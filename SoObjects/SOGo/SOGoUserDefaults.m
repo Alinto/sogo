@@ -1,6 +1,6 @@
 /* SOGoUserDefaults.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2020 Inverse inc.
+ * Copyright (C) 2009-2021 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -766,6 +766,16 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 - (NSArray *) mailIdentities
 {
   return [self arrayForKey: @"SOGoMailIdentities"];
+}
+
+- (void) setMailForceDefaultIdentity: (BOOL) newValue
+{
+  [self setBool: newValue forKey: @"SOGoMailForceDefaultIdentity"];
+}
+
+- (BOOL) mailForceDefaultIdentity
+{
+  return [self boolForKey: @"SOGoMailForceDefaultIdentity"];
 }
 
 - (void) setAuxiliaryMailAccounts: (NSArray *) newAccounts

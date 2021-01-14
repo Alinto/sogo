@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2020 Inverse inc.
+  Copyright (C) 2007-2021 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -685,37 +685,40 @@ static NSString    *userAgent      = nil;
   NSDictionary *identity;
   NSMutableArray *addrs;
   NSString *email;
+  SOGoMailAccount *account;
   int i;
 
-  /* Pick the first email matching one of the account's identities */
-  addrs = [NSMutableArray array];
-  if (_fromSentMailbox)
-    [self _addRecipients: [_envelope from] toArray: addrs];
-  else
-    {
-      [self _addRecipients: [_envelope to] toArray: addrs];
-      if ([addrs count] == 0)
-        [self _addRecipients: [_envelope cc] toArray: addrs];
-      if ([addrs count] == 0)
-        [self _addRecipients: [_envelope bcc] toArray: addrs];
-    }
-
   identity = nil;
-  if ([addrs count])
+  account = [[self container] mailAccountFolder];
+  if (![account forceDefaultIdentity])
     {
-      for (i = 0; !identity && i < [addrs count]; i++)
+      /* Pick the first email matching one of the account's identities */
+      addrs = [NSMutableArray array];
+      if (_fromSentMailbox)
+        [self _addRecipients: [_envelope from] toArray: addrs];
+      else
         {
-          email = [addrs objectAtIndex: i];
-          identity = [[[self container] mailAccountFolder] identityForEmail: email];
+          [self _addRecipients: [_envelope to] toArray: addrs];
+          [self _addRecipients: [_envelope cc] toArray: addrs];
+          [self _addRecipients: [_envelope bcc] toArray: addrs];
         }
-      if (identity)
+
+      if ([addrs count])
         {
-          [_info setObject: [self _emailFromIdentity: identity]  forKey: @"from"];
+          for (i = 0; !identity && i < [addrs count]; i++)
+            {
+              email = [addrs objectAtIndex: i];
+              identity = [[[self container] mailAccountFolder] identityForEmail: email];
+            }
+          if (identity)
+            {
+              [_info setObject: [self _emailFromIdentity: identity]  forKey: @"from"];
+            }
         }
     }
   if (!identity)
     {
-      identity = [[context activeUser] defaultIdentity];
+      identity = [account defaultIdentity];
       if (identity)
         [_info setObject: [self _emailFromIdentity: identity]  forKey: @"from"];
     }

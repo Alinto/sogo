@@ -1,6 +1,6 @@
 /* UIxPreferences.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2020 Inverse inc.
+ * Copyright (C) 2007-2021 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1253,7 +1253,7 @@ static NSArray *reminderValues = nil;
     {
       knownKeys = [NSArray arrayWithObjects: @"id", @"name", @"serverName", @"port",
                            @"userName", @"password", @"encryption", @"replyTo",
-                           @"identities", @"mailboxes",
+                           @"identities", @"mailboxes", @"forceDefaultIdentity",
                            @"receipts", @"security", @"isNew",
                            nil];
       [knownKeys retain];
@@ -1307,6 +1307,10 @@ static NSArray *reminderValues = nil;
       identities = [account objectForKey: @"identities"];
       if ([self _validateAccountIdentities: identities])
         [target setObject: identities forKey: @"SOGoMailIdentities"];
+      if ([[account objectForKey: @"forceDefaultIdentity"] boolValue])
+        [target setObject: [NSNumber numberWithBool: YES] forKey: @"SOGoMailForceDefaultIdentity"];
+      else if ([target objectForKey: @"SOGoMailforceDefaultIdentity"])
+        [target removeObjectForKey: @"SOGoMailforceDefaultIdentity"];
       [self _extractMainReceiptsPreferences: [account objectForKey: @"receipts"]  inDictionary: target];
       [self _extractMainSecurityPreferences: [account objectForKey: @"security"]  inDictionary: target];
     }
@@ -1512,6 +1516,7 @@ static NSArray *reminderValues = nil;
           if ([accounts count] > 0)
             {
               // The first account is the main system account. The following mapping is required:
+              // - forceDefaultIdentity                => SOGoMailForceDefaultIdentity
               // - receipts.receiptAction              => SOGoMailReceiptAllow
               // - receipts.receiptNonRecipientAction  => SOGoMailReceiptNonRecipientAction
               // - receipts.receiptOutsideDomainAction => SOGoMailReceiptOutsideDomainAction

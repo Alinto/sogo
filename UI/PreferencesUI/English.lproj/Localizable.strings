@@ -215,6 +215,7 @@
 "Reply To Email" = "Reply To Email";
 "Signature" = "Signature";
 "Identities" = "Identities";
+"Always use the default identity when replying to messages" = "Always use the default identity when replying to messages";
 "Default Identity" = "Default Identity";
 "New Identity" = "New Identity";
 "(Click to create)" = "(Click to create)";

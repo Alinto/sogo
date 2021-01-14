@@ -74,6 +74,10 @@
       }
     };
 
+    this.hasDefaultIdentity = function() {
+      return _.findIndex(this.account.identities, function(identity) { return !!identity.isDefault; }) >= 0;
+    };
+
     this.setDefaultIdentity = function ($event, $index) {
       _.forEach(this.account.identities, function(identity, i) {
         if (i == $index)

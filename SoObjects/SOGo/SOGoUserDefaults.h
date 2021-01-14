@@ -1,6 +1,6 @@
 /* SOGoUserDefaults.h - this file is part of SOGo
  *
- * Copyright (C) 2011-2020 Inverse inc.
+ * Copyright (C) 2011-2021 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -184,6 +184,9 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 
 - (void) setMailIdentities: (NSArray *) newIdentites;
 - (NSArray *) mailIdentities;
+
+- (void) setMailForceDefaultIdentity: (BOOL) newValue;
+- (BOOL) mailForceDefaultIdentity;
 
 - (void) setAuxiliaryMailAccounts: (NSArray *) newAccounts;
 - (NSArray *) auxiliaryMailAccounts;

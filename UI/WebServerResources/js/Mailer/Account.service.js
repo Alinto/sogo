@@ -480,7 +480,7 @@
    * @return an object literal copy of the Account instance
    */
   Account.prototype.$omit = function () {
-    var account = {}, identities = [];
+    var account = {}, identities = [], defaultIdentity = false;
 
     angular.forEach(this, function(value, key) {
       if (key != 'constructor' && key !='identities' && key[0] != '$') {
@@ -491,8 +491,13 @@
     _.forEach(this.identities, function (identity) {
       if (!identity.isReadOnly)
         identities.push(_.pick(identity, ['email', 'fullName', 'replyTo', 'signature', 'isDefault']));
+      if (identity.isDefault)
+        defaultIdentity = identity;
     });
     account.identities = identities;
+
+    if (!defaultIdentity || !account.forceDefaultIdentity)
+      delete account.forceDefaultIdentity;
 
     return account;
   };

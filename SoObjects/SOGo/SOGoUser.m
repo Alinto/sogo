@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2020 Inverse inc.
+  Copyright (C) 2006-2021 Inverse inc.
 
   This file is part of SOGo.
 
@@ -883,6 +883,9 @@
 
   [mailAccount setObject: identities forKey: @"identities"];
   [identities release];
+
+  if ([_defaults mailForceDefaultIdentity])
+    [mailAccount setObject: [NSNumber numberWithBool: YES] forKey: @"forceDefaultIdentity"];
 
   // 6. Receipts
   if ([_defaults allowUserReceipt])

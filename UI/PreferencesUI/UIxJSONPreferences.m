@@ -1,6 +1,6 @@
 /* UIxJSONPreferences.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2020 Inverse inc.
+ * Copyright (C) 2007-2021 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -441,6 +441,7 @@ static SoProduct *preferencesProduct = nil;
   [values removeObjectForKey: @"SOGoMailCertificate"];
   [values removeObjectForKey: @"SOGoMailCertificateAlwaysSign"];
   [values removeObjectForKey: @"SOGoMailCertificateAlwaysEncrypt"];
+  [values removeObjectForKey: @"SOGoMailForceDefaultIdentity"];
 
   // Add the domain's default vacation subject if user has not specified a custom subject
   vacationOptions = [defaults vacationOptions];

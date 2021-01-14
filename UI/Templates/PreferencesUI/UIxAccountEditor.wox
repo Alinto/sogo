@@ -97,6 +97,12 @@
             <!-- identities -->
             <div class="pseudo-input-container" ng-if="$AccountDialogController.hasIdentities()">
               <label class="pseudo-input-label"><var:string label:value="Identities"/></label>
+              <md-checkbox
+                  class="pseudo-input-field"
+                  ng-show="$AccountDialogController.hasDefaultIdentity()"
+                  ng-model="$AccountDialogController.account.forceDefaultIdentity"
+                  ng-true-value="1"
+                  ng-false-value="0"><var:string label:value="Always use the default identity when replying to messages"/></md-checkbox>
               <md-card ng-repeat="identity in $AccountDialogController.account.identities | filter:$AccountDialogController.isEditableIdentity"
                        class="sg-collapsed"
                        ng-class="{ 'sg-expanded': $index == $AccountDialogController.selectedIdentity }">

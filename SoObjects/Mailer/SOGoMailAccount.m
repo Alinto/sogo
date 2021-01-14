@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2020 Inverse inc.
+  Copyright (C) 2007-2021 Inverse inc.
 
   This file is part of SOGo.
 
@@ -692,6 +692,11 @@ static NSString *inboxFolderName = @"INBOX";
     }
 
   return defaultIdentity; // can be nil
+}
+
+- (BOOL) forceDefaultIdentity
+{
+  return [[[self _mailAccount] objectForKey: @"forceDefaultIdentity"] boolValue];
 }
 
 - (NSDictionary *) identityForEmail: (NSString *) email
