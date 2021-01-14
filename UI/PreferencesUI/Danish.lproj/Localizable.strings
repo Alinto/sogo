@@ -18,22 +18,37 @@
 "Delete" = "Slet";
 /* contacts categories */
 "contacts_category_labels" = "Kollega, konkurrent, kunde, ven, familie, samarbejdspartner, udbyder, presse, VIP";
+
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Aktivér ferie autosvar";
+"Enable custom auto reply subject" = "Aktivér brugerdefinerede autosvar emne";
+"Auto reply subject" = "Autosvar emne";
+"You can write ${subject} to insert the original subject" = "Du kan skrive ${subject} for at indsætte den oprindelig emne";
 "Auto reply message" ="Automatisk beskedsvar";
-"Email addresses (separated by commas)" ="E-mail adresser (adskilt af kommaer)";
+"Email addresses" ="E-mail adresser";
 "Add default email addresses" = "Tilføj standard e-mail-adresser";
 "Days between responses" ="Dage imellem svar";
 "Do not send responses to mailing lists" = "Send ikke svar til postlister";
+"Enable auto reply on" = "Aktiver Autosvar til";
+"First day of vacation" = "Første dag af ferie";
 "Disable auto reply on" = "Deaktiver Autosvar til";
+"Last day of vacation" = "Sidste dag af ferie";
+"Enter date" = "Indtast en dato";
+"Always send vacation message response" = "Altid send feriebesked";
+"The vacation message is sent prior to apply your filters." = "Feriebesked sendes inden anvendelse af dine filtre.";
+"Discard incoming mails during vacation" = "Kassér indgående mails under ferie";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Feriebesked sendes, men indgående beskeder leveres ikke til din indbakke.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Angiv venligst din besked og de e-mail-adresser, som du vil aktivere autosvar for.";
 "Your vacation message must not end with a single dot on a line." = "Din ferie meddelelse må ikke slutte med et enkelt punktum på en linje.";
 "End date of your auto reply must be in the future."
 = "Sluttidspunkt for dit autosvar skal være i fremtiden.";
+
 /* forward messages */
 "Forward incoming messages" = "Videresend indgående beskeder";
 "Keep a copy" = "Behold en kopi";
+"Enter an email" = "Indtast en e-mail";
+"Add another email" = "Tilføj endnu en e-mail";
 "Please specify an address to which you want to forward your messages."
 = "Angiv en adresse, som du ønsker at sende dine beskeder til.";
 /* d & t */
