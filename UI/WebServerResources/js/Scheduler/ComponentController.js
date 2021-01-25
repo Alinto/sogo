@@ -351,7 +351,8 @@
         this.showAttendeesEditor |= initOrganizer;
       }
 
-      $timeout(scrollToStart);
+      if (_.has(this.component, '$attendees'))
+        $timeout(scrollToStart);
 
       return $q.all(promises);
     };
@@ -630,9 +631,11 @@
     };
 
     function updateFreeBusy() {
-      vm.component.$attendees.updateFreeBusyCoverage();
-      vm.component.$attendees.updateFreeBusy();
-      $timeout(scrollToStart);
+      if (_.has(vm.component, '$attendees')) {
+        vm.component.$attendees.updateFreeBusyCoverage();
+        vm.component.$attendees.updateFreeBusy();
+        $timeout(scrollToStart);
+      }
     }
   }
 
