@@ -40,14 +40,19 @@
 "Auto reply subject" = "Тема сообщения автоответа";
 "You can write ${subject} to insert the original subject" = "Вы может написать ${subject} для вставки в исходную тему";
 "Auto reply message" = "Текст сообщения автоответа";
-"Email addresses (separated by commas)" = "E-mail адреса (разделенные запятыми)";
+"Email addresses" = "E-mail адреса";
 "Add default email addresses" = "Добавить e-mail адреса по умолчанию";
 "Days between responses" = "Дней между ответами";
 "Do not send responses to mailing lists" = "Не отправлять ответы на почтовые списки рассылки";
 "Enable auto reply on" = "Включить автоответ на";
+"First day of vacation" = "Первый день отпуска";
 "Disable auto reply on" = "Отключить автоответ";
+"Last day of vacation" = "Последний день отпуска";
+"Enter date" = "Выберите дату";
 "Always send vacation message response" = "Всегда отправлять ответное сообщение об отпуске";
+"The vacation message is sent prior to apply your filters." = "Сообщение об отпуске отправляется до применения ваших фильтров.";
 "Discard incoming mails during vacation" = "Не получать входящие письма во время отпуска";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Сообщение об отпуске отправляется, но входящие сообщения не доставляются в папку Входящие.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Пожалуйста, укажите Ваше сообщение и адреса электронной почты для которых Вы хотите включить автоматический ответ.";
 "Your vacation message must not end with a single dot on a line." = "Ваше сообщение о верменном отсутсвии не должно оканчиваться строкой с одиночной точкой.";
@@ -57,10 +62,13 @@
 /* forward messages */
 "Forward incoming messages" = "Пересылать входящие сообщения";
 "Keep a copy" = "Оставлять копию";
+"Enter an email" = "Введите адрес электронной почты";
+"Add another email" = "Добавить ещё адрес электронной почты";
 "Please specify an address to which you want to forward your messages."
 = "Пожалуйста укажите адрес, на который вы хотите переадресовать ваши сообщения.";
 "You are not allowed to forward your messages to an external email address." = "Вы не можете пересылать свои сообщения на внешний адрес электронной почты.";
 "You are not allowed to forward your messages to an internal email address." = "Вы не можете пересылать свои сообщения на внутренний адрес электронной почты.";
+"You are not allowed to forward your messages to this domain:" = "Вам не разрешается пересылать свои сообщения на этот домен:";
 
 /* d & t */
 "Current Time Zone" = "Текущий часовой пояс";
@@ -85,7 +93,9 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
 
 "longDateFmt_0" = "%A %e %B %Y";
 "longDateFmt_1" = "%e %b. %Y";
@@ -156,6 +166,7 @@
 "New label" = "Новая метка";
 "Show subscribed mailboxes only" = "Показывать только почтовые ящики, на которые подписан";
 "Synchronize only default mail folders (EAS)" = "Синхронизировать только почтовые папки по умолчанию (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Проверять количество непрочитанных сообщений для всех почтовых ящиков";
 "Sort messages by threads" = "Группировать сообщения по обсуждениям";
 "Always open mail composer" = "Всегда открывать редактор писем";
 "Inside current window" = "Внутри текущего окна";
@@ -187,6 +198,7 @@
 /* Contact */
 "Personal Address Book" = "Личная адресная книга";
 "Collected Address Book" = "Собранные адреса";
+"Contact categories must have unique names." = "Категории контактов должны иметь уникальные имена.";
 
 /* IMAP Accounts */
 "Settings" = "Настройки";
@@ -202,6 +214,10 @@
 "Email" = "E-mail";
 "Reply To Email" = "Ответить на e-mail";
 "Signature" = "Подпись";
+"Identities" = "Идентификаторы";
+"Always use the default identity when replying to messages" = "Всегда использовать идентификатор по умолчанию при ответе на сообщения";
+"Default Identity" = "Идентификатор по умолчанию";
+"New Identity" = "Новый идентификатор";
 "(Click to create)" = "(Нажмите чтобы создать)";
 "Please enter your signature below" = "Введите Вашу подпись ниже";
 "Please specify a valid sender address." = "Пожалуйста, укажите правильный адрес отправителя.";
@@ -217,14 +233,17 @@
 "When composing a message" = "При составлении сообщения";
 "Digitally sign the message by default" = "Подписывать цифровой подписью сообщения по умолчанию";
 "Always try to encrypt the message" = "Всегда пытаться зашифровать сообщение";
+"An error occurred while importing the certificate. Verify your password." = "При импорте сертификата произошла ошибка. Проверьте свой пароль.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Дополнительные параметры";
 
 /* password */
+"Current password" = "Текущий пароль";
 "New password" = "Новый пароль";
 "Confirmation" = "Повтор нового пароля";
 "Change" = "Изменить";
+"Passwords don't match" = "Пароли не совпадают";
 
 /* Event+task classifications */
 "Default events classification" = "Событие по умолчанию";
@@ -237,6 +256,7 @@
 "Calendar Category" = "Категория календаря";
 "Add Calendar Category" = "Добавить категорию календаря";
 "New category" = "Новая категория";
+"Reset to defaults" = "Сброс к стандартным настройкам";
 "Remove Calendar Category" = "Удалить категорию календаря";
 "Contact Category" = "Категория контактов";
 "Add Contact Category" = "Добавить категорию контактов";
@@ -305,6 +325,7 @@
 "refreshview_every_20_minutes" = "Каждые 20 минут";
 "refreshview_every_30_minutes" = "Каждые 30 минут";
 "refreshview_once_per_hour" = "Раз в час";
+"Enable Desktop Notifications" = "Включить уведомления на рабочем столе";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Когда я получаю запрос об уведомлении о доставке";
@@ -436,3 +457,13 @@
 /* Limited Animation Mode */
 "animation_LIMITED" = "Ограниченный";
 "animation_NONE" = "Нет";
+
+/* 2FA */
+"Enable two-factor authentication using Google Authenticator" = "Включите двухфакторную аутентификацию TOTP";
+"You must enter this key into your Google Authenticator application." = "Отсканируйте QR-код в TOTP совместимом приложение, на пример: Twillio Authy или Google Authenticator.";
+"If you do not and you log out you will not be able to login again." = "Учтите: если вы сейчас сохраните настройки профиля SOGo и не отсканируете/сохраните запись на основе QR-кода в приложении, то когда выйдете из системы, вы не сможете войти в систему снова.";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "Внешний скрипт Sieve активен";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve - это язык программирования, который может быть использован для фильтрации электронной почты. Если вы позволите SOGo обрабатывать ваши фильтры, настройки отпуска и переадресации, ваш активный скрипт будет отключен.";
+"Let SOGo handle everything" = "Пусть SOGo всем управляет";
