@@ -121,6 +121,7 @@
 "Edit Draft..." = "Редактировать черновик...";
 "Load Images" = "Загрузить изображения";
 "Return Receipt" = "Уведомление о вручении";
+"Choose which identity to send this message from" = "Выберите, с каким идентификатором отправить это сообщение";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Отправитель этого сообщения запросил уведомление о прочтении. Отправить уведомление?";
 "Return Receipt (displayed) - %@"= "Уведомление о вручении (отображается на дисплее) -% @";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.";
@@ -179,6 +180,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Добавиь в адресную книгу...";
+"Successfully created card" = "Карта успешно создана";
 "Compose Mail To" = "Составить письмо для";
 "Create Filter From Message..." = "Создать фильтр из сообщения...";
 
@@ -266,6 +268,15 @@
 
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Нет сертификата, связанного с учетной записью.";
+
+/* Invalid message signature */
+"Digital signature is not valid" = "Цифровая подпись недействительна";
+
+/* Valid message signature */
+"Message is signed" = "Сообщение подписано";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Цифровая подпись недействительна";
 
 "This Folder" = "Текущая папка";
 
@@ -402,6 +413,15 @@
 "Your email has been saved" = "Письмо сохранено";
 "Your email has been sent" = "Письмо отправлено";
 "Folder compacted" = "Папка сжата";
+
+/* Advanced search */
+"Enter Subject" = "Поиск по Теме";
+"Enter From" = "Поиск по Отправителю";
+"Enter To" = "Поиск по Получателю";
+"Enter Cc" = "Поиск по Копии";
+"Enter Body" = "Поиск по Телу письма";
+"match" = "совпадает";
+"does not match" = "не совпадает";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Область поиска";
