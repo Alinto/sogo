@@ -181,6 +181,25 @@ md-sidenav {
   }
 }
 
+// Limit height of attachments card, format content-type labels
+.msg-attachment-link,
+.msg-attachment-image {
+  md-card-content {
+    padding: $baseline-grid;
+    p {
+      @extend .md-caption;
+      line-height: $sg-line-height-2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      .sg-label-outline {
+        border-color: $colorGrey400;
+        color: $colorGrey600;
+      }
+    }
+  }
+}
+
 // The drop zone zone is only visibile when the user is dragging a file to the browser window
 .sg-dropzone {
   display: none;
@@ -223,9 +242,11 @@ md-sidenav {
   }
 }
 
+// Text or html message body
 .msg-attachment-other {
   flex: 0 0 100%;
   max-width: 100%;
+  word-break: break-word;
 }
 
 .sg-attachment-name {
@@ -245,28 +266,6 @@ md-sidenav {
   margin-bottom: $line;
   white-space: normal;
   font-weight: $sg-font-regular;
-}
-
-// Limit height of attachments card, format content-type labels
-.mailer_mailcontent {
-  .sg-mail-part {
-    md-card {
-      md-card-content {
-        padding: $baseline-grid;
-        p {
-          @extend .md-caption;
-          line-height: $sg-line-height-2;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          .sg-label-outline {
-            border-color: $colorGrey400;
-            color: $colorGrey600;
-          }
-        }
-      }
-    }
-  }
 }
 
 .mailer_plaincontent {
