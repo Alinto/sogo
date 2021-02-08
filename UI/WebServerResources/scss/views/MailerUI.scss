@@ -247,19 +247,22 @@ md-sidenav {
   font-weight: $sg-font-regular;
 }
 
+// Limit height of attachments card, format content-type labels
 .mailer_mailcontent {
-  md-card {
-    md-card-content {
-      padding: $baseline-grid;
-      p {
-        @extend .md-caption;
-        line-height: $sg-line-height-2;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        .sg-label-outline {
-          border-color: $colorGrey400;
-          color: $colorGrey600;
+  .sg-mail-part {
+    md-card {
+      md-card-content {
+        padding: $baseline-grid;
+        p {
+          @extend .md-caption;
+          line-height: $sg-line-height-2;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          .sg-label-outline {
+            border-color: $colorGrey400;
+            color: $colorGrey600;
+          }
         }
       }
     }
