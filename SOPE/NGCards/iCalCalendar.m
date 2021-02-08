@@ -22,6 +22,8 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
+#import <NGExtensions/NSObject+Logs.h>
+
 #import "iCalEvent.h"
 #import "iCalToDo.h"
 #import "iCalJournal.h"
@@ -38,6 +40,30 @@
 @end
 
 @implementation iCalCalendar
+
++ (NSArray *) parseFromSource: (id) source
+{
+  NSArray *result;
+  NSMutableString *content;
+
+  result = [super parseFromSource: source];
+
+  // If parsing doesn't return any card, check if the opening tag is present but the ending tag
+  // missing. Add the ending tag and parse the source again in this case.
+  if ([result count] == 0 &&
+      [source length] &&
+      [source hasPrefix: @"BEGIN:VCALENDAR"] &&
+      !([source hasSuffix: @"END:VCALENDAR\r\n"] || [source hasSuffix: @"END:VCALENDAR"]))
+    {
+      content = [NSMutableString stringWithString: source];
+      [content appendString: @"END:VCALENDAR"];
+      result = [super parseFromSource: content];
+      if ([result count] > 0)
+        [self logWithFormat: @"Successfully repaired VCALENDAR by adding ending tag"];
+    }
+
+  return result;
+}
 
 /* class mapping */
 - (Class) classForTag: (NSString *) classTag
