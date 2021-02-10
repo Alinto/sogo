@@ -356,10 +356,7 @@
 
       domains = [];
 
-      if ($window.forwardConstraints > 0 &&
-          angular.isDefined(Preferences.defaults.Forward) &&
-          Preferences.defaults.Forward.enabled &&
-          angular.isDefined(Preferences.defaults.Forward.forwardAddress)) {
+      if ($window.forwardConstraints > 0) {
 
         // We first extract the list of 'known domains' to SOGo
         defaultAddresses = $window.defaultEmailAddresses;
@@ -396,7 +393,8 @@
       // We do some sanity checks
 
       // We check if we're allowed or not to forward based on the domain defaults
-      if (this.preferences.defaults.Forward && this.preferences.defaults.Forward.forwardAddress) {
+      if (this.preferences.defaults.Forward && this.preferences.defaults.Forward.enabled &&
+          this.preferences.defaults.Forward.forwardAddress) {
         addresses = this.preferences.defaults.Forward.forwardAddress;
         try {
           for (i = 0; i < addresses.length; i++) {
