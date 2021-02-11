@@ -104,7 +104,7 @@
 "To"            = "За";
 "Cc"            = "Цц";
 "Bcc"           = "Бцц";
-"Reply-To"	    = "Одговори";
+"Reply-To"	= "Одговори";
 "Add address"   = "Додај адресу";
 "Body"          = "Тело";
 "Open" = "Отвори";
@@ -121,6 +121,7 @@
 "Edit Draft..." = "Измени нацрт...";
 "Load Images" = "Учитај слике";
 "Return Receipt" = "Потврда о пријему";
+"Choose which identity to send this message from" = "Изаберите са ког идентитета да се проследи ова порука";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Пошиљалац ове поруке је питао да буде обавештен када прочитате ову поруку. Да ли желите да обавестите пошиљаоца?";
 "Return Receipt (displayed) - %@"= "Потврда о пријему (приказана) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Ово је Потврда о пријему за пошту коју сте послали %@.\n\nБелешка: Ова потврда о пријему је само потврда да је порука приказана на рачунару примаоца. Нема гаранције да је прималац прочитао поруку или разумео садржај поруке.";
@@ -267,6 +268,15 @@
 
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Нема сертификата повезаног са налогом.";
+
+/* Invalid message signature */
+"Digital signature is not valid" = "Дигитални потпис није валидан";
+
+/* Valid message signature */
+"Message is signed" = "Порука је потписана";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Дигитални потпис није валидан";
 
 "This Folder" = "Овај директоријум";
 

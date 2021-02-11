@@ -107,6 +107,7 @@
 "Name of the Calendar" = "Име календара";
 "new" = "Нови";
 "Print view" = "Преглед штампе";
+"Print" = "Штампај";
 "edit" = "Измени";
 "delete" = "Обриши";
 "proposal" = "Предлог";
@@ -147,6 +148,7 @@
 "Display events and tasks colors" = "Прикажи боје догађаја и задатака";
 "Borders" = "Ивице";
 "Backgrounds" = "Позадине";
+"Page Format" = "Формат стране";
 
 /* Appointments */
 "Appointment viewer" = "Прегледач састанака";

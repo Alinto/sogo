@@ -8,18 +8,25 @@
 "Connect" = "Повежи";
 
 /* Appears while authentication is in progress */
-"Authenticating" = "Аунетнтификација";
+"Authenticating" = "Аунетнтикација";
 
 /* Appears when authentication succeeds */
 "Welcome" = "Добродошли";
 
-"Authentication Failed" = "Операција није успела";
-"Wrong username or password." = "Погрешно корисничко име и лозинка.";
+"Authentication Failed" = "Аутентикација није успела";
+"Wrong username or password." = "Погрешно корисничко име или лозинка.";
 "Retry" = "Покушај поново";
-"cookiesNotEnabled" = "Не можете се пријавити јер су онемогућени колачићи у вашеп прегледачу. Молимо омогућите колачиће у подашавањима прегледача и покушајте поново.";
-"browserNotCompatible" = "Открили смо да верзија вашег прегледача није подржана на овом сајту. Наша препорука је да корситите Firefox. Кликните на линк испод да преузмете последњу верзију овог прегледача.";
-"alternativeBrowsers" = "Алтернативно, можете користити и следеће компатибилне прегледаче";
+"Login failed due to unhandled error case:" = "Пријава није успела због неутврђеног случаја грешке:";
+"cookiesNotEnabled" = "Не можете се пријавити јер су онемогућени колачићи у вашеп претраживачу. Молимо омогућите колачиће у подашавањима претраживача и покушајте поново.";
+"browserNotCompatible" = "Открили смо да верзија вашег претраживача није подржана на овом сајту. Наша препорука је да корситите Firefox. Кликните на линк испод да преузмете последњу верзију овог претраживача.";
+"alternativeBrowsers" = "Алтернативно, можете користити и следеће компатибилне претраживаче";
 "alternativeBrowserSafari" = "Алтернативно, можете користити и Safari.";
+
+/* 2FA */
+"Verification Code" = "Верификациони код";
+"Enter the 6-digit verification code from your Google Authenticator application." = "Унесите 6-цифрени код из ваше Google Authenticator апликације.";
+"You provided an invalid Google Authenticator key." = "Унели сте неисправан код.";
+
 "Download" = "Преузимање";
 "Language" = "Језик";
 "choose" = "Изабери ...";
@@ -27,7 +34,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -67,7 +74,7 @@
 "AboutBox" = "Развијен од стране Inverse, SOGo је потпуно функционалан групвер сервер фокусиран на скалабилност и лаку употребу.<br/><br/>\nSOGo пружа богати AJAX-базирани веб интерфејс и подржава више нативних клијената кроз коришћење стандардних протокола као што су CalDAV и CardDAV.<br/><br/>\nSOGo се дистрибуира кроз лиценцу <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> верзија 2 или каснија а делови се дистрибуирају кроз GNU LGPL верзија 2. Ово је слободан софтвер: слободни сте да мењате и поново дистрибуирате. НЕМА ГАРАНЦИЈЕ, у мери у којој то допушта закон.<br/><br/>\nПогледајте <a href=\"http://www.sogo.nu/en/support/community.html\">ову страницу</a> за различите опције подршке.";
 "Your account was locked due to too many failed attempts." = "Ваш налог је закључан због више неуспешних покушаја пријаве.";
 "Your account was locked due to an expired password." = "Ваш налог је закључан због истекле лозинке.";
-"Login failed due to unhandled error case" = "Пријава није успела због необрађеног случаја грешке";
+"Login failed due to unhandled error case" = "Пријава није успела због неутврђеног случаја грешке:";
 "Change your Password" = "Промените вашу лозинку";
 "The password was changed successfully." = "Лозинка је успешно промењена.";
 "Your password has expired, please enter a new one below" = "Ваша лозинка је истекла, молимо унесите нову испод";
@@ -76,7 +83,7 @@
 "Password Grace Period" = "Грејс период лозинке";
 "You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Преостало вам је %{0} пријава пре него вам буде закључан налог. Молимо промените лозинку у дијалогу подешавања.";
 "Password about to expire" = "Лозинка ускоро истиче";
-"Your password is going to expire in %{0} %{1}." = "Ваша лозинка истиче %{0} %{1}.";
+"Your password is going to expire in %{0} %{1}." = "Ваша лозинка истиче за %{0} %{1}.";
 "days" = "дани";
 "hours" = "сати";
 "minutes" = "минути";

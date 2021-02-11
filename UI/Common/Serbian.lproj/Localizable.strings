@@ -13,7 +13,7 @@
 "Disconnect" = "Прекини";
 "Toggle Menu" = "Искључи мени";
 "Right Administration" = "Администрација права";
-"Log Console (dev.)" = "Конзола дневника (раз.)";
+"Log Console (dev.)" = "Конзола логова (раз.)";
 "User" = "Корисник";
 "Vacation message is enabled" = "Омогућена је порука за Одмор";
 "Help" = "Помоћ";
@@ -22,7 +22,7 @@
 "Owner" = "Власник";
 "Publish the Free/Busy information" = "Објави информацију Слободан/Заузет";
 "Add..." = "Додај...";
-"Remove" = "Уклони...";
+"Remove" = "Уклони";
 "Subscribe User" = "Претплати корисника";
 "Any Authenticated User" = "Било који аутентификовани корисник";
 "Public Access" = "Јавни приступ";

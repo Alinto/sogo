@@ -121,7 +121,7 @@
 "Edit Draft..." = "Izmeni nacrt...";
 "Load Images" = "Učitaj slike";
 "Return Receipt" = "Potvrda o prijemu";
-"Choose which identity to send this message from" = "Choose which identity to send this message from";
+"Choose which identity to send this message from" = "Izaberite iz kog identiteta želite da pošaljete ovu poruku";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Pošiljalac ove poruke je pitao da bude obavešten kada pročitate ovu poruku. Da li želite da obavestite pošiljaoca?";
 "Return Receipt (displayed) - %@"= "Potvrda o prijemu (prikazana) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Ovo je Potvrda o prijemu za poštu koju ste poslali %@.\n\nBeleška: Ova potvrda o prijemu je samo potvrda da je poruka prikazana na računaru primaoca. Nema garancije da je primalac pročitao poruku ili razumeo sadržaj poruke.";
@@ -270,13 +270,13 @@
 "No certificate associated to account." = "Nema sertifikata povezanog sa nalogom.";
 
 /* Invalid message signature */
-"Digital signature is not valid" = "Digital signature is not valid";
+"Digital signature is not valid" = "Digitalni potpis nije važeći";
 
 /* Valid message signature */
-"Message is signed" = "Message is signed";
+"Message is signed" = "Poruka je potpisana";
 
 /* Unknown error while validating message signature */
-"Digital signature is not valid" = "Digital signature is not valid";
+"Digital signature is not valid" = "Digitalni potpis nije važeći";
 
 "This Folder" = "Ovaj direktorijum";
 

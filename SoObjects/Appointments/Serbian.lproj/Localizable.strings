@@ -1,4 +1,4 @@
-"Inviting the following persons is prohibited:" = "Забрањено да је позовете следеће особе:";
+"Inviting the following persons is prohibited:" = "Забрањено је позивање следеће особе:";
 "Personal Calendar" = "Лични календар";
 vevent_class0 = "(Јавни догађај)";
 vevent_class1 = "(Приватни догађај)";
@@ -31,7 +31,7 @@ vtodo_class2 = "(Поверљиви задатак)";
 
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Позивница за догађај: \"%{Summary}\"";
-"(sent by %{SentBy}) " = "(послао %{SentBy}) ";
+"(sent by %{SentBy}) " = "(послао/ла %{SentBy}) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}вас је позвао на %{Summary}.\n\nПочетак: %{StartDate}\nЗавршетак: %{EndDate}\nОпис: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}вас је позвао на %{Summary}.\n\nПочетак: %{StartDate} у %{StartTime}\nЗавршетак: %{EndDate} у %{EndTime}\nОпис: %{Description}";
 
