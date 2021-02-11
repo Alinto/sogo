@@ -107,6 +107,7 @@
 "Name of the Calendar" = "Название календаря";
 "new" = "Новый";
 "Print view" = "Печать";
+"Print" = "Печать";
 "edit" = "Изменить";
 "delete" = "Удалить";
 "proposal" = "Предложение";
@@ -147,6 +148,7 @@
 "Display events and tasks colors" = "Показывать цвета событий и задач";
 "Borders" = "Границы";
 "Backgrounds" = "Условия";
+"Page Format" = "Формат страницы";
 
 /* Appointments */
 "Appointment viewer" = "Просмотр встреч";
@@ -440,15 +442,45 @@ validate_untilbeforeend    = "Повторение должно заканчив
 "Are you sure you want to delete the selected components?"
 = "Вы уверены, что вы хотите удалить выбранные компоненты?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Роль";
+
+/* Participant role: participation is required */
 "Participant" = "Участник";
+
+/* Participant role: participation is required */
+"req-participant" = "Участник";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Необязательный участник";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Возможный участник";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Не участник";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Не участник";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "Организатор";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Организатор";
+
+/* Participant status: needs action */
 "Needs action" = "Требует действия";
+
+/* Participant status: event accepted */
 "Accepted" = "Принято";
+
+/* Participant status: event declined */
 "Declined" = "Отклонено";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Предварительно";
+
 "Free" = "Свободен";
 "Busy" = "Занят";
 "Maybe busy" = "Возможно занят";

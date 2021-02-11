@@ -1,2 +1,5 @@
 "OtherUsersFolderName"   = "Другие пользователи";
 "SharedFoldersName" = "Общие папки";
+
+"Report: Marked messages as junk" = "Пометить сообщения как спам";
+"Report: Marked messages as not junk" = "Пометить сообщения как не спам";

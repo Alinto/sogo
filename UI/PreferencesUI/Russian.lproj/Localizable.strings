@@ -7,7 +7,7 @@
 "Unsaved Changes" = "Несохранённые изменения";
 
 /* Unsaved changes confirmation dialog text */
-"Do you want to save your changes made to the configuration?" = "Вы хотите, чтобы сохранить изменения, внесенные в конфигурацию?";
+"Do you want to save your changes made to the configuration?" = "Вы хотите сохранить изменения внесенные в конфигурацию?";
 
 /* Unsaved changes confirmation dialog button */
 "Save" = "Сохранить";
@@ -40,14 +40,19 @@
 "Auto reply subject" = "Тема сообщения автоответа";
 "You can write ${subject} to insert the original subject" = "Вы может написать ${subject} для вставки в исходную тему";
 "Auto reply message" = "Текст сообщения автоответа";
-"Email addresses (separated by commas)" = "E-mail адреса (разделенные запятыми)";
+"Email addresses" = "Адреса электронной почты";
 "Add default email addresses" = "Добавить e-mail адреса по умолчанию";
 "Days between responses" = "Дней между ответами";
 "Do not send responses to mailing lists" = "Не отправлять ответы на почтовые списки рассылки";
 "Enable auto reply on" = "Включить автоответ на";
+"First day of vacation" = "Первый день отпуска";
 "Disable auto reply on" = "Отключить автоответ";
+"Last day of vacation" = "Последний день отпуска";
+"Enter date" = "Введите дату";
 "Always send vacation message response" = "Всегда отправлять ответное сообщение об отпуске";
+"The vacation message is sent prior to apply your filters." = "Сообщение об отпуске отправляется до применения фильтров.";
 "Discard incoming mails during vacation" = "Не получать входящие письма во время отпуска";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Сообщение об отпуске отправляется, но входящие сообщения не доставляются в ваш почтовый ящик.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Пожалуйста, укажите Ваше сообщение и адреса электронной почты для которых Вы хотите включить автоматический ответ.";
 "Your vacation message must not end with a single dot on a line." = "Ваше сообщение о верменном отсутсвии не должно оканчиваться строкой с одиночной точкой.";
@@ -57,13 +62,16 @@
 /* forward messages */
 "Forward incoming messages" = "Пересылать входящие сообщения";
 "Keep a copy" = "Оставлять копию";
+"Enter an email" = "Введите адрес электронной почты";
+"Add another email" = "Добавить еще один адрес электронной почты";
 "Please specify an address to which you want to forward your messages."
 = "Пожалуйста укажите адрес, на который вы хотите переадресовать ваши сообщения.";
 "You are not allowed to forward your messages to an external email address." = "Вы не можете пересылать свои сообщения на внешний адрес электронной почты.";
 "You are not allowed to forward your messages to an internal email address." = "Вы не можете пересылать свои сообщения на внутренний адрес электронной почты.";
+"You are not allowed to forward your messages to this domain:" = "Вы не можете пересылать свои сообщения на указанный домен:";
 
 /* d & t */
-"Current Time Zone" = "Текущий часовой пояс";
+"Time Zone" = "Часовой пояс";
 "Short Date Format" = "Короткий формат даты";
 "Long Date Format" = "Длинный формат даты";
 "Time Format" = "Формат времени";
@@ -85,7 +93,9 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
 
 "longDateFmt_0" = "%A %e %B %Y";
 "longDateFmt_1" = "%e %b. %Y";
@@ -132,7 +142,7 @@
 "selectedCalendar" = "Выбранный календарь";
 "personalCalendar" = "Персональный календарь";
 "firstCalendar" = "Первый разрешенный календарь";
-"reminder_NONE" = "нет";
+"reminder_NONE" = "Не напоминать";
 "reminder_5_MINUTES_BEFORE" = "за 5 минут";
 "reminder_10_MINUTES_BEFORE" = "за 10 минут";
 "reminder_15_MINUTES_BEFORE" = "за 15 минут";
@@ -156,7 +166,8 @@
 "New label" = "Новая метка";
 "Show subscribed mailboxes only" = "Показывать только почтовые ящики, на которые подписан";
 "Synchronize only default mail folders (EAS)" = "Синхронизировать только почтовые папки по умолчанию (EAS)";
-"Sort messages by threads" = "Группировать сообщения по обсуждениям";
+"Fetch count of unseen messages for all mailboxes" = "Проверять количество непрочитанных сообщений для всех почтовых ящиков";
+"Sort messages by threads" = "Сортировать сообщения по темам ";
 "Always open mail composer" = "Всегда открывать редактор писем";
 "Inside current window" = "Внутри текущего окна";
 "In a popup window" = "Во всплывающем окне";
@@ -187,6 +198,7 @@
 /* Contact */
 "Personal Address Book" = "Личная адресная книга";
 "Collected Address Book" = "Собранные адреса";
+"Contact categories must have unique names." = "Имена категорий контактов должны быть уникальными.";
 
 /* IMAP Accounts */
 "Settings" = "Настройки";
@@ -196,19 +208,23 @@
 "Server Name" = "Имя сервера";
 "Port" = "Порт";
 "Encryption" = "Шифрование";
-"None" = "Нет";
+"None" = "Отсутствует";
 "User Name" = "Имя пользователя";
 "Full Name" = "Полное имя";
 "Email" = "E-mail";
 "Reply To Email" = "Ответить на e-mail";
 "Signature" = "Подпись";
+"Identities" = "Идентификаторы";
+"Always use the default identity when replying to messages" = "Всегда использовать идентификатор по умолчанию при ответе на сообщения";
+"Default Identity" = "Идентификатор по умолчанию";
+"New Identity" = "Новый идентификатор";
 "(Click to create)" = "(Нажмите чтобы создать)";
 "Please enter your signature below" = "Введите Вашу подпись ниже";
 "Please specify a valid sender address." = "Пожалуйста, укажите правильный адрес отправителя.";
 "Please specify a valid reply-to address." = "Пожалуйста, укажите правильный адрес для ответа.";
 "Specify a hostname other than the local host" = "Укажите имя хоста, отличное от localhost";
 
-"No certificate installed" = "Отсутствует сертификат";
+"No certificate installed" = "Сертификат отсутствует";
 "The SSL certificate must use the PKCS#12 (PFX) format." = "SSL сертификат должен использовать формат PKCS#12 (PFX).";
 "Uninstall" = "Удалить";
 "Choose PKCS12 Certificate .." = "Выберите сертификат PKCS12...";
@@ -217,14 +233,17 @@
 "When composing a message" = "При составлении сообщения";
 "Digitally sign the message by default" = "Подписывать цифровой подписью сообщения по умолчанию";
 "Always try to encrypt the message" = "Всегда пытаться зашифровать сообщение";
+"An error occurred while importing the certificate. Verify your password." = "Ошибка при импорте сертификата. Проверьте ваш пароль.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Дополнительные параметры";
 
 /* password */
+"Current password" = "Текущий пароль";
 "New password" = "Новый пароль";
 "Confirmation" = "Повтор нового пароля";
 "Change" = "Изменить";
+"Passwords don't match" = "Пароли не совпадают";
 
 /* Event+task classifications */
 "Default events classification" = "Событие по умолчанию";
@@ -237,11 +256,12 @@
 "Calendar Category" = "Категория календаря";
 "Add Calendar Category" = "Добавить категорию календаря";
 "New category" = "Новая категория";
+"Reset to defaults" = "Параметры по умолчанию";
 "Remove Calendar Category" = "Удалить категорию календаря";
 "Contact Category" = "Категория контактов";
 "Add Contact Category" = "Добавить категорию контактов";
 "Remove Contact Category" = "Удалить категорию контактов";
-"category_none" = "Нет";
+"category_none" = "Без категории";
 "calendar_category_labels" = "Годовщина,День рождения,Деловые,Звонки,Клиенты,Конкуренты,Потребители,Избранное,Вслед за,Подарки,Праздники,Идеи,Встречи,Проблемы,Разное,Персональное,Проекты,Государственный праздник,Статус,Поставщики,Путешествия,Отпуск";
 
 /* Default module */
@@ -253,7 +273,7 @@
 "SOGo Version" = "Версия SOGo";
 
 /* Confirmation asked when changing the language */
-"Save preferences and reload page now?" = "Сейчас сохранить настройки и перезагрузить страницу?";
+"Save preferences and reload page now?" = "Сохранить настройки и перезагрузить страницу сейчас?";
 "Language" = "Язык";
 "choose" = "Выбрать ...";
 "Arabic" = "العربية";
@@ -305,6 +325,7 @@
 "refreshview_every_20_minutes" = "Каждые 20 минут";
 "refreshview_every_30_minutes" = "Каждые 30 минут";
 "refreshview_once_per_hour" = "Раз в час";
+"Enable Desktop Notifications" = "Включить уведомления на рабочем столе";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Когда я получаю запрос об уведомлении о доставке";
@@ -423,16 +444,26 @@
 /* Avatars */
 "Use Gravatar" = "Использовать Gravatar";
 "Alternate Avatar" = "Альтернативный аватар";
-"none" =  "Ничего";
+"none" =  "Не использовать";
 "identicon" = "Иконка идентификатора";
 "monsterid" = "Монстр";
 "wavatar" = "Ваватар";
 "retro" = "Ретро";
 
 /* Animation Level */
-"Animation Level" = "Уровень анимации";
+"Animation Level" = "Анимация";
 /* Normal Animation Mode */
-"animation_NORMAL" = "Обычный";
+"animation_NORMAL" = "Обычная";
 /* Limited Animation Mode */
-"animation_LIMITED" = "Ограниченный";
-"animation_NONE" = "Нет";
+"animation_LIMITED" = "Ограниченая";
+"animation_NONE" = "Выключена";
+
+/* 2FA */
+"Enable two-factor authentication using Google Authenticator" = "Включить двухфакторную аутентификацию с помощью Google Authenticator";
+"You must enter this key into your Google Authenticator application." = "Вы должны ввести этот ключ в приложение Google Authenticator.";
+"If you do not and you log out you will not be able to login again." = "Если вы этого не сделаете и выйдете из системы, вы не сможете войти снова.";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "Внешний скрипт Sieve активен";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve - это язык программирования, который может быть использован для фильтрации электронной почты. Если вы позволите SOGo обрабатывать ваши фильтры, настройки отпуска и переадресации, ваш активный скрипт будет отключен.";
+"Let SOGo handle everything" = "Предоставить SOGo возможность управлять всем";

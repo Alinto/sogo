@@ -16,10 +16,17 @@
 "Authentication Failed" = "Проверка доступа завершилась неудачно";
 "Wrong username or password." = "Неправильный логин или пароль.";
 "Retry" = "Повторить";
+"Login failed due to unhandled error case:" = "Войти не удалось из-за необработанного случая ошибки:";
 "cookiesNotEnabled" = "Вы не можете войти в систему, так как в Вашем броузере (программа для просмотра страниц в интернете) выключены cookies. Пожалуйста разрешите нашему сайту использовать cookies в настройках Вашего броузера.";
 "browserNotCompatible" = "Мы определили что Ваша программа просмотра интернет-страниц (browser) не поддерживает используемую на нашем сайте технологию. Мы рекомендуем использовать одину из совместимых программ (в порядке лучшей совместимости): Firefox, Internet Explorer, Safari, Chrome. Скачать свежий Firefox можно тут:";
 "alternativeBrowsers" = "В качестве альтернативы можно использовать следующие программы:";
 "alternativeBrowserSafari" = "Также можно использовать Safari.";
+
+/* 2FA */
+"Verification Code" = "Код верификации";
+"Enter the 6-digit verification code from your Google Authenticator application." = "Введите 6-значный код подтверждения из приложения Google Authenticator.";
+"You provided an invalid Google Authenticator key." = "Вы ввели неверный ключ Google Authenticator.";
+
 "Download" = "Скачать";
 "Language" = "Язык";
 "choose" = "Выбрать...";
