@@ -104,7 +104,7 @@
 "To"            = "Pre";
 "Cc"            = "Kópia";
 "Bcc"           = "Skrytá kópia";
-"Reply-To"	    = "Odpovedz odosielateľovi";
+"Reply-To"	= "Odpovedz odosielateľovi";
 "Add address"   = "Pridať adresu";
 "Body"          = "Telo";
 "Open" = "Otvoriť";
@@ -121,6 +121,7 @@
 "Edit Draft..." = "Uprav rozpísané...";
 "Load Images" = "Nahraj obrázky";
 "Return Receipt" = "Notifikácia o doručení";
+"Choose which identity to send this message from" = "Vyberte identitu, z ktorej se má táto správa odoslať";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Odosielateľ tejto správy si vyžiadal notifikáciu o prečítaní tejto správy. Prajete si odoslať notifikáciu o prečítaní?";
 "Return Receipt (displayed) - %@"= "Notifikácia o doručení (zobrazená) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Toto je potvrdenie o prečítaní k správe, ktorú ste poslali pre %@.  Poznámka: Potvrdenie o prijatí znamená iba to, že sa správa zobrazila na počítači adresáta. Nie je ale zaručené, že adresát správu čítal a porozumel jej obsahu.";
@@ -267,6 +268,15 @@
 
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "K účtu nie je priradený žiadny certifikát.";
+
+/* Invalid message signature */
+"Digital signature is not valid" = "Digitálny podpis nie je platný.";
+
+/* Valid message signature */
+"Message is signed" = "Správa je podpísaná.";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Digitálny podpis nie je platný.";
 
 "This Folder" = "Tento priečinok";
 

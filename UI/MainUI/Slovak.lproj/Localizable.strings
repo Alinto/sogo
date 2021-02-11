@@ -21,6 +21,12 @@
 "browserNotCompatible" = "Zistili sme, že váš prehliadač nie je našou stránkou  momentálne podporovaný. Odporúčame používať Firefox. Kliknite na odkaz nižšie a stiahnite si aktuálnu verziu tohto prehliadača.";
 "alternativeBrowsers" = "Prípadne môžete použiť aj nasledujúce kompatibilné prehliadače.";
 "alternativeBrowserSafari" = "Alternatívne je možné použiť aj Safari.";
+
+/* 2FA */
+"Verification Code" = "Overovací kód";
+"Enter the 6-digit verification code from your Google Authenticator application." = "Zadajte 6-miestny číselný overovací kód z Vašej aplikácie Google Authenticator.";
+"You provided an invalid Google Authenticator key." = "Zadali ste neplatný overovací kód z Google Authenticator.";
+
 "Download" = "Stiahnuť";
 "Language" = "Jazyk";
 "choose" = "Výber ...";

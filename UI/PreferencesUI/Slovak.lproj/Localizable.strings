@@ -40,7 +40,7 @@
 "Auto reply subject" = "Predmet automatickej odpovede";
 "You can write ${subject} to insert the original subject" = "Môžeťe napísať ${subject} pre vloženie originálneho predmetu.";
 "Auto reply message" = "Automatická odpoveď";
-"Email addresses (separated by commas)" = "E-mailové adresy (oddelené čiarkami)";
+"Email addresses" = "E-mailové adresy";
 "Add default email addresses" = "Pridať predvolené e-mailové adresy";
 "Days between responses" = "Dni medzi odpoveďami";
 "Do not send responses to mailing lists" = "Neposielať odpovede e-mailovým skupinám";
@@ -62,6 +62,8 @@
 /* forward messages */
 "Forward incoming messages" = "Preposielať prichádzajúce správy";
 "Keep a copy" = "Ponechaj kópiu";
+"Enter an email" = "Zadajte e-mail";
+"Add another email" = "Pridajte ďalší e-mail";
 "Please specify an address to which you want to forward your messages."
 = "Prosím, zvoľte adresu, na ktorú chcete preposielať vaše správy.";
 "You are not allowed to forward your messages to an external email address." = "Nemáte oprávnenie preposielať svoje správy na externú e-mailovú adresu.";
@@ -69,7 +71,7 @@
 "You are not allowed to forward your messages to this domain:" = "Nemáte oprávnenie preposielať svoje správy na nasledujúcu doménu:";
 
 /* d & t */
-"Current Time Zone" = "Aktuálna časová zóna";
+"Time Zone" = "Časová zóna";
 "Short Date Format" = "Krátky formát dátumu";
 "Long Date Format" = "Dlhý formát dátumu";
 "Time Format" = "Formát času";
@@ -212,6 +214,10 @@
 "Email" = "E-mailová adresa";
 "Reply To Email" = "E-mailová adresa pre odpoveď";
 "Signature" = "Podpis";
+"Identities" = "Identity";
+"Always use the default identity when replying to messages" = "Vždy použiť predvolenú identitu pri odpovedaní na správy";
+"Default Identity" = "Predvolená identita";
+"New Identity" = "Nová identita";
 "(Click to create)" = "(kliknúť pre vytvorenie)";
 "Please enter your signature below" = "Prosím, vložte svoj podpis nižšie.";
 "Please specify a valid sender address." = "Prosím, zvoľte platnú adresu odosielateľa.";
@@ -233,9 +239,11 @@
 "Additional Parameters" = "Ďalšie parametre";
 
 /* password */
+"Current password" = "Aktuálne heslo";
 "New password" = "Nové heslo";
 "Confirmation" = "Potvrdenie";
 "Change" = "Zmeniť";
+"Passwords don't match" = "Heslá nie sú rovnaké";
 
 /* Event+task classifications */
 "Default events classification" = "Predvolená klasifikácia udalostí";
@@ -317,6 +325,7 @@
 "refreshview_every_20_minutes" = "Každých 20 minút";
 "refreshview_every_30_minutes" = "Každých 30 minút";
 "refreshview_once_per_hour" = "Raz za hodinu";
+"Enable Desktop Notifications" = "Povoliť oznámenia na ploche";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Keď dostanem požiadavku na potvrdenie o doručení.";
@@ -448,3 +457,13 @@
 /* Limited Animation Mode */
 "animation_LIMITED" = "Obmedzená";
 "animation_NONE" = "Žiadna";
+
+/* 2FA */
+"Enable two-factor authentication using Google Authenticator" = "Povoliť 2-fázové overovanie pomocou Google Authenticator";
+"You must enter this key into your Google Authenticator application." = "Tento kľúč musíte zadať do svojej aplikácie Google Authenticator.";
+"If you do not and you log out you will not be able to login again." = "Pokiaľ tak neurobíte a odhlásíte sa, nebudete sa môcť znova prihlásiť.";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "Je aktivný externý Sieve skript.";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve je programovací jazyk, ktorý môže býť použitý pre filtrovanie e-mailových správ. Pokiaľ chcete, aby SOGo spravoval Vaše filtre, nastavenie neprítomnosti a preposielanie, Váš aktívny skript bude deaktivovaný.";
+"Let SOGo handle everything" = "Nechať SOGo spravovať všetko";
