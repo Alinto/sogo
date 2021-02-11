@@ -276,7 +276,7 @@
 "Message is signed" = "Wiadomość jest podpisana";
 
 /* Unknown error while validating message signature */
-"No error information available" = "Błąd bez opisu";
+"Digital signature is not valid" = "Podpis elektroniczny nie jest poprawny";
 
 "This Folder" = "Ten folder";
 
