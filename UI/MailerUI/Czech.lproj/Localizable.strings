@@ -276,7 +276,7 @@
 "Message is signed" = "Zpráva je podepsána";
 
 /* Unknown error while validating message signature */
-"No error information available" = "Nejsou dostupné informace o chybě";
+"Digital signature is not valid" = "Elektronický podpis není validní";
 
 "This Folder" = "Tato složka";
 

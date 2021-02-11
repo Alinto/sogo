@@ -71,7 +71,7 @@
 "You are not allowed to forward your messages to this domain:" = "Nemáte povoleno přeposílání Vašich zpráv na následující doménu:";
 
 /* d & t */
-"Current Time Zone" = "Současné časové pásmo";
+"Time Zone" = "Časové pásmo";
 "Short Date Format" = "Krátký formát data";
 "Long Date Format" = "Dlouhý formát data";
 "Time Format" = "Formát času";
@@ -215,6 +215,7 @@
 "Reply To Email" = "Adresa pro odpověď";
 "Signature" = "Podpis";
 "Identities" = "Identity";
+"Always use the default identity when replying to messages" = "Vždy použít implicitní identitu při odpovídání na zprávy";
 "Default Identity" = "Implicitní identita";
 "New Identity" = "Nová identita";
 "(Click to create)" = "(Klikni pro vytvoření)";
@@ -238,9 +239,11 @@
 "Additional Parameters" = "Dodatečné parametry";
 
 /* password */
+"Current password" = "Současné heslo";
 "New password" = "Nové heslo";
 "Confirmation" = "Potvrzení";
 "Change" = "Změnit";
+"Passwords don't match" = "Hesla nejsou shodná";
 
 /* Event+task classifications */
 "Default events classification" = "Výchozí druh události";
@@ -322,6 +325,7 @@
 "refreshview_every_20_minutes" = "Každých 20 minut";
 "refreshview_every_30_minutes" = "Každých 30 minut";
 "refreshview_once_per_hour" = "Jednou za hodinu";
+"Enable Desktop Notifications" = "Povolit oznámení na ploše";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Pokud zpráva obsahuje žádost potvrzení o přečtení";
