@@ -378,7 +378,7 @@
 
     angular.extend(options, { sortingAttributes: Mailbox.$query });
     if (angular.isDefined(filters)) {
-      options.filters = _.reject(filters, function(filter) {
+      options.filters = _.reject(angular.copy(filters), function(filter) {
         return !filter.searchInput || filter.searchInput.length === 0;
       });
       // Decompose filters that match two fields
