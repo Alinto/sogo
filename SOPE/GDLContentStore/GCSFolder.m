@@ -457,7 +457,7 @@ static GCSStringFormatter *stringFormatter = nil;
 
   field = [qualifier key];
   attribute = [self _attributeForColumn: field];
-  if (attribute)
+  if (attribute && [[qualifier value] isNotNull])
     {
       formattedValue = [adaptor formatValue: [qualifier value]
                                forAttribute: attribute];
