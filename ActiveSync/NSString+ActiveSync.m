@@ -234,7 +234,7 @@ static NSArray *easCommandParameters = nil;
           
           // parameter_code 7 == Options
           // http://msdn.microsoft.com/en-us/library/ee237789(v=exchg.80).aspx
-          if (parameter_code == 7)
+          if (parameter_code == 7 && ! [parameterValue isEqualToString: @"\000"]  )
             [components addObject: [NSString stringWithFormat: @"%@=%@", [easCommandParameters objectAtIndex: parameter_code],
                                              ([parameterValue isEqualToString: @"\001"]) ? @"SaveInSent" : @"AcceptMultiPart"]];
           else
