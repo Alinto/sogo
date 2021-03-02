@@ -50,28 +50,28 @@
 
 	          <var:if condition="currentUserAttendee.partStatWithDefault"
                           const:value="ACCEPTED" const:negate="YES">
-                    <md-button type="button" ng-click="iCalendarAction('accept')">
+                    <md-button class="md-raised md-accent" type="button" ng-click="iCalendarAction('accept')">
                       <var:string label:value="Accept" />
                     </md-button>
 	          </var:if>
 
 	          <var:if condition="currentUserAttendee.partStatWithDefault"
                           const:value="DECLINED" const:negate="YES">
-                    <md-button type="button" ng-click="iCalendarAction('decline')">
+                    <md-button class="md-raised md-warn" type="button" ng-click="iCalendarAction('decline')">
                       <var:string label:value="Decline" />
                     </md-button>
 	          </var:if>
 
 	          <var:if condition="currentUserAttendee.partStatWithDefault"
                           const:value="TENTATIVE" const:negate="YES">
-                    <md-button type="button" ng-click="iCalendarAction('tentative')">
+                    <md-button class="md-raised" type="button" ng-click="iCalendarAction('tentative')">
                       <var:string label:value="Tentative" />
                     </md-button>
 	          </var:if>
 
                   <var:if condition="currentUserAttendee.partStatWithDefault"
                           const:value="DELEGATED" const:negate="YES">
-                    <md-button type="button"
+                    <md-button class="md-raised" type="button"
                                ng-click="delegateInvitation = true"
                                ng-hide="delegateInvitation == true">
                       <var:string label:value="Delegate ..." />
@@ -125,7 +125,7 @@
                 </var:if> <!-- if condition="currentUserAttendee.rsvp" const:value="true" -->
 
 	        <var:if condition="isEventStoredInCalendar" const:negate="YES">
-                  <md-button type="button" ng-click="iCalendarAction('addToCalendar')">
+                  <md-button class="md-raised" type="button" ng-click="iCalendarAction('addToCalendar')">
                     <var:string label:value="Add to calendar" />
                   </md-button>
                 </var:if>
@@ -174,7 +174,7 @@
 	        <i><var:string label:value="$storedReplyAttendee.partStatWithDefault"/></i>.
               </p>
               <br/>
-              <md-button type="button" ng-click="iCalendarAction('updateUserStatus')">
+              <md-button class="md-raised" type="button" ng-click="iCalendarAction('updateUserStatus')">
                 <var:string label:value="Update status" />
               </md-button>
             </var:if>
@@ -187,7 +187,7 @@
         <var:if condition="inCalendar.method.uppercaseString" const:value="CANCEL">
           <p><var:string label:value="cancel_info_text" /></p>
 	  <var:if condition="isEventStoredInCalendar">
-            <md-button type="button" ng-click="iCalendarAction('deleteFromCalendar')">
+            <md-button class="md-raised" type="button" ng-click="iCalendarAction('deleteFromCalendar')">
               <var:string label:value="Delete from calendar" />
             </md-button>
 	  </var:if>
