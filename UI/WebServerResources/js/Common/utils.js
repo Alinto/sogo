@@ -210,7 +210,7 @@ String.prototype.parseDate = function(localeProvider, format) {
       return (i >= 0);
     }],
     '%y': [/\d\d/, function(input) {
-      var nearFuture = parseInt(now.getFullYear().toString().substring(2)) + 5;
+      var nearFuture = parseInt(now.getFullYear().toString().substring(2)) + 50;
       date.year = parseInt(input);
       if (date.year < nearFuture) date.year += 2000;
       else date.year += 1900;
