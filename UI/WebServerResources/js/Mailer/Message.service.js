@@ -728,6 +728,15 @@
           if (accountDefaults.security.alwaysEncrypt)
             data.encrypt = true;
         }
+        if (data.isHTML) {
+          // Sanitize HTML replies to properly display quoted content in CKEditor
+          var html = angular.element('<div>' + data.text + '</div>');
+          html.find('meta').remove();
+          html.find('link').remove();
+          html.find('base').remove();
+          html.find('title').remove();
+          data.text = html.html();
+        }
         angular.extend(message.editable, data);
 
         // We keep a reference to our original message in order to update the flags
