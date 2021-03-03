@@ -1658,8 +1658,6 @@ static NSArray *childRecordFields = nil;
                 {
                   if ([(id<SOGoMembershipSource>)(source) groupWithUIDHasMemberWithUID: currentUID memberUid: uid])
                     [acls addObject: [record valueForKey: @"c_role"]];
-                  else
-                    [self errorWithFormat: @"Group %@ has no member with UID %@", currentUID, uid];
                 }
               else
                 {
