@@ -76,7 +76,7 @@
     },
     {
       columnName = c_mail;
-      sqlType    = "VARCHAR(255)";
+      sqlType    = "TEXT";
       allowsNull = YES;
     },
     {
@@ -103,6 +103,11 @@
       columnName = c_component;
       sqlType    = "VARCHAR(10)";
       allowsNull = NO;
+    },
+    {
+      columnName = c_hascertificate;
+      sqlType    = "INT4";
+      allowsNull = YES;
     },
   );
 }
