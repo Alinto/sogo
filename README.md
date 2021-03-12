@@ -21,10 +21,9 @@ To compile SOGo, you first need to obtain the source code of both SOGo and SOPE.
 * [https://github.com/inverse-inc/sope/archive/master.zip](https://github.com/inverse-inc/sope/archive/master.zip)
 * [https://github.com/inverse-inc/sogo/archive/master.zip](https://github.com/inverse-inc/sogo/archive/master.zip)
 
-The source code of the SOGo Connector and SOGo Integrator extensions for Thunderbird 31+ can be obtained from Inverse's github repository:
+The source code of the SOGo Connector extension for Thunderbird 78+ can be obtained from Inverse's github repository:
 
-* [https://github.com/inverse-inc/sogo-connector.tb31](https://github.com/inverse-inc/sogo-connector.tb31)
-* [https://github.com/inverse-inc/sogo-integrator.tb31](https://github.com/inverse-inc/sogo-integrator.tb31)
+* [https://github.com/inverse-inc/sogo-connector](https://github.com/inverse-inc/sogo-connector)
 
 Please refer to the [FAQ](https://sogo.nu/support.html#/faq) for [compilation instructions](https://sogo.nu/support/faq/how-do-i-compile-sogo.html).
 
