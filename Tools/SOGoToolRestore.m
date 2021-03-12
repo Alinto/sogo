@@ -95,7 +95,7 @@
 
 - (void) usage
 {
-  fprintf (stderr, "restore [-l|-p|-f/-F folder/ALL|-p] [-c credentialFile] directory user\n\n"
+  fprintf (stderr, "restore [-l|-p|-f/-F folder/ALL] [-c credentialFile] directory user\n\n"
 	   "           directory  the directory where backup files were initially stored\n"
 	   "           user       the user of whom to restore the data\n"
 	   "           -l         flag used to list folders to restore\n"
