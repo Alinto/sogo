@@ -60,7 +60,9 @@
 - (NSData *) asBlowfishCryptUsingSalt: (NSData *) theSalt;
 #ifdef HAVE_SODIUM
 - (NSData *) asArgon2iUsingSalt: (NSData *) theSalt;
+# ifdef crypto_pwhash_ALG_ARGON2ID13
 - (NSData *) asArgon2idUsingSalt: (NSData *) theSalt;
+#endif /* crypto_pwhash_ALG_ARGON2ID13 */
 #endif /* HAVE_SODIUM */
 
 - (NSData *) extractSalt: (NSString *) theScheme;
