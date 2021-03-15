@@ -71,7 +71,7 @@
 "You are not allowed to forward your messages to this domain:" = "Ön számára nem engedélyezett az üzenetek továbbítása ebbe a tartományba:";
 
 /* d & t */
-"Current Time Zone" = "Időzóna";
+"Time Zone" = "Időzóna";
 "Short Date Format" = "Rövid dátumformátum";
 "Long Date Format" = "Hosszú dátumformátum";
 "Time Format" = "Időformátum";
@@ -215,6 +215,7 @@
 "Reply To Email" = "Válaszlevél";
 "Signature" = "Aláírás";
 "Identities" = "Személyazonosságok";
+"Always use the default identity when replying to messages" = "Mindig az alapértelmezett azonosítót használja amikor válaszol a levelekre";
 "Default Identity" = "Alapértelmezett személyazonosság";
 "New Identity" = "Új személyazonosság";
 "(Click to create)" = "(A létrehozáshoz kattintson ide)";
@@ -238,9 +239,11 @@
 "Additional Parameters" = "További beállítások";
 
 /* password */
+"Current password" = "Jelenlegi jelszó";
 "New password" = "Új jelszó";
 "Confirmation" = "Megerősítés";
 "Change" = "Módosítás";
+"Passwords don't match" = "Jelszavak nem egyeznek meg";
 
 /* Event+task classifications */
 "Default events classification" = "Események alapértelmezett besorolása";
@@ -322,6 +325,7 @@
 "refreshview_every_20_minutes" = "Húszpercenként";
 "refreshview_every_30_minutes" = "Harminc percenként";
 "refreshview_once_per_hour" = "Óránként";
+"Enable Desktop Notifications" = "Asztali értesítések engedélyezése";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Visszaigazolási kérelem esetén";

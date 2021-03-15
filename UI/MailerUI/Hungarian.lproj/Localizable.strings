@@ -269,6 +269,15 @@
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Nincs tanúsítvány hozzárendelve a fiókhoz.";
 
+/* Invalid message signature */
+"Digital signature is not valid" = "Az elektronikus aláírás nem érvényes";
+
+/* Valid message signature */
+"Message is signed" = "Az üzenet alá van írva";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Az elektronikus aláírás nem érvényes";
+
 "This Folder" = "Aktulis mappa";
 
 /* Label popup menu */
