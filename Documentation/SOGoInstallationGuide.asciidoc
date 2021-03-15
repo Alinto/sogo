@@ -992,7 +992,7 @@ corresponds to either "group", "location" or "thing". If that's the
 case, SOGo will consider the returned entry to be a resource.
 
 For LDAP-based sources, SOGo can also automatically determine if it's a
-resource if the entry has the calendarresource objectClass set.
+resource if the entry has the `CalendarResource` objectClass set.
 
 |MultipleBookingsFieldName (optional)
 |The value of this attribute is the maximum number of concurrent events
@@ -2411,6 +2411,13 @@ Defaults to `below`.
 * `html`
 
 Defaults to `html`.
+
+|U |SOGoMailComposeWindow (optional)
+|Force mail composer window to always open in either the current window
+or in a popup window. Possible values are:
+
+* `inline`
+* `popup`
 
 |S |SOGoEnableEMailAlarms
 |Parameter used to enable email-based alarms on events and tasks.
