@@ -655,7 +655,10 @@
   // Retrieve messages UIDs using form parameters "sort" and "asc"
   uids = [self getSortedUIDsInFolder: folder];
   if (uids == nil)
-    return nil;
+    {
+      [folder unsubscribe]; // Mailbox is possibly missing -- cleanup subscriptions
+      return nil;
+    }
   
   // Get rid of the extra parenthesis
    // uids = [[[[uids stringValue] stringByReplacingOccurrencesOfString:@"(" withString:@""] stringByReplacingOccurrencesOfString:@")" withString:@""] componentsSeparatedByString:@","];

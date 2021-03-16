@@ -298,8 +298,7 @@
 
   connection = [co imap4Connection];
   folderName = [[srcURL path] lastPathComponent];
-  trashFolderName
-    = [[co mailAccountFolder] trashFolderNameInContext: context];
+  trashFolderName = [[co mailAccountFolder] trashFolderNameInContext: context];
   path = [NSString stringWithFormat: @"/%@/%@",
 		   trashFolderName, folderName];
   testPath = path;
@@ -326,17 +325,15 @@
   return destURL;
 }
 
-- (void) _removeFolder
+- (void) _removeFolderAtURL: (NSURL *) srcURL
 {
   NGImap4Connection *connection;
   NSMutableDictionary *moduleSettings, *threadsCollapsed;;
   NSString *keyForMsgUIDs, *currentMailbox, *currentAccount;
-  NSURL *srcURL;
   SOGoMailFolder *co;
   SOGoUserSettings *us;
 
   co = [self clientObject];
-  srcURL = [co imap4URL];
   connection = [co imap4Connection];
 
   // Unsubscribe from mailbox
@@ -346,7 +343,6 @@
   us = [[context activeUser] userSettings];
   moduleSettings = [us objectForKey: @"Mail"];
   threadsCollapsed = [moduleSettings objectForKey: @"threadsCollapsed"];
-
   if (threadsCollapsed)
     {
       currentMailbox = [co nameInContainer];
@@ -363,26 +359,30 @@
 - (WOResponse *) deleteAction
 {
   NSDictionary *jsonRequest, *jsonResponse;
+  NSEnumerator *subURLs;
   NGImap4Connection *connection;
   SOGoMailFolder *co, *inbox;
-  NSURL *srcURL, *destURL;
+  NSURL *srcURL, *destURL, *currentURL;
   WORequest *request;
   WOResponse *response;
   NSException *error;
+  NSInteger count;
   BOOL moved, withTrash;
 
   request = [context request];
   co = [self clientObject];
+  connection = [co imap4Connection];
   srcURL = [co imap4URL];
+  subURLs = [[co allFolderURLs] objectEnumerator];
   jsonRequest = [[request contentAsString] objectFromJSONString];
   withTrash = ![[jsonRequest objectForKey: @"withoutTrash"] boolValue];
+  error = nil;
   moved = YES;
 
   if (withTrash)
     {
       if ([co ensureTrashFolder])
         {
-          connection = [co imap4Connection];
           destURL = [self _trashedURLOfFolder: srcURL withObject: co];
           inbox = [[co mailAccountFolder] inboxFolderInContext: context];
           [[connection client] select: [inbox absoluteImap4Name]];
@@ -397,7 +397,9 @@
               moved = NO;
             }
           else
-            error = [connection moveMailboxAtURL: srcURL toURL: destURL];
+            {
+              error = [connection moveMailboxAtURL: srcURL toURL: destURL];
+            }
           if (error)
             {
               jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to move/delete folder." inContext: context]
@@ -407,9 +409,30 @@
           else
             {
               // We unsubscribe to the old one, and subscribe back to the new one
+              [self _removeFolderAtURL: srcURL];
               if (moved)
                 [[connection client] subscribe: [destURL path]];
-              [self _removeFolder];
+
+              // We do the same for all subfolders
+              count = [[srcURL pathComponents] count];
+              while (!error && (currentURL = [subURLs nextObject]))
+                {
+                  [self _removeFolderAtURL: currentURL];
+                  if (moved)
+                    {
+                      NSArray *currentComponents;
+                      NSMutableArray *destComponents;
+                      NSInteger currentCount;
+
+                      destComponents = [NSMutableArray arrayWithArray: [destURL pathComponents]];
+                      [destComponents removeObjectAtIndex: 0]; // remove leading forward slash
+                      currentCount = [[currentURL pathComponents] count];
+                      currentComponents = [[currentURL pathComponents] subarrayWithRange: NSMakeRange(count, currentCount - count)];
+                      [destComponents addObjectsFromArray: currentComponents];
+
+                      [[connection client] subscribe: [NSString stringWithFormat: @"/%@", [destComponents componentsJoinedByString: @"/"]]];
+                    }
+                }
               response = [self responseWith204];
             }
         }
@@ -433,7 +456,12 @@
         }
       else
         {
-          [self _removeFolder];
+          // Cleanup all references to mailbox and submailboxes
+          [self _removeFolderAtURL: srcURL];
+          while (!error && (currentURL = [subURLs nextObject]))
+            {
+              [self _removeFolderAtURL: currentURL];
+            }
           response = [self responseWith204];
         }
     }

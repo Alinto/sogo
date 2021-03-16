@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2009-2019 Inverse inc.
+  Copyright (C) 2009-2021 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -1213,6 +1213,20 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
       if (!error)
         [[imap4 client] unsubscribe: [[self imap4URL] path]];
     }
+  else
+    error = [NSException exceptionWithName: @"SOGoMailException"
+                                    reason: @"IMAP connection is invalid"
+                                  userInfo: nil];
+
+  return error;
+}
+
+- (NSException *) unsubscribe
+{
+  NSException *error = nil;
+
+  if ([self imap4Connection])
+    [[imap4 client] unsubscribe: [[self imap4URL] path]];
   else
     error = [NSException exceptionWithName: @"SOGoMailException"
                                     reason: @"IMAP connection is invalid"
