@@ -17,9 +17,9 @@
 Lahko se odjavite s klikom na to povezavo:
     <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>unsubscribe?mail-invitation=YES
 
-V nasprotnem primeru se lahko kasneje odjavite preko SoGo spletnega vmesnika.
+V nasprotnem primeru se lahko kasneje odjavite preko SOGo spletnega vmesnika.
 
-Ne morete se vec prijaviti preko SoGo spletnega vmesnika:
+Do vsebine prav tako ne morete več dostopati po naslednjem URL-ju:
 
 <var:string value="httpFolderURL" const:escapeHTML="NO"/>
 -->
