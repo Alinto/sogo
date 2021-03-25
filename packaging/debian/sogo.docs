@@ -1,4 +1,5 @@
-NEWS
+CHANGELOG.md
+Scripts/*.js
 Scripts/*.sh
 Scripts/updates.php
 Apache/SOGo-apple-ab.conf
