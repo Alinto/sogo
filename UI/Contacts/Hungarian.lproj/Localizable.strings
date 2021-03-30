@@ -22,12 +22,12 @@
 "Lastname" = "Vezetéknév";
 "Location" = "Hely";
 "Add a category" = "Kategória hozzáadása";
-"MobilePhone" = "Mobil telefon";
+"MobilePhone" = "Mobiltelefon";
 "Name" = "Név";
 "OfficePhone" = "Hivatali telefon";
 "Organization" = "Szervezet";
 "Work Phone" = "Munkahelyi telefon";
-"Cell" = "Cella";
+"Cell" = "Mobil";
 "Pager" = "Személyhívó";
 "Pref" = "Beállítás";
 "Phone" = "Telefon";
@@ -40,10 +40,10 @@
 "edit" = "Szerkeszt";
 "invalidemailwarn" = "A megadott email cím érvénytelen";
 "new" = "új";
-"Preferred Phone" = "Preferált telefon";
+"Preferred Phone" = "Elsődleges telefon";
 "Move To" = "Áthelyezés";
 "Copy To" = "Másolás";
-"Add to" = "Add to";
+"Add to" = "Hozzáadás";
 "To" = "Címzett";
 "Carbon Copy (Cc)" = "Másolat (Cc)";
 "Blind Carbon Copy (Bcc)" = "Titkos másolat (Bcc)";
@@ -73,7 +73,7 @@
 "homephone" = "Telefon";
 
 /* Search scope: mobile field */
-"mobile" = "Mobil";
+"mobile" = "Mobiltelefon";
 
 /* Search scope: fax field */
 "facsimiletelephonenumber" = "Fax";
@@ -191,7 +191,7 @@
 "Nickname" = "Becenév";
 "Telephone" = "Telefon";
 "Work" = "Munkahely";
-"Mobile" = "Mobil";
+"Mobile" = "Mobiltelefon";
 "Pager" = "Személyhívó";
 
 /* categories */

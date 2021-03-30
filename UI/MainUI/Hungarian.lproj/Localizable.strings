@@ -1,7 +1,7 @@
 /* this file is in UTF-8 format! */
 
 "title" = "SOGo";
-"Username" = "Felhasználó";
+"Username" = "Felhasználónév";
 "Password" = "Jelszó";
 "Domain" = "Tartomány";
 "Remember username" = "Felhasználónév megjegyzése";
