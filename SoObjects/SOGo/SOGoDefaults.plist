@@ -6,7 +6,7 @@
     WOPidFile = "/var/run/sogo/sogo.pid";
     WOHTTPAdaptorCapitalizeHeaders = YES;
     WOPort = "127.0.0.1:20000";
-    SOGoXSRFValidationEnabled = NO;
+    SOGoXSRFValidationEnabled = YES;
 
     NGImap4ConnectionStringSeparator = "/";
     NGImap4ConnectionGroupIdPrefix = "$";
