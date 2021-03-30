@@ -1,7 +1,71 @@
 # Changelog
 
-### [5.0.1](https://github.com/inverse-inc/sogo/compare/SOGo-5.0.0...SOGo-5.0.1) (2020-10-07)
+## [5.1.0](https://github.com/inverse-inc/sogo/compare/SOGo-5.0.1...SOGo-5.1.0) (2021-03-30)
 
+### Features
+
+* **calendar(js):** allow HTML links in location field ([0509d7f](https://github.com/inverse-inc/sogo/commit/0509d7f1624a47579b3936fb364e581f44c60b24))
+* **calendar(web):** allow to change the classification of an event ([4a83733](https://github.com/inverse-inc/sogo/commit/4a8373303922bb2697d5aa91b89c34b77c3af6a2))
+* **eas:** Allow EAS Search operation in all parts of a message ([fab8061](https://github.com/inverse-inc/sogo/commit/fab8061766786245bdf1abc093527455e6be7bc7))
+* **mail:** new option to force default identity ([fc4f5d2](https://github.com/inverse-inc/sogo/commit/fc4f5d2161b2811671dfb34052f6d97f7d5125bd))
+
+### Bug Fixes
+
+* **acls:** remove debugging output when searching in groups ([3722169](https://github.com/inverse-inc/sogo/commit/372216952299c9af5953667a5a90050a51fb4b95))
+* **addressbook(dav):** add support for macOS 11 (Big Sur) ([b9e19c2](https://github.com/inverse-inc/sogo/commit/b9e19c2cc4c0918bf59d8180fbe9a3cc56dc21a3)), closes [#5203](https://sogo.nu/bugs/view.php?id=5203)
+* **calendar:** accept HTML in repeat frequencies descriptions ([c38524a](https://github.com/inverse-inc/sogo/commit/c38524ab079a32eeef1b22f4aeea4feed6969774))
+* **calendar:** avoid exception when FoldersOrder have invalid entries ([c27be0f](https://github.com/inverse-inc/sogo/commit/c27be0fbe52fc4e7b91cfbc8c9695934f5b8b944))
+* **calendar:** fix all-day events in lists ([5d1ac9d](https://github.com/inverse-inc/sogo/commit/5d1ac9db5d834f0f23431ea09301a0fdcdbc5d63))
+* **calendar:** try to repair VCALENDAR when parsing versit string ([9fe2de7](https://github.com/inverse-inc/sogo/commit/9fe2de753b9865b0be5d9bd0367fbcc1e1f38958))
+* **calendar(js):** add attendee from search field when saving ([74acab0](https://github.com/inverse-inc/sogo/commit/74acab073806f6e9cc483f35a799102778193a60)), closes [#5185](https://sogo.nu/bugs/view.php?id=5185)
+* **calendar(js):** fix exception when changing an event calendar ([0e0fc72](https://github.com/inverse-inc/sogo/commit/0e0fc72b44c8c7825ec28897aeb6983e6fba942f))
+* **calendar(js):** ignore attendees when saving task ([e78eb44](https://github.com/inverse-inc/sogo/commit/e78eb44dd77a2ac6b43e23e8dd72af839434b840))
+* **common(js):** improve parsing of year ([6f90977](https://github.com/inverse-inc/sogo/commit/6f90977196f13f7edc10cfe4c681bf4e96170374)), closes [#5268](https://sogo.nu/bugs/view.php?id=5268)
+* **core:** fix compilation warning in NSData+Crypto ([386429e](https://github.com/inverse-inc/sogo/commit/386429e46ea177d0f466e52989a2ca7e7dbf4049))
+* **core:** release alarm folder's channel immediately after being used ([41bbbfa](https://github.com/inverse-inc/sogo/commit/41bbbfacd9a63d7de53273a05a4f119ebda302ba))
+* **core:** remove overstruck diacritics from sanitized strings ([7da4bc4](https://github.com/inverse-inc/sogo/commit/7da4bc465f1a87a7543fc355aa251caf1324483b))
+* **core:** use "is null" instead of "= null" when building SQL ([dd326f9](https://github.com/inverse-inc/sogo/commit/dd326f9ddf9d0351b41bd9cd1c2c62f5efc165b7))
+* **css:** adjust colors of center lists of views ([f64b4e1](https://github.com/inverse-inc/sogo/commit/f64b4e1a855e4dc1aa7d9e2a67edaf1d6ac2671d))
+* **eas:** handle fileAs element (fixes [#5239](https://sogo.nu/bugs/view.php?id=5239)) ([dd8ebd1](https://github.com/inverse-inc/sogo/commit/dd8ebd1922a8ef0cec822bad4a7a4adce7344dff))
+* **eas:** handle SENT-BY in delegated calendars ([3796009](https://github.com/inverse-inc/sogo/commit/3796009eca93b2a5c8db706aa75bedc944d67bbe))
+* **eas:** improve EAS parameters parsing (fixes [#5266](https://sogo.nu/bugs/view.php?id=5266)) ([b2008cd](https://github.com/inverse-inc/sogo/commit/b2008cd30940294671c246c3b13bc9dd239b9730))
+* **login:** fix localizabled strings when changing language ([a3277eb](https://github.com/inverse-inc/sogo/commit/a3277eb65a530a2596074fb5f1bbfcfae9d4f28c))
+* **mail:** unsubscribe from all subfolders when deleting parent ([cb6de75](https://github.com/inverse-inc/sogo/commit/cb6de7584551cf5b2253eb1a9c057cf9c84c1c17)), closes [#5218](https://sogo.nu/bugs/view.php?id=5218)
+* **mail(css):** improve visibility of buttons in invitations ([088764a](https://github.com/inverse-inc/sogo/commit/088764a3f7f7f3c89a492845c29744166696acf5)), closes [#5263](https://sogo.nu/bugs/view.php?id=5263)
+* **mail(css):** limit some text formatting to attachment cards ([9dcdaed](https://github.com/inverse-inc/sogo/commit/9dcdaedb402730e7d7488d363eb9ea395790c080))
+* **mail(css):** limit some text formatting to attachment cards ([e774c4c](https://github.com/inverse-inc/sogo/commit/e774c4c47484e42db75cbf466d4c40d3f7205ead))
+* **mail(css):** restore scrolling of msg source when animation is off ([86ab731](https://github.com/inverse-inc/sogo/commit/86ab7312a4e6e9ae9e35ec2a90a68da3ed824cad))
+* **mail(js):** add collapse button to toolbar of HTML editor ([00030ba](https://github.com/inverse-inc/sogo/commit/00030ba2fa863084c081ed7af11daf8a1750121c))
+* **mail(js):** don't modify filters for automatic refresh ([f9a8d84](https://github.com/inverse-inc/sogo/commit/f9a8d8491eccad217ee216db79ecfe573993fda5)), closes [#5226](https://sogo.nu/bugs/view.php?id=5226)
+* **mail(js):** improve quoted message when replying ([fa3e5e0](https://github.com/inverse-inc/sogo/commit/fa3e5e0b75a3358875410f0249a75c9a3871f9d7)), closes [#5223](https://sogo.nu/bugs/view.php?id=5223)
+* **preferences(css):** improve display of some select input fields ([12047d1](https://github.com/inverse-inc/sogo/commit/12047d112f452c92e71b27a5877f436d0201c48d))
+* **preferences(js):** always apply forward constraints to sieve filters ([#294](https://sogo.nu/bugs/view.php?id=294)) ([59e876d](https://github.com/inverse-inc/sogo/commit/59e876d8f7de087702a3b2d2d86a0c314f2f6f8c))
+* **preferences(mail):** make sure auto-reply (vacation) text is set ([1c4ff40](https://github.com/inverse-inc/sogo/commit/1c4ff40d330290711a3a6affa56715d30145064b))
+* **print:** don't print toasts ([bc77536](https://github.com/inverse-inc/sogo/commit/bc77536b5d236b0f28067d60c3e58e0690a33da0)), closes [#5207](https://sogo.nu/bugs/view.php?id=5207)
+
+
+### Localization
+
+* **cs:** update Czech translation ([9bafb57](https://github.com/inverse-inc/sogo/commit/9bafb57a797364aeb51a2670d51f0a1ef5d6f545))
+* **cs:** update Czech translation ([1827a45](https://github.com/inverse-inc/sogo/commit/1827a4548a715c752a236985778957085a95f7af))
+* **de:** update German translation ([cbcf6cb](https://github.com/inverse-inc/sogo/commit/cbcf6cbfdf14cb937802ecf81e7dfa8d901fbe99))
+* **de:** update German translation ([c7166de](https://github.com/inverse-inc/sogo/commit/c7166de428cb3aa61ea97ba026c884aaad4c88b1))
+* **fr:** update French translation ([f5b925d](https://github.com/inverse-inc/sogo/commit/f5b925d90e68b8c66aef4d26a8ee73a8aa93fdd2))
+* **hu:** update Hungarian translation ([1914a35](https://github.com/inverse-inc/sogo/commit/1914a3516adf45049c5474e4e406e4cc2d31623f))
+* **hu:** update Hungarian translation ([3875edd](https://github.com/inverse-inc/sogo/commit/3875eddda339594d6ba15bca693f82f8187a564a))
+* **mail:** fix status for message validity ([e6088c9](https://github.com/inverse-inc/sogo/commit/e6088c9026cdbc8ce8f23d476a88505a726cf0b3)), closes [#5204](https://sogo.nu/bugs/view.php?id=5204)
+* **mail:** improve generic error message for signed/encrypted messages ([e2e5e6f](https://github.com/inverse-inc/sogo/commit/e2e5e6fed9b5d44c5d02374ab73449fab6de5e47)), closes [#5204](https://sogo.nu/bugs/view.php?id=5204)
+* **pl:** update Polish translation ([3662332](https://github.com/inverse-inc/sogo/commit/366233222999df1d76b6dc1f1ebbf3408be36437))
+* **pl:** update Polish translation ([2ecfa70](https://github.com/inverse-inc/sogo/commit/2ecfa70e7266e64f223932ed11b16f7c3d821250))
+* **pt_BR:** update Brazilian Portuguese translation ([c6fab04](https://github.com/inverse-inc/sogo/commit/c6fab04df6e6160934cf7e4e08bfb3c8ed418faf))
+* **ru:** update Russian translation ([d030d1c](https://github.com/inverse-inc/sogo/commit/d030d1c4b38b6155fe9d39e744f93300db0ecfc1))
+* **sk:** update Slovak translation ([b486938](https://github.com/inverse-inc/sogo/commit/b486938e4005d5292b690583544e574a38d5c194))
+* **sl_SI:** update Slovenian translation ([a95964b](https://github.com/inverse-inc/sogo/commit/a95964b51f01e1bdc79948452e4d73cad0150105))
+* **sr:** update Serbian and Serbian Latin translations ([8915749](https://github.com/inverse-inc/sogo/commit/8915749f758db5ae3d922a211b87900e38b9bc60))
+* **sr_SR:** add Serbian (Latin) translation ([8386bb2](https://github.com/inverse-inc/sogo/commit/8386bb2c083e5f6e679c3f0afff06de6d132bbc0))
+* **sr_SR:** update Serbian (Latin) translation ([822c50f](https://github.com/inverse-inc/sogo/commit/822c50ff569bd5f5336137fc5efbe4f4c6dc507c))
+
+### [5.0.1](https://github.com/inverse-inc/sogo/compare/SOGo-5.0.0...SOGo-5.0.1) (2020-10-07)
 
 ### Bug Fixes
 

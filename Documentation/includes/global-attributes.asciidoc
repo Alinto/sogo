@@ -13,6 +13,6 @@
 
 // TODO have the build system take care of this
 
-:release_version: 5.0.1
+:release_version: 5.1.0
 
 // vim: set syntax=asciidoc tabstop=2 shiftwidth=2 expandtab:
