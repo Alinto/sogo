@@ -21,6 +21,12 @@
 "browserNotCompatible" = "Foi detectado que a atual versão de seu navegador não é suportado neste site. Recomentamos que use o Firefox. Clique no link abaixo para baixar a versão atual deste navegador.";
 "alternativeBrowsers" = "Alternativamente, você pode usar os seguinte navegadores compatíveis";
 "alternativeBrowserSafari" = "Alternativamente, você pode usar o Safari.";
+
+/* 2FA */
+"Verification Code" = "Código de verificação";
+"Enter the 6-digit verification code from your Google Authenticator application." = "Digite o código de verificação de 6 dígitos do seu aplicativo Google Authenticator.";
+"You provided an invalid Google Authenticator key." = "Você forneceu uma chave inválida do Google Authenticator.";
+
 "Download" = "Download";
 "Language" = "Idioma";
 "choose" = "Escolha ...";

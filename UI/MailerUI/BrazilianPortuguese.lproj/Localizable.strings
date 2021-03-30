@@ -104,7 +104,7 @@
 "To"            = "Para";
 "Cc"            = "Cc";
 "Bcc"           = "Cco";
-"Reply-To"	    = "Responder-Para";
+"Reply-To"	= "Responder-Para";
 "Add address"   = "Adicionar endereço";
 "Body"          = "Corpo";
 "Open" = "Abrir";
@@ -121,6 +121,7 @@
 "Edit Draft..." = "Editar Rascunho...";
 "Load Images" = "Carregar Imagens";
 "Return Receipt" = "Confirmação de leitura";
+"Choose which identity to send this message from" = "Escolha de qual identidade enviar esta mensagem";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "O remetente desta mensagem será notificado quando você ler esta mensagem. Você deseja notificá-lo?";
 "Return Receipt (displayed) - %@"= "Confirmação de leiura (exibida)- %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Este é a Confirmação de Leitura do e-mail que você enviou para %@.\n\nNota: Esta confirmação de leitura permite saber que a mensagem foi visualizada pelo destinatário. Não há garantia de que o destinatário tenha lido ou entendido o conteúdo da mensagem.";
@@ -267,6 +268,15 @@
 
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Nenhum certificado associado à conta.";
+
+/* Invalid message signature */
+"Digital signature is not valid" = "A assinatura digital não é válida";
+
+/* Valid message signature */
+"Message is signed" = "A mensagem está assinada";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "A assinatura digital não é válida";
 
 "This Folder" = "Esta Pasta";
 

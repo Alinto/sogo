@@ -40,7 +40,7 @@
 "Auto reply subject" = "Auto Responder somente uma vez a cada remetente com o sequinte assunto";
 "You can write ${subject} to insert the original subject" = "Você pode escrever ${subject} para inserir o assunto original";
 "Auto reply message" = "Auto Responder somente uma vez a cada remetente com o seguinte texto";
-"Email addresses (separated by commas)" = "Endereço de e-mail (separado por vírgulas)";
+"Email addresses" = "Endereços de e-mail";
 "Add default email addresses" = "Adicionar endereço de e-mail padrão";
 "Days between responses" = "Dias entre respostas";
 "Do not send responses to mailing lists" = "Não envie respostas para listas de e-mails";
@@ -62,6 +62,8 @@
 /* forward messages */
 "Forward incoming messages" = "Encaminhar mensagens recebidas";
 "Keep a copy" = "Manter uma cópia";
+"Enter an email" = "Digite um e-mail";
+"Add another email" = "Adicionar outro e-mail";
 "Please specify an address to which you want to forward your messages."
 = "Favor especificar um endereço para o qual você deseja encaminhar suas mensagens.";
 "You are not allowed to forward your messages to an external email address." = "Você não tem permissão para transmitir a sua mensagem para um endereço de e-mail externo.";
@@ -69,7 +71,7 @@
 "You are not allowed to forward your messages to this domain:" = "Você não tem permissão para encaminhar suas mensagens para este domínio:";
 
 /* d & t */
-"Current Time Zone" = "Fuso Horário";
+"Time Zone" = "Fuso Horário";
 "Short Date Format" = "Formato da Data (Curto)";
 "Long Date Format" = "Formato da Data (Longo)";
 "Time Format" = "Formato da Hora";
@@ -212,6 +214,10 @@
 "Email" = "E-mail";
 "Reply To Email" = "Responder para o Email";
 "Signature" = "Assinatura";
+"Identities" = "Identidades";
+"Always use the default identity when replying to messages" = "Sempre use a identidade padrão ao responder a mensagens";
+"Default Identity" = "Identidade padrão";
+"New Identity" = "Nova identidade";
 "(Click to create)" = "(Click para criar)";
 "Please enter your signature below" = "Por favor, digite sua assinatura abaixo";
 "Please specify a valid sender address." = "Por favor, especifique um endereço de email válido.";
@@ -233,9 +239,11 @@
 "Additional Parameters" = "Parâmetros Adicionais";
 
 /* password */
+"Current password" = "Senha atual";
 "New password" = "Nova senha";
 "Confirmation" = "Confirmação";
 "Change" = "Alterar";
+"Passwords don't match" = "As senhas não coincidem";
 
 /* Event+task classifications */
 "Default events classification" = "Classificação padrão do compromisso";
@@ -317,6 +325,7 @@
 "refreshview_every_20_minutes" = "A cada 20 minutos";
 "refreshview_every_30_minutes" = "A cada 30 minutos";
 "refreshview_once_per_hour" = "Uma vez por hora";
+"Enable Desktop Notifications" = "Habilitar notificações na área de trabalho";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Quando eu receber uma confirmação de leitura";
@@ -448,3 +457,13 @@
 /* Limited Animation Mode */
 "animation_LIMITED" = "Limitado";
 "animation_NONE" = "Nenhum";
+
+/* 2FA */
+"Enable two-factor authentication using Google Authenticator" = "Ative a autenticação de dois fatores usando o Google Authenticator";
+"You must enter this key into your Google Authenticator application." = "Ative a autenticação de dois fatores usando o Google Authenticator";
+"If you do not and you log out you will not be able to login again." = "Se você não fizer isso e fizer logout, não será possível fazer o login novamente.";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "Um script Sieve externo está ativo";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve é uma linguagem de programação que pode ser usada para filtragem de e-mail. Se você deixar o SOGo lidar com seus filtros, férias e configurações de encaminhamento, seu script ativo será desabilitado.";
+"Let SOGo handle everything" = "Deixe o SOGo cuidar de tudo";
