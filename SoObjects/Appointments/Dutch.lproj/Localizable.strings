@@ -7,6 +7,7 @@ vevent_class2 = "(Vertrouwelijke afspraak)";
 vtodo_class0 = "(Publieke taak)";
 vtodo_class1 = "(Privétaak)";
 vtodo_class2 = "(Vertrouwelijke taak)";
+
 /* Receipts */
 "The event \"%{Summary}\" was created" = "De afspraak \"%{Summary}\" is aangemaakt";
 "The event \"%{Summary}\" was deleted" = "De afspraak \"%{Summary}\" is verwijderd";
@@ -14,25 +15,33 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "The following attendees(s) were notified" = "De volgende deelnemers zijn in kennis gesteld";
 "The following attendees(s) were added" = "De volgende deelnemers zijn toegevoegd";
 "The following attendees(s) were removed" = "De volgende deelnemers zijn verwijderd";
+
 /* IMIP messages */
 "calendar_label" = "Agenda";
 "startDate_label" = "Start";
 "endDate_label" = "Einde";
+"time_label" = "Tijd";
+"to_label" = "Tot";
 "due_label" = "Vervaldag:";
 "location_label" = "Locatie";
 "summary_label" = "Samenvatting:";
 "comment_label" = "Commentaar:";
+"organizer_label" = "Organisator";
+"attendee_label" = "Deelnemer";
+
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Uitnodiging voor afspraak: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(Verzonden door %{SentBy})";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}heeft u uitgenodigd voor: %{Summary}.\n\nBegin: %{StartDate}\nEinde: %{EndDate}\nBeschrijving: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}heeft u uitgenodigd voor %{Summary}.\n\nStart: %{StartDate} om %{StartTime}\nEinde: %{EndDate} om %{EndTime}\nOmschrijving: %{Description}";
+
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Afspraak geannuleerd: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}heeft deze afspraak afgezegd: %{Summary}.\n\nBegin: %{StartDate}\nEinde: %{EndDate}\nBeschrijving: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}heeft de afspraak: %{Summary} geannuleerd.\n\nStart: %{StartDate} om %{StartTime}\nEinde: %{EndDate} om %{EndTime}\nOmschrijving: %{Description}";
+
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "De afspraak \"%{Summary}\" op %{OldStartDate} is veranderd.";
@@ -42,6 +51,7 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 = "De volgende parameters zijn veranderd in de \"%{Summary}\" vergadering:";
 "Please accept or decline those changes."
 = "Accepteer deze wijzigingen of wijs ze af.";
+
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Uitnodiging geaccepteerd: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Uitnodiging afgewezen: \"%{Summary}\"";
@@ -55,6 +65,15 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 = "%{Attendee} %{SentByText}heeft de uitnodiging gedelegeerd aan %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}heeft nog niet gereageerd op uw uitnodiging.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Herinnering: \"%{Summary}\" - %{StartDate}";
+
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Kan bron \"%{Cn} %{SystemEmail}\" niet benaderen";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Het maximale aantal gelijktijdige reserveringen (%{NumberOfSimultaneousBookings}) voor \"%{Cn} %{SystemEmail}\" is bereikt. De conflicterende afspraak is \"%{EventTitle}\" en begint op %{StartDate}.";
+
+/* Participation role */
+"Your participation is required to this event" = "Uw deelname is vereist voor dit evenement";
+"Your participation is optional to this event" = "Uw deelname is optioneel voor dit evenement";
+"Your participation is not required to this event" = "Uw deelname is niet vereist voor dit evenement";

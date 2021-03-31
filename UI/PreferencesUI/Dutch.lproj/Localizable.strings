@@ -45,8 +45,14 @@
 "Days between responses" = "Dagen tussen reacties";
 "Do not send responses to mailing lists" = "Geen reacties naar maillinglijsten sturen";
 "Enable auto reply on" = "Automatisch beantwoorden inschakelen";
+"First day of vacation" = "Eerste vakantiedag";
 "Disable auto reply on" = "Automatisch bericht bij afwezigheid uitschakelen op";
+"Last day of vacation" = "Laatste vakantiedag";
+"Enter date" = "Voer datum in";
 "Always send vacation message response" = "Afwezigheidsbericht altijd versturen";
+"The vacation message is sent prior to apply your filters." = "Automatisch bericht bij afwezigheid wordt verstuurd voordat jouw filters toegepast worden.";
+"Discard incoming mails during vacation" = "Gooi binnenkomende berichten weg tijdens afwezigheid";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Automatisch bericht bij afwezigheid is verstuurd maar binnenkomende berichten zijn niet afgeleverd in jouw inbox.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Geef alstublieft de tekst van het automatische bericht bij afwezigheid en de e-mailadressen waarvoor het moet worden geactiveerd op.";
 "Your vacation message must not end with a single dot on a line." = "Uw automatisch bericht bij afwezigheid mag niet eindigen met een enkele punt op een regel.";
@@ -60,6 +66,7 @@
 = "Alstublieft het e-mailadres waarnaar u de berichten wilt laten doorsturen aangeven.";
 "You are not allowed to forward your messages to an external email address." = "Email naar een extern emailadres doorsturen is niet toegestaan";
 "You are not allowed to forward your messages to an internal email address." = "Email naar een intern emailadres doorsturen is niet toegestaan";
+"You are not allowed to forward your messages to this domain:" = "U mag uw berichten niet doorsturen naar dit domein:";
 
 /* d & t */
 "Current Time Zone" = "Huidige tijdzone";
@@ -84,8 +91,10 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
-   
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
+
 "longDateFmt_0" = "%A %e %B %Y";
 "longDateFmt_1" = "%e %b. %Y";
 "longDateFmt_2" = "%e %B %Y";
@@ -123,6 +132,8 @@
 "Prevent from being invited to appointments" = "Voorkom uitnodigingen voor afspraken";
 "White list for appointment invitations" = "Whitelist voor uitnodigingen";
 "Contacts Names" = "Contactnamen";
+"Duplicate name" = "Dubbele naam";
+"Calendar categories must have unique names." = "Kalendercategorieën moeten unieke namen hebben.";
 
 /* Default Calendar */
 "Default calendar" = "Standaardagenda";
@@ -146,10 +157,18 @@
 /* Mailer */
 "Labels" = "Labels";
 "Label" = "Labelen";
+"IMAP Label" = "IMAP label";
+"Invalid label" = "Gebruik geen spatie of ( ) { } % * \" \\";
+"Duplicate label" = "Dubbele label";
+"IMAP labels must have unique names." = "IMAP labels moeten unieke namen hebben.";
 "New label" = "Nieuwe label";
 "Show subscribed mailboxes only" = "Toon alleen geabonneerde postvakken";
 "Synchronize only default mail folders (EAS)" = "Alleen standaard e-mailmappen synchroniseren (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Ophalen aantal ongelezen berichten voor alle postvakken";
 "Sort messages by threads" = "Berichten sorteren op threads";
+"Always open mail composer" = "Open altijd mail editor";
+"Inside current window" = "Binnen huidige venster";
+"In a popup window" = "In een popupvenster";
 "When sending mail, add unknown recipients to my" = "Bij het versturen van mail, voeg onbekende ontvangers toe aan mijn";
 "Address Book" = "Adresboek";
 "Forward messages" = "Berichten doorsturen";
@@ -177,8 +196,11 @@
 /* Contact */
 "Personal Address Book" = "Persoonlijk adresboek";
 "Collected Address Book" = "Verzamelde adressen";
+"Contact categories must have unique names." = "Contactcategorieën moeten unieke namen hebben.";
 
 /* IMAP Accounts */
+"Settings" = "Instellingen";
+"Security" = "Beveiliging";
 "Mail Account" = "Mailaccount";
 "New Mail Account" = "Nieuw mailaccount";
 "Server Name" = "Servernaam";
@@ -195,6 +217,17 @@
 "Please specify a valid sender address." = "Geef alstublieft een geldig afzendadres aan.";
 "Please specify a valid reply-to address." = "Geef alstublieft een geldig antwoordadres aan.";
 "Specify a hostname other than the local host" = "Geef een hostname anders dan de locale hostname op";
+
+"No certificate installed" = "Geen certificaat geïnstalleerd";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "Het SSL certificaat moet in PKCS#12 (PFX) formaat zijn.";
+"Uninstall" = "Deinstalleren";
+"Choose PKCS12 Certificate .." = "Kies PKCS12 Certificaat ..";
+"Certificate Import Password" = "Certificaat import wachtwoord";
+"Upload" = "Uploaden";
+"When composing a message" = "Bij het opstellen van een bericht";
+"Digitally sign the message by default" = "Standaard digitaal ondertekenen van het bericht";
+"Always try to encrypt the message" = "Probeer altijd het bericht te versleutelen";
+"An error occurred while importing the certificate. Verify your password." = "Er is een fout opgetreden tijdens het importeren van het certificaat. Controleer je wachtwoord.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Extra Parameters";
@@ -215,6 +248,7 @@
 "Calendar Category" = "Agendacategorie";
 "Add Calendar Category" = "Agendacategorie toevoegen";
 "New category" = "Nieuwe categorie";
+"Reset to defaults" = "Terugzetten naar standaardwaarden";
 "Remove Calendar Category" = "Agendacategorie verwijderen";
 "Contact Category" = "Contactcategorie";
 "Add Contact Category" = "Contactcategorie toevoegen";
@@ -238,7 +272,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -250,7 +284,9 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
+"Japanese" = "日本語";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
@@ -259,8 +295,10 @@
 "Polish" = "Polski";
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
@@ -402,3 +440,11 @@
 "monsterid" = "Monster";
 "wavatar" = "Wavatar";
 "retro" = "Retro";
+
+/* Animation Level */
+"Animation Level" = "Visuele effecten";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Normaal";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Minimaal";
+"animation_NONE" = "Geen";

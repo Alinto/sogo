@@ -8,4 +8,20 @@
 /* Modules titles */
 "ACLs_title" = "Urejanje uporabniških pravic na mapah";
 /* Modules descriptions */
-"ACLs_description" = "<p>The Access Control Lists administration module allows to change the ACLs of each user's Calendars and Address books.</p><p>To modify the ACLs of a user's folder, type the name of the user in the search field at the top of the window and double-click on the desired folder.</p>";
+"ACLs_description" = "<p>Access Control Lists administracijski modul vam omogoča spreminjanje pravic koledarjev in imenikov vsakega uporabnika.</p><p>Če želite spremeniti ACL mape uporabnika, vnesite ime uporabnika v iskalno polje na vrhu okna in dvokliknite na želeno mapo.</p>";
+"Name or Email" = "Ime ali Email";
+"ACLs saved" = "ACLs shranjen";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Začni iskanje za urejanje pravic";
+/* Rights module: Empty search result */
+"No matching user" = "Ni ustreznega uporabnika";
+/* Rights module: no selection */
+"No resource selected" = "Ni izbranih virov";
+"Add User" = "Dodaj uporabnika";
+"Subscribe User" = "Naroči uporabnika";
+"Rights" = "Pravice";
+"Search Users" = "Išči med uporabniki";
+"users found" = "najdenih uporabnikov";
+"No resource" = "Ni virov";
+"Any Authenticated User" = "Vsak prijavljen uporabnik";
+"Public Access" = "Javni dostop";

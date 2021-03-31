@@ -56,7 +56,7 @@
 "Uploading" = "Téléversement en cours";
 "Publish Calendar..." = "Publier l'agenda...";
 "Reload Remote Calendars" = "Recharger les agendas distants";
-"Properties" = "Propriétés";
+"Properties" = "Propriétés...";
 "Done" = "Terminer";
 "An error occurred while importing calendar." = "Une erreur s'est produite lors de l'importation.";
 "No event was imported." = "Aucun événement n'a été importé.";
@@ -107,6 +107,7 @@
 "Name of the Calendar" = "Nom de l'agenda";
 "new" = "Nouveau";
 "Print view" = "Imprimer";
+"Print" = "Imprimer";
 "edit" = "Éditer";
 "delete" = "Supprimer";
 "proposal" = "Recherche de plages horaires";
@@ -147,6 +148,7 @@
 "Display events and tasks colors" = "Affichage en couleurs";
 "Borders" = "Bordures";
 "Backgrounds" = "Arrière-plans";
+"Page Format" = "Papier";
 
 /* Appointments */
 "Appointment viewer" = "Visualisation de rendez-vous";
@@ -212,14 +214,15 @@
 "Could not create iCal data!" = "Les données iCal n'ont pu être crées ...";
 
 /* Searching */
-"view_all" = "Tous les événements";
-"view_today" = "Événements du jour";
-"view_next7" = "Événements des 7 prochains jours";
-"view_next14" = "Événements des 14 prochains jours";
-"view_next31" = "Événements des 31 prochains jours";
-"view_thismonth" = "Événements du mois en cours";
-"view_future" = "Tous les événements futurs";
-"view_selectedday" = "Jour courant";
+"view_all" = "Tous";
+"view_today" = "Aujourd'hui";
+"view_next7" = "Les 7 prochains jours";
+"view_next14" = "Les 14 prochains jours";
+"view_next31" = "Les 31 prochains jours";
+"view_thismonth" = "Mois en cours";
+"view_thisyear" = "Année en cours";
+"view_future" = "Futurement";
+"view_selectedday" = "Jour sélectionné";
 "view_not_started" = "Tâches non-commencées";
 "view_overdue" = "Tâches en retard";
 "view_incomplete" = "Tâches à compléter";
@@ -339,6 +342,7 @@
 "repeat_YEARLY" = "Annuelle";
 "repeat_CUSTOM" = "Personnaliser...";
 "reminder_NONE" = "Pas de rappel";
+"reminder_0" = "À l'heure de l'événement";
 "reminder_5_MINUTES_BEFORE" = "5 minutes avant";
 "reminder_10_MINUTES_BEFORE" = "10 minutes avant";
 "reminder_15_MINUTES_BEFORE" = "15 minutes avant";
@@ -435,16 +439,48 @@ validate_untilbeforeend    = "La répétition doit se terminer après la premiè
 = "Vous ne pouvez pas supprimer ni vous désabonner de votre agenda personnel.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Voulez-vous vraiment supprimer l'agenda «%{0}»?";
+"Are you sure you want to delete the selected components?"
+= "Voulez-vous vraiment supprimer les éléments sélectionnés?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Role";
+
+/* Participant role: participation is required */
 "Participant" = "Invité";
+
+/* Participant role: participation is required */
+"req-participant" = "Invité";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Invité optionnel";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Invité optionnel";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Non-invité";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Non-invité";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "Président";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Président";
+
+/* Participant status: needs action */
 "Needs action" = "En attente";
+
+/* Participant status: event accepted */
 "Accepted" = "Accepté";
+
+/* Participant status: event declined */
 "Declined" = "Décliné";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Tentatif";
+
 "Free" = "Libre";
 "Busy" = "Occupé";
 "Maybe busy" = "Peut-être occupé";
@@ -540,6 +576,8 @@ vtodo_class2 = "(Tâche confidentielle)";
 "Delete Event" = "Supprimer l'événement";
 "Copy event to my calendar" = "Copier l'événement dans mon agenda";
 "View Raw Source" = "Afficher le contenu original";
+"Move To" = "Déplacer vers";
+"Copy To" = "Copier vers";
 "Subscriptions" = "Abonnements";
 "Subscribe to a shared folder" = "S'abonner à un dossier partagé";
 "Subscribe to a web calendar..." = "S'inscrire à un agenda en ligne...";
@@ -571,6 +609,7 @@ vtodo_class2 = "(Tâche confidentielle)";
 "More options" = "Plus d'options";
 "Delete This Occurrence" = "Supprimer cette occurrence";
 "Delete All Occurrences" = "Supprimer toutes les occurrences";
+"Add Recurrence Date" = "Ajouter une date de récurrence";
 "Add From" = "Ajouter date de début";
 "Add Due" = "Ajouter date d'échéance";
 "Import" = "Importer";

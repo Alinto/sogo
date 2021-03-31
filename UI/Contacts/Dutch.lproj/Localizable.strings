@@ -27,6 +27,9 @@
 "OfficePhone" = "Kantoor";
 "Organization" = "Organisatie";
 "Work Phone" = "Werk";
+"Cell" = "Mobiel";
+"Pager" = "Pieper";
+"Pref" = "Voorkeur";
 "Phone" = "Telefoon";
 "Phones" = "Telefoonnummers";
 "Postal" = "Postcode";
@@ -41,6 +44,93 @@
 "Move To" = "Verplaatsen naar";
 "Copy To" = "Kopieren naar";
 "Add to" = "Toevoegen aan";
+"To" = "Tot";
+"Carbon Copy (Cc)" = "Carbon Copy (CC)";
+"Blind Carbon Copy (Bcc)" = "Blind Carbon Copy (BCC)";
+
+/* Search scope: name fields */
+"name" = "Naam";
+
+/* Search scope: name fields */
+"c_cn" = "Naam";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "Secundaire email";
+
+/* Search scope: screen name field */
+"nsaimid" = "Weergavenaam";
+
+/* Search scope: mail fields */
+"mail" = "Bericht";
+
+/* Search scope: mail fields */
+"c_mail" = "Bericht";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Telefoon";
+
+/* Search scope: telephone field */
+"homephone" = "Telefoon";
+
+/* Search scope: mobile field */
+"mobile" = "Mobiel";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Fax";
+
+/* Search scope: pager field */
+"pager" = "Pieper";
+
+/* Search scope: categories field */
+"c_categories" = "Categorieën";
+
+/* Search scope: categories field */
+"vcardcategories" = "Categorieën";
+
+/* Search scope: title field */
+"title" = "Titel";
+
+/* Search scope: organization field */
+"c_o" = "Organisatie";
+
+/* Search scope: organization field */
+"o" = "Organisatie";
+
+/* Search scope: department field */
+"ou" = "Afdeling";
+
+/* Search scope: city field */
+"l" = "Plaats";
+
+/* Search scope: country field */
+"c" = "Land";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Thuis adres";
+
+/* Search scope: state/province field */
+"st" = "Staat/Provincie";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Staat van herkomst / Provincie";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "Postcode";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "Postcode";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "Thuisland";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Startpagina";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Webpagina";
+
+/* Search scope: note field */
+"description" = "Notitie";
 
 /* Subheader of empty addressbook */
 "No contact" = "Geen contactpersoon";
@@ -152,6 +242,12 @@
 "Unable to subscribe to that folder!"
 = "Abonneren op deze map mislukt!";
 
+/* security */
+"Security" = "Beveiliging";
+"Uninstall" = "Deinstalleren";
+"Error reading the card certificate." = "Fout bij het lezen van het kaartcertificaat.";
+"No certificate associated to card." = "Geen certificaat gekoppeld aan kaart.";
+
 /* acls */
 "Access rights to" = "Toegangsrechten voor";
 "For user" = "Voor gebruiker";
@@ -231,6 +327,7 @@
 "URL" = "URL";
 "New URL" = "Nieuwe URL";
 "street" = "straat";
+"street (continued)" = "straat (vervolg)";
 "Postoffice" = "Postkantoor";
 "Region" = "Regio";
 "Postal Code" = "Postcode";
@@ -244,6 +341,12 @@
 "More options" = "Meer opties";
 "Role" = "Rol";
 "Add Screen Name" = "Weergavenaam toevoegen";
+"Custom 1" = "Aanpassing 1";
+"Custom 2" = "Aanpassing 2";
+"Custom 3" = "Aanpassing 3";
+"Custom 4" = "Aanpassing 4";
+"Custom Value" = "Aangepaste waarde";
+"New Custom Value" = "Nieuwe aangepaste waarde";
 "Synchronization" = "Synchronisatie";
 "Synchronize" = "Synchroniseren";
 "Sucessfully subscribed to address book" = "Met succes geabonneerd op dit adresboek";

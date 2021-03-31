@@ -1,5 +1,5 @@
 # We disable OpenChange builds on el5 since it's prehistoric
-%define enable_openchange 1
+%define enable_openchange 0
 %{?el5:%define enable_openchange 0}
 %{?el6:%define enable_openchange 0}
 %{?el7:%define enable_openchange 0}
@@ -50,9 +50,12 @@ BuildRequires:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{so
 # saml is enabled everywhere except on el5 since its glib2 is prehistoric
 %define saml2_cfg_opts "--enable-saml2"
 %{?el5:%define saml2_cfg_opts ""}
-%{?el7:%define saml2_cfg_opts ""}
 %{?el6:Requires: lasso}
 %{?el6:BuildRequires: lasso-devel}
+%{?el7:Requires: lasso}
+%{?el7:BuildRequires: lasso-devel}
+%{?el8:Requires: lasso}
+%{?el8:BuildRequires: lasso-devel}
 
 %description
 SOGo is a groupware server built around OpenGroupware.org (OGo) and
@@ -182,7 +185,7 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ****************************** build ********************************
 %build
-%if 0%{?el7}
+%if 0%{?rhel} >= 7
 . /usr/lib64/GNUstep/Makefiles/GNUstep.sh
 %else
 . /usr/share/GNUstep/Makefiles/GNUstep.sh
@@ -333,7 +336,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %config(noreplace) %{_sysconfdir}/cron.d/sogo
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/SOGo.conf
 %config(noreplace) %{_sysconfdir}/sysconfig/sogo
-%doc ChangeLog NEWS Scripts/*sh Scripts/updates.php Apache/SOGo-apple-ab.conf
+%doc ChangeLog CHANGELOG.md Scripts/*sh Scripts/updates.php Apache/SOGo-apple-ab.conf
 
 %files -n sogo-tool
 %{_sbindir}/sogo-tool

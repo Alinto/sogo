@@ -1,2 +1,5 @@
 "OtherUsersFolderName"   = "Andere Benutzer";
 "SharedFoldersName" = "Gemeinsame Ordner";
+
+"Report: Marked messages as junk" = "Bericht: Nachrichten als Spam markiert";
+"Report: Marked messages as not junk" = "Bericht: Nachrichten als Kein-Spam markiert";

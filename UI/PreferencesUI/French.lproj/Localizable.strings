@@ -40,13 +40,19 @@
 "Auto reply subject" = "Modifier le sujet de la réponse automatique";
 "You can write ${subject} to insert the original subject" = "Inscrire ${subject} pour insérer le sujet original";
 "Auto reply message" = "Contenu de la réponse automatique";
-"Email addresses (separated by commas)" = "Adresses courriels (séparées par des virgules)";
+"Email addresses" = "Adresses de courriel";
 "Add default email addresses" = "Ajouter les adresses par défaut";
 "Days between responses" = "Nombre de jours entre les réponses d'absence";
 "Do not send responses to mailing lists" = "Ne pas envoyer les réponses aux listes de diffusion";
 "Enable auto reply on" = "Débuter la réponse automatique le";
+"First day of vacation" = "Premier jour d'absence";
 "Disable auto reply on" = "Désactiver la réponse automatique le";
+"Last day of vacation" = "Dernier jour d'absence";
+"Enter date" = "Date";
 "Always send vacation message response" = "Toujours envoyer le message de vacances prolongées";
+"The vacation message is sent prior to apply your filters." = "Le message de vacances est envoyé avant d'appliquer vos filtres.";
+"Discard incoming mails during vacation" = "Ne pas conserver le courrier entrant pendant les vacances";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Le message de vacances est envoyé mais les messages entrants ne sont pas livrés dans votre boîte de réception.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Veuillez définir un message et vos adresses pour lesquelles pour désirez activer une réponse automatique.";
 "Your vacation message must not end with a single dot on a line." = "Le message de vacances ne doit pas se terminer par une ligne ne contenant qu'un point.";
@@ -56,10 +62,13 @@
 /* forward messages */
 "Forward incoming messages" = "Transférer les messages entrant";
 "Keep a copy" = "Garder une copie";
+"Enter an email" = "Adresse de courriel";
+"Add another email" = "Ajouter un courriel";
 "Please specify an address to which you want to forward your messages."
 = "Veuillez définir une adresse à laquelle vous désirez transférer automatiquement vos nouveaux messages.";
 "You are not allowed to forward your messages to an external email address." = "Il est interdit de renvoyer vos messages vers une adresse externe.";
 "You are not allowed to forward your messages to an internal email address." = "Il est interdit de renvoyer vos messages vers une adresse interne.";
+"You are not allowed to forward your messages to this domain:" = "Vous ne pouvez pas transférer vos messages à ce domaine :";
 
 /* d & t */
 "Current Time Zone" = "Fuseau horaire en cours";
@@ -84,8 +93,10 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
-   
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
+
 "longDateFmt_0" = "%A %e %B %Y";
 "longDateFmt_1" = "%e %b. %Y";
 "longDateFmt_2" = "%e %B %Y";
@@ -123,6 +134,8 @@
 "Prevent from being invited to appointments" = "Interdire de m'inviter à des rendez-vous";
 "White list for appointment invitations" = "Liste blanche pour les invitations";
 "Contacts Names" = "Noms des contacts";
+"Duplicate name" = "Nom déjà utilisé";
+"Calendar categories must have unique names." = "Les catégories doivent être uniques.";
 
 /* Default Calendar */
 "Default calendar" = "Calendrier par défaut";
@@ -146,10 +159,18 @@
 /* Mailer */
 "Labels" = "Étiquettes";
 "Label" = "Étiquette";
+"IMAP Label" = "Étiquette IMAP";
+"Invalid label" = "N'utilisez pas d'espaces, ni ( ) { } % * \" \\";
+"Duplicate label" = "Dupliquer l'étiquette";
+"IMAP labels must have unique names." = "Les étiquettes IMAP doivent être uniques.";
 "New label" = "Nouvelle étiquette";
 "Show subscribed mailboxes only" = "Afficher seulement les abonnements";
 "Synchronize only default mail folders (EAS)" = "Synchroniser uniquement les boîtes principales (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Récupération du nombre de messages non lus pour toutes les boîtes aux lettres";
 "Sort messages by threads" = "Grouper les discussions";
+"Always open mail composer" = "Toujours ouvrir l'éditeur";
+"Inside current window" = "Dans la fenêtre courante";
+"In a popup window" = "Dans une nouvelle fenêtre";
 "When sending mail, add unknown recipients to my" = "Lors de l'envoi d'un message, ajouter les destinataires inconnus au carnet";
 "Address Book" = "Carnet d'adresses";
 "Forward messages" = "Transférer les messages";
@@ -177,8 +198,11 @@
 /* Contact */
 "Personal Address Book" = "Adresses personnelles";
 "Collected Address Book" = "Adresses collectées";
+"Contact categories must have unique names." = "Les catégories de contact doivent être uniques.";
 
 /* IMAP Accounts */
+"Settings" = "Paramètres";
+"Security" = "Sécurité";
 "Mail Account" = "Compte courriel";
 "New Mail Account" = "Nouveau compte";
 "Server Name" = "Serveur";
@@ -190,11 +214,25 @@
 "Email" = "Email";
 "Reply To Email" = "Adresse de retour";
 "Signature" = "Signature";
+"Identities" = "Identités";
+"Default Identity" = "Identité par défaut";
+"New Identity" = "Nouvelle identité";
 "(Click to create)" = "(Signature vide)";
 "Please enter your signature below" = "Introduisez votre signature ci-dessous";
 "Please specify a valid sender address." = "Veuillez définir une adresse d'expédition valide.";
 "Please specify a valid reply-to address." = "Veuillez définir une adresse de retour valide.";
 "Specify a hostname other than the local host" = "Veuillez utiliser un nom d'hôte autre que l'hôte local";
+
+"No certificate installed" = "Aucun certificat installé";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "Le certificat SSL doit être au format PKCS#12 (PFX).";
+"Uninstall" = "Désinstaller";
+"Choose PKCS12 Certificate .." = "Choisir un certificat PKCS#12 ...";
+"Certificate Import Password" = "Mot de passe d'importation du certificat";
+"Upload" = "Ajouter";
+"When composing a message" = "Lors de la rédaction d'un message";
+"Digitally sign the message by default" = "Toujours signer le message";
+"Always try to encrypt the message" = "Toujours tenter de crypter le message";
+"An error occurred while importing the certificate. Verify your password." = "Une erreur est survenue lors de l'importation du certificat. Veuillez vérifier votre mot de passe.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Paramètres supplémentaires";
@@ -215,6 +253,7 @@
 "Calendar Category" = "Catégorie de calendrier";
 "Add Calendar Category" = "Ajouter une catégorie";
 "New category" = "Nouvelle catégorie";
+"Reset to defaults" = "Réinitialiser les valeurs";
 "Remove Calendar Category" = "Supprimer une catégorie";
 "Contact Category" = "Catégorie de contact";
 "Add Contact Category" = "Ajouter une catégorie";
@@ -238,7 +277,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -250,7 +289,9 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
+"Japanese" = "日本語";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
@@ -259,8 +300,10 @@
 "Polish" = "Polski";
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
@@ -410,3 +453,13 @@
 /* Limited Animation Mode */
 "animation_LIMITED" = "Restreint";
 "animation_NONE" = "Aucun";
+
+/* 2FA */
+"Enable two-factor authentication using Google Authenticator" = "Activer l'authentification à deux facteurs à l'aide de Google Authenticator";
+"You must enter this key into your Google Authenticator application." = "Vous devez saisir cette clé dans votre application Google Authenticator.";
+"If you do not and you log out you will not be able to login again." = "À défaut de le faire, vous ne pourrez pas vous reconnecter.";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "Un script Sieve externe est actif";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve est un langage de programmation qui peut être utilisé pour le filtrage des messages. Si vous laissez SOGo gérer vos filtres, votre message d'absence et vos paramètres de transfert, votre script actuel sera désactivé.";
+"Let SOGo handle everything" = "Laissez SOGo s'occuper de tout";

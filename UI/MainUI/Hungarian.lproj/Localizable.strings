@@ -1,7 +1,7 @@
 /* this file is in UTF-8 format! */
 
 "title" = "SOGo";
-"Username" = "Felhasználó";
+"Username" = "Felhasználónév";
 "Password" = "Jelszó";
 "Domain" = "Tartomány";
 "Remember username" = "Felhasználónév megjegyzése";
@@ -16,10 +16,17 @@
 "Authentication Failed" = "A hitelesítés nem sikerült";
 "Wrong username or password." = "Hibás felhasználónév vagy jelszó.";
 "Retry" = "Újra";
+"Login failed due to unhandled error case:" = "A bejelentkezés nem sikerült. A nem kezelt hiba:";
 "cookiesNotEnabled" = "Nem tud bejelentkezni, mivel a böngészőjében a cookie-k ki vannak kapcsolva. Kérem engedélyezze a cookie-kat a böngészője beállításaiban, majd próbálja újra.";
 "browserNotCompatible" = "A böngészője nem támogatja ennek az oldalnak a megjelnítését. Javasoljuk a Firefox használatát. Kattintson az alábbi hivatkozásra a legújabb verzió letöltéséhez.";
 "alternativeBrowsers" = "További megoldásként az alábbi, kompatibilis böngészőket használhatja";
 "alternativeBrowserSafari" = "A Safari böngésző is használható.";
+
+/* 2FA */
+"Verification Code" = "Megerősítő kód";
+"Enter the 6-digit verification code from your Google Authenticator application." = "Adja meg a Google Authenticator alkalmazás által megadott 6 jegyű megerősítő kódot.";
+"You provided an invalid Google Authenticator key." = "Érvénytelen Google Authenticator kódot adott meg.";
+
 "Download" = "Letöltés";
 "Language" = "Nyelv";
 "choose" = "Válasszon ...";
@@ -27,7 +34,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -39,7 +46,9 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
+"Japanese" = "日本語";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
@@ -48,8 +57,10 @@
 "Polish" = "Polski";
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";

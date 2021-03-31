@@ -13,7 +13,7 @@
 "Contact editor" = "Éditer le contact";
 "Contact viewer" = "Visualiser le contact";
 "Email" = "Adresse électronique";
-"Screen Name" = "Pseudo";
+"Screen Name" = "Surnom";
 "Extended" = "Informations complémentaires";
 "Fax" = "Fax";
 "Firstname" = "Prénom";
@@ -27,6 +27,9 @@
 "OfficePhone" = "Bureau";
 "Organization" = "Société";
 "Work Phone" = "Travail";
+"Cell" = "Cellulaire";
+"Pager" = "Téléavertisseur";
+"Pref" = "Favori";
 "Phone" = "Téléphone";
 "Phones" = "Numéros de téléphone";
 "Postal" = "Professionnelle";
@@ -45,6 +48,90 @@
 "Carbon Copy (Cc)" = "Copie carbone";
 "Blind Carbon Copy (Bcc)" = "C. carbone cachée";
 
+/* Search scope: name fields */
+"name" = "Nom";
+
+/* Search scope: name fields */
+"c_cn" = "Nom";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "Adresse courriel secondaire";
+
+/* Search scope: screen name field */
+"nsaimid" = "Nom d'utilisateur";
+
+/* Search scope: mail fields */
+"mail" = "Courriel";
+
+/* Search scope: mail fields */
+"c_mail" = "Courriel";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Téléphone";
+
+/* Search scope: telephone field */
+"homephone" = "Téléphone";
+
+/* Search scope: mobile field */
+"mobile" = "Portable";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Télécopieur";
+
+/* Search scope: pager field */
+"pager" = "Téléavertisseur";
+
+/* Search scope: categories field */
+"c_categories" = "Catégories";
+
+/* Search scope: categories field */
+"vcardcategories" = "Catégories";
+
+/* Search scope: title field */
+"title" = "Titre";
+
+/* Search scope: organization field */
+"c_o" = "Société";
+
+/* Search scope: organization field */
+"o" = "Société";
+
+/* Search scope: department field */
+"ou" = "Service";
+
+/* Search scope: city field */
+"l" = "Ville/Localité ";
+
+/* Search scope: country field */
+"c" = "Pays ";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Adresse";
+
+/* Search scope: state/province field */
+"st" = "État/Prov.";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "État/Prov. (maison)";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "Code postal";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "Code postal (maison)";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "Pays (maison)";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Site Web personnel";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Site Web";
+
+/* Search scope: note field */
+"description" = "Remarques";
+
 /* Subheader of empty addressbook */
 "No contact" = "Aucun contact";
 
@@ -55,10 +142,10 @@
 "contacts" = "contacts";
 
 /* No contact matching search criteria */
-"No matching contact" = "Aucun contact retourné";
+"No matching contact" = "Aucun contact trouvé";
 
 /* Number of contacts matching search criteria; string is prefixed by number */
-"matching contacts" = "contacts retournés";
+"matching contacts" = "contacts trouvés";
 
 /* Number of selected contacts in list */
 "selected" = "sélectionné(s)";
@@ -83,7 +170,7 @@
 "New Card" = "Nouvelle fiche";
 "New List" = "Nouvelle liste";
 "Edit" = "Éditer";
-"Properties" = "Modifier";
+"Properties" = "Propriétés...";
 "Sharing..." = "Partage...";
 "Write" = "Écrire";
 "Delete" = "Effacer";
@@ -154,6 +241,12 @@
 = "Vous ne pouvez pas vous inscrire à un dossier qui vous appartient.";
 "Unable to subscribe to that folder!"
 = "Impossible de vous inscrire à ce dossier.";
+
+/* security */
+"Security" = "Sécurité";
+"Uninstall" = "Désinstaller";
+"Error reading the card certificate." = "Impossible de lire le certificat.";
+"No certificate associated to card." = "Aucun certificat n'est associé à cette carte.";
 
 /* acls */
 "Access rights to" = "Droits d'accès à";
@@ -226,18 +319,19 @@
 "Close" = "Fermer";
 "More contact options" = "Options des contacts";
 "Organization Unit" = "Unité organisationnelle";
-"Add Organizational Unit" = "Ajouter une unité oranisationnelle";
+"Add Organizational Unit" = "Ajouter une unité organisationnelle";
 "Type" = "Type";
 "Email Address" = "Adresse courriel";
 "New Email Address" = "Ajouter une adresse courriel";
 "New Phone Number" = "Ajouter un numéro téléphone";
 "URL" = "URL";
-"New URL" = "Nouveau URL";
-"street" = "rue";
+"New URL" = "Ajouter un URL";
+"street" = "Rue";
+"street (continued)" = "Rue (suite)";
 "Postoffice" = "Bureau de poste";
 "Region" = "Région";
 "Postal Code" = "Code postal";
-"New Address" = "Nouvelle adresse";
+"New Address" = "Ajouter une adresse";
 "Reset" = "Réinitialiser";
 "Description" = "Description";
 "Add Member" = "Ajouter un contact";
@@ -252,7 +346,7 @@
 "Custom 3" = "Autre 3";
 "Custom 4" = "Autre 4";
 "Custom Value" = "Valeur";
-"New Custom Value" = "Ajouter un champs personnalisé";
+"New Custom Value" = "Ajouter un champ personnalisé";
 "Synchronization" = "Synchronisation";
 "Synchronize" = "Synchroniser";
 "Sucessfully subscribed to address book" = "Abonnement au carnet d'adresses complété";

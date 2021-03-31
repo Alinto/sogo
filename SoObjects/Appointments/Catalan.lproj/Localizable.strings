@@ -7,32 +7,41 @@ vevent_class2 = "(Esdeveniment confidencial)";
 vtodo_class0 = "(Tasca pública)";
 vtodo_class1 = "(Tasca privada)";
 vtodo_class2 = "(Tasca confidencial)";
+
 /* Receipts */
 "The event \"%{Summary}\" was created" = "Es va crear l'esdeveniment \"%{Summary}\" ";
 "The event \"%{Summary}\" was deleted" = "Es va esborrar l'esdeveniment \"%{Summary}\" ";
 "The event \"%{Summary}\" was updated" = "Es va modificar l'esdeveniment \"%{Summary}\" ";
-"The following attendees(s) were notified" = "I va notificar als següents participants ";
-"The following attendees(s) were added" = "S'han afegit els següents participants";
+"The following attendees(s) were notified" = "S'han notificat els següents assistents ";
+"The following attendees(s) were added" = "S'han afegit els següents assistents";
 "The following attendees(s) were removed" = "Heu suprimit els assistents següents";
+
 /* IMIP messages */
 "calendar_label" = "Calendari";
 "startDate_label" = "Inici";
 "endDate_label" = "Final";
+"time_label" = "Hora";
+"to_label" = "a";
 "due_label" = "Data de venciment";
 "location_label" = "Lloc";
 "summary_label" = "Resum:";
 "comment_label" = "Comentari:";
+"organizer_label" = "Organitzador";
+"attendee_label" = "Assistent";
+
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Invitació a l'esdeveniment: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(enviada per %{SentBy}) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} us ha invitat a %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} us ha invitat a %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Esdeveniment suspès: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}ha suspès aquest esdeveniment: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}ha suspès aquest esdeveniment: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "La cita \"%{Summary}\" per al dia %{OldStartDate}  ha canviat";
@@ -42,6 +51,7 @@ vtodo_class2 = "(Tasca confidencial)";
 = "Els paràmetres següents han canviat en la reunió \"%{Summary}\":";
 "Please accept or decline those changes."
 = "Si us plau, accepteu o rebutgeu aquests canvis.";
+
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Invitació acceptada: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Invitació rebutjada; \"%{Summary}\"";
@@ -55,6 +65,15 @@ vtodo_class2 = "(Tasca confidencial)";
 = "%{Attendee} %{SentByText}ha delegat la invitació en %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}encara no s'ha decidit sobre la invitació a l'esdeveniment.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Recordatori: \"%{Summary}\" - %{StartDate}";
+
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "No es pot accedir al recurs: \"%{Cn} %{SystemEmail}\" ";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Nombre màxim de reserves simultànies (%{NumberOfSimultaneousBookings}) assolit per al recurs \"%{Cn} %{SystemEmail}\". L'esdeveniment que entra en conflicte és \"%{EventTitle}\", i comença el %{StartDate}.";
+
+/* Participation role */
+"Your participation is required to this event" = "Es requereix la teva participació en aquest esdeveniment";
+"Your participation is optional to this event" = "La teva participació és opcional en aquest esdeveniment";
+"Your participation is not required to this event" = "No es requereix la teva participació en aquest esdeveniment";

@@ -43,7 +43,7 @@
 "Search multiple mailboxes" = "Przeszukaj wiele skrzynek";
 
 /* Main Frame  */
-"Home"                 = "Strona główna"; 
+"Home"                 = "Strona główna";
 "Calendar"             = "Kalendarz";
 "Addressbook"          = "Książka adresowa";
 "Mail"                 = "Poczta";
@@ -84,7 +84,7 @@
 "Any Authenticated User" = "Dowolny zalogowany użytkownik";
 "List and see this folder" = "Wylistuj i zobacz ten folder";
 "Read mails from this folder" = "Czytaj wiadomości z tego folderu";
-"Mark mails read and unread" = "Zaznacz wiadomości jako przeczytane lub nie przeczytane";
+"Mark mails read and unread" = "Zaznacz wiadomości jako przeczytane lub nieprzeczytane";
 "Modify the flags of the mails in this folder" = "Zmień oflagowanie wiadomości w tym folderze";
 "Insert, copy and move mails into this folder" = "Wstaw, kopiuj lub przenieś wiadomości do tego folderu";
 "Post mails" = "Wyślij wiadomości";
@@ -104,7 +104,7 @@
 "To"            = "Do";
 "Cc"            = "DW";
 "Bcc"           = "UDW";
-"Reply-To"	    = "Odpowiedź do";
+"Reply-To"	= "Odpowiedź do";
 "Add address"   = "Dodaj adres";
 "Body"          = "Treść";
 "Open" = "Otwórz";
@@ -121,9 +121,13 @@
 "Edit Draft..." = "Edytuj szkic";
 "Load Images" = "Załaduj obrazki";
 "Return Receipt" = "Potwierdzenie";
+"Choose which identity to send this message from" = "Wybierz tożsamość, z której chcesz wysłać tę wiadomość";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Nadawca wiadomości prosił o powiadomienie, gdy odczytasz tą wiadomość. Czy powiadomić nadawcę?";
 "Return Receipt (displayed) - %@"= "Potwierdzenie (wyświetlone) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "To jest potwierdzenie dla e-maila, który był wysłany do %@.\n\nUwaga: To jest potwierdzenie otwarcia maila. Nie gwarantuje ono, że odbiorca przeczytał wiadomość i ją zrozumiał.";
+"Security" = "Bezpieczeństwo";
+"Sign" = "Podpisz";
+"Encrypt" = "Zaszyfruj";
 "Priority" = "Priorytet";
 "highest" = "Najwyższy";
 "high" = "Wysoki";
@@ -137,7 +141,7 @@
 /* Popup "show" */
 "all"     = "wszystkie";
 "read"    = "przeczytane";
-"unread"  = "nie przeczytane";
+"unread"  = "nieprzeczytane";
 "deleted" = "usunięte";
 "flagged" = "oflagowane";
 
@@ -158,7 +162,7 @@
 "last"          = "Ostatnia";
 "msgnumber_to"  = "do";
 "msgnumber_of"  = "z";
-"Mark Unread" = "Oznacz jako nie przeczytane";
+"Mark Unread" = "Oznacz jako nieprzeczytane";
 "Mark Read"   = "Oznacz jako przeczytane";
 "Untitled" = "Bez tytułu";
 
@@ -176,6 +180,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Dodaj do książki adresowej";
+"Successfully created card" = "Karta pomyślnie utworzona";
 "Compose Mail To" = "Utwórz wiadomość do";
 "Create Filter From Message..." = "Utwórz filtr z wiadomości";
 
@@ -245,6 +250,33 @@
 
 /* Number of selected messages in list */
 "selected" = "wybranych";
+
+/* Encrypted message notification */
+"This message is encrypted" = "Ta wiadomość jest zaszyfrowana";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Tej wiadomości nie można odszyfrować. Upewnij się, że wgrałeś swój certyfikat S/MIME w ustawieniach poczty.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Nie można zweryfikować podpisu wiadomości";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "Ta wiadomość nie jest oryginalna";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Błąd odczytu pliku certyfikatu. Proszę zainstalować nowy certyfikat.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "Nie ma żadnego certyfikatu przypisanego do tego konta.";
+
+/* Invalid message signature */
+"Digital signature is not valid" = "Podpis elektroniczny nie jest poprawny";
+
+/* Valid message signature */
+"Message is signed" = "Wiadomość jest podpisana";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Podpis elektroniczny nie jest poprawny";
 
 "This Folder" = "Ten folder";
 
@@ -321,6 +353,7 @@
 = "Wiadomość nie może być przeniesiona do kosza. Czy chcesz ją skasować?";
 
 /* Message editing */
+"Please specify a subject." = "Proszę wybrać tytuł.";
 "error_missingsubject" = "Brak tematu";
 "error_missingrecipients" = "Brak odbiorców";
 "Send Anyway" = "Wyślij mimo wszystko";
@@ -368,7 +401,7 @@
 "Back" = "Wstecz";
 "Copy messages" = "Kopiuj wiadomości";
 "More messages options" = "Więcej opcji wiadomości";
-"Mark as Unread" = "Oznacz jako nie przeczytany";
+"Mark as Unread" = "Oznacz jako nieprzeczytany";
 "Mark as Read" = "Oznacz jako przeczytane";
 "Closing Window ..." = "Zamykanie okna";
 "Tried to send too many mails. Please wait." = "Próbowano wysłać zbyt wiele e-maili. Proszę czekać.";
@@ -380,6 +413,15 @@
 "Your email has been saved" = "E-mail został zapisany";
 "Your email has been sent" = "E-mail został wysłany";
 "Folder compacted" = "Folder zkompaktowany";
+
+/* Advanced search */
+"Enter Subject" = "Tytuł";
+"Enter From" = "Od";
+"Enter To" = "Do";
+"Enter Cc" = "CC";
+"Enter Body" = "Treść";
+"match" = "pasuje do";
+"does not match" = "nie pasuje do";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Zakres wyszukiwania";

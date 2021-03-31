@@ -1,6 +1,19 @@
 /* toolbar */
 "Save and Close" = "Spara och stäng";
 "Close" = "Stäng";
+"Preferences saved" = "Inställningar sparade";
+
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Osparade ändringar";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Vill du spara ändringarna du gjort i konfigurationen?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Sparar";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Spara inte";
 
 /* tabs */
 "General" = "Allmänt";
@@ -12,32 +25,53 @@
 "Forward" = "Vidarebefordring";
 "Password" = "Lösenord";
 "Categories" = "Kategorier";
+"Appointments invitations" = "Mötesinbjudningar";
 "Name" = "Namn";
 "Color" = "Färg";
 "Add" = "Lägg till";
 "Delete" = "Ta bort";
+
 /* contacts categories */
 "contacts_category_labels" = "Kollega, Konkurrent, Kund, Vän, Familj, Affärspartner, Leverantör, Press, VIP";
+
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Aktivera frånvaro auto-svar";
-"Auto reply message" ="Auto-svar meddelande";
-"Email addresses (separated by commas)" ="E-post adresser (kommaseparerade)";
+"Enable custom auto reply subject" = "Aktivera personligt ämne i auto-svar";
+"Auto reply subject" = "Auto-svar ämne";
+"You can write ${subject} to insert the original subject" = "Du kan skriva ${subject} för att lägga in det ursprungliga ämnet";
+"Auto reply message" = "Auto-svar meddelande";
+"Email addresses (separated by commas)" = "E-postadresser (kommaseparerade)";
 "Add default email addresses" = "Lägg till standard e-postadress";
-"Days between responses" ="Dagar mellan svar";
-"Do not send responses to mailing lists" = "Skicka inte svar till utskickslistor";
+"Days between responses" = "Dagar mellan svar";
+"Do not send responses to mailing lists" = "Skicka inte svar till e-postlistor";
+"Enable auto reply on" = "Aktivera auto-svar den";
+"Disable auto reply on" = "Inaktivera auto-svar den";
+"Always send vacation message response" = "Skicka alltid frånvaromeddelande";
+"The vacation message is sent prior to apply your filters." = "Semestermeddelandet skickas innan du tillämpar dina filter.";
+"Discard incoming mails during vacation" = "Släng inkommande e-post under semester";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Semestermeddelandet har skickats, men inkommande meddelanden levereras inte till din inkorg.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
-= "Skriv meddelandet och ange din e-postadress som du vill aktivera auto-svar.";
+= "Ange meddelande och din e-postadress som du vill aktivera auto-svar för.";
+"Your vacation message must not end with a single dot on a line." = "Ditt frånvaromeddelande får inte sluta med endast en punkt på en rad.";
+"End date of your auto reply must be in the future."
+= "Slutdatum för frånvaromeddelandet måste vara i framtiden";
+
 /* forward messages */
 "Forward incoming messages" = "Vidarebefordra inkommande meddelanden";
 "Keep a copy" = "Spara en kopia";
 "Please specify an address to which you want to forward your messages."
 = "Ange adressen du vill vidarebefordra dina meddelanden till.";
+"You are not allowed to forward your messages to an external email address." = "Du får inte vidarebefordra dina meddelanden till en extern e-postadress.";
+"You are not allowed to forward your messages to an internal email address." = "Du får inte vidarebefordra dina meddelanden till en intern e-postadress.";
+
 /* d & t */
-"Current Time Zone" ="Gällande tidszon";
-"Short Date Format" ="Kort datumformat";
-"Long Date Format" ="Långt datumformat";
-"Time Format" ="Tidsformat";
+"Current Time Zone" = "Nuvarande tidszon";
+"Short Date Format" = "Kort datumformat";
+"Long Date Format" = "Långt datumformat";
+"Time Format" = "Tidsformat";
 "default" = "Standard";
+"Default Module" = "Standardmodul";
+"Save" = "Sparar";
 "shortDateFmt_0" = "%d-%b-%y";
 "shortDateFmt_1" = "%d-%m-%y";
 "shortDateFmt_2" = "%d/%m/%y";
@@ -53,60 +87,90 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
-   
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
+
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
 "longDateFmt_2" = "%A, %d %B, %Y";
 "longDateFmt_3" = "%d %B, %Y";
 "longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
 "timeFmt_0" = "%I:%M %p";
 "timeFmt_1" = "%H:%M";
 "timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
+
+/* Timezone autocompletion */
+"No matches found." = "Inga träffar hittades";
+
 /* calendar */
-"Week begins on" ="Veckan börjar med";
-"Day start time" ="Dagen börjar kl";
-"Day end time" ="Dagen slutar kl";
+"Week begins on" = "Veckan börjar med";
+"Day start time" = "Dagen börjar kl";
+"Day end time" = "Dagen slutar kl";
 "Day start time must be prior to day end time." = "Dagens starttid måste vara före dagens sluttid.";
-"First week of year" ="Första veckan på året";
+"Week days to display" = "Veckodagar att visa";
+"Show time as busy outside working hours" = "Visa tid utan för arbetstid som upptagen";
+"First week of year" = "Första veckan på året";
 "Enable reminders for Calendar items" = "Aktivera påminnelser för kalenderposter";
-"Play a sound when a reminder comes due"
-= "Spela upp ett ljud vid en påminnelse";
-"Default reminder" ="Standardpåminnelse";
+"Play a sound when a reminder comes due" = "Spela upp ett ljud vid en påminnelse";
+"Default reminder" = "Standardpåminnelse";
 "firstWeekOfYear_January1" = "Börjar den 1 januari";
 "firstWeekOfYear_First4DayWeek" = "Första 4-dagarsveckan på året";
 "firstWeekOfYear_FirstFullWeek" = "Första hela veckan på året";
+"Prevent from being invited to appointments" = "Förhindra att bli inbjuden till möten";
+"White list for appointment invitations" = "Lista över godkända mötesarrangörer";
+"Contacts Names" = "Kontaktnamn";
+"Duplicate name" = "Dubblettnamn";
+"Calendar categories must have unique names." = "Kalenderkategorier måste ha unika namn.";
+
 /* Default Calendar */
-"Default calendar" ="Default calendar";
+"Default calendar" = "Default calendar";
 "selectedCalendar" = "Selected calendar";
 "personalCalendar" = "Personal calendar";
 "firstCalendar" = "First enabled calendar";
+"reminder_NONE" = "Ingen påminnelse";
 "reminder_5_MINUTES_BEFORE" = "5 minuter";
 "reminder_10_MINUTES_BEFORE" = "10 minuter";
 "reminder_15_MINUTES_BEFORE" = "15 minuter";
 "reminder_30_MINUTES_BEFORE" = "30 minuter";
+"reminder_45_MINUTES_BEFORE" = "45 minuter före";
 "reminder_1_HOUR_BEFORE" = "1 timme";
 "reminder_2_HOURS_BEFORE" = "2 timmar";
-"reminder_5_HOURS_BEFORE"= "5 timmar";
-"reminder_15_HOURS_BEFORE"= "15 timmar";
+"reminder_5_HOURS_BEFORE" = "5 timmar";
+"reminder_15_HOURS_BEFORE" = "15 timmar";
 "reminder_1_DAY_BEFORE" = "1 dag";
 "reminder_2_DAYS_BEFORE" = "2 dagar";
+"reminder_1_WEEK_BEFORE" = "1 vecka före";
+
 /* Mailer */
+"Labels" = "Etiketter";
 "Label" = "Etikett";
+"IMAP Label" = "IMAP betecknimg";
+"Invalid label" = "Använd ej mellanslag, eller ( ) { } % * \" \\";
+"Duplicate label" = "Dubbel etikett";
+"IMAP labels must have unique names." = "IMAP beteckningar måste ha unika namn";
+"New label" = "Ny etikett";
 "Show subscribed mailboxes only" = "Visa endast prenumrerade postlådor";
+"Synchronize only default mail folders (EAS)" = "Synkronisera bara standard e-postmappar (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Antal hämtade osynliga meddelanden för alla brevlådor";
 "Sort messages by threads" = "Sort messages by threads";
-"Check for new mail" = "Hämta ny post";
-"refreshview_manually" = "Manuellt";
-"refreshview_every_minute" = "Varje minut";
-"refreshview_every_2_minutes" = "Varje 2 minuter";
-"refreshview_every_5_minutes" = "Varje 5 minuter";
-"refreshview_every_10_minutes" = "Varje 10 minuter";
-"refreshview_every_20_minutes" = "Varje 20 minuter";
-"refreshview_every_30_minutes" = "Varje 30 minuter";
-"refreshview_once_per_hour" = "Varje timme";
+"Always open mail composer" = "Öppna alltid e-post skapare";
+"Inside current window" = "I nuvarande fönster";
+"In a popup window" = "I ett popupfönster";
+"When sending mail, add unknown recipients to my" = "När e-post skickas, lägg till nya mottagare till min";
+"Address Book" = "Adressbok";
 "Forward messages" = "Vidarebefordra meddelanden";
 "messageforward_inline" = "Infogade";
 "messageforward_attached" = "Bifogade";
+"When replying to a message" = "Vid svar på meddelanden";
 "replyplacement_above" = "Börja mitt svar ovanför det infogade meddelandet";
 "replyplacement_below" = "Börja mitt svar under det infogade meddelandet";
 "And place my signature" = "Lägg till min signatur";
@@ -115,30 +179,75 @@
 "Compose messages in" = "Skriv meddelanden i";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Oformaterad text";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Standardteckenstorlek";
+
+"Display remote inline images" = "Visa externa inbäddade bilder";
+"displayremoteinlineimages_never" = "Aldrig";
+"displayremoteinlineimages_always" = "Alltid";
+"Auto save every" = "Autospara varje";
+"minutes" = "minuter";
+
+/* Contact */
+"Personal Address Book" = "Personlig adressbok";
+"Collected Address Book" = "Historisk adressbok";
+
 /* IMAP Accounts */
+"Settings" = "Inställningar";
+"Security" = "Säkerhet";
+"Mail Account" = "E-postkonto";
 "New Mail Account" = "Nytt e-postkonto";
-"Server Name" = "
-Servernamn:";
+"Server Name" = "Servernamn";
 "Port" = "Port";
+"Encryption" = "Kryptering";
+"None" = "Ingen";
 "User Name" = "Användarnamn";
 "Full Name" = "Fullständigt namn";
 "Email" = "E-postadress";
+"Reply To Email" = "Svara på e-post";
 "Signature" = "Signatur";
 "(Click to create)" = "(Klicka för att skapa)";
 "Please enter your signature below" = "Skriv din signatur nedan";
+"Please specify a valid sender address." = "Använd en korrekt avsändaradress.";
+"Please specify a valid reply-to address." = "Använd en korrekt svarsadress.";
+"Specify a hostname other than the local host" = "Använd ett värdnamn annat en det lokala";
+
+"No certificate installed" = "Inget certifikat installerat";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "SSL certifikatet måste använda PKCS#12 (PFX) formatet.";
+"Uninstall" = "Avinstallera";
+"Choose PKCS12 Certificate .." = "Välj PKCS12 Certifikat ...";
+"Certificate Import Password" = "Lösenord för import av certifikat";
+"Upload" = "Ladda upp";
+"When composing a message" = "Vid skapande av ett meddelande";
+"Digitally sign the message by default" = "Digitalt signera meddelande som standard";
+"Always try to encrypt the message" = "Försök alltid kryptera meddelande";
+"An error occurred while importing the certificate. Verify your password." = "Ett fel uppstod vid import av certifikatet. Verifiera ditt lösenord.";
+
 /* Additional Parameters */
 "Additional Parameters" = "Övriga parametrar";
+
 /* password */
 "New password" = "Nytt lösenord";
 "Confirmation" = "Bekräfta";
 "Change" = "Ändra";
+
 /* Event+task classifications */
-"Default events classification" ="Default events classification";
-"Default tasks classification" ="Default tasks classification";
+"Default events classification" = "Default events classification";
+"Default tasks classification" = "Default tasks classification";
 "PUBLIC_item" = "Public";
 "CONFIDENTIAL_item" = "Confidential";
 "PRIVATE_item" = "Private";
+
 /* Event+task categories */
+"Calendar Category" = "Kalenderkategori";
+"Add Calendar Category" = "Lägg till kalenderkategori";
+"New category" = "Ny kategori";
+"Reset to defaults" = "Återställ till standardinställningar";
+"Remove Calendar Category" = "Ta bort kalenderkategori";
+"Contact Category" = "Kontaktkategori";
+"Add Contact Category" = "Lägg till kontaktkategori";
+"Remove Contact Category" = "Ta bort kontaktkategori";
 "category_none" = "Ingen";
 "calendar_category_labels" = "Jubileum,Födelsedagar,Arbete,Telefonsamtal,Klient,Tävlingar,Kunder,Favoriter,Uppföljning,Presenter,Ledighet,Idéer,Möte,Ärenden,Diverse,Personligt,Projekt,Helgdagar,Status,Leverantörer,Resor,Semester";
 
@@ -148,14 +257,17 @@ Servernamn:";
 "Mail" = "E-post";
 "Last" = "Senast använd";
 "Default Module " = "Standardmodul";
-"Language" ="Språk";
+"SOGo Version" = "SOGo version";
+
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "Spara inställningar och ladda om sidan nu?";
+"Language" = "Språk";
 "choose" = "Välj ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
-"Croatian" = "Hrvatski";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -168,16 +280,19 @@ Servernamn:";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
+"Japanese" = "日本語";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
-"BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
 "Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
@@ -186,6 +301,17 @@ Servernamn:";
 "TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
+"Refresh View" = "Uppdatera vy";
+"refreshview_manually" = "Manuellt";
+"refreshview_every_minute" = "Varje minut";
+"refreshview_every_2_minutes" = "Varje 2 minuter";
+"refreshview_every_5_minutes" = "Varje 5 minuter";
+"refreshview_every_10_minutes" = "Varje 10 minuter";
+"refreshview_every_20_minutes" = "Varje 20 minuter";
+"refreshview_every_30_minutes" = "Varje 30 minuter";
+"refreshview_once_per_hour" = "Varje timme";
+
 /* Return receipts */
 "When I receive a request for a return receipt" = "När jag får en begäran om mottagningskvitto";
 "Never send a return receipt" = "Skicka aldrig mottagningskvitto";
@@ -196,18 +322,30 @@ Servernamn:";
 "Never send" = "Skicka aldrig";
 "Always send" = "Skicka alltid";
 "Ask me" = "Fråga mig";
+
 /* Filters - UIxPreferences */
 "Filters" = "Filter";
 "Active" = "Aktiv";
 "Move Up" = "Flytta up";
 "Move Down" = "Flytta ner";
+"Connection error" = "Anslutningsfel";
+"Service temporarily unavailable" = "Tjänsten tillfälligt otillgänglig";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Aktivera filter";
+
 /* Filters - UIxFilterEditor */
 "Filter name" = "Filter namn";
+/* Button label */
+"Add a condition" = "Lägg till villkor";
+/* Button label */
+"Add an action" = "Lägg till åtgärd";
 "For incoming messages that" = "För inkommande meddelanden som";
 "match all of the following rules" = "matchar alla följande regler";
 "match any of the following rules" = "matchar någon av följande regler";
 "match all messages" = "matchar alla meddelanden";
 "Perform these actions" = "Utför följande handlingar";
+"Untitled Filter" = "Nytt filter";
 "Subject" = "Ämne";
 "From" = "Från";
 "To" = "Till";
@@ -215,12 +353,29 @@ Servernamn:";
 "To or Cc" = "Till eller Kopia";
 "Size (Kb)" = "Storlek (Kb)";
 "Header" = "Rubrik";
+"Body" = "Meddelandetext";
 "Flag the message with" = "Märk meddelandet med";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Flagga";
+
 "Discard the message" = "Kasta meddelandet";
 "File the message in" = "Spara meddelandet i";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "E-postlåda";
+
 "Keep the message" = "Behåll meddelandet";
 "Forward the message to" = "Vidarebefordra meddelandet till";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "E-postadress";
+
 "Send a reject message" = "Avvisa meddelandet";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Meddelande";
+
 "Send a vacation message" = "Skicka ett frånvaromeddelande";
 "Stop processing filter rules" = "Avsluta körning av filterreglerna";
 "is under" = "är under";
@@ -233,17 +388,17 @@ Servernamn:";
 "does not match" = "matchar inte";
 "matches regex" = "matchar regulärt uttryck";
 "does not match regex" = "matchar inte regulärt uttryck";
+/* Placeholder for the value field of a condition */
+"Value" = "Värde";
 "Seen" = "Visad";
 "Deleted" = "Borttagen";
 "Answered" = "Besvarad";
 "Flagged" = "Märkt";
 "Junk" = "Skräp";
 "Not Junk" = "Inte skräp";
-"Label 1" = "Etikett 1";
-"Label 2" = "Etikett 2";
-"Label 3" = "Etikett 3";
-"Label 4" = "Etikett 4";
-"Label 5" = "Etikett 5";
+
+/* Password policy */
+"The password was changed successfully." = "Lösenordet har ändrats.";
 "Password must not be empty." = "Le mot de passe ne doit pas être vide.";
 "The passwords do not match. Please try again." = "Les mots de passe ne sont pas identiques. Essayez de nouveau.";
 "Password change failed" = "Échec au changement";
@@ -256,3 +411,34 @@ Servernamn:";
 "Unhandled error response" = "Erreur inconnue";
 "Password change is not supported." = "Changement de mot de passe non-supporté.";
 "Unhandled HTTP error code: %{0}" = "Code HTTP non-géré: %{0}";
+"Cancel" = "Avbryt";
+"Invitations" = "Inbjudningar";
+"Edit Filter" = "Ändra filter";
+"Delete Filter" = "Ta bort filter";
+"Create Filter" = "Skapa filter";
+"Delete Label" = "Ta bort etikett";
+"Create Label" = "Skapa etikett";
+"Accounts" = "Konton";
+"Edit Account" = "Ändra konton";
+"Delete Account" = "Ta bort konto";
+"Create Account" = "Skapa konto";
+"Account Name" = "Kontonamn";
+"SSL" = "SSL";
+"TLS" = "TLS";
+
+/* Avatars */
+"Use Gravatar" = "Använd Gravatar";
+"Alternate Avatar" = "Alternativ avatar";
+"none" =  "Ingen";
+"identicon" = "Identicon";
+"monsterid" = "Monter";
+"wavatar" = "Wavatar";
+"retro" = "Retro";
+
+/* Animation Level */
+"Animation Level" = "Animeringsnivå";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Normal";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Begränsad";
+"animation_NONE" = "Ingen";

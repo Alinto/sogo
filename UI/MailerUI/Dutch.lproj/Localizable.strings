@@ -43,7 +43,7 @@
 "Search multiple mailboxes" = "Zoek in meerdere postvakken";
 
 /* Main Frame  */
-"Home"                 = "Start"; 
+"Home"                 = "Start";
 "Calendar"             = "Agenda";
 "Addressbook"          = "Adresboek";
 "Mail"                 = "E-mail";
@@ -69,6 +69,8 @@
 
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Geen postvak geselecteerd";
+
+"An error occured while communicating with the mail server" = "Er is een fout opgetreden tijdens de communicatie met de mailserver";
 
 /* Mailbox actions */
 /* Compact Folder success message */
@@ -122,6 +124,9 @@
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "De afzender van dit bericht heeft gevraagd om een leesbevestiging. Wilt u een leesbevestiging sturen?";
 "Return Receipt (displayed) - %@"= "Ontvangstbevestigig (vertoond) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Dit is een Ontvangstbevestiging voor de e-mail die u hebt verzonden naar %@.\n\nOpmerking: Deze ontvangstbevestiging bevestigt alleen dat het bericht is weergegeven op de computer van de ontvanger. Er is geen garantie dat de ontvanger het gelezen of begrepen heeft.";
+"Security" = "Beveiliging";
+"Sign" = "Onderteken";
+"Encrypt" = "Versleutelen";
 "Priority" = "Prioriteit";
 "highest" = "Hoogste";
 "high" = "Hoog";
@@ -174,6 +179,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Aan adresboek toevoegen";
+"Successfully created card" = "Kaart is succesvol gemaakt";
 "Compose Mail To" = "Bericht opstellen";
 "Create Filter From Message..." = "Filter maken op basis van bericht...";
 
@@ -243,6 +249,24 @@
 
 /* Number of selected messages in list */
 "selected" = "geselecteerd";
+
+/* Encrypted message notification */
+"This message is encrypted" = "Dit bericht is versleuteld";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Dit bericht kan niet worden gedecodeerd. Zorg ervoor dat u uw S/MIME-certificaat hebt geüpload vanuit de mail instellingen module.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Kon de handtekening van het bericht niet verifiëren";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "Het bericht is gewijzigd";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Fout bij het lezen van het certificaat. Installeer een nieuw certificaat.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "Geen certificaat gekoppeld aan account.";
 
 "This Folder" = "Deze map";
 
@@ -319,6 +343,7 @@
 = "De berichten konden niet naar de vuilnisbak worden verplaatst. Wilt u ze direct verwijderen?";
 
 /* Message editing */
+"Please specify a subject." = "Geef een onderwerp op.";
 "error_missingsubject" = "Dit bericht heeft geen onderwerp. Weet u zeker dat u het wilt verzenden?";
 "error_missingrecipients" = "U heeft geen ontvanger opgegeven!";
 "Send Anyway" = "Toch verzenden";
@@ -378,6 +403,15 @@
 "Your email has been saved" = "Uw email is opgeslagen";
 "Your email has been sent" = "Uw email is verzonden";
 "Folder compacted" = "Map gecomprimeerd";
+
+/* Advanced search */
+"Enter Subject" = "Voer in Onderwerp";
+"Enter From" = "Voer in Afzender";
+"Enter To" = "Voer in Aan";
+"Enter Cc" = "Voer in Cc";
+"Enter Body" = "Voer in Inhoud";
+"match" = "is gelijk aan";
+"does not match" = "is niet gelijk aan";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Zoekbereik";

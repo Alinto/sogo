@@ -43,7 +43,7 @@
 "Search multiple mailboxes" = "Rechercher dans plusieurs boîtes";
 
 /* Main Frame  */
-"Home"                 = "Accueil"; 
+"Home"                 = "Accueil";
 "Calendar"             = "Agenda";
 "Addressbook"          = "Adresses";
 "Mail"                 = "Courrier";
@@ -104,7 +104,7 @@
 "To"            = "Destinataire";
 "Cc"            = "Copie à";
 "Bcc"           = "Copie cachée à";
-"Reply-To"	    = "Répondre à";
+"Reply-To"	= "Répondre à";
 "Add address"   = "Ajouter Adresse";
 "Body"          = "Contenu";
 "Open" = "Ouvrir";
@@ -121,9 +121,13 @@
 "Edit Draft..." = "Modifier le brouillon...";
 "Load Images" = "Télécharger les images";
 "Return Receipt" = "Accusé de réception";
+"Choose which identity to send this message from" = "Choisir l'identité avec laquelle le message sera envoyé";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "L'expéditeur demande d'être avisé car vous avez lu son message. Souhaitez-vous le notifier?";
 "Return Receipt (displayed) - %@"= "Accusé de réception (affiché) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Ceci est un accusé de réception pour le courrier électronique envoyé à %@.\n\nNote : Cet accusé de réception indique seulement que le message a été affiché sur l'ordinateur du destinataire. Il n'y a aucune garantie que le destinataire ait lu ou compris le contenu du message.";
+"Security" = "Sécurité";
+"Sign" = "Signer";
+"Encrypt" = "Chiffrer";
 "Priority" = "Priorité";
 "highest" = "Maximale";
 "high" = "Haute";
@@ -165,7 +169,7 @@
 /* Tree */
 "SentFolderName"   = "Envoyés";
 "TrashFolderName"  = "Corbeille";
-"InboxFolderName"  = "Courrier entrant";
+"InboxFolderName"  = "Réception";
 "DraftsFolderName" = "Brouillons";
 "JunkFolderName" = "Pourriel";
 "SieveFolderName"  = "Filtres";
@@ -176,6 +180,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Ajouter au carnet d'adresses";
+"Successfully created card" = "Carte créé avec succès";
 "Compose Mail To" = "Écrire à";
 "Create Filter From Message..." = "Créer un filtre à partir du message...";
 
@@ -245,6 +250,33 @@
 
 /* Number of selected messages in list */
 "selected" = "sélectionné(s)";
+
+/* Encrypted message notification */
+"This message is encrypted" = "Ce message est crypté";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Ce message ne peut être chiffré. Assurez-vous d'avoir ajouté votre certificat S/MIME dans le module Courrier des préférences.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Impossible de vérifier la signature du message";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "Ce message a été modifié";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Impossible de lire le certificat. Veuillez le réinstaller.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "Aucun certificat n'est associé à ce compte.";
+
+/* Invalid message signature */
+"Digital signature is not valid" = "Signature digitale non-valide";
+
+/* Valid message signature */
+"Message is signed" = "Ce message est signé";
+
+/* Unknown error while validating message signature */
+"No error information available" = "Aucune information d'erreur disponible";
 
 "This Folder" = "Ce dossier-ci";
 
@@ -321,6 +353,7 @@
 = "Les messages ne peuvent être déplacés dans la corbeille. Voulez-vous les supprimer immédiatement?";
 
 /* Message editing */
+"Please specify a subject." = "Veuillez définir un sujet.";
 "error_missingsubject" = "Le message n'a pas de sujet. Êtes-vous certain de vouloir l'envoyer?";
 "error_missingrecipients" = "Veuillez spécifier au moins un destinataire.";
 "Send Anyway" = "Envoyer sans sujet";
@@ -374,12 +407,21 @@
 "Tried to send too many mails. Please wait." = "Vous avez envoyé trop de courriels. Veillez patienter.";
 "View Mail" = "Voir le courriel";
 "This message contains external images." = "Ce message contient des images externes.";
-"Expanded" = "Étendre";
+"Expanded" = "Ouvert";
 "Add a Criteria" = "Ajouter un critère";
 "More search options" = "Options de recherches avancées";
 "Your email has been saved" = "Votre courriel a été sauvegardé";
 "Your email has been sent" = "Votre courriel a été envoyé";
 "Folder compacted" = "Dossier compressé";
+
+/* Advanced search */
+"Enter Subject" = "Sujet";
+"Enter From" = "Expéditeur";
+"Enter To" = "Destinataire";
+"Enter Cc" = "Cc";
+"Enter Body" = "Contenu";
+"match" = "correspond à";
+"does not match" = "ne correspond pas à";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Étendue de la recherche";

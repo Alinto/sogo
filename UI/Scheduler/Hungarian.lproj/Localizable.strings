@@ -64,6 +64,12 @@
 "Compose E-Mail to All Attendees" = "Üzenet küldése az összes résztvevőnek";
 "Compose E-Mail to Undecided Attendees" = "Üzenet küldése az bizonytalan résztvevőnek";
 
+/* Relative dates */
+"Yesterday" = "Tegnap";
+"Today" = "Ma";
+"Tomorrow" = "Holnap";
+"Last %@" = "Utolsó 1%@";
+
 /* Folders */
 "Personal calendar" = "Személyes naptár";
 
@@ -101,6 +107,7 @@
 "Name of the Calendar" = "Naptár neve";
 "new" = "Új";
 "Print view" = "Nyomtatási nézet";
+"Print" = "Nyomtatás";
 "edit" = "Szerkesztés";
 "delete" = "Törlés";
 "proposal" = "Javaslat";
@@ -141,6 +148,7 @@
 "Display events and tasks colors" = "Események és feladatok színes megjelenítése";
 "Borders" = "Keretek";
 "Backgrounds" = "Hátterek";
+"Page Format" = "Oldal formátum";
 
 /* Appointments */
 "Appointment viewer" = "Találkozó betekintő";
@@ -212,6 +220,7 @@
 "view_next14" = "Következő 14 nap";
 "view_next31" = "Következő 31 nap";
 "view_thismonth" = "Aktuális hónap";
+"view_thisyear" = "Aktuális év";
 "view_future" = "Összes jövőbeni esemény";
 "view_selectedday" = "Kijelölt nap";
 "view_not_started" = "Nem megkezdett feladatok";
@@ -333,6 +342,7 @@
 "repeat_YEARLY" = "Évente";
 "repeat_CUSTOM" = "Egyéni...";
 "reminder_NONE" = "Nincs emlékeztető";
+"reminder_0" = "Az esemény időpontjában";
 "reminder_5_MINUTES_BEFORE" = "5 perccel előtte";
 "reminder_10_MINUTES_BEFORE" = "10 perccel előtte";
 "reminder_15_MINUTES_BEFORE" = "15 perccel előtte";
@@ -429,16 +439,48 @@ validate_untilbeforeend    = "Az ismétlődésnek az első előfordulás után k
 = "Nem törölhet, valamint nem iratkozhat le egy személyes naptárról.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Biztosan törli ezt a naptárat: \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Biztosan törli a kiválasztott komponenseket?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Szerepkör";
+
+/* Participant role: participation is required */
 "Participant" = "Kötelező résztvevő";
+
+/* Participant role: participation is required */
+"req-participant" = "Résztvevő";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Nem kötelező résztvevő";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Nem kötelező résztvevő";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Nem résztvevő";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Nem résztvevő";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "Szék";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Elnők";
+
+/* Participant status: needs action */
 "Needs action" = "Foglalkozni kell vele";
+
+/* Participant status: event accepted */
 "Accepted" = "Elfogadott";
+
+/* Participant status: event declined */
 "Declined" = "Visszautasított";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Bizonytalan";
+
 "Free" = "Szabad";
 "Busy" = "Foglalt";
 "Maybe busy" = "Bizonytalan";
@@ -498,7 +540,7 @@ vtodo_class2 = "(Bizalmas feladat)";
 "Export" = "Exportálás";
 
 
-/* Show only the calendar for which the menu is displayed */ 
+/* Show only the calendar for which the menu is displayed */
 "Show Only This Calendar" = "Csak ennek a naptárnak a megjelenítése";
 
 
@@ -534,6 +576,8 @@ vtodo_class2 = "(Bizalmas feladat)";
 "Delete Event" = "Esemény törlése";
 "Copy event to my calendar" = "Esemény másolása a naptáromba";
 "View Raw Source" = "Forrás megtekintése";
+"Move To" = "Áthelyezés";
+"Copy To" = "Másolás";
 "Subscriptions" = "Feliratkozások";
 "Subscribe to a shared folder" = "Feliratkozás megosztott mappára";
 "Subscribe to a web calendar..." = "Internetes naptár becsatolása";
@@ -565,6 +609,7 @@ vtodo_class2 = "(Bizalmas feladat)";
 "More options" = "További tulajdonságok";
 "Delete This Occurrence" = "Törli ezt az előfordulást";
 "Delete All Occurrences" = "Törli az összes előfordulást";
+"Add Recurrence Date" = "Ismétlődés hozzáadása";
 "Add From" = "Feladó hozzáadása";
 "Add Due" = "Lejárat hozzáadása";
 "Import" = "Importálás";

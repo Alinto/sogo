@@ -1,6 +1,6 @@
 /* NGVCard+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2015 Inverse inc.
+ * Copyright (C) 2009-2021 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
  */
 
 
+#import <Foundation/NSValue.h>
 #import <Foundation/NSTimeZone.h>
 
 #import <NGExtensions/NSNull+misc.h>
@@ -917,6 +918,11 @@ convention:
   else
     [fields setObject: [NSNull null] forKey: @"c_categories"];
   [fields setObject: @"vcard" forKey: @"c_component"];
+
+  // S/MIME certificate
+  element = [self uniqueChildWithTag: @"key"];
+  [fields setObject: [NSNumber numberWithInt: (element && ![element isVoid])]
+             forKey: @"c_hascertificate"];
 
   return fields;
 }

@@ -43,7 +43,7 @@
 "Search multiple mailboxes" = "Buscar en varios buzones";
 
 /* Main Frame  */
-"Home"                 = "Inicio"; 
+"Home"                 = "Inicio";
 "Calendar"             = "Calendario";
 "Addressbook"          = "Libreta de direcciones";
 "Mail"                 = "Correo";
@@ -124,6 +124,9 @@
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "El remitente de este mensaje ha pedido ser avisado cuando el mensaje ha sido leído. ¿Quiere notificar al remitente?";
 "Return Receipt (displayed) - %@"= "Acuse de Recibo (mostrado) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Este es un Acuse de Recibo del correo enviado a %@.\n\nNota: Este acuse de recibo sólo acredita que el mensaje se mostró en el ordenador del destinatario. No hay garantía de que el destinatario haya leído o comprendido el contenido del mensaje.";
+"Security" = "Seguridad";
+"Sign" = "Firmar";
+"Encrypt" = "Cifrar";
 "Priority" = "Prioridad";
 "highest" = "Muy alta";
 "high" = "Alta";
@@ -246,6 +249,24 @@
 /* Number of selected messages in list */
 "selected" = "seleccionado";
 
+/* Encrypted message notification */
+"This message is encrypted" = "Este mensaje está encriptado";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Este mensaje no se puede descifrar. Por favor asegúrese de que ha cargado el certificado S/MIME en el módulo de las opciones de correo.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "No se puede verificar la firma";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "EL mensaje ha sido modificado";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Error en la lectura del certificado. Por favor, instale un nuevo certificado.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "El certificado no está asociado a ninguna cuenta.";
+
 "This Folder" = "Esta carpeta";
 
 /* Label popup menu */
@@ -321,6 +342,7 @@
 = "Los mensajes no pueden ser movidos a la papelera. ¿Quiere borrarlos inmediatamente?";
 
 /* Message editing */
+"Please specify a subject." = "Por favor especifica un asunto.";
 "error_missingsubject" = "No ha indicado el asunto";
 "error_missingrecipients" = "No ha indicado el/los destinatario(s)";
 "Send Anyway" = "Enviar de toda forma";
@@ -363,8 +385,8 @@
 "Set as Junk" = "Marcar como Spam";
 
 "Sort" = "Ordenar";
-"Order Received" = "Orden recivida";
-"Descending Order" = "Orden desciendente";
+"Order Received" = "Orden recibida";
+"Descending Order" = "Orden descendiente";
 "Back" = "Atras";
 "Copy messages" = "Copiar mensajes";
 "More messages options" = "Mas opciones de mensajes";

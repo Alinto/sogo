@@ -7,6 +7,7 @@ vevent_class2 = "(Skrytá událost)";
 vtodo_class0 = "(Veřejný úkol)";
 vtodo_class1 = "(Soukromý úkol)";
 vtodo_class2 = "(Skrytý úkol)";
+
 /* Receipts */
 "The event \"%{Summary}\" was created" = "Událost \"%{Summary}\" byla vytvořena";
 "The event \"%{Summary}\" was deleted" = "Událost \"%{Summary}\" byla smazána";
@@ -14,6 +15,7 @@ vtodo_class2 = "(Skrytý úkol)";
 "The following attendees(s) were notified" = "Následující účastníci byli upozorněni";
 "The following attendees(s) were added" = "Následující účastníci byli přidáni";
 "The following attendees(s) were removed" = "Následující účastníci byli odebráni";
+
 /* IMIP messages */
 "calendar_label" = "Kalendář";
 "startDate_label" = "Začátek";
@@ -26,17 +28,20 @@ vtodo_class2 = "(Skrytý úkol)";
 "comment_label" = "Komentář:";
 "organizer_label" = "Organizátor";
 "attendee_label" = "Účastník";
+
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Pozvání na událost: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(poslal/a %{SentBy}) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}Vás pozval/a na %{Summary}.\n\nZačátek: %{StartDate}\nKonec: %{EndDate}\nPopis: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}Vás pozval/a na %{Summary}.\n\nZačátek: %{StartDate} v %{StartTime}\nKonec: %{EndDate} v %{EndTime}\nPopis: %{Description}";
+
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Zrušení události: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}zrušil/a událost: %{Summary}.\n\nZačátek: %{StartDate}\nKonec: %{EndDate}\nPopis: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}zrušil/a událost: %{Summary}.\n\nZačátek: %{StartDate} v %{StartTime}\nKonec: %{EndDate} v %{EndTime}\nPopis: %{Description}";
+
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "Schůzka \"%{Summary}\" na %{OldStartDate} byla změněna";
@@ -46,6 +51,7 @@ vtodo_class2 = "(Skrytý úkol)";
 = "Následující parametry byly ve schůzce \"%{Summary}\" změněny:";
 "Please accept or decline those changes."
 = "Prosím přijměte nebo odmítněte tyto změny.";
+
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Přijaté pozvání: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Odmítnuté pozvání: \"%{Summary}\"";
@@ -59,6 +65,15 @@ vtodo_class2 = "(Skrytý úkol)";
 = "%{Attendee} %{SentByText}delegoval/a Vaše pozvání na %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}dosud o Vašem pozvání k události nerozhodl/a.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Připomenutí: \"%{Summary}\" - %{StartDate}";
+
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Nedostupný zdroj: \"%{Cn} %{SystemEmail}\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Byl dosažen maximální počet současných rezervací\n(%{NumberOfSimultaneousBookings})  pro zdroj \"%{Cn} %{SystemEmail}\". Konfliktní událost je \"%{EventTitle}\" a začíná %{StartDate}.";
+
+/* Participation role */
+"Your participation is required to this event" = "Vaše účast je vyžadována";
+"Your participation is optional to this event" = "Vaše účast je dobrovolná";
+"Your participation is not required to this event" = "Vaše účast není vyžadována";

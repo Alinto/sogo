@@ -71,21 +71,25 @@ case "$1" in
 	then
 	    log_progress_msg "already running"
         fi
+	chown root:root $PIDFILE
 	log_end_msg 0
 	;;
   stop)
 	log_daemon_msg "Stopping $DESC" "$NAME"
-	start-stop-daemon --stop --pidfile $PIDFILE --retry=TERM/20/KILL/5 --oknodo
+	start-stop-daemon -c $USER --stop --pidfile $PIDFILE --retry=TERM/20/KILL/5 --oknodo
+	rm -f $PIDFILE
 	log_end_msg 0
 	;;
   restart|force-reload)
 	log_daemon_msg "Restarting $DESC" "$NAME"
-	start-stop-daemon --stop --pidfile $PIDFILE --retry=TERM/20/KILL/5 --oknodo
+	start-stop-daemon -c $USER --stop --pidfile $PIDFILE --retry=TERM/20/KILL/5 --oknodo
+	rm -f $PIDFILE
         # Ensure directory's existence and permissions
         install -o $USER -g adm -m 755 -d /var/run/$NAME
         install -o $USER -g adm -m 750 -d /var/spool/$NAME
         install -o $USER -g adm -m 750 -d /var/log/$NAME
 	start-stop-daemon -c $USER --quiet --start --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS 
+	chown root:root $PIDFILE
 	log_end_msg 0
 	;;
   status)

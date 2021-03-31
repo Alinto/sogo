@@ -16,6 +16,7 @@
 "Authentication Failed" = "Autentifikācija neizdevās";
 "Wrong username or password." = "Nepareizs lietotājvārds vai parole.";
 "Retry" = "Mēģināt vēlreiz";
+"Login failed due to unhandled error case:" = "Pieteikšanās neizdevās nezināmas kļūdas dēļ:";
 "cookiesNotEnabled" = "Jūs nevarat pieteikties, jo jūsu pārlūkprogrammas sīkfaili ir atspējoti. Lūdzu, iespējojiet sīkfailus savā pārlūkprogrammas iestatījumos un mēģiniet vēlreiz.";
 "browserNotCompatible" = "Mēs esam noteikuši, ka jūsu pārlūkprogrammas versija pašlaik netiek atbalstīta šajā vietnē. Mūsu ieteikums ir izmantot Firefox. Noklikšķiniet uz tālāk norādītās saites, lai lejupielādētu visjaunāko šīs pārlūkprogrammas versiju.";
 "alternativeBrowsers" = "Alternatīvi var izmantot arī šādas saderīgas pārlūkprogrammas";
@@ -27,7 +28,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -39,7 +40,9 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
+"Japanese" = "日本語";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
@@ -48,8 +51,10 @@
 "Polish" = "Polski";
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";

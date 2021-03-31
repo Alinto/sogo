@@ -45,8 +45,14 @@
 "Days between responses" = "Dienas starp atbildēm";
 "Do not send responses to mailing lists" = "Nesūtīt automātiskās atbildes adresātu sarakstam";
 "Enable auto reply on" = "Ieslēgt automātisko atbildi";
+"First day of vacation" = "Pirmā atvaļinājuma diena";
 "Disable auto reply on" = "Izslēgt automātisko atbildi";
+"Last day of vacation" = "Pēdējā atvaļinājuma diena";
+"Enter date" = "Ievadiet datumu";
 "Always send vacation message response" = "Vienmēr sūtīt atvaļinājuma atbildes ziņojumu";
+"The vacation message is sent prior to apply your filters." = "Atvaļinājuma ziņojums tiek nosūtīts pirms filtru lietošanas.";
+"Discard incoming mails during vacation" = "Atmest ienākošo pastu atvaļinājuma laikā";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Atvaļinājuma laika ziņojums tiek nosūtīts, bet ienākošās ziņas netiek piegādātas uz iesūtni.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Lūdzu, norādiet ziņojuma adresātu un e-pasta adreses, kuras vēlaties iespējot automātisko atbildi.";
 "Your vacation message must not end with a single dot on a line." = "Jūsu atvaļinājums ziņa nedrīkst beigties ar vienu punktiņu līnijā.";
@@ -60,6 +66,7 @@
 = "Lūdzu, norādiet adresi, uz kuru vēlaties pārsūtīt ziņojumu.";
 "You are not allowed to forward your messages to an external email address." = "Jums nav atļauts pārsūtīt ziņojumus uz ārēju e-pasta adresi.";
 "You are not allowed to forward your messages to an internal email address." = "Jums nav atļauts nosūtīt savus ziņojumus iekšējai e-pasta adresei.";
+"You are not allowed to forward your messages to this domain:" = "Jums nav atļauts pārsūtīt ziņojumus uz šo domēnu:";
 
 /* d & t */
 "Current Time Zone" = "Pašreizējā laika josla";
@@ -84,7 +91,9 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
 
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
@@ -123,6 +132,8 @@
 "Prevent from being invited to appointments" = "Izvairītos no aicinājuma uz tikšanos";
 "White list for appointment invitations" = "Tikšanās uzaicinājumu baltais saraksts";
 "Contacts Names" = "Kontaktu nosaukumi";
+"Duplicate name" = "Nosaukuma dublikāts";
+"Calendar categories must have unique names." = "Kalendāra kategorijām ir jābūt ar unikāliem nosaukumiem.";
 
 /* Default Calendar */
 "Default calendar" = "Noklusējuma kalendārs";
@@ -146,10 +157,18 @@
 /* Mailer */
 "Labels" = "Etiķetes";
 "Label" = "Etiķete";
+"IMAP Label" = "IMAP etiķete";
+"Invalid label" = "Nelietojiet atstarpi, ne () {}% * \"\\";
+"Duplicate label" = "Etiķetes dublikāts";
+"IMAP labels must have unique names." = "IMAP etiķetēm ir jābūt unikāliem nosaukumiem.";
 "New label" = "Jauna etiķete";
 "Show subscribed mailboxes only" = "Rādīt tikai abonētajām pastkastēm";
 "Synchronize only default mail folders (EAS)" = "Sinhronizēt tikai noklusējuma pasta mapes (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Iegūt visu pastkastu neredzamo ziņojumu skaitu";
 "Sort messages by threads" = "Kārtot ziņojumus pēc pavedieniem";
+"Always open mail composer" = "Vienmēr atvērt e-pasta sastādītāju";
+"Inside current window" = "Pašreizējā logā";
+"In a popup window" = "Uznirstošajā logā";
 "When sending mail, add unknown recipients to my" = "Sūtot e-pastu, pievienojiet nezināmos adresātus manai";
 "Address Book" = "Adrešu grāmata";
 "Forward messages" = "Pārsūtīt ziņojumus";
@@ -177,8 +196,11 @@
 /* Contact */
 "Personal Address Book" = "Personiskā adrešu grāmata";
 "Collected Address Book" = "Savāktā adrešu grāmata";
+"Contact categories must have unique names." = "Kontaktpersonu kategorijām jābūt unikāliem nosaukumiem.";
 
 /* IMAP Accounts */
+"Settings" = "Iestatījumi";
+"Security" = "Drošība";
 "Mail Account" = "E-pasta konts";
 "New Mail Account" = "Jauns e-pasta konts";
 "Server Name" = "Servera nosaukums";
@@ -195,6 +217,17 @@
 "Please specify a valid sender address." = "Lūdzu, norādiet derīgu sūtītāja adresi.";
 "Please specify a valid reply-to address." = "Lūdzu, norādiet derīgu atbildēt-uz adresi.";
 "Specify a hostname other than the local host" = "Jānorāda resursdatora nosaukums, izņemot vietējo resursdatoru";
+
+"No certificate installed" = "Nav instalēts neviens sertifikāts";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "SSL sertifikātam jāizmanto PKCS # 12 (PFX) formāts.";
+"Uninstall" = "Atinstalēt";
+"Choose PKCS12 Certificate .." = "Izvēlieties PKCS12 sertifikātu.";
+"Certificate Import Password" = "Sertifikāta importēšanas parole";
+"Upload" = "Augšupielādēt";
+"When composing a message" = "Veidojot ziņojumu";
+"Digitally sign the message by default" = "Ziņojuma parakstīšana ar ciparparakstu pēc noklusējuma";
+"Always try to encrypt the message" = "Vienmēr mēģiniet šifrēt ziņojumu";
+"An error occurred while importing the certificate. Verify your password." = "Importējot sertifikātu, radās kļūda. Pārbaudiet paroli.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Papildu parametri";
@@ -215,12 +248,13 @@
 "Calendar Category" = "Kalendāra kategorija";
 "Add Calendar Category" = "Pievienot kalendāra kategorijai";
 "New category" = "Jauna kategorija";
+"Reset to defaults" = "Atiestatīt noklusējumus";
 "Remove Calendar Category" = "Noņemiet kalendāra kategorijas";
 "Contact Category" = "Kontaktu kategorijas";
 "Add Contact Category" = "Pievienot kontaktpersonu kategorijas";
 "Remove Contact Category" = "Noņemt kontaktpersonu kategorijas";
 "category_none" = "Neviens";
-"calendar_category_labels" = "Gadadienas, Dzimšanas dienas, Bizness, Zvani, Klienti, Konkurence,  Izlase, Sekošana, Dāvanas, Brīvdienas, Idejas, Sapulces, Jautājumi, Dažādi, Personīgi, Projekti, Valsts svētki, Statusi, Piegādātāji, Ceļojumi, Atvaļinājumi";
+"calendar_category_labels" = "Gadadienas,Dzimšanas dienas,Bizness,Zvani,Klienti,Konkurence,Klients,Izlase,Sekošana,Dāvanas,Brīvdienas,Idejas,Sapulces,Jautājumi,Dažādi,Personīgi,Projekti,Valsts svētki,Statusi,Piegādātāji,Ceļojumi,Atvaļinājumi";
 
 /* Default module */
 "Calendar" = "Kalendārs";
@@ -238,7 +272,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -250,7 +284,9 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
+"Japanese" = "日本語";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
@@ -259,8 +295,10 @@
 "Polish" = "Polski";
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";

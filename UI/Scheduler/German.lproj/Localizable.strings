@@ -107,6 +107,7 @@
 "Name of the Calendar" = "Name des Kalenders";
 "new" = "Neu";
 "Print view" = "Ansicht drucken";
+"Print" = "Drucken";
 "edit" = "Bearbeiten";
 "delete" = "Löschen";
 "proposal" = "Vorschlag";
@@ -147,6 +148,7 @@
 "Display events and tasks colors" = "Zeige die Termin- und Aufgabenfarben an";
 "Borders" = "Rahmen";
 "Backgrounds" = "Hintergründe";
+"Page Format" = "Seitenformat";
 
 /* Appointments */
 "Appointment viewer" = "Termin Anzeige";
@@ -218,6 +220,7 @@
 "view_next14" = "Termine in den nächsten 14 Tagen";
 "view_next31" = "Termine in den nächsten 31 Tagen";
 "view_thismonth" = "Termine in diesem Kalendermonat";
+"view_thisyear" = "Dieses Jahr";
 "view_future" = "Alle zukünftigen Termine";
 "view_selectedday" = "Momentan gewählter Tag";
 "view_not_started" = "Nicht begonnene Aufgaben";
@@ -339,6 +342,7 @@
 "repeat_YEARLY" = "jährlich";
 "repeat_CUSTOM" = "benutzerdefiniert...";
 "reminder_NONE" = "Keine Erinnerung";
+"reminder_0" = "Zum Zeitpunkt des Termins";
 "reminder_5_MINUTES_BEFORE" = "5 Minuten vorher";
 "reminder_10_MINUTES_BEFORE" = "10 Minuten vorher";
 "reminder_15_MINUTES_BEFORE" = "15 Minuten vorher";
@@ -435,16 +439,48 @@ validate_untilbeforeend    = "Die Wiederholung muss nach dem ersten Auftreten en
 = "Der persönliche Kalender kann weder gelöscht noch abbestellt werden.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Wollen Sie diesen Kalender wirklich löschen \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Wollen Sie wirklich die ausgewählten Komponenten löschen?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Rolle";
+
+/* Participant role: participation is required */
 "Participant" = "Teilnehmer";
+
+/* Participant role: participation is required */
+"req-participant" = "Teilnehmer";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Optionaler Teilnehmer";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Optionaler Teilnehmer";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Kein Teilnehmer";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Kein Teilnehmer";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "Vorsitz";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Vorsitz";
+
+/* Participant status: needs action */
 "Needs action" = "Benötigt Eingriff";
+
+/* Participant status: event accepted */
 "Accepted" = "Akzeptiert";
+
+/* Participant status: event declined */
 "Declined" = "Abgelehnt";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Vorläufig";
+
 "Free" = "Verfügbar";
 "Busy" = "Beschäftigt";
 "Maybe busy" = "Vielleicht beschäftigt";
@@ -540,6 +576,8 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "Delete Event" = "Termin löschen";
 "Copy event to my calendar" = "Kopiere diesen Termin in meinen Kalender";
 "View Raw Source" = "Rohen Quelltext anzeigen";
+"Move To" = "Verschieben in";
+"Copy To" = "Kopieren in";
 "Subscriptions" = "Abonnements";
 "Subscribe to a shared folder" = "Einen geteilten Ordner abonnieren";
 "Subscribe to a web calendar..." = "Einen Webkalender abonnieren...";
@@ -571,6 +609,7 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "More options" = "Weiter Optionen";
 "Delete This Occurrence" = "Diese Instanz löschen";
 "Delete All Occurrences" = "Alle Instanzen löschen";
+"Add Recurrence Date" = "Wiederholungsdatum hinzufügen";
 "Add From" = "Von hinzufügen";
 "Add Due" = "Fälligkeit hinzufügen";
 "Import" = "Importieren";
@@ -582,7 +621,7 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "Successfully subscribed to calendar" = "Der Kalender wurde erfolgreich abonniert";
 
 /* Aria label for color chip button to select and unselect an event or task */
-"Toggle item" = "Punkt umschalten";
+"Toggle item" = "Objekt umschalten";
 
 /* Aria label for scope of search on events or tasks */
 "Search scope" = "Suchbereich";

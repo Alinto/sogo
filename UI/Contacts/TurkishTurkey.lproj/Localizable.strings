@@ -45,6 +45,90 @@
 "Carbon Copy (Cc)" = "Karbon Kopya (Cc)";
 "Blind Carbon Copy (Bcc)" = "Gizli Karbon Kopya (Bcc)";
 
+/* Search scope: name fields */
+"name" = "İsim";
+
+/* Search scope: name fields */
+"c_cn" = "İsim";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "İkinci E-posta";
+
+/* Search scope: screen name field */
+"nsaimid" = "Görünen İsim";
+
+/* Search scope: mail fields */
+"mail" = "E-posta";
+
+/* Search scope: mail fields */
+"c_mail" = "E-posta";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Telefon";
+
+/* Search scope: telephone field */
+"homephone" = "Telefon";
+
+/* Search scope: mobile field */
+"mobile" = "Cep";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Faks";
+
+/* Search scope: pager field */
+"pager" = "Çağrı cihazı";
+
+/* Search scope: categories field */
+"c_categories" = "Kategoriler";
+
+/* Search scope: categories field */
+"vcardcategories" = "Kategoriler";
+
+/* Search scope: title field */
+"title" = "Ünvan";
+
+/* Search scope: organization field */
+"c_o" = "Organizasyon";
+
+/* Search scope: organization field */
+"o" = "Organizasyon";
+
+/* Search scope: department field */
+"ou" = "Şube";
+
+/* Search scope: city field */
+"l" = "Şehir";
+
+/* Search scope: country field */
+"c" = "Ülke";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Ev Adresi";
+
+/* Search scope: state/province field */
+"st" = "Eyalet / İl";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Yerleşik Olduğu Eyalet / İl";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "ZIP/Posta Kodu";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "ZIP/Posta Kodu";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "Yerleşik Olduğu Ülke";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Ana Sayfa";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Web Sitesi";
+
+/* Search scope: note field */
+"description" = "Açıklama";
+
 /* Subheader of empty addressbook */
 "No contact" = "Adres defteri boş";
 

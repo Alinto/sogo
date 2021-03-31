@@ -16,10 +16,17 @@
 "Authentication Failed" = "Ověření selhalo";
 "Wrong username or password." = "Špatné uživatelské jméno nebo heslo.";
 "Retry" = "Opakovat";
+"Login failed due to unhandled error case:" = "Přihlášení selhalo z důvodu chyby: ";
 "cookiesNotEnabled" = "Nemůžete se přihlásit, protože nemáte povoleny cookies ve Vašem prohlížeči. Povolte prosím cookies v nastavení Vašeho prohlížeče a akci opakujte.";
 "browserNotCompatible" = "Tento systém nepodporuje současnou verzi Vašeho prohlížeče. Doporučujeme použít Firefox. Klikněte na níže uvedený odkaz pro stažení aktuální verze tohoto prohlížeče.";
 "alternativeBrowsers" = "Můžete však použít i následující kompatibilní prohlížeče";
 "alternativeBrowserSafari" = "Můžete však použít i Safari.";
+
+/* 2FA */
+"Verification Code" = "Ověřovací kód";
+"Enter the 6-digit verification code from your Google Authenticator application." = "Zadejte 6-ti místný číselný ověřovací kód z Vaší aplikace Google Authenticator.";
+"You provided an invalid Google Authenticator key." = "Zadali jste neplatný ověřovací kód z Google Authenticator.";
+
 "Download" = "Stáhnout";
 "Language" = "Jazyk";
 "choose" = "Vybrat ...";
@@ -27,7 +34,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -39,7 +46,9 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
+"Japanese" = "日本語";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
@@ -48,8 +57,10 @@
 "Polish" = "Polski";
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";

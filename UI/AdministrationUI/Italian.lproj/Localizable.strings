@@ -9,3 +9,18 @@
 "ACLs_title" = "Amministrazione ACL risorse utenti";
 /* Modules descriptions */
 "ACLs_description" = "<p>Il modulo di amministrazione delle ACL permette di cambiare le ACL di tutti i Calendari e le Rubriche degli utenti.</p><p>Per modificare le ACL relative ad una risorsa di un utente, scrivere il nome del utente nel campo di ricerca e fare doppio click sulla risorsa desiderata.</p>";
+"Name or Email" = "Nome o indirizzo Email";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Inizia una ricerca per modificare i permessi";
+/* Rights module: Empty search result */
+"No matching user" = "Nessun utente corrispondente";
+/* Rights module: no selection */
+"No resource selected" = "Nessuna risorsa selezionata";
+"Add User" = "Aggiungi utente";
+"Subscribe User" = "Sottoscrivi utente";
+"Rights" = "Permessi";
+"Search Users" = "Cerca utenti";
+"users found" = "utenti trovati";
+"No resource" = "Nessuna risorsa";
+"Any Authenticated User" = "Utenti autenticati";
+"Public Access" = "Accesso pubblico";

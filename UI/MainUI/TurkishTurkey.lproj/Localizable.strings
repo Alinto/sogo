@@ -3,8 +3,8 @@
 "title" = "SOGo";
 "Username" = "Kullanıcı Adı";
 "Password" = "Şifre";
-"Domain" = "Alan";
-"Remember username" = "Kullanıcı Adını hatırla";
+"Domain" = "Alan adı";
+"Remember username" = "Kullanıcı Adımı hatırla";
 "Connect" = "Bağlan";
 
 /* Appears while authentication is in progress */
@@ -22,12 +22,12 @@
 "alternativeBrowserSafari" = "Diğer bir seçenek olarak, Safari de kullanabilirsiniz.";
 "Download" = "İndir";
 "Language" = "Dil";
-"choose" = "Seç ...";
+"choose" = "Seçin ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -39,7 +39,9 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
+"Japanese" = "日本語";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
@@ -48,8 +50,10 @@
 "Polish" = "Polski";
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
@@ -63,13 +67,13 @@
 "AboutBox" = "Inverse tarafından geliştirilen SOGo tüm özellikleri kapsayan, kolay kullanım ve ölçeklenebilirliğe odaklı groupware sunucusudur.<br/><br/>\nSOGo zengin AJAX-tabanlı bir Web arayüzü sunar, CalDAV ve CardDAV gibi standart protokollerle çoklu doğal istemcileri destekler.<br/><br/>\nSOGo <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> sürüm 2 veya üst lisansı altında ve  parçaları GNU LGPL sürüm 2 lisansı altında dağıtılmıştır. Bu bir ücretsiz yazılımdır: bu yazılımı değiştirmeniz ve yeniden dağıtmanız serbesttir. Yasaların izin verdiği ölçüde bir GARANTİSİ YOKTUR.<br/><br/>\nÇeşitli destek seçenekleri için <a href=\"http://www.sogo.nu/en/support/community.html\">bu sayfaya</a> bakın.";
 "Your account was locked due to too many failed attempts." = "Çok fazla başarısız giriş denemesi nedeniyle hesabınız kitlendi.";
 "Your account was locked due to an expired password." = "Süresi dolan şifreniz nedeniyle hesabınız kitlendi.";
-"Login failed due to unhandled error case" = "Telafi edilemeyen bir hata nedeniyle girişiniz başarısız oldu";
+"Login failed due to unhandled error case" = "Belirlenemeyen bir hata nedeniyle girişiniz başarısız oldu";
 "Change your Password" = "Şifrenizi Değiştirin";
 "The password was changed successfully." = "Şifre başarıyla değiştirildi.";
 "Your password has expired, please enter a new one below" = "Şifrenizin süresi doldu, lütfen aşağıya yeni bir şifre girin";
 "Password must not be empty." = "Şifre boş olmamalı.";
 "The passwords do not match. Please try again." = "Şifreler eşleşmiyor. Lütfen tekrar deneyin.";
-"Password Grace Period" = "Şifre Yenilenme Dönemi";
+"Password Grace Period" = "Şifre Geçerlilik Süresi";
 "You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Hesabınızın kitlenmesine %{0} giriş kaldı. Lütfen şifrenizi tercih panosundan değiştirin.";
 "Password about to expire" = "Şifrenizin süresi dolmak üzere";
 "Your password is going to expire in %{0} %{1}." = "Şifreniz %{0} %{1} içinde dolacak.";

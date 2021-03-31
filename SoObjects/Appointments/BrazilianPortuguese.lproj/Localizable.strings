@@ -7,6 +7,7 @@ vevent_class2 = "(Evento Confidencial)";
 vtodo_class0 = "(Tarefa Pública)";
 vtodo_class1 = "(Tarefa Privada)";
 vtodo_class2 = "(Tarefa Confidencial)";
+
 /* Receipts */
 "The event \"%{Summary}\" was created" = "O evento \"%{Summary}\" foi criado";
 "The event \"%{Summary}\" was deleted" = "O evento \"%{Summary}\" foi removido";
@@ -14,25 +15,33 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "The following attendees(s) were notified" = "Estes participantes foram notificados";
 "The following attendees(s) were added" = "Estes participantes foram adicionados";
 "The following attendees(s) were removed" = "Estes participantes foram removidos";
+
 /* IMIP messages */
 "calendar_label" = "Calendário";
 "startDate_label" = "Início";
 "endDate_label" = "Fim";
+"time_label" = "Horário";
+"to_label" = "para";
 "due_label" = "Data de Vencimento:";
 "location_label" = "Localização";
 "summary_label" = "Resumo:";
 "comment_label" = "Comentário:";
+"organizer_label" = "Organizador";
+"attendee_label" = "Participante";
+
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Convite do Evento: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(enviado por %{SentBy}) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}convidou você para %{Summary}.\n\nInicio: %{StartDate}\nFim: %{EndDate}\nDescrição: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} convidou você para %{Summary}.\n\nInício: %{StartDate} as %{StartTime}\nFim: %{EndDate} as %{EndTime}\nDescrição: %{Description}";
+
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Evento Cancelado: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}cancelou este evento: %{Summary}.\n\nInicio: %{StartDate}\nFim: %{EndDate}\nDescrição: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} cancelou este evento: %{Summary}.\n\nInício: %{StartDate} as %{StartTime}\nFim: %{EndDate} as %{EndTime}\nDescrição: %{Description}";
+
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "O compromisso \"%{Summary}\" de %{OldStartDate} mudou";
@@ -42,6 +51,7 @@ vtodo_class2 = "(Tarefa Confidencial)";
 = "Os seguintes parâmetros mudaram na reunião \"%{Summary}\" :\n\n";
 "Please accept or decline those changes."
 = "Por favor, aceitar ou recusar as alterações.";
+
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Convite aceito: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Convite recusado: \"%{Summary}\"";
@@ -55,6 +65,15 @@ vtodo_class2 = "(Tarefa Confidencial)";
 = "%{Attendee} %{SentByText} delegou o convite para %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}foi ainda não decidiu seu convite ao evento.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Lembrete: \"%{Summary}\" - %{StartDate}";
+
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Não foi possível acessar o recurso:  \"%{Cn} %{SystemEmail}\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "O número máximo de reservas simultaneas (%{NumberOfSimultaneousBookings}) acabou para o recurso \"%{Cn} %{SystemEmail}\". O evento conflitante é \"%{EventTitle}\", e inicia em %{StartDate}.";
+
+/* Participation role */
+"Your participation is required to this event" = "Sua participação é necessária para este evento";
+"Your participation is optional to this event" = "Sua participação é opcional para este evento";
+"Your participation is not required to this event" = "Sua participação não é necessária para este evento";

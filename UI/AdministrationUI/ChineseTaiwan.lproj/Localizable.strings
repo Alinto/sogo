@@ -9,3 +9,19 @@
 "ACLs_title" = "使用者資料匣存取控制清單";
 /* Modules descriptions */
 "ACLs_description" = "\"<p>存取控制清單管理模組允許異動每個使用者行事曆及通訊錄的使用權限。</p><p>如要修改使用者資料匣的使用權限，請在視窗上方的搜尋欄位輸入使用者名稱後，將遊標移到要修改的資料匣上連續按兩下滑鼠。</p>";
+"Name or Email" = "名稱或電子郵件";
+"ACLs saved" = "已儲存控制清單";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "開始一個搜尋以便編輯權限";
+/* Rights module: Empty search result */
+"No matching user" = "找不到符合搜尋條件的用戶";
+/* Rights module: no selection */
+"No resource selected" = "未選取任何的資源";
+"Add User" = "新增用戶";
+"Subscribe User" = "訂閱用戶";
+"Rights" = "權限";
+"Search Users" = "搜尋用戶";
+"users found" = "搜尋到的用戶";
+"No resource" = "沒有資源";
+"Any Authenticated User" = "任何已認證的用戶";
+"Public Access" = "公開的存取權限";

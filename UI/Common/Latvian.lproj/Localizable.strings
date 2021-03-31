@@ -76,6 +76,13 @@
 "Yes" = "Jā";
 "No" = "Nē";
 
+/* generic messages */
+"Error" = "Kļūda";
+"Success" = "Panākumi";
+
+/* confirmation dialog box */
+"Confirmation" = "Apstiprinājums";
+
 /* alarms */
 "Reminder" = "Atgādinājums";
 "Start" = "Sākums";
@@ -97,6 +104,7 @@
 "Personal" = "Personisks";
 "To Do" = "Uzdevums";
 "Later" = "Vēlāk";
+"Return Receipt Sent" = "Saņemšanas paziņojums nosūtīts";
 "a2_Sunday" = "Sv";
 "a2_Monday" = "Pr";
 "a2_Tuesday" = "Ot";
@@ -109,6 +117,16 @@
 "Loading" = "Ielādēšana";
 "No such user." = "Nav šādu lietotāju.";
 "You cannot (un)subscribe to a folder that you own!" = "Nevar (ne) abonēt mapi, kas tev pieder!";
+
+/* SMIME Certificate field */
+"S/MIME Certificate" = "S/MIME sertifikāts";
+"Subject Name" = "Tēmas nosaukums";
+"Issuer" = "Izdevējs";
+"countryName" = "Valsts";
+"organizationName" = "Organizācija";
+"organizationalUnitName" = "Organizācijas vienība";
+"commonName" = "Kopējais vārds";
+"emailAddress" = "E-pasta adrese";
 
 /* Authentication username */
 "Username" = "Lietotājvārds";
@@ -125,8 +143,19 @@
 /* Error message displayed when a file upload exceeds WOMaxUploadSize */
 "File size upload limit reached" = "Sasniegts augšupielādes faila lielums";
 
+/* Generic server error */
+"An error occured, please try again." = "Radās kļūda. Lūdzu, mēģiniet vēlreiz.";
+
+/* Open datepicker */
+"Open Calendar" = "Atvērt kalendāru";
+
 /* Toggle visibility (ex: mail account in left navigation menu) */
 "Toggle visibility" = "Pārslēgt redzamību";
+
+"Keyboard Shortcuts" = "Tastatūras saīsnes";
+
+/* Aria label for avatar button to select and unselect an item */
+"Toggle item" = "Pārslēgt vienumu";
 
 /* Toggle multiple items at the same time (hotkeys cheatsheet) */
 "Toggle range of items" = "Pārslēgt vienību diapazonu";
@@ -136,6 +165,9 @@
 
 /* Space key */
 "key_space" = "space";
+
+/* Delete key */
+"key_delete" = "dzēst";
 
 /* Shift and space key */
 "key_shift+space" = "shift + space";
@@ -159,7 +191,7 @@
 "key_shift+down" = "shift + ↓";
 
 /* Backspace key */
-"key_backspace" = "backspace";
+"key_backspace" = "⌫";
 
 /* Hotkey to start a search */
 "hotkey_search" = "s";

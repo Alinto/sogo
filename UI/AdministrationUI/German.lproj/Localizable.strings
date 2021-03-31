@@ -10,6 +10,7 @@
 /* Modules descriptions */
 "ACLs_description" = "<p>Dieses Modul ermöglicht die Verwaltung der Zugriffsrechte (ACLs) für die Kalender und Adressbücher jedes Benutzer.</p><p>Zum Ändern der Zugriffsrechte geben Sie den Namen des jeweiligen Benutzers in das Suchfeld ein. Wählen Sie den zu ändernden Ordner mit einem Doppelklick aus der Liste aus.</p>";
 "Name or Email" = "Name oder E-Mail";
+"ACLs saved" = "Berechtigungen gespeichert";
 /* Rights module: initial search message */
 "Start a search to edit the rights" = "Suche starten, um die Rechte zu ändern";
 /* Rights module: Empty search result */

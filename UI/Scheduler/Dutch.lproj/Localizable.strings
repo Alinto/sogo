@@ -64,6 +64,12 @@
 "Compose E-Mail to All Attendees" = "E-mail aan alle deelnemers opstellen";
 "Compose E-Mail to Undecided Attendees" = "E-mail opstellen aan deelnemers die nog niet hebben gereageerd";
 
+/* Relative dates */
+"Yesterday" = "Gisteren";
+"Today" = "Vandaag";
+"Tomorrow" = "Morgen";
+"Last %@" = "Laatste %@";
+
 /* Folders */
 "Personal calendar" = "Persoonlijke agenda";
 
@@ -101,6 +107,7 @@
 "Name of the Calendar" = "Naam van de agenda";
 "new" = "Nieuw";
 "Print view" = "Print weergave";
+"Print" = "Afdrukken";
 "edit" = "Aanpassen";
 "delete" = "Verwijderen";
 "proposal" = "Voorstel";
@@ -141,6 +148,7 @@
 "Display events and tasks colors" = "Toon afspraak- en taakkleuren";
 "Borders" = "Randen";
 "Backgrounds" = "Achtergronden";
+"Page Format" = "Paginaformaat";
 
 /* Appointments */
 "Appointment viewer" = "Afspraak inzien";
@@ -212,6 +220,7 @@
 "view_next14" = "Afspraken in de volgende 14 dagen";
 "view_next31" = "Afspraken in de volgende 31 dagen";
 "view_thismonth" = "Afspraken in deze kalendermaand";
+"view_thisyear" = "Dit jaar";
 "view_future" = "Alle toekomstige afspraken";
 "view_selectedday" = "Afspraken op de geselecteerde dag";
 "view_not_started" = "Niet begonnen taken";
@@ -333,6 +342,7 @@
 "repeat_YEARLY" = "jaarlijks";
 "repeat_CUSTOM" = "aangepast...";
 "reminder_NONE" = "Geen herinnering";
+"reminder_0" = "Op het moment van gebeurtenis";
 "reminder_5_MINUTES_BEFORE" = "5 minuten van tevoren";
 "reminder_10_MINUTES_BEFORE" = "10 minuten van tevoren";
 "reminder_15_MINUTES_BEFORE" = "15 minuten van tevoren";
@@ -429,16 +439,48 @@ validate_untilbeforeend    = "De herhaling moet eindigen nadat deze eenmaal is v
 = "U kunt niet uw persoonlijke agenda verwijderen of opzeggen.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Weet u zeker dat u de agenda \"%{0}\" wilt verwijderen?";
+"Are you sure you want to delete the selected components?"
+= "Weet u zeker dat u de geselecteerde componenten wilt verwijderen?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Rol";
+
+/* Participant role: participation is required */
 "Participant" = "Deelnemer";
+
+/* Participant role: participation is required */
+"req-participant" = "Deelnemer";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Gewenste deelnemer";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Optionele deelnemer";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Geen deelnemer";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Geen deelnemer";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "Voorzitter";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Voorzitter";
+
+/* Participant status: needs action */
 "Needs action" = "Actie vereist";
+
+/* Participant status: event accepted */
 "Accepted" = "Geaccepteerd";
+
+/* Participant status: event declined */
 "Declined" = "Geweigerd";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Onder voorbehoud";
+
 "Free" = "Beschikbaar";
 "Busy" = "Bezet";
 "Maybe busy" = "Waarschijnlijk bezet";
@@ -498,7 +540,7 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "Export" = "Exporteren";
 
 
-/* Show only the calendar for which the menu is displayed */ 
+/* Show only the calendar for which the menu is displayed */
 "Show Only This Calendar" = "Toon alleen deze agenda";
 
 
@@ -534,6 +576,8 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "Delete Event" = "Afspraak verwijderen";
 "Copy event to my calendar" = "Kopieer afspraak naar mijn agenda";
 "View Raw Source" = "Bekijk broncode";
+"Move To" = "Verplaatsen naar";
+"Copy To" = "Kopieren naar";
 "Subscriptions" = "Abonnementen";
 "Subscribe to a shared folder" = "Abonneren op een gedeelde map";
 "Subscribe to a web calendar..." = "Abonneren op een web-agenda...";
@@ -565,6 +609,7 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "More options" = "Meer opties";
 "Delete This Occurrence" = "Verwijder deze afspraak";
 "Delete All Occurrences" = "Verwijder afsprakenreeks";
+"Add Recurrence Date" = "Herhaalingsdatum toevoegen";
 "Add From" = "Begintijd toevoegen";
 "Add Due" = "Eindtijd toevoegen";
 "Import" = "Importeren";

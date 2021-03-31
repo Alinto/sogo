@@ -221,7 +221,7 @@
 "Add Contact Category" = "Ychwanegu Categori Cysylltiadau";
 "Remove Contact Category" = "Dileu Categori Cysylltiadau";
 "category_none" = "Dim";
-"calendar_category_labels" = "Amrywiol,Anrhegion,Busnes,Canlyniadau,Cleientiaid,Cwsmer,Cyflenwyr,Cystadleuaeth,Dilyn lan,Ffefrynnau,Galwadau,Gwyliau,Cyfarfod,Gwyliau Cyhoeddus,Pen-blwydd,Personol,Prosiectau,Statws,Syniadau,Teithio";
+"calendar_category_labels" = "Pen-blwydd,Pen-blwydd,Busnes,Galwadau,Cleientiaid,Cystadleuaeth,Cwsmer,Ffefrynnau,Dilyniant,Anrhegion,Gwyliau,Syniadau,Cyfarfod,Materion,Amrywiol,Personol,Prosiectau,Gwyliau cyhoeddus,Statws,Cyflenwyr,Teithio,Gwyliau";
 
 /* Default module */
 "Calendar" = "Calendr";
@@ -251,7 +251,9 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
+"Japanese" = "日本語";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
@@ -260,8 +262,10 @@
 "Polish" = "Polski";
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";

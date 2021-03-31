@@ -6,35 +6,44 @@
 "Edit this event or task" = "編輯事件或任務";
 "Print the current calendar view" = "列印正在瀏覽的行事曆";
 "Delete this event or task" = "刪除事件或任務";
-"Go to today" = "移動到今天";
+"Go to today" = "回到今日";
 "Switch to day view" = "切換到日檢視";
 "Switch to week view" = "切換到週檢視";
 "Switch to month view" = "切換到月檢視";
+"Switch to multi-columns day view" = "切換成多重欄位的日檢視";
 "Reload all calendars" = "重新載入所有行事曆";
+
 /* Tabs */
 "Date" = "日期";
 "Calendars" = "行事曆";
+"No events for selected criteria" = "找不到符合搜尋條件的事件";
+"No tasks for selected criteria" = "找不到符合搜尋條件的任務";
+
 /* Day */
-"DayOfTheMonth" = "該月的同一日";
+"DayOfTheMonth" = "日 (該月)";
 "dayLabelFormat" = "%m/%d/%Y";
 "today" = "今天";
 "Previous Day" = "前一日";
 "Next Day" = "後一日";
+
 /* Week */
 "Week" = "週";
 "this week" = "本週";
 "Week %d" = "第 %d 週";
 "Previous Week" = "前一週";
 "Next Week" = "後一週";
+
 /* Month */
 "this month" = "本月";
 "Previous Month" = "前一月";
 "Next Month" = "後一月";
+
 /* Year */
 "this year" = " 今年";
+
 /* Menu */
 "Calendar" = "行事曆";
-"Contacts" = "連絡人";
+"Contacts" = "聯絡人";
 "New Calendar..." = "建立新行事曆...";
 "Delete Calendar" = "刪除行事曆...";
 "Unsubscribe Calendar" = "取消訂閱";
@@ -42,37 +51,46 @@
 "Export Calendar..." = "匯出行事曆...";
 "Import Events..." = "匯入事件...";
 "Import Events" = "匯入事件";
-"Select an iCalendar file (.ics)." = "選擇iCalendar文件檔(.ics)。";
+"Select an iCalendar file (.ics)." = "請選擇 iCalendar 文件 (.ics)。";
 "Upload" = "上傳";
 "Uploading" = "上傳中";
 "Publish Calendar..." = "公開行事曆...";
 "Reload Remote Calendars" = "重新載入遠端的行事曆";
-"Properties" = "屬性";
+"Properties" = "屬性設定";
 "Done" = "完成";
 "An error occurred while importing calendar." = "匯入行事曆時發生錯誤。";
-"No event was imported." = "沒有事件匯入。";
-"A total of %{0} events were imported in the calendar." = "共 %{0} 筆事件匯入此行事曆。";
-"Compose E-Mail to All Attendees" = "發送通知信件給所有的邀請者";
-"Compose E-Mail to Undecided Attendees" = "發送通知信件給所有未定的邀請者";
+"No event was imported." = "沒有匯入任何事件。";
+"A total of %{0} events were imported in the calendar." = "共匯入 %{0} 筆事件至此行事曆。";
+"Compose E-Mail to All Attendees" = "發送通知信件給所有的受邀者";
+"Compose E-Mail to Undecided Attendees" = "發送通知信件給所有未決定的受邀者";
+
+/* Relative dates */
+"Yesterday" = "昨日";
+"Today" = "今日";
+"Tomorrow" = "明日";
+"Last %@" = "上 %@";
+
 /* Folders */
 "Personal calendar" = "個人行事曆";
+
 /* Misc */
 "OpenGroupware.org" = "OpenGroupware.org";
 "Forbidden" = "禁止";
+
 /* acls */
 "Access rights to" = "給予存取權限至";
 "For user" = "给使用者";
 "Any Authenticated User" = "任一授權的使用者";
 "Public Access" = "公開存取";
-"label_Public" = "公開";
-"label_Private" = "私人";
-"label_Confidential" = "機密";
-"label_Viewer" = "顯示全部";
+"label_Public" = "公開事件";
+"label_Private" = "私人事件";
+"label_Confidential" = "機密事件";
+"label_Viewer" = "顯示全部內容";
 "label_DAndTViewer" = "只顯示日期和時間";
 "label_Modifier" = "修改";
 "label_Responder" = " 回應";
 "label_None" = "無";
-"View All" = "顯示全部";
+"View All" = "顯示全部內容";
 "View the Date & Time" = "只顯示日期和時間";
 "Modify" = "修改";
 "Respond To" = "回應";
@@ -81,9 +99,11 @@
 = "允許在我的行事曆新增事件。";
 "This person can erase objects from my calendar."
 = "允許在我的行事曆刪除事件。";
+
 /* Button Titles */
 "Subscribe to a Calendar..." = "訂閱行事曆...";
-"Remove the selected Calendar" = "移除選擇的行事曆";
+"Remove the selected Calendar" = "移除所選擇的行事曆";
+"New calendar" = "新增日曆";
 "Name of the Calendar" = "行事曆名稱";
 "new" = "新增";
 "Print view" = "預覽列印";
@@ -93,11 +113,14 @@
 "Save and Close" = "儲存並關閉";
 "Close" = "關閉";
 "Invite Attendees" = "邀請出席者";
-"Attach" = "附加檔案";
+"Attach" = "附加連結";
 "Update" = "更新";
 "Cancel" = "取消";
+"Reset" = "重置";
+"Save" = "儲存";
 "show_rejected_apts" = "顯示已拒絶的邀請";
 "hide_rejected_apts" = "隱藏已拒絶的邀請";
+
 /* Schedule */
 "Schedule" = "行程";
 "No appointments found" = "沒有議程";
@@ -110,6 +133,7 @@
 "more attendees" = "其他出席者";
 "Hide already accepted and rejected appointments" = "隱藏已接受/已拒絶的議程";
 "Show already accepted and rejected appointments" = "顯示已接受/已拒絶的議程";
+
 /* Print view */
 "LIST" = "列表";
 "Print Settings" = "列印設定";
@@ -123,9 +147,10 @@
 "Display events and tasks colors" = "顯示事件和任務的顏色";
 "Borders" = "邊界";
 "Backgrounds" = "背景";
+
 /* Appointments */
-"Appointment viewer" = "顯示議程";
-"Appointment editor" = "編輯議程";
+"Appointment viewer" = "議程顯示器";
+"Appointment editor" = "議程編輯器";
 "Appointment proposal" = "安排議程";
 "Appointment on" = "會議安排在";
 "Start" = "開始";
@@ -136,7 +161,8 @@
 "Status" = "狀態";
 "% complete" = "% 完成";
 "Location" = "地點";
-"Priority" = "優先順序";
+"Add a category" = "新增類別";
+"Priority" = "優先度";
 "Privacy" = "私人";
 "Cycle" = "重複事件";
 "Cycle End" = "重複事件結束";
@@ -154,44 +180,52 @@
 "General" = "一般";
 "Reply" = "回覆";
 "Created by" = "建立者";
+"You are invited to participate" = "您收到邀請參與";
 "Target" = "目標";
 "attributes" = "屬性";
 "attendees" = "出席者";
 "delegated from" = "委任自";
+
 /* checkbox title */
 "is private" = "私人的";
+
 /* classification */
 "Public" = "公開";
 "Private" = "私人";
+
 /* text used in overviews and tooltips */
-"empty title" = "沒有主題";
+"empty title" = "沒有標題";
 "private appointment" = "私人議程";
 "Change..." = "修改...";
+
 /* Appointments (participation state) */
 "partStat_NEEDS-ACTION" = "我稍後確認";
 "partStat_ACCEPTED" = "我會出席";
 "partStat_DECLINED" = "我不出席";
 "partStat_TENTATIVE" = "我可能出席";
-"partStat_DELEGATED" = "我委任其他人出席";
+"partStat_DELEGATED" = "我委任";
 "partStat_OTHER" = "其它";
+
 /* Appointments (error messages) */
 "Conflicts found!" = "發現衝突事件!";
 "Invalid iCal data!" = "無效的 iCal 資料!";
 "Could not create iCal data!" = "無法建立 iCal 資料!";
+
 /* Searching */
 "view_all" = "全部";
 "view_today" = "今天";
-"view_next7" = "一週後";
-"view_next14" = "二週後";
-"view_next31" = "31天後";
+"view_next7" = "7天內";
+"view_next14" = "14天內";
+"view_next31" = "31天內";
 "view_thismonth" = "本月";
-"view_future" = "全部將來的事件";
+"view_thisyear" = "今年";
+"view_future" = "所有將來的事件";
 "view_selectedday" = "選擇的日期";
 "view_not_started" = "尚未開始的任務";
 "view_overdue" = "逾期的任務";
-"view_incomplete" = "未完任的任務";
+"view_incomplete" = "未完成的任務";
 "View" = "檢視";
-"Title, category or location" = "主題, 類別或地點";
+"Title, category or location" = "標題, 類別或地點";
 "Entire content" = "全部內容";
 "Search" = "搜尋";
 "Search attendees" = "搜尋出席者";
@@ -199,13 +233,15 @@
 "Search appointments" = "搜尋議程";
 "All day Event" = "全天事件";
 "check for conflicts" = "檢查衝突事件";
-"Browse URL" = "瀏覽網址";
+"URL" = "網址";
 "newAttendee" = "增加出席者";
+
 /* calendar modes */
 "Overview" = "總覽";
 "Chart" = "圖表";
 "List" = "列表";
 "Columns" = "列";
+
 /* Priorities */
 "prio_0" = "未指定";
 "prio_1" = "重要";
@@ -217,6 +253,7 @@
 "prio_7" = "低";
 "prio_8" = "低";
 "prio_9" = "低";
+
 /* access classes (privacy) */
 "PUBLIC_vevent" = "公開事件";
 "CONFIDENTIAL_vevent" = "機密事件";
@@ -224,15 +261,26 @@
 "PUBLIC_vtodo" = "公開任務";
 "CONFIDENTIAL_vtodo" = "機密任務";
 "PRIVATE_vtodo" = "私人任務";
+
 /* status type */
 "status_" = "未指定";
 "status_NOT-SPECIFIED" = "未指定";
 "status_TENTATIVE" = "未定";
-"status_CONFIRMED" = "確認";
-"status_CANCELLED" = "取消";
+"status_CONFIRMED" = "已確認";
+"status_CANCELLED" = "已取消";
 "status_NEEDS-ACTION" = "需要操作";
 "status_IN-PROCESS" = "處理中";
 "status_COMPLETED" = "完成於";
+
+/* Priority level */
+"low" = "低";
+
+/* Priority level */
+"normal" = "中";
+
+/* Priority level */
+"high" = "高";
+
 /* Cycles */
 "cycle_once" = "重複一次";
 "cycle_daily" = "日重複";
@@ -240,13 +288,14 @@
 "cycle_2weeks" = "雙週重複";
 "cycle_4weeks" = "每四週重複";
 "cycle_monthly" = "月重覆";
-"cycle_weekday" = "週末重覆";
+"cycle_weekday" = "週間重覆";
 "cycle_yearly" = "年重複";
 "cycle_end_never" = "沒有結束日期";
 "cycle_end_until" = "結束於";
 "Recurrence pattern" = "重複模式";
 "Range of recurrence" = "重複範圍";
 "Daily" = "日";
+"Multi-Columns" = "多重欄位";
 "Weekly" = "週";
 "Monthly" = "月";
 "Yearly" = "年";
@@ -255,25 +304,33 @@
 "Week(s)" = "週";
 "On" = "在";
 "Month(s)" = "月";
+
 /* [Event recurrence editor] Ex: _The_ first Sunday */
-"The" = "此";
-"Recur on day(s)" = "重複事件發生日";
+"The" = "在";
+"Recur on day(s)" = "在哪(些)日重複";
 "Year(s)" = "年";
+
 /* [Event recurrence editor] Ex: Every first Sunday _of_ April */
-"cycle_of" = "的\n";
+"cycle_of" = "的";
 "No end date" = "沒有結束日期";
 "Create" = "建立";
 "appointment(s)" = "議程";
 "Repeat until" = "重複直到";
-"First" = "第一";
-"Second" = "第二";
-"Third" = "第三";
-"Fourth" = "第四";
-"Fift" = "第五";
-"Last" = "最後";
+"End Repeat" = "停止重複";
+"Never" = "不停止";
+"After" = "在幾次之後";
+"On Date" = "在某日之後";
+"times" = "次";
+"First" = "第一個";
+"Second" = "第二個";
+"Third" = "第三個";
+"Fourth" = "第四個";
+"Fift" = "第五個";
+"Last" = "最後一個";
+
 /* Appointment categories */
 "category_none" = "無";
-"category_labels" = "結婚紀念日,生日,工作,電話,顧客,競爭對手,客戶,收藏, 追踪 ,禮物,假日,想法,會議,事件,雜項,個人,專案,公眾假日,狀態,供應商,旅遊,休假";
+"category_labels" = "結婚紀念日,生日,工作,電話,顧客,競爭對手,客戶,收藏, 追踪 ,禮物,假日,想法,會議,事件,雜項,個人,專案,國定假日,狀態,供應商,旅遊,休假";
 "repeat_NEVER" = "不重複";
 "repeat_DAILY" = "日重複";
 "repeat_WEEKLY" = "週重複";
@@ -283,6 +340,7 @@
 "repeat_YEARLY" = "年重複";
 "repeat_CUSTOM" = "自訂...";
 "reminder_NONE" = "無提醒";
+"reminder_0" = "事件開始時";
 "reminder_5_MINUTES_BEFORE" = "5分鐘前";
 "reminder_10_MINUTES_BEFORE" = "10分鐘前";
 "reminder_15_MINUTES_BEFORE" = "15分鐘前";
@@ -299,48 +357,71 @@
 "reminder_MINUTES" = "分鐘";
 "reminder_HOURS" = "小時";
 "reminder_DAYS" = "天";
-"reminder_BEFORE" = "之前";
-"reminder_AFTER" = "之後";
-"reminder_START" = "事件開始於";
-"reminder_END" = "事件結束於";
+"reminder_WEEKS" = "週";
+"reminder_BEFORE" = "早於";
+"reminder_AFTER" = "晚於";
+"reminder_START" = "事件開始之時";
+"reminder_END" = "事件結束之時";
 "Reminder Details" = "提醒詳細內容";
 "Choose a Reminder Action" = "選擇提醒方式";
-"Show an Alert" = "顯示警告訊息";
+"Show an Alert" = "顯示提醒訊息";
 "Send an E-mail" = "寄送電子郵件";
-"Email Organizer" = "電子郵件發送者";
-"Email Attendees" = "電子郵件接收者";
+"Email Organizer" = "寄電子郵件給發起人";
+"Email Attendees" = "寄電子郵件給出席者";
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
 "zoom_50" = "50%";
 "zoom_25" = "25%";
+
+/* Arial label for reminder units */
+"Reminder units" = "提醒單位";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "提醒位置";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "提醒關係";
+
 /* transparency */
 "Show Time as Free" = "顯示空閒時間";
+
 /* email notifications */
-"Send Appointment Notifications" = "寄送預約通知";
+"Send Appointment Notifications" = "寄送議程通知";
+"From" = "寄件者";
+"To" = "收件者";
+
 /* validation errors */
 validate_notitle           = "沒有標題,是否繼續?";
 validate_invalid_startdate = "開始日期欄位不正確!";
 validate_invalid_enddate   = "結束日期欄位不正確!";
-validate_endbeforestart    = "事件開始時間不能大於結束時間。";
+validate_endbeforestart    = "事件開始時間不能晚於結束時間。";
+validate_untilbeforeend    = "重複的發生必須晚於第一次開始的時間。";
+
 "Events" = "事件";
 "Tasks" = "任務";
 "Show completed tasks" = "顯示已完成的任務";
+
 /* tabs */
 "Task" = "任務";
 "Event" = "事件";
 "Recurrence" = "重複";
+
 /* toolbar */
 "New Event" = "新增事件";
 "New Task" = "新增任務";
 "Edit" = "編輯";
 "Delete" = "删除";
-"Go to Today" = "移動到今天";
+"Go to Today" = "回到今日";
 "Day View" = "日檢視";
 "Week View" = "週檢視";
 "Month View" = "月檢視";
 "Reload" = "重新載入";
+
+/* Number of selected components in events or tasks list */
+"selected" = "已選";
 "eventPartStatModificationError" = "您無法修改出席狀態。";
+
 /* menu */
 "New Event..." = "新增事件...";
 "New Task..." = "新增任務...";
@@ -355,53 +436,97 @@ validate_endbeforestart    = "事件開始時間不能大於結束時間。";
 "You cannot remove nor unsubscribe from your personal calendar."
 = "您不能刪除或取消訂閱自己的行事曆。";
 "Are you sure you want to delete the calendar \"%{0}\"?"
-= "您確定要刪除這本行事曆 \"%{0}\"嗎?";
-/* Legend */
+= "您確定要刪除 \"%{0}\"這本行事曆嗎?";
+"Are you sure you want to delete the selected components?"
+= "您確定要刪除所選擇的物件嗎？";
+
+/* Participation role */
+"Role" = "身份";
+
+/* Participant role: participation is required */
 "Participant" = "出席者";
+
+/* Participant role: participation is required */
+"req-participant" = "出席者";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "可能出席者";
+
+/* Participant role: participation is optional */
+"opt-participant" = "可能出席者";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "非出席者";
-"Chair" = "席次";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "非出席者";
+
+/* Participant role: participant is chair of the calendar entity */
+"Chair" = "主席";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "主席";
+
+/* Participant status: needs action */
 "Needs action" = "需要操作";
+
+/* Participant status: event accepted */
 "Accepted" = "已接受";
+
+/* Participant status: event declined */
 "Declined" = "已拒絶";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "未定";
+
 "Free" = "空閒";
 "Busy" = "忙碌";
 "Maybe busy" = "可能忙碌";
 "No free-busy information" = "沒有 空閒/忙碌 資訊";
+
 /* FreeBusy panel buttons and labels */
 "Suggest time slot" = "建議時段";
-"Zoom:" = "縮放";
+"Zoom" = "縮放";
 "Previous slot" = "前一時段";
 "Next slot" = "後一時段";
 "Previous hour" = "前一小時";
 "Next hour" = "前一小時";
-"Work days only" = "只限工作日";
-"The whole day" = "所有日期";
+"Work days only" = "僅限工作日";
+"The whole day" = "整天";
 "Between" = "介於";
 "and" = "和";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
-= "出席者中有人在此時段有其他的行程安排。\n是否要維持現在的議程安排?";
-/* apt list */
+= "出席者中有人在此時段有其他的行程安排。\n是否仍要維持現在的議程安排?";
+
+/* events list */
+"Due" = "到期日/時間";
 "(Private Event)" = "(私人事件)";
 vevent_class0 = "(公開事件)";
 vevent_class1 = "(私人事件)";
 vevent_class2 = "(機密事件)";
+
+/* tasks list */
+"Descending Order" = "降冪排列";
 vtodo_class0 = "(公開任務)";
 vtodo_class1 = "(私人任務)";
 vtodo_class2 = "(機密任務)";
-"closeThisWindowMessage" = "謝謝! 您可以關閉視窗或檢視您的";
+"closeThisWindowMessage" = "謝謝! 您現在可以關閉視窗或檢視您的";
 "Multicolumn Day View" = "每日多列檢視";
 "Please select an event or a task." = "請選擇一項事件或任務。";
 "editRepeatingItem" = "這是一筆重複事件。請問您要編輯所有重複事件還是只有單獨這一筆事件?";
 "button_thisOccurrenceOnly" = "僅目前這一筆";
 "button_allOccurrences" = "所有重複事件";
+"Edit This Occurrence" = "僅編輯這一筆";
+"Edit All Occurrences" = "編輯所有重複事件";
+"Update This Occurrence" = "僅更新這一筆";
+"Update All Occurrences" = "更新所有重複事件";
+
 /* Properties dialog */
 "Color" = "顏色";
-"Include in free-busy" = "包括忙碌-空間";
+"Include in free-busy" = "包括在忙碌-空間中";
 "Synchronization" = "同步";
 "Synchronize" = "同步";
-"Tag:" = "標籤";
+"Tag" = "標籤";
 "Display" = "顯示";
 "Show alarms" = "顯示提醒";
 "Show tasks" = "顯示任務";
@@ -409,37 +534,113 @@ vtodo_class2 = "(機密任務)";
 "Receive a mail when I modify my calendar" = "當我修改我的行事曆時以電子郵件通知我";
 "Receive a mail when someone else modifies my calendar" = "當有其他人修改我的行事曆時以電子郵件通知我";
 "When I modify my calendar, send a mail to" = "當我修改我的行事曆時以電子郵件通知";
+"Email Address" = "電子郵件地址";
+"Export" = "匯出";
+
+
+/* Show only the calendar for which the menu is displayed */
+"Show Only This Calendar" = "只顯示這個行事曆";
+
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "顯示所有行事曆";
+
 "Links to this Calendar" = "連結到這本行事曆";
 "Authenticated User Access" = "授權的使用者存取";
-"CalDAV URL" = "CalDAV URL ";
-"WebDAV ICS URL" = "WebDAV ICS URL";
-"WebDAV XML URL" = "WebDAV XML URL";
+"CalDAV URL" = "CalDAV 網址";
+"WebDAV ICS URL" = "WebDAV ICS 網址";
+"WebDAV XML URL" = "WebDAV XML 網址";
+
 /* Error messages */
-"dayFieldInvalid" = "請在日數欄位輸入1或大於1的數字。";
-"weekFieldInvalid" = "請在週數欄位輸入1或大於1的數字。";
-"monthFieldInvalid" = "請在月數欄位輸入1或大於1的數字。";
-"monthDayFieldInvalid" = "請在每月第幾日欄位輸入1或大於1的數字。";
-"yearFieldInvalid" = "請在年數欄位輸入1或大於1的數字。";
-"appointmentFieldInvalid" = "請在次數欄位輸入1或大於1的數字。";
-"recurrenceUnsupported" = "未支援這種重複類型。";
+"dayFieldInvalid" = "請在日數欄位輸入大於等於 1 的數字。";
+"weekFieldInvalid" = "請在週數欄位輸入大於等於 1 的數字。";
+"monthFieldInvalid" = "請在月數欄位輸入大於等於 1 的數字。";
+"monthDayFieldInvalid" = "請在每月第幾日欄位輸入大於等於 1 的數字。";
+"yearFieldInvalid" = "請在年數欄位輸入大於等於 1 的數字。";
+"appointmentFieldInvalid" = "請在次數欄位輸入大於等於 1 的數字。";
+"recurrenceUnsupported" = "目前不支援這種重複類型。";
 "Please specify a calendar name." = "請輸入行事曆的名稱。";
-"tagNotDefined" = "果您想要同步行事曆必需指定標籤。";
-"tagAlreadyExists" = "您指定的標籤已經用於其他行事曆。";
+"tagNotDefined" = "如果您想要同步行事曆必需先指定一個標籤。";
+"tagAlreadyExists" = "您指定的標籤已經用於另一個行事曆。";
 "tagHasChanged" = "如果您修改了行事曆的標籤，您就必須在您的行動裝置重新下載所有資料。\n是否繼續?";
 "tagWasAdded" = "如果您想要同步這本行事曆，您就必須在您的行動裝置重新下載所有資料。\n是否繼續?";
 "tagWasRemoved" = "如果您取消這本行事曆的同步設定，您就必須在您的行動裝置重新下載所有資料。\n是否繼續?";
-"DestinationCalendarError" = "來源行事曆和目的行事曆是相同的，請複製為不同的行事曆。";
-"EventCopyError" = "複製失敗。請複製為為不同的行事曆。";
+"DestinationCalendarError" = "來源行事曆和目的行事曆是相同的，請複製到不同的行事曆。";
+"EventCopyError" = "複製失敗。請換一個目的地行事曆再試試看。";
 "Please select at least one calendar" = "請選擇至少一本行事曆";
 "Open Task..." = "開啟任務...";
-"Mark Completed" = "標示為完成";
+"Mark Completed" = "標示為已完成";
 "Delete Task" = "刪除任務";
 "Delete Event" = "刪除事件 ";
 "Copy event to my calendar" = "將事件複製到我的行事曆";
 "View Raw Source" = "檢視原始碼";
-"Subscribe to a web calendar..." = "訂閱到web行事曆...";
-"URL of the Calendar" = "行事曆的URL";
-"Web Calendar" = "Web 行事曆";
+"Move To" = "移動至";
+"Copy To" = "複製至";
+"Subscriptions" = "訂閱";
+"Subscribe to a shared folder" = "訂閱共享的資料夾";
+"Subscribe to a web calendar..." = "訂閱網路行事曆...";
+"URL of the Calendar" = "行事曆的網址";
+"Web Calendar" = "網路行事曆";
+"Web Calendars" = "網路行事曆";
 "Reload on login" = "登入時重新載入";
 "Invalid number." = "無效的數字。";
-"Please identify yourself to %{0}" = "請向 %{0} 識別您的身分";
+"Please identify yourself to %{0}" = "請向 %{0} 驗證您的身份";
+"quantity" = "數量";
+"Current view" = "目前檢視";
+"Selected events and tasks" = "已選的事件及任務";
+"Custom date range" = "自訂資料範圍";
+"Select starting date" = "選擇開始時間";
+"Select ending date" = "選擇結束時間";
+"Delegated to" = "委任予";
+"Keep sending me updates" = "繼續通知更新";
+"OK" = "OK";
+"Confidential" = "保密";
+"Enable" = "啟用";
+"Filter" = "搜尋條件";
+"Sort" = "分類";
+"Back" = "返回";
+"Day" = "日";
+"Month" = "月";
+"New Appointment" = "新的事件";
+"filters" = "搜尋條件";
+"Today" = "今日";
+"More options" = "更多選項";
+"Delete This Occurrence" = "僅刪除這一筆";
+"Delete All Occurrences" = "刪除所有重複事件";
+"Add Recurrence Date" = "新增重複發生日期";
+"Add From" = "新增開始日期/時間";
+"Add Due" = "新增到期日/時間";
+"Import" = "匯入";
+"Rename" = "重新命名";
+"Import Calendar" = "匯入行事曆";
+"Select an ICS file." = "選擇一個 ICS 格式檔案。";
+
+/* Notification when user subscribes to a calendar */
+"Successfully subscribed to calendar" = "已成功訂閱行事曆";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "切換物品";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "搜尋範圍";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";

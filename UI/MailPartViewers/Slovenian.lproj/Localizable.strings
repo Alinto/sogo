@@ -34,10 +34,15 @@ reply_info = "To je odgovor na tvoje povabilo na dogodek.";
 "to" = "za";
 "Untitled" = "Brez naslova";
 "Size" = "Velikost";
-"Digital signature is not valid" = "Digitalno potrdilo ni veljavno";
-"Message is signed" = "Sporočilo je podpisano";
 "Subject" = "Zadeva";
 "From" = "Od";
 "Date" = "Datum";
 "To" = "Za";
 "Issuer" = "Izdajatelj";
+/* Tooltips */
+"View Attachment" = "Poglej prilogo";
+"Save Attachment" = "Shrani prilogo";
+"CC" = "CC";
+"Cancel" = "Prekliči";
+"OK" = "V redu";
+"Comment" = "Komentar:";

@@ -10,6 +10,7 @@
 /* Modules descriptions */
 "ACLs_description" = "<p>Le module de gestion des droits d'accès (ACL) vous permet de changer les ACL des calendriers et carnets d'adresses des utilisateurs.</p><p>Pour modifier les ACL sur un dossier, recherchez un utilisateur et double-clickez sur le dossier souhaité.</p>";
 "Name or Email" = "Nom ou adresse courriel";
+"ACLs saved" = "Droits sauvegardés";
 /* Rights module: initial search message */
 "Start a search to edit the rights" = "Démarrer une recherche pour modifier les droits";
 /* Rights module: Empty search result */

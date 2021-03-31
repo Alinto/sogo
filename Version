@@ -1,7 +1,3 @@
-#
-# This file is included by library makefiles to set the version information
-# of the executable.
-
 MAJOR_VERSION=2
-MINOR_VERSION=3
-SUBMINOR_VERSION=23
+MINOR_VERSION=4
+SUBMINOR_VERSION=0

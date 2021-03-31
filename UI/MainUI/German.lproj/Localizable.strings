@@ -16,10 +16,17 @@
 "Authentication Failed" = "Authentifizierung fehlgeschlagen";
 "Wrong username or password." = "Falscher Benutzername oder falsches Passwort";
 "Retry" = "Erneut versuchen";
+"Login failed due to unhandled error case:" = "Anmeldung ist wegen folgendem unbehandelten Fehler fehlgeschlagen:";
 "cookiesNotEnabled" = "Anmeldung an SOGo ist nicht möglich, da Cookies in Ihrem Browser deaktiviert sind. Bitte aktivieren Sie Cookies in Ihrem Browser und versuchen Sie es erneut.";
 "browserNotCompatible" = "Wir haben festgestellt, dass Ihre Browserversion im Moment nicht von SOGo unterstützt wird. Wir empfehlen Firefox zu verwenden. Klicken Sie unten auf den Link, um die aktuelle Version dieses Browsers zu installieren.";
 "alternativeBrowsers" = "Sie können auch die folgenden Browser benutzen";
 "alternativeBrowserSafari" = "Sie können auch Safari benutzen.";
+
+/* 2FA */
+"Verification Code" = "Sicherheitscode";
+"Enter the 6-digit verification code from your Google Authenticator application." = "Geben Sie den 6-stelligen Sicherheitscode aus Ihrer Google Authenticator App ein.";
+"You provided an invalid Google Authenticator key." = "Sie haben einen ungültigen Google Authenticator Schlüssel eingegeben.";
+
 "Download" = "Herunterladen";
 "Language" = "Sprache";
 "choose" = "Auswählen ...";
@@ -27,7 +34,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -39,7 +46,9 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
+"Japanese" = "日本語";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
@@ -48,8 +57,10 @@
 "Polish" = "Polski";
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";

@@ -104,7 +104,7 @@
 "To"            = "To";
 "Cc"            = "Cc";
 "Bcc"           = "Bcc";
-"Reply-To"	    = "Reply-To";
+"Reply-To"	= "Reply-To";
 "Add address"   = "Add address";
 "Body"          = "Body";
 "Open" = "Open";
@@ -121,9 +121,13 @@
 "Edit Draft..." = "Edit Draft...";
 "Load Images" = "Load Images";
 "Return Receipt" = "Return Receipt";
+"Choose which identity to send this message from" = "Choose which identity to send this message from";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "The sender of this message has asked to be notified when you read this message. Do you wish to notify the sender?";
 "Return Receipt (displayed) - %@"= "Return Receipt (displayed) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.";
+"Security" = "Security";
+"Sign" = "Sign";
+"Encrypt" = "Encrypt";
 "Priority" = "Priority";
 "highest" = "Highest";
 "high" = "High";
@@ -176,6 +180,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Add to Address Book...";
+"Successfully created card" = "Successfully created card";
 "Compose Mail To" = "Compose Mail To";
 "Create Filter From Message..." = "Create Filter From Message...";
 
@@ -245,6 +250,33 @@
 
 /* Number of selected messages in list */
 "selected" = "selected";
+
+/* Encrypted message notification */
+"This message is encrypted" = "This message is encrypted";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Unable to verify message signature";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "The message has been modified";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Error reading the certificate. Please install a new certificate.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "No certificate associated to account.";
+
+/* Invalid message signature */
+"Digital signature is not valid" = "Digital signature is not valid";
+
+/* Valid message signature */
+"Message is signed" = "Message is signed";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Digital signature is not valid";
 
 "This Folder" = "This Folder";
 
@@ -321,6 +353,7 @@
 = "The messages could not be moved to the trash folder. Would you like to delete them immediately?";
 
 /* Message editing */
+"Please specify a subject." = "Please specify a subject.";
 "error_missingsubject" = "The message has no subject. Are you sure you want to send it?";
 "error_missingrecipients" = "Please specify at least one recipient.";
 "Send Anyway" = "Send Anyway";
@@ -380,6 +413,15 @@
 "Your email has been saved" = "Your email has been saved";
 "Your email has been sent" = "Your email has been sent";
 "Folder compacted" = "Folder compacted";
+
+/* Advanced search */
+"Enter Subject" = "Enter Subject";
+"Enter From" = "Enter From";
+"Enter To" = "Enter To";
+"Enter Cc" = "Enter Cc";
+"Enter Body" = "Enter Body";
+"match" = "match";
+"does not match" = "does not match";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Search scope";

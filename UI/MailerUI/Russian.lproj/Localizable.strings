@@ -43,7 +43,7 @@
 "Search multiple mailboxes" = "Поиск в папках";
 
 /* Main Frame  */
-"Home"                 = "Начало"; 
+"Home"                 = "Начало";
 "Calendar"             = "Календарь";
 "Addressbook"          = "Адресная книга";
 "Mail"                 = "Почта";
@@ -94,7 +94,7 @@
 "Expunge this folder" = "Сжимать эту папку";
 "Export This Folder" = "Экспортировать эту папку";
 "Modify the acl of this folder" = "Управлять правами доступа к этой папке";
-"Saved Messages.zip" = "Сохраненные сообщения.zip";
+"Saved Messages.zip" = "Сохранено Messages.zip";
 "Update" = "Обновить";
 "Cancel" = "Отмена";
 
@@ -104,7 +104,7 @@
 "To"            = "Кому";
 "Cc"            = "Копия";
 "Bcc"           = "Скрытая копия";
-"Reply-To"	    = "Обратный адрес";
+"Reply-To"	= "Обратный адрес";
 "Add address"   = "Добавить адрес";
 "Body"          = "Тело письма";
 "Open" = "Открыть";
@@ -121,9 +121,13 @@
 "Edit Draft..." = "Редактировать черновик...";
 "Load Images" = "Загрузить изображения";
 "Return Receipt" = "Уведомление о вручении";
+"Choose which identity to send this message from" = "Выберите, с каким идентификатором отправить это сообщение";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Отправитель этого сообщения запросил уведомление о прочтении. Отправить уведомление?";
 "Return Receipt (displayed) - %@"= "Уведомление о вручении (отображается на дисплее) -% @";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.";
+"Security" = "Безопасность";
+"Sign" = "Подписать";
+"Encrypt" = "Зашифровать";
 "Priority" = "Важность";
 "highest" = "Самый высокий";
 "high" = "Высокий";
@@ -176,6 +180,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Добавиь в адресную книгу...";
+"Successfully created card" = "Успешно создана карточка";
 "Compose Mail To" = "Составить письмо для";
 "Create Filter From Message..." = "Создать фильтр из сообщения...";
 
@@ -187,10 +192,10 @@
 "Open in New Mail Window" = "Открыть в новом окне";
 "Copy Folder Location" = "Скопировать адрес папки";
 "Subscribe..." = "Подписаться...";
-"Mark Folder Read" = "Отметить письма в папке как прочтенные...";
+"Mark Folder Read" = "Отметить письма в папке как прочитанные";
 "New Folder..." = "Создать папку...";
 "Compact This Folder" = "Сжать эту папку";
-"Search Messages..." = "Поиск в сообщениях...";
+"Search Messages..." = "Поиск сообщений...";
 "Sharing..." = "Совместное использование папки...";
 "New Subfolder..." = "Создать вложенную папку...";
 "Rename Folder..." = "Переименовать папку...";
@@ -245,6 +250,33 @@
 
 /* Number of selected messages in list */
 "selected" = "выбран";
+
+/* Encrypted message notification */
+"This message is encrypted" = "Это сообщение зашифровано";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Это сообщение не может быть расшифровано. Убедитесь, что вы загрузили сертификат S/MIME из модуля настройек почты.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Не удалось проверить подпись сообщения";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "Сообщение было изменено";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Ошибка чтения сертификата. Пожалуйста, установите новый сертификат.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "Нет сертификата, связанного с учетной записью.";
+
+/* Invalid message signature */
+"Digital signature is not valid" = "Цифровая подпись недействительна";
+
+/* Valid message signature */
+"Message is signed" = "Сообщение подписано";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Цифровая подпись недействительна";
 
 "This Folder" = "Текущая папка";
 
@@ -301,16 +333,16 @@
 "Please select only one message to print." = "Пожалуйста выберите только одно сообщение для печати.";
 "The message you have selected doesn't exist anymore." = "Сообщение, которое вы выбрали, не существует больше.";
 "The folder with name \"%{0}\" could not be created."
-= "Не могу создать папку с именем \"%{0}\".";
+= "Не удалось создать папку с именем \"% {0}\".";
 "This folder could not be renamed to \"%{0}\"."
-= "Не могу переименовать папку в \"%{0}\".";
+= "Не удалось переименовать эту папку в \"% {0}\".";
 "The folder could not be deleted."
-= "Не могу удалить эту папку.";
+= "Не удалось удалить папку. ";
 "The trash could not be emptied."
 = "Не могу очистить корзину.";
 "The folder functionality could not be changed."
 = "Назначение папки не может быть изменено.";
-"You need to choose a non-virtual folder!" = "Выберите одно из невиртуальных папок!";
+"You need to choose a non-virtual folder!" = "Вам нужно выбрать не виртуальную папку!";
 "Moving a message into its own folder is impossible!"
 = "Невозможно переместить сообщение туда, где оно уже находится!";
 "Copying a message into its own folder is impossible!"
@@ -321,6 +353,7 @@
 = "Сообщения не могут быть помещены в корзину. Хотите ли вы уничтожить их немедленно?";
 
 /* Message editing */
+"Please specify a subject." = "Пожалуйста, укажите тему.";
 "error_missingsubject" = "Тема сообщения не указана";
 "error_missingrecipients" = "Не указан адрес получателя";
 "Send Anyway" = "Всё равно послать";
@@ -380,6 +413,15 @@
 "Your email has been saved" = "Письмо сохранено";
 "Your email has been sent" = "Письмо отправлено";
 "Folder compacted" = "Папка сжата";
+
+/* Advanced search */
+"Enter Subject" = "Введите Тему";
+"Enter From" = "Введите Отправителя";
+"Enter To" = "Введите Получателя";
+"Enter Cc" = "Введите Скрытую копию";
+"Enter Body" = "Введите Сообщение";
+"match" = "совпадает";
+"does not match" = "не совпадает";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Область поиска";
