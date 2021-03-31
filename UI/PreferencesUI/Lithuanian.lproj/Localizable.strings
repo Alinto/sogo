@@ -63,12 +63,11 @@
 "shortDateFmt_7" = "%m/%d/%y";
 "shortDateFmt_8" = "%m/%e/%y";
 "shortDateFmt_9" = "%y/%m/%d";
-"shortDateFmt_10" = "%y/%m/%d";
-"shortDateFmt_11" = "%y.%m.%d";
-"shortDateFmt_12" = "%Y-%m-%d";
-"shortDateFmt_13" = "%Y/%m/%d";
-"shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
+"shortDateFmt_10" = "%y.%m.%d";
+"shortDateFmt_11" = "%Y-%m-%d";
+"shortDateFmt_12" = "%Y/%m/%d";
+"shortDateFmt_13" = "%Y.%m.%d";
+"shortDateFmt_14" = "";
    
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
@@ -222,7 +221,9 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
+"Japanese" = "日本語";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Makedonų";
@@ -231,8 +232,10 @@
 "Polish" = "Polski";
 "Portuguese" = "Portugalų";
 "BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovėnų";
 "SpanishSpain" = "Español (España)";

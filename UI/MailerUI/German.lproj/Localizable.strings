@@ -43,7 +43,7 @@
 "Search multiple mailboxes" = "In mehreren Postfächern suchen";
 
 /* Main Frame  */
-"Home"                 = "Anfang"; 
+"Home"                 = "Anfang";
 "Calendar"             = "Kalender";
 "Addressbook"          = "Adressbuch";
 "Mail"                 = "E-Mail";
@@ -104,7 +104,7 @@
 "To"            = "An";
 "Cc"            = "CC";
 "Bcc"           = "BCC";
-"Reply-To"	    = "Antwort an";
+"Reply-To"	= "Antwort an";
 "Add address"   = "Adresse hinzufügen";
 "Body"          = "Inhalt";
 "Open" = "Öffnen";
@@ -121,9 +121,13 @@
 "Edit Draft..." = "Entwurf bearbeiten...";
 "Load Images" = "Bilder laden";
 "Return Receipt" = "Empfangsbestätigung";
+"Choose which identity to send this message from" = "Wählen Sie von welcher Identität diese Nachricht gesendet wird";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Der Absender möchte benachrichtigt werden, sobald Sie diese Nachricht lesen. Möchten Sie den Absender benachrichtigen?";
 "Return Receipt (displayed) - %@"= "Empfangsbestätigung (angezeigt) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Dies ist die Empfangsbestätigung für die Nachricht, die Sie an %@ gesendet haben.\n\nHinweis: Es wird lediglich bestätigt, dass die Nachricht auf dem Computer des Empfängers empfangen (angezeigt) wurde. Es wird nicht garantiert, dass der Empfänger die Nachricht gelesen und/oder verstanden hat.";
+"Security" = "Sicherheit";
+"Sign" = "Signieren";
+"Encrypt" = "Verschlüsseln";
 "Priority" = "Priorität";
 "highest" = "Sehr hoch";
 "high" = "Hoch";
@@ -176,6 +180,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Zum Adressbuch hinzufügen...";
+"Successfully created card" = "Karte erfolgreich erstellt";
 "Compose Mail To" = "Verfassen an";
 "Create Filter From Message..." = "Filter aus Nachricht erstellen...";
 
@@ -213,7 +218,7 @@
 "Edit As New..." = "Als neu bearbeiten...";
 "Move To" = "Verschieben in";
 "Copy To" = "Kopieren in";
-"Label" = "Schlagwörter";
+"Label" = "Schlagwort";
 "Mark" = "Markieren";
 "Save As..." = "Speichern unter...";
 "Print Preview" = "Druckvorschau";
@@ -245,6 +250,33 @@
 
 /* Number of selected messages in list */
 "selected" = "ausgewählt";
+
+/* Encrypted message notification */
+"This message is encrypted" = "Diese Nachricht ist verschlüsselt.";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Diese Nachricht kann nicht entschlüsselt werden. Bitte stellen Sie sicher, dass Sie ihr S/MIME-Zertifikat im Modul für E-Mail-Einstellungen hochgeladen haben.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Signatur der Nachricht konnte nicht verifiziert werden";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "Die Nachricht wurde verändert.";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Fehler beim Lesen des Zertifikats. Bitte installieren Sie ein neues Zertifikat.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "Kein Zertifikat mit dem Benutzer verbunden.";
+
+/* Invalid message signature */
+"Digital signature is not valid" = "Die kryptographische Signatur ist ungültig";
+
+/* Valid message signature */
+"Message is signed" = "Nachricht ist signiert";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Die kryptographische Signatur ist ungültig";
 
 "This Folder" = "Dieser Ordner";
 
@@ -321,6 +353,7 @@
 = "Die Nachricht(en) konnten nicht in den Papierkorb verschoben werden. Wollen Sie diese endgültig löschen?";
 
 /* Message editing */
+"Please specify a subject." = "Bitte geben Sie einen Betreff an.";
 "error_missingsubject" = "Der Betreff fehlt. Sind Sie sicher, dass Sie dies so senden möchten?";
 "error_missingrecipients" = "Der Empfänger fehlt.";
 "Send Anyway" = "Trotzdem versenden";
@@ -346,7 +379,7 @@
 "More mail options" = "Weitere E-Mail-Optionen";
 "Delegation" = "Delegation";
 "Add User" = "Benutzer hinzufügen";
-"Add a tag" = "Markierung hinzufügen";
+"Add a tag" = "Schlagwort hinzufügen";
 "reply" = "Antworten";
 "Edit" = "Ändern";
 "Yes" = "Ja";
@@ -360,7 +393,7 @@
 "Set as Trash" = "Als Papierkorb festlegen";
 
 /* Set the folder as the one holding Junk mails */
-"Set as Junk" = "Als Spam markieren";
+"Set as Junk" = "Als Spam festlegen";
 
 "Sort" = "Sortieren";
 "Order Received" = "Nach Empfang sortieren";
@@ -380,6 +413,15 @@
 "Your email has been saved" = "Ihre E-Mail wurde gespeichert";
 "Your email has been sent" = "Ihre E-Mail wurde gesendet";
 "Folder compacted" = "Ordner komprimiert";
+
+/* Advanced search */
+"Enter Subject" = "Betreff eingeben";
+"Enter From" = "Von eingeben";
+"Enter To" = "An eingeben";
+"Enter Cc" = "CC eingeben";
+"Enter Body" = "Inhalt eingeben";
+"match" = "stimmt überein";
+"does not match" = "stimmt nicht überein";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Suchbereich";

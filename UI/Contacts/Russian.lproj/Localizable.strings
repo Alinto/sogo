@@ -27,6 +27,9 @@
 "OfficePhone" = "Рабочий телефон";
 "Organization" = "Организация";
 "Work Phone" = "Рабочий";
+"Cell" = "Мобильный";
+"Pager" = "Пейджер";
+"Pref" = "Предп.";
 "Phone" = "Телефон";
 "Phones" = "Телефоны";
 "Postal" = "Почтовый адрес";
@@ -44,6 +47,90 @@
 "To" = "Кому";
 "Carbon Copy (Cc)" = "Копия (Cc)";
 "Blind Carbon Copy (Bcc)" = "Скрытая копия (Bcc)";
+
+/* Search scope: name fields */
+"name" = "Имя";
+
+/* Search scope: name fields */
+"c_cn" = "Имя";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "Дополнительный email";
+
+/* Search scope: screen name field */
+"nsaimid" = "Отображаемое имя";
+
+/* Search scope: mail fields */
+"mail" = "Почта";
+
+/* Search scope: mail fields */
+"c_mail" = "Почта";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Телефон";
+
+/* Search scope: telephone field */
+"homephone" = "Телефон";
+
+/* Search scope: mobile field */
+"mobile" = "Мобильный";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Факс";
+
+/* Search scope: pager field */
+"pager" = "Пейджер";
+
+/* Search scope: categories field */
+"c_categories" = "Категории";
+
+/* Search scope: categories field */
+"vcardcategories" = "Категории";
+
+/* Search scope: title field */
+"title" = "Должность";
+
+/* Search scope: organization field */
+"c_o" = "Организация";
+
+/* Search scope: organization field */
+"o" = "Организация";
+
+/* Search scope: department field */
+"ou" = "Отдел";
+
+/* Search scope: city field */
+"l" = "Город";
+
+/* Search scope: country field */
+"c" = "Страна";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Домашний адрес";
+
+/* Search scope: state/province field */
+"st" = "Область, край";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Домашние область, край";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "Почтовый индекс";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "Почтовый индекс";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "Домашняя страна";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Домашняя страница";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Веб-страница";
+
+/* Search scope: note field */
+"description" = "Примечание";
 
 /* Subheader of empty addressbook */
 "No contact" = "Нет контакта";
@@ -154,6 +241,12 @@
 = "Вы не можете подписаться на папку, которой владеете.";
 "Unable to subscribe to that folder!"
 = "Невозможно подписаться на эту папку.";
+
+/* security */
+"Security" = "Безопасность";
+"Uninstall" = "Удалить";
+"Error reading the card certificate." = "Ошибка чтения карточки сертификата.";
+"No certificate associated to card." = "Отсутствует сертификат, связанный карточкой.";
 
 /* acls */
 "Access rights to" = "Права доступа к";

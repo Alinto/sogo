@@ -16,7 +16,7 @@
 "Don't Save" = "Neuložit";
 
 /* tabs */
-"General" = "Obecný";
+"General" = "Obecné";
 "Calendar Options" = "Možnosti kalendáře";
 "Contacts Options" = "Možnosti kontaktů";
 "Mail Options" = "Možnosti pošty";
@@ -40,13 +40,19 @@
 "Auto reply subject" = "Předmět odpovědi v nepřítomnosti";
 "You can write ${subject} to insert the original subject" = "Napište ${subject} pro vložení originálního předmětu zprávy";
 "Auto reply message" = "Zpráva zasílaná v nepřítomnosti";
-"Email addresses (separated by commas)" = "Emailové adresy (oddělené čárkami)";
+"Email addresses" = "E-mailové adresy";
 "Add default email addresses" = "Přidat základní emailové adresy";
 "Days between responses" = "Počet dnů mezi odpověďmi";
 "Do not send responses to mailing lists" = "Neposílat odpovědi do konferencí";
 "Enable auto reply on" = "Zapnout odpovědi v nepřítomnosti";
+"First day of vacation" = "První den nepřítomnosti";
 "Disable auto reply on" = "Automatické odpovědi vypnout dne";
+"Last day of vacation" = "Poslední den nepřítomnosti";
+"Enter date" = "Zadejte datum";
 "Always send vacation message response" = "Vždy posílat zprávu v nepřítomnosti";
+"The vacation message is sent prior to apply your filters." = "Zpráva v nepřítomnosti je odeslána ještě před provedením Vašich filtrů.";
+"Discard incoming mails during vacation" = "Zrušit příjem pošty během nepřítomnosti";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Zpráva v nepřítomnosti je odeslána, ale příchozí zpráva nebude doručena do Vaší schránky.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Prosím zadejte text zprávy a své emailové adresy, pro které chcete zasílání v nepřítomnosti použít.";
 "Your vacation message must not end with a single dot on a line." = "Vaše zpráva v nepřítomnosti nesmí končit samotnou tečkou na řádce.";
@@ -56,13 +62,16 @@
 /* forward messages */
 "Forward incoming messages" = "Přeposílat příchozí zprávy";
 "Keep a copy" = "Ponechat kopii";
+"Enter an email" = "Zadejte e-mail";
+"Add another email" = "Přidejte další e-mail";
 "Please specify an address to which you want to forward your messages."
 = "Prosím zadejte adresu, na kterou chcete své zprávy přeposílat.";
 "You are not allowed to forward your messages to an external email address." = "Nemáte povoleno přeposílání Vašich zpráv na externí emailovou adresu.";
 "You are not allowed to forward your messages to an internal email address." = "Nemáte povoleno přeposílání Vašich zpráv na interní emailovou adresu.";
+"You are not allowed to forward your messages to this domain:" = "Nemáte povoleno přeposílání Vašich zpráv na následující doménu:";
 
 /* d & t */
-"Current Time Zone" = "Současné časové pásmo";
+"Time Zone" = "Časové pásmo";
 "Short Date Format" = "Krátký formát data";
 "Long Date Format" = "Dlouhý formát data";
 "Time Format" = "Formát času";
@@ -84,8 +93,10 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
-   
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
+
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
 "longDateFmt_2" = "%A, %d %B, %Y";
@@ -123,6 +134,8 @@
 "Prevent from being invited to appointments" = "Blokovat budoucí pozvání na schůzky";
 "White list for appointment invitations" = "Seznam povolených pro pozvání na schůzky";
 "Contacts Names" = "Jména kontaktů";
+"Duplicate name" = "Duplicitní jméno";
+"Calendar categories must have unique names." = "Kategorie kalendáře musí mít jedinečná jména.";
 
 /* Default Calendar */
 "Default calendar" = "Výchozí kalendář";
@@ -146,10 +159,18 @@
 /* Mailer */
 "Labels" = "Štítky";
 "Label" = "Štítek";
+"IMAP Label" = "IMAP Štítek";
+"Invalid label" = "Nepoužívejte mezeru, ani znaky ( ) { } % * \" \\";
+"Duplicate label" = "Duplicitní štítek";
+"IMAP labels must have unique names." = "IMAP štítky musí mít jedinečná jména.";
 "New label" = "Nový štítek";
-"Show subscribed mailboxes only" = "Ukázat pouze odebírané poštovní schránky";
-"Synchronize only default mail folders (EAS)" = "Synchronizovat pouze standartní poštovní složky (EAS)";
+"Show subscribed mailboxes only" = "Ukázat pouze odebírané poštovní složky";
+"Synchronize only default mail folders (EAS)" = "Synchronizovat pouze standardní poštovní složky (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Načíst počet nepřečtených zpráv pro všechny poštovní složky";
 "Sort messages by threads" = "Třídit zprávy podle souvislostí";
+"Always open mail composer" = "Vždy otevřít editor zprávy";
+"Inside current window" = "Uvnitř aktuálního okna";
+"In a popup window" = "Ve vyskakovacím okně";
 "When sending mail, add unknown recipients to my" = "Automaticky přidávat odchozí e-mailovou adresu do složky:";
 "Address Book" = "Adresář";
 "Forward messages" = "Přeposlat zprávy";
@@ -177,8 +198,11 @@
 /* Contact */
 "Personal Address Book" = "Osobní kontakty";
 "Collected Address Book" = "Sebrané kontakty";
+"Contact categories must have unique names." = "Kategorie kontaktů musí mít jedinečná jména.";
 
 /* IMAP Accounts */
+"Settings" = "Nastavení";
+"Security" = "Zabezpečení";
 "Mail Account" = "Poštovní účet";
 "New Mail Account" = "Nový poštovní účet";
 "Server Name" = "Adresa serveru";
@@ -190,19 +214,36 @@
 "Email" = "E-mailová adresa";
 "Reply To Email" = "Adresa pro odpověď";
 "Signature" = "Podpis";
+"Identities" = "Identity";
+"Always use the default identity when replying to messages" = "Vždy použít implicitní identitu při odpovídání na zprávy";
+"Default Identity" = "Implicitní identita";
+"New Identity" = "Nová identita";
 "(Click to create)" = "(Klikni pro vytvoření)";
 "Please enter your signature below" = "Text podpisu";
 "Please specify a valid sender address." = "Prosím zadejte správnou adresu odesílatele.";
 "Please specify a valid reply-to address." = "Prosím zadejte správnou adresu pro odpověď.";
 "Specify a hostname other than the local host" = "Zadefinujte jiné doménové jméno než local host";
 
+"No certificate installed" = "Není instalován žádný certifikát";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "SSL certifikát musí být ve formátu PKCS#12 (PFX).";
+"Uninstall" = "Odinstalovat";
+"Choose PKCS12 Certificate .." = "Vyberte PKCS12 certifikát ..";
+"Certificate Import Password" = "Heslo pro import certifikátu";
+"Upload" = "Nahrát";
+"When composing a message" = "Při vytváření zprávy";
+"Digitally sign the message by default" = "Vždy digitálně podepsat zprávu";
+"Always try to encrypt the message" = "Vždy zkusit zašifrovat zprávu";
+"An error occurred while importing the certificate. Verify your password." = "Při importu certifikátu došlo k chybě. Ověřte své heslo.";
+
 /* Additional Parameters */
 "Additional Parameters" = "Dodatečné parametry";
 
 /* password */
+"Current password" = "Současné heslo";
 "New password" = "Nové heslo";
 "Confirmation" = "Potvrzení";
 "Change" = "Změnit";
+"Passwords don't match" = "Hesla nejsou shodná";
 
 /* Event+task classifications */
 "Default events classification" = "Výchozí druh události";
@@ -215,6 +256,7 @@
 "Calendar Category" = "Kategorie kalendáře";
 "Add Calendar Category" = "Přidat kategorii kalendáře";
 "New category" = "Nová kategorie";
+"Reset to defaults" = "Nastavení výchozích hodnot";
 "Remove Calendar Category" = "Odstranit kategorii kalendáře";
 "Contact Category" = "Kategorie kontaktu";
 "Add Contact Category" = "Přidat kategorii kontaktu";
@@ -238,7 +280,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -250,7 +292,9 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
+"Japanese" = "日本語";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
@@ -259,8 +303,10 @@
 "Polish" = "Polski";
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
@@ -279,6 +325,7 @@
 "refreshview_every_20_minutes" = "Každých 20 minut";
 "refreshview_every_30_minutes" = "Každých 30 minut";
 "refreshview_once_per_hour" = "Jednou za hodinu";
+"Enable Desktop Notifications" = "Povolit oznámení na ploše";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Pokud zpráva obsahuje žádost potvrzení o přečtení";
@@ -321,8 +368,8 @@
 "To or Cc" = "Komu nebo Kopie";
 "Size (Kb)" = "Velikost (Kb)";
 "Header" = "Hlavička";
-"Body" = "Tělo";
-"Flag the message with" = "Oštítkuj zprávu jako";
+"Body" = "Text zprávy";
+"Flag the message with" = "Označ zprávu štítkem";
 
 /* Select field label of "flag message" mail filter action */
 "Flag" = "Štítek";
@@ -402,3 +449,21 @@
 "monsterid" = "Monster";
 "wavatar" = "Wavatar";
 "retro" = "Retro";
+
+/* Animation Level */
+"Animation Level" = "Úroveň animace";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Normální";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Omezená";
+"animation_NONE" = "Žádná";
+
+/* 2FA */
+"Enable two-factor authentication using Google Authenticator" = "Povolit 2-fázové ověřování pomocí Google Authenticator";
+"You must enter this key into your Google Authenticator application." = "Tento klíč musíte zadat do své aplikace Google Authenticator.";
+"If you do not and you log out you will not be able to login again." = "Pokud tak neučiníte a odhlásíte se, nebudete se moci znovu přihlásit.";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "Je aktivní externí Sieve skript.";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve je programovací jazyk, který může být použit k filtrování emailových zpráv. Pokud chcete aby SOGo spravovalo Vaše filtry, nastavení nepřítomnosti a přeposílání, Váš aktivní skript bude deaktivován.";
+"Let SOGo handle everything" = "Nechat SOGo spravovat vše";

@@ -37,29 +37,30 @@
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Otomatik tatil yanıtını etkinleştir";
 "Enable custom auto reply subject" = "Özelleştirilmiş otomatik yanıt konusunu etkinleştir";
-"Auto reply subject" = "Otomatik yanıt konusu";
+"Auto reply subject" = "Otomatik yanıtın konusu";
 "You can write ${subject} to insert the original subject" = "Asıl konuyu eklemek için ${subject} yazabilirsiniz";
 "Auto reply message" = "Otomatik yanıt iletisi";
 "Email addresses (separated by commas)" = "E-posta adresleri (virgülle ayrılmış)";
 "Add default email addresses" = "Varsayılan e-posta adresi ekle";
-"Days between responses" = "Yanıtlar arasındaki gün sayısı";
-"Do not send responses to mailing lists" = "Yanıtları e-posta listelerine gönderme";
-"Enable auto reply on" = "Otomatik yanıt başlangıç tarihi";
+"Days between responses" = "Yanıt gün sayısı";
+"Do not send responses to mailing lists" = "E-posta listelerine yanıt gönderme";
+"Enable auto reply on" = "Otomatik yanıtın etkinleştirme tarihi";
 "Disable auto reply on" = "Otomatik yanıt bitiş tarihi";
 "Always send vacation message response" = "Her zaman tatil yanıtı iletisi gönder";
+"Discard incoming mails during vacation" = "Tatildeyken gelen iletileri sil";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Lütfen otomatik yanıtı etkinleştireceğiniz e-posta adreslerini ve yanıt iletinizi belirleyin.";
 "Your vacation message must not end with a single dot on a line." = "Tatil yanıtlama iletiniz bir satırda tek nokta olarak bitmemeli.";
 "End date of your auto reply must be in the future."
-= "Otomatik yanıt bitiş tarihi gelecekte bir tarih olmalı.";
+= "Otomatik yanıtın bitiş tarihi gelecekte bir tarih olmalı.";
 
 /* forward messages */
 "Forward incoming messages" = "Gelen e-postaları iletirken";
 "Keep a copy" = "Bir kopyasını sakla";
 "Please specify an address to which you want to forward your messages."
 = "Lütfen e-postaların iletileceği adresi beilrtin.";
-"You are not allowed to forward your messages to an external email address." = "E-postalarınızı sistem dışındaki bir adrese iletme izniniz yok.";
-"You are not allowed to forward your messages to an internal email address." = "E-postalarınızı sistemdeki bir başka adrese iletme izniniz yok.";
+"You are not allowed to forward your messages to an external email address." = "E-postalarınızı sistem dışındaki bir adrese iletmezsiniz.";
+"You are not allowed to forward your messages to an internal email address." = "E-postalarınızı sistemdeki bir başka adrese iletmezsiniz.";
 
 /* d & t */
 "Current Time Zone" = "Geçerli Saat Dilimi";
@@ -85,7 +86,7 @@
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
 "shortDateFmt_15" = "";
-   
+
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
 "longDateFmt_2" = "%A, %d %B, %Y";
@@ -146,10 +147,17 @@
 /* Mailer */
 "Labels" = "Etiketler";
 "Label" = "Etiket";
+"IMAP Label" = "IMAP Etiketi";
+"Invalid label" = "Boşluk ve şu karakterleri kullanmayın ( ) { } % * \" \\";
+"Duplicate label" = "Etiketin aynısını oluştur";
+"IMAP labels must have unique names." = "IMAP etiketleri farklı isimlerden oluşmalı.";
 "New label" = "Yeni etiket";
 "Show subscribed mailboxes only" = "Sadece üye olunan e-posta klasörlerini göster";
 "Synchronize only default mail folders (EAS)" = "Sadece varsayılan e-posta klasörlerini eşitle (EAS)";
 "Sort messages by threads" = "İletileri diziler halinde sırala";
+"Always open mail composer" = "E-posta düzenleyicisini her zaman aç";
+"Inside current window" = "Mevcut pencerenin içinde";
+"In a popup window" = "Yeni pencerede";
 "When sending mail, add unknown recipients to my" = "Gönderilen iletide bulunan yeni kişileri, aşağıdaki defterime ekle";
 "Address Book" = "Adres Defteri";
 "Forward messages" = "Başkasına İletilen e-postayı";
@@ -168,10 +176,10 @@
 /* Base font size for messages composed in HTML */
 "Default font size" = "Varsayılan yazı büyüklüğü";
 
-"Display remote inline images" = "İletiye gömülü harici resimleri";
+"Display remote inline images" = "Asılları dışarıda olup ileti içinde bağlantıları bulunan resimleri göster";
 "displayremoteinlineimages_never" = "Gösterme";
 "displayremoteinlineimages_always" = "Göster";
-"Auto save every" = "Yazdığım iletinin otomatik kaydedilme aralığı";
+"Auto save every" = "Yazılan iletinin otomatik kaydedilme aralığı";
 "minutes" = "dakika";
 
 /* Contact */
@@ -179,11 +187,13 @@
 "Collected Address Book" = "Otomatik Eklenen Adresler";
 
 /* IMAP Accounts */
+"Settings" = "Ayarlar";
+"Security" = "Güvenlik";
 "Mail Account" = "E-posta Hesabı";
 "New Mail Account" = "Yeni E-posta Hesabı";
 "Server Name" = "Sunucu Adı";
 "Port" = "Port";
-"Encryption" = "Şifreleme";
+"Encryption" = "Kripto";
 "None" = "Hiç biri";
 "User Name" = "Kullanıcı Adı";
 "Full Name" = "Ad Soyad";
@@ -195,6 +205,16 @@
 "Please specify a valid sender address." = "Lütfen geçeril bir gönderici adresi belirtin.";
 "Please specify a valid reply-to address." = "Lütfen geçeril bir yanıt adresi belirtin.";
 "Specify a hostname other than the local host" = "Yerel sunucu adından farklı bir sunucu adı belirtin";
+
+"No certificate installed" = "Yüklü sertifika yok";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "SSL sertifikası, PKCS # 12 (PFX) biçimini kullanmalıdır.";
+"Uninstall" = "Kaldır";
+"Choose PKCS12 Certificate .." = "PKCS12 Sertifikasını Seçin ..";
+"Certificate Import Password" = "Sertifika İçeri Alma Parolası";
+"Upload" = "Yükle";
+"When composing a message" = "İleti yazarken";
+"Digitally sign the message by default" = "İletiyi öntanımlı olarak sayısal olarak imzala";
+"Always try to encrypt the message" = "Her zaman iletiyi şifrelemeyi dene";
 
 /* Additional Parameters */
 "Additional Parameters" = "Diğer Özellikler";
@@ -233,12 +253,12 @@
 /* Confirmation asked when changing the language */
 "Save preferences and reload page now?" = "Tercihler kaydedilip ve sayfa tazelensin mi?";
 "Language" = "Dil";
-"choose" = "Seç ...";
+"choose" = "Seçin ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -250,7 +270,9 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
+"Japanese" = "日本語";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
@@ -259,8 +281,10 @@
 "Polish" = "Polski";
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
@@ -270,7 +294,7 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
-"Refresh View" = "Görünüm Tazeleme Sıklığı";
+"Refresh View" = "Tazeleme Sıklığı";
 "refreshview_manually" = "El ile";
 "refreshview_every_minute" = "Dakikada bir";
 "refreshview_every_2_minutes" = "Her 2 dakikada bir";
@@ -303,11 +327,11 @@
 "Enable filter" = "Süzgeçi Etkinleştir";
 
 /* Filters - UIxFilterEditor */
-"Filter name" = "Süzgeç adı";
+"Filter name" = "Süzgeçin adı";
 /* Button label */
 "Add a condition" = "Bir koşul ekle";
 /* Button label */
-"Add an action" = "Eylem ekle";
+"Add an action" = "Bir eylem ekle";
 "For incoming messages that" = "Gelen ileti";
 "match all of the following rules" = "aşağıdaki kuralların hepsiyle eşleşiyorsa";
 "match any of the following rules" = "aşağıdaki kurallardan sadece biriyle eşleşiyorsa";
@@ -370,33 +394,33 @@
 "Password must not be empty." = "Şifre boş olamaz.";
 "The passwords do not match. Please try again." = "Şifreler eşleşmiyor. Lütfen tekrar deneyin.";
 "Password change failed" = "Şifre değiştirme başarısız";
-"Password change failed - Permission denied" = "Şifre değiştirme başarısız - İzin yetersiz";
-"Password change failed - Insufficient password quality" = "Şifre değiştirme başarısız - yetersiz şifre niteliği";
+"Password change failed - Permission denied" = "Şifre değiştirme başarısız - İzin düzeyi yetersiz";
+"Password change failed - Insufficient password quality" = "Şifre değiştirme başarısız - şifre gerekli şartları karşılamıyor";
 "Password change failed - Password is too short" = "Şifre değiştirme başarısız - Şifre çok kısa";
-"Password change failed - Password is too young" = "Şifre değiştirme başarısız - Şifre çok taze";
-"Password change failed - Password is in history" = "Şifre değiştirme başarısız - Şifre geçmişte kullanılmış";
-"Unhandled policy error: %{0}" = "Telafi edilemeyen yöntem hatası: %{0}";
-"Unhandled error response" = "Telafi edilemeyen hata yanıtı";
+"Password change failed - Password is too young" = "Şifre değiştirme başarısız - Şifre çok yetersiz";
+"Password change failed - Password is in history" = "Şifre değiştirme başarısız - Şifre daha önceden kullanılmış";
+"Unhandled policy error: %{0}" = "İşlenmeyen yöntem hatası: %{0}";
+"Unhandled error response" = "İşlenmeyen hata yanıtı";
 "Password change is not supported." = "Şifre değiştirme desteklenmiyor.";
-"Unhandled HTTP error code: %{0}" = "Telafi edilemeyen HTTP hata kodu: %{0}";
+"Unhandled HTTP error code: %{0}" = "İşlenmeyen HTTP hata kodu: %{0}";
 "Cancel" = "İptal";
 "Invitations" = "Davetler";
 "Edit Filter" = "Süzgeçi düzenle";
 "Delete Filter" = "Süzgeçi Sil";
-"Create Filter" = "Süzgeç Oluştur";
+"Create Filter" = "Yeni Süzgeç";
 "Delete Label" = "Bayrağı Sil";
-"Create Label" = "Etiket Oluştur";
+"Create Label" = "Yeni Etiket";
 "Accounts" = "Hesaplar";
 "Edit Account" = "Hesabı Düzenle";
 "Delete Account" = "Hesabı Sil";
-"Create Account" = "Hesap Oluştur";
+"Create Account" = "Yeni Hesap";
 "Account Name" = "Hesap Adı";
 "SSL" = "SSL";
 "TLS" = "TLS";
 
 /* Avatars */
 "Use Gravatar" = "Gravatar Kullan";
-"Alternate Avatar" = "Avatarı Değiştir";
+"Alternate Avatar" = "Değişken Avatar";
 "none" =  "Hiç biri";
 "identicon" = "Profil İkonu";
 "monsterid" = "Canavar";

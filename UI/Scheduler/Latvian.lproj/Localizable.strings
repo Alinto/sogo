@@ -107,6 +107,7 @@
 "Name of the Calendar" = "Kalendāra nosaukums";
 "new" = "Jauns";
 "Print view" = "Drukas skats";
+"Print" = "Drukāt";
 "edit" = "Labot";
 "delete" = "Dzēst";
 "proposal" = "Priekšlikums";
@@ -147,6 +148,7 @@
 "Display events and tasks colors" = "Rādīt notikumus un uzdevumus krāsas";
 "Borders" = "Robežas";
 "Backgrounds" = "Foni";
+"Page Format" = "Lapas formāts";
 
 /* Appointments */
 "Appointment viewer" = "Tikšanās skatītājs";
@@ -218,6 +220,7 @@
 "view_next14" = "Nākamās 14 dienas";
 "view_next31" = "Nākamās 31 diena";
 "view_thismonth" = "Šis mēnesis";
+"view_thisyear" = "Šogad";
 "view_future" = "Visi nākotnes notikumi";
 "view_selectedday" = "Izvēlētā diena";
 "view_not_started" = "Neuzsāktie uzdevumi";
@@ -339,6 +342,7 @@
 "repeat_YEARLY" = "Ik gadu";
 "repeat_CUSTOM" = "Pielāgots...";
 "reminder_NONE" = "Nav atgādinājumu";
+"reminder_0" = "Pasākuma laikā";
 "reminder_5_MINUTES_BEFORE" = "pirms 5 minūtēm";
 "reminder_10_MINUTES_BEFORE" = "pirms 10 minūtēm";
 "reminder_15_MINUTES_BEFORE" = "pirms 15 minūtēm";
@@ -435,16 +439,48 @@ validate_untilbeforeend    = "Atkārtošanās ir jāpārtrauc pēc pirmā gadīj
 = "Jūs nevarat noņemt vai atteikties no jūsu personiskā kalendāra.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Vai tiešām vēlaties dzēst kalendāru \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Vai tiešām vēlaties izdzēst atlasītos komponentus?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Loma";
+
+/* Participant role: participation is required */
 "Participant" = "Dalībnieks";
+
+/* Participant role: participation is required */
+"req-participant" = "Dalībnieks";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Neobligāts dalībnieks";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Neobligāts dalībnieks";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Nav dalībnieks";
-"Chair" = "Katedra";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Nav dalībnieks";
+
+/* Participant role: participant is chair of the calendar entity */
+"Chair" = "Priekšsēdētājs";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Priekšsēdētājs";
+
+/* Participant status: needs action */
 "Needs action" = "Nepieciešama darbība";
+
+/* Participant status: event accepted */
 "Accepted" = "Akceptēts";
+
+/* Participant status: event declined */
 "Declined" = "Noraidījis";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Varbūtējs";
+
 "Free" = "Brīvs";
 "Busy" = "Aizņemts";
 "Maybe busy" = "Varbūt aizņemts";
@@ -540,6 +576,8 @@ vtodo_class2 = "(Konfidenciāls uzdevums)";
 "Delete Event" = "Dzēst notikumu";
 "Copy event to my calendar" = "Kopēt manā kalendārā notikumu";
 "View Raw Source" = "Apskatīt RAW avotu";
+"Move To" = "Pārvietot uz";
+"Copy To" = "Kopēt uz";
 "Subscriptions" = "Abonementi";
 "Subscribe to a shared folder" = "Parakstīties uz koplietojamu mapi";
 "Subscribe to a web calendar..." = "Abonēt Web kalendāru...";
@@ -571,6 +609,7 @@ vtodo_class2 = "(Konfidenciāls uzdevums)";
 "More options" = "Papildu opcijas";
 "Delete This Occurrence" = "Dzēst šo notikumu";
 "Delete All Occurrences" = "Dzēst visus notikumus";
+"Add Recurrence Date" = "Pievienot atkārtošanos datumu";
 "Add From" = "Pievienot No";
 "Add Due" = "Pievienot paredzamu";
 "Import" = "Importēt";

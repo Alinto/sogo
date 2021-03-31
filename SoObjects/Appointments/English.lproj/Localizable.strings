@@ -7,6 +7,7 @@ vevent_class2 = "(Confidential event)";
 vtodo_class0 = "(Public task)";
 vtodo_class1 = "(Private task)";
 vtodo_class2 = "(Confidential task)";
+
 /* Receipts */
 "The event \"%{Summary}\" was created" = "The event \"%{Summary}\" was created";
 "The event \"%{Summary}\" was deleted" = "The event \"%{Summary}\" was deleted";
@@ -14,6 +15,7 @@ vtodo_class2 = "(Confidential task)";
 "The following attendees(s) were notified" = "The following attendee(s) were notified";
 "The following attendees(s) were added" = "The following attendee(s) were added";
 "The following attendees(s) were removed" = "The following attendee(s) were removed";
+
 /* IMIP messages */
 "calendar_label" = "Calendar";
 "startDate_label" = "Start";
@@ -26,17 +28,20 @@ vtodo_class2 = "(Confidential task)";
 "comment_label" = "Comment";
 "organizer_label" = "Organizer";
 "attendee_label" = "Attendee";
+
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Event Invitation: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(sent by %{SentBy}) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Event Cancelled: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "The appointment \"%{Summary}\" for the %{OldStartDate} has changed";
@@ -46,6 +51,7 @@ vtodo_class2 = "(Confidential task)";
 = "The following parameters have changed in the \"%{Summary}\" meeting:";
 "Please accept or decline those changes."
 = "Please accept or decline those changes.";
+
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Accepted invitation: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Declined invitation: \"%{Summary}\"";
@@ -59,6 +65,15 @@ vtodo_class2 = "(Confidential task)";
 = "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}has not yet decided upon your event invitation.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Reminder: \"%{Summary}\" - %{StartDate}";
+
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Cannot access resource: \"%{Cn} %{SystemEmail}\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}.";
+
+/* Participation role */
+"Your participation is required to this event" = "Your participation is required to this event";
+"Your participation is optional to this event" = "Your participation is optional to this event";
+"Your participation is not required to this event" = "Your participation is not required to this event";

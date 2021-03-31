@@ -147,10 +147,17 @@
 /* Mailer */
 "Labels" = "Oznake";
 "Label" = "Oznaka";
+"IMAP Label" = "IMAP oznaka";
+"Invalid label" = "Nemojte koristiti razmak niti znakove ( ) { } % * \" \\";
+"Duplicate label" = "Udvostruči oznaku";
+"IMAP labels must have unique names." = "IMAP oznake moraju imati jedinstvene nazive.";
 "New label" = "Nova oznaka";
 "Show subscribed mailboxes only" = "Prikaži samo pretplaćene mape";
 "Synchronize only default mail folders (EAS)" = "Sinkroniziraj samo standardne mape (EAS)";
 "Sort messages by threads" = "Sortiraj poruke po temi";
+"Always open mail composer" = "Uvijek otvori sastavljač poruke";
+"Inside current window" = "U trenutnom prozoru";
+"In a popup window" = "U skočnom prozoru";
 "When sending mail, add unknown recipients to my" = "Prilikom slanja pošte, dodaj nepoznatog primatelja u moj";
 "Address Book" = "Imenik";
 "Forward messages" = "Proslijedi poruke";
@@ -180,6 +187,8 @@
 "Collected Address Book" = "Prikupljeni imenik";
 
 /* IMAP Accounts */
+"Settings" = "Postavke";
+"Security" = "Sigurnost";
 "Mail Account" = "Račun e pošte";
 "New Mail Account" = "Novi račun e pošte";
 "Server Name" = "Ime poslužitelja";
@@ -196,6 +205,16 @@
 "Please specify a valid sender address." = "Molim odaberite važeču adresu pošiljatelja";
 "Please specify a valid reply-to address." = "Molim odaberite važeču adresu za odgovaranje";
 "Specify a hostname other than the local host" = "Odredite \"hostname\" ali ne \"local host\"";
+
+"No certificate installed" = "Nema instaliranih vjerodajnica";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "SSL vjerodajnica mora biti u PKCS#12 (PFX) obliku.";
+"Uninstall" = "Deinstaliraj";
+"Choose PKCS12 Certificate .." = "Odaberi PKCS#12 vjerodajnicu...";
+"Certificate Import Password" = "Zaporka vjerodajnice";
+"Upload" = "Otpremi";
+"When composing a message" = "Kad sastavljam poruku";
+"Digitally sign the message by default" = "Zadano digitalno potpiši poruku";
+"Always try to encrypt the message" = "Uvijek pokušaj kodirati poruku";
 
 /* Additional Parameters */
 "Additional Parameters" = "Dodatne postavke";
@@ -251,7 +270,9 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
+"Japanese" = "日本語";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
@@ -260,8 +281,10 @@
 "Polish" = "Polski";
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";

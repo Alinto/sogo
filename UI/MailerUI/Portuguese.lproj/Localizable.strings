@@ -43,7 +43,7 @@
 "Search multiple mailboxes" = "Pesquisar múltiplas caixas de correio";
 
 /* Main Frame  */
-"Home"                 = "Início"; 
+"Home"                 = "Início";
 "Calendar"             = "Calendário";
 "Addressbook"          = "Contactos";
 "Mail"                 = "Correio";
@@ -53,7 +53,13 @@
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Bem-Vindo ao SOGo WebMail. Use as pastas à esquerda para exibir suas contas de email!";
 "Read messages"       = "Ler mensagens";
+
+/* Tooltip for fab button */
 "Write a new message" = "Escrever uma nova mensagem";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Escreva a mensagem numa nova janela";
+
 "Share" = "Partilha";
 "Account" = "Conta";
 "Shared Account" = "Conta partilhada";
@@ -63,6 +69,14 @@
 
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Nenhuma caixa de email selecionada";
+
+"An error occured while communicating with the mail server" = "Ocorreu um erro ao estabelecer comunicação com o servidor de correio";
+
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "Pasta compactada";
+/* Empty Trash success message */
+"Trash emptied" = "Lixeira esvaziada";
 
 /* acls */
 "Access rights to" = "Permissões de acesso para";
@@ -95,6 +109,7 @@
 "Body"          = "Corpo";
 "Open" = "Abrir";
 "Select All" = "Seleccionar Tudo";
+"Select Message" = "Selecione a mensagem";
 "Attach Web Page..." = "Anexar Página Web...";
 "file" = "arquivo";
 "files" = "arquivos";
@@ -109,6 +124,9 @@
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "O remetente desta mensagem pediu para ser notificado quando você ler esta mensagem. Deseja notificar o remetente?";
 "Return Receipt (displayed) - %@"= "Endereço de Resposta - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Este é o Endereço de Resposta do e-mail que enviou para %@.\n\nNota: Este Endereço de Resposta permite saber que a mensagem foi visualizada pelo destinatário. Não há garantia de que o destinatário tenha lido ou entendido o conteúdo da mensagem.";
+"Security" = "Segurança";
+"Sign" = "Assinar";
+"Encrypt" = "Encriptar";
 "Priority" = "Prioridade";
 "highest" = "Muito Alta";
 "high" = "Alta";
@@ -210,6 +228,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Converter para Tarefa";
 
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Guardar todos os anexos";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "anexos";
+
 "Print..." = "Imprimir...";
 "Delete Message" = "Apagar Mensagem";
 "Delete Selected Messages" = "Apagar Mensagens Selecionadas";
@@ -224,6 +248,24 @@
 
 /* Number of selected messages in list */
 "selected" = "selecionado";
+
+/* Encrypted message notification */
+"This message is encrypted" = "Esta mensagem está encriptada";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Esta mensagem não pode ser desencriptada. Por favor certifique-se que enviou o seu certificado S/MIME no módulo de preferências do email.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Não foi possível verificar a assinatura da mensagem";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "A mensagem foi alterada";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Erro ao ler o certificado. Por favor instale um novo certificado.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "Não existe um certificado associado à conta.";
 
 "This Folder" = "Esta Pasta";
 
@@ -260,9 +302,20 @@
 "Operation failed" = "Falha na Operação";
 "Quota" = "Quota:";
 "quotasFormat" = "%{0}% utilizado de %{1} MB";
+"Unable to move/delete folder." = "Não é possível mover/eliminar a pasta.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "A caixa de correio não pode ser movida para a pasta Lixo. Pretende eliminá-la imediatamente?";
 
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Tem certeza  que deseja apagar as mensagens selecionadas?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} mensagem/mensagens copiada(s)";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} mensagem/mensagens movida(s)";
 
 "Please select a message." = "Por favor, selecione uma mensagem.";
 "Please select a message to print." = "Por favor, selecione a mensagem para imprimir.";
@@ -289,6 +342,7 @@
 = "As mensagens não podem ser movidas para a pasta do lixo. Gostaria de eliminar imediatamente?";
 
 /* Message editing */
+"Please specify a subject." = "Por favor especifique um assunto.";
 "error_missingsubject" = "Falta o Assunto";
 "error_missingrecipients" = "Sem destinatários seleccionados";
 "Send Anyway" = "Enviar na mesma";
@@ -297,8 +351,14 @@
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Erro ao carregar o arquivo \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Este arquivo está a ser carregado. Se fechar a janela irá interromper o processo.";
+"Message is too big" = "A mensagem excede o tamanho permitido";
 
-/* Message sending */
+/* Appears while sending the message */
+"Sending" = "A enviar";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Enviado";
+
 "cannot send message: (smtp) all recipients discarded" = "Não é possível enviar a mensagem: todos os destinatários são inválidos.";
 "cannot send message (smtp) - recipients discarded" = "Não é possível enviar a mensagem. Os seguintes endereços estão inválidos";
 "cannot send message: (smtp) error when connecting" = "Não é possível enviar a mensagem: erro ao conectar ao servidor SMTP.";
@@ -325,11 +385,13 @@
 "Set as Junk" = "Marcar como Lixo Eletrônico";
 
 "Sort" = "Ordenar";
+"Order Received" = "Pedido Recebido";
 "Descending Order" = "Ordem descrescente";
 "Back" = "Voltar";
 "Copy messages" = "Copiar mensagens";
 "More messages options" = "Mais opções";
 "Mark as Unread" = "Marcar como não lido";
+"Mark as Read" = "Marcar como Lida";
 "Closing Window ..." = "Fechando Janela ...";
 "Tried to send too many mails. Please wait." = "Você tentou enviar muitos emails. Por favor, aguarde.";
 "View Mail" = "Ver Email";
@@ -340,3 +402,30 @@
 "Your email has been saved" = "Seu email foi salvo";
 "Your email has been sent" = "Seu email foi enviado";
 "Folder compacted" = "Pasta compactada";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Âmbito da pesquisa";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Gerir inscrições";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Filtro";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

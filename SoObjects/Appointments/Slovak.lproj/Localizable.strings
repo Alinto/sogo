@@ -7,45 +7,51 @@ vevent_class2 = "(Dôverná udalosť)";
 vtodo_class0 = "(Verejná úloha)";
 vtodo_class1 = "(Súkromná úloha)";
 vtodo_class2 = "(Dôverná úloha)";
+
 /* Receipts */
 "The event \"%{Summary}\" was created" = "Udalosť \"%{Summary}\" bola vytvorená";
-"The event \"%{Summary}\" was deleted" = "Udalosť \"%{Summary}\" bola vymazaná";
-"The event \"%{Summary}\" was updated" = "Udalosť \"%{Summary}\" bola aktualizovaná";
-"The following attendees(s) were notified" = "Nasledujúci účastník(ci) bol upozornený";
-"The following attendees(s) were added" = "Nasledujúci účastník(ci) bol pridaný";
-"The following attendees(s) were removed" = "Nasledujúci účastník(ci) bol odstránený";
+"The event \"%{Summary}\" was deleted" = "Udalosť \"%{Summary}\" bola vymazaná.";
+"The event \"%{Summary}\" was updated" = "Udalosť \"%{Summary}\" bola aktualizovaná.";
+"The following attendees(s) were notified" = "Nasledujúci účastník/ci bol/i upozornený/í.";
+"The following attendees(s) were added" = "Nasledujúci účastník/ci bol/i pridaný/í.";
+"The following attendees(s) were removed" = "Nasledujúci účastník/ci bol/i odstránený/í.";
+
 /* IMIP messages */
 "calendar_label" = "Kalendár";
 "startDate_label" = "Začiatok";
 "endDate_label" = "Koniec";
 "time_label" = "Čas";
 "to_label" = "pre";
-"due_label" = "Platnosť:";
+"due_label" = "Termín dokončenia:";
 "location_label" = "Miesto";
 "summary_label" = "Zhrnutie:";
 "comment_label" = "Komentár:";
 "organizer_label" = "Organizátor";
 "attendee_label" = "Účastník";
+
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Pozvánka na udalosť: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(odoslané %{SentBy})";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}Vás pozval na %{Summary}.⏎ ⏎ Začiatok: %{StartDate}⏎ Koniec: %{EndDate}⏎ Podrobnosti: %{Description}";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}has invited you to %{Summary}.⏎ ⏎ Start: %{StartDate} at %{StartTime}⏎ End: %{EndDate} at %{EndTime}⏎ Description: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}Vás pozval na %{Summary}.  Začiatok: %{StartDate} Koniec: %{EndDate} Podrobnosti: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}Vás pozval na %{Summary}.  Začiatok: %{StartDate} o %{StartTime} Koniec: %{EndDate} o %{EndTime} Podrobnosti: %{Description}";
+
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Udalosť zrušená: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}zrušil túto udalosť: %{Summary}.⏎ ⏎ Začiatok: %{StartDate}⏎ Koniec: %{EndDate}⏎ Podrobnosti: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}zrušil túto udalosť: %{Summary}.⏎ ⏎\nZačiatok: %{StartDate} o %{StartTime}⏎ Koniec: %{EndDate} o %{EndTime}⏎ \nPopis: %{Description}";
+
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
-= "Stretnutie \"%{Summary}\" z %{OldStartDate} bolo zmenené";
+= "Stretnutie \"%{Summary}\" z %{OldStartDate} bolo zmenené.";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
-= "Stretnutie \"%{Summary}\" z %{OldStartDate} o %{OldStartTime} bola zmenená";
+= "Stretnutie \"%{Summary}\" z %{OldStartDate} o %{OldStartTime} bola zmenené.";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
 = "Nasledujúce parametre boli zmenené v \"%{Summary}\" stretnutie:";
 "Please accept or decline those changes."
 = "Prosím prijmite alebo odmietnite tieto zmeny.";
+
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Prijatá pozvánka: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Zamietnutá pozvánka: \"%{Summary}\"";
@@ -59,6 +65,15 @@ vtodo_class2 = "(Dôverná úloha)";
 = "%{Attendee} %{SentByText}delegoval pozvánku na %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}zatiaľ nerozhodol o Vašej pozvánke.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Pripomienka: \"%{Summary}\" - %{StartDate}";
+
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Zdroj nedostupný: \"%{Cn} %{SystemEmail}\"";
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Maximálny počet súčasných rezervácií (%{NumberOfSimultaneousBookings}) prekročil zdroje \"%{Cn} %{SystemEmail}\". Konfliktná udalosť je \"%{EventTitle}\", začínajúca %{StartDate}.";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Bol dosiahnutý maximálny počet súčasných rezervácií (%{NumberOfSimultaneousBookings}) pre zdroj \"%{Cn} %{SystemEmail}\". Konfliktná udalosť je \"%{EventTitle}\", začínajúca %{StartDate}.";
+
+/* Participation role */
+"Your participation is required to this event" = "Na tejto udalosti je potrebná vaša účasť";
+"Your participation is optional to this event" = "Vaša účasť je pre túto udalosť dobrovoľná";
+"Your participation is not required to this event" = "Vaša účasť sa na tejto udalosti nevyžaduje";

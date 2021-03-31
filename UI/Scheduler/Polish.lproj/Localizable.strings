@@ -107,6 +107,7 @@
 "Name of the Calendar" = "Nazwa kalendarza";
 "new" = "Nowy";
 "Print view" = "Widok wydruku";
+"Print" = "Drukuj";
 "edit" = "Edytuj";
 "delete" = "Usuń";
 "proposal" = "Propozycja";
@@ -147,6 +148,7 @@
 "Display events and tasks colors" = "Pokazuj kolory wydarzeń i zadań";
 "Borders" = "Ramki";
 "Backgrounds" = "Tła";
+"Page Format" = "Format strony";
 
 /* Appointments */
 "Appointment viewer" = "Przeglądarka spoktań";
@@ -218,6 +220,7 @@
 "view_next14" = "Następne 14 dni";
 "view_next31" = "Następne 31 dni";
 "view_thismonth" = "Ten miesiąc";
+"view_thisyear" = "Ten rok";
 "view_future" = "wszystkie przyszłe wydarzenia";
 "view_selectedday" = "Zaznaczony dzień";
 "view_not_started" = "Zadania nie rozpoczęte";
@@ -339,6 +342,7 @@
 "repeat_YEARLY" = "Co rok";
 "repeat_CUSTOM" = "Inaczej";
 "reminder_NONE" = "Bez przypomnienia";
+"reminder_0" = "W chwili rozpoczęcia wydarzenia";
 "reminder_5_MINUTES_BEFORE" = "5 minut przed";
 "reminder_10_MINUTES_BEFORE" = "10 minut przed";
 "reminder_15_MINUTES_BEFORE" = "15 minut przed";
@@ -435,16 +439,48 @@ validate_untilbeforeend    = "Zapętlenie musi zakończyć się po pierwszym wys
 = "Nie możesz usunąć ani zrezygnować z subskrypcji kalendarza osobistego.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Czy na pewno chcesz usunąć kalendarz \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Na pewno chcesz usunąć wybrane komponenty?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Rola";
+
+/* Participant role: participation is required */
 "Participant" = "Uczestnik";
+
+/* Participant role: participation is required */
+"req-participant" = "Uczestnik";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Uczestnik opcjonalny";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Uczestnik opcjonalny";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Nie uczestniczy";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Nie uczestniczy";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "Prowadzący";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Prowadzący";
+
+/* Participant status: needs action */
 "Needs action" = "Wymaga akcji";
+
+/* Participant status: event accepted */
 "Accepted" = "Zaakceptowane";
+
+/* Participant status: event declined */
 "Declined" = "Odmówione";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Niepewne";
+
 "Free" = "Wolny";
 "Busy" = "Zajęty";
 "Maybe busy" = "Być może zajęty";
@@ -540,6 +576,8 @@ vtodo_class2 = "(Zadanie poufne)";
 "Delete Event" = "Usuń wydarzenie";
 "Copy event to my calendar" = "Kopiuj wydarzenie do mojego kalendarza";
 "View Raw Source" = "Obejrzyj źródło";
+"Move To" = "Przenieś do";
+"Copy To" = "Kopiuj do";
 "Subscriptions" = "Subskrybcje";
 "Subscribe to a shared folder" = "Subskrybuj współdzielony folder";
 "Subscribe to a web calendar..." = "Subskrybuj sieciowy kalendarz";
@@ -571,6 +609,7 @@ vtodo_class2 = "(Zadanie poufne)";
 "More options" = "Więcej opcji";
 "Delete This Occurrence" = "Usuń to wydarzenie";
 "Delete All Occurrences" = "Usuń wszystkie wydarzenia";
+"Add Recurrence Date" = "Dodaj datę powtórzenia";
 "Add From" = "Dodaj od";
 "Add Due" = "Dodaj termin";
 "Import" = "Importuj";

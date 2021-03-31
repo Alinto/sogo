@@ -7,7 +7,8 @@
 "Expunge"     = "Compactar";
 "Forward"     = "Reenviar";
 "Get Mail"    = "Rebre";
-"Junk"        = "Brossa";
+"Junk"        = "Correu brossa";
+"Not junk"    = "No és brossa";
 "Reply"       = "Respondre";
 "Reply All"   = "Respondre a tots";
 "Print"       = "Imprimir";
@@ -21,6 +22,7 @@
 "Options" = "Opcions";
 "Close" = "Tancar";
 "Size" = "Mida";
+
 /* Tooltips */
 "Send this message now" = "Enviar aquest missatge ara";
 "Select a recipient from an Address Book" = "Seleccionar un destinatari d'una llibreta d'adreces";
@@ -33,29 +35,49 @@
 "Reply to sender and all recipients" = "Respondre al remitent i a tots els destinataris";
 "Forward selected message" = "Reenviar missatge seleccionat";
 "Delete selected message or folder" = "Esborrar el missatge o la carpeta seleccionats";
-"Mark the selected messages as junk" = "Marcar els missatges seleccionats com a brossa";
 "Print this message" = "Imprimir aquest missatge";
 "Stop the current transfer" = "Aturar la transferència";
 "Attachment" = "Adjunt";
 "Unread" = "No llegit";
 "Flagged" = "Marcat";
 "Search multiple mailboxes" = "Cerca a diverses bústies";
+
 /* Main Frame  */
-"Home"                 = "Inici"; 
+"Home"                 = "Inici";
 "Calendar"             = "Calendari";
 "Addressbook"          = "Llibreta d'adreces";
 "Mail"                 = "Correu";
 "Right Administration" = "Gestió de permisos";
 "Help" = "Ajuda";
+
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Benvingut a SOGo! Utilitzeu l'arbre de carpetes de l'esquerra per a navegar pels comptes de correu.";
 "Read messages"       = "Llegir missatges";
+
+/* Tooltip for fab button */
 "Write a new message" = "Redactar un missatge nou";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Redacta un missatge en una nova finestra";
+
 "Share" = "Compartir";
 "Account" = "Compte";
 "Shared Account" = "Compte compartit";
-/* Empty right pane */
+
+/* A mailbox is selected, but no message (only shown on large screens) */
 "No message selected" = "Cap missatge seleccionat";
+
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "Cap carpeta seleccionada";
+
+"An error occured while communicating with the mail server" = "S'ha produït un error durant la comunicació amb el servidor de correu";
+
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "carpeta compactada";
+/* Empty Trash success message */
+"Trash emptied" = "S'ha buidat la paperera";
+
 /* acls */
 "Access rights to" = "Drets d'accés a";
 "For user" = "Per a l'usuari";
@@ -75,17 +97,19 @@
 "Saved Messages.zip" = "missatgesdesats.zip";
 "Update" = "Actualitzar";
 "Cancel" = "Cancel·lar";
+
 /* Mail edition */
 "From"          = "De";
-"Subject"       = "Assummpte";
+"Subject"       = "Assumpte";
 "To"            = "Per a";
 "Cc"            = "Cc";
 "Bcc"           = "C/o";
-"Reply-To"	    = "Respondre a";
+"Reply-To"	= "Respondre a";
 "Add address"   = "Afegir adreça";
 "Body"          = "Cos";
 "Open" = "Obrir";
 "Select All" = "Seleccionar tots";
+"Select Message" = "Selecciona el missatge";
 "Attach Web Page..." = "Adjuntar pàgina Web...";
 "file" = "Fitxer";
 "files" = "Fitxers";
@@ -97,9 +121,13 @@
 "Edit Draft..." = "Modificar esborrany...";
 "Load Images" = "Carregar imatges";
 "Return Receipt" = "Justificant de recepció";
-"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "El remitent d'aquest missatge ha demanat justificant de recepció. Voleu enviar-li justificant de recepció?";
+"Choose which identity to send this message from" = "Tria amb quina identitat vols enviar aquest missatge";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "El remitent d'aquest missatge demana ser notificat quan llegeixis el missatge. Vols notificar-li?";
 "Return Receipt (displayed) - %@"= " Justificant de recepció (mostrat) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Aquest és un justificant de recepció del missatge que has enviat a% @. \ N \ nNota: Aquest justificant de recepció només confirma que el missatge ha estat mostrat en l'ordinador del destinatari. No es garanteix que el destinatari haja llegit o entès el contingut del missatge.";
+"Security" = "Seguretat";
+"Sign" = "Signar";
+"Encrypt" = "Xifrar";
 "Priority" = "Prioritat";
 "highest" = "Màxima";
 "high" = "Alta";
@@ -109,12 +137,14 @@
 "This mail is being sent from an unsecure network!" = "Aquest missatge s'envia des d'una xarxa no segura.";
 "Address Book" = "Llibreta d'adreces";
 "Search For" = "Cercar";
+
 /* Popup "show" */
 "all"     = "tot";
 "read"    = "llegit";
 "unread"  = "no llegit";
 "deleted" = "esborrat";
 "flagged" = "marcat";
+
 /* MailListView */
 "Sender" = "Remitent";
 "Subject or Sender" = "Assumpte o remitent";
@@ -135,22 +165,29 @@
 "Mark Unread" = "Marcar com a no llegit";
 "Mark Read"   = "Marcar com a llegit";
 "Untitled" = "Sense títol";
+
 /* Tree */
 "SentFolderName"   = "Enviats";
 "TrashFolderName"  = "Paperera";
 "InboxFolderName"  = "Safata d'entrada";
 "DraftsFolderName" = "Esborranys";
+"JunkFolderName" = "Correu brossa";
 "SieveFolderName"  = "Filtres";
 "Folders"          = "Carpetes"; /* title line */
+
 /* MailMoveToPopUp */
 "MoveTo"        = "Moure a &hellip;";
+
 /* Address Popup menu */
 "Add to Address Book..." = "Afegir a una llibreta d'adreces...";
+"Successfully created card" = "Contacte creat correctament";
 "Compose Mail To" = "Crear missatge per a";
 "Create Filter From Message..." = "Crear filtre a partir del missatge...";
+
 /* Image Popup menu */
 "Save Image" = "Desar imatge";
 "Save Attachment" = "Guardar adjunt";
+
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Obrir missatge en una finestra nova";
 "Copy Folder Location" = "Copiar adreça de la carpeta";
@@ -167,10 +204,13 @@
 "Get Messages for Account" = "Rebre missatges per a compte";
 "Properties..." = "Propietats...";
 "Delegation..." = "Delegació ...";
+
 /* Use This Folder menu */
 "Sent Messages" = "Enviar missatges";
 "Drafts" = "Esborranys";
 "Deleted Messages" = "Missatges esborrats";
+"Junk Messages" = "Correu brossa";
+
 /* Message list popup menu */
 "Open Message In New Window" = "Obrir missatge en una finestra nova";
 "Reply to Sender Only" = "Respondre només al remitent";
@@ -183,14 +223,57 @@
 "Save As..." = "Desar com a...";
 "Print Preview" = "Vista preliminar";
 "View Message Source" = "Veure format original del missatge";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "Converteix a esdeveniment";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "Converteix a tasca";
+
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Descarrega tots els adjunts";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "adjunts";
+
 "Print..." = "Imprimir...";
 "Delete Message" = "Esborrar missatge";
 "Delete Selected Messages" = "Esborrar missatges seleccionats";
+"Mark the selected messages as junk" = "Marcar els missatges seleccionats com a brossa";
+"Mark the selected messages as not junk" = "Marcar els missatges seleccionats com a no brossa";
+
+/* Text appended to the recipients list when there are too many recipients */
+"and %{0} more..." = "i %{0} més...";
+
+/* Button label to hide extended list of recipients */
+"Hide" = "Amaga";
+
 /* Number of selected messages in list */
 "selected" = "seleccionats";
+
+/* Encrypted message notification */
+"This message is encrypted" = "Aquest missatge està xifrat";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Aquest missatge no es pot desxifrar. Assegureu-vos que heu carregat el certificat S/MIME del mòdul de preferències de correu.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "No es pot verificar la signatura del missatge";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "El missatge ha estat modificat";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Error en llegir el certificat. Instal·leu un certificat nou.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "No hi ha cap certificat associat al compte.";
+
 "This Folder" = "Aquesta carpeta";
+
 /* Label popup menu */
 "None" = "Cap";
+
 /* Mark popup menu */
 "As Read" = "Com a llegits";
 "Thread As Read" = "Conversa com a llegida";
@@ -211,6 +294,7 @@
 "results found" = "resultats trobats";
 "result found" = "resultat trobat";
 "Please specify at least one filter" = "Si us plau especifiqui com a mínim un filtre";
+
 /* Folder operations */
 "Name" = "Nom";
 "Enter the new name of your folder"
@@ -220,6 +304,21 @@
 "Operation failed" = "Operació no vàlida";
 "Quota" = "Quota";
 "quotasFormat" = "%{0}% de %{1} Mb usats";
+"Unable to move/delete folder." = "No es pot moure ni esborrar la carpeta.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "La bústia no es pot moure a la paperera. Voleu esborrar-la immediatament?";
+
+/* Confirmation message when deleting multiple messages */
+"Are you sure you want to delete the selected messages?" = "Voleu esborrar els missatges seleccionats?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} missatge(s) copiats";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} missatge(s) moguts";
+
 "Please select a message." = "Seleccioneu un missatge abans.";
 "Please select a message to print." = "Seleccioneu el missatge que voleu imprimir.";
 "Please select only one message to print." = "Per imprimir, seleccioneu només un missatge.";
@@ -239,20 +338,33 @@
 = "No es poden moure missatges a la mateixa carpeta.";
 "Copying a message into its own folder is impossible!"
 = "No es poden copiar missatges en la mateixa carpeta.";
+
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
 = "Els missatges no poden traslladar-se a la paperera. Els voleu esborrar immediatament?";
+
 /* Message editing */
+"Please specify a subject." = "Indiqueu un assumpte.";
 "error_missingsubject" = "No heu indicat l'assumpte";
 "error_missingrecipients" = "No heu indicat els destinataris";
 "Send Anyway" = "Enviar igualment";
 "Error while saving the draft" = "Error en guardar l'esborrany";
+
+/* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Error en carregar el fitxer \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Hi ha una càrrega de fitxer activa. S'interromprà si es tanca la finestra.";
-/* Message sending */
+"Message is too big" = "Missatge massa gran";
+
+/* Appears while sending the message */
+"Sending" = "Enviant";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Enviat";
+
 "cannot send message: (smtp) all recipients discarded" = "No s'ha pogut enviar el missatge: tots els destinataris són incorrectes.";
 "cannot send message (smtp) - recipients discarded" = "No s'ha pogut enviar el missatge. Les següents adreces són incorrectes";
 "cannot send message: (smtp) error when connecting" = "No s'ha pogut enviar el missatge. Error al connectar amb el servidor SMTP.";
+
 /* Contacts list in mail editor */
 "Email" = "Correu electrònic";
 "More mail options" = "Més opcions de correu";
@@ -270,12 +382,18 @@
 "Set as Drafts" = "Establir com a Esborranys";
 "Set as Sent" = "Establir com a enviat";
 "Set as Trash" = "Establir com a Paperera";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "Estableix com a correu brossa";
+
 "Sort" = "Ordenar";
+"Order Received" = "Ordre rebuda";
 "Descending Order" = "Ordre descendent";
 "Back" = "Enrere";
 "Copy messages" = "Copiar els missatges";
 "More messages options" = "Més opcions de missatges";
 "Mark as Unread" = "Marca com a no llegit";
+"Mark as Read" = "Marca com a llegit";
 "Closing Window ..." = "Tancant la finestra ...";
 "Tried to send too many mails. Please wait." = "Intent d'enviar massa correus. Esperar, per favor.";
 "View Mail" = "Veure correu";
@@ -283,3 +401,42 @@
 "Expanded" = "Expandit";
 "Add a Criteria" = "Afegeix un criteri";
 "More search options" = "Més opcions de cerca";
+"Your email has been saved" = "El teu email s'ha guardat";
+"Your email has been sent" = "El teu email s'ha enviat";
+"Folder compacted" = "carpeta compactada";
+
+/* Advanced search */
+"Enter Subject" = "Introduïu l'Assumpte";
+"Enter From" = "Introduïu  De";
+"Enter To" = "Introduïu Per a";
+"Enter Cc" = "Introduïu Cc";
+"Enter Body" = "Introduïu Cos";
+"match" = "coincideix";
+"does not match" = "no coincideix";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Abast de la cerca";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Gestiona les subscripcions";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Filtre";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

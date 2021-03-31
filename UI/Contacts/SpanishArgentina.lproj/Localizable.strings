@@ -41,20 +41,115 @@
 "Move To" = "Mover a";
 "Copy To" = "Copiar a";
 "Add to" = "Añadir a";
+"To" = "Para";
+"Carbon Copy (Cc)" = "Con Copia (Cc)";
+"Blind Carbon Copy (Bcc)" = "Con Copia Oculta (CCo)";
+
+/* Search scope: name fields */
+"name" = "Nombre";
+
+/* Search scope: name fields */
+"c_cn" = "Nombre";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "Email secundario";
+
+/* Search scope: screen name field */
+"nsaimid" = "Nombre en pantalla";
+
+/* Search scope: mail fields */
+"mail" = "Correo";
+
+/* Search scope: mail fields */
+"c_mail" = "Correo";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Teléfono";
+
+/* Search scope: telephone field */
+"homephone" = "Teléfono";
+
+/* Search scope: mobile field */
+"mobile" = "Celular";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Fax";
+
+/* Search scope: pager field */
+"pager" = "Localizador";
+
+/* Search scope: categories field */
+"c_categories" = "Categorías";
+
+/* Search scope: categories field */
+"vcardcategories" = "Categorías";
+
+/* Search scope: title field */
+"title" = "Cargo";
+
+/* Search scope: organization field */
+"c_o" = "Organización";
+
+/* Search scope: organization field */
+"o" = "Organización";
+
+/* Search scope: department field */
+"ou" = "Departamento";
+
+/* Search scope: city field */
+"l" = "Ciudad";
+
+/* Search scope: country field */
+"c" = "País";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Domicilio particular";
+
+/* Search scope: state/province field */
+"st" = "Provincia";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Provincia Natal";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "Código Postal";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "Código Postal";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "País Natal";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Pagina de inicio";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Página web";
+
+/* Search scope: note field */
+"description" = "Nota";
+
 /* Subheader of empty addressbook */
 "No contact" = "Ningún contacto";
+
 /* Subheader of system addressbook */
 "Start a search to browse this address book" = "Realice una búsqueda para encontrar contactos dentro de esta libreta de direcciones";
+
 /* Number of contacts in addressbook; string is prefixed by number */
 "contacts" = "contactos";
+
 /* No contact matching search criteria */
 "No matching contact" = "Ningún contacto coincide";
+
 /* Number of contacts matching search criteria; string is prefixed by number */
 "matching contacts" = "contactos que coinciden";
+
 /* Number of selected contacts in list */
 "selected" = "seleccionado";
+
 /* Empty right pane */
 "No contact selected" = "Ningún contacto seleccionado";
+
 /* Tooltips */
 "Create a new address book card" = "Crear un nuevo contacto";
 "Create a new list" = "Crear una nueva lista";
@@ -95,9 +190,11 @@
 "Work" = "Trabajo";
 "Mobile" = "Celular";
 "Pager" = "Buscapersonas";
+
 /* categories */
 "contacts_category_labels" = "Colega, Competidor, Cliente, Amigo, Familia, Socio, Proveedor, Prensa, VIP";
 "New category" = "Nueva categoría";
+
 /* adresses */
 "Title" = "Título";
 "Service" = "Servicio";
@@ -126,18 +223,22 @@
 "Name of the Address Book" = "Nombre de la libreta de direcciones";
 "Are you sure you want to delete the selected address book?"
 = "¿Está seguro de que desea borrar la libreta de direcciones seleccionada?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "¿Está seguro de que quiere borrar la libreta de direcciones \"%{0}\"?";
 "You cannot remove nor unsubscribe from a public addressbook."
 = "No puede ni borrarse ni darse de baja de una libreta de direcciones pública.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "No puede ni borrarse ni darse de baja de su libreta de direcciones personal.";
 "Are you sure you want to delete the selected contacts?"
 = "¿Está seguro que desea borrar el/los contacto(s) seleccionado(s)?";
+"Are you sure you want to delete the card of %{0}?" = "Está seguro que quiere borrar el contacto %{0}?";
 "You cannot delete the card of \"%{0}\"."
 = "No puede borrar el contacto de \"%{0}\".";
 "You cannot subscribe to a folder that you own!"
 = "No puede suscribirse a una carpeta que es suya.";
 "Unable to subscribe to that folder!"
 = "No puede suscribirse a esta carpeta.";
+
 /* acls */
 "Access rights to" = "Permisos de acceso a";
 "For user" = "Para el usuario";
@@ -156,11 +257,15 @@
 "The selected contact has no email address."
 = "El contacto seleccionado no tiene dirección de correo electrónico.";
 "Please select a contact." = "Seleccione un contacto, por favor.";
-/* Error messages for move and copy */
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} contacto(s) copiado/s";
+"%{0} card(s) moved" = "%{0} contactos(s) trasladado/s";
 "SoAccessDeniedException" = "No puede escribir en esta libreta de direcciones.";
-"Forbidden" = "No puede escribir en esta libreta de direcciones.";
+"Forbidden" = "Prohibido";
 "Invalid Contact" = "El contacto seleccionado ya no existe.";
 "Unknown Destination Folder" = "La libreta de direcciones de destino ya no existe.";
+
 /* Lists */
 "List details" = "Detalles de la lista";
 "List name" = "Nombre de la lista";
@@ -173,6 +278,8 @@
 "Export" = "Exportar";
 "Export Address Book..." = "Exportar libreta de direcciones...";
 "View Raw Source" = "Ver el original";
+
+/* Import */
 "Import Cards" = "Importar Contactos";
 "Select a vCard or LDIF file." = "Seleccionar un archivo vCard o LDIF.";
 "Upload" = "Cargar";
@@ -182,6 +289,7 @@
 "No card was imported." = "No se ha importado ningún contacto.";
 "A total of %{0} cards were imported in the addressbook." = "Un total de %{0} contactos han sido importados a la libreta de direcciones.";
 "Reload" = "Recargar";
+
 /* Properties window */
 "Address Book Name" = "Nombre de la libreta de direcciones";
 "Links to this Address Book" = "Enlaces a esta libreta de direcciones";
@@ -210,6 +318,7 @@
 "URL" = "URL";
 "New URL" = "Nueva URL";
 "street" = "dirección";
+"street (continued)" = "calle (continuación)";
 "Postoffice" = "Ofiicina postal";
 "Region" = "Región";
 "Postal Code" = "Código postal";
@@ -223,6 +332,24 @@
 "More options" = "Más opciones";
 "Role" = "Rol";
 "Add Screen Name" = "Agregar nombre a mostrar";
+"Custom 1" = "Personalizado 1";
+"Custom 2" = "Personalizado 2";
+"Custom 3" = "Personalizado 3";
+"Custom 4" = "Personalizado 4";
+"Custom Value" = "Campo personalizado";
+"New Custom Value" = "Nuevo campo personalizado";
 "Synchronization" = "Sincronización";
 "Synchronize" = "Sincronizar";
-"Successfully subscribed to address book" = "Se suscribió con éxito a la libreta de direcciones";
+"Sucessfully subscribed to address book" = "Se suscribió con éxito a la libreta de direcciones ";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "Alcance para la busqueda";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Intercambiar elemento";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

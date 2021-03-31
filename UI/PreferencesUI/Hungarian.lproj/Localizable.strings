@@ -40,13 +40,19 @@
 "Auto reply subject" = "Válaszüzenet tárgya";
 "You can write ${subject} to insert the original subject" = "Használhatja a ${subject} változót az eredeti tárgy beillesztéséhez";
 "Auto reply message" = "Automatikus válasz minden feladónak csak egy alkalommal";
-"Email addresses (separated by commas)" = "Email címek (vesszővel elválasztva)";
+"Email addresses" = "Email címek";
 "Add default email addresses" = "Saját email címek hozzáadása";
 "Days between responses" = "Válaszok között eltelt napok száma";
 "Do not send responses to mailing lists" = "Levelező listákra válasz mellőzése";
 "Enable auto reply on" = "Automatikus válasz engedélyezése";
+"First day of vacation" = "Távollét első napja";
 "Disable auto reply on" = "Automatikus válasz tiltása";
+"Last day of vacation" = "Távollét utolsó napja";
+"Enter date" = "Adja meg a dátumot";
 "Always send vacation message response" = "Mindig küldjön távollét üzenet választ";
+"The vacation message is sent prior to apply your filters." = "Távollét üzenet elküldve a szűrőknek megfelelően.";
+"Discard incoming mails during vacation" = "Dobja el a bejövő leveleket a távollét alatt";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Távollét üzenet elküldve, de a beérkező üzenetek nem lettek továbbítva a beérkezett üzenetek mappába.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Kérem adja meg az üzenetét valamint a címeket, amelyekre engedélyezi az automatikus válasz küldését.";
 "Your vacation message must not end with a single dot on a line." = "A távollét üzenet utolsó sora nem tartalmazhat egy egyedülálló . karatert.";
@@ -56,13 +62,16 @@
 /* forward messages */
 "Forward incoming messages" = "Beérkező levelek továbbítása";
 "Keep a copy" = "Másolat megtartása";
+"Enter an email" = "Email címet adjon meg";
+"Add another email" = "Adjon meg másik email címet";
 "Please specify an address to which you want to forward your messages."
 = "Kérem adjon meg egy címet, amelyre a leveleit továbbítani kívánja.";
 "You are not allowed to forward your messages to an external email address." = "Ön számára nem endélyezett az üzenetek továbbítása külső email címre.";
 "You are not allowed to forward your messages to an internal email address." = "Ön számára nem endélyezett az üzenetek továbbítása belső email címre.";
+"You are not allowed to forward your messages to this domain:" = "Ön számára nem engedélyezett az üzenetek továbbítása ebbe a tartományba:";
 
 /* d & t */
-"Current Time Zone" = "Időzóna";
+"Time Zone" = "Időzóna";
 "Short Date Format" = "Rövid dátumformátum";
 "Long Date Format" = "Hosszú dátumformátum";
 "Time Format" = "Időformátum";
@@ -84,8 +93,10 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
-   
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
+
 "longDateFmt_0" = "%Y %B %d, %A";
 "longDateFmt_1" = "%B %d, %Y";
 "longDateFmt_2" = "%A, %d %B, %Y";
@@ -123,6 +134,8 @@
 "Prevent from being invited to appointments" = "Megakadályozza a meghívást találkozókra";
 "White list for appointment invitations" = "Engedélyezési lista a találkozók meghívásaihoz";
 "Contacts Names" = "Kapcsolatok nevei";
+"Duplicate name" = "Név kettőzése";
+"Calendar categories must have unique names." = "Naptár kategóriáknak egyedi névvel kell rendelkezniük.";
 
 /* Default Calendar */
 "Default calendar" = "Alapértelmezett naptár";
@@ -146,10 +159,18 @@
 /* Mailer */
 "Labels" = "Címkék";
 "Label" = "Címke";
+"IMAP Label" = "IMAP címke";
+"Invalid label" = "Ne használjon szóközt, vagy ( ) { } % * \" \\ karaktereket";
+"Duplicate label" = "Címke kettőzése";
+"IMAP labels must have unique names." = "IMAP címkéknek egyedi névvel kell rendelkezniük";
 "New label" = "Új címke";
 "Show subscribed mailboxes only" = "Csak azon fiókok mutatása, amelyre feliratkozott";
 "Synchronize only default mail folders (EAS)" = "Csak az alapértelmezett levelezési mappák szinkronizálása (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Olvasatlan üzenetek számának összegyűjtése minden mappában";
 "Sort messages by threads" = "Üzenetek beszélgetések szerinti rendezése";
+"Always open mail composer" = "Mindig nyissa meg a levél szerkesztőt";
+"Inside current window" = "Az aktuális ablakban";
+"In a popup window" = "Felbukkanó ablakban";
 "When sending mail, add unknown recipients to my" = "Levél küldésekor az ismeretlen címeket adja hozzá a következőhöz";
 "Address Book" = "Címjegyzék";
 "Forward messages" = "Üzenetek továbbítása";
@@ -177,8 +198,11 @@
 /* Contact */
 "Personal Address Book" = "Személyes címjegyzék";
 "Collected Address Book" = "Összegyűjtöt címek jegyzéke";
+"Contact categories must have unique names." = "Névjegy kategóriáknak egyedi névvel kell rendelkezniük.";
 
 /* IMAP Accounts */
+"Settings" = "Beállítások";
+"Security" = "Biztonság";
 "Mail Account" = "Levelezési fiók";
 "New Mail Account" = "Új email fiók";
 "Server Name" = "Kiszolgáló neve";
@@ -190,19 +214,36 @@
 "Email" = "Email cím";
 "Reply To Email" = "Válaszlevél";
 "Signature" = "Aláírás";
+"Identities" = "Személyazonosságok";
+"Always use the default identity when replying to messages" = "Mindig az alapértelmezett azonosítót használja amikor válaszol a levelekre";
+"Default Identity" = "Alapértelmezett személyazonosság";
+"New Identity" = "Új személyazonosság";
 "(Click to create)" = "(A létrehozáshoz kattintson ide)";
 "Please enter your signature below" = "Kérem itt adja meg az aláírását";
 "Please specify a valid sender address." = "Egy érvényes feladó címet adjon meg.";
 "Please specify a valid reply-to address." = "Egy érvényes válaszcímet adjon meg.";
 "Specify a hostname other than the local host" = "A helyi géptől eltérő gépnevet adjon meg";
 
+"No certificate installed" = "Nincs telepített tanúsítvány";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "Az SSL tanúsítványnak PKCS#12 (PFX) formátumúnak kell lennie.";
+"Uninstall" = "Eltávolítás";
+"Choose PKCS12 Certificate .." = "Válasszon PKCS12 tanúsítványt ..";
+"Certificate Import Password" = "Tanúsítvány import jelszó";
+"Upload" = "Feltöltés";
+"When composing a message" = "Amikor létrehoz egy üzenetet";
+"Digitally sign the message by default" = "Alapértelmezés szerint digitálisan aláírja az üzenetet";
+"Always try to encrypt the message" = "Mindig titkosítani próbálja az üzenetet";
+"An error occurred while importing the certificate. Verify your password." = "Hiba történt a tanúsítvány importálása során. Ellenőrizze a jelszót.";
+
 /* Additional Parameters */
 "Additional Parameters" = "További beállítások";
 
 /* password */
+"Current password" = "Jelenlegi jelszó";
 "New password" = "Új jelszó";
 "Confirmation" = "Megerősítés";
 "Change" = "Módosítás";
+"Passwords don't match" = "Jelszavak nem egyeznek meg";
 
 /* Event+task classifications */
 "Default events classification" = "Események alapértelmezett besorolása";
@@ -215,6 +256,7 @@
 "Calendar Category" = "Naptár kategória";
 "Add Calendar Category" = "Naptár kategória hozzáadása";
 "New category" = "Új kategória";
+"Reset to defaults" = "Visszaállítás alapértékekre";
 "Remove Calendar Category" = "Naptár kategória eltávolítása";
 "Contact Category" = "Kapcsolat kategória";
 "Add Contact Category" = "Kapcsolat kategória hozzáadása";
@@ -238,7 +280,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -250,7 +292,9 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
+"Japanese" = "日本語";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
@@ -259,8 +303,10 @@
 "Polish" = "Polski";
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
@@ -279,6 +325,7 @@
 "refreshview_every_20_minutes" = "Húszpercenként";
 "refreshview_every_30_minutes" = "Harminc percenként";
 "refreshview_once_per_hour" = "Óránként";
+"Enable Desktop Notifications" = "Asztali értesítések engedélyezése";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Visszaigazolási kérelem esetén";
@@ -410,3 +457,13 @@
 /* Limited Animation Mode */
 "animation_LIMITED" = "Korlátozott";
 "animation_NONE" = "Nincs";
+
+/* 2FA */
+"Enable two-factor authentication using Google Authenticator" = "Két faktoros hitelesítés engedélyezése Google Authenticator használatával";
+"You must enter this key into your Google Authenticator application." = "Meg kell adnia ezt a kulcsot a Google Authenticator alkalmazásban.";
+"If you do not and you log out you will not be able to login again." = "Ha nem teszi meg és kijelentkezik, akkor nem lesz képes újra bejelentkezni.";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "Külső Sieve szkript aktív";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve egy programozási nyelv amely az email üzenetek szűrésére használható. Ha engedélyezi, hogy a SOGo kezelje szűrőit, távollét és továbbítási beállításait, akkor a jelenleg aktív szkript le lesz tiltva.";
+"Let SOGo handle everything" = "A SOGo kezeljen mindent";

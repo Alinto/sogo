@@ -107,6 +107,7 @@
 "Name of the Calendar" = "Name of the Calendar";
 "new" = "New";
 "Print view" = "Print view";
+"Print" = "Print";
 "edit" = "Edit";
 "delete" = "Delete";
 "proposal" = "Proposal";
@@ -147,6 +148,7 @@
 "Display events and tasks colors" = "Display events and tasks colors";
 "Borders" = "Borders";
 "Backgrounds" = "Backgrounds";
+"Page Format" = "Page Format";
 
 /* Appointments */
 "Appointment viewer" = "Appointment Viewer";
@@ -218,6 +220,7 @@
 "view_next14" = "Next 14 days";
 "view_next31" = "Next 31 days";
 "view_thismonth" = "This Month";
+"view_thisyear" = "This Year";
 "view_future" = "All Future Events";
 "view_selectedday" = "Selected Day";
 "view_not_started" = "Not started tasks";
@@ -339,6 +342,7 @@
 "repeat_YEARLY" = "Yearly";
 "repeat_CUSTOM" = "Custom...";
 "reminder_NONE" = "No reminder";
+"reminder_0" = "At time of event";
 "reminder_5_MINUTES_BEFORE" = "5 minutes before";
 "reminder_10_MINUTES_BEFORE" = "10 minutes before";
 "reminder_15_MINUTES_BEFORE" = "15 minutes before";
@@ -435,16 +439,48 @@ validate_untilbeforeend    = "The recurrence must end after the first occurrence
 = "You cannot remove nor unsubscribe from your personal calendar.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Are you sure you want to delete the calendar \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Are you sure you want to delete the selected components?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Role";
+
+/* Participant role: participation is required */
 "Participant" = "Participant";
+
+/* Participant role: participation is required */
+"req-participant" = "Participant";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Optional Participant";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Optional Participant";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Non Participant";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Non Participant";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "Chair";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Chair";
+
+/* Participant status: needs action */
 "Needs action" = "Needs action";
+
+/* Participant status: event accepted */
 "Accepted" = "Accepted";
+
+/* Participant status: event declined */
 "Declined" = "Declined";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Tentative";
+
 "Free" = "Free";
 "Busy" = "Busy";
 "Maybe busy" = "Maybe busy";
@@ -540,6 +576,8 @@ vtodo_class2 = "(Confidential task)";
 "Delete Event" = "Delete Event";
 "Copy event to my calendar" = "Copy event to my calendar";
 "View Raw Source" = "View Raw Source";
+"Move To" = "Move To";
+"Copy To" = "Copy To";
 "Subscriptions" = "Subscriptions";
 "Subscribe to a shared folder" = "Subscribe to a shared folder";
 "Subscribe to a web calendar..." = "Subscribe to a web calendar...";
@@ -571,6 +609,7 @@ vtodo_class2 = "(Confidential task)";
 "More options" = "More options";
 "Delete This Occurrence" = "Delete This Occurrence";
 "Delete All Occurrences" = "Delete All Occurrences";
+"Add Recurrence Date" = "Add Recurrence Date";
 "Add From" = "Add From";
 "Add Due" = "Add Due";
 "Import" = "Import";

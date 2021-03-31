@@ -40,13 +40,19 @@
 "Auto reply subject" = "Тема аутоматског одговора";
 "You can write ${subject} to insert the original subject" = "Можете написати ${subject} да га уметнете оригиналну тему";
 "Auto reply message" = "Порука аутоматског одговора";
-"Email addresses (separated by commas)" = "Адресе епоште (одвојене зарезима)";
+"Email addresses" = "Адресе поште";
 "Add default email addresses" = "Додај подразумевану адресу епоште";
 "Days between responses" = "Дани између одговора";
 "Do not send responses to mailing lists" = "Не одговарај на поштанске листе";
 "Enable auto reply on" = "Омогући аутоматски одговор ";
+"First day of vacation" = "Први дан одмора";
 "Disable auto reply on" = "Онемогући аутоматски одговор ";
+"Last day of vacation" = "Последњи дан одмора";
+"Enter date" = "Унесите датум";
 "Always send vacation message response" = "Увек пошаљи поруку аутоматског одговора за време одмора";
+"The vacation message is sent prior to apply your filters." = "Порука за одмор се шаље пре примене Ваших филтера.";
+"Discard incoming mails during vacation" = "Одбаците долазну пошту током одмора";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Порука за одмор је послата али долазне поруке нису испоручене у Ваше сандуче.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Молимо наведите вашу поруку и вашу адресу епоште за коју желите да омогућите аутомаски одговор.";
 "Your vacation message must not end with a single dot on a line." = "Ваша порука за време одмора не сме да се завршава само са тачком у реду.";
@@ -56,13 +62,16 @@
 /* forward messages */
 "Forward incoming messages" = "Проследите долазне поруке";
 "Keep a copy" = "Задржите копију";
+"Enter an email" = "Унесите адресу ел. поште";
+"Add another email" = "Додајте адресу ел. поште";
 "Please specify an address to which you want to forward your messages."
 = "Молимо наведите адресу на коју желите да прослеђујете ваше поруке.";
 "You are not allowed to forward your messages to an external email address." = "Није вам дозвољено да прослеђујете ваше поруке на спољну адресу епоште.";
 "You are not allowed to forward your messages to an internal email address." = "Није вам дозвољено да прослеђујете ваше поруке на интерну адресу епоште.";
+"You are not allowed to forward your messages to this domain:" = "Није вам дозвољено да проследите ваше поруке на овај домен.";
 
 /* d & t */
-"Current Time Zone" = "Тренутна временска зона";
+"Time Zone" = "Временска зона";
 "Short Date Format" = "Кратки формат датума";
 "Long Date Format" = "Дуги формат датума";
 "Time Format" = "Формат времена";
@@ -84,8 +93,10 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
-   
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
+
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
 "longDateFmt_2" = "%A, %d %B, %Y";
@@ -123,6 +134,8 @@
 "Prevent from being invited to appointments" = "Спречите позиве на састанке";
 "White list for appointment invitations" = "Бела листа позивница на састанке";
 "Contacts Names" = "Имена контаката";
+"Duplicate name" = "Дуплирано име";
+"Calendar categories must have unique names." = "Категорије календара морају имати јединствена имена.";
 
 /* Default Calendar */
 "Default calendar" = "Подразумевани календар";
@@ -146,14 +159,22 @@
 /* Mailer */
 "Labels" = "Ознаке";
 "Label" = "Ознака";
+"IMAP Label" = "ИМАП Ознака";
+"Invalid label" = "Немојте користити размак, нити ( ) { } % * \" \\";
+"Duplicate label" = "Дуплирана ознака";
+"IMAP labels must have unique names." = "ИМАП ознаке морају имати јединствена имена.";
 "New label" = "Нова ознака";
 "Show subscribed mailboxes only" = "Прикажи само преплаћене поштанске сандучиће";
 "Synchronize only default mail folders (EAS)" = "Синхронизуј само подразумеване поштанске директоријуме (ЕАС)";
+"Fetch count of unseen messages for all mailboxes" = "Преузми број непрочитаних порука и свим поштанским сандучићима";
 "Sort messages by threads" = "Сортирај поруке по темама";
+"Always open mail composer" = "Увек отвори уређивач поште";
+"Inside current window" = "Унутар тренутног прозора";
+"In a popup window" = "У искачућем прозору";
 "When sending mail, add unknown recipients to my" = "Када шаљеш пошту, додај непознатог примаоца у мој";
 "Address Book" = "Адресар";
 "Forward messages" = "Проследи поруке";
-"messageforward_inline" = "У реду";
+"messageforward_inline" = "У оквиру поруке";
 "messageforward_attached" = "Као прилог";
 "When replying to a message" = "Када одговараш на поруку";
 "replyplacement_above" = "Започни мој одговор изнад цитата";
@@ -177,8 +198,11 @@
 /* Contact */
 "Personal Address Book" = "Лични адресар";
 "Collected Address Book" = "Прикупљени адресар";
+"Contact categories must have unique names." = "Категорије контаката морају имати јединствене називе.";
 
 /* IMAP Accounts */
+"Settings" = "Подешавања";
+"Security" = "Сигурност";
 "Mail Account" = "Поштански налог";
 "New Mail Account" = "Нови поштански налог";
 "Server Name" = "Име сервера";
@@ -190,18 +214,36 @@
 "Email" = "Епошта";
 "Reply To Email" = "Одговори на еписмо";
 "Signature" = "Потпис";
+"Identities" = "Идентитети";
+"Always use the default identity when replying to messages" = "Увек користите подразумевани идентитет када одговарате на поруке";
+"Default Identity" = "Подразумевани идентитет";
+"New Identity" = "Нови идентитет";
 "(Click to create)" = "(Кликни да креираш)";
 "Please enter your signature below" = "Молимо унесите ваш потпис испод";
 "Please specify a valid sender address." = "Молимо наведите валидну адресу пошиљаоца.";
 "Please specify a valid reply-to address." = "Молимо наведите валидну адресу за одговор.";
+"Specify a hostname other than the local host" = "Наведи име домаћина другачије од имена локалног домаћина";
+
+"No certificate installed" = "Нема инсталираних сертификата";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "ССЛ сертификат мора бити у формату PKCS#12 (PFX).";
+"Uninstall" = "Уклони";
+"Choose PKCS12 Certificate .." = "Одабери PKCS12 сертификат";
+"Certificate Import Password" = "Лозинка за увоз сертификата";
+"Upload" = "Отпреми";
+"When composing a message" = "Када састављаш поруку";
+"Digitally sign the message by default" = "Подразумевано потпиши дигитално поруку ";
+"Always try to encrypt the message" = "Увек покушај да енкриптујеш поруку";
+"An error occurred while importing the certificate. Verify your password." = "Догодила се грешка приликом увоза сертификата. Верификујте Вашу лозинку.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Додатни параметри";
 
 /* password */
+"Current password" = "Тренутна лозинка";
 "New password" = "Нова лозинка";
 "Confirmation" = "Потврда";
 "Change" = "Измени";
+"Passwords don't match" = "Лозинке се не подударају";
 
 /* Event+task classifications */
 "Default events classification" = "Подразумевана класификација догађаја";
@@ -214,6 +256,7 @@
 "Calendar Category" = "Категорија календара";
 "Add Calendar Category" = "Додај категорију календара";
 "New category" = "Нова категорија";
+"Reset to defaults" = "Вратите на подразумевано";
 "Remove Calendar Category" = "Уклони категорију календара";
 "Contact Category" = "Категорија контакта";
 "Add Contact Category" = "Додај категорију контакта";
@@ -237,7 +280,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -249,7 +292,9 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
+"Japanese" = "日本語";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
@@ -258,8 +303,10 @@
 "Polish" = "Polski";
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
@@ -278,6 +325,7 @@
 "refreshview_every_20_minutes" = "Сваких 20 минута";
 "refreshview_every_30_minutes" = "Сваких 30 минута";
 "refreshview_once_per_hour" = "Сваки сат";
+"Enable Desktop Notifications" = "Омогући обавештења";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Када добијем захтев за потврдом о пријему";
@@ -401,3 +449,21 @@
 "monsterid" = "Чудовиште";
 "wavatar" = "Вејватар";
 "retro" = "Ретро";
+
+/* Animation Level */
+"Animation Level" = "Ниво анимације";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Нормалан";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Ограничен";
+"animation_NONE" = "Нема";
+
+/* 2FA */
+"Enable two-factor authentication using Google Authenticator" = "Омогући двоструку аутентикацију уз помоћ Google Authenticator апликације";
+"You must enter this key into your Google Authenticator application." = "Морате унети овај кључ у вашу Google Authenticator апликацију.";
+"If you do not and you log out you will not be able to login again." = "Уколико то не урадите и изађете из апликације, нећете моћи да се вратите накнадно.";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "Екстерна Sieve скрипта је активна";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve је програмски језик за филтрирање електронске поште. Уколико SOGo управља вашим филтерима, подешавањима одмора и прослеђивањем порука, ваша активна скрипта биће онемогућена-";
+"Let SOGo handle everything" = "Нека SOGo управља свиме";

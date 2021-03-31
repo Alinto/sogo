@@ -3,44 +3,44 @@
 /* toolbars */
 "Save" = "Spremi";
 "Close" = "Zatvori";
-"Edit User Rights" = "Uređivanje korisničkih prava";
-"Home" = "Početna";
+"Edit User Rights" = "Uredi korisnička prava";
+"Home" = "Početno";
 "Calendar" = "Kalendar";
 "Address Book"  = "Imenik";
 "Mail" = "Pošta";
 "Preferences" = "Postavke";
-"Administration" = "Administracija";
-"Disconnect" = "Prekini vezu";
-"Toggle Menu" = "Prikaz izbornika";
-"Right Administration" = "Upravljanje pravima";
-"Log Console (dev.)" = "Provjera Log datoteka (dev.)";
+"Administration" = "Upravljanje";
+"Disconnect" = "Odspoji";
+"Toggle Menu" = "Prikaži izbornik";
+"Right Administration" = "Upravljaj pravima";
+"Log Console (dev.)" = "Pregled zapisa sustava (za razvojnike)";
 "User" = "Korisnik";
 "Vacation message is enabled" = "Poruka o odsutnosti je uključena";
 "Help" = "Pomoć";
-"noJavascriptError" = "SOGo zahtijeva Javascript za pokretanje. Provjerite je li ova opcija dostupna i aktivirana u postavkama preglednika.";
-"noJavascriptRetry" = "Ponovni pokušaj";
+"noJavascriptError" = "SOGo zahtijeva Javascript za rad. Provjerite je li ova mogućnost dostupna i uključena u postavkama preglednika.";
+"noJavascriptRetry" = "Pokušaj ponovno";
 "Owner" = "Vlasnik";
-"Publish the Free/Busy information" = "Objavi informacije slobodno/zauzeto ";
+"Publish the Free/Busy information" = "Objavi podatak od dostupnosti mojih termina";
 "Add..." = "Dodaj...";
 "Remove" = "Ukloni";
-"Subscribe User" = "Naruči korisnika";
+"Subscribe User" = "Pretplati korisnika";
 "Any Authenticated User" = "Svaki ovlašteni korisnik";
 "Public Access" = "Javni pristup";
 "Any user not listed above" = "Svaki korisnik koji nije gore naveden";
-"Anybody accessing this resource from the public area" = "Svatko, tko pristupa do resursa iz javnog prostora";
-"Sorry, the user rights can not be configured for that object." = "Korisnička prava ne mogu biti konfigurirana za taj objekt.";
+"Anybody accessing this resource from the public area" = "Svatko, tko pristupa resursu iz javnog prostora";
+"Sorry, the user rights can not be configured for that object." = "Korisnička se prava ne mogu podešavati za taj objekt.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Svaki korisnik s računom na ovom sustavu moći će pristupiti vašem pretincu \"%{0}\". Jeste li sigurni da su svi povjerljivi?";
-"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
      = "Svaki korisnik s računom na ovom sustavu moći će pristupiti vašem kalendaru \"%{0}\". Jeste li sigurni da su svi povjerljivi?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Bilo tko na internetu moći će pristupiti vašem kalendaru \"%{0}\", čak iako nema računa u ovom sustavu. Jeli ova informacija prikladna za javnu objavu na internetu?";
+     = "Bilo tko na internetu moći će pristupiti vašem kalendaru \"%{0}\", čak i ako nema račun na ovom sustavu. Je li ova informacija prikladna za javnu objavu na internetu?";
 "Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
      = "Svaki korisnik s računom na ovom sustavu moći će pristupiti vašem imeniku\"%{0}\". Jeste li sigurni da su svi povjerljivi?";
 "Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Bilo tko na internetu moći će pristupiti vašem imeniku\"%{0}\", čak iako nema računa u ovom sustavu. Jeli ova informacija prikladna za javnu objavu na internetu?";
-"Give Access" = "Daj pristup";
-"Keep Private" = "Zadrži privatno";
+     = "Bilo tko na internetu moći će pristupiti vašem imeniku \"%{0}\", čak i ako nema račun na ovom sustavu. Je li ova informacija prikladna za javnu objavu na internetu?";
+"Give Access" = "Dopusti pristup";
+"Keep Private" = "Zadrži osobnim";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -53,32 +53,36 @@
         = "Ne možete se odjaviti od vlastite mape! ";
 "Unable to rename that folder!" = "Ne mogu preimenovati tu mapu!";
 "You have already subscribed to that folder!"
-        = "Več ste pretplaćeni na tu mapu!";
+        = "Već ste pretplaćeni na tu mapu!";
 "The user rights cannot be edited for this object!"
-        = "Korisnička prava ne mogu biti konfigurirana za taj objekt.";
-"A folder by that name already exists." = "Mapa sa ovim imenom več postoji!";
-"You cannot create a list in a shared address book." 
-        = "Ne možete kreirati liste u zajedničkom imeniku!";
+        = "Korisnička se prava ne mogu podešavati za taj objekt.";
+"A folder by that name already exists." = "Mapa s ovim nazivom već postoji!";
+"You cannot create a list in a shared address book."
+        = "Ne možete napraviti popis u zajedničkom imeniku!";
 "Warning" = "Upozorenje";
-"Can't contact server" = "Došlo je do pogreške prilikom kontaktiranja poslužitelja. Pokušajte ponovno kasnije.";
+"Can't contact server" = "Došlo je do pogreške prilikom pristupa poslužitelju. Pokušajte ponovno kasnije.";
 "You are not allowed to access this module or this system. Please contact your system administrator."
-= "Nemate ovlasti za pristup ovome modulu ili ovome sustavu. Molimo obratite se administratoru sustava.";
+= "Nemate ovlasti za pristup ovom modulu ili ovom sustavu. Molim, obratite se administratoru sustava.";
 "You don't have the required privileges to perform the operation."
-= "Nemate potrebne ovlasti za obavljanje ove operacije.";
+= "Nemate potrebne ovlasti za obavljanje ove radnje.";
 "noEmailForDelegation" = "Morate navesti adresu na koju želite prenijeti svoju pozivnicu.";
 "delegate is organizer" = "Delegat je organizator. Navedite nekog drugog delegata.";
 "delegate is a participant" = "Delegat je već sudionik.";
-"delegate is a group" = "Navedena adresa odgovara skupini. Možete prenijeti samo na jedinstvenu osobu.";
+"delegate is a group" = "Navedena adresa odgovara skupini. Adresu možete prenijeti samo na jedinstvenu osobu.";
 
 /* common buttons */
-"OK" = "OK";
+"OK" = "U redu";
 "Cancel" = "Odustani";
 "Yes" = "Da";
 "No" = "Ne";
 
+/* generic messages */
+"Error" = "Pogreška";
+"Success" = "Uspjeh";
+
 /* alarms */
 "Reminder" = "Podsjetnik";
-"Start" = "Start";
+"Start" = "Početak";
 "Due Date" = "Datum dospijeća";
 "Location" = "Mjesto";
 "Snooze" = "Utišaj";
@@ -106,24 +110,33 @@
 "a2_Saturday" = "Su";
 "Access Rights" = "Pristupna prava";
 "Add User" = "Dodaj korisnika";
-"Loading" = "Otvaranje";
+"Loading" = "Otvaram";
 "No such user." = "Nema takvog korisnika.";
-"You cannot (un)subscribe to a folder that you own!" = "Ne možete se (od)javiti od vlastite mape! ";
+"You cannot (un)subscribe to a folder that you own!" = "Ne možete se pretplatiti ni odjaviti od vlastite mape! ";
+
+/* SMIME Certificate field */
+"Subject Name" = "Naziv subjekta";
+"Issuer" = "Izdavatelj";
+"countryName" = "Država";
+"organizationName" = "Organizacija";
+"organizationalUnitName" = "Organizacijska jedinica";
+"commonName" = "Zajednički naziv";
+"emailAddress" = "Adresa elektroničke pošte";
 
 /* Authentication username */
 "Username" = "Korisničko ime";
 
 /* Authentication password */
-"Password" = "Lozinka";
+"Password" = "Zaporka";
 
 /* Authentication failed */
-"Wrong username or password." = "Pogrešno korisničko ime ili lozinka";
+"Wrong username or password." = "Pogrešno je korisničko ime i/ili zaporka";
 
 /* Error message displayed bellow search field when the search string has less than the required number of characters */
-"Enter at least %{minimumSearchLength} characters" = "Unesite %{minimumSearchLength} znakova";
+"Enter at least %{minimumSearchLength} characters" = "Unesite barem %{minimumSearchLength} znakova";
 
 /* Error message displayed when a file upload exceeds WOMaxUploadSize */
-"File size upload limit reached" = "Dosegnuta je maksimalna veličina privitka";
+"File size upload limit reached" = "Privitak je prevelik";
 
 /* Toggle visibility (ex: mail account in left navigation menu) */
 "Toggle visibility" = "Uključi/Isključi vidljivost";
@@ -132,13 +145,13 @@
 "Toggle range of items" = "Uključi/isključi stavke";
 
 /* Question mark shows list of hotkeys */
-"Show or hide this help" = "Prikaži/Sakrij ovu pomoć";
+"Show or hide this help" = "Prikaži ili sakrij ovu pomoć";
 
 /* Space key */
 "key_space" = "space";
 
 /* Shift and space key */
-"key_shift+space" = "Shift + Space";
+"key_shift+space" = "shift + space";
 
 /* Up arrow key */
 "key_up" = "↑";
@@ -165,13 +178,13 @@
 "hotkey_search" = "s";
 
 /* Hotkey description to select next list item */
-"View next item" = "Vidi slijedeću stavku";
+"View next item" = "Vidi sljedeću stavku";
 
 /* Hotkey description to select previous list item */
 "View previous item" = "Vidi prethodnu stavku";
 
 /* Hotkey description to add next list item to selection */
-"Add next item to selection" = "Dodaj slijedeću stavku u odabir";
+"Add next item to selection" = "Dodaj sljedeću stavku u odabir";
 
 /* Hotkey description to add previous list item to selection */
 "Add previous item to selection" = "Dodaj prethodnu stavku u odabir";

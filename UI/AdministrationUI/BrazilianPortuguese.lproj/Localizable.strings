@@ -10,6 +10,7 @@
 /* Modules descriptions */
 "ACLs_description" = "<p>O módulo administrativo das Listas de Controle de Acesso permitem alterar as ACLs de Calendário e Catálogo de cada usuário.</p><p>Para modificar as ACLs do usuário, digite o nome no campo de busca, no topo da janela e dê um duplo-click na opção desejada.</p>";
 "Name or Email" = "Nome ou Email";
+"ACLs saved" = "ACLs gravadas";
 /* Rights module: initial search message */
 "Start a search to edit the rights" = "Inicie uma pesquisa para editar as permissões";
 /* Rights module: Empty search result */

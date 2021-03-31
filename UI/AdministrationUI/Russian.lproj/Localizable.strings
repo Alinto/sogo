@@ -10,6 +10,7 @@
 /* Modules descriptions */
 "ACLs_description" = "<p> Данный модуль администрирования позволяет изменять списки доступа (ACL) для календарей и адресных книг пользователей. </p><p> Чтобы изменить списки ACL, введите имя пользователя в поле поиска в верхней части окна и дважды щелкните по нужной папке. </p>";
 "Name or Email" = "Имя или e-mail";
+"ACLs saved" = "ACL сохранены";
 /* Rights module: initial search message */
 "Start a search to edit the rights" = "Начать поиск для редактирования прав";
 /* Rights module: Empty search result */

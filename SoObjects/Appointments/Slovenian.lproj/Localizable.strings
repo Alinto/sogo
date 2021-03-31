@@ -7,6 +7,7 @@ vevent_class2 = "(Zaupni dogodek)";
 vtodo_class0 = "(Javno opravilo)";
 vtodo_class1 = "(Osebno opravilo)";
 vtodo_class2 = "(Zaupno opravilo)";
+
 /* Receipts */
 "The event \"%{Summary}\" was created" = "Dogodek \"%{Summary}\" je bil ustvarjen";
 "The event \"%{Summary}\" was deleted" = "Dogodek \"%{Summary}\" je bil izbrisan";
@@ -14,25 +15,33 @@ vtodo_class2 = "(Zaupno opravilo)";
 "The following attendees(s) were notified" = "Naslednji udeleženci so bili obveščeni";
 "The following attendees(s) were added" = "Naslednji udeleženci so bili dodani";
 "The following attendees(s) were removed" = "Naslednji udeleženci so bili odstranjeni";
+
 /* IMIP messages */
 "calendar_label" = "Koledar";
 "startDate_label" = "Začetek";
 "endDate_label" = "Konec";
+"time_label" = "Čas";
+"to_label" = "za";
 "due_label" = "Datum zapadlosti:";
 "location_label" = "Mesto";
 "summary_label" = "Povzetek:";
 "comment_label" = "Komentar:";
+"organizer_label" = "Organizator";
+"attendee_label" = "Udeleženec";
+
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Povabila na dogodek: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(posladno od %{SentBy})";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} te je povabil na %{Summary}.\n\n\nZačetek: %{StartDate}\nKonec: %{EndDate}\nOpis: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} te je povabil na %{Summary}.\n\n\nZačetek: %{StartDate} at %{StartTime}\nKonec: %{EndDate} at %{EndTime}\nOpis: %{Description}";
+
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Dogodek odpovedan: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} je odpovedal ta dogodek: %{Summary}.\n\n\nZačetek: %{StartDate}\nKonec: %{EndDate}\nOpis: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} je odpovedal ta dogodek: %{Summary}.\n\n\nZačetek: %{StartDate} at %{StartTime}\nKonec: %{EndDate} at %{EndTime}\nOpis: %{Description}";
+
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "Sestanek \"%{Summary}\" za %{OldStartDate} se je spremenil";
@@ -42,6 +51,7 @@ vtodo_class2 = "(Zaupno opravilo)";
 = "Naslednji parametri so se spremenil v \"%{Summary}\" srečanju:";
 "Please accept or decline those changes."
 = "Prosim sprejmi ali zavrni te spremembe.";
+
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Sprejeto povabilo: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Zavrnjeno povabilo: \"%{Summary}\"";
@@ -55,6 +65,15 @@ vtodo_class2 = "(Zaupno opravilo)";
 = "%{Attendee} %{SentByText} je posredoval povabilo k %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText} se še ni odločil glede tvojega povabila.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Opomnik: \"%{Summary}\" - %{StartDate}";
+
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Ne morem dostopati do vira: \"%{Cn} %{SystemEmail}\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Doseženo je največje število sočasnih rezervacij (%{NumberOfSimultaneousBookings}) za vir \"%{Cn} %{SystemEmail}\". Konfliktni dogodek je \"%{EventTitle}\", začel se je %{StartDate}.";
+
+/* Participation role */
+"Your participation is required to this event" = "Udeležba na dogodku je obvezna";
+"Your participation is optional to this event" = "Udeležba na dogodku ni obvezna";
+"Your participation is not required to this event" = "Udeležba na dogodku ni potrebna";

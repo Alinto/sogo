@@ -22,11 +22,14 @@
 "Lastname" = "Vezetéknév";
 "Location" = "Hely";
 "Add a category" = "Kategória hozzáadása";
-"MobilePhone" = "Mobil telefon";
+"MobilePhone" = "Mobiltelefon";
 "Name" = "Név";
 "OfficePhone" = "Hivatali telefon";
 "Organization" = "Szervezet";
 "Work Phone" = "Munkahelyi telefon";
+"Cell" = "Mobil";
+"Pager" = "Személyhívó";
+"Pref" = "Beállítás";
 "Phone" = "Telefon";
 "Phones" = "Telefonszámok";
 "Postal" = "Irányítószám";
@@ -37,13 +40,97 @@
 "edit" = "Szerkeszt";
 "invalidemailwarn" = "A megadott email cím érvénytelen";
 "new" = "új";
-"Preferred Phone" = "Preferált telefon";
+"Preferred Phone" = "Elsődleges telefon";
 "Move To" = "Áthelyezés";
 "Copy To" = "Másolás";
-"Add to" = "Add to";
+"Add to" = "Hozzáadás";
 "To" = "Címzett";
 "Carbon Copy (Cc)" = "Másolat (Cc)";
 "Blind Carbon Copy (Bcc)" = "Titkos másolat (Bcc)";
+
+/* Search scope: name fields */
+"name" = "Név";
+
+/* Search scope: name fields */
+"c_cn" = "Név";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "Másodlagos email";
+
+/* Search scope: screen name field */
+"nsaimid" = "Megjelenített név";
+
+/* Search scope: mail fields */
+"mail" = "Mail";
+
+/* Search scope: mail fields */
+"c_mail" = "Mail";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Telefon";
+
+/* Search scope: telephone field */
+"homephone" = "Telefon";
+
+/* Search scope: mobile field */
+"mobile" = "Mobiltelefon";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Fax";
+
+/* Search scope: pager field */
+"pager" = "Személyhívó";
+
+/* Search scope: categories field */
+"c_categories" = "Kategóriák";
+
+/* Search scope: categories field */
+"vcardcategories" = "Kategóriák";
+
+/* Search scope: title field */
+"title" = "Beosztás";
+
+/* Search scope: organization field */
+"c_o" = "Szervezet";
+
+/* Search scope: organization field */
+"o" = "Szervezet";
+
+/* Search scope: department field */
+"ou" = "Részleg";
+
+/* Search scope: city field */
+"l" = "Település";
+
+/* Search scope: country field */
+"c" = "Ország";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Otthoni cím";
+
+/* Search scope: state/province field */
+"st" = "Állam/tartomány";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Otthoni állam/tartomány";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "Irányítószám";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "Irányítószám";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "Otthoni ország";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Kezdőlap";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Weboldal";
+
+/* Search scope: note field */
+"description" = "Megjegyzés";
 
 /* Subheader of empty addressbook */
 "No contact" = "Nincs kapcsolat";
@@ -104,7 +191,7 @@
 "Nickname" = "Becenév";
 "Telephone" = "Telefon";
 "Work" = "Munkahely";
-"Mobile" = "Mobil";
+"Mobile" = "Mobiltelefon";
 "Pager" = "Személyhívó";
 
 /* categories */
@@ -154,6 +241,12 @@
 = "Saját tulajdonú mappára nem lehet feliratkozni.";
 "Unable to subscribe to that folder!"
 = "Erre a mappára nem lehet feliratkozni.";
+
+/* security */
+"Security" = "Biztonság";
+"Uninstall" = "Eltávolítás";
+"Error reading the card certificate." = "Hiba történt a kártya tanúsítvány beolvasása során.";
+"No certificate associated to card." = "Nincs tanúsítvány összerendelés a kártyához.";
 
 /* acls */
 "Access rights to" = "Hozzáférés az alábbiaknak:";
@@ -234,6 +327,7 @@
 "URL" = "URL";
 "New URL" = "Új URL";
 "street" = "utca";
+"street (continued)" = "utca (folytatás)";
 "Postoffice" = "Postahivatal";
 "Region" = "Megye";
 "Postal Code" = "Irányítószám";

@@ -16,10 +16,17 @@
 "Authentication Failed" = "Logowanie nie powiodło się";
 "Wrong username or password." = "Zła nazwa użytkownika lub hasło.";
 "Retry" = "Ponów";
+"Login failed due to unhandled error case:" = "Logowanie nie powiodło się z powodu niezidentyfikowanego błędu: ";
 "cookiesNotEnabled" = "Nie możesz się zalogować ponieważ twoja przeglądarka ma zablokowaną obsługę ciasteczek (cookies). Włącz obsługę ciasteczek w ustawieniach twojej przeglądarki i spróbuj ponownie.";
 "browserNotCompatible" = "Używasz przeglądarki WWW, która nie jest obecnie obsługiwana przez tę stronę. Rekomendowaną przeglądarką jest Firefox. Kliknij poniższy odnośnik aby pobrać najnowszą wersję tej przeglądarki.";
 "alternativeBrowsers" = "Alternatywnie możesz także używać następujących przeglądarek";
 "alternativeBrowserSafari" = "Alternatywnie możesz używać również przeglądarki Safari.";
+
+/* 2FA */
+"Verification Code" = "Kod weryfikacyjny";
+"Enter the 6-digit verification code from your Google Authenticator application." = "Wpisz 6-cio cyfrowy kod z aplikacji Google Authenticator.";
+"You provided an invalid Google Authenticator key." = "Podałeś nieprawidłowy klucz Google Authenticator.";
+
 "Download" = "Pobierz";
 "Language" = "Język";
 "choose" = "Wybierz ...";
@@ -27,7 +34,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -39,7 +46,9 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
+"Japanese" = "日本語";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
@@ -48,8 +57,10 @@
 "Polish" = "Polski";
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";

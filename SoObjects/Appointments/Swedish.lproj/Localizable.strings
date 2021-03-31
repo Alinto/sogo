@@ -1,3 +1,4 @@
+"Inviting the following persons is prohibited:" = "Det är förbjudet att bjuda in följande personer:";
 "Personal Calendar" = "Personlig kalender";
 vevent_class0 = "(Publik händelse)";
 vevent_class1 = "(Privat händelse)";
@@ -6,42 +7,56 @@ vevent_class2 = "(Konfidentiell händelse)";
 vtodo_class0 = "(Publik uppgift)";
 vtodo_class1 = "(Privat uppgift)";
 vtodo_class2 = "(Konfidentiell uppgift)";
+
 /* Receipts */
-"Title:" = "Titel:";
-"Start:" = "Start:";
-"End:" = "Slut:";
-"Receipt: users invited to a meeting" = "Kvitto: användare inbjudna till ett möte";
-"You have invited the following attendees(s):" = "Du har bjudit in följande deltagare:";
-"... to attend the following event:" = "... att delta i följande händelse:";
-"Receipt: invitation updated" = "Kvitto: inbjudan uppdaterad";
-"The following attendees(s):" = "Följande deltagare:";
-"... have been notified of the changes to the following event:" = "... har blivit informerade om ändringarna i följande händelse:";
-"Receipt: attendees removed from an event" = "Kvitto: deltagare bottagna från en händelse";
-"You have removed the following attendees(s):" = "Du har tagit bort följande deltagare:";
-"... from the following event:" = "... från följande händelse:";
+"The event \"%{Summary}\" was created" = "Händelsen \"%{Summary}\" skapades";
+"The event \"%{Summary}\" was deleted" = "Händelsen \"%{Summary}\" raderades";
+"The event \"%{Summary}\" was updated" = "Händelsen \"%{Summary}\" uppdaterades";
+"The following attendees(s) were notified" = "Följande deltagare meddelades";
+"The following attendees(s) were added" = "Följande deltagare lades till";
+"The following attendees(s) were removed" = "Följande deltagare togs bort";
+
 /* IMIP messages */
+"calendar_label" = "Kalender";
 "startDate_label" = "Startdatum";
 "endDate_label" = "Slutdatum";
+"time_label" = "Tid";
+"to_label" = "Till";
 "due_label" = "Datum:";
 "location_label" = "Plats";
 "summary_label" = "Sammanfattning:";
 "comment_label" = "Kommentar:";
+"organizer_label" = "Organisatör";
+"attendee_label" = "Deltagare";
+
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Mötesinbjudan: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(skickad av %{SentBy}) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}har bjudit in dig till %{Summary}.\n\nStart: %{StartDate}\nSlut: %{EndDate}\nBeskrivning: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}har bjudit in dig till %{Summary}.\n\nStart: %{StartDate} kl %{StartTime}\nSlut: %{EndDate} kl %{EndTime}\nBeskrivning: %{Description}";
+
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Möte inställt: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}har ställt in detta möte: %{Summary}.\n\nStart: %{StartDate}\nSlut: %{EndDate}\nBeskrivning: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}har ställt in detta möte: %{Summary}.\n\nStart: %{StartDate} kl %{StartTime}\nSlut: %{EndDate} kl %{EndTime}\nBeskrivning: %{Description}";
+
 /* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "Mötet \"%{Summary}\" den %{OldStartDate} har ändrats";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
 = "Mötet \"%{Summary}\" den %{OldStartDate} kl %{OldStartTime} har ändrats";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
 = "Följande har ändrats i \"%{Summary}\" mötet:";
 "Please accept or decline those changes."
 = "Acceptera eller avböj dessa ändringar.";
+
 /* Reply */
+"Accepted invitation: \"%{Summary}\"" = "Accepterad inbjudan: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "Avböjd inbjudan: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Delegerad inbjudan: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "Obesvarad inbjudan: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}har accepterat din mötesinbjudan.";
 "%{Attendee} %{SentByText}has declined your event invitation."
@@ -50,5 +65,15 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 = "%{Attendee} %{SentByText}har delegerat din inbjudan till %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}har inte än bestämt sig om din mötesinbjudan.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Påminnelse: \"%{Summary}\" - %{StartDate}";
+
 /* Resources */
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\".";
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Kommer inte åt resursen: \"%{Cn} %{SystemEmail}\"";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Maximalt antal bokningar (%{NumberOfSimultaneousBookings}) uppnått för resursen \"%{Cn} %{SystemEmail}\". Den konflikterande händelsen är \"%{EventTitle}\", och startar den %{StartDate}.";
+
+/* Participation role */
+"Your participation is required to this event" = "Ditt deltagande krävs för denna händelse";
+"Your participation is optional to this event" = "Ditt deltagande är valfritt för denna händelse";
+"Your participation is not required to this event" = "Ditt deltagande är inte nödvändigt för denna händelse";

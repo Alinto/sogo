@@ -2,15 +2,15 @@
 
 /* Icon's label */
 "Create"      = "新建";
-"Empty Trash" = "清空垃圾箱";
+"Empty Trash" = "清空回收站";
 "Delete"      = "删除";
-"Expunge"     = "擦除";
+"Expunge"     = "清空";
 "Forward"     = "转发";
-"Get Mail"    = "收取邮件";
+"Get Mail"    = "收信";
 "Junk"        = "垃圾邮件";
 "Not junk"    = "非垃圾邮件";
 "Reply"       = "回复";
-"Reply All"   = "全部回复";
+"Reply All"   = "回复所有人";
 "Print"       = "打印";
 "Stop"        = "停止";
 "Write"       = "写邮件";
@@ -76,7 +76,7 @@
 /* Compact Folder success message */
 "Folder compacted" = "文件夹已压缩";
 /* Empty Trash success message */
-"Trash emptied" = "垃圾箱已清空";
+"Trash emptied" = "回收站已清空";
 
 /* acls */
 "Access rights to" = "访问权限到";
@@ -91,10 +91,10 @@
 "Add subfolders to this folder" = "该目录下的所有子目录";
 "Remove this folder" = "删除该目录";
 "Erase mails from this folder" = "清除该目录下的邮件";
-"Expunge this folder" = "擦去该目录";
+"Expunge this folder" = "清空目录";
 "Export This Folder" = "导出此文件夹";
 "Modify the acl of this folder" = "更改该目录访问控制列表";
-"Saved Messages.zip" = "保存的压缩邮件";
+"Saved Messages.zip" = "压缩邮件为ZIP";
 "Update" = "更新";
 "Cancel" = "取消";
 
@@ -102,8 +102,8 @@
 "From"          = "发件人";
 "Subject"       = "主题";
 "To"            = "收件人";
-"Cc"            = "抄送人";
-"Bcc"           = "密送人";
+"Cc"            = "抄送";
+"Bcc"           = "密送";
 "Reply-To"	    = "回复到";
 "Add address"   = "新增地址";
 "Body"          = "正文";
@@ -115,8 +115,8 @@
 "files" = "文件";
 "Save all" = "全部保存";
 "to"            = "收件人";
-"cc"            = "抄送人";
-"bcc"           = "密送人";
+"cc"            = "抄送";
+"bcc"           = "密送";
 "Add a recipient" = "新增收件人";
 "Edit Draft..." = "编辑草稿...";
 "Load Images" = "加载图片";
@@ -124,6 +124,9 @@
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "此消息的发件人要求当你阅读该消息时得到通知。你是否希望通知发件人？";
 "Return Receipt (displayed) - %@"= "回复回执(已标示)- %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "这是你发送邮件给 %@ 的回执。\n\n附注: 回执只通知邮件已收到， 并不保证收件人已经阅读内容。 ";
+"Security" = "安全性";
+"Sign" = "标记";
+"Encrypt" = "加密";
 "Priority" = "优先级";
 "highest" = "最高";
 "high" = "高";
@@ -164,7 +167,7 @@
 
 /* Tree */
 "SentFolderName"   = "已发送";
-"TrashFolderName"  = "垃圾箱";
+"TrashFolderName"  = "回收站";
 "InboxFolderName"  = "收件箱";
 "DraftsFolderName" = "草稿箱";
 "JunkFolderName" = "垃圾邮件";
@@ -246,6 +249,24 @@
 /* Number of selected messages in list */
 "selected" = "已选";
 
+/* Encrypted message notification */
+"This message is encrypted" = "此消息已加密";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "此消息无法解密。请确保您已从邮件首选项上传您的S / MIME证书。";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "无法验证消息签名";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "该消息已被修改";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "证书错误，请安装新证书。";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "没有与帐户关联的证书。";
+
 "This Folder" = "该目录";
 
 /* Label popup menu */
@@ -307,7 +328,7 @@
 "The folder could not be deleted."
 = "该目录不能删除。";
 "The trash could not be emptied."
-= "垃圾箱不能清空。";
+= "回收站不能清空。";
 "The folder functionality could not be changed."
 = "该目录功能不能修改。";
 "You need to choose a non-virtual folder!" = "你需要选择一个非虚拟目录！";
@@ -321,9 +342,10 @@
 = "该邮件不能移到垃圾箱目录。 是否直接删除？";
 
 /* Message editing */
+"Please specify a subject." = "请指定一个主题";
 "error_missingsubject" = "该邮件没有标题。 是否发送？";
 "error_missingrecipients" = "请至少指定一个收件人。";
-"Send Anyway" = "不管怎样发送";
+"Send Anyway" = "一直发送";
 "Error while saving the draft" = "保存草稿時发生错误";
 
 /* Error when uploading a file attachment */
@@ -357,7 +379,7 @@
 "Export" = "导出";
 "Set as Drafts" = "设为草稿";
 "Set as Sent" = "设为已发送";
-"Set as Trash" = "设为放入垃圾箱";
+"Set as Trash" = "设为放入回收站";
 
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "设为垃圾邮件";

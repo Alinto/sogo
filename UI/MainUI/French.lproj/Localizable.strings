@@ -16,10 +16,17 @@
 "Authentication Failed" = "L'authentification a échoué";
 "Wrong username or password." = "Mauvais nom d'utilisateur ou mot de passe.";
 "Retry" = "Réessayer";
+"Login failed due to unhandled error case:" = "Échec de la connexion :";
 "cookiesNotEnabled" = "Vous ne pouvez vous authentifier car les témoins (cookies) de votre navigateur Web sont désactivés. Activez les témoins dans votre navigateur Web et essayez de nouveau.";
 "browserNotCompatible" = "La version de votre navigateur Web n'est présentement pas supportée par ce site. Nous recommandons d'utiliser Firefox. Vous trouverez un lien vers la plus récente version de ce navigateur ci-dessous:";
 "alternativeBrowsers" = "Comme alternative, vous pouvez aussi utiliser les navigateurs suivants:";
 "alternativeBrowserSafari" = "Comme alternative, vous pouvez aussi utiliser Safari.";
+
+/* 2FA */
+"Verification Code" = "Code de vérification";
+"Enter the 6-digit verification code from your Google Authenticator application." = "Saisissez le code de vérification à 6 chiffres de votre application Google Authenticator.";
+"You provided an invalid Google Authenticator key." = "Vous avez fourni une clé Google Authenticator non valide.";
+
 "Download" = "Télécharger";
 "Language" = "Langue";
 "choose" = "Choisir ...";
@@ -27,7 +34,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -39,7 +46,9 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
+"Japanese" = "日本語";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
@@ -48,8 +57,10 @@
 "Polish" = "Polski";
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";

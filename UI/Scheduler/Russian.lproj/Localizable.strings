@@ -107,6 +107,7 @@
 "Name of the Calendar" = "Название календаря";
 "new" = "Новый";
 "Print view" = "Печать";
+"Print" = "Печать";
 "edit" = "Изменить";
 "delete" = "Удалить";
 "proposal" = "Предложение";
@@ -147,6 +148,7 @@
 "Display events and tasks colors" = "Показывать цвета событий и задач";
 "Borders" = "Границы";
 "Backgrounds" = "Условия";
+"Page Format" = "Формат страницы";
 
 /* Appointments */
 "Appointment viewer" = "Просмотр встреч";
@@ -218,6 +220,7 @@
 "view_next14" = "Следующие 14 дней";
 "view_next31" = "Следующий 31 день";
 "view_thismonth" = "Этот месяц";
+"view_thisyear" = "Этот год";
 "view_future" = "Все будущие мероприятия";
 "view_selectedday" = "Выбранный день";
 "view_not_started" = "Неначатые задачи";
@@ -339,6 +342,7 @@
 "repeat_YEARLY" = "Ежегодно";
 "repeat_CUSTOM" = "Настроить...";
 "reminder_NONE" = "Не напоминать";
+"reminder_0" = "Во время мероприятия";
 "reminder_5_MINUTES_BEFORE" = "за 5 минут";
 "reminder_10_MINUTES_BEFORE" = "за 10 минут";
 "reminder_15_MINUTES_BEFORE" = "за 15 минут";
@@ -435,16 +439,48 @@ validate_untilbeforeend    = "Повторение должно заканчив
 = "Вы не можете удалить персональный календарь, равно как и выключить подписку на него.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Вы уверены что хотите удалить календарь \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Вы уверены, что вы хотите удалить выбранные компоненты?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Роль";
+
+/* Participant role: participation is required */
 "Participant" = "Участник";
+
+/* Participant role: participation is required */
+"req-participant" = "Участник";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Необязательный участник";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Возможный участник";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Не участник";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Не участник";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "Организатор";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Организатор";
+
+/* Participant status: needs action */
 "Needs action" = "Требует действия";
+
+/* Participant status: event accepted */
 "Accepted" = "Принято";
+
+/* Participant status: event declined */
 "Declined" = "Отклонено";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Предварительно";
+
 "Free" = "Свободен";
 "Busy" = "Занят";
 "Maybe busy" = "Возможно занят";
@@ -540,6 +576,8 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "Delete Event" = "Удалить событие";
 "Copy event to my calendar" = "Копировать событие в мой календарь";
 "View Raw Source" = "Показать исходный код сообщения";
+"Move To" = "Переместить в";
+"Copy To" = "Копировать в";
 "Subscriptions" = "Подписки";
 "Subscribe to a shared folder" = "Подписаться на разделяемую папку.";
 "Subscribe to a web calendar..." = "Подписаться на калентарь в сети...";
@@ -571,6 +609,7 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "More options" = "Больше опций";
 "Delete This Occurrence" = "Удалить это появление";
 "Delete All Occurrences" = "Удалить все появления";
+"Add Recurrence Date" = "Добавить дату повторения";
 "Add From" = "Добавить поле начала";
 "Add Due" = "Добавить Сделать к сроку";
 "Import" = "Импорт";

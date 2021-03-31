@@ -10,6 +10,7 @@
 /* Modules descriptions */
 "ACLs_description" = "<p>De Access Control Lists-beheer-module maakt het mogelijk om de ACLs van de agenda's en adresboeken van elke gebruiker te wijzigen.</p><p>Als u de ACLs van de map van een gebruiker wilt wijzigen, typt u de naam van de gebruiker in het zoekveld bovenaan het venster en dubbelklikt u op de gewenste map.</p>";
 "Name or Email" = "Naam of e-mail";
+"ACLs saved" = "ACLs opgeslagen";
 /* Rights module: initial search message */
 "Start a search to edit the rights" = "Begin met zoeken om rechten te bewerken";
 /* Rights module: Empty search result */
