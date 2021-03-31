@@ -5,7 +5,7 @@ const tracker = {
 
 module.exports = {
   tagPrefix: "SOGo-",
-  issueUrlFormat: "https://sogo.nu/bugs/view.php?id={{id}}",
+  issueUrlFormat: "https://www.sogo.nu/bugs/view.php?id={{id}}",
   compareUrlFormat: "{{host}}/{{owner}}/{{repository}}/compare/{{previousTag}}...{{currentTag}}",
   types: [
     {type: "feat",     section: "Features"},

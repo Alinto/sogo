@@ -1,3 +1,34 @@
+# Changelog
+
+## [2.4.0](https://github.com/inverse-inc/sogo/compare/SOGo-2.3.18...SOGo-2.4.0) (2021-03-31)
+
+### Features
+
+* **core:** Support smtps and STARTTLS for SMTP ([cd3095e](https://github.com/inverse-inc/sogo/commit/cd3095e43b06e4a623cfc63cd990a484d6422191)), closes [#31](https://www.sogo.nu/bugs/view.php?id=31)
+
+### Bug Fixes
+
+* **addressbook(dav):** add support for macOS 11 (Big Sur) ([c65e121](https://github.com/inverse-inc/sogo/commit/c65e1212a55a79ad91f71f3d2bd48486a2c765e7)), closes [#5203](https://www.sogo.nu/bugs/view.php?id=5203)
+* **addressbook(dav):** add support for macOS 11 (Big Sur) ([0057524](https://github.com/inverse-inc/sogo/commit/005752498374da5e8906e56e708b13b41254ea66)), closes [#5203](https://www.sogo.nu/bugs/view.php?id=5203)
+* **calendar:** fix all-day events in lists ([1268e23](https://github.com/inverse-inc/sogo/commit/1268e2370f04f18526498fad2f259cca926dc74c))
+* **core:** adjust syntax for Python > 2 ([9198fc9](https://github.com/inverse-inc/sogo/commit/9198fc9bf63a88e13cb46909ef86b7cc19e4fde9))
+* **core:** synchronize database schema with v5 ([a98fe2f](https://github.com/inverse-inc/sogo/commit/a98fe2f850b04fd99f5586c374578ba4dc96ae0d))
+* **packaging:** add dh_makeshlibs back ([0fa6947](https://github.com/inverse-inc/sogo/commit/0fa6947a743e46f047c3322c7d710308abdf9a9a))
+* **packaging:** disable openchange permenantly ([0c47b63](https://github.com/inverse-inc/sogo/commit/0c47b639b20b47c8eb91f95dade4bdcf84b83174))
+* **packaging:** disabled openchange some more ([2911578](https://github.com/inverse-inc/sogo/commit/2911578f4b90e97d1c5e6df3a0c3ccdf02158f36))
+* **packaging:** fixed centos 7 (saml) and centos 8 builds ([47d0132](https://github.com/inverse-inc/sogo/commit/47d01326c96a2d7b7946dd9d114406b7afbea628))
+* **packaging:** more openchange cleanups ([cfd4c7b](https://github.com/inverse-inc/sogo/commit/cfd4c7b9997ea58af79bda2bf782a5fb54028268))
+* **packaging:** more openchange cleanups ([9a0b0cc](https://github.com/inverse-inc/sogo/commit/9a0b0ccb832fdc3b196691cb651f3aa5821672a2))
+* **packaging:** remove deps on openchange ([acb2a34](https://github.com/inverse-inc/sogo/commit/acb2a34b61c172153de3b2ad5fff25159ebf5593))
+
+### Localization
+
+* update translations ([32bc1e8](https://github.com/inverse-inc/sogo/commit/32bc1e8ffcd90598550f34baf4070c7cd06f84f9))
+
+### Enhancements
+
+* replace calls to create GMT NSTimeZone instance ([2b33d45](https://github.com/inverse-inc/sogo/commit/2b33d45346fad64aa657ccf28c2aaf80640f1d42)), closes [#3757](https://www.sogo.nu/bugs/view.php?id=3757)
+
 ## [2.3.24](https://github.com/inverse-inc/sogo/compare/SOGo-2.3.23...SOGo-2.3.24) (2021-05-26)
 
 ### Features
@@ -2290,4 +2321,3 @@
 * added the ability to use and configure SMTP as the email transport instead of sendmail
 * rewrote the handling of draft objects to comply better with the behaviour of Thunderbird
 * added a German translation based on Thunderbird
-
