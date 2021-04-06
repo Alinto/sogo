@@ -210,7 +210,8 @@
 
     // Register custom stylesheet for toolbar of center lists
     $mdThemingProvider.registerStyles([
-      'md-toolbar.md-hue-1:not(.md-menu-toolbar).md-accent {',
+      'md-toolbar.md-hue-1:not(.md-menu-toolbar).md-accent,',
+      'md-toolbar.md-hue-1:not(.md-menu-toolbar).md-accent md-input-container[md-no-float] .md-input {',
       '  background-color: \'{{accent-hue-1}}\';',
       '  color: \'{{foreground-1}}\';',
       '}',
