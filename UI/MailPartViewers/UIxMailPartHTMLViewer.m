@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSData.h>
 
 #import <SaxObjC/SaxLexicalHandler.h>
 #import <SaxObjC/SaxXMLReaderFactory.h>
@@ -506,10 +506,10 @@ _xmlCharsetForCharset (NSString *charset)
                   else
                     skipAttribute = YES;
                 }
-              else if (([name isEqualToString: @"background"] ||
-                       ([name isEqualToString: @"data"]
-                        || [name isEqualToString: @"classid"]))
-                       && [lowerName isEqualToString: @"object"])
+              else if ([name isEqualToString: @"background"] ||
+                       (([name isEqualToString: @"data"]
+                         || [name isEqualToString: @"classid"])
+                        && [lowerName isEqualToString: @"object"]))
                 {
                   value = [_attributes valueAtIndex: count];
                   name = [NSString stringWithFormat: @"unsafe-%@", name];
