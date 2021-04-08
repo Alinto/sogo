@@ -27,16 +27,12 @@ BuildRequires:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{so
 
 
 # Required by MS Exchange freebusy lookups
-%{?el5:Requires: curl}
-%{?el5:BuildRequires: curl-devel}
 %{?el6:Requires: libcurl}
 %{?el6:BuildRequires: libcurl-devel}
 
 # saml is enabled everywhere except on el5 since its glib2 is prehistoric
 %define saml2_cfg_opts "--enable-saml2"
 %define mfa_cfg_opts "--enable-mfa"
-%{?el5:%define saml2_cfg_opts ""}
-%{?el5:%define mfa_cfg_opts ""}
 %{?el6:%define mfa_cfg_opts ""}
 %{?el6:Requires: lasso}
 %{?el6:BuildRequires: lasso-devel}
