@@ -319,8 +319,9 @@
     }
 
     this.$onDestroy = function () {
+      var noUpdate = true;
       editorElement.classList.add('ng-cloak');
-      editor.destroy();
+      editor.destroy(noUpdate);
     }
 
     function onInstanceReady (event) {
