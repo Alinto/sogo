@@ -303,6 +303,17 @@
   };
 
   /**
+   * @function $unselectMessages
+   * @memberof Mailbox.prototype
+   * @desc Unselect all messages.
+   */
+  Mailbox.prototype.$unselectMessages = function() {
+    _.forEach(this.$selectedMessages(), function(message) {
+      message.selected = false;
+    });
+  };
+
+  /**
    * @function isSelectedMessage
    * @memberof Mailbox.prototype
    * @desc Check if the specified message is displayed in the detailed view.

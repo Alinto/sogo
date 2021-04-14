@@ -255,11 +255,13 @@
     if (Mailbox.$virtualMode)
       return [];
 
-    if (stateMailbox)
+    if (stateMailbox) {
+      stateMailbox.$unselectMessages();
       promise = stateMailbox.$filter().catch(function() {
         // Mailbox not found
         return $q.reject('Mailbox not found');
       });
+    }
     else
       promise = $q.reject("Mailbox doesn't exist");
 
