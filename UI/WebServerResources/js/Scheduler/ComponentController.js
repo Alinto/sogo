@@ -480,9 +480,8 @@
               Preferences.getAlarms();
               $mdDialog.hide();
             }, function(response) {
-              if (response.status == CalendarSettings.ConflictHTTPErrorCode &&
-                  _.isObject(response.data.message))
-                vm.attendeeConflictError = response.data.message;
+              if (response.status == CalendarSettings.ConflictHTTPErrorCode)
+                vm.attendeeConflictError = _.isObject(response.data.message) ? response.data.message : { reject: response.data.message };
               else
                 vm.edit(form);
             });
