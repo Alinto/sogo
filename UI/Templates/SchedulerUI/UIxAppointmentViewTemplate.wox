@@ -187,6 +187,7 @@
                     <a href="#"
                        label:aria-label="Email Organizer"
                        ng-click="editor.newMessageWithRecipient($event, $chip.name, $chip.email)">{{$chip.name}}</a>
+                    <md-tooltip md-direction="bottom" ng-show="$chip.email != $chip.name">{{ $chip.email }}</md-tooltip>
                   </div>
                 </md-chip-template>
               </md-chips>
@@ -206,6 +207,7 @@
                   <div class="md-contact-name">
                     <a href="#"
                        ng-click="editor.newMessageWithRecipient($event, $chip.name, $chip.email)">{{$chip.name}}</a>
+                    <md-tooltip md-direction="bottom" ng-show="$chip.email != $chip.name">{{ $chip.email }}</md-tooltip>
                   </div>
                   <md-icon class="sg-secondary" ng-class="'icon-' + $chip.partstat"><!-- partstat --></md-icon>
                 </md-chip-template>
