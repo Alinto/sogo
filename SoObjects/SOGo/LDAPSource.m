@@ -2085,7 +2085,9 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
               if (user)
                 {
                   [logins addObject: login];
-                  [members addObject: user];
+                  [members addObject: [NSDictionary dictionaryWithObjectsAndKeys: login, @"c_uid",
+                                                                                  [user cn], @"c_cn",
+                                                                                  [user allEmails], @"c_emails", nil]];
                 }
               [pool release];
             }
@@ -2101,13 +2103,16 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
                   contactInfos = [self lookupContactEntryWithUIDorEmail: login inDomain: nil];
                   if ([contactInfos objectForKey: @"isGroup"])
                     {
+#warning Potential endless recursion due to cyclic memberships                    
                       users = [self membersForGroupWithUID: login];
                       [members addObjectsFromArray: users];
                     }
                   else
                     {
                       [logins addObject: login];
-                      [members addObject: user];
+                      [members addObject: [NSDictionary dictionaryWithObjectsAndKeys: login, @"c_uid",
+                                                                                      [user cn], @"c_cn",
+                                                                                      [user allEmails], @"c_emails", nil]];
                     }
                 }
               [pool release];
@@ -2115,7 +2120,7 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
 
 
           // We are done fetching members, let's cache the members of the group
-          // (ie., their UIDs) in memcached to speed up -groupWithUIDHasMemberWithUID.
+          // (ie., their UIDs) in memcached to speed up -hasMemberWithUID.
           [[SOGoCache sharedCache] setValue: [logins componentsJoinedByString: @","]
             forKey: [NSString stringWithFormat: @"%@+%@", uid, _domain]];
         }

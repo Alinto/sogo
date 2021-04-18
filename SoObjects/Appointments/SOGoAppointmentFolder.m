@@ -429,7 +429,6 @@ static Class iCalEventK = nil;
   NSString *subscriptionPointer, *domain;
   NSMutableArray *allUsers;
   SOGoUserSettings *us;
-  SOGoUser *sogoUser;
   NSDictionary *dict;
   BOOL rc;
   int i;
@@ -453,11 +452,15 @@ static Class iCalEventK = nil;
              NSArray *members;
 
              members = [(id<SOGoMembershipSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]];
-             allUsers = [NSMutableArray arrayWithArray: members];
+             allUsers = [NSMutableArray array];
 
+             for (i = 0; i < [members count]; i++)
+               {
+                 [allUsers addObject: [[members objectAtIndex: i] objectForKey: @"c_uid"]];
+               }
              // We remove the active user from the group (if present) in order to
              // not subscribe him to their own resource!
-             [allUsers removeObject: [context activeUser]];
+             [allUsers removeObject: [[context activeUser] login]];
            }
          else
            {
@@ -467,17 +470,15 @@ static Class iCalEventK = nil;
        }
      else
        {
-         sogoUser = [SOGoUser userWithLogin: theIdentifier roles: nil];
-         if (sogoUser)
-           allUsers = [NSArray arrayWithObject: sogoUser];
+         if (dict)
+           allUsers = [NSArray arrayWithObject: [dict objectForKey: @"c_uid"]];
          else
            allUsers = [NSArray array];
        }
 
       for (i = 0; i < [allUsers count]; i++)
         {
-          sogoUser = [allUsers objectAtIndex: i];
-          us = [sogoUser userSettings];
+          us = [SOGoUserSettings settingsForUser: [allUsers objectAtIndex: i]];
           moduleSettings = [us objectForKey: [container nameInContainer]];
           if (!(moduleSettings
                 && [moduleSettings isKindOfClass: [NSMutableDictionary class]]))
@@ -1519,7 +1520,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   BOOL rememberRecords, canCycle;
   SOGoUser *ownerUser;
 
-  ownerUser = [SOGoUser userWithLogin: self->owner roles: nil];
+  ownerUser = [SOGoUser userWithLogin: owner roles: nil];
   rememberRecords = [self _checkIfWeCanRememberRecords: _fields];
   canCycle = [_component isEqualToString: @"vevent"] || [_component isEqualToString: @"vtodo"];
 //   if (rememberRecords)
@@ -1677,7 +1678,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
         }
 
       currentLogin = [[context activeUser] login];
-      if (![currentLogin isEqualToString: self->owner])
+      if (![currentLogin isEqualToString: owner])
         {
 
           if (!_includeProtectedInformation)
