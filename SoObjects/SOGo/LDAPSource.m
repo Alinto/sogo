@@ -2028,12 +2028,12 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
 
 - (NSArray *) membersForGroupWithUID: (NSString *) uid
 {
-  NSMutableArray *dns, *uids, *logins;
+  NSMutableArray *dns, *uids;
   NSString *dn, *login;
   SOGoUserManager *um;
   NSDictionary *d, *contactInfos;
   SOGoUser *user;
-  NSArray *o, *users;
+  NSArray *o, *subusers, *logins;
   NSAutoreleasePool *pool;
   int i, c;
   NGLdapEntry *entry;
@@ -2049,7 +2049,6 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
       members = [NSMutableArray new];
       uids = [NSMutableArray array];
       dns = [NSMutableArray array];
-      logins = [NSMutableArray array];
 
       // We check if it's a static group
       // Fetch "members" - we get DNs
@@ -2084,8 +2083,16 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
               user = [SOGoUser userWithLogin: login  roles: nil];
               if (user)
                 {
-                  [logins addObject: login];
-                  [members addObject: user];
+                  contactInfos = [self lookupContactEntryWithUIDorEmail: login inDomain: nil];
+                  if ([contactInfos objectForKey: @"isGroup"])
+                    {
+                      subusers = [self membersForGroupWithUID: login];
+                      [members addObjectsFromArray: subusers];
+                    }
+                  else
+                    {
+                      [members addObject: user];
+                    }
                 }
               [pool release];
             }
@@ -2101,23 +2108,22 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
                   contactInfos = [self lookupContactEntryWithUIDorEmail: login inDomain: nil];
                   if ([contactInfos objectForKey: @"isGroup"])
                     {
-                      users = [self membersForGroupWithUID: login];
-                      [members addObjectsFromArray: users];
+                      subusers = [self membersForGroupWithUID: login];
+                      [members addObjectsFromArray: subusers];
                     }
                   else
                     {
-                      [logins addObject: login];
                       [members addObject: user];
                     }
                 }
               [pool release];
             }
 
-
           // We are done fetching members, let's cache the members of the group
           // (ie., their UIDs) in memcached to speed up -groupWithUIDHasMemberWithUID.
+          logins = [members resultsOfSelector: @selector (loginInDomain)];
           [[SOGoCache sharedCache] setValue: [logins componentsJoinedByString: @","]
-            forKey: [NSString stringWithFormat: @"%@+%@", uid, _domain]];
+                                     forKey: [NSString stringWithFormat: @"%@+%@", uid, _domain]];
         }
       else
         {
