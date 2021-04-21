@@ -32,28 +32,31 @@
 
       return [
         '<div class="sg-event"',
-        //    Add a class while dragging
-        '     ng-class="{\'sg-event--dragging\': block.dragging}"',
-        '     ng-click="clickBlock({clickEvent: $event, clickComponent: block.component})">',
-        //   Categories color stripes
+        //  Add a class while dragging
+        '   ng-class="{\'sg-event--dragging\': block.dragging}"',
+        '   ng-click="clickBlock({clickEvent: $event, clickComponent: block.component})">',
+        // Categories color stripes
         '  <div class="sg-category" ng-repeat="category in '+p+'block.component.categories"',
-        '       ng-class="'+p+'(\'bg-category\' + category)"',
-        '       ng-style="'+p+'{ right: ($index * 3) + \'px\' }"></div>',
-        '  <span class="secondary" ng-if="'+p+'(!block.component.c_isallday && block.isFirst)">{{ '+p+'block.component.startHour }}</span>',
-        //     Priority
-        '  <span ng-show="'+p+'block.component.c_priority" class="sg-priority">{{'+p+'block.component.c_priority}}</span>',
-        // Summary
-        '  {{ '+p+'block.component.summary }}',
-        '  <span class="icons">',
-        //   Component is reccurent
-        '    <md-icon ng-if="'+p+'block.component.occurrenceId">repeat</md-icon>',
-        //   Component has an alarm
-        '    <md-icon ng-if="'+p+'block.component.c_nextalarm">alarm</md-icon>',
-        //   Component is confidential
-        '    <md-icon ng-if="'+p+'block.component.c_classification == 2">visibility_off</md-icon>',
-        //   Component is private
-        '    <md-icon ng-if="'+p+'block.component.c_classification == 1">vpn_key</md-icon>',
-        '  </span>',
+        '     ng-class="'+p+'(\'bg-category\' + category)"',
+        '     ng-style="'+p+'{ right: ($index * 10) + \'%\' }"></div>',
+        '  <div class="text">',
+        //   Start hour
+        '    <span class="secondary" ng-if="'+p+'(!block.component.c_isallday && block.isFirst)">{{ '+p+'block.component.startHour }}</span>',
+        //   Priority
+        '    <span ng-show="'+p+'block.component.c_priority" class="sg-priority">{{'+p+'block.component.c_priority}}</span>',
+        //   Summary
+        '    {{ '+p+'block.component.summary }}',
+        '    <span class="sg-icons">',
+        //     Component is reccurent
+        '      <md-icon ng-if="'+p+'block.component.occurrenceId">repeat</md-icon>',
+        //     Component has an alarm
+        '      <md-icon ng-if="'+p+'block.component.c_nextalarm">alarm</md-icon>',
+        //     Component is confidential
+        '      <md-icon ng-if="'+p+'block.component.c_classification == 2">visibility_off</md-icon>',
+        //     Component is private
+        '      <md-icon ng-if="'+p+'block.component.c_classification == 1">vpn_key</md-icon>',
+        '    </span>',
+        '  </div>',
         '</div>'
       ].join('');
     }

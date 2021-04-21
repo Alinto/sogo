@@ -39,12 +39,13 @@
         //   Categories color stripes
         '    <div class="sg-category" ng-repeat="category in ::component.categories"',
         '         ng-class="::(\'bg-category\' + category)"',
-        '         ng-style="::{ right: ($index * 3) + \'px\' }"></div>',
+        '         ng-style="::{ right: ($index * 10) + \'%\' }"></div>',
+        '    <div class="text">',
         //     Priority
         '      <span ng-show="::component.c_priority" class="sg-priority" ng-bind="::component.c_priority"></span>',
         //     Summary
         '      {{ ::component.c_title }}',
-        '      <span class="icons">',
+        '      <span class="sg-icons">',
         //       Component is reccurent
         '        <md-icon ng-if="::component.occurrenceId">repeat</md-icon>',
         //       Component has an alarm
@@ -62,6 +63,7 @@
         '      <div class="secondary" ng-if="::component.c_location">',
         '        <md-icon>place</md-icon> <span ng-bind="::component.c_location"></span>',
         '      </div>',
+        '    </div>',
         '</div>'
       ].join('');
     }

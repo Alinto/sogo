@@ -376,6 +376,16 @@ $quarter_height: 10px;
 
     .eventInside {
       overflow: hidden;
+      .text {
+        position: absolute;
+        top: 3px;
+        left: 1%;
+        right: 1%;
+        bottom: 3px;
+        margin: 0 2px;
+        overflow: hidden;
+        line-height: $sg-font-size-2;
+      }
     }
 
     .material-icons {
@@ -384,7 +394,7 @@ $quarter_height: 10px;
       min-width: $sg-font-size-2;
     }
 
-    .icons md-icon {
+    .sg-icons md-icon {
       float: right;
     }
 
@@ -533,10 +543,6 @@ $quarter_height: 10px;
         overflow: auto;
       }
     }
-    .text {
-      position: relative;
-      overflow: auto;
-    }
   }
 
   // Multicolumn day cell that contains the calendar name
@@ -651,14 +657,8 @@ $quarter_height: 10px;
   }
 
   .text {
-    position: absolute;
-    top: 3px;
-    left: 1%;
-    right: 1%;
-    bottom: 3px;
-    margin: 0 2px;
-    overflow: hidden;
-    line-height: $sg-font-size-2;
+    position: relative;
+    z-index: $z-index-view + 1;
   }
 
   .gradient > IMG {
