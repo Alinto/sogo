@@ -906,6 +906,8 @@ static NSString *sieveScriptName = @"sogo";
   if (!delimiter)
     [imapClient list: @"INBOX"  pattern: @""];
 
+  delimiter = [imapClient delimiter];
+
   if (!delimiter)
     delimiter = [dd stringForKey: @"NGImap4ConnectionStringSeparator"];
 
