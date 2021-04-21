@@ -14,7 +14,7 @@
           <label class="pseudo-input-label pseudo-input-label">
             <var:string label:value="Search messages in"/>
           </label>
-          <md-select class="pseudo-input-field" ng-model="mailbox.service.$virtualPath">
+          <md-select class="pseudo-input-field" label:aria-label="Search messages in" ng-model="mailbox.service.$virtualPath">
             <md-option ng-value="''">
               <span ng-bind="app.accounts[0].name"><!-- main account name --></span>
             </md-option>
@@ -205,7 +205,9 @@
                   <div ng-repeat="account in ::mailbox.accounts track by account.id">
                     <md-menu-item>
                       <md-menu>
-                        <md-button class="md-primary" ng-click="$mdMenu.open($event)"
+                        <md-button class="md-primary"
+                                   aria-label="{{ ::account.name }}"
+                                   ng-click="$mdMenu.open($event)"
                                    ng-bind="::account.name"><!-- account name --></md-button>
                         <md-menu-content class="md-dense" width="4">
                           <div ng-repeat="folder in
@@ -237,7 +239,9 @@
                   <div ng-repeat="account in ::mailbox.accounts track by account.id">
                     <md-menu-item>
                       <md-menu>
-                        <md-button class="md-primary" ng-click="$mdMenu.open($event)"
+                        <md-button class="md-primary"
+                                   aria-label="{{ ::account.name }}"
+                                   ng-click="$mdMenu.open($event)"
                                    ng-bind="::account.name"><!-- account name --></md-button>
                         <md-menu-content class="md-dense" width="4">
                           <div ng-repeat="folder in
