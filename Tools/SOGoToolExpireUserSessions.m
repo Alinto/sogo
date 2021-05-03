@@ -1,6 +1,6 @@
 /* SOGoToolExpireUserSessions.m - this file is part of SOGo
  *
- * Copyright (C) 2012-2020 Inverse inc.
+ * Copyright (C) 2012-2021 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@
 #import <NGExtensions/NSNull+misc.h>
 
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoSession.h>
 
 #import "SOGoTool.h"
 
@@ -63,20 +64,20 @@
   BOOL rc;
   EOAdaptorChannel *channel;
   GCSChannelManager *cm;
-  NSArray *attrs, *qValues;
+  NSArray *attrs;
   NSDictionary *qresult;
   NSException *ex;
-  NSString *sql, *sessionsFolderURL;
+  NSString *sql, *sessionsFolderURL, *sessionID;
   NSURL *tableURL;
   NSUserDefaults *ud;
 
   unsigned int now, oldest;
-  int sessionsToDelete;
 
-  rc=YES;
+  rc = YES;
   ud = [NSUserDefaults standardUserDefaults];
   now = [[NSCalendarDate calendarDate] timeIntervalSince1970];
   oldest = now - (nbMinutes * 60);
+  sessionID = nil;
 
   sessionsFolderURL = [ud stringForKey: @"OCSSessionsFolderURL"];
   if (!sessionsFolderURL)
@@ -93,56 +94,43 @@
   {
     /* FIXME: nice error msg */
     NSLog(@"Can't aquire channel");
-    return rc=NO;
+    return rc = NO;
   }
 
-  sql = [NSString stringWithFormat: @"SELECT count(*) FROM %@ WHERE c_lastseen <= %d",
-                        [tableURL gcsTableName], oldest];
+  sql = [NSString stringWithFormat: @"SELECT c_id FROM %@ WHERE c_lastseen <= %d",
+                  [tableURL gcsTableName], oldest];
   ex = [channel evaluateExpressionX: sql]; 
   if (ex)
   {
     NSLog(@"%@", [ex reason]);
     [ex raise];
-    return rc=NO;
+    return rc = NO;
   }
 
   attrs = [channel describeResults: NO];
-  /* only one row */
-  qresult = [channel fetchAttributes: attrs withZone: NULL];
-  qValues = [qresult allValues];
-  sessionsToDelete = [[qValues objectAtIndex: 0] intValue];
-  if (sessionsToDelete)
-  {
-    if (verbose)
-      NSLog(@"Will be removing %d sessions", sessionsToDelete);
-    [channel cancelFetch];
-    sql = [NSString stringWithFormat: @"DELETE FROM %@ WHERE c_lastseen <= %d",
-                        [tableURL gcsTableName], oldest];
-    if (verbose)
-      NSLog(@"Removing sessions older than %d minute(s)", nbMinutes);
-    ex = [channel evaluateExpressionX: sql]; 
-    if (ex)
+  while ((qresult = [channel fetchAttributes: attrs withZone: NULL]))
     {
-      NSLog(@"An exception occured while deleting old sessions: %@", [ex reason]);
-      [ex raise];
-      return rc=NO;
+      sessionID = [qresult objectForKey: @"c_id"];
+      if (sessionID)
+        {
+          if (verbose)
+            NSLog(@"Removing session %@", sessionID);
+          [SOGoSession deleteValueForSessionKey: sessionID];
+        }
     }
-  }
-  else
-  {
-    if (verbose)
-      NSLog(@"No session to remove");
-  }
-
   [cm releaseChannel: channel  immediately: YES];
+
+  if (verbose && sessionID == nil)
+    NSLog(@"No session to remove");
+
   return rc;
 }
 
 - (BOOL) run
 {
   BOOL rc;
-  int sessionExpireMinutes=0;
-  
+  int sessionExpireMinutes = -1;
+
   rc = NO;
 
   if ([arguments count])
@@ -150,7 +138,7 @@
     sessionExpireMinutes = [[arguments objectAtIndex: 0] intValue];
   }
 
-  if (sessionExpireMinutes > 0)
+  if (sessionExpireMinutes >= 0)
   {
     rc = [self expireUserSessionOlderThan: sessionExpireMinutes];
   }
