@@ -166,9 +166,8 @@
 {
   NSDictionary *jsonError;
 
-  jsonError
-    = [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: error]
-                                  forKey: @"LDAPPasswordPolicyError"];
+  jsonError = [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: error]
+                                          forKey: @"LDAPPasswordPolicyError"];
   return [self responseWithStatus: 403
             andJSONRepresentation: jsonError];
 }
@@ -649,57 +648,90 @@
   request = [context request];
   message = [[request contentAsString] objectFromJSONString];
 
-  auth = [[WOApplication application]
-	   authenticatorInContext: context];
-  value = [[context request]
-           cookieValueForKey: [auth cookieNameInContext: context]];
-  creds = [auth parseCredentials: value];
+  auth = [[WOApplication application] authenticatorInContext: context];
+  value = [[context request] cookieValueForKey: [auth cookieNameInContext: context]];
+  creds = nil;
+  username = nil;
 
-  [SOGoSession decodeValue: [SOGoSession valueForSessionKey: [creds objectAtIndex: 1]]
-                  usingKey: [creds objectAtIndex: 0]
-                     login: &username
-                    domain: &domain
-                  password: &password];
+  if (value)
+    {
+      // User is logged in; extract username from session
+      creds = [auth parseCredentials: value];
+
+      [SOGoSession decodeValue: [SOGoSession valueForSessionKey: [creds objectAtIndex: 1]]
+                      usingKey: [creds objectAtIndex: 0]
+                         login: &username
+                        domain: &domain
+                      password: &password];
+    }
+  else
+    {
+      // We are using ppolicy and changing the password upon login
+      username = [message objectForKey: @"userName"];
+      domain = [message objectForKey: @"domain"];
+    }
 
   newPassword = [message objectForKey: @"newPassword"];
   // overwrite the value from the session to compare the actual input
   password = [message objectForKey: @"oldPassword"];
 
-  um = [SOGoUserManager sharedUserManager];
-
-  // This will also update the cached password in memcached.
-  if ([um changePasswordForLogin: username
-                        inDomain: domain
-                     oldPassword: password
-                     newPassword: newPassword
-                            perr: &error])
+  // Validate required parameters
+  if (!username)
     {
-      // We delete the previous session
-      [SOGoSession deleteValueForSessionKey: [creds objectAtIndex: 1]];
-
-      if ([domain isNotNull])
-        {
-          sd = [SOGoSystemDefaults sharedSystemDefaults];
-          if ([sd enableDomainBasedUID] &&
-              [username rangeOfString: @"@"].location == NSNotFound)
-            username = [NSString stringWithFormat: @"%@@%@", username, domain];
-        }
-
-      response = [self responseWith204];
-      authCookie = [auth cookieWithUsername: username
-                                andPassword: newPassword
-                                  inContext: context];
-      [response addCookie: authCookie];
-
-      // We update the XSRF protection cookie
-      creds = [auth parseCredentials: [authCookie value]];
-      xsrfCookie = [WOCookie cookieWithName: @"XSRF-TOKEN"
-                                      value: [[SOGoSession valueForSessionKey: [creds lastObject]] asSHA1String]];
-      [xsrfCookie setPath: [NSString stringWithFormat: @"/%@/", [request applicationName]]];
-      [response addCookie: xsrfCookie];
+     response = [self responseWithStatus: 403
+                              andString: @"Missing 'username' parameter"];
+    }
+  else if (!password)
+    {
+     response = [self responseWithStatus: 403
+                              andString: @"Missing 'oldPassword' parameter"];
+    }
+  else if (!newPassword)
+    {
+     response = [self responseWithStatus: 403
+                              andString: @"Missing 'newPassword' parameter"];
     }
   else
-    response = [self _responseWithLDAPPolicyError: error];
+    {
+      um = [SOGoUserManager sharedUserManager];
+
+      // This will also update the cached password in memcached.
+      if ([um changePasswordForLogin: username
+                            inDomain: domain
+                         oldPassword: password
+                         newPassword: newPassword
+                                perr: &error])
+        {
+          if (creds)
+            {
+              // We delete the previous session
+              [SOGoSession deleteValueForSessionKey: [creds objectAtIndex: 1]];
+            }
+
+          if ([domain isNotNull])
+            {
+              sd = [SOGoSystemDefaults sharedSystemDefaults];
+              if ([sd enableDomainBasedUID] &&
+                  [username rangeOfString: @"@"].location == NSNotFound)
+                username = [NSString stringWithFormat: @"%@@%@", username, domain];
+            }
+
+          response = [self responseWith204];
+          authCookie = [auth cookieWithUsername: username
+                                    andPassword: newPassword
+                                      inContext: context];
+          [response addCookie: authCookie];
+
+          // We update the XSRF protection cookie
+          creds = [auth parseCredentials: [authCookie value]];
+          xsrfCookie = [WOCookie cookieWithName: @"XSRF-TOKEN"
+                                          value: [[SOGoSession valueForSessionKey: [creds lastObject]] asSHA1String]];
+          [xsrfCookie setPath: [NSString stringWithFormat: @"/%@/", [request applicationName]]];
+          [response addCookie: xsrfCookie];
+        }
+      else
+        response = [self _responseWithLDAPPolicyError: error];
+    }
 
   return response;
 }

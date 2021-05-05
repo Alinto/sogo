@@ -156,6 +156,59 @@
             </div>
             </var:if>
 
+            <!-- Password policy: Password is expired -->
+            <div layout="column" layout-align="center center"
+                 ng-switch-when="passwordexpired">
+              <md-icon class="md-accent md-hue-1 sg-icon--large">watch_later</md-icon>
+              <div class="md-default-theme md-accent md-hue-1 md-fg md-padding">
+                <var:string label:value="Your password has expired, please enter a new one below"/>
+              </div>
+              <div flex="100">
+                <div layout="row" layout-xs="column">
+                 <md-input-container class="md-block" flex="flex">
+                    <label><var:string label:value="Current password"/>
+                    </label>
+                    <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.oldPassword"/>
+                  </md-input-container>
+                  <md-input-container class="md-block" flex="flex">
+                    <label><var:string label:value="New password"/>
+                    </label>
+                    <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.newPassword"/>
+                  </md-input-container>
+                  <md-input-container class="md-block" flex="flex">
+                    <label><var:string label:value="Confirmation"/>
+                    </label>
+                    <input type="password" name="newPasswordConfirmation" sg-no-dirty-check="true" ng-model="app.passwords.newPasswordConfirmation"/>
+                    <div ng-messages="loginForm.newPasswordConfirmation.$error">
+                      <div ng-message="newPasswordMismatch"><var:string label:value="Passwords don't match"/></div>
+                    </div>
+                  </md-input-container>
+                </div>
+                <div layout="row" layout-align="end center">
+                  <md-button ng-click="app.changePassword()" type="button" ng-disabled="!app.canChangePassword(loginForm)">
+                    <var:string label:value="Change"/>
+                  </md-button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Password policy: Grace period -->
+            <div layout="column" layout-align="center center"
+                 ng-switch-when="passwordwillexpire">
+              <md-icon class="md-accent md-hue-1 sg-icon--large">warning</md-icon>
+              <div class="md-default-theme md-accent md-hue-1 md-fg md-padding" ng-if="app.cn">
+                <var:string label:value="Welcome"/> {{app.cn}}
+              </div>
+              <div class="md-default-theme md-warn md-hue-1 md-bg md-padding">
+                {{app.errorMessage}}
+                <md-button class="md-raised"
+                    ng-click="app.loginState = 'passwordexpired'"><var:string label:value="Change your Password"/></md-button>
+              </div>
+              <md-button
+                  ng-click="app.continueLogin()"
+                  sg-ripple-click="loginContent"><var:string label:value="Continue"/></md-button>
+            </div>
+
             <!-- Logged in -->
             <div layout="column" layout-align="center center"
                  ng-switch-when="logged">
@@ -163,6 +216,17 @@
               <div class="md-default-theme md-accent md-hue-1 md-fg md-padding">
                 <var:string label:value="Welcome"/> {{app.cn}}
               </div>
+            </div>
+
+            <div layout="column" layout-align="center center"
+                 ng-switch-when="message">
+              <md-icon class="md-accent md-hue-1 sg-icon--large">done</md-icon>
+              <div class="md-default-theme md-accent md-hue-1 md-fg md-padding">
+                {{app.errorMessage}}
+              </div>
+              <md-button
+                  ng-click="app.continueLogin()"
+                  sg-ripple-click="loginContent"><var:string label:value="Continue"/></md-button>
             </div>
 
             <!-- Error -->

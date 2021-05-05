@@ -100,46 +100,68 @@
               // Check password policy
               else if (typeof data.expire != 'undefined' && typeof data.grace != 'undefined') {
                 if (data.expire < 0 && data.grace > 0) {
-                  d.reject({grace: data.grace});
-                  //showPasswordDialog('grace', createPasswordGraceDialog, data['grace']);
+                  d.reject({
+                    cn: data.cn,
+                    url: redirectUrl(username, domain),
+                    grace: data.grace
+                  });
                 } else if (data.expire > 0 && data.grace == -1) {
-                  d.reject({expire: data.expire});
-                  //showPasswordDialog('expiration', createPasswordExpirationDialog, data['expire']);
+                  d.reject({
+                    cn: data.cn,
+                    url: redirectUrl(username, domain),
+                    expire: data.expire
+                  });
                 }
                 else {
-                  d.resolve({ cn: data.cn, url: redirectUrl(username, domain) });
+                  d.resolve({
+                    cn: data.cn,
+                    url: redirectUrl(username, domain)
+                  });
                 }
               }
               else {
                 d.resolve({ url: redirectUrl(username, domain) });
               }
             }
-          }, function(response) {
-            var msg, perr, data = response.data;
+          }, function(error) {
+            var response, perr, data = error.data;
             if (data && data.GoogleAuthenticatorInvalidKey) {
-              msg = l('You provided an invalid Google Authenticator key.');
+              response = {error: l('You provided an invalid Google Authenticator key.')};
             }
-            else if (data && data.LDAPPasswordPolicyError) {
+            else if (data && angular.isDefined(data.LDAPPasswordPolicyError)) {
               perr = data.LDAPPasswordPolicyError;
               if (perr == passwordPolicyConfig.PolicyNoError) {
-                msg = l('Wrong username or password.');
+                response = {error: l('Wrong username or password.')};
               }
               else if (perr == passwordPolicyConfig.PolicyAccountLocked) {
-                msg = l('Your account was locked due to too many failed attempts.');
+                response = {error: l('Your account was locked due to too many failed attempts.')};
+              }
+              else if (perr == passwordPolicyConfig.PolicyPasswordExpired ||
+                       perr == passwordPolicyConfig.PolicyChangeAfterReset) {
+                response = {
+                  passwordexpired: 1,
+                  url: redirectUrl(username, domain)
+                };
+              }
+              else if (perr == passwordPolicyConfig.PolicyChangeAfterReset) {
+                response = {
+                  passwordexpired: 1,
+                  url: redirectUrl(username, domain)
+                };
               }
               else {
-                msg = l('Login failed due to unhandled error case: ') + perr;
+                response = {error: l('Login failed due to unhandled error case: ') + perr};
               }
             }
             else {
-              msg = l('Unhandled error response');
+              response = {error: l('Unhandled error response')};
             }
-            d.reject({error: msg});
+            d.reject(response);
           });
           return d.promise;
         }, // login: function(data) { ...
 
-        changePassword: function(newPassword, oldPassword) {
+        changePassword: function(userName, domain, newPassword, oldPassword) {
           var d = $q.defer(),
               xsrfCookie = $cookies.get('XSRF-TOKEN');
 
@@ -151,8 +173,10 @@
             headers: {
               'X-XSRF-TOKEN' : xsrfCookie
             },
-            data: { newPassword: newPassword, oldPassword: oldPassword }
-          }).then(d.resolve, function(response) {
+            data: { userName: userName, newPassword: newPassword, oldPassword: oldPassword }
+          }).then(function() {
+            d.resolve({url: redirectUrl(userName, domain)});
+          }, function(response) {
             var error,
                 data = response.data,
                 perr = data.LDAPPasswordPolicyError;
@@ -161,7 +185,8 @@
               perr = passwordPolicyConfig.PolicyPasswordSystemUnknown;
               error = _("Unhandled error response");
             }
-            else if (perr == passwordPolicyConfig.PolicyNoError) {
+            else if (perr == passwordPolicyConfig.PolicyNoError ||
+                     perr == passwordPolicyConfig.PolicyPasswordUnknown) {
               error = l("Password change failed");
             } else if (perr == passwordPolicyConfig.PolicyPasswordModNotAllowed) {
               error = l("Password change failed - Permission denied");

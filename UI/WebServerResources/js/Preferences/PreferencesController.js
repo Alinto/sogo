@@ -484,7 +484,7 @@
     };
 
     this.changePassword = function() {
-      Authentication.changePassword(this.passwords.newPassword, this.passwords.oldPassword).then(function() {
+      Authentication.changePassword(null, null, this.passwords.newPassword, this.passwords.oldPassword).then(function() {
         var alert = $mdDialog.alert({
           title: l('Password'),
           textContent: l('The password was changed successfully.'),
@@ -497,7 +497,7 @@
       }, function(msg) {
         var alert = $mdDialog.alert({
           title: l('Password'),
-          content: msg,
+          textContent: msg,
           ok: l('OK')
         });
         $mdDialog.show( alert )
