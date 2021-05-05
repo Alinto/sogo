@@ -18,8 +18,8 @@
 
      <textarea rows="9" md-no-autogrow sg-autogrow="!isPopup" />
   */
-  sgAutogrow.$inject = ['$document', '$timeout'];
-  function sgAutogrow($document, $timeout) {
+  sgAutogrow.$inject = ['$document', '$timeout', '$mdUtil'];
+  function sgAutogrow($document, $timeout, $mdUtil) {
     return {
       restrict: 'A',
       scope: {
@@ -44,19 +44,17 @@
         textarea.style.overflow = 'hidden';
 
         function AutoGrowTextArea() {
-          $timeout(function() {
-            content = textarea.value.encodeEntities();
-            content = content.replace(/\n/g, '<br>');
-            hiddenDiv.innerHTML = content + '<br style="line-height: 3px;">';
-            hiddenDiv.style.visibility = 'hidden';
-            hiddenDiv.style.display = 'block';
-            textarea.style.height = Math.max(minHeight, hiddenDiv.offsetHeight) + 'px';
-            hiddenDiv.style.visibility = 'visible';
-            hiddenDiv.style.display = 'none';
-          });
+          content = textarea.value.encodeEntities();
+          content = content.replace(/\n/g, '<br>');
+          hiddenDiv.innerHTML = content + '<br style="line-height: 3px;">';
+          hiddenDiv.style.visibility = 'hidden';
+          hiddenDiv.style.display = 'block';
+          textarea.style.height = Math.max(minHeight, hiddenDiv.offsetHeight) + 'px';
+          hiddenDiv.style.visibility = 'visible';
+          hiddenDiv.style.display = 'none';
         }
 
-        elem.on('keyup', AutoGrowTextArea);
+        elem.on('keyup', $mdUtil.debounce(AutoGrowTextArea, 200));
         elem.on('paste', AutoGrowTextArea);
 
         var deregisterWatcher = scope.$watch(function() {
