@@ -433,15 +433,18 @@ static Class NSNullK;
                            perr: (SOGoPasswordPolicyError *) perr
 {
   NSObject <SOGoSource> *sogoSource;
-  NSEnumerator *authIDs;
   NSString *currentID;
   BOOL didChange;
 
+  *perr = -1;
   didChange = NO;
 
-  authIDs = [[self authenticationSourceIDsInDomain: domain] objectEnumerator];
-  while (!didChange && (currentID = [authIDs nextObject]))
+  NSDictionary *info = [self contactInfosForUserWithUIDorEmail: login
+                                                      inDomain: domain];
+
+  if (info)
     {
+      currentID = [info objectForKey: @"SOGoSource"];
       sogoSource = [_sources objectForKey: currentID];
       didChange = [sogoSource changePasswordForLogin: login
                                          oldPassword: oldPassword
@@ -1031,7 +1034,7 @@ static Class NSNullK;
       if ([currentUser isKindOfClass: NSNullK])
         currentUser = nil;
       else if (!([currentUser objectForKey: @"emails"]
-            && [currentUser objectForKey: @"cn"]))
+                 && [currentUser objectForKey: @"cn"]))
         {
           // We make sure that we either have no occurence of a cache entry or
           // that we have an occurence with only a cached password. In the
