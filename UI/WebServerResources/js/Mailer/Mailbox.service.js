@@ -376,9 +376,7 @@
     if (!angular.isDefined(this.unseenCount))
       this.unseenCount = 0;
 
-    Mailbox.$timeout(function() {
-      _this.$isLoading = true;
-    });
+    this.$isLoading = true;
 
     if (Mailbox.$refreshTimeout)
       Mailbox.$timeout.cancel(Mailbox.$refreshTimeout);
