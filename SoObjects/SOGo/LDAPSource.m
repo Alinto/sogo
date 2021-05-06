@@ -718,10 +718,15 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
                   }
                 else if (_passwordPolicy)
                   {
-                    didChange = [bindConnection changePasswordAtDn: userDN
-                                                       oldPassword: oldPassword
-                                                       newPassword: newPassword
-                                                              perr: (void *)perr];
+                    if ([bindConnection bindWithMethod: @"simple"
+                                                binddn: _sourceBindDN
+                                           credentials: _sourceBindPassword])
+                      {
+                        didChange = [bindConnection changePasswordAtDn: userDN
+                                                           oldPassword: oldPassword
+                                                           newPassword: newPassword
+                                                                  perr: (void *)perr];
+                      }
                   }
                 else
                   {
@@ -740,12 +745,20 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 
                     if (encryptedPass != nil)
                       {
-                        *perr = PolicyNoError;
-                        didChange = [self _ldapModifyAttribute: @"userPassword"
-                                                     withValue: encryptedPass
-                                                        userDN: userDN
-                                                      password: oldPassword
-                                                    connection: bindConnection];
+                        if ([bindConnection bindWithMethod: @"simple"
+                                                    binddn: userDN
+                                               credentials: oldPassword])
+                          {
+                            didChange = [self _ldapModifyAttribute: @"userPassword"
+                                                         withValue: encryptedPass
+                                                            userDN: userDN
+                                                          password: oldPassword
+                                                        connection: bindConnection];
+                            if (didChange)
+                              {
+                                *perr = PolicyNoError;
+                              }
+                          }
                       }
                   }
 
