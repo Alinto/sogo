@@ -38,7 +38,7 @@ html * {
   top: 0;
   bottom: 0;
   width: 10%;
-  z-index: $z-index-view;
+  z-index: -1;
 }
 
 // Group fields of a form

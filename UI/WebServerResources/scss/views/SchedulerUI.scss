@@ -164,12 +164,13 @@ $quarter_height: 10px;
           border-bottom-right-radius: $block_radius;
         }
       }
+
+      .eventInside .text {
+        position: static;
+        padding: 3px 1%;
+      }
     }
 
-    .text {
-      position: static;
-      padding: 3px 1%;
-    }
   }
 
   // Toolbar of all-day events when expanded to display all events
