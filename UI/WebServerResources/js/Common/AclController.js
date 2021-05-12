@@ -45,7 +45,7 @@
     }
 
     function userFilter($query) {
-      return User.$filter($query, folder.$acl.users);
+      return User.$filter($query, folder.$acl.users, { dry: true });
     }
 
     function closeModal() {
