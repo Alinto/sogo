@@ -1,8 +1,6 @@
 /* LDAPSourceSchema.m - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2011-2021 Inverse inc
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -239,6 +237,12 @@ fillSchemaFromEntry (NSMutableDictionary *schema, NGLdapEntry *entry)
     }
 }
 
+- (void) setSchema: (NSMutableDictionary *) newSchema
+{
+  ASSIGN (schema, newSchema);
+  [schema release];
+}
+
 static void
 fillFieldsForClass (NSMutableDictionary *schema, NSString *schemaName,
                     NSMutableArray *fields)
@@ -287,6 +291,11 @@ fillFieldsForClass (NSMutableDictionary *schema, NSString *schemaName,
     }
 
   return [fieldHash allKeys];
+}
+
+- (NSString *) jsonRepresentation
+{
+  return [schema jsonRepresentation];
 }
 
 @end

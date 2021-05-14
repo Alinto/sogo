@@ -440,6 +440,8 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 - (NGLdapConnection *) _ldapConnection
 {
   NGLdapConnection *ldapConnection;
+  NSString *value, *key;
+  SOGoCache *cache;
 
   NS_DURING
     {
@@ -459,7 +461,20 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
           if (!_schema)
             {
               _schema = [LDAPSourceSchema new];
-              [_schema readSchemaFromConnection: ldapConnection];
+              cache = [SOGoCache sharedCache];
+              key = [NSString stringWithFormat: @"schema:%@", _sourceID];
+              value = [cache valueForKey: key];
+
+              if (value)
+                {
+                  [_schema setSchema: (NSMutableDictionary *)[value objectFromJSONString]];
+                }
+              else
+                {
+                  // We go check in the LDAP directory
+                  [_schema readSchemaFromConnection: ldapConnection];
+                  [cache setValue: [_schema jsonRepresentation] forKey: key];
+                }
             }
         }
       else
