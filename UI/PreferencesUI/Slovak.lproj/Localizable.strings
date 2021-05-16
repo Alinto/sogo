@@ -459,8 +459,8 @@
 "animation_NONE" = "Žiadna";
 
 /* 2FA */
-"Enable two-factor authentication using Google Authenticator" = "Povoliť 2-fázové overovanie pomocou Google Authenticator";
-"You must enter this key into your Google Authenticator application." = "Tento kľúč musíte zadať do svojej aplikácie Google Authenticator.";
+"Enable two-factor authentication using a TOTP application" = "Povoliť 2-fázové overovanie pomocou Google Authenticator";
+"You must enter this key into your TOTP application." = "Tento kľúč musíte zadať do svojej aplikácie Google Authenticator.";
 "If you do not and you log out you will not be able to login again." = "Pokiaľ tak neurobíte a odhlásíte sa, nebudete sa môcť znova prihlásiť.";
 
 /* External Sieve scripts */

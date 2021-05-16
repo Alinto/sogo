@@ -459,8 +459,8 @@
 "animation_NONE" = "Nijedan";
 
 /* 2FA */
-"Enable two-factor authentication using Google Authenticator" = "Omogućite dvofaktorsku potvrdu identiteta pomoću Google Authenticator-a";
-"You must enter this key into your Google Authenticator application." = "Ovaj ključ morate da unesete u aplikaciju Google Authenticator.";
+"Enable two-factor authentication using a TOTP application" = "Omogućite dvofaktorsku potvrdu identiteta pomoću Google Authenticator-a";
+"You must enter this key into your TOTP application." = "Ovaj ključ morate da unesete u aplikaciju Google Authenticator.";
 "If you do not and you log out you will not be able to login again." = "Ako to ne učinite i odjavite se, više nećete moći da se prijavite.";
 
 /* External Sieve scripts */

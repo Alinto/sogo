@@ -459,8 +459,8 @@
 "animation_NONE" = "Nincs";
 
 /* 2FA */
-"Enable two-factor authentication using Google Authenticator" = "Két faktoros hitelesítés engedélyezése Google Authenticator használatával";
-"You must enter this key into your Google Authenticator application." = "Meg kell adnia ezt a kulcsot a Google Authenticator alkalmazásban.";
+"Enable two-factor authentication using a TOTP application" = "Két faktoros hitelesítés engedélyezése Google Authenticator használatával";
+"You must enter this key into your TOTP application." = "Meg kell adnia ezt a kulcsot a Google Authenticator alkalmazásban.";
 "If you do not and you log out you will not be able to login again." = "Ha nem teszi meg és kijelentkezik, akkor nem lesz képes újra bejelentkezni.";
 
 /* External Sieve scripts */

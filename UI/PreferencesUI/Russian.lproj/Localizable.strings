@@ -459,8 +459,8 @@
 "animation_NONE" = "Выключена";
 
 /* 2FA */
-"Enable two-factor authentication using Google Authenticator" = "Включить двухфакторную аутентификацию с помощью Google Authenticator";
-"You must enter this key into your Google Authenticator application." = "Вы должны ввести этот ключ в приложение Google Authenticator.";
+"Enable two-factor authentication using a TOTP application" = "Включить двухфакторную аутентификацию с помощью Google Authenticator";
+"You must enter this key into your TOTP application." = "Вы должны ввести этот ключ в приложение Google Authenticator.";
 "If you do not and you log out you will not be able to login again." = "Если вы этого не сделаете и выйдете из системы, вы не сможете войти снова.";
 
 /* External Sieve scripts */

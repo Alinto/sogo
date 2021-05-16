@@ -24,8 +24,8 @@
 
 /* 2FA */
 "Verification Code" = "Potrditvena koda";
-"Enter the 6-digit verification code from your Google Authenticator application." = "Vnesite 6 mestno potrditveno številko iz Google Authenticator aplikacije.";
-"You provided an invalid Google Authenticator key." = "Vnesena številka je napačna.";
+"Enter the 6-digit verification code from your TOTP application." = "Vnesite 6 mestno potrditveno številko iz Google Authenticator aplikacije.";
+"You provided an invalid TOTP key." = "Vnesena številka je napačna.";
 
 "Download" = "Prenos";
 "Language" = "Jezik";
