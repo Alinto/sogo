@@ -454,7 +454,6 @@ static NSMapTable *serverTable = nil;
 
   responseData = strdup ([authnResponse UTF8String]);
 
-  lasso_profile_set_signature_verify_hint(lassoLogin, LASSO_PROFILE_SIGNATURE_VERIFY_HINT_IGNORE);
   rc = lasso_login_process_authn_response_msg (lassoLogin, responseData);
   if (rc)
     [NSException raiseSAML2Exception: rc];
