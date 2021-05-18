@@ -287,12 +287,11 @@
   return response;
 }
 
-- (NSURL *) _trashedURLOfFolder: (NSURL *) srcURL
-                     withObject: (SOGoMailFolder *) co
+- (NSString *) _trashedNameOfFolder: (NSURL *) srcURL
+                         withObject: (SOGoMailFolder *) co
 {
   NSString *trashFolderName, *folderName, *path, *testPath;
   NGImap4Connection *connection;
-  NSURL *destURL;
   id test;
   int i;
 
@@ -318,14 +317,11 @@
           break;
         }
     }
-  destURL = [[NSURL alloc] initWithScheme: [srcURL scheme]
-                                     host: [srcURL host] path: path];
-  [destURL autorelease];
 
-  return destURL;
+  return path;
 }
 
-- (void) _removeFolderAtURL: (NSURL *) srcURL
+- (void) _removeFolder: (NSString *) srcName
 {
   NGImap4Connection *connection;
   NSMutableDictionary *moduleSettings, *threadsCollapsed;;
@@ -337,7 +333,7 @@
   connection = [co imap4Connection];
 
   // Unsubscribe from mailbox
-  [[connection client] unsubscribe: [srcURL path]];
+  [[connection client] unsubscribe: srcName];
 
   // Verify if the current folder have any collapsed threads save under it name and erase it
   us = [[context activeUser] userSettings];
@@ -359,21 +355,22 @@
 - (WOResponse *) deleteAction
 {
   NSDictionary *jsonRequest, *jsonResponse;
-  NSEnumerator *subURLs;
+  NSEnumerator *subNames;
   NGImap4Connection *connection;
   SOGoMailFolder *co, *inbox;
-  NSURL *srcURL, *destURL, *currentURL;
+  NSURL *srcURL;
   WORequest *request;
   WOResponse *response;
   NSException *error;
   NSInteger count;
+  NSString *destName, *currentName;
   BOOL moved, withTrash;
 
   request = [context request];
   co = [self clientObject];
   connection = [co imap4Connection];
   srcURL = [co imap4URL];
-  subURLs = [[co allFolderURLs] objectEnumerator];
+  subNames = [[co allFolderPaths] objectEnumerator];
   jsonRequest = [[request contentAsString] objectFromJSONString];
   withTrash = ![[jsonRequest objectForKey: @"withoutTrash"] boolValue];
   error = nil;
@@ -383,7 +380,7 @@
     {
       if ([co ensureTrashFolder])
         {
-          destURL = [self _trashedURLOfFolder: srcURL withObject: co];
+          destName = [self _trashedNameOfFolder: srcURL withObject: co];
           inbox = [[co mailAccountFolder] inboxFolderInContext: context];
           [[connection client] select: [inbox absoluteImap4Name]];
 
@@ -391,14 +388,14 @@
           // the folder within the 'Trash' folder, as it's getting renamed
           // over and over with an integer suffix (in trashedURLOfFolder:...)
           // If that is the case, we simple delete the folder, instead of renaming it
-          if ([[destURL path] hasPrefix: [srcURL path]])
+          if ([destName hasPrefix: [srcURL path]])
             {
               error = [connection deleteMailboxAtURL: srcURL];
               moved = NO;
             }
           else
             {
-              error = [connection moveMailboxAtURL: srcURL toURL: destURL];
+              error = [connection moveMailbox: [srcURL path] to: destName];
             }
           if (error)
             {
@@ -409,25 +406,25 @@
           else
             {
               // We unsubscribe to the old one, and subscribe back to the new one
-              [self _removeFolderAtURL: srcURL];
+              [self _removeFolder: [srcURL path]];
               if (moved)
-                [[connection client] subscribe: [destURL path]];
+                [[connection client] subscribe: destName];
 
               // We do the same for all subfolders
               count = [[srcURL pathComponents] count];
-              while (!error && (currentURL = [subURLs nextObject]))
+              while (!error && (currentName = [subNames nextObject]))
                 {
-                  [self _removeFolderAtURL: currentURL];
+                  [self _removeFolder: currentName];
                   if (moved)
                     {
                       NSArray *currentComponents;
                       NSMutableArray *destComponents;
                       NSInteger currentCount;
 
-                      destComponents = [NSMutableArray arrayWithArray: [destURL pathComponents]];
+                      destComponents = [NSMutableArray arrayWithArray: [destName  componentsSeparatedByString: @"/"]];
                       [destComponents removeObjectAtIndex: 0]; // remove leading forward slash
-                      currentCount = [[currentURL pathComponents] count];
-                      currentComponents = [[currentURL pathComponents] subarrayWithRange: NSMakeRange(count, currentCount - count)];
+                      currentCount = [[currentName componentsSeparatedByString: @"/"] count];
+                      currentComponents = [[currentName componentsSeparatedByString: @"/"] subarrayWithRange: NSMakeRange(count, currentCount - count)];
                       [destComponents addObjectsFromArray: currentComponents];
 
                       [[connection client] subscribe: [NSString stringWithFormat: @"/%@", [destComponents componentsJoinedByString: @"/"]]];
@@ -457,10 +454,10 @@
       else
         {
           // Cleanup all references to mailbox and submailboxes
-          [self _removeFolderAtURL: srcURL];
-          while (!error && (currentURL = [subURLs nextObject]))
+          [self _removeFolder: [srcURL path]];
+          while (!error && (currentName = [subNames nextObject]))
             {
-              [self _removeFolderAtURL: currentURL];
+              [self _removeFolder: currentName];
             }
           response = [self responseWith204];
         }
@@ -884,7 +881,7 @@
   NSEnumerator *subfolders;
   WOResponse *response;
   NGImap4Connection *connection;
-  NSURL *currentURL;
+  NSString *currentName;
   NSDictionary *data;
 
   id quota;
@@ -900,11 +897,11 @@
 
       // Delete folders within the trash
       connection = [co imap4Connection];
-      subfolders = [[co allFolderURLs] objectEnumerator];
-      while ((currentURL = [subfolders nextObject]))
+      subfolders = [[co allFolderPaths] objectEnumerator];
+      while ((currentName = [subfolders nextObject]))
         {
-          [[connection client] unsubscribe: [currentURL path]];
-          [connection deleteMailboxAtURL: currentURL];
+          [[connection client] unsubscribe: currentName];
+          [connection deleteMailbox: currentName];
         }
     }
   if (error)

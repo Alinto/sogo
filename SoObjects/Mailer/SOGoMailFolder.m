@@ -301,8 +301,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 {
   NSException *error;
   SOGoMailFolder *inbox;
-  NSURL *destURL;
-  NSString *path, *newName;
+  NSString *path, *newName, *destName;
   NGImap4Client *client;
 
   if ([theNewName length] > 0)
@@ -324,22 +323,16 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 
 	  // If new name contains the path - dont't need to add
           if ([newName rangeOfString: @"/"].location == NSNotFound)
-            destURL = [[NSURL alloc] initWithScheme: [imap4URL scheme]
-                                               host: [imap4URL host]
-                                               path: [NSString stringWithFormat: @"%@%@",
-                                                               path, newName]];
+            destName = [NSString stringWithFormat: @"%@%@",
+                                 path, newName];
           else
-            destURL = [[NSURL alloc] initWithScheme: [imap4URL scheme]
-                                               host: [imap4URL host]
-                                               path: [NSString stringWithFormat: @"%@",
-                                                               newName]];
-          [destURL autorelease];
-          error = [imap4 moveMailboxAtURL: imap4URL
-                                    toURL: destURL];
+            destName = newName;
+          error = [imap4 moveMailbox: [imap4URL path]
+                                  to: destName];
           if (!error)
             {
               // We unsubscribe to the old one, and subscribe back to the new one
-              [client subscribe: [destURL path]];
+              [client subscribe: destName];
               [client unsubscribe: [imap4URL path]];
 
               ASSIGN (imap4URL, nil);

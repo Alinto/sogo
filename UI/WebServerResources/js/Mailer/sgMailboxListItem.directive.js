@@ -273,11 +273,13 @@
         };
 
         this.share = function() {
+          var encodeURL = angular.bind(this.folder.constructor.$$resource,
+                                       this.folder.constructor.$$resource.encodeURL);
           // Fetch list of ACL users
           this.folder.$acl.$users().then(function() {
             // Show ACL editor
             $mdDialog.show({
-              templateUrl: $menuCtrl.folder.id + '/UIxAclEditor', // UI/Templates/UIxAclEditor.wox
+              templateUrl: encodeURL($menuCtrl.folder.id).join('/') + '/UIxAclEditor', // UI/Templates/UIxAclEditor.wox
               controller: 'AclController', // from the ng module SOGo.Common
               controllerAs: 'acl',
               clickOutsideToClose: true,
