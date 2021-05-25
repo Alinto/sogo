@@ -42,8 +42,8 @@
   if ((self = [super init]))
     {
       ud = [[context activeUser] userDefaults];
-      htmlComposition
-        = [[ud mailComposeMessageType] isEqualToString: @"html"];
+      htmlComposition = [[ud mailComposeMessageType] isEqualToString: @"html"];
+      forceDefaultIdentity = [ud mailForceDefaultIdentity];
       sourceMail = nil;
       currentValue = nil;
     }
@@ -243,23 +243,27 @@
   NSString *email, *signature, *mailSignature, *nl, *space;
   int count, max;
 
-  fromSentMailbox = [[sourceMail container] isKindOfClass: [SOGoSentFolder class]];
-  if (fromSentMailbox)
-    addresses = [sourceMail fromEnvelopeAddresses];
-  else
-    addresses = [sourceMail toEnvelopeAddresses];
   identity = nil;
   mailSignature = @"";
-  max = [addresses count];
 
-  if (max)
+  if (!forceDefaultIdentity)
     {
-      // Pick the first email matching one of the account's identities
-      for (count = 0; !identity && count < max; count++)
+      fromSentMailbox = [[sourceMail container] isKindOfClass: [SOGoSentFolder class]];
+      if (fromSentMailbox)
+        addresses = [sourceMail fromEnvelopeAddresses];
+      else
+        addresses = [sourceMail toEnvelopeAddresses];
+      max = [addresses count];
+
+      if (max)
         {
-          address = [addresses objectAtIndex: count];
-          email = [address baseEMail];
-          identity = [[sourceMail mailAccountFolder] identityForEmail: email];
+          // Pick the first email matching one of the account's identities
+          for (count = 0; !identity && count < max; count++)
+            {
+              address = [addresses objectAtIndex: count];
+              email = [address baseEMail];
+              identity = [[sourceMail mailAccountFolder] identityForEmail: email];
+            }
         }
     }
 

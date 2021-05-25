@@ -30,7 +30,7 @@
   SOGoMailObject *sourceMail;
   NSString *field;
   NSString *currentValue;
-  BOOL htmlComposition;
+  BOOL htmlComposition, forceDefaultIdentity;
   NSString *signaturePlacement;
 }
 

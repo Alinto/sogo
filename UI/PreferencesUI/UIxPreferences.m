@@ -1309,8 +1309,8 @@ static NSArray *reminderValues = nil;
         [target setObject: identities forKey: @"SOGoMailIdentities"];
       if ([[account objectForKey: @"forceDefaultIdentity"] boolValue])
         [target setObject: [NSNumber numberWithBool: YES] forKey: @"SOGoMailForceDefaultIdentity"];
-      else if ([target objectForKey: @"SOGoMailforceDefaultIdentity"])
-        [target removeObjectForKey: @"SOGoMailforceDefaultIdentity"];
+      else if ([target objectForKey: @"SOGoMailForceDefaultIdentity"])
+        [target removeObjectForKey: @"SOGoMailForceDefaultIdentity"];
       [self _extractMainReceiptsPreferences: [account objectForKey: @"receipts"]  inDictionary: target];
       [self _extractMainSecurityPreferences: [account objectForKey: @"security"]  inDictionary: target];
     }
