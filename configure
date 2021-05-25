@@ -397,7 +397,7 @@ EOF
 }
 
 checkDependencies() {
-  cfgwrite "BASE_LIBS := `gnustep-config --base-libs` -lzip"
+  cfgwrite "BASE_LIBS := `gnustep-config --base-libs` -lzip -lytnef"
   if test "x$ARG_ENABLE_SAML2" = "x1"; then
       checkLinking "lasso"   required;
       if test $? = 0; then

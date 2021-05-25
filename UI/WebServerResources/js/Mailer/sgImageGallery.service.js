@@ -80,12 +80,21 @@
         $mdPanel = ImageGallery.$mdPanel,
         partSrc = angular.element(this.message.$content()[partIndex].content).find('img')[0].src;
 
-    var images = _.filter(this.message.attachmentAttrs, function(attrs) {
-      return attrs.mimetype.indexOf('image/') === 0 && attrs.mimetype.indexOf('svg+xml') < 0;
-    });
+    var _findImages = function (parts, images) {
+      _.forEach(parts, function (part) {
+        if (part.type == 'UIxMailPartImageViewer') {
+          images.push(part);
+        }
+        else if (typeof part.content != 'string') {
+          _findImages(part.content, images);
+        }
+      });
+    };
+    var images = [];
+    _findImages(this.message.$content(), images);
 
     var selectedIndex = _.findIndex(images, function(image) {
-      return image.url.indexOf(partSrc) >= 0;
+      return partSrc.indexOf(image.viewURL) >= 0;
     });
 
     // Add a class to the body in order to modify the panel backdrop opacity
@@ -128,7 +137,7 @@
         '    <div md-truncate class="md-flex" ng-bind="$panelCtrl.selectedImage.filename"></div>',
         '    <md-button class="md-icon-button"',
         '                aria-label="' + l('Save Attachment') + '"',
-        '                ng-href="{{$panelCtrl.selectedImage.urlAsAttachment}}">',
+        '                ng-href="{{$panelCtrl.selectedImage.downloadURL}}">',
         '      <md-icon>file_download</md-icon>',
         '    </md-button>',
         '  </div>',
@@ -137,7 +146,7 @@
         '                 ng-disabled="$panelCtrl.selectedIndex == 0">',
         '        <md-icon>navigate_before</md-icon>',
         '      </md-button>',
-        '      <img class="sg-image" ng-src="{{$panelCtrl.selectedImage.url}}">',
+        '      <img class="sg-image" ng-src="{{$panelCtrl.selectedImage.viewURL}}">',
         '      <md-button class="md-icon-button" ng-click="$panelCtrl.nextImage()"',
         '                 ng-disabled="$panelCtrl.selectedIndex == $panelCtrl.lastIndex">',
         '        <md-icon>navigate_next</md-icon>',
@@ -145,7 +154,7 @@
         '  </div>',
         '    <div class="sg-image-thumbnails">',
         '      <div class="sg-image-thumbnail" ng-repeat="image in ::$panelCtrl.images">',
-        '        <img class="sg-hide" ng-src="{{::image.url}}" ng-click="$panelCtrl.selectImage($index)">',
+        '        <img class="sg-hide" ng-src="{{::image.viewURL}}" ng-click="$panelCtrl.selectImage($index)">',
         '      </div>',
         '    </div>',
         '</sg-image-gallery>'

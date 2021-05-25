@@ -174,6 +174,11 @@ static BOOL showNamedTextAttachmentsInline = NO;
   return [viewer pageWithName: @"UIxMailPartICalViewer"];
 }
 
+- (WOComponent *) tnefViewer
+{
+  return [viewer pageWithName: @"UIxMailPartTnefViewer"];
+}
+
 /* main viewer selection */
 
 - (WOComponent *) viewerForBodyInfo: (id) _info
@@ -269,6 +274,11 @@ static BOOL showNamedTextAttachmentsInline = NO;
               if ([[[viewer clientObject] mailAccountFolder] certificate])
                 return [self encryptedViewer];
             }
+        }
+
+      if ([st isEqualToString: @"ms-tnef"])
+        {
+          return [self tnefViewer];
         }
 
 #if 0 /* the link viewer looks better than plain text ;-) */

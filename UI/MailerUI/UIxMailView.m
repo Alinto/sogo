@@ -180,11 +180,6 @@ static NSString *mailETag = nil;
   return attachmentAttrs;
 }
 
-- (BOOL) hasAttachments
-{
-  return [[self attachmentAttrs] count] > 0 ? YES : NO;
-}
-
 - (NSFormatter *) sizeFormatter
 {
   return [UIxMailSizeFormatter sharedMailSizeFormatter];
@@ -197,14 +192,6 @@ static NSString *mailETag = nil;
   formatter = [[self context] mailDateFormatter];
 
   return [formatter stringForObjectValue: [[self clientObject] date]];
-}
-
-- (NSString *) attachmentsText
-{
-  if ([[self attachmentAttrs] count] > 1)
-    return [self labelForKey: @"files"];
-  else
-    return [self labelForKey: @"file"];
 }
 
 /* viewers */
@@ -287,6 +274,7 @@ static NSString *mailETag = nil;
   SOGoMailObject *co;
   UIxEnvelopeAddressFormatter *addressFormatter;
   UIxMailRenderingContext *mctx;
+  id viewer, renderedPart;
 
   co = [self clientObject];
   addressFormatter = [context mailEnvelopeAddressFormatter];
@@ -338,11 +326,13 @@ static NSString *mailETag = nil;
                 andJSONRepresentation: data];
     }
 
+  viewer = [self contentViewerComponent]; // set attachmentIds for common parts
+  renderedPart = [viewer renderedPart];   // set attachmentIds for encrypted & TNEF parts
+
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                       [self attachmentAttrs], @"attachmentAttrs",
                        [self shouldAskReceipt], @"shouldAskReceipt",
                        [NSNumber numberWithBool: [self mailIsDraft]], @"isDraft",
-                       [[self contentViewerComponent] renderedPart], @"parts",
+                       renderedPart, @"parts",
                        nil];
   if ([self formattedDate])
     [data setObject: [self formattedDate] forKey: @"date"];

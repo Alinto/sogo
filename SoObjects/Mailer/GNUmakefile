@@ -30,6 +30,7 @@ Mailer_OBJC_FILES += \
 	SOGoImageMailBodyPart.m		\
 	SOGoMessageMailBodyPart.m	\
 	SOGoCalendarMailBodyPart.m	\
+	SOGoTnefMailBodyPart.m		\
 	SOGoVCardMailBodyPart.m		\
 	\
 	SOGoMailForward.m		\

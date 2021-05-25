@@ -157,8 +157,7 @@ static BOOL debugOn = NO;
 {
   if (!partInfo)
     {
-      partInfo
-	= [[self mailObject] lookupInfoForBodyPart: [self bodyPartPath]];
+      partInfo = [[self mailObject] lookupInfoForBodyPart: [self bodyPartPath]];
       [partInfo retain];
     }
 
@@ -546,7 +545,7 @@ static BOOL debugOn = NO;
     return self;
   
   /* hard coded for now */
-  
+
   switch ([pe length]) {
   case 3:
     if ([pe isEqualToString:@"gif"] ||
@@ -588,6 +587,8 @@ static BOOL debugOn = NO;
     classString = @"SOGoVCardMailBodyPart";
   else if ([mimeType isEqualToString: @"message/rfc822"])
     classString = @"SOGoMessageMailBodyPart";
+  else if ([mimeType isEqualToString: @"application/ms-tnef"])
+    classString = @"SOGoTnefMailBodyPart";
   else
     {
       classString = @"SOGoMailBodyPart";
