@@ -629,7 +629,7 @@
           Preferences.$toast.hide();
         };
         scope.snooze = function() {
-          Preferences.$$resource.fetch(url, 'view?snoozeAlarm=' + scope.reminder);
+          Preferences.$$resource.fetch('Calendar/' + url, 'view?snoozeAlarm=' + scope.reminder);
           Preferences.$toast.hide();
         };
       }
