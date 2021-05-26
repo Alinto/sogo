@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2016 Inverse inc.
+  Copyright (C) 2006-2021 Inverse inc.
 
   This file is part of SOGo
 
@@ -35,6 +35,10 @@
 #import <NGExtensions/NGBase64Coding.h>
 #import <NGHttp/NGHttpRequest.h>
 #import <NGMime/NGMimeMultipartBody.h>
+
+#import <GDLAccess/EOAdaptorChannel.h>
+#import <GDLAccess/EOAdaptorContext.h>
+#import <GDLContentStore/GCSFolder.h>
 
 #import <Contacts/NSDictionary+LDIF.h>
 
@@ -129,7 +133,7 @@ static NSArray *photoTags = nil;
 
   data = [[[data parts] lastObject] body];
 
-  fileContent = [[NSString alloc] initWithData: (NSData *) data 
+  fileContent = [[NSString alloc] initWithData: (NSData *) data
                                       encoding: NSUTF8StringEncoding];
   [fileContent autorelease];
 
@@ -154,6 +158,7 @@ static NSArray *photoTags = nil;
 
 - (int) importLdifData: (NSString *) ldifData
 {
+  NSMutableArray *ldifListEntries;
   NSMutableDictionary *entry, *encodedEntry;
   SOGoContactLDIFEntry *ldifEntry;
   NSArray *ldifContacts, *lines;
@@ -161,13 +166,15 @@ static NSArray *photoTags = nil;
   NSEnumerator *keyEnumerator;
   NSString *key, *uid, *line;
   NGVCard *vCard;
-  id value;
+  NGVList *vList;
+  id value, values;
 
   NSRange r;
   int i, j, count, linesCount, len;
   int rc;
 
   folder = [self clientObject];
+  ldifListEntries = [NSMutableArray array];
   ldifContacts = [ldifData componentsSeparatedByString: @"\ndn"];
   count = [ldifContacts count];
   rc = 0;
@@ -175,7 +182,7 @@ static NSArray *photoTags = nil;
   for (i = 0; i < count; i++)
     {
       encodedEntry = [NSMutableDictionary dictionary];
-      lines = [[ldifContacts objectAtIndex: i] 
+      lines = [[ldifContacts objectAtIndex: i]
                componentsSeparatedByString: @"\n"];
 
       key = NULL;
@@ -201,9 +208,20 @@ static NSArray *photoTags = nil;
             {
               if (key != NULL)
                 {
-                  value = [[encodedEntry valueForKey: key]
-			    stringByAppendingString: [line substringFromIndex: 1]];
-                  [encodedEntry setValue: value forKey: key];
+                  values = [encodedEntry objectForKey: key];
+                  if ([values isKindOfClass: [NSArray class]])
+                    {
+                      // Multiple values for key
+                      value = [[values lastObject] stringByAppendingString: [line substringFromIndex: 1]];
+                      [values replaceObjectAtIndex: [values count] - 1
+                                        withObject: value];
+                    }
+                  else
+                    {
+                      // Single value for key
+                      value = [values stringByAppendingString: [line substringFromIndex: 1]];
+                      [encodedEntry setValue: value forKey: key];
+                    }
                 }
               continue;
             }
@@ -217,7 +235,15 @@ static NSArray *photoTags = nil;
               if ([key length] == 0)
                 key = @"dn";
 
-              [encodedEntry setValue: value forKey: key];
+              if ((values = [encodedEntry objectForKey: key]))
+                {
+                  if (![values isKindOfClass: [NSArray class]])
+                    values = [NSMutableArray arrayWithObject: values];
+                  [values addObject: value];
+                  [encodedEntry setValue: values forKey: key];
+                }
+              else
+                [encodedEntry setValue: value forKey: key];
             }
           else
             {
@@ -230,21 +256,31 @@ static NSArray *photoTags = nil;
       keyEnumerator = [encodedEntry keyEnumerator];
       while ((key = [keyEnumerator nextObject]))
         {
-          value = [encodedEntry valueForKey: key];
+          values = [encodedEntry valueForKey: key];
           if ([key hasSuffix: @":"])
             {
               key = [key substringToIndex: [key length] - 1];
 	      if ([photoTags containsObject: key])
-		value = [value dataByDecodingBase64];
-	      else
-		value = [value stringByDecodingBase64];
+	values = [values dataByDecodingBase64];
+	      else if ([values isKindOfClass: [NSArray class]])
+                {
+                  for (j = 0; j < [values count]; j++)
+                    {
+                      value = [values objectAtIndex: j];
+                      value = [value stringByDecodingBase64];
+                      [values replaceObjectAtIndex: j
+                                        withObject: value];
+                    }
+                }
+              else
+                values = [values stringByDecodingBase64];
             }
 
 	  // Standard key recognized in NGCards
 	  if ([photoTags containsObject: key])
 	    key = @"photo";
 
-          [entry setValue: value forKey: key];
+          [entry setValue: values forKey: key];
         }
 
       uid = [folder globallyUniqueObjectId];
@@ -253,12 +289,35 @@ static NSArray *photoTags = nil;
                                                  inContainer: folder];
       if (ldifEntry)
         {
-          vCard = [ldifEntry vCard];
-          if ([self importVcard: vCard])
-            rc++;
-          
+          if ([ldifEntry isList])
+            {
+              // Postpone importation of lists
+              [ldifListEntries addObject: ldifEntry];
+            }
+          else
+            {
+              vCard = [ldifEntry vCard];
+              if ([self importVcard: vCard])
+                {
+                  rc++;
+                }
+            }
+
         }
     }
+
+  // Force update of quick table
+  [[[[[self clientObject] ocsFolder] acquireQuickChannel] adaptorContext] commitTransaction];
+
+  // Convert groups to vLists
+  count = [ldifListEntries count];
+  for (i = 0; i < count; i++)
+    {
+      vList = [[ldifListEntries objectAtIndex: i] vList];
+      if ([self importVlist: vList])
+        rc++;
+    }
+
   return rc;
 }
 
@@ -308,16 +367,42 @@ static NSArray *photoTags = nil;
     {
       pool = [[NSAutoreleasePool alloc] init];
       folder = [self clientObject];
-      uid = [folder globallyUniqueObjectId];
 
-      [card setUid: uid];
       // TODO: shall we add .vcf as in [SOGoContactGCSEntry copyToFolder:]
+      uid = [card uid];
       contact = [SOGoContactGCSEntry objectWithName: uid
                                         inContainer: folder];
       [contact setIsNew: YES];
-      
       [contact saveComponent: card];
-      
+
+      rc = YES;
+      RELEASE(pool);
+    }
+
+  return rc;
+}
+
+ - (BOOL) importVlist: (NGVList *) list
+{
+  SOGoContactGCSFolder *folder;
+  SOGoContactGCSList *contact;
+  NSAutoreleasePool *pool;
+  NSString *uid;
+
+  BOOL rc = NO;
+
+  if (list)
+    {
+      pool = [[NSAutoreleasePool alloc] init];
+      folder = [self clientObject];
+
+      // TODO: shall we add .vcf as in [SOGoContactGCSEntry copyToFolder:]
+      uid = [list uid];
+      contact = [SOGoContactGCSList objectWithName: uid
+                                       inContainer: folder];
+      [contact setIsNew: YES];
+      [contact saveComponent: list];
+
       rc = YES;
       RELEASE(pool);
     }

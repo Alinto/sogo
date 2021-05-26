@@ -1,6 +1,6 @@
 /* SOGoContactLDIFEntry.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2017 Inverse inc.
+ * Copyright (C) 2006-2021 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 #import <SOGo/SOGoPermissions.h>
 
 #import "NGVCard+SOGo.h"
+#import "NGVList+SOGo.h"
 #import "SOGoContactEntryPhoto.h"
 #import "SOGoContactGCSEntry.h"
 #import "SOGoContactLDIFEntry.h"
@@ -76,6 +77,11 @@
   isNew = newIsNew;
 }
 
+- (BOOL) isList
+{
+  return [ldifEntry objectForKey: @"member"] != nil;
+}
+
 - (NSString *) contentAsString
 {
   return [[self vCard] versitString];
@@ -92,6 +98,20 @@
   [vcard updateFromLDIFRecord: [self ldifRecord]];
 
   return vcard;
+}
+
+- (NGVList *) vList
+{
+  NGVList *vlist;
+
+  vlist = [NGVList listWithUid: [self nameInContainer]];
+  [vlist setProdID: [NSString
+                      stringWithFormat: @"-//Inverse inc./SOGo %@//EN",
+                      SOGoVersion]];
+  [vlist updateFromLDIFRecord: [self ldifRecord]
+                  inContainer: container];
+
+  return vlist;
 }
 
 - (BOOL) isFolderish

@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2006-2016 Inverse inc.
+ Copyright (C) 2006-2021 Inverse inc.
 
  This file is part of SOGo
  
@@ -34,6 +34,7 @@
 - (int) importLdifData: (NSString *) ldifData;
 - (int) importVcardData: (NSString *) vcardData;
 - (BOOL) importVcard: (NGVCard *) card;
+- (BOOL) importVlist: (NGVList *) list;
 
 @end
 

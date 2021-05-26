@@ -1,6 +1,6 @@
 /* NGVCard+SOGo.h - this file is part of SOGo
  *
- * Copyright (C) 2009-2014 Inverse inc.
+ * Copyright (C) 2009-2021 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,16 @@
 
 @interface NGVList (SOGoExtensions)
 
+- (CardElement *) elementWithTag: (NSString *) elementTag
+                          ofType: (NSString *) type;
+
 - (NSString *) ldifString;
+- (void) updateFromLDIFRecord: (NSDictionary *) ldifRecord
+                  inContainer: (id) container;
+- (void) setCardReference: (NSString *) newCardReference
+              inContainer: (id) container;
+- (void) setCardReferences: (NSArray *) newCardReferences
+               inContainer: (id) container;
 
 @end
 

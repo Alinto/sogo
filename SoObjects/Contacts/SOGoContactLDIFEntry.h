@@ -1,6 +1,6 @@
 /* SOGoContactLDIFEntry.h - this file is part of SOGo
  *
- * Copyright (C) 2006-2017 Inverse inc.
+ * Copyright (C) 2006-2021 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 
 @class NSDictionary;
 @class NSString;
+@class NGVList;
 
 @interface SOGoContactLDIFEntry : SOGoObject <SOGoContactObject>
 {
@@ -42,6 +43,9 @@
 
 - (BOOL) isNew;
 - (void) setIsNew: (BOOL) newIsNew;
+- (BOOL) isList;
+
+- (NGVList *) vList;
 
 - (NSString *) davEntityTag;
 

@@ -205,7 +205,7 @@
   [card release];
   card = nil;
 
-  // We now check if we must update lisst where this contact is present
+  // We now check if we must update lists where this contact is present
   qualifier = [EOQualifier qualifierWithQualifierFormat: @"c_component = 'vlist'"];
   lists = [[self container] lookupContactsWithQualifier: qualifier];
 

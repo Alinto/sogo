@@ -179,12 +179,12 @@
   NSMutableArray *deletedRefs;
 
   deletedRefs = [NSMutableArray array];
-  cardReferences
-    = [[self childrenWithTag: @"card"] objectEnumerator];
+  cardReferences = [[self childrenWithTag: @"card"] objectEnumerator];
   while ((currentRef = [cardReferences nextObject]))
-    if ([[currentRef reference]
-	  isEqualToString: [cardRef reference]])
-      [deletedRefs addObject: currentRef];
+    {
+      if ([[currentRef reference] isEqualToString: [cardRef reference]])
+        [deletedRefs addObject: currentRef];
+    }
 
   [children removeObjectsInArray: deletedRefs];
 }
