@@ -328,6 +328,9 @@ fi
 
 # ********************************* changelog *************************
 %changelog
+* Thu May 27 2021 Inverse inc. <support@inverse.ca>
+- Drop support for RHEL/CentOS 6
+
 * Thu Apr 30 2020 Inverse inc. <support@inverse.ca>
 - added liboath requirements for RHELv7
 
