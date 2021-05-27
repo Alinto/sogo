@@ -132,7 +132,7 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ****************************** build ********************************
 %build
-/usr/lib64/GNUstep/Makefiles/GNUstep.sh
+. /usr/lib64/GNUstep/Makefiles/GNUstep.sh
 ./configure %saml2_cfg_opts %mfa_cfg_opts %sodium_cfg_opts
 
 case %{_target_platform} in
