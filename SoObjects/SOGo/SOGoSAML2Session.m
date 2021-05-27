@@ -18,25 +18,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <lasso/lasso.h>
 #include <lasso/xml/misc_text_node.h>
 #include <lasso/xml/saml-2.0/saml2_attribute.h>
 #include <lasso/xml/saml-2.0/saml2_attribute_statement.h>
 #include <lasso/xml/saml-2.0/saml2_attribute_value.h>
 #include <lasso/xml/saml-2.0/samlp2_authn_request.h>
-#include <lasso/xml/saml-2.0/samlp2_response.h>
-
-#import <Foundation/NSBundle.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSException.h>
-#import <Foundation/NSMapTable.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSURL.h>
 
 #import <NGObjWeb/WOApplication.h>
-#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOContext.h>
-#import <NGObjWeb/WOResponse.h>
 
 #import "SOGoCache.h"
 #import "SOGoSAML2Exceptions.h"
@@ -247,22 +236,24 @@ static NSMapTable *serverTable = nil;
 
 - (void) _updateDataFromLogin
 {
-  LassoSaml2Assertion *saml2Assertion;
   GList *statementList, *attributeList;
-  LassoSaml2AttributeStatement *statement;
-  LassoSaml2Attribute *attribute;
-  LassoSaml2AttributeValue *value;
   LassoMiscTextNode *textNode;
+  LassoNode *lassoNode;
+  LassoSaml2Assertion *saml2Assertion;
+  LassoSaml2Attribute *attribute;
+  LassoSaml2AttributeStatement *statement;
+  LassoSaml2AttributeValue *value;
   LassoSaml2NameID *nameIdentifier;
-  SOGoSystemDefaults *sd;
   NSString *loginAttribue;
+  SOGoSystemDefaults *sd;
   
   gchar *dump;
-                  
-  saml2Assertion = LASSO_SAML2_ASSERTION (lasso_login_get_assertion (lassoLogin));
+
+  lassoNode = lasso_login_get_assertion (lassoLogin);
+  saml2Assertion = LASSO_SAML2_ASSERTION (lassoNode);
   sd = [SOGoSystemDefaults sharedSystemDefaults];
   loginAttribue = [sd SAML2LoginAttribute];
-  
+
   if (saml2Assertion)
     {
       /* deduce user login */
@@ -277,6 +268,7 @@ static NSMapTable *serverTable = nil;
           while (!login && attributeList)
             {
               attribute = LASSO_SAML2_ATTRIBUTE (attributeList->data);
+
               if (loginAttribue && (strcmp (attribute->Name, [loginAttribue UTF8String]) == 0))
                 {
                   value = LASSO_SAML2_ATTRIBUTE_VALUE (attribute->AttributeValue->data);
@@ -330,8 +322,7 @@ static NSMapTable *serverTable = nil;
         assertion = nil;
     }
 
-  nameIdentifier
-    = LASSO_SAML2_NAME_ID (LASSO_PROFILE (lassoLogin)->nameIdentifier);
+  nameIdentifier = LASSO_SAML2_NAME_ID (LASSO_PROFILE (lassoLogin)->nameIdentifier);
   if (nameIdentifier)
     {
       /* deduce session id */
@@ -344,7 +335,7 @@ static NSMapTable *serverTable = nil;
 - (id) _initWithDump: (NSDictionary *) saml2Dump
            inContext: (WOContext *) context
 {
-  // lasso_error_t rc;
+  lasso_error_t rc;
   LassoServer *server;
   LassoProfile *profile;
   const gchar *dump;
@@ -356,10 +347,10 @@ static NSMapTable *serverTable = nil;
       if (saml2Dump)
         {
           profile = LASSO_PROFILE (lassoLogin);
+
           ASSIGN (login, [saml2Dump objectForKey: @"login"]);
           ASSIGN (identifier, [saml2Dump objectForKey: @"identifier"]);
           ASSIGN (assertion, [saml2Dump objectForKey: @"assertion"]);
-
           ASSIGN(identity, [saml2Dump objectForKey: @"identity"]);
           dump = [identity UTF8String];
           if (dump)
@@ -369,11 +360,10 @@ static NSMapTable *serverTable = nil;
           dump = [session UTF8String];
           if (dump)
             lasso_profile_set_session_from_dump (profile, dump);
-          
-          lasso_login_accept_sso (lassoLogin);
-          // if (rc)
-          //   [NSException raiseSAML2Exception: rc];
-          [self _updateDataFromLogin];
+
+          rc = lasso_login_accept_sso (lassoLogin);
+          if (!rc)
+            [self _updateDataFromLogin];
         }
     }
 
@@ -464,6 +454,7 @@ static NSMapTable *serverTable = nil;
 
   responseData = strdup ([authnResponse UTF8String]);
 
+  profile = LASSO_PROFILE (lassoLogin);
   rc = lasso_login_process_authn_response_msg (lassoLogin, responseData);
   if (rc)
     [NSException raiseSAML2Exception: rc];
@@ -478,8 +469,6 @@ static NSMapTable *serverTable = nil;
   [saml2Dump setObject: login forKey: @"login"];
   [saml2Dump setObject: identifier forKey: @"identifier"];
   [saml2Dump setObject: assertion forKey: @"assertion"];
-
-  profile = LASSO_PROFILE (lassoLogin);
 
   lasso_session = lasso_profile_get_session (profile);
   if (lasso_session)
