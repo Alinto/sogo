@@ -1,3 +1,0 @@
-{
-  requires = ( MAIN, Appointments, Contacts, Mailer );
-}
