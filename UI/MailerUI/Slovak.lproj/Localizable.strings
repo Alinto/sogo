@@ -3,8 +3,8 @@
 /* Icon's label */
 "Create"      = "Vytvoriť";
 "Empty Trash" = "Vyprázdniť kôš";
-"Delete"      = "Zmazať";
-"Expunge"     = "Vyškrtnúť";
+"Delete"      = "Vymazať";
+"Expunge"     = "Vymazať";
 "Forward"     = "Preposlať";
 "Get Mail"    = "Prijať";
 "Junk"        = "Nevyžiadaná pošta";
@@ -19,12 +19,12 @@
 "Contacts" = "Kontakty";
 "Attach" = "Príloha";
 "Save" = "Uložiť";
-"Options" = "Voľby";
+"Options" = "Možnosti";
 "Close" = "Zavrieť";
 "Size" = "Veľkosť";
 
 /* Tooltips */
-"Send this message now" = "Poslať správu";
+"Send this message now" = "Odoslať túto správu teraz";
 "Select a recipient from an Address Book" = "Vyberte príjemcu z adresára";
 "Include an attachment" = "Zahrnúť prílohu";
 "Save this message" = "Uložiť správu";
@@ -51,11 +51,11 @@
 "Help" = "Pomoc";
 
 /* Mail account main windows */
-"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Vitajte v SOGo Mailer. Použite zoznam zložiek vľavo na prehliadanie vášho e-mailového účtu!";
-"Read messages"       = "Čítať správu";
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Vitajte v SOGo Mailer. Pomocou stromu priečinkov naľavo môžete prehľadávať svoje poštové účty.";
+"Read messages"       = "Čítať správy";
 
 /* Tooltip for fab button */
-"Write a new message" = "Nápísať správu";
+"Write a new message" = "Nápísať novú správu";
 
 /* Tooltip for fab button */
 "Write a message in new window" = "Napísať správu v novom okne";

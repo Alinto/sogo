@@ -24,13 +24,13 @@
 "Add..." = "Pridať...";
 "Remove" = "Odstrániť";
 "Subscribe User" = "Prihlásiť používateľa na odber";
-"Any Authenticated User" = "Všetkým prihláseným používateľom";
+"Any Authenticated User" = "Všetci prihlásení používatelia";
 "Public Access" = "Verejný prístup";
 "Any user not listed above" = "Každý používateľ, ktorý nie je uvedený vyššie.";
 "Anybody accessing this resource from the public area" = "Každý, kto pristupuje k tomuto zdroju z verejného priestoru.";
 "Sorry, the user rights can not be configured for that object." = "Je nám ľúto, používateľské práva nie je možné konfigurovať pre daný objekt.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
-     = "Ktorýkoľvek používateľ tohoto systému bude môcť vidieť vašu zložku \"%{0}\". Ste si istý, že veríte všetkým používateľom?";
+     = "Ktorýkoľvek používateľ tohoto systému bude môcť vidieť vašu zložku \"%{0}\". Ste si istý, že dôverujete všetkým používateľom?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
      = "Ktorýkoľvek používateľ tohoto systému bude môcť vidieť váš kalendár \"%{0}\". Ste si istý, že veríte všetkým používateľom?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
