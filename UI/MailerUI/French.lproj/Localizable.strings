@@ -276,7 +276,7 @@
 "Message is signed" = "Ce message est signé";
 
 /* Unknown error while validating message signature */
-"No error information available" = "Aucune information d'erreur disponible";
+"Digital signature is not valid" = "Signature digitale non-valide";
 
 "This Folder" = "Ce dossier-ci";
 

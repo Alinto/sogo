@@ -71,7 +71,7 @@
 "You are not allowed to forward your messages to this domain:" = "Vous ne pouvez pas transférer vos messages à ce domaine :";
 
 /* d & t */
-"Current Time Zone" = "Fuseau horaire en cours";
+"Time Zone" = "Fuseau horaire";
 "Short Date Format" = "Style de date courte";
 "Long Date Format" = "Style de date longue";
 "Time Format" = "Style de l'heure";
@@ -215,6 +215,7 @@
 "Reply To Email" = "Adresse de retour";
 "Signature" = "Signature";
 "Identities" = "Identités";
+"Always use the default identity when replying to messages" = "Toujours utiliser l'identité par défaut en répondant aux messages";
 "Default Identity" = "Identité par défaut";
 "New Identity" = "Nouvelle identité";
 "(Click to create)" = "(Signature vide)";
@@ -238,9 +239,11 @@
 "Additional Parameters" = "Paramètres supplémentaires";
 
 /* password */
+"Current password" = "Mot de passe actuel";
 "New password" = "Nouveau mot de passe";
 "Confirmation" = "Confirmation";
 "Change" = "Changer";
+"Passwords don't match" = "Les mots de passe ne correspondent pas";
 
 /* Event+task classifications */
 "Default events classification" = "Classification par défaut des événements";
@@ -322,6 +325,7 @@
 "refreshview_every_20_minutes" = "Toutes les 20 minutes";
 "refreshview_every_30_minutes" = "Toutes les 30 minutes";
 "refreshview_once_per_hour" = "Une fois par heure";
+"Enable Desktop Notifications" = "Activer les notifications";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Lors de la réception d'une demande d'accusé de réception ";
