@@ -30,12 +30,7 @@ $(TEST_TOOL)_OBJC_FILES += \
 	TestNSString+Crypto.m \
 	TestNSString+URLEscaping.m \
 	TestNSString+Utilities.m \
-	TestNGMailAddressParser.m \
-	\
-	TestRTFHandler.m \
-	../../OpenChange/RTFHandler.m
-    # I don't know how to link against -l:SOGoBackend \
-	     undefined reference to `__objc_class_name_SOGoMailFolder'
+	TestNGMailAddressParser.m
 
 TEST_TOOL_NAME = $(TEST_TOOL)
 
