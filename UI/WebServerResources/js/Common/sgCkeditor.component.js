@@ -353,7 +353,7 @@
 
     function onEditorChange () {
       var html = editor.getData();
-      var body = editor.document.getBody();
+      var body = editor.document ? editor.document.getBody() : null;
       var text;
 
       if (_.isEmpty(body))
