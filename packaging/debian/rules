@@ -5,12 +5,7 @@ export DH_VERBOSE=1
 
 DESTDIR=$(CURDIR)/debian/tmp
 DIST_CODENAME=$(shell lsb_release -cs)
-
-# Debian 6
-ifeq ($(DIST_CODENAME), squeeze)
 SAML2_CONFIG=--enable-saml2
-SODIUM_CONFIG=--disable-sodium
-endif
 
 # Debian 7
 ifeq ($(DIST_CODENAME), wheezy)
