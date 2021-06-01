@@ -1,5 +1,46 @@
 # Changelog
 
+### [5.1.1](https://github.com/inverse-inc/sogo/compare/SOGo-5.1.0...SOGo-5.1.1) (2021-06-01)
+
+### Bug Fixes
+
+* **addressbook:** import contact lists from LDIF file ([e1d8d70](https://github.com/inverse-inc/sogo/commit/e1d8d70e288beb229628bb05ae6f1d071d40b792)), closes [#3260](https://sogo.nu/bugs/view.php?id=3260)
+* **calendar(css):** enlarge categories color stripes ([bd80b6e](https://github.com/inverse-inc/sogo/commit/bd80b6ea758e945564aa1a7fcf3ec473781581a2)), closes [#5301](https://sogo.nu/bugs/view.php?id=5301)
+* **calendar(css):** enlarge categories color stripes ([e5d9571](https://github.com/inverse-inc/sogo/commit/e5d957181c2218fba21d70179dcb72059750b8eb)), closes [#5301](https://sogo.nu/bugs/view.php?id=5301)
+* **calendar(js):** fix URL for snoozing alarms ([d4a0b25](https://github.com/inverse-inc/sogo/commit/d4a0b25c0659f1dfacca2ed4d1ee6349529dc9bd)), closes [#5324](https://sogo.nu/bugs/view.php?id=5324)
+* **calendar(js):** show conflict error inside appointment editor ([fec299f](https://github.com/inverse-inc/sogo/commit/fec299f040da27faedc4521ea51c95c718f70ddf))
+* **core:** avoid appending an empty domain to uid in cache ([debcbd1](https://github.com/inverse-inc/sogo/commit/debcbd16db64cdd2fd3047d3eec2fc24ca6cd788))
+* **core:** change password in user's matching source only ([da36608](https://github.com/inverse-inc/sogo/commit/da366083e93382f96338fc75dbc9a03b23010464))
+* **core:** decompose LDAP nested groups, cache logins ([a83b0d8](https://github.com/inverse-inc/sogo/commit/a83b0d822ab66f81ba5ac94efc923495de665e01))
+* **core:** don't bind a DN to LDAP sources with a different search base ([e0b6e22](https://github.com/inverse-inc/sogo/commit/e0b6e22fa278d3d908b17acbe5f5c284d3563773))
+* **css:** adjust colors of center lists of views ([045879a](https://github.com/inverse-inc/sogo/commit/045879a1faa9efe6a4686e18927403d7fb6db2a7)), closes [#5291](https://sogo.nu/bugs/view.php?id=5291)
+* **mail:** handle folders that end with a question mark ([657f00f](https://github.com/inverse-inc/sogo/commit/657f00f92be8c1ffcad4b720fd129e7f5ea95fae)), closes [#5303](https://sogo.nu/bugs/view.php?id=5303)
+* **mail:** retrieve IMAP delimiter after LIST command ([189aab3](https://github.com/inverse-inc/sogo/commit/189aab3535e78bff31a5b6a4d1d74c2b1e565b5f))
+* **mail:** use default signature when forcing default identity ([dc81f70](https://github.com/inverse-inc/sogo/commit/dc81f70928afeddbce0f1dbebb7552e298ff99b2))
+* **mail(css):** improve HTML sanitization of background attribute ([72321ec](https://github.com/inverse-inc/sogo/commit/72321ec545ed4e7062af9c1a545616a8c4e31b1a))
+* **mail(html):** add missing ARIA labels ([66afbd2](https://github.com/inverse-inc/sogo/commit/66afbd2172ecdb47c981b5f2e68a4c3e338c449e))
+* **mail(js):** add CKEditor plugin pastefromgdocs ([517b888](https://github.com/inverse-inc/sogo/commit/517b8887b437c979107eb65f7415f6dc5ad8bf66)), closes [#5316](https://sogo.nu/bugs/view.php?id=5316)
+* **mail(js):** add debouncing on keyup events of sgAutogrow ([d303247](https://github.com/inverse-inc/sogo/commit/d303247481fb74e296876ccc0b2654042a3bf603))
+* **mail(js):** add tooltip with email of attendees in invitation ([af61752](https://github.com/inverse-inc/sogo/commit/af61752933f5f9972eebf8e2ab5ddbc3f0f01a48))
+* **mail(js):** avoid updating the DOM before closing editor ([bed91ce](https://github.com/inverse-inc/sogo/commit/bed91ce95a8d53022c008381e1069ba1e969361a))
+* **mail(js):** don't delay the progress indicator when loading mailbox ([049c17f](https://github.com/inverse-inc/sogo/commit/049c17f15a8dd1ad571a12f93d426d126cc4d8e1)), closes [#5278](https://sogo.nu/bugs/view.php?id=5278)
+* **mail(js):** unselect all messages when changing mailbox ([bfbf43b](https://github.com/inverse-inc/sogo/commit/bfbf43b1c81eee1432f856ade9f7c44c412a7ac7)), closes [#4970](https://sogo.nu/bugs/view.php?id=4970) [#5148](https://sogo.nu/bugs/view.php?id=5148)
+* **saml:** don't ignore the signature of messages ([e536365](https://github.com/inverse-inc/sogo/commit/e53636564680ac0df11ec898304bc442908ba746))
+* **saml:** fix profile initialization, improve error handling ([1d88d36](https://github.com/inverse-inc/sogo/commit/1d88d36ded4246cd8b1806096601ced870b2f423)), closes [#5153](https://sogo.nu/bugs/view.php?id=5153) [#5270](https://sogo.nu/bugs/view.php?id=5270)
+* **web:** allow to change expired password from login page ([bdd8e35](https://github.com/inverse-inc/sogo/commit/bdd8e3500ada76703d95ff47077f7f8ba349e323))
+* **web:** allow to change expired password from login page ([8e98af0](https://github.com/inverse-inc/sogo/commit/8e98af0e9f7df219e63cd362af3282b102c53fff))
+* **web:** restore support of ppolicy OpenLDAP overlay ([0c1f9fd](https://github.com/inverse-inc/sogo/commit/0c1f9fdb02559e8650fd486583bbbe11517ef4c7))
+* **web(js):** don't cache users results in ACL editor ([4501b5e](https://github.com/inverse-inc/sogo/commit/4501b5e35cfe00ccd185756a80ec3d6de868d4ad))
+
+### Localization
+
+* **fr:** update French translation ([7bebc71](https://github.com/inverse-inc/sogo/commit/7bebc71f677d1216b145b675b5d232e49ead8f5e))
+* **sk:** update Slovak translation ([376c473](https://github.com/inverse-inc/sogo/commit/376c473a5a79e9eeb4d7c81f47ace9396e766558))
+
+### Enhancements
+
+* **core:** cache the schema of LDAP user sources ([d0056d3](https://github.com/inverse-inc/sogo/commit/d0056d3b272a29a35108ac26bfce5038794bbe66))
+
 ## [5.1.0](https://github.com/inverse-inc/sogo/compare/SOGo-5.0.1...SOGo-5.1.0) (2021-03-30)
 
 ### Features
@@ -42,7 +83,6 @@
 * **preferences(js):** always apply forward constraints to sieve filters ([#294](https://sogo.nu/bugs/view.php?id=294)) ([59e876d](https://github.com/inverse-inc/sogo/commit/59e876d8f7de087702a3b2d2d86a0c314f2f6f8c))
 * **preferences(mail):** make sure auto-reply (vacation) text is set ([1c4ff40](https://github.com/inverse-inc/sogo/commit/1c4ff40d330290711a3a6affa56715d30145064b))
 * **print:** don't print toasts ([bc77536](https://github.com/inverse-inc/sogo/commit/bc77536b5d236b0f28067d60c3e58e0690a33da0)), closes [#5207](https://sogo.nu/bugs/view.php?id=5207)
-
 
 ### Localization
 
