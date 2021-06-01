@@ -1,6 +1,15 @@
 # Changelog
 
-## [2.4.0](https://github.com/inverse-inc/sogo/compare/SOGo-2.3.18...SOGo-2.4.0) (2021-03-31)
+## [2.4.1](https://github.com/inverse-inc/sogo/compare/SOGo-2.4.0...SOGo-2.4.1) (2021-06-01)
+
+### Bug Fixes
+
+* **addressbook(js):** handle multi-values organization field (c_o) ([69b86d3](https://github.com/inverse-inc/sogo/commit/69b86d3f9343de8364d19d5f301a3034cb4bccbd)), closes [#5312](https://www.sogo.nu/bugs/view.php?id=5312)
+* **mail:** avoid exception on recent GNUstep when no filename is defined ([a2ef542](https://github.com/inverse-inc/sogo/commit/a2ef542ad4251d32444aa3ad3930ccbd12e8ee65))
+* **saml:** don't ignore the signature of messages ([c0e6090](https://github.com/inverse-inc/sogo/commit/c0e60902a0cab4823323d1dd349666e7eb3781f3))
+* **saml:** fix profile initialization, improve error handling ([3d1b365](https://github.com/inverse-inc/sogo/commit/3d1b365b5d8802291270824fea176ac5e1838bf9)), closes [#5153](https://www.sogo.nu/bugs/view.php?id=5153) [#5270](https://www.sogo.nu/bugs/view.php?id=5270)
+
+## [2.4.0](https://github.com/inverse-inc/sogo/compare/SOGo-2.3.23...SOGo-2.4.0) (2021-03-31)
 
 ### Features
 
