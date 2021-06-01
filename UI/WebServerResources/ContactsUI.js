@@ -95,8 +95,10 @@ function contactsListCallback(http) {
                         else
                             $(cells[2]).update();
 
-                        if (contact["c_o"])
+                        if (contact["c_o"] && typeof(contact["c_o"]) == "string")
                             $(cells[3]).update(contact["c_o"].escapeHTML());
+                        else if (contact["c_o"] && typeof(contact["c_o"]) == "object")
+                            $(cells[3]).update(contact["c_o"].join(', ').escapeHTML());
                         else
                             $(cells[3]).update();
 

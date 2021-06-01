@@ -1,18 +1,32 @@
 # Changelog
 
-## [2.4.0](https://github.com/inverse-inc/sogo/compare/SOGo-2.3.18...SOGo-2.4.0) (2021-03-31)
+## [2.4.1](https://github.com/inverse-inc/sogo/compare/SOGo-2.4.0...SOGo-2.4.1) (2021-06-01)
+
+### Bug Fixes
+
+* **addressbook(js):** handle multi-values organization field (c_o) ([69b86d3](https://github.com/inverse-inc/sogo/commit/69b86d3f9343de8364d19d5f301a3034cb4bccbd)), closes [#5312](https://www.sogo.nu/bugs/view.php?id=5312)
+* **mail:** avoid exception on recent GNUstep when no filename is defined ([a2ef542](https://github.com/inverse-inc/sogo/commit/a2ef542ad4251d32444aa3ad3930ccbd12e8ee65))
+* **saml:** don't ignore the signature of messages ([c0e6090](https://github.com/inverse-inc/sogo/commit/c0e60902a0cab4823323d1dd349666e7eb3781f3))
+* **saml:** fix profile initialization, improve error handling ([3d1b365](https://github.com/inverse-inc/sogo/commit/3d1b365b5d8802291270824fea176ac5e1838bf9)), closes [#5153](https://www.sogo.nu/bugs/view.php?id=5153) [#5270](https://www.sogo.nu/bugs/view.php?id=5270)
+
+## [2.4.0](https://github.com/inverse-inc/sogo/compare/SOGo-2.3.23...SOGo-2.4.0) (2021-03-31)
 
 ### Features
 
 * **core:** Support smtps and STARTTLS for SMTP ([cd3095e](https://github.com/inverse-inc/sogo/commit/cd3095e43b06e4a623cfc63cd990a484d6422191)), closes [#31](https://www.sogo.nu/bugs/view.php?id=31)
+* **core:** Debian 10 (Buster) support for x86_64 (closes [#4775](http://sogo.nu/bugs/view.php?id=4775))
 
 ### Bug Fixes
 
 * **addressbook(dav):** add support for macOS 11 (Big Sur) ([c65e121](https://github.com/inverse-inc/sogo/commit/c65e1212a55a79ad91f71f3d2bd48486a2c765e7)), closes [#5203](https://www.sogo.nu/bugs/view.php?id=5203)
 * **addressbook(dav):** add support for macOS 11 (Big Sur) ([0057524](https://github.com/inverse-inc/sogo/commit/005752498374da5e8906e56e708b13b41254ea66)), closes [#5203](https://www.sogo.nu/bugs/view.php?id=5203)
 * **calendar:** fix all-day events in lists ([1268e23](https://github.com/inverse-inc/sogo/commit/1268e2370f04f18526498fad2f259cca926dc74c))
+* **web:** restored mail threads state of inbox on initial page load
+* **web:** fixed and improved messages list in threads mode
+* **web:** sanitize value of draft auto save timer, defaults to 5 minutes
 * **core:** adjust syntax for Python > 2 ([9198fc9](https://github.com/inverse-inc/sogo/commit/9198fc9bf63a88e13cb46909ef86b7cc19e4fde9))
 * **core:** synchronize database schema with v5 ([a98fe2f](https://github.com/inverse-inc/sogo/commit/a98fe2f850b04fd99f5586c374578ba4dc96ae0d))
+* **tool:** sogo-tool manage-acl not working on v2 (closes [#4292](http://sogo.nu/bugs/view.php?id=4292))
 * **packaging:** add dh_makeshlibs back ([0fa6947](https://github.com/inverse-inc/sogo/commit/0fa6947a743e46f047c3322c7d710308abdf9a9a))
 * **packaging:** disable openchange permenantly ([0c47b63](https://github.com/inverse-inc/sogo/commit/0c47b639b20b47c8eb91f95dade4bdcf84b83174))
 * **packaging:** disabled openchange some more ([2911578](https://github.com/inverse-inc/sogo/commit/2911578f4b90e97d1c5e6df3a0c3ccdf02158f36))
@@ -28,19 +42,6 @@
 ### Enhancements
 
 * replace calls to create GMT NSTimeZone instance ([2b33d45](https://github.com/inverse-inc/sogo/commit/2b33d45346fad64aa657ccf28c2aaf80640f1d42)), closes [#3757](https://www.sogo.nu/bugs/view.php?id=3757)
-
-## [2.3.24](https://github.com/inverse-inc/sogo/compare/SOGo-2.3.23...SOGo-2.3.24) (2021-05-26)
-
-### Features
-
-* **core:** Debian 10 (Buster) support for x86_64 (closes [#4775](http://sogo.nu/bugs/view.php?id=4775))
-
-### Bug Fixes
-
-* **tool:** sogo-tool manage-acl not working on v2 (closes [#4292](http://sogo.nu/bugs/view.php?id=4292))
-* **web:** restored mail threads state of inbox on initial page load
-* **web:** fixed and improved messages list in threads mode
-* **web:** sanitize value of draft auto save timer, defaults to 5 minutes
 
 ## [2.3.23](https://github.com/inverse-inc/sogo/compare/SOGo-2.3.22...SOGo-2.3.23) (2017-10-18)
 

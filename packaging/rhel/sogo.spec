@@ -1,26 +1,6 @@
-# We disable OpenChange builds on el5 since it's prehistoric
-%define enable_openchange 0
-%{?el5:%define enable_openchange 0}
-%{?el6:%define enable_openchange 0}
-%{?el7:%define enable_openchange 0}
-
-%ifarch %ix86
-%define enable_openchange 0
-%endif
-
 %{!?sogo_major_version: %global sogo_major_version %(/bin/echo %{sogo_version} | /bin/cut -f 1 -d .)}
-%if %enable_openchange
-%global oc_build_depends samba4 openchange
-%endif
 
 %{!?python_sys_pyver: %global python_sys_pyver %(/usr/bin/python -c "import sys; print sys.hexversion")}
-
-# Systemd for fedora >= 17 or el 7
-%if 0%{?fedora} >= 17 || 0%{?rhel} >= 7
-  %global _with_systemd 1
-%else
-  %global _with_systemd 0
-%endif
 
 %define sogo_user sogo
 
@@ -36,26 +16,11 @@ Group:        Productivity/Groupware
 Source:       SOGo-%{sogo_version}.tar.gz
 Prefix:       /usr
 AutoReqProv:  off
-Requires:     gnustep-base >= 1.23, sope%{sope_major_version}%{sope_minor_version}-core, httpd, sope%{sope_major_version}%{sope_minor_version}-core, sope%{sope_major_version}%{sope_minor_version}-appserver, sope%{sope_major_version}%{sope_minor_version}-ldap, sope%{sope_major_version}%{sope_minor_version}-cards >= %{sogo_version}, sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore >= %{sogo_version}, sope%{sope_major_version}%{sope_minor_version}-sbjson, libmemcached, memcached, tmpwatch, zip
+Requires:     gnustep-base >= 1.23, sope%{sope_major_version}%{sope_minor_version}-core, httpd, sope%{sope_major_version}%{sope_minor_version}-core, sope%{sope_major_version}%{sope_minor_version}-appserver, sope%{sope_major_version}%{sope_minor_version}-ldap, sope%{sope_major_version}%{sope_minor_version}-cards >= %{sogo_version}, sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore >= %{sogo_version}, sope%{sope_major_version}%{sope_minor_version}-sbjson, lasso, libmemcached, memcached, libcurl, tmpwatch, zip
 BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}
-BuildRequires:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{sope_minor_version}-appserver-devel sope%{sope_major_version}%{sope_minor_version}-core-devel sope%{sope_major_version}%{sope_minor_version}-ldap-devel sope%{sope_major_version}%{sope_minor_version}-mime-devel sope%{sope_major_version}%{sope_minor_version}-xml-devel sope%{sope_major_version}%{sope_minor_version}-gdl1-devel sope%{sope_major_version}%{sope_minor_version}-sbjson-devel libmemcached-devel sed %{?oc_build_depends}
+BuildRequires:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{sope_minor_version}-appserver-devel sope%{sope_major_version}%{sope_minor_version}-core-devel sope%{sope_major_version}%{sope_minor_version}-ldap-devel sope%{sope_major_version}%{sope_minor_version}-mime-devel sope%{sope_major_version}%{sope_minor_version}-xml-devel sope%{sope_major_version}%{sope_minor_version}-gdl1-devel sope%{sope_major_version}%{sope_minor_version}-sbjson-devel lasso-devel libmemcached-devel sed libcurl-devel
 
-
-# Required by MS Exchange freebusy lookups
-%{?el5:Requires: curl}
-%{?el5:BuildRequires: curl-devel}
-%{?el6:Requires: libcurl}
-%{?el6:BuildRequires: libcurl-devel}
-
-# saml is enabled everywhere except on el5 since its glib2 is prehistoric
 %define saml2_cfg_opts "--enable-saml2"
-%{?el5:%define saml2_cfg_opts ""}
-%{?el6:Requires: lasso}
-%{?el6:BuildRequires: lasso-devel}
-%{?el7:Requires: lasso}
-%{?el7:BuildRequires: lasso-devel}
-%{?el8:Requires: lasso}
-%{?el8:BuildRequires: lasso-devel}
 
 %description
 SOGo is a groupware server built around OpenGroupware.org (OGo) and
@@ -138,7 +103,7 @@ Requires:     sope%{sope_major_version}%{sope_minor_version}-gdl1
 AutoReqProv:  off
 
 %description -n sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore-devel
-This package contains the header files for SOPE's GDLContentStore library.
+This package contains the header files for SOPE\'s GDLContentStore library.
 
 SOPE is a framework for developing web applications and services. The
 name "SOPE" (SKYRiX Object Publishing Environment) is inspired by ZOPE.
@@ -160,36 +125,14 @@ AutoReqProv:  off
 %description -n sope%{sope_major_version}%{sope_minor_version}-cards-devel
 SOPE versit parsing library for iCal and VCard formats
 
-%if %enable_openchange
-%package openchange-backend
-Summary:      SOGo backend for OpenChange
-Group:        Productivity/Groupware
-AutoReqProv:  off
-
-%description openchange-backend
-SOGo backend for OpenChange
-%endif
-
 ########################################
 %prep
 rm -fr ${RPM_BUILD_ROOT}
 %setup -q -n SOGo-%{sogo_version}
 
-
-# small tweak to the python script for RHEL5
-# if hex(sys.hexversion) < 0x02060000
-#%if %{python_sys_pyver} < 33947648
-#  sed -i 's!/usr/bin/env python!/usr/bin/env python2.6!' Scripts/openchange_user_cleanup
-#%endif
-
-
 # ****************************** build ********************************
 %build
-%if 0%{?rhel} >= 7
 . /usr/lib64/GNUstep/Makefiles/GNUstep.sh
-%else
-. /usr/share/GNUstep/Makefiles/GNUstep.sh
-%endif
 ./configure %saml2_cfg_opts
 
 case %{_target_platform} in
@@ -202,13 +145,6 @@ ppc64-*)
 esac
 
 make CC="$cc" LDFLAGS="$ldflags" messages=yes
-
-# OpenChange
-%if %enable_openchange
-(cd OpenChange; \
- LD_LIBRARY_PATH=../SOPE/NGCards/obj:../SOPE/GDLContentStore/obj \
- make GNUSTEP_INSTALLATION_DOMAIN=SYSTEM )
-%endif
 
 # ****************************** install ******************************
 %install
@@ -229,12 +165,7 @@ make DESTDIR=${RPM_BUILD_ROOT} \
      CC="$cc" LDFLAGS="$ldflags" \
      install
 
-%if 0%{?_with_systemd}
-  install -d  ${RPM_BUILD_ROOT}/usr/lib/systemd/system/
-%else
-  install -d  ${RPM_BUILD_ROOT}/etc/init.d
-%endif
-
+install -d  ${RPM_BUILD_ROOT}/usr/lib/systemd/system/
 install -d  ${RPM_BUILD_ROOT}/etc/cron.d
 install -d ${RPM_BUILD_ROOT}/etc/cron.daily
 install -d ${RPM_BUILD_ROOT}/etc/logrotate.d
@@ -247,36 +178,18 @@ install -d ${RPM_BUILD_ROOT}/var/run/sogo
 install -d ${RPM_BUILD_ROOT}/var/spool/sogo
 install -d -m 750 -o %sogo_user -g %sogo_user ${RPM_BUILD_ROOT}/etc/sogo
 install -m 640 -o %sogo_user -g %sogo_user Scripts/sogo.conf ${RPM_BUILD_ROOT}/etc/sogo/
-#install -m 755 Scripts/openchange_user_cleanup ${RPM_BUILD_ROOT}/%{_sbindir}
 cat Apache/SOGo.conf | sed -e "s@/lib/@/%{_lib}/@g" > ${RPM_BUILD_ROOT}/etc/httpd/conf.d/SOGo.conf
 install -m 600 Scripts/sogo.cron ${RPM_BUILD_ROOT}/etc/cron.d/sogo
 cp Scripts/tmpwatch ${RPM_BUILD_ROOT}/etc/cron.daily/sogo-tmpwatch
 chmod 755 ${RPM_BUILD_ROOT}/etc/cron.daily/sogo-tmpwatch
 cp Scripts/logrotate ${RPM_BUILD_ROOT}/etc/logrotate.d/sogo
-
-%if 0%{?_with_systemd}
-  cp Scripts/sogo-systemd-redhat ${RPM_BUILD_ROOT}/usr/lib/systemd/system/sogod.service
-  chmod 644 ${RPM_BUILD_ROOT}/usr/lib/systemd/system/sogod.service
-  mkdir ${RPM_BUILD_ROOT}/etc/tmpfiles.d
-  cp Scripts/sogo-systemd.conf ${RPM_BUILD_ROOT}/etc/tmpfiles.d/sogo.conf
-  chmod 644 ${RPM_BUILD_ROOT}/etc/tmpfiles.d/sogo.conf
-%else
-  cp Scripts/sogo-init.d-redhat ${RPM_BUILD_ROOT}/etc/init.d/sogod
-  chmod 755 ${RPM_BUILD_ROOT}/etc/init.d/sogod
-%endif
-
+cp Scripts/sogo-systemd-redhat ${RPM_BUILD_ROOT}/usr/lib/systemd/system/sogod.service
+chmod 644 ${RPM_BUILD_ROOT}/usr/lib/systemd/system/sogod.service
+mkdir ${RPM_BUILD_ROOT}/etc/tmpfiles.d
+cp Scripts/sogo-systemd.conf ${RPM_BUILD_ROOT}/etc/tmpfiles.d/sogo.conf
+chmod 644 ${RPM_BUILD_ROOT}/etc/tmpfiles.d/sogo.conf
 cp Scripts/sogo-default ${RPM_BUILD_ROOT}/etc/sysconfig/sogo
 rm -rf ${RPM_BUILD_ROOT}%{_bindir}/test_quick_extract
-
-# OpenChange
-%if %enable_openchange
-(cd OpenChange; \
- LD_LIBRARY_PATH=${RPM_BUILD_ROOT}%{_libdir} \
- make DESTDIR=${RPM_BUILD_ROOT} \
-     GNUSTEP_INSTALLATION_DOMAIN=SYSTEM \
-      CC="$cc" LDFLAGS="$ldflags" \
-   install)
-%endif
 
 # ActiveSync
 (cd ActiveSync; \
@@ -294,12 +207,8 @@ rm -fr ${RPM_BUILD_ROOT}
 %files -n sogo
 %defattr(-,root,root,-)
 
-%if 0%{?_with_systemd}
 /usr/lib/systemd/system/sogod.service
 /etc/tmpfiles.d/sogo.conf
-%else
-/etc/init.d/sogod
-%endif
 /etc/cron.daily/sogo-tmpwatch
 %dir %attr(0700, %sogo_user, %sogo_user) %{_var}/lib/sogo
 %dir %attr(0700, %sogo_user, %sogo_user) %{_var}/log/sogo
@@ -307,7 +216,6 @@ rm -fr ${RPM_BUILD_ROOT}
 %dir %attr(0700, %sogo_user, %sogo_user) %{_var}/spool/sogo
 %dir %attr(0750, root, %sogo_user) %{_sysconfdir}/sogo
 %{_sbindir}/sogod
-#%{_sbindir}/openchange_user_cleanup
 %{_libdir}/sogo/libSOGo.so*
 %{_libdir}/sogo/libSOGoUI.so*
 %{_libdir}/GNUstep/SOGo/AdministrationUI.SOGo
@@ -381,13 +289,6 @@ rm -fr ${RPM_BUILD_ROOT}
 %{_includedir}/NGCards
 %{_libdir}/sogo/libNGCards.so*
 
-%if %enable_openchange
-%files openchange-backend
-%defattr(-,root,root,-)
-%{_libdir}/GNUstep/SOGo/*.MAPIStore
-%{_libdir}/mapistore_backends/*
-%endif
-
 # **************************** pkgscripts *****************************
 %pre
 if ! getent group %sogo_user >& /dev/null; then
@@ -403,25 +304,15 @@ find %{_libdir}/GNUstep/SOGo/WebServerResources  -exec touch {} \;
 # make shells scripts in documentation directory executable
 find %{_docdir}/ -name '*.sh' -exec chmod a+x {} \;
 
-%if 0%{?_with_systemd}
-  systemctl daemon-reload
-  systemctl enable sogod
-  systemctl start sogod > /dev/null 2>&1
-%else
-  /sbin/chkconfig --add sogod
-  /etc/init.d/sogod condrestart  >&/dev/null
-%endif
+systemctl daemon-reload
+systemctl enable sogod
+systemctl start sogod > /dev/null 2>&1
 
 %preun
 if [ "$1" == "0" ]
 then
-  %if 0%{?_with_systemd}
-    systemctl disable sogod
-    systemctl stop sogod > /dev/null 2>&1
-  %else
-    /sbin/chkconfig --del sogod
-    /sbin/service sogod stop > /dev/null 2>&1
-  %endif
+  systemctl disable sogod
+  systemctl stop sogod > /dev/null 2>&1
 fi
 
 %postun
@@ -436,6 +327,9 @@ fi
 
 # ********************************* changelog *************************
 %changelog
+* Thu May 27 2021 Inverse inc. <support@inverse.ca>
+- Drop support for RHEL/CentOS 6
+
 * Thu Mar 31 2015 Inverse inc. <support@inverse.ca>
 - Change script start sogod for systemd
 

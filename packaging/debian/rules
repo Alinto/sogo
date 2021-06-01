@@ -6,9 +6,7 @@ export DH_VERBOSE=1
 DESTDIR=$(CURDIR)/debian/tmp
 DIST_CODENAME=$(shell lsb_release -cs)
 
-#ifeq ($(DIST_CODENAME), squeeze)
 SAML2_CONFIG=--enable-saml2
-#endif
 
 include /etc/GNUstep/GNUstep.conf
 include /usr/share/GNUstep/Makefiles/common.make
@@ -24,9 +22,6 @@ build-arch: build-arch-stamp
 build-arch-stamp:  config.make 
 #	 Add here commands to compile the arch part of the package.
 	$(MAKE)
-	if pkg-config --atleast-version=1.0 libmapi; \
-	then (cd OpenChange; $(MAKE));  \
-	fi
 	(cd ActiveSync && $(MAKE))
 	touch $@
 
@@ -39,14 +34,9 @@ clean:
 	-find Tests -name "*.pyc" -exec rm -f {} \;
 	if [ -f config.make ]; \
 	then \
-	  if pkg-config --atleast-version=1.0 libmapi; \
-	  then \
-	    (cd OpenChange; make clean); \
-	  fi; \
 	  (cd ActiveSync; $(MAKE) clean); \
 	  make clean; \
 	fi
-	-rm -f OpenChange/MAPIStorePropertySelectors.*
 	-rm -f config.make
 	dh_clean 
 
