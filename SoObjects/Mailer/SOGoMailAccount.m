@@ -429,15 +429,18 @@ static NSString *inboxFolderName = @"INBOX";
 - (NSString *) _folderType: (NSString *) folderName
                      flags: (NSMutableArray *) flags
 {
+  static NSDictionary *metadata = nil;
   NSString *folderType, *key;
-  NSDictionary *metadata;
   SOGoUserDefaults *ud;
 
-  ud = [[context activeUser] userDefaults];
-
-  metadata = [[[self imap4Connection] allFoldersMetadataForURL: [self imap4URL]
-                                         onlySubscribedFolders: [ud mailShowSubscribedFoldersOnly]]
-               objectForKey: @"list"];
+  if (!metadata)
+    {
+      ud = [[context activeUser] userDefaults];
+      metadata = [[[self imap4Connection] allFoldersMetadataForURL: [self imap4URL]
+                                             onlySubscribedFolders: [ud mailShowSubscribedFoldersOnly]]
+                   objectForKey: @"list"];
+      [metadata retain];
+    }
 
   key = [NSString stringWithFormat: @"/%@", folderName];
   [flags addObjectsFromArray: [metadata objectForKey: key]];
@@ -488,6 +491,7 @@ static NSString *inboxFolderName = @"INBOX";
   parentIsOtherUsersFolder = NO;
   pathComponents = [folderPath pathComponents];
   count = [pathComponents count];
+  currentPath = @"";
 
   // Make sure all ancestors exist.
   // The variable folderPath is something like '/INBOX/Junk' so pathComponents becomes ('/', 'INBOX', 'Junk').
@@ -496,7 +500,10 @@ static NSString *inboxFolderName = @"INBOX";
     {
       last = ((count - i) == 1);
       folder = nil;
-      currentPath = [[[pathComponents subarrayWithRange: NSMakeRange(0,i+1)] componentsJoinedByString: @"/"] substringFromIndex: 2];
+      if ([currentPath length])
+        currentPath = [NSString stringWithFormat: @"%@/%@", currentPath, [pathComponents objectAtIndex: i]];
+      else
+        currentPath = [pathComponents objectAtIndex: i];
 
       // Search for the current path in the children of the parent folder.
       // For the first iteration, take the parent folder passed as argument.
