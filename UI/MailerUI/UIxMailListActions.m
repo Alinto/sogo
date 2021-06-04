@@ -228,10 +228,11 @@
   if (![subject length])
     subject = @"";
 
+  // NSLog(@"*** subject = |%@|", subject);
   return subject;
 }
 
-- (BOOL) showToAddress 
+- (BOOL) showToAddress
 {
   SOGoMailFolder *co;
 
@@ -794,105 +795,111 @@
   NSArray *to, *from;
   NSDictionary *msgs;
   NSString *msgDate;
-  
-  headers = [NSMutableArray arrayWithCapacity: [uids count]];
-  addressFormatter = [context mailEnvelopeAddressFormatter];
-  
-  // Fetch headers
-  msgs = (NSDictionary *)[mailFolder fetchUIDs: uids
-					 parts: [self fetchKeys]];
+  int count;
 
-  msgsList = [[msgs objectForKey: @"fetch"] objectEnumerator];
-  [self setMessage: [msgsList nextObject]];
+  count = [uids count];
+  headers = [NSMutableArray arrayWithCapacity: count];
 
-  msg = [NSMutableArray arrayWithObjects: @"To", @"hasAttachment", @"isFlagged", @"Subject", @"From", @"isRead", @"Priority", @"RelativeDate", @"Size", @"Flags", @"uid", @"isAnswered", @"isForwarded", nil];
-  [headers addObject: msg];
-  while (message)
+  if (count > 0)
     {
-      // We must check for "umimportant" untagged responses.
-      //
-      // It's generally caused by IMAP server processes sending untagged IMAP responses to SOGo in differnent IMAP
-      // connections (SOGo might use 2-3 per user). Say you ask your messages:
-      //
-      // 127.000.000.001.40725-127.000.000.001.00143: 59 uid fetch 62 (UID FLAGS ENVELOPE RFC822.SIZE BODYSTRUCTURE BODY.PEEK[HEADER.FIELDS (X-PRIORITY)])
-      // 127.000.000.001.00143-127.000.000.001.40725: * 62 FETCH (UID 62 FLAGS (\Seen) RFC822.SIZE 854 ENVELOPE  .... (
-      // * 61 FETCH (FLAGS (\Deleted \Seen))
-      // * 62 FETCH (FLAGS (\Deleted \Seen))
-      // * 63 FETCH (FLAGS (\Deleted \Seen))
-      // 59 OK Fetch completed.
-      //
-      // We must ignore the * 61 .. * 63 untagged responses.
-      //
-      if (![message objectForKey: @"uid"])
-	{
-	  [self setMessage: [msgsList nextObject]];
-	  continue;
-	}
+      addressFormatter = [context mailEnvelopeAddressFormatter];
 
-      msg = [NSMutableArray arrayWithCapacity: 12];
+      // Fetch headers
+      msgs = (NSDictionary *)[mailFolder fetchUIDs: uids
+                                             parts: [self fetchKeys]];
 
-      // Columns data
-
-      // To
-      to = [[message objectForKey: @"envelope"] to];
-      if ([to count] > 0)
-	[msg addObject: [addressFormatter dictionariesForArray: to]];
-      else
-	[msg addObject: @""];
-
-      // hasAttachment
-      [msg addObject: [NSNumber numberWithBool: [self hasMessageAttachment]]];
-
-      // isFlagged
-      [msg addObject: [NSNumber numberWithBool: [self isMessageFlagged]]];
-
-      // Subject
-      [msg addObject: [self messageSubject]];
-      
-      // From
-      from = [[message objectForKey: @"envelope"] from];
-      if ([from count] > 0)
-	[msg addObject: [addressFormatter dictionariesForArray: from]];
-      else
-	[msg addObject: @""];
-      
-      // isRead
-      [msg addObject: [NSNumber numberWithBool: [self isMessageRead]]];
-      
-      // Priority
-      [msg addObject: [self messagePriority]];
-
-      // Relative Date
-      msgDate = [self messageDate];
-      if (msgDate == nil)
-	msgDate = @"";
-      [msg addObject: msgDate];
-
-      // Size
-      [msg addObject: [[self sizeFormatter] stringForObjectValue: [message objectForKey: @"size"]]];
-
-      // Mail labels / tags
-      tags = [NSMutableArray arrayWithArray: [message objectForKey: @"flags"]];
-      [tags removeObject: @"answered"];
-      [tags removeObject: @"deleted"];
-      [tags removeObject: @"draft"];
-      [tags removeObject: @"flagged"];
-      [tags removeObject: @"recent"];
-      [tags removeObject: @"seen"];
-      [tags removeObject: @"$forwarded"];
-      [msg addObject: tags];
-
-      // UID
-      [msg addObject: [message objectForKey: @"uid"]];
-      [headers addObject: msg];
-
-      // isAnswered
-      [msg addObject: [NSNumber numberWithBool: [self isMessageAnswered]]];
-
-      // isForwarded
-      [msg addObject: [NSNumber numberWithBool: [self isMessageForwarded]]];
-      
+      msgsList = [[msgs objectForKey: @"fetch"] objectEnumerator];
       [self setMessage: [msgsList nextObject]];
+
+      msg = [NSMutableArray arrayWithObjects: @"To", @"hasAttachment", @"isFlagged", @"Subject", @"From", @"isRead", @"Priority", @"RelativeDate", @"Size", @"Flags", @"uid", @"isAnswered", @"isForwarded", nil];
+      [headers addObject: msg];
+      while (message)
+        {
+          // We must check for "umimportant" untagged responses.
+          //
+          // It's generally caused by IMAP server processes sending untagged IMAP responses to SOGo in differnent IMAP
+          // connections (SOGo might use 2-3 per user). Say you ask your messages:
+          //
+          // 127.000.000.001.40725-127.000.000.001.00143: 59 uid fetch 62 (UID FLAGS ENVELOPE RFC822.SIZE BODYSTRUCTURE BODY.PEEK[HEADER.FIELDS (X-PRIORITY)])
+          // 127.000.000.001.00143-127.000.000.001.40725: * 62 FETCH (UID 62 FLAGS (\Seen) RFC822.SIZE 854 ENVELOPE  .... (
+          // * 61 FETCH (FLAGS (\Deleted \Seen))
+          // * 62 FETCH (FLAGS (\Deleted \Seen))
+          // * 63 FETCH (FLAGS (\Deleted \Seen))
+          // 59 OK Fetch completed.
+          //
+          // We must ignore the * 61 .. * 63 untagged responses.
+          //
+          if (![message objectForKey: @"uid"])
+            {
+              [self setMessage: [msgsList nextObject]];
+              continue;
+            }
+
+          msg = [NSMutableArray arrayWithCapacity: 12];
+
+          // Columns data
+
+          // To
+          to = [[message objectForKey: @"envelope"] to];
+          if ([to count] > 0)
+            [msg addObject: [addressFormatter dictionariesForArray: to]];
+          else
+            [msg addObject: @""];
+
+          // hasAttachment
+          [msg addObject: [NSNumber numberWithBool: [self hasMessageAttachment]]];
+
+          // isFlagged
+          [msg addObject: [NSNumber numberWithBool: [self isMessageFlagged]]];
+
+          // Subject
+          [msg addObject: [self messageSubject]];
+      
+          // From
+          from = [[message objectForKey: @"envelope"] from];
+          if ([from count] > 0)
+            [msg addObject: [addressFormatter dictionariesForArray: from]];
+          else
+            [msg addObject: @""];
+      
+          // isRead
+          [msg addObject: [NSNumber numberWithBool: [self isMessageRead]]];
+      
+          // Priority
+          [msg addObject: [self messagePriority]];
+
+          // Relative Date
+          msgDate = [self messageDate];
+          if (msgDate == nil)
+            msgDate = @"";
+          [msg addObject: msgDate];
+
+          // Size
+          [msg addObject: [[self sizeFormatter] stringForObjectValue: [message objectForKey: @"size"]]];
+
+          // Mail labels / tags
+          tags = [NSMutableArray arrayWithArray: [message objectForKey: @"flags"]];
+          [tags removeObject: @"answered"];
+          [tags removeObject: @"deleted"];
+          [tags removeObject: @"draft"];
+          [tags removeObject: @"flagged"];
+          [tags removeObject: @"recent"];
+          [tags removeObject: @"seen"];
+          [tags removeObject: @"$forwarded"];
+          [msg addObject: tags];
+
+          // UID
+          [msg addObject: [message objectForKey: @"uid"]];
+          [headers addObject: msg];
+
+          // isAnswered
+          [msg addObject: [NSNumber numberWithBool: [self isMessageAnswered]]];
+
+          // isForwarded
+          [msg addObject: [NSNumber numberWithBool: [self isMessageForwarded]]];
+      
+          [self setMessage: [msgsList nextObject]];
+        }
     }
 
   return headers;
