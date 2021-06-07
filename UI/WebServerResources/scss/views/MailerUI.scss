@@ -18,6 +18,10 @@
     content: '';
     width: $mg;
   }
+
+  .sg-category-dot {
+    border-color: rgba(255, 255, 255, .9);
+  }
 }
 
 // Container for the linear progress bar of the quota

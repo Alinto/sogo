@@ -24,6 +24,7 @@
         '    <div class="sg-tile-date"><!-- date --></div>',
         '  </div>',
         '  <div class="sg-md-body">',
+        '    <div class="sg-category-dot-container"><!-- categories --></div>',
         '    <div class="sg-tile-subject"><!-- subject --></div>',
         '    <div class="sg-tile-size"><!-- size --></div>',
         '    <md-button class="sg-tile-btn md-secondary ng-hide" md-colors="::{ color: \'accent-600\'}" ng-click="$ctrl.toggleThread()">',
@@ -121,17 +122,18 @@
         $ctrl.message = $ctrl.parentController.message;
 
         // Flags
-        var flagElements = $mdUtil.nodesToArray($element[0].querySelectorAll('.sg-category'));
+        var flagList = $element[0].querySelector('.sg-category-dot-container'),
+            $flagList = angular.element(flagList),
+            flagElements = $mdUtil.nodesToArray(flagList.querySelectorAll('.sg-category-dot'));
         _.forEach(flagElements, function(flagElement) {
-          $element[0].removeChild(flagElement);
+          flagList.removeChild(flagElement);
         });
         for (i = 0; i < $ctrl.message.flags.length && i < 5; i++) {
           var tag = $ctrl.message.flags[i];
           if ($ctrl.service.$tags[tag]) {
-            var flagElement = angular.element('<div class="sg-category"></div>');
-            flagElement.css('left', (i*3) + 'px');
+            var flagElement = angular.element('<div class="sg-category-dot"></div>');
             flagElement.css('background-color', $ctrl.service.$tags[tag][1]);
-            $element.prepend(flagElement);
+            $flagList.append(flagElement);
           }
         }
 

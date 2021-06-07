@@ -36,13 +36,14 @@
       return [
         '<div class="sg-event"',
         '     ng-click="clickComponent({clickEvent: $event, clickComponent: component})">',
-        //   Categories color stripes
-        '    <div class="sg-category" ng-repeat="category in ::component.categories"',
-        '         ng-class="::(\'bg-category\' + category)"',
-        '         ng-style="::{ right: ($index * 10) + \'%\' }"></div>',
         '    <div class="text">',
         //     Priority
         '      <span ng-show="::component.c_priority" class="sg-priority" ng-bind="::component.c_priority"></span>',
+        //   Categories color dots
+        '      <div class="sg-category-dot-container">',
+        '        <div class="sg-category-dot" ng-repeat="category in ::component.categories"',
+        '             ng-class="::(\'bg-category\' + category)"></div>',
+        '      </div>',
         //     Summary
         '      {{ ::component.c_title }}',
         '      <span class="sg-icons">',

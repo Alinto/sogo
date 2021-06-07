@@ -407,6 +407,7 @@ $quarter_height: 10px;
     }
 
     .sg-category {
+      z-index: -1;
       &:first-child {
         border-top-right-radius: $block_radius;
         border-bottom-right-radius: $block_radius;

@@ -38,7 +38,22 @@ html * {
   top: 0;
   bottom: 0;
   width: 10%;
-  z-index: -1;
+}
+.sg-category-dot {
+  display: inline-block;
+  height: .9em;
+  width: .9em;
+  margin-bottom: -1px; // border width
+  margin-right: -.3em; // 1 third overlap
+  border-radius: 50%;
+  border-width: 1px;
+  border-style: solid;
+  &:last-child {
+    margin-right: .3em;
+  }
+}
+.sg-category-dot-container {
+  display: inline-block;
 }
 
 // Group fields of a form
