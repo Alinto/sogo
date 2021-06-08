@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2016 Inverse inc.
+  Copyright (C) 2006-2021 Inverse inc.
 
   This file is part of SOGo.
 
@@ -46,6 +46,7 @@
 #import <SOGo/SOGoUserManager.h>
 #import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/SOGoAppointmentFolder.h>
+#import <Appointments/SOGoAppointmentFolders.h>
 #import <Appointments/SOGoAppointmentObject.h>
 #import <Mailer/SOGoMailObject.h>
 #import <Mailer/SOGoMailBodyPart.h>
@@ -252,51 +253,45 @@
 }
 
 /* calendar folder support */
-
-- (SOGoAppointmentFolder *) calendarFolder
-{
-  /* return scheduling calendar of currently logged-in user */
-  SOGoUser *user;
-  id folder;
-
-  user = [context activeUser];
-  folder = [[user homeFolderInContext: context] lookupName: @"Calendar"
-						inContext: context
-						acquire: NO];
-
-  return [folder lookupName: @"personal" inContext: context acquire: NO];
-}
-
 - (BOOL) hasCalendarAccess
 {
   return [[context activeUser] canAccessModule: @"Calendar"];
 }
 
+/* lookup object in the user calendars */
 - (SOGoAppointmentObject *) storedEventObject
 {
-  /* lookup object in the users Calendar */
-  SOGoAppointmentFolder *calendar;
-  NSString *filename;
+  NSArray *folders;
+  NSEnumerator *e;
+  NSString *uid, *cname, *userLogin;
+  SOGoAppointmentFolder *folder;
+  SOGoUser *user;
 
   if (!storedEventFetched)
     {
       if ([self hasCalendarAccess])
         {
-          calendar = [self calendarFolder];
-          if ([calendar isKindOfClass: [NSException class]])
-            [self errorWithFormat:@"Did not find Calendar folder: %@", calendar];
-          else
+          user = [context activeUser];
+          userLogin = [user login];
+          uid = [[self inEvent] uid];
+          storedEventObject = nil;
+
+          folders = [[user calendarsFolderInContext: context] subFolders];
+          e = [folders objectEnumerator];
+          while (storedEventObject == nil && (folder = [e nextObject]))
             {
-              filename = [calendar resourceNameForEventUID:[[self inEvent] uid]];
-              if (filename)
+              if ([[folder ownerInContext: nil] isEqualToString: userLogin])
                 {
-                  storedEventObject = [calendar lookupName: filename
-                                                 inContext: [self context]
-                                                   acquire: NO];
-                  if ([storedEventObject isKindOfClass: [NSException class]])
-		    storedEventObject = nil;
-                  else
-                    [storedEventObject retain];
+                  cname = [folder resourceNameForEventUID: uid];
+                  if (cname)
+                    {
+                      storedEventObject = [folder lookupName: cname inContext: context
+                                               acquire: NO];
+                      if ([storedEventObject isKindOfClass: [NSException class]])
+                        storedEventObject = nil;
+                      else
+                        [storedEventObject retain];
+                    }
                 }
             }
         }
