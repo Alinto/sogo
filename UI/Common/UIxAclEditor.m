@@ -251,24 +251,6 @@
   return ([[request method] isEqualToString: @"POST"]);
 }
 
-- (id <WOActionResults>) saveAclsAction
-{
-  NSEnumerator *aclsEnum;
-  SOGoObject *clientObject;
-  NSString *currentUID, *ownerLogin;
-
-  clientObject = [self clientObject];
-  ownerLogin = [clientObject ownerInContext: context];
-  aclsEnum = [[self aclsForObject] objectEnumerator];
-  while ((currentUID = [[aclsEnum nextObject] objectForKey: @"c_uid"]))
-    if ([currentUID isEqualToString: ownerLogin]
-        || [savedUIDs containsObject: currentUID])
-      [users removeObjectForKey: currentUID];
-  [clientObject removeAclsForUsers: [users allKeys]];
-
-  return [self jsCloseWithRefreshMethod: nil];
-}
-
 - (BOOL) isPublicAccessEnabled
 {
   return [[SOGoSystemDefaults sharedSystemDefaults] enablePublicAccess];

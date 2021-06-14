@@ -80,8 +80,6 @@
 
 - (BOOL) hideFrame;
 
-- (UIxComponent *) jsCloseWithRefreshMethod: (NSString *) methodName;
-
 /* SoUser */
 - (NSString *) shortUserNameForDisplay;
 

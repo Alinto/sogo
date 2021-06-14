@@ -44,7 +44,7 @@
 #import <SOGo/WOContext+SOGo.h>
 #import <SOGo/WOResourceManager+SOGo.h>
 
-#import "UIxJSClose.h"
+#import "UIxComponent.h"
 
 
 @interface UIxComponent (PrivateAPI)
@@ -446,17 +446,6 @@ static SoProduct      *commonProduct      = nil;
 - (BOOL) hideFrame
 {
   return ([[self queryParameterForKey: @"noframe"] boolValue]);
-}
-
-- (UIxComponent *) jsCloseWithRefreshMethod: (NSString *) methodName
-{
-  UIxJSClose *jsClose;
-
-  jsClose = [UIxJSClose new];
-  [jsClose autorelease];
-  [jsClose setRefreshMethod: [methodName doubleQuotedString]];
-
-  return jsClose;
 }
 
 /* common conditions */
