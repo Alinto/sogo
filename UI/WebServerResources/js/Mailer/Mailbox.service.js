@@ -961,19 +961,16 @@
     this.$futureMailboxData.then(function(data) {
       var selectedMessages = _.map(_this.$selectedMessages(), 'uid');
       Mailbox.$timeout(function() {
-        var uids, headers;
+        var uids, headers, headersFields;
 
         if (!data.uids || _this.$topIndex > data.uids.length - 1)
           _this.$topIndex = 0;
 
-        _this.init(data);
+        if (data.uids) {
+          // Initialization phase, we received complete list of UIDs
+          Mailbox.$log.debug('unwrapping ' + data.uids.length + ' messages');
 
-        if (_this.uids) {
-          Mailbox.$log.debug('unwrapping ' + _this.uids.length + ' messages');
-
-          // First entry of 'headers' are keys
-          headers = _.invokeMap(_this.headers[0], 'toLowerCase');
-          _this.headers.splice(0, 1);
+          _this.init(data);
 
           // First entry of 'uids' are keys when threaded view is enabled
           if (_this.threaded) {
@@ -981,9 +978,9 @@
             _this.uids.splice(0, 1);
           }
 
-          // Instanciate Message objects
+          // Populate $messages with object literals
           _.reduce(_this.uids, function(msgs, msg, i) {
-            var data, msgObject;
+            var data;
             if (_this.threaded) {
               data = _.zipObject(uids, msg);
               if (data.first === 1) {
@@ -1006,28 +1003,38 @@
             // Build map of UID <=> index
             _this.uidsMap[data.uid] = i;
 
-            msgObject = new Mailbox.$Message(_this.$account.id, _this, data, true);
-
             // Restore selection
-            msgObject.selected = selectedMessages.indexOf(msgObject.uid) > -1;
+            data.selected = selectedMessages.indexOf(data.uid) > -1;
 
-            msgs.push(msgObject);
+            // Add an object literal to be used later to create a Message object
+            msgs.push(data);
 
             return msgs;
           }, _this.$messages);
+        }
 
-          // Extend Message objects with received headers
-          _.forEach(_this.headers, function(data) {
-            var msg = _.zipObject(headers, data),
+        if (data.headers) {
+          // First entry of 'headers' are keys
+          headersFields = _.invokeMap(data.headers.splice(0, 1)[0], 'toLowerCase');
+          headers = data.headers;
+
+          // Instanciate or extend Message objects with received headers
+          _.forEach(headers, function(data) {
+            var msg = _.zipObject(headersFields, data),
                 i = _this.uidsMap[msg.uid.toString()];
+            if (!(_this.$messages[i] instanceof Mailbox.$Message)) {
+              _this.$messages[i] = new Mailbox.$Message(_this.$account.id, _this, _this.$messages[i], true);
+            }
             _this.$messages[i].init(msg);
           });
         }
+
         Mailbox.$log.debug('mailbox ' + _this.id + ' ready');
         _this.$isLoading = false;
         deferred.resolve(_this.$messages);
       });
     }, function(data) {
+      Mailbox.$log.error(data);
       angular.extend(_this, data);
       _this.isError = true;
       _this.$isLoading = false;
@@ -1057,6 +1064,9 @@
             messageHeaders = _.zipObject(headers, messageHeaders);
             j = _this.uidsMap[messageHeaders.uid.toString()];
             if (angular.isDefined(j)) {
+              if (!(_this.$messages[j] instanceof Mailbox.$Message)) {
+                _this.$messages[j] = new Mailbox.$Message(_this.$account.id, _this, _this.$messages[j], true);
+              }
               _this.$messages[j].init(messageHeaders);
             }
           });
