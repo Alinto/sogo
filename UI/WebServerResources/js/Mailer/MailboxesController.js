@@ -321,11 +321,11 @@
       var dstId, messages, uids, clearMessageView, promise, success;
 
       dstId = '/' + dstFolder.id;
-      messages = srcFolder.$selectedMessages();
+      messages = srcFolder.selectedMessages();
       if (messages.length === 0)
-        messages = [srcFolder.$selectedMessage()];
+        messages = [srcFolder.selectedMessage()];
       uids = _.map(messages, 'uid');
-      clearMessageView = (srcFolder.selectedMessage && uids.indexOf(srcFolder.selectedMessage) >= 0);
+      clearMessageView = (srcFolder.$selectedMessage && uids.indexOf(srcFolder.$selectedMessage) >= 0);
 
       if (mode == 'copy') {
         promise = srcFolder.$copyMessages(messages, dstId);

@@ -26,8 +26,10 @@
         this.init(futureMessageData);
       }
       this.uid = parseInt(futureMessageData.uid);
+      this.selected = !!futureMessageData.selected;
       this.level = parseInt(futureMessageData.level);
       this.first = parseInt(futureMessageData.first) === 1;
+      this.flags = [];
       if (this.first) {
         this.threadCount = parseInt(futureMessageData.count);
         this.collapsed = (futureMessageData.collapsed === true);
@@ -61,6 +63,8 @@
     // Initialize tags form user's defaults
     if (Preferences.defaults.SOGoMailLabelsColors) {
       Message.$tags = Preferences.defaults.SOGoMailLabelsColors;
+    } else {
+      Message.$tags = {};
     }
     if (Preferences.defaults.SOGoMailDisplayRemoteInlineImages &&
         Preferences.defaults.SOGoMailDisplayRemoteInlineImages == 'always') {

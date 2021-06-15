@@ -156,7 +156,7 @@
         <md-button class="sg-icon-button" ng-click="mailbox.unselectMessages()">
           <md-icon>arrow_back</md-icon>
         </md-button>
-        <label class="md-truncate"><span ng-bind="mailbox.service.selectedFolder.$selectedCount()"><!-- count --></span> <var:string label:value="selected"/></label>
+        <label class="md-truncate"><span ng-bind="mailbox.service.selectedFolder.selectedCount()"><!-- count --></span> <var:string label:value="selected"/></label>
         <div class="md-flex"><!-- spacer --></div>
         <md-button class="sg-icon-button" ng-click="mailbox.selectAll()">
           <md-tooltip md-direction="bottom"><var:string label:value="Select All"/></md-tooltip>
@@ -286,8 +286,8 @@
         <md-list class="sg-section-list"
                  ng-class="{ 'sg-list-selectable': mailbox.mode.multiple }"
                  sg-draggable="mailbox.selectedFolder"
-                 sg-drag-start="mailbox.selectedFolder.hasSelectedMessage() || mailbox.selectedFolder.$selectedCount()"
-                 sg-drag-count="mailbox.selectedFolder.$selectedCount()">
+                 sg-drag-start="mailbox.selectedFolder.hasSelectedMessage() || mailbox.selectedFolder.selectedCount()"
+                 sg-drag-count="mailbox.selectedFolder.selectedCount()">
           <md-list-item
               aria-label="{{currentMessage.subject}}"
               class="sg-message-list-item"

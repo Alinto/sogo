@@ -19,6 +19,11 @@
           actionClass = "UIxMailListActions";
           actionName  = "getUIDs";
         };
+        changes = {
+          protectedBy = "View";
+          actionClass = "UIxMailListActions";
+          actionName  = "getChanges";
+        };
         headers = {
           protectedBy = "View";
           actionClass = "UIxMailListActions";

@@ -42,6 +42,7 @@
       $Preferences: Preferences,
       $query: { sort: 'arrival', asc: 0 }, // The default sort must match [UIxMailListActions defaultSortKey]
       selectedFolder: null,
+      $selectedMessages: [],
       $refreshTimeout: null,
       $virtualMode: false,
       $virtualPath: false,
@@ -265,9 +266,8 @@
     if (index >= 0 && index < visibleMessages.length) {
       message = visibleMessages[index];
       this.$lastVisibleIndex = Math.max(0, index - 3); // Magic number is NUM_EXTRA from virtual-repeater.js
-
-      if (this.$loadMessage(message.uid))
-        return message;
+      this.$loadMessage(message.uid);
+      return message; // skeleton is displayed while headers are being fetched
     }
     return null;
   };
@@ -283,23 +283,25 @@
   };
 
   /**
-   * @function $selectedMessages
+   * @function selectedMessages
    * @memberof Mailbox.prototype
    * @desc Return the messages selected by the user.
    * @returns Message instances
    */
-  Mailbox.prototype.$selectedMessages = function() {
-    return _.filter(this.$messages, function(message) { return message.selected; });
+  Mailbox.prototype.selectedMessages = function(options) {
+    if (options && options.updateCache)
+      this.$selectedMessages = _.filter(this.$messages, function(message) { return message.selected; });
+    return this.$selectedMessages;
   };
 
   /**
-   * @function $selectedCount
+   * @function selectedCount
    * @memberof Mailbox.prototype
    * @desc Return the number of messages selected by the user.
    * @returns the number of selected messages
    */
-  Mailbox.prototype.$selectedCount = function() {
-    return this.$selectedMessages().length;
+  Mailbox.prototype.selectedCount = function() {
+    return this.$selectedMessages.length;
   };
 
   /**
@@ -308,9 +310,10 @@
    * @desc Unselect all messages.
    */
   Mailbox.prototype.$unselectMessages = function() {
-    _.forEach(this.$selectedMessages(), function(message) {
+    _.forEach(this.$selectedMessages, function(message) {
       message.selected = false;
     });
+    this.$selectedMessages = [];
   };
 
   /**
@@ -321,7 +324,7 @@
    * @returns true if the specified message is displayed
    */
   Mailbox.prototype.isSelectedMessage = function(messageId) {
-    return this.selectedMessage == messageId;
+    return this.$selectedMessage == messageId;
   };
 
   /**
@@ -330,10 +333,9 @@
    * @desc Return the currently visible message.
    * @returns a Message instance or undefined if no message is displayed
    */
-  Mailbox.prototype.$selectedMessage = function() {
+  Mailbox.prototype.selectedMessage = function() {
     var _this = this;
-
-    return _.find(this.$messages, function(message) { return message.uid == _this.selectedMessage; });
+    return _.find(this.$messages, function(message) { return message.uid == _this.$selectedMessage; });
   };
 
   /**
@@ -343,7 +345,7 @@
    * @returns a number or undefined if no message is selected
    */
   Mailbox.prototype.$selectedMessageIndex = function() {
-    return this.uidsMap[this.selectedMessage];
+    return this.uidsMap[this.$selectedMessage];
   };
 
   /**
@@ -353,7 +355,7 @@
    * @returns true if the a message is selected
    */
   Mailbox.prototype.hasSelectedMessage = function() {
-    return angular.isDefined(this.selectedMessage);
+    return angular.isDefined(this.$selectedMessage);
   };
 
   /**
@@ -371,7 +373,7 @@
    * @returns a promise of the HTTP operation
    */
   Mailbox.prototype.$filter = function(sortingAttributes, filters) {
-    var _this = this, options = {};
+    var _this = this, action = 'view', options = {};
 
     if (!angular.isDefined(this.unseenCount))
       this.unseenCount = 0;
@@ -403,6 +405,10 @@
         }
       });
     }
+    else if (!sortingAttributes && this.$syncToken) {
+      action = 'changes';
+      options.syncToken = this.$syncToken;
+    }
 
     // Restart the refresh timer, if needed
     if (!Mailbox.$virtualMode) {
@@ -413,14 +419,14 @@
       }
     }
 
-    var futureMailboxData = Mailbox.$$resource.post(this.id, 'view', options);
+    var futureMailboxData = Mailbox.$$resource.post(this.id, action, options);
     return this.$unwrap(futureMailboxData);
   };
 
   /**
    * @function $loadMessage
    * @memberof Mailbox.prototype
-   * @desc Check if the message is loaded and in any case, fetch more messages headers from the server.
+   * @desc Check if the message headers are loaded and in any case, fetch more messages headers from the server.
    * @returns true if the message metadata are already fetched
    */
   Mailbox.prototype.$loadMessage = function(messageId) {
@@ -765,8 +771,8 @@
       if (selectedIndex > -1) {
         uids.splice(selectedIndex, 1);
         delete _this.uidsMap[message.uid];
-        if (message.uid == _this.selectedMessage)
-          delete _this.selectedMessage;
+        if (message.uid == _this.$selectedMessage)
+          delete _this.$selectedMessage;
         _this.$messages.splice(index, 1);
         if (index < firstIndex)
           firstIndex = index;
@@ -813,7 +819,10 @@
       });
     }
 
-    return _deleteMessages(0, Math.min(batchSize, uids.length));
+    return _deleteMessages(0, Math.min(batchSize, uids.length)).then(function(firstIndex) {
+      _this.$selectedMessages = []; // reset selection
+      return firstIndex;
+    });
   };
 
   /**
@@ -860,6 +869,7 @@
     uids = _.map(messages, 'uid');
     return Mailbox.$$resource.post(this.id, 'moveMessages', {uids: uids, folder: folder})
       .then(function() {
+        _this.$selectedMessages = []; // reset selection
         return _this.$_deleteMessages(uids, messages);
       });
   };
@@ -959,12 +969,48 @@
 
     this.$futureMailboxData = futureMailboxData;
     this.$futureMailboxData.then(function(data) {
-      var selectedMessages = _.map(_this.$selectedMessages(), 'uid');
+      var selectedMessages = _.map(_this.$selectedMessages, 'uid');
       Mailbox.$timeout(function() {
-        var uids, headers, headersFields;
+        var uids, headers, headersFields, msgObject;
 
         if (!data.uids || _this.$topIndex > data.uids.length - 1)
           _this.$topIndex = 0;
+        if (data.syncToken)
+          _this.$syncToken = data.syncToken;
+
+        if (data.deleted) {
+          var deletedMessages = [];
+          _.forEachRight(data.deleted, function(uid, i) {
+            var j = _this.uidsMap[uid.toString()];
+            if (j >= 0 && _this.$messages[j])
+              deletedMessages.push(_this.$messages[j]);
+            else
+              // Unkown message
+              data.deleted.splice(i, 1);
+          });
+          if (deletedMessages.length)
+            _this.$_deleteMessages(data.deleted, deletedMessages);
+        }
+        if (data.changed) {
+          var i = 0, j;
+          _.forEach(data.changed, function(uid) {
+            if (angular.isUndefined(_this.uidsMap[uid.toString()])) {
+              // New messsage; update map of UID <=> index
+              _this.uidsMap[uid] = i;
+              msgObject = new Mailbox.$Message(_this.$account.id, _this, {uid: uid}, true);
+              _this.$messages.splice(i, 0, msgObject);
+              i++;
+            }
+          });
+
+          if (i > 0) {
+            // New messages received, update uidsMap
+            for (j = i; j < _this.$messages.length; j++) {
+              msgObject = _this.$messages[j];
+              _this.uidsMap[msgObject.uid] += i;
+            }
+          }
+        }
 
         if (data.uids) {
           // Initialization phase, we received complete list of UIDs

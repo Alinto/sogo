@@ -51,11 +51,33 @@
 
 .unread {
   .#{$md}-subhead,
-  .#{$md}-body {
+  .#{$md}-body,
+  .sg-tile-date {
     font-weight: $sg-font-medium;
   }
-  .sg-tile-date {
-    color: sg-color($sogoBlue, 600);
+}
+
+.sg-skeleton {
+  background-color: inherit;
+  sg-avatar-image, .sg-category-dot-container, md-icon, .sg-tile-btn {
+    display: none;
+  }
+  .md-icon-button, .sg-md-subhead, .sg-md-body {
+    color: $colorGrey300;
+    background-color: $colorGrey300;
+    font-size: 0;
+  }
+  .sg-md-subhead, .sg-md-body {
+    margin-bottom: 3px;
+    border-radius: 3px;
+  }
+  .sg-md-subhead {
+    height: 1.2rem;
+    width: 45%;
+  }
+  .sg-md-body {
+    height: 1rem;
+    width: 70%;
   }
 }
 

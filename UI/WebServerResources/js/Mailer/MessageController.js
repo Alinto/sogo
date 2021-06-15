@@ -148,7 +148,7 @@
         keys.push(sgHotkeys.createHotkey({
           key: hotkey,
           callback: _unlessInDialog(function($event) {
-            if (vm.mailbox.$selectedCount() === 0)
+            if (vm.mailbox.selectedCount() === 0)
               vm.deleteMessage();
             $event.preventDefault();
           }),
@@ -371,7 +371,7 @@
             else {
               state.go('mail.account.mailbox').then(function() {
                 message = null;
-                delete mailbox.selectedMessage;
+                delete mailbox.$selectedMessage;
               });
             }
           }
@@ -446,7 +446,7 @@
       var destination = Mailbox.$virtualMode ? 'mail.account.virtualMailbox' : 'mail.account.mailbox';
       $state.go(destination).then(function() {
         vm.message = null;
-        delete stateMailbox.selectedMessage;
+        delete stateMailbox.$selectedMessage;
       });
     };
 

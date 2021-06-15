@@ -166,9 +166,9 @@
     this.cancelSearch = function() {
       vm.mode.search = false;
       vm.selectedFolder.$filter().then(function() {
-        if (vm.selectedFolder.selectedMessage) {
+        if (vm.selectedFolder.$selectedMessage) {
           $timeout(function() {
-            vm.selectedFolder.$topIndex = vm.selectedFolder.uidsMap[vm.selectedFolder.selectedMessage];
+            vm.selectedFolder.$topIndex = vm.selectedFolder.uidsMap[vm.selectedFolder.$selectedMessage];
           });
         }
       });
@@ -320,14 +320,14 @@
           selectedIndex, nextSelectedIndex, i;
 
       if (!message)
-        message = folder.$selectedMessage();
+        message = folder.selectedMessage();
       if (!message)
         return true;
+
       message.selected = !message.selected;
-      vm.mode.multiple += message.selected? 1 : -1;
 
       // Select closest range of messages when shift key is pressed
-      if ($event.shiftKey && folder.$selectedCount() > 1) {
+      if ($event.shiftKey && folder.selectedCount() > 0) {
         selectedIndex = folder.uidsMap[message.uid];
         // Search for next selected message above
         nextSelectedIndex = selectedIndex - 2;
@@ -349,6 +349,8 @@
         }
       }
 
+      folder.selectedMessages({ updateCache: true });
+      vm.mode.multiple = vm.selectedFolder.selectedCount();
       $event.preventDefault();
       $event.stopPropagation();
     };
@@ -368,7 +370,7 @@
     // This function must not be called in virtual mode.
     function _unselectMessage(message, index) {
       var nextMessage, previousMessage, nextIndex = index;
-      vm.mode.multiple = vm.selectedFolder.$selectedCount();
+      vm.mode.multiple = vm.selectedFolder.selectedCount();
       if (message) {
         // Select either the next or previous message
         if (index > 0) {
@@ -404,7 +406,7 @@
     }
 
     this.confirmDeleteSelectedMessages = function($event) {
-      var selectedMessages = vm.selectedFolder.$selectedMessages();
+      var selectedMessages = vm.selectedFolder.selectedMessages();
 
       if (vm.messageDialog === null && _.size(selectedMessages) > 0)
         vm.messageDialog = Dialog.confirm(l('Confirmation'),
@@ -456,9 +458,10 @@
 
     this.markOrUnMarkMessagesAsJunk = function() {
       var moveSelectedMessage = vm.selectedFolder.hasSelectedMessage();
-      var selectedMessages = vm.selectedFolder.$selectedMessages();
+      var selectedMessages = vm.selectedFolder.selectedMessages();
       if (_.size(selectedMessages) === 0 && moveSelectedMessage)
-        selectedMessages = [vm.selectedFolder.$selectedMessage()];
+        // No selection, user has pressed keyboard shortcut
+        selectedMessages = [vm.selectedFolder.selectedMessage()];
       if (_.size(selectedMessages) > 0)
         vm.selectedFolder.$markOrUnMarkMessagesAsJunk(selectedMessages).then(function() {
           var dstFolder = '/' + vm.account.id + '/folderINBOX';
@@ -481,12 +484,12 @@
     };
 
     this.copySelectedMessages = function(dstFolder) {
-      var selectedMessages = vm.selectedFolder.$selectedMessages();
+      var selectedMessages = vm.selectedFolder.selectedMessages();
       if (_.size(selectedMessages) > 0)
         vm.selectedFolder.$copyMessages(selectedMessages, '/' + dstFolder).then(function() {
           $mdToast.show(
             $mdToast.simple()
-              .textContent(l('%{0} message(s) copied', vm.selectedFolder.$selectedCount()))
+              .textContent(l('%{0} message(s) copied', vm.selectedFolder.selectedCount()))
               .position('top right')
               .hideDelay(2000));
         });
@@ -494,8 +497,8 @@
 
     this.moveSelectedMessages = function(dstFolder) {
       var moveSelectedMessage = vm.selectedFolder.hasSelectedMessage();
-      var selectedMessages = vm.selectedFolder.$selectedMessages();
-      var count = vm.selectedFolder.$selectedCount();
+      var selectedMessages = vm.selectedFolder.selectedMessages();
+      var count = vm.selectedFolder.selectedCount();
       if (_.size(selectedMessages) > 0)
         vm.selectedFolder.$moveMessages(selectedMessages, '/' + dstFolder).then(function(index) {
           $mdToast.show(
@@ -520,8 +523,11 @@
       var count = 0;
       _.forEach(_currentMailboxes(), function(folder) {
         var i = 0, length = folder.$messages.length;
-        for (; i < length; i++)
+        folder.$selectedMessages = [];
+        for (; i < length; i++) {
           folder.$messages[i].selected = true;
+          folder.$selectedMessages.push(folder.$messages[i]);
+        }
         count += length;
       });
       vm.mode.multiple = count;
@@ -529,6 +535,7 @@
 
     this.unselectMessages = function() {
       _.forEach(_currentMailboxes(), function(folder) {
+        folder.$selectedMessages = [];
         _.forEach(folder.$messages, function(message) {
           message.selected = false;
         });
@@ -537,7 +544,7 @@
     };
 
     this.markSelectedMessagesAsFlagged = function() {
-      var selectedMessages = vm.selectedFolder.$selectedMessages();
+      var selectedMessages = vm.selectedFolder.selectedMessages();
       if (_.size(selectedMessages) > 0)
         vm.selectedFolder.$flagMessages(selectedMessages, '\\Flagged', 'add').then(function(messages) {
           _.forEach(messages, function(message) {
@@ -547,7 +554,7 @@
     };
 
     this.markSelectedMessagesAsUnread = function() {
-      var selectedMessages = vm.selectedFolder.$selectedMessages();
+      var selectedMessages = vm.selectedFolder.selectedMessages();
       if (_.size(selectedMessages) > 0) {
         vm.selectedFolder.$flagMessages(selectedMessages, 'seen', 'remove').then(function(messages) {
           _.forEach(messages, function(message) {
@@ -560,7 +567,7 @@
     };
 
     this.markSelectedMessagesAsRead = function() {
-      var selectedMessages = vm.selectedFolder.$selectedMessages();
+      var selectedMessages = vm.selectedFolder.selectedMessages();
       if (_.size(selectedMessages) > 0) {
         vm.selectedFolder.$flagMessages(selectedMessages, 'seen', 'add').then(function(messages) {
           _.forEach(messages, function(message) {

@@ -122,7 +122,7 @@
    */
   VirtualMailbox.prototype.resetSelectedMessage = function() {
     _.forEach(this.$mailboxes, function(mailbox) {
-      delete mailbox.selectedMessage;
+      delete mailbox.$selectedMessage;
     });
   };
 
@@ -134,7 +134,7 @@
    */
   VirtualMailbox.prototype.hasSelectedMessage = function() {
     return angular.isDefined(_.find(this.$mailboxes, function(mailbox) {
-      return angular.isDefined(mailbox.selectedMessage);
+      return angular.isDefined(mailbox.$selectedMessage);
     }));
   };
 
@@ -148,7 +148,7 @@
    */
   VirtualMailbox.prototype.isSelectedMessage = function(messageId, mailboxPath) {
     return angular.isDefined(_.find(this.$mailboxes, function(mailbox) {
-      return mailbox.path == mailboxPath && mailbox.selectedMessage == messageId;
+      return mailbox.path == mailboxPath && mailbox.$selectedMessage == messageId;
     }));
   };
 
@@ -216,7 +216,7 @@
   VirtualMailbox.prototype.$selectedMessageIndex = function() {
     var offset = 0;
     var selectedMailbox = _.find(this.$mailboxes, function(mailbox) {
-      if (angular.isDefined(mailbox.selectedMessage)) {
+      if (angular.isDefined(mailbox.$selectedMessage)) {
         return true;
       }
       else {
@@ -224,7 +224,7 @@
         return false;
       }
     });
-    return offset + selectedMailbox.uidsMap[selectedMailbox.selectedMessage];
+    return offset + selectedMailbox.uidsMap[selectedMailbox.$selectedMessage];
   };
 
   /**
@@ -233,23 +233,23 @@
    * @desc Return an associative array of the selected messages for each mailbox. Keys are the mailboxes ids.
    * @returns an associative array
    */
-  VirtualMailbox.prototype.$selectedMessages = function() {
+  VirtualMailbox.prototype.selectedMessages = function() {
     var messagesMap = {};
     return _.filter(_.transform(this.$mailboxes, function(messagesMap, mailbox) {
-      messagesMap[mailbox.id] = mailbox.$selectedMessages();
+      messagesMap[mailbox.id] = mailbox.$selectedMessages;
     }, {}), function(o) {
       return _.size(o) > 0;
     });
   };
 
   /**
-   * @function $selectedCount
+   * @function selectedCount
    * @memberof VirtualMailbox.prototype
    * @desc Return the number of messages selected by the user.
    * @returns the number of selected messages
    */
-  VirtualMailbox.prototype.$selectedCount = function() {
-    return _.sum(_.invokeMap(this.$mailboxes, '$selectedCount'));
+  VirtualMailbox.prototype.selectedCount = function() {
+    return _.sum(_.invokeMap(this.$mailboxes, 'selectedCount'));
   };
 
   /**

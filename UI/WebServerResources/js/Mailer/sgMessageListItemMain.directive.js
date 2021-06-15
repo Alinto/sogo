@@ -121,71 +121,73 @@
         var i;
         $ctrl.message = $ctrl.parentController.message;
 
-        // Flags
-        var flagList = $element[0].querySelector('.sg-category-dot-container'),
-            $flagList = angular.element(flagList),
-            flagElements = $mdUtil.nodesToArray(flagList.querySelectorAll('.sg-category-dot'));
-        _.forEach(flagElements, function(flagElement) {
-          flagList.removeChild(flagElement);
-        });
-        for (i = 0; i < $ctrl.message.flags.length && i < 5; i++) {
-          var tag = $ctrl.message.flags[i];
-          if ($ctrl.service.$tags[tag]) {
-            var flagElement = angular.element('<div class="sg-category-dot"></div>');
-            flagElement.css('background-color', $ctrl.service.$tags[tag][1]);
-            $flagList.append(flagElement);
+        if (!$ctrl.message.loading) {
+          // Flags
+          var flagList = $element[0].querySelector('.sg-category-dot-container'),
+              $flagList = angular.element(flagList),
+              flagElements = $mdUtil.nodesToArray(flagList.querySelectorAll('.sg-category-dot'));
+          _.forEach(flagElements, function(flagElement) {
+            flagList.removeChild(flagElement);
+          });
+          for (i = 0; i < $ctrl.message.flags.length && i < 5; i++) {
+            var tag = $ctrl.message.flags[i];
+            if ($ctrl.service.$tags[tag]) {
+              var flagElement = angular.element('<div class="sg-category-dot"></div>');
+              flagElement.css('background-color', $ctrl.service.$tags[tag][1]);
+              $flagList.append(flagElement);
+            }
           }
-        }
 
-        // Mailbox name when in virtual mode
-        if ($ctrl.mailboxNameElement)
-          $ctrl.mailboxNameElement.innerHTML = $ctrl.message.$mailbox.$displayName;
+          // Mailbox name when in virtual mode
+          if ($ctrl.mailboxNameElement)
+            $ctrl.mailboxNameElement.innerHTML = $ctrl.message.$mailbox.$displayName;
 
-        // Sender or recipient when in
-        if ($ctrl.MailboxService.selectedFolder.isSentFolder)
-          $ctrl.senderElement.innerHTML = $ctrl.message.$shortAddress('to').encodeEntities();
-        else
-          $ctrl.senderElement.innerHTML = $ctrl.message.$shortAddress('from').encodeEntities();
-
-        // Priority icon
-        if ($ctrl.message.priority && $ctrl.message.priority.level < 3) {
-          $ctrl.priorityIconElement.classList.remove('ng-hide');
-          if ($ctrl.message.priority.level < 2)
-            $ctrl.priorityIconElement.classList.add('md-warn');
+          // Sender or recipient when in
+          if ($ctrl.MailboxService.selectedFolder.isSentFolder)
+            $ctrl.senderElement.innerHTML = $ctrl.message.$shortAddress('to').encodeEntities();
           else
-            $ctrl.priorityIconElement.classList.remove('md-warn');
+            $ctrl.senderElement.innerHTML = $ctrl.message.$shortAddress('from').encodeEntities();
+
+          // Priority icon
+          if ($ctrl.message.priority && $ctrl.message.priority.level < 3) {
+            $ctrl.priorityIconElement.classList.remove('ng-hide');
+            if ($ctrl.message.priority.level < 2)
+              $ctrl.priorityIconElement.classList.add('md-warn');
+            else
+              $ctrl.priorityIconElement.classList.remove('md-warn');
+          }
+          else
+            $ctrl.priorityIconElement.classList.add('ng-hide');
+
+          // Mail thread
+          if ($ctrl.message.first) {
+            $ctrl.threadButton.classList.remove('ng-hide');
+            $ctrl.threadCountElement.innerHTML = $ctrl.message.threadCount;
+            if ($ctrl.message.collapsed)
+              $ctrl.threadIconElement.classList.remove('md-rotate-180-ccw');
+          }
+          else {
+            $ctrl.threadButton.classList.add('ng-hide');
+          }
+
+          // Subject
+          $ctrl.subjectElement.innerHTML = $ctrl.message.subject.encodeEntities();
+
+          // Message size
+          $ctrl.sizeElement.innerHTML = $ctrl.message.size;
+
+          // Received Date
+          $ctrl.dateElement.innerHTML = $ctrl.message.relativedate;
+
+          setVisibility($ctrl.flagIconElement,
+                        $ctrl.message.isflagged);
+          setVisibility($ctrl.answerIconElement,
+                        $ctrl.message.isanswered);
+          setVisibility($ctrl.forwardIconElement,
+                        $ctrl.message.isforwarded);
+          setVisibility($ctrl.attachmentIconElement,
+                        $ctrl.message.hasattachment);
         }
-        else
-          $ctrl.priorityIconElement.classList.add('ng-hide');
-
-        // Mail thread
-        if ($ctrl.message.first) {
-          $ctrl.threadButton.classList.remove('ng-hide');
-          $ctrl.threadCountElement.innerHTML = $ctrl.message.threadCount;
-          if ($ctrl.message.collapsed)
-            $ctrl.threadIconElement.classList.remove('md-rotate-180-ccw');
-        }
-        else {
-          $ctrl.threadButton.classList.add('ng-hide');
-        }
-
-        // Subject
-        $ctrl.subjectElement.innerHTML = $ctrl.message.subject.encodeEntities();
-
-        // Message size
-        $ctrl.sizeElement.innerHTML = $ctrl.message.size;
-
-        // Received Date
-        $ctrl.dateElement.innerHTML = $ctrl.message.relativedate;
-
-        setVisibility($ctrl.flagIconElement,
-                       $ctrl.message.isflagged);
-        setVisibility($ctrl.answerIconElement,
-                       $ctrl.message.isanswered);
-        setVisibility($ctrl.forwardIconElement,
-                       $ctrl.message.isforwarded);
-        setVisibility($ctrl.attachmentIconElement,
-                       $ctrl.message.hasattachment);
 
         // Call original method on parent controller
         angular.bind($ctrl.parentController, parentControllerOnUpdate)();

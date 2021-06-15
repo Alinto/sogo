@@ -317,7 +317,7 @@
       return messageObject.uid == parseInt($stateParams.messageId);
     });
 
-    if (message) {
+    if (message && message.$reload) {
       return message.$reload({useCache: true});
     }
     else {
@@ -331,7 +331,7 @@
    */
   onEnterMessage.$inject = ['$stateParams', 'stateMailbox'];
   function onEnterMessage($stateParams, stateMailbox) {
-    stateMailbox.selectedMessage = parseInt($stateParams.messageId);
+    stateMailbox.$selectedMessage = parseInt($stateParams.messageId);
   }
 
   /**
@@ -339,7 +339,7 @@
    */
   onExitMessage.$inject = ['stateMailbox'];
   function onExitMessage(stateMailbox) {
-    delete stateMailbox.selectedMessage;
+    delete stateMailbox.$selectedMessage;
   }
 
   /**

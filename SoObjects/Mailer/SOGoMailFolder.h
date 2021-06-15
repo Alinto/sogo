@@ -105,7 +105,14 @@
                           matchingSyncToken: (NSString *) theSyncToken
                                    fromDate: (NSCalendarDate *) theStartDate
                                 initialLoad: (BOOL) initialLoadInProgress;
-/* flags */
+- (NSArray *) syncTokenFieldsWithProperties: (NSDictionary *) theProperties
+                          matchingSyncToken: (NSString *) theSyncToken
+                                   fromDate: (NSCalendarDate *) theStartDate
+                                initialLoad: (BOOL) initialLoadInProgress
+                               sortOrdering: (id) theSortOrdering
+                                   threaded: (BOOL) isThreaded;
+
+  /* flags */
 
 - (NSException *) addFlagsToAllMessages: (id) _f;
 

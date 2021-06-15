@@ -1,6 +1,7 @@
 /* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 
 (function() {
+  /* jshint loopfunc: true */
   'use strict';
 
   /**
@@ -386,38 +387,50 @@
     if (this.nextInboxPoll)
       Preferences.$timeout.cancel(this.nextInboxPoll);
 
-    Preferences.$$resource.post('Mail', '0/folderINBOX/view', params).then(function(data) {
-      var uids = data.uids;
-      var uidHeaderIndex = data.headers[0].indexOf('uid');
-      var fromHeaderIndex = data.headers[0].indexOf('From');
-      var subjectHeaderIndex = data.headers[0].indexOf('Subject');
-      if (data.threaded) {
-        data.uids.splice(0, 1);
-        uids = _.map(data.uids, 0);
+    if (this.inboxSyncToken)
+      params.syncToken = this.inboxSyncToken;
+
+    Preferences.$$resource.post('Mail', '0/folderINBOX/changes', params).then(function(data) {
+      if (data.syncToken) {
+        _this.inboxSyncToken = data.syncToken;
+        Preferences.$log.debug("New syncToken is " + _this.inboxSyncToken);
       }
-      if (_this.lastUid) {
-        _.find(uids, function (uid, index) {
-          var headers, id, href, toast;
-          if (uid > _this.lastUid) {
+
+      if (angular.isDefined(data.headers) && data.headers.length > 0) {
+        var uidHeaderIndex = data.headers[0].indexOf('uid');
+        var isReadHeaderIndex = data.headers[0].indexOf('isRead');
+        var fromHeaderIndex = data.headers[0].indexOf('From');
+        var subjectHeaderIndex = data.headers[0].indexOf('Subject');
+        var i;
+        var showToast = function() {
+          var _this = this;
+          return Preferences.$toast.show(this)
+            .then(function(response) {
+              if (response === 'ok') {
+                _this.viewInboxMessage(_this.locals.uid);
+              }
+            });
+        };
+        for (i = 1; i < data.headers.length; i++) {
+          var headers = data.headers[i],
+              uid = headers[uidHeaderIndex],
+              id, href, toast;
+          if (!headers[isReadHeaderIndex]) {
             // New unseen message
             Preferences.$log.debug('Show notification for message ' + uid);
-            headers = _.find(data.headers, function(h) {
-              return h[uidHeaderIndex] == uid;
-            });
             if (_this.defaults.SOGoDesktopNotifications) {
               id = 'mail-inbox-' + uid;
               href = Preferences.$state.href('mail.account.mailbox.message', { accountId: 0, mailboxId: 'INBOX', messageId: uid });
               _this.createNotification(id, headers[subjectHeaderIndex], {
                 body: headers[fromHeaderIndex][0].name || headers[fromHeaderIndex][0].email,
                 icon: '/SOGo.woa/WebServerResources/img/email-256px.png',
-                onClick: function () {
-                  _this.viewInboxMessage(uid);
-                }
+                onClick: angular.bind(_this, _this.viewInboxMessage, uid)
               });
             }
             else {
               toast = {
                 locals: {
+                  uid: uid,
                   title: headers[subjectHeaderIndex],
                   body: headers[fromHeaderIndex][0].name || headers[fromHeaderIndex][0].email
                 },
@@ -440,28 +453,13 @@
                 ].join(''),
                 position: 'top right',
                 hideDelay: 5000,
-                controller: toastController
+                controller: toastController,
+                viewInboxMessage: _this.viewInboxMessage
               };
-              _this.currentToast = _this.currentToast.then(function () {
-                return Preferences.$toast.show(toast)
-                .then(function(response) {
-                  if (response === 'ok') {
-                    _this.viewInboxMessage(uid);
-                  }
-                });
-              });
+              _this.currentToast = _this.currentToast.then(angular.bind(toast, showToast));
             }
-            return false; // Continue to next unseen message
           }
-          else {
-            return true; // No more new messages
-          }
-        });
-        if (uids[0] > _this.lastUid) {
-          _this.lastUid = uids[0];
         }
-      } else {
-        _this.lastUid = uids[0];
       }
     }).finally(function () {
       var refreshViewCheck = _this.defaults.SOGoRefreshViewCheck;

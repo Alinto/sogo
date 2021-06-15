@@ -28,7 +28,7 @@
 
 
     this.$onInit = function () {
-      var watchedAttrs = ['uid', 'isread', 'isflagged', 'flags', 'subject'];
+      var watchedAttrs = ['uid', 'isread', 'isflagged', 'flags', 'subject', 'loading'];
 
       // this.service = Message;
       this.MailboxService = Mailbox;
@@ -52,6 +52,11 @@
 
 
     this.onUpdate = function () {
+      if (this.message.loading) {
+        $element.addClass('sg-skeleton');
+        return;
+      }
+      $element.removeClass('sg-skeleton');
       // Is the message unread?
       if (this.message.isread)
         $element.removeClass('unread');

@@ -40,6 +40,7 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Envelope.h>
 
 #import <EOControl/EOQualifier.h>
@@ -489,7 +490,7 @@
         }
       else
         fetchQualifier = notDeleted;
-    
+
       sortedUIDs = [mailFolder fetchUIDsMatchingQualifier: fetchQualifier
                                              sortOrdering: [self imap4SortOrdering]
                                                  threaded: sortByThread];
@@ -648,7 +649,7 @@
   int count;
 
   data = [NSMutableDictionary dictionary];
-  
+
   // TODO: we might want to flush the caches?
   //[folder flushMailCaches];
   [folder expungeLastMarkedFolder];
@@ -661,6 +662,16 @@
       return nil;
     }
   
+  // We first make sure QRESYNC is enabled
+  if (![[folder imap4Connection] enableExtensions: [NSArray arrayWithObject: @"QRESYNC"]])
+    {
+      NSString *tag = [folder davCollectionTag];
+      if (![tag isEqualToString: @"-1"])
+        {
+          [data setObject: tag forKey: @"syncToken"];
+        }
+    }
+
   // Get rid of the extra parenthesis
    // uids = [[[[uids stringValue] stringByReplacingOccurrencesOfString:@"(" withString:@""] stringByReplacingOccurrencesOfString:@")" withString:@""] componentsSeparatedByString:@","];
 
@@ -781,6 +792,72 @@
                              @"An error occured while communicating with the mail server", @"message", nil];
       response = [self responseWithStatus: 500 /* Error */
                     andJSONRepresentation: data];
+    }
+
+  return response;
+}
+
+- (id <WOActionResults>) getChangesAction
+{
+  NSArray *changedMessages, *headers;
+  NSDictionary *requestContent, *data, *changedMessage;
+  NSMutableArray *changedUids, *deletedUids;
+  NSString *syncToken, *newSyncToken, *uid;
+  SOGoMailFolder *folder;
+  WORequest *request;
+  WOResponse *response;
+  int i, max;
+
+  request = [context request];
+  requestContent = [[request contentAsString] objectFromJSONString];
+  response = nil;
+  folder = [self clientObject];
+  syncToken = [requestContent objectForKey: @"syncToken"];
+  newSyncToken = [folder davCollectionTag];
+
+  if ([syncToken length] && ![syncToken isEqual: newSyncToken])
+    {
+      // Fetch list of changed uids
+      changedMessages = [folder syncTokenFieldsWithProperties: nil
+                                            matchingSyncToken: syncToken
+                                                     fromDate: nil
+                                                  initialLoad: NO
+                                                 sortOrdering: [self imap4SortOrdering]
+                                                     threaded: sortByThread];
+      if ((max = [changedMessages count]))
+        {
+          // Split new or modified uids from deleted uids
+          changedUids = [NSMutableArray array];
+          deletedUids = [NSMutableArray array];
+          for (i = 0; i < max; i++)
+            {
+              changedMessage = [changedMessages objectAtIndex: i];
+              uid = [[changedMessage allKeys] lastObject];
+              if ([[changedMessage objectForKey: uid] isEqual: [NSNull null]])
+                [deletedUids addObject: uid];
+              else
+                [changedUids addObject: uid];
+            }
+
+          // Fetch headers for new or modified messages
+          headers = [self getHeadersForUIDs: changedUids
+                                   inFolder: folder];
+
+          data = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 changedUids, @"changed",
+                               deletedUids, @"deleted",
+                               headers, @"headers",
+                               newSyncToken, @"syncToken",
+                               nil];
+          response = [self responseWithStatus: 200 andJSONRepresentation: data];
+        }
+    }
+  if (!response)
+    {
+      data = [NSDictionary dictionaryWithObjectsAndKeys:
+                           newSyncToken, @"syncToken",
+                           nil];
+      response = [self responseWithStatus: 200 andJSONRepresentation: data];
     }
 
   return response;

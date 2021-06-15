@@ -2260,6 +2260,21 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
                                    fromDate: (NSCalendarDate *) theStartDate
                                 initialLoad: (BOOL) initialLoadInProgress
 {
+  return [self syncTokenFieldsWithProperties: theProperties
+                           matchingSyncToken: theSyncToken
+                                    fromDate: theStartDate
+                                 initialLoad: initialLoadInProgress
+                                sortOrdering: nil
+                                    threaded: NO];
+}
+
+- (NSArray *) syncTokenFieldsWithProperties: (NSDictionary *) theProperties
+                          matchingSyncToken: (NSString *) theSyncToken
+                                   fromDate: (NSCalendarDate *) theStartDate
+                                initialLoad: (BOOL) initialLoadInProgress
+                               sortOrdering: (id) theSortOrdering
+                                   threaded: (BOOL) isThreaded
+{
   EOQualifier *searchQualifier;
   NSMutableArray *allTokens;
   NSArray *a, *uids;
@@ -2316,17 +2331,19 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 
   // we fetch modified or added uids
   uids = [self fetchUIDsMatchingQualifier: searchQualifier
-                             sortOrdering: nil];
+                             sortOrdering: theSortOrdering];
 
   fetchResults = [(NSDictionary *)[self fetchUIDs: uids
                                             parts: [NSArray arrayWithObjects: @"modseq", @"flags", nil]]
                      objectForKey: @"fetch"];
   
-  /* NOTE: we sort items manually because Cyrus does not properly sort
-     entries with a MODSEQ of 0 */
-  fetchResults
-    = [fetchResults sortedArrayUsingFunction: _compareFetchResultsByMODSEQ
-                                     context: NULL];
+  if (theSortOrdering == nil)
+    {
+      /* NOTE: we sort items manually because Cyrus does not properly sort
+         entries with a MODSEQ of 0 */
+      fetchResults = [fetchResults sortedArrayUsingFunction: _compareFetchResultsByMODSEQ
+                                                    context: NULL];
+    }
 
   for (i = 0; i < [fetchResults count]; i++)
     { 
