@@ -1129,7 +1129,7 @@
   return [authValue boolValue];
 }
 
-- (NSString *) googleAuthenticatorKey
+- (NSString *) totpKey
 {
 #if defined(MFA_CONFIG)
   NSString *key, *result;

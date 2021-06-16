@@ -243,8 +243,8 @@
               </md-radio-group>
             </md-input-container>
 
-            <var:if condition="isGoogleAuthenticatorEnabled">
-              <md-checkbox ng-model="app.preferences.defaults.SOGoGoogleAuthenticatorEnabled"
+            <var:if condition="isTotpEnabled">
+              <md-checkbox ng-model="app.preferences.defaults.SOGoTOTPEnabled"
                            ng-true-value="1"
                            ng-false-value="0"
                            label:aria-label="Enable two-factor authentication using a TOTP application">
@@ -252,9 +252,9 @@
               </md-checkbox>
               <div layout="row" layout-align="start center" layout-xs="column"
                    layout-padding="layout-padding" layout-margin="layout-margin"
-                   ng-show="app.preferences.defaults.SOGoGoogleAuthenticatorEnabled">
+                   ng-show="app.preferences.defaults.SOGoTOTPEnabled">
                 <div>
-                  <sg-qr-code var:text="googleAuthenticatorKey" />
+                  <sg-qr-code var:text="totpKey" />
                 </div>
                 <div flex="100" flex-sm="60" flex-gt-sm="50">
                   <var:string label:value="You must enter this key into your TOTP application."/> <b><var:string label:value="If you do not and you log out you will not be able to login again."/></b>

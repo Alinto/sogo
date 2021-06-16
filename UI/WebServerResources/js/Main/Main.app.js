@@ -25,7 +25,7 @@
         this.creds.language = $window.language;
       this.loginState = false;
 
-      // Code pattern for Google verification code
+      // Code pattern for TOTP verification code
       this.verificationCodePattern = '\\d{6}';
 
       // Password policy - change expired password
@@ -41,8 +41,8 @@
       Authentication.login(vm.creds)
         .then(function(data) {
 
-          if (data.gamissingkey) {
-            vm.loginState = 'googleauthenticatorcode';
+          if (data.totpmissingkey) {
+            vm.loginState = 'totpcode';
           }
           else {
             vm.loginState = 'logged';

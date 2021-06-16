@@ -228,6 +228,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
                         @"SOGoReminderEnabled", @"ReminderEnabled",
                         @"SOGoReminderTime", @"ReminderTime",
                         @"SOGoRemindWithASound", @"RemindWithASound",
+                        @"SOGoTOTPEnabled", @"SOGoGoogleAuthenticatorEnabled",
                         nil];
       [migratedKeys retain];
     }
@@ -567,14 +568,14 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self stringForKey: @"SOGoAnimationMode"];
 }
 
-- (BOOL) googleAuthenticatorEnabled
+- (BOOL) totpEnabled
 {
-  return [self boolForKey: @"SOGoGoogleAuthenticatorEnabled"];
+  return [self boolForKey: @"SOGoTOTPEnabled"];
 }
 
-- (void) setGoogleAuthenticatorEnabled: (BOOL) newValue
+- (void) setTotpEnabled: (BOOL) newValue
 {
-  [self setBool: newValue  forKey: @"SOGoGoogleAuthenticatorEnabled"];
+  [self setBool: newValue  forKey: @"SOGoTOTPEnabled"];
 }
 
 - (void) setMailComposeWindow: (NSString *) newValue

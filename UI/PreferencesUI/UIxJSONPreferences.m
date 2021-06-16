@@ -172,8 +172,8 @@ static SoProduct *preferencesProduct = nil;
   if (![[defaults source] objectForKey: @"SOGoAnimationMode"])
     [[defaults source] setObject: [defaults animationMode]  forKey: @"SOGoAnimationMode"];
 
-  if (![[defaults source] objectForKey: @"SOGoGoogleAuthenticatorEnabled"])
-    [[defaults source] setObject: [NSNumber numberWithBool: NO]  forKey: @"SOGoGoogleAuthenticatorEnabled"];
+  if (![[defaults source] objectForKey: @"SOGoTOTPEnabled"])
+    [[defaults source] setObject: [NSNumber numberWithBool: NO]  forKey: @"SOGoTOTPEnabled"];
 
   //
   // Default Calendar preferences

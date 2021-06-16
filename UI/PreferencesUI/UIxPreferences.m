@@ -1002,7 +1002,7 @@ static NSArray *reminderValues = nil;
   return [NSString stringWithString: SOGoVersion];
 }
 
-- (BOOL) isGoogleAuthenticatorEnabled
+- (BOOL) isTotpEnabled
 {
 #if defined(MFA_CONFIG)
   return YES;
@@ -1011,9 +1011,9 @@ static NSArray *reminderValues = nil;
 #endif
 }
 
-- (NSString *) googleAuthenticatorKey
+- (NSString *) totpKey
 {
-  return [[context activeUser] googleAuthenticatorKey];
+  return [[context activeUser] totpKey];
 }
 
 //

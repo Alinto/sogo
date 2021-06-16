@@ -127,14 +127,14 @@
             </div>
 
             <!-- TOTP Code -->
-            <var:if condition="isGoogleAuthenticatorEnabled">
+            <var:if condition="isTotpEnabled">
             <div layout="row" layout-align="center center" layout-fill="layout-fill"
-                 ng-switch-when="googleauthenticatorcode">
+                 ng-switch-when="totpcode">
               <div flex="80" flex-sm="50" flex-gt-sm="40">
                 <md-input-container class="md-block">
                   <label><var:string label:value="Verification Code"/></label>
                   <md-icon>lock</md-icon>
-                  <input type="text" ng-pattern="app.verificationCodePattern" ng-model="app.creds.verificationCode" ng-required="app.loginState == 'googleauthenticatorcode'"/>
+                  <input type="text" ng-pattern="app.verificationCodePattern" ng-model="app.creds.verificationCode" ng-required="app.loginState == 'totpcode'"/>
                   <div class="sg-hint"><var:string label:value="Enter the 6-digit verification code from your TOTP application."/></div>
                 </md-input-container>
                 <div layout="row" layout-align="space-between center">
@@ -146,7 +146,7 @@
                   </md-button>
                   <md-button class="md-fab md-accent md-hue-2" type="submit"
                              label:aria-label="Connect"
-                             ng-if="app.loginState == 'googleauthenticatorcode'"
+                             ng-if="app.loginState == 'totpcode'"
                              ng-disabled="loginForm.$invalid"
                              ng-click="app.login()">
                     <md-icon>arrow_forward</md-icon>

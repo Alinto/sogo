@@ -1,6 +1,6 @@
 /*
 
-  Copyright (C) 2006-2015 Inverse inc.
+  Copyright (C) 2006-2021 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -33,6 +33,7 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSObject+Values.h>
 
 #import <Appointments/SOGoAppointmentFolders.h>
 
@@ -185,7 +186,7 @@
   SOGoUserDefaults *ud;
   SOGoUser *loggedInUser;
   NSDictionary *params;
-  NSString *username, *password, *language, *domain, *remoteHost, *verificationCode;
+  NSString *username, *password, *language, *domain, *remoteHost;
   NSArray *supportedLanguages, *creds;
 
   SOGoPasswordPolicyError err;
@@ -201,7 +202,6 @@
 
   username = [params objectForKey: @"userName"];
   password = [params objectForKey: @"password"];
-  verificationCode = [params objectForKey: @"verificationCode"];
   language = [params objectForKey: @"language"];
   rememberLogin = [[params objectForKey: @"rememberLogin"] boolValue];
   domain = [params objectForKey: @"domain"];
@@ -232,8 +232,11 @@
       loggedInUser = [SOGoUser userWithLogin: username];
 
 #if defined(MFA_CONFIG)
-      if ([[loggedInUser userDefaults] googleAuthenticatorEnabled])
+      if ([[loggedInUser userDefaults] totpEnabled])
         {
+          NSString *verificationCode;
+
+          verificationCode = [params objectForKey: @"verificationCode"];
           if ([verificationCode length] == 6 && [verificationCode unsignedIntValue] > 0)
             {
               unsigned int code;
@@ -245,7 +248,7 @@
               const auto time_step = OATH_TOTP_DEFAULT_TIME_STEP_SIZE;
               const auto digits = 6;
 
-              real_secret = [[loggedInUser googleAuthenticatorKey] UTF8String];
+              real_secret = [[loggedInUser totpKey] UTF8String];
 
               auto result = oath_init();
               auto t = time(NULL);
@@ -275,7 +278,7 @@
                 {
                   [self logWithFormat: @"Invalid TOTP key for '%@'", username];
                   json = [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: 1]
-                                                 forKey: @"GoogleAuthenticatorInvalidKey"];
+                                                 forKey: @"totpInvalidKey"];
                   return [self responseWithStatus: 403
                         andJSONRepresentation: json];
                 }
@@ -284,7 +287,7 @@
             {
               [self logWithFormat: @"Missing TOTP key for '%@', asking it..", username];
               json = [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: 1]
-                                                 forKey: @"GoogleAuthenticatorMissingKey"];
+                                                 forKey: @"totpMissingKey"];
               return [self responseWithStatus: 202
                         andJSONRepresentation: json];
             }
@@ -736,7 +739,7 @@
   return response;
 }
 
-- (BOOL) isGoogleAuthenticatorEnabled
+- (BOOL) isTotpEnabled
 {
 #if defined(MFA_CONFIG)
   return YES;

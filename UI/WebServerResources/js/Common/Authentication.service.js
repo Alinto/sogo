@@ -94,8 +94,8 @@
             }
             else {
               // Check for TOTP
-              if (typeof data.GoogleAuthenticatorMissingKey != 'undefined' && response.status == 202) {
-                d.resolve({gamissingkey: 1});
+              if (typeof data.totpMissingKey != 'undefined' && response.status == 202) {
+                d.resolve({totpmissingkey: 1});
               }
               // Check password policy
               else if (typeof data.expire != 'undefined' && typeof data.grace != 'undefined') {
@@ -125,7 +125,7 @@
             }
           }, function(error) {
             var response, perr, data = error.data;
-            if (data && data.GoogleAuthenticatorInvalidKey) {
+            if (data && data.totpInvalidKey) {
               response = {error: l('You provided an invalid TOTP key.')};
             }
             else if (data && angular.isDefined(data.LDAPPasswordPolicyError)) {
