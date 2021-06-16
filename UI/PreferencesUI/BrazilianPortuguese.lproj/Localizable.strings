@@ -459,8 +459,8 @@
 "animation_NONE" = "Nenhum";
 
 /* 2FA */
-"Enable two-factor authentication using Google Authenticator" = "Ative a autenticação de dois fatores usando o Google Authenticator";
-"You must enter this key into your Google Authenticator application." = "Ative a autenticação de dois fatores usando o Google Authenticator";
+"Enable two-factor authentication using a TOTP application" = "Ative a autenticação de dois fatores usando o Google Authenticator";
+"You must enter this key into your TOTP application." = "Ative a autenticação de dois fatores usando o Google Authenticator";
 "If you do not and you log out you will not be able to login again." = "Se você não fizer isso e fizer logout, não será possível fazer o login novamente.";
 
 /* External Sieve scripts */

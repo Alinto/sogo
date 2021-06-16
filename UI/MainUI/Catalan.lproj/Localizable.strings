@@ -24,8 +24,8 @@
 
 /* 2FA */
 "Verification Code" = "Codi de verificació";
-"Enter the 6-digit verification code from your Google Authenticator application." = "Introdueix el codi de verificació de 6 dígits de l'aplicació Google Authenticator.";
-"You provided an invalid Google Authenticator key." = "Has proporcionat una clau de Google Authenticator invàlida.";
+"Enter the 6-digit verification code from your TOTP application." = "Introdueix el codi de verificació de 6 dígits de l'aplicació Google Authenticator.";
+"You provided an invalid TOTP key." = "Has proporcionat una clau de Google Authenticator invàlida.";
 
 "Download" = "Descàrrega";
 "Language" = "Llengua";

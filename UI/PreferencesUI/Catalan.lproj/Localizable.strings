@@ -455,8 +455,8 @@
 "animation_NONE" = "Cap";
 
 /* 2FA */
-"Enable two-factor authentication using Google Authenticator" = "Activa l'autenticació en dos passos mitjançant Google Authenticator";
-"You must enter this key into your Google Authenticator application." = "Has d'introduir aquesta clau a l'aplicació Google Authenticator.";
+"Enable two-factor authentication using a TOTP application" = "Activa l'autenticació en dos passos mitjançant Google Authenticator";
+"You must enter this key into your TOTP application." = "Has d'introduir aquesta clau a l'aplicació Google Authenticator.";
 "If you do not and you log out you will not be able to login again." = "Si no ho fas i surts, no podràs tornar a iniciar la sessió.";
 
 /* External Sieve scripts */

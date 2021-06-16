@@ -24,8 +24,8 @@
 
 /* 2FA */
 "Verification Code" = "Sicherheitscode";
-"Enter the 6-digit verification code from your Google Authenticator application." = "Geben Sie den 6-stelligen Sicherheitscode aus Ihrer Google Authenticator App ein.";
-"You provided an invalid Google Authenticator key." = "Sie haben einen ungültigen Google Authenticator Schlüssel eingegeben.";
+"Enter the 6-digit verification code from your TOTP application." = "Geben Sie den 6-stelligen Sicherheitscode aus Ihrer Google Authenticator App ein.";
+"You provided an invalid TOTP key." = "Sie haben einen ungültigen Google Authenticator Schlüssel eingegeben.";
 
 "Download" = "Herunterladen";
 "Language" = "Sprache";

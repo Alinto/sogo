@@ -273,7 +273,7 @@
 
               if (code != [verificationCode unsignedIntValue])
                 {
-                  [self logWithFormat: @"Invalid Google Authenticator key for '%@'", username];
+                  [self logWithFormat: @"Invalid TOTP key for '%@'", username];
                   json = [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: 1]
                                                  forKey: @"GoogleAuthenticatorInvalidKey"];
                   return [self responseWithStatus: 403
@@ -282,7 +282,7 @@
             } //  if ([verificationCode length] == 6 && [verificationCode unsignedIntValue] > 0)
           else
             {
-              [self logWithFormat: @"Missing Google Authenticator key for '%@', asking it..", username];
+              [self logWithFormat: @"Missing TOTP key for '%@', asking it..", username];
               json = [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: 1]
                                                  forKey: @"GoogleAuthenticatorMissingKey"];
               return [self responseWithStatus: 202

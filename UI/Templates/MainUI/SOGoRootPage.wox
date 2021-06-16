@@ -126,7 +126,7 @@
               </div>
             </div>
 
-            <!-- Google Authenticator Code -->
+            <!-- TOTP Code -->
             <var:if condition="isGoogleAuthenticatorEnabled">
             <div layout="row" layout-align="center center" layout-fill="layout-fill"
                  ng-switch-when="googleauthenticatorcode">
@@ -135,7 +135,7 @@
                   <label><var:string label:value="Verification Code"/></label>
                   <md-icon>lock</md-icon>
                   <input type="text" ng-pattern="app.verificationCodePattern" ng-model="app.creds.verificationCode" ng-required="app.loginState == 'googleauthenticatorcode'"/>
-                  <div class="sg-hint"><var:string label:value="Enter the 6-digit verification code from your Google Authenticator application."/></div>
+                  <div class="sg-hint"><var:string label:value="Enter the 6-digit verification code from your TOTP application."/></div>
                 </md-input-container>
                 <div layout="row" layout-align="space-between center">
                   <md-button class="md-icon-button"

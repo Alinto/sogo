@@ -93,7 +93,7 @@
               d.reject({error: l('cookiesNotEnabled')});
             }
             else {
-              // Check for Google Authenticator 2FA
+              // Check for TOTP
               if (typeof data.GoogleAuthenticatorMissingKey != 'undefined' && response.status == 202) {
                 d.resolve({gamissingkey: 1});
               }
@@ -126,7 +126,7 @@
           }, function(error) {
             var response, perr, data = error.data;
             if (data && data.GoogleAuthenticatorInvalidKey) {
-              response = {error: l('You provided an invalid Google Authenticator key.')};
+              response = {error: l('You provided an invalid TOTP key.')};
             }
             else if (data && angular.isDefined(data.LDAPPasswordPolicyError)) {
               perr = data.LDAPPasswordPolicyError;
