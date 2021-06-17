@@ -1,16 +1,13 @@
 Microsoft Outlook CalDAVSynchronizer Configuration Guide
 ========================================================
-:toc: left
-:icons: font
-
 ////
 
     This file is part of the SOGo project.
 
-    See docinfo.xml for authors, copyright and license information.
+    See includes/global-attributes.asciidoc
+    for authors, copyright and license information.
 
 ////
-
 include::includes/global-attributes.asciidoc[]
 
 About this Guide

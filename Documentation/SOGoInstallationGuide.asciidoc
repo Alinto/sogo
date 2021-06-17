@@ -1,16 +1,13 @@
 Installation and Configuration Guide
 ====================================
-:toc: left
-:icons: font
-
 ////
 
     This file is part of the SOGo project.
 
-    See docinfo.xml for authors, copyright and license information.
+    See includes/global-attributes.asciidoc
+    for authors, copyright and license information.
 
 ////
-
 include::includes/global-attributes.asciidoc[]
 
 About this Guide
@@ -334,7 +331,7 @@ by the user and stored in SOGo's database.
 To identify the level in which each parameter can be defined, we use the
 following abbreviations in the tables of this document:
 
-[cols="^3,97"]
+[cols="^5,95"]
 |====================================================================
 |S |Parameter exclusive to the system and not configurable per domain
 |D |Parameter exclusive to a domain and not configurable per user
@@ -349,7 +346,7 @@ General Preferences
 
 The following table describes the general parameters that can be set:
 
-[cols="^3,47,50a"]
+[cols="^4,46,50a"]
 |=======================================================================
 |S |WOWorkersCount
 |The amount of instances of SOGo that will be spawned
@@ -776,9 +773,14 @@ any requests being made. Default value is 0, or disabled
 |Number of seconds, defaults to 300 (or 5 minutes). Note that _SOGoCacheCleanupInterval_
 must be set to a value equal or higher than _SOGoRequestBlockInterval_.
 
-|D |SOGoXSRFValidationEnabled
+|S |SOGoXSRFValidationEnabled
 |Parameter used to enable or not XSRF (also known as CSRF) protection in SOGo.
 Default value is `YES`, or enabled.
+
+|D |SOGoUserSources
+|Parameter used to set the LDAP and/or SQL sources used for
+authentication and global address books. Multiple sources can be
+specified as an array of dictionaries.
 
 |=======================================================================
 
@@ -918,16 +920,10 @@ would be:
 ----
 
 The following table describes the possible parameters related to a LDAP
-source:
+source defined as a dictionary entry of the _SOGoUserSources_ parameter:
 
-[cols="3,47a,50"]
+[cols="1,2a"]
 |=======================================================================
-.36+^|D |SOGoUserSources
-|Parameter used to set the LDAP and/or SQL sources used for
-authentication and global address books. Multiple sources can be
-specified as an array of dictionaries. A dictionary that defines an LDAP
-source can contain the following values:
-
 |type
 |The type of this user source, set to ldap` for an LDAP source.
 
@@ -1112,8 +1108,8 @@ Defaults to `NO` when unset.
 (with read-only access). Note that if set to `NO`, autocompletion will
 not work for entries in this source and thus, freebusy lookups.
 
-|displayName (optional)
-|If set as an address book, the human identification name of the LDAP
+!displayName (optional)
+!If set as an address book, the human identification name of the LDAP
 repository
 
 |listRequiresDot (optional)
@@ -1167,7 +1163,7 @@ The following parameters can be defined along the other keys of each
 entry of the SOGoUserSources, but can also defined at the domain and/or
 system levels:
 
-[cols="3,47,50a"]
+[cols="^4,46,50a"]
 |=======================================================================
 |D |SOGoLDAPContactInfoAttribute
 |Parameter used to specify an attribute that should appear in
@@ -1474,7 +1470,7 @@ OCSSessionsFolderURL =
 
 The following table describes the parameters that were set:
 
-[cols="3,47,50a"]
+[cols="^4,46,50a"]
 |=======================================================================
 |S |SOGoProfileURL
 |Parameter used to set the database URL so that SOGo can retrieve user
@@ -1632,17 +1628,11 @@ Authentication using SQL
 SOGo can use a SQL-based database server for authentication. The
 configuration is very similar to LDAP-based authentication.
 
-The following table describes all the possible parameters related to a
-SQL source:
+The following table describes the possible parameters related to a SQL
+source defined as a dictionary entry of the _SOGoUserSources_ parameter:
 
-[cols="3,47a,50"]
+[cols="1,2a"]
 |=======================================================================
-.21+^|D |SOGoUserSources
-|Parameter used to set the SQL and/or LDAP sources used for
-authentication and global address books. Multiple sources can be
-specified as an array of dictionaries. A dictionary that defines a SQL
-source can contain the following values:
-
 |type
 |The type of this user source, set to `sql` for a SQL source.
 
@@ -1816,7 +1806,7 @@ iMIP/iTIP messages and various notifications.
 
 The following table describes the related parameters.
 
-[cols="3,47,50a"]
+[cols="^4,46,50a"]
 |=======================================================================
 |D |SOGoMailingMechanism
 |Parameter used to set how SOGo sends mail messages. Possible values
@@ -1868,7 +1858,7 @@ messages, manage their folders and more.
 
 The following table describes the related parameters.
 
-[cols="3,47,50a"]
+[cols="^4,46,50a"]
 |=======================================================================
 |U |SOGoDraftsFolderName
 |Parameter used to set the IMAP folder name used to store drafts
@@ -2031,7 +2021,7 @@ Web Interface Configuration
 The following additional parameters only affect the Web interface
 behaviour of SOGo.
 
-[cols="3,47,50a"]
+[cols="^4,46,50a"]
 |=======================================================================
 |S |SOGoPageTitle
 |Parameter used to define the Web page title.
@@ -2591,7 +2581,7 @@ coyote.com):
 The following additional parameters only affect SOGo when using multiple
 domains.
 
-[cols="3,47,50a"]
+[cols="^4,46,50a"]
 |=======================================================================
 |S |SOGoEnableDomainBasedUID
 |Parameter used to enable user identification by domain. Users will be
@@ -2812,7 +2802,7 @@ Restart Apache afterwards.
 The following additional parameters only affect SOGo when using
 ActiveSync:
 
-[cols="3,47,50a"]
+[cols="^4,46,50a"]
 |=======================================================================
 |S |SOGoMaximumPingInterval
 |Parameter used to set the maximum amount of time, in seconds, SOGo will

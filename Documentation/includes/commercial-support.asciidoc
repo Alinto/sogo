@@ -6,7 +6,7 @@
     Authors:
       - Inverse inc. <info@inverse.ca>
 
-    Copyright (C) 2008-2014 Inverse inc.
+    Copyright (C) 2008-2021 Inverse inc.
     License: GFDL 1.2 or later. http://www.gnu.org/licenses/fdl.html
 
 ////
@@ -15,12 +15,14 @@ Commercial Support and Contact Information
 ------------------------------------------
 
 For any questions or comments, do not hesitate to contact us by writing
-an email to :
+an email to support@inverse.ca.
 
-mailto:support@inverse.ca[support@inverse.ca]
+Inverse (https://inverse.ca/) offers professional services around SOGo
+to help organizations deploy the solution, customize, migrate versions or
+from another system, performance tuning or aligning with best practices.
 
-Inverse (http://inverse.ca/[http://inverse.ca]) offers professional
-services around SOGo to help organizations deploy the solution and
-migrate from their legacy systems.
+Hourly rates or support packages are offered to best suit your needs.
+
+Please visit https://inverse.ca/ for details.
 
 // vim: set syntax=asciidoc tabstop=2 shiftwidth=2 expandtab:

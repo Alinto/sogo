@@ -6,13 +6,25 @@
     Authors:
       - Inverse inc. <info@inverse.ca>
 
-    Copyright (C) 2008-2020 Inverse inc.
+    Copyright (C) 2008-2021 Inverse inc.
     License: GFDL 1.2 or later. http://www.gnu.org/licenses/fdl.html
 
 ////
+:encoding: UTF-8
+:lang: en
+:doctype: book
+SOGo v{release_version}
+:toc: left
+:sectanchors:
+:sectlinks:
+// Add numbers to each section
+:sectnums:
+// Remove chapter prefix
+:chapter-signifier:
+:front-cover-image: image:images/sogo-logo.png[fit=none,pdfwidth=50%,position=center]
+:source-highlighter: rouge
+:rouge-style: github
 
-// TODO have the build system take care of this
-
-:release_version: 5.1.1
-
+// Above empty line will insert page brake
+include::docinfo.asciidoc[]
 // vim: set syntax=asciidoc tabstop=2 shiftwidth=2 expandtab:
