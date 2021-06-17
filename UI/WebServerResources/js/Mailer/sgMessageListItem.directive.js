@@ -28,7 +28,7 @@
 
 
     this.$onInit = function () {
-      var watchedAttrs = ['uid', 'isread', 'isflagged', 'flags', 'subject', 'loading'];
+      var watchedAttrs = ['uid', 'isread', 'isflagged', 'flags', 'loading'];
 
       // this.service = Message;
       this.MailboxService = Mailbox;

@@ -166,6 +166,7 @@
       this.$isLoading = true;
       this.$messages = [];
       this.uidsMap = {};
+      this.$visibleMessages = this.$messages;
     }
     angular.extend(this, data);
     if (this.path) {
@@ -234,16 +235,7 @@
    * @returns the number of messages in the mailbox
    */
   Mailbox.prototype.getLength = function() {
-    var _this = this, collapsedThread = false;
-    var visibleMessages = _.filter(this.$messages, function(msg, i) {
-      if (msg.first) {
-        collapsedThread = msg.collapsed;
-      } else if (msg.level < 0) {
-        collapsedThread = false;
-      }
-      return msg.first || collapsedThread === false;
-    });
-    return visibleMessages.length;
+    return this.$visibleMessages.length;
   };
 
   /**
@@ -253,18 +245,10 @@
    * @returns the message at the specified index
    */
   Mailbox.prototype.getItemAtIndex = function(index) {
-    var _this = this, collapsedThread = false, message;
-    var visibleMessages = _.filter(this.$messages, function(msg, i) {
-      if (msg.first) {
-        collapsedThread = msg.collapsed;
-      } else if (msg.level < 0) {
-        collapsedThread = false; // leaving the thread
-      }
-      return msg.first || collapsedThread === false;
-    });
+    var message;
 
-    if (index >= 0 && index < visibleMessages.length) {
-      message = visibleMessages[index];
+    if (index >= 0 && index < this.$visibleMessages.length) {
+      message = this.$visibleMessages[index];
       this.$lastVisibleIndex = Math.max(0, index - 3); // Magic number is NUM_EXTRA from virtual-repeater.js
       this.$loadMessage(message.uid);
       return message; // skeleton is displayed while headers are being fetched
@@ -473,6 +457,7 @@
           else {
             // Message at this index will be loaded
             uids.push(this.$messages[startIndex].uid);
+            //console.debug('loading ' + this.$messages[startIndex].uid);
             this.$messages[startIndex].loading = true;
           }
         }
@@ -957,6 +942,26 @@
   };
 
   /**
+   * @function updateVisibleMessages
+   * @memberof Mailbox.prototype
+   * @desc Update list of visible messages when in threaded mode.
+   */
+  Mailbox.prototype.updateVisibleMessages = function() {
+    var collapsedThread = false;
+
+    if (this.threaded) {
+      this.$visibleMessages = _.filter(this.$messages, function(msg, i) {
+        if (msg.first) {
+          collapsedThread = msg.collapsed;
+        } else if (msg.level < 0) {
+          collapsedThread = false; // leaving the thread
+        }
+        return msg.first || collapsedThread === false;
+      });
+    }
+  };
+
+  /**
    * @function $unwrap
    * @memberof Mailbox.prototype
    * @desc Unwrap a promise and instanciate new Message objects using received data.
@@ -997,14 +1002,13 @@
             if (angular.isUndefined(_this.uidsMap[uid.toString()])) {
               // New messsage; update map of UID <=> index
               _this.uidsMap[uid] = i;
-              msgObject = new Mailbox.$Message(_this.$account.id, _this, {uid: uid}, true);
-              _this.$messages.splice(i, 0, msgObject);
+              _this.$messages.splice(i, 0, {uid: uid});
               i++;
             }
           });
 
           if (i > 0) {
-            // New messages received, update uidsMap
+            // New messages received, update uidsMap for existing messages
             for (j = i; j < _this.$messages.length; j++) {
               msgObject = _this.$messages[j];
               _this.uidsMap[msgObject.uid] += i;
@@ -1043,7 +1047,7 @@
                 }
               }
             } else {
-              data = {uid: msg.toString()};
+              data = {uid: msg};
             }
 
             // Build map of UID <=> index
@@ -1073,6 +1077,10 @@
             }
             _this.$messages[i].init(msg);
           });
+        }
+
+        if (_this.threaded) {
+          _this.updateVisibleMessages();
         }
 
         Mailbox.$log.debug('mailbox ' + _this.id + ' ready');
@@ -1116,6 +1124,9 @@
               _this.$messages[j].init(messageHeaders);
             }
           });
+          if (_this.threaded) {
+            _this.updateVisibleMessages();
+          }
         }
       });
     });

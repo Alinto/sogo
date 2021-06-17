@@ -594,8 +594,12 @@
       action = 'markMessageUncollapse';
 
     this.collapsed = !this.collapsed;
+    _this.$mailbox.updateVisibleMessages();
 
-    return Message.$$resource.post(this.$absolutePath(), action);
+    return Message.$$resource.post(this.$absolutePath(), action).catch(function() {
+      this.collapsed = !this.collapsed;
+      _this.$mailbox.updateVisibleMessages();
+    });
   };
 
   /**
