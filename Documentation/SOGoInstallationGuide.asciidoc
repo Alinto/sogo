@@ -1571,7 +1571,7 @@ Requirements:
 * SOGo >= 3.1.0
 
 Strongly suggested MySQL configuration settings (innodb* parameters are
-mandatory):
+mandatory *only* for versions lower than 8.0):
 
 ----
 [client]
@@ -1584,9 +1584,9 @@ default-character-set          = utf8mb4
 character-set-client-handshake = FALSE
 character-set-server           = utf8mb4
 collation-server               = utf8mb4_unicode_ci
-innodb_file_per_table          = TRUE
-innodb_file_format             = barracuda
-innodb_large_prefix            = TRUE
+innodb_file_per_table          = TRUE       # MySQL < 8.0 only
+innodb_file_format             = barracuda  # MySQL < 8.0 only
+innodb_large_prefix            = TRUE       # MySQL < 8.0 only
 ----
 
 CAUTION: Changing InnoDB parameters on an already deployed database server can
