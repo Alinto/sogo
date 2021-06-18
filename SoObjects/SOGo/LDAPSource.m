@@ -601,7 +601,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
                                      _IDField, [_login escapedForLDAPDN], _baseDN];
               }
 
-            if (userDN && [[userDN lowercaseString] hasSuffix: [_baseDN lowercaseString]])
+            if (userDN)
               {
                 if (!_passwordPolicy)
                   didBind = [bindConnection bindWithMethod: @"simple"
