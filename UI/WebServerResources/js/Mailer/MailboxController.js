@@ -165,7 +165,7 @@
 
     this.cancelSearch = function() {
       vm.mode.search = false;
-      vm.selectedFolder.$filter().then(function() {
+      vm.selectedFolder.$filter(vm.service.$query).then(function() {
         if (vm.selectedFolder.$selectedMessage) {
           $timeout(function() {
             vm.selectedFolder.$topIndex = vm.selectedFolder.uidsMap[vm.selectedFolder.$selectedMessage];
