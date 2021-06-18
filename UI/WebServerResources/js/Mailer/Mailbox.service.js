@@ -1046,6 +1046,10 @@
                   data.collapsed = true;
                 }
               }
+              else if (!isNaN(data.level) && data.level >= 0) {
+                data.threadMember = true;
+              }
+
             } else {
               data = {uid: msg};
             }
