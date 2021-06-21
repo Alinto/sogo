@@ -1270,9 +1270,10 @@ Authenticating using C.A.S.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 SOGo natively supports C.A.S. authentication. For activating C.A.S.
-authentication you need first to make sure that
-the _SOGoAuthenticationType_ setting is set to `cas` and that
-the _SOGoCASServiceURL_ setting is configured appropriately.
+authentication you need first to make sure that the
+_SOGoAuthenticationType_ setting is set to `cas`,
+_SOGoXSRFValidationEnabled_ is set to `NO` and that the
+_SOGoCASServiceURL_ setting is configured appropriately.
 
 The tricky part shows up when using SOGo as a frontend interface to an
 IMAP server as this imposes constraints needed by the C.A.S. protocol to
@@ -1373,7 +1374,8 @@ Authenticating using SAML2
 
 SOGo natively supports SAML2 authentication. Please refer to the
 documentation of your identity provider and the SAML2 configuration keys
-that are listed above for proper setup. Once a SOGo instance is
+that are listed above for proper setup. Make sure
+_SOGoXSRFValidationEnabled_ is set to `NO`. Once a SOGo instance is
 configured properly, the metadata for that instance can be retrieved
 from `http://<hostname>/SOGo/saml2-metadata` for registration with the
 identity provider. SOGo will dynamically generate the metadata based on
