@@ -276,7 +276,7 @@
             </label>
             <div>
               <md-content>
-                <var:string value="authorativeEvent.comment" const:insertBR="1" />
+                <var:string value="authorativeEvent.comment.stringByDetectingURLs" const:insertBR="1" const:escapeHTML="NO"/>
               </md-content>
             </div>
           </div>

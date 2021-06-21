@@ -273,6 +273,9 @@ md-sidenav {
   flex: 0 0 100%;
   max-width: 100%;
   word-break: break-word;
+  md-card-content md-content {
+    background-color: inherit;
+  }
 }
 
 .sg-attachment-name {
