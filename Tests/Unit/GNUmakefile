@@ -34,6 +34,8 @@ $(TEST_TOOL)_OBJC_FILES += \
 	TestNGMailAddressParser.m \
 	TestNGInternetSocketAddress.m \
 	\
+	TestRTFHandler.m \
+	\
     # I don't know how to link against -l:SOGoBackend \
 	     undefined reference to `__objc_class_name_SOGoMailFolder'
 
