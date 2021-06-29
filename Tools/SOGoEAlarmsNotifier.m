@@ -282,7 +282,7 @@
        andContainerPath: [[[metadata objectAtIndex: count] objectForKey: @"record"] objectForKey: @"c_path"]];
 
   // We now update the next alarm date (if any, for recurring
-  // events or tasks for example). This will also delete any emai
+  // events or tasks for example). This will also delete any email
   // alarms that are no longer relevant
   max = [metadata count];
 

@@ -60,7 +60,7 @@
 
 + (NSString *) description
 {
-  return @"checkup integrity of user(s) data)";
+  return @"checkup integrity of user(s) data";
 }
 
 - (id) init
