@@ -54,6 +54,7 @@ html * {
 }
 .sg-category-dot-container {
   display: inline-block;
+  overflow: inherit !important;
 }
 
 // Group fields of a form
