@@ -397,12 +397,6 @@
           $state.go('mail.account.mailbox');
         }
       }
-      else {
-        $timeout(function() {
-          console.warn('go to mailbox');
-          $state.go('mail.account.mailbox');
-        });
-      }
     }
 
     this.confirmDeleteSelectedMessages = function($event) {

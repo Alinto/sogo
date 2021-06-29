@@ -229,7 +229,6 @@
   if (![subject length])
     subject = @"";
 
-  // NSLog(@"*** subject = |%@|", subject);
   return subject;
 }
 
@@ -848,6 +847,7 @@
                                deletedUids, @"deleted",
                                headers, @"headers",
                                newSyncToken, @"syncToken",
+                               [NSNumber numberWithUnsignedInt: [folder unseenCount]], @"unseenCount",
                                nil];
           response = [self responseWithStatus: 200 andJSONRepresentation: data];
         }

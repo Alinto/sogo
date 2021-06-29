@@ -34,7 +34,7 @@
 
       this.showSubscribedOnly = Preferences.defaults.SOGoMailShowSubscribedFoldersOnly;
 
-      this.refreshUnseenCount();
+      Account.refreshUnseenCount($window.unseenCountFolders);
 
       _registerHotkeys(hotkeys);
 
@@ -269,49 +269,6 @@
         }
       }
     }; // delegate
-
-    this.refreshUnseenCount = function() {
-      var unseenCountFolders, refreshViewCheck;
-
-      if (Preferences.defaults.SOGoMailFetchAllUnseenCountFolders === 1)
-        unseenCountFolders = [];
-      else
-        unseenCountFolders = $window.unseenCountFolders;
-
-      _.forEach(vm.accounts, function(account) {
-        if (Preferences.defaults.SOGoMailFetchAllUnseenCountFolders === 1) {
-          // Include all mailboxes
-          _.forEach(account.$$flattenMailboxes, function(mailbox) {
-            unseenCountFolders.push(mailbox.id);
-          });
-        }
-        else {
-          // Always include the INBOX
-          if (!_.includes(unseenCountFolders, account.id + '/folderINBOX'))
-            unseenCountFolders.push(account.id + '/folderINBOX');
-
-          _.forEach(account.$$flattenMailboxes, function(mailbox) {
-            if (angular.isDefined(mailbox.unseenCount) &&
-                !_.includes(unseenCountFolders, mailbox.id))
-              unseenCountFolders.push(mailbox.id);
-          });
-        }
-      });
-
-      Account.$$resource.post('', 'unseenCount', {mailboxes: unseenCountFolders}).then(function(data) {
-        _.forEach(vm.accounts, function(account) {
-          _.forEach(account.$$flattenMailboxes, function(mailbox) {
-            if (data[mailbox.id]) {
-              mailbox.unseenCount = data[mailbox.id];
-            }
-          });
-        });
-      });
-
-      refreshViewCheck = Preferences.defaults.SOGoRefreshViewCheck;
-      if (refreshViewCheck && refreshViewCheck != 'manually')
-        $timeout(vm.refreshUnseenCount, refreshViewCheck.timeInterval()*1000);
-    };
 
     this.isDroppableFolder = function(srcFolder, dstFolder) {
       return (dstFolder.id != srcFolder.id) && !dstFolder.isNoSelect();

@@ -103,6 +103,61 @@
   };
 
   /**
+   * @memberof Account
+   * @desc Refresh the unseen count for all required mailboxes.
+   *       Starts a timer if user choose to automatically refresh folders.
+   * @param {array} [string] - the paths of the folders
+   */
+  Account.refreshUnseenCount = function(folders) {
+    var unseenCountFolders,
+        fetchAllUnseenCountFolders = (Account.$Preferences.defaults.SOGoMailFetchAllUnseenCountFolders === 1),
+        refreshViewCheck = Account.$Preferences.defaults.SOGoRefreshViewCheck;
+
+    if (fetchAllUnseenCountFolders)
+      unseenCountFolders = [];
+    else if (folders)
+      unseenCountFolders = folders;
+    else
+      throw Error('SOGoMailFetchAllUnseenCountFolders is disabled and no folders list provided');
+
+    _.forEach(Account.$accounts, function(account) {
+      if (fetchAllUnseenCountFolders) {
+        // Include all mailboxes
+        _.forEach(account.$$flattenMailboxes, function(mailbox) {
+          unseenCountFolders.push(mailbox.id);
+        });
+      }
+      else {
+        // Always include the INBOX
+        if (!_.includes(unseenCountFolders, account.id + '/folderINBOX'))
+          unseenCountFolders.push(account.id + '/folderINBOX');
+
+        _.forEach(account.$$flattenMailboxes, function(mailbox) {
+          if (angular.isDefined(mailbox.unseenCount) &&
+              !_.includes(unseenCountFolders, mailbox.id))
+            unseenCountFolders.push(mailbox.id);
+        });
+      }
+    });
+
+    Account.$$resource.post('', 'unseenCount', {mailboxes: unseenCountFolders}).then(function(data) {
+      _.forEach(Account.$accounts, function(account) {
+        _.forEach(account.$$flattenMailboxes, function(mailbox) {
+          if (data[mailbox.id]) {
+            mailbox.unseenCount = data[mailbox.id];
+          }
+        });
+      });
+    });
+
+    if (refreshViewCheck && refreshViewCheck != 'manually') {
+      if (Account.$refreshUnseenCount)
+        Account.$timeout.cancel(Account.$refreshUnseenCount);
+      Account.$refreshUnseenCount = Account.$timeout(angular.bind(this, Account.refreshUnseenCount, folders), refreshViewCheck.timeInterval()*1000);
+    }
+  };
+
+  /**
    * @function getLength
    * @memberof Account.prototype
    * @desc Used by md-virtual-repeat / md-on-demand

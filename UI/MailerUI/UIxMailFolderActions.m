@@ -1,6 +1,6 @@
 /* UIxMailFolderActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2018 Inverse inc.
+ * Copyright (C) 2007-2021 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSURL.h>
+#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
@@ -468,14 +469,13 @@
 
 - (WOResponse *) batchDeleteAction
 {
-  NSMutableDictionary *moduleSettings, *threadsCollapsed;
+  NSMutableDictionary *moduleSettings, *threadsCollapsed, *data;
   NSString *currentMailbox, *currentAccount, *keyForMsgUIDs;
   NSMutableArray *mailboxThreadsCollapsed;
   SOGoMailAccount *account;
   SOGoUserSettings *us;
   WOResponse *response;
   SOGoMailFolder *co;
-  NSDictionary *data;
   WORequest *request;
 
   id uids, quota;
@@ -494,18 +494,16 @@
       response = (WOResponse *) [co deleteUIDs: uids useTrashFolder: &withTrash inContext: context];
       if (!response)
         {
+          data = [NSMutableDictionary dictionary];
           if (!withTrash)
             {
               // When not using a trash folder, return the quota
               account = [co mailAccountFolder];
               if ((quota = [account getInboxQuota]))
                 {
-                  data = [NSDictionary dictionaryWithObjectsAndKeys: quota, @"quotas", nil];
-                  response = [self responseWithStatus: 200
-                                            andString: [data jsonRepresentation]];
+                  [data setObject: quota
+                           forKey: @"quotas"];
                 }
-              else
-                response = [self responseWithStatus: 200];
             }
           else
             {
@@ -519,15 +517,18 @@
 
               if (threadsCollapsed)
                 {
-                  if ((mailboxThreadsCollapsed = [threadsCollapsed objectForKey:keyForMsgUIDs]))
+                  if ((mailboxThreadsCollapsed = [threadsCollapsed objectForKey: keyForMsgUIDs]))
                     {
                       for (i = 0; i < [uids count]; i++)
-                        [mailboxThreadsCollapsed removeObject:[uids objectAtIndex:i]];
+                        [mailboxThreadsCollapsed removeObject: [uids objectAtIndex:i]];
                       [us synchronize];
                     }
                 }
-              response = [self responseWith204];
             }
+          [data setObject: [NSNumber numberWithUnsignedInt: [co unseenCount]]
+                   forKey: @"unseenCount"];
+          response = [self responseWithStatus: 200
+                                    andString: [data jsonRepresentation]];
         }
     }
   else
@@ -681,7 +682,9 @@
                   [us synchronize];
                 }
             }
-          response = [self responseWith204];
+          data = [NSDictionary dictionaryWithObject: [NSNumber numberWithUnsignedInt: [co unseenCount]]
+                                             forKey: @"unseenCount"];
+          response = [self responseWithStatus: 200 andJSONRepresentation: data];
         }
       else
         {

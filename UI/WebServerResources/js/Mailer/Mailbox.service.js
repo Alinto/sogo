@@ -42,7 +42,6 @@
       $Preferences: Preferences,
       $query: { sort: 'arrival', asc: 0 }, // The default sort must match [UIxMailListActions defaultSortKey]
       selectedFolder: null,
-      $selectedMessages: [],
       $refreshTimeout: null,
       $virtualMode: false,
       $virtualPath: false,
@@ -167,6 +166,7 @@
       this.$messages = [];
       this.uidsMap = {};
       this.$visibleMessages = this.$messages;
+      this.$selectedMessages = [];
     }
     angular.extend(this, data);
     if (this.path) {
@@ -738,15 +738,10 @@
    * @memberof Mailbox.prototype
    * @desc Delete multiple messages from Mailbox object.
    * @param {string[]} uids - the messages uids
-   * @param {object[]} messages - the Message instances
    * @return the index of the first deleted message
    */
-  Mailbox.prototype.$_deleteMessages = function(uids, messages) {
-    var _this = this, selectedUIDs, _$messages, unseen, firstIndex = this.$messages.length;
-
-    // Decrement the unseen count
-    unseen = _.filter(messages, function(message, i) { return !message.isread; });
-    this.unseenCount -= unseen.length;
+  Mailbox.prototype.$_deleteMessages = function(uids) {
+    var _this = this, firstIndex = this.$messages.length;
 
     // Remove messages from $messages and uidsMap
     _.forEachRight(this.$messages, function(message, index) {
@@ -766,6 +761,10 @@
         _this.uidsMap[message.uid] -= uids.length;
       }
     });
+
+    if (this.threaded) {
+      this.updateVisibleMessages();
+    }
 
     // Return the index of the first deleted message
     return firstIndex;
@@ -787,19 +786,21 @@
     // Recursive function to synchronously delete batch of messages
     function _deleteMessages(start, end) {
       var currentUids = uids.slice(start, end),
-          currentMessages = messages.slice(start, end),
           data = { uids: currentUids };
       if (options) angular.extend(data, options);
       return Mailbox.$$resource.post(_this.id, 'batchDelete', data).then(function(data) {
+        if (data.unseenCount) {
+          _this.unseenCount = data.unseenCount;
+        }
         if (end < uids.length) {
-          _this.$_deleteMessages(currentUids, currentMessages);
+          _this.$_deleteMessages(currentUids);
           return _deleteMessages(end, Math.min(end + batchSize, uids.length));
         }
         else {
           // Last API call; update inbox quota
           if (data.quotas)
             _this.$account.updateQuota(data.quotas);
-          return _this.$_deleteMessages(currentUids, currentMessages);
+          return _this.$_deleteMessages(currentUids);
         }
       });
     }
@@ -853,9 +854,12 @@
 
     uids = _.map(messages, 'uid');
     return Mailbox.$$resource.post(this.id, 'moveMessages', {uids: uids, folder: folder})
-      .then(function() {
+      .then(function(data) {
+        if (data.unseenCount) {
+          _this.unseenCount = data.unseenCount;
+        }
         _this.$selectedMessages = []; // reset selection
-        return _this.$_deleteMessages(uids, messages);
+        return _this.$_deleteMessages(uids);
       });
   };
 
@@ -984,17 +988,14 @@
           _this.$syncToken = data.syncToken;
 
         if (data.deleted) {
-          var deletedMessages = [];
           _.forEachRight(data.deleted, function(uid, i) {
             var j = _this.uidsMap[uid.toString()];
-            if (j >= 0 && _this.$messages[j])
-              deletedMessages.push(_this.$messages[j]);
-            else
+            if (j < 0 || !_this.$messages[j])
               // Unkown message
               data.deleted.splice(i, 1);
           });
-          if (deletedMessages.length)
-            _this.$_deleteMessages(data.deleted, deletedMessages);
+          if (data.deleted.length)
+            _this.$_deleteMessages(data.deleted);
         }
         if (data.changed) {
           var i = 0, j;
@@ -1013,7 +1014,13 @@
               msgObject = _this.$messages[j];
               _this.uidsMap[msgObject.uid] += i;
             }
+            if (_this.threaded) {
+              _this.updateVisibleMessages();
+            }
           }
+        }
+        if (data.unseenCount) {
+          _this.unseenCount = data.unseenCount;
         }
 
         if (data.uids) {
@@ -1081,10 +1088,6 @@
             }
             _this.$messages[i].init(msg);
           });
-        }
-
-        if (_this.threaded) {
-          _this.updateVisibleMessages();
         }
 
         Mailbox.$log.debug('mailbox ' + _this.id + ' ready');
