@@ -980,7 +980,7 @@
     this.$futureMailboxData.then(function(data) {
       var selectedMessages = _.map(_this.$selectedMessages, 'uid');
       Mailbox.$timeout(function() {
-        var uids, headers, headersFields, msgObject;
+        var uids, headers, headersFields, msgObject, hasNewMessages = false;
 
         if (!data.uids || _this.$topIndex > data.uids.length - 1)
           _this.$topIndex = 0;
@@ -1004,6 +1004,7 @@
               // New messsage; update map of UID <=> index
               _this.uidsMap[uid] = i;
               _this.$messages.splice(i, 0, {uid: uid});
+              hasNewMessages = true;
               i++;
             }
           });
@@ -1013,9 +1014,6 @@
             for (j = i; j < _this.$messages.length; j++) {
               msgObject = _this.$messages[j];
               _this.uidsMap[msgObject.uid] += i;
-            }
-            if (_this.threaded) {
-              _this.updateVisibleMessages();
             }
           }
         }
@@ -1088,6 +1086,10 @@
             }
             _this.$messages[i].init(msg);
           });
+        }
+
+        if (hasNewMessages && _this.threaded) {
+          _this.updateVisibleMessages();
         }
 
         Mailbox.$log.debug('mailbox ' + _this.id + ' ready');
