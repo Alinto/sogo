@@ -774,7 +774,9 @@ any requests being made. Default value is 0, or disabled
 must be set to a value equal or higher than _SOGoRequestBlockInterval_.
 
 |S |SOGoXSRFValidationEnabled
-|Parameter used to enable or not XSRF (also known as CSRF) protection in SOGo.
+|Parameter used to enable or not XSRF (Cross-site request forgery, also known as CSRF) protection in
+ SOGo. Make sure your Web server configuration *doesn't* add the `HttpOnly` flag to the `Set-Cookie`
+ header as the CSRF token cookie is intended to be read by the JavaScript by design.
 Default value is `YES`, or enabled.
 
 |D |SOGoUserSources
@@ -1053,7 +1055,7 @@ URLs examples:
 * `ldaps://127.0.0.1`
 * `ldap://127.0.0.1/????!StartTLS`
 
-|port(deprecated)
+|port (deprecated)
 |Port number of the LDAP server.
 
 A non-default port should be part of the ldap URL in the hostname
