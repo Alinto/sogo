@@ -251,6 +251,12 @@
 /* Number of selected messages in list */
 "selected" = "sélectionné(s)";
 
+/* Date formatting from one time to another time */
+"to_time" = "à";
+
+/* Date formatting from one day to another day */
+"to_date" = "au";
+
 /* Encrypted message notification */
 "This message is encrypted" = "Ce message est crypté";
 

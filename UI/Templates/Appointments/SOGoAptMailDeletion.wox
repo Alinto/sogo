@@ -19,11 +19,21 @@ th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; fon
           padding-bottom: 9px; border-bottom: 1px solid #ccc;" class="ng-hide"><var:string
           value="getSubject" const:escapeHTML="NO"/> <small style="font-size: 12px; color: #999;"><var:string
           value="organizerName" const:escapeHTML="NO"/><var:string value="sentByText" const:escapeHTML="NO"/></small></h1></td>
-        </tr>
-      <tr>
+      </tr>  <var:if condition="location.length"
+      ><tr>
         <th align="right" style="font-weight: bold;"><var:string label:value="location_label" const:escapeHTML="NO"/></th>
         <td><var:string value="location" const:escapeHTML="NO"/></td>
+      </tr></var:if>
+
+      <var:if condition="apt.isAllDay">
+      <tr>
+        <th align="right" style="font-weight: bold;"><var:string label:value="time_label" const:escapeHTML="NO"/></th>
+        <td><var:string value="formattedAptStartDate"
+      const:escapeHTML="NO"/><var:if condition="isEndDateOnSameDay" const:negate="YES"> <var:string label:value="to_label" const:escapeHTML="NO"/> <var:string value="formattedAptEndDate" const:escapeHTML="NO"/>
+           </var:if></td>
       </tr>
+      </var:if>
+      <var:if condition="apt.isAllDay" const:negate="YES">
       <tr>
         <th align="right" style="font-weight: bold;"><var:string label:value="startDate_label" const:escapeHTML="NO"/></th>
         <td><var:string value="formattedAptStartDate" const:escapeHTML="NO"
@@ -34,8 +44,9 @@ th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; fon
         <th align="right" style="font-weight: bold;"><var:string label:value="endDate_label" const:escapeHTML="NO"/></th>
         <td><var:string value="formattedAptEndDate" const:escapeHTML="NO"
            /><var:if condition="formattedAptEndTime.length"> - <var:string value="formattedAptEndTime" const:escapeHTML="NO"/> <var:string value="viewTZ" const:escapeHTML="NO"/>
-           </var:if></td>
+        </var:if></td>
       </tr>
+      </var:if>
       <var:if condition="apt.comment.length"
       ><tr>
         <th align="right" style="font-weight: bold;"><var:string label:value="comment_label" const:escapeHTML="NO"/></th>

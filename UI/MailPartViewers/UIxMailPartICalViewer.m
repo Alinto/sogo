@@ -143,7 +143,8 @@
  
   date = [[self inEvent] startDate];
   ud = [[context activeUser] userDefaults];
-  [date setTimeZone: [ud timeZone]];
+  if (![[self inEvent] isAllDay])
+    [date setTimeZone: [ud timeZone]];
   
   return date;
 }
@@ -186,12 +187,12 @@
   if ([self isEndDateOnSameDay] &&
       ![[self inEvent] isAllDay])
     {
-      [s appendFormat: @" %@", [self labelForKey: @"to"]];
+      [s appendFormat: @" %@", [self labelForKey: @"to_time"]];
       [s appendFormat: @" %@", [self endTime]];
     }
   else if (![self isEndDateOnSameDay])
     {
-      [s appendFormat: @" %@", [self labelForKey: @"to"]];
+      [s appendFormat: @" %@", [self labelForKey: @"to_date"]];
       [s appendFormat: @" %@", [self endDate]];
 
       if (![[self inEvent] isAllDay])
@@ -218,7 +219,8 @@
  
   date = [[self inEvent] endDate];
   ud = [[context activeUser] userDefaults];
-  [date setTimeZone: [ud timeZone]];
+  if (![[self inEvent] isAllDay])
+    [date setTimeZone: [ud timeZone]];
 
   return date;
 }

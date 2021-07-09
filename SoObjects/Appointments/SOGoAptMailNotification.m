@@ -106,7 +106,8 @@
   if (!oldStartDate)
     {
       ASSIGN (oldStartDate, [[self previousApt] startDate]);
-      [oldStartDate setTimeZone: viewTZ];
+      if (![(iCalEvent*)[self previousApt] isAllDay])
+        [oldStartDate setTimeZone: viewTZ];
     }
   return oldStartDate;
 }
@@ -116,33 +117,50 @@
   if (!newStartDate)
     {
       ASSIGN (newStartDate, [[self apt] startDate]);
-      [newStartDate setTimeZone: viewTZ];
+      if (![(iCalEvent*)[self apt] isAllDay])
+        [newStartDate setTimeZone: viewTZ];
     }
   return newStartDate;
 }
 
 - (NSCalendarDate *) oldEndDate
 {
+  NSCalendarDate *endDate;
+
   if (!oldEndDate)
     {
       if ([[self previousApt] isKindOfClass: [iCalEvent class]])
-        ASSIGN (oldEndDate, [(iCalEvent*)[self previousApt] endDate]);
+        {
+          endDate = [(iCalEvent*)[self previousApt] endDate];
+          if ([(iCalEvent*)[self previousApt] isAllDay])
+            endDate = [endDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:-1];
+          ASSIGN (oldEndDate, endDate);
+        }
       else
         ASSIGN (oldEndDate, [(iCalToDo*)[self previousApt] due]);
-      [oldEndDate setTimeZone: viewTZ];
+      if (![(iCalEvent*)[self previousApt] isAllDay])
+        [oldEndDate setTimeZone: viewTZ];
     }
   return oldEndDate;
 }
 
 - (NSCalendarDate *) newEndDate
 {
+  NSCalendarDate *endDate;
+
   if (!newEndDate)
     {
       if ([[self apt] isKindOfClass: [iCalEvent class]])
-        ASSIGN (newEndDate, [(iCalEvent*)[self apt] endDate]);
+        {
+          endDate = [(iCalEvent*)[self apt] endDate];
+          if ([(iCalEvent*)[self apt] isAllDay])
+            endDate = [endDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:-1];
+          ASSIGN (newEndDate, endDate);
+        }
       else
         ASSIGN (newEndDate, [(iCalToDo*)[self apt] due]);
-      [newEndDate setTimeZone: viewTZ];
+      if (![(iCalEvent*)[self apt] isAllDay])
+        [newEndDate setTimeZone: viewTZ];
     }
   return newEndDate;
 }
