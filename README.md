@@ -72,3 +72,9 @@ SOGo and its associated components are available in various languages. The follo
 * [cy] Welsh - Iona Bailey
  
 If you would like to translate the software in an other language, please consult the [FAQ](https://sogo.nu/support/faq/how-to-translate-sogo-in-another-language.html). You can also subscribe to the SOGo i18n mailing list to follow string additions or changes. To subscribe to i18n@sogo.nu, send an email to i18n-request@sogo.nu with SUBSCRIBE i18n as the subject. Archived posts are [available online](https://lists.inverse.ca/sogo/arc/i18n).
+
+## Sponsor
+![Scheduling API](https://user-images.githubusercontent.com/9488406/125080407-0dd25780-e0c5-11eb-9f70-ef958968674a.png)
+
+This repo is sponsored by [**Spurwing**](https://www.spurwing.io/), where their API Makes Adding Scheduling Quick, Reliable and Scalable.
+Use Spurwing to build and integrate Scheduling, Booking & Calendar features in your project. Read more about Spurwing [**Scheduling API on GitHub**](https://github.com/Spurwing/Appointment-Scheduling-API).
