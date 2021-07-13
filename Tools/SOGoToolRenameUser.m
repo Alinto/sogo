@@ -413,6 +413,7 @@
 }
 
 - (void) _updateLocalACLsForPath: (NSString *) path
+                     andFolderID: (NSString *) folderID
                      fromSQLUser: (NSString *) sqlFromUserID
                        toSQLUser: (NSString *) sqlToUserID
 {
@@ -443,8 +444,12 @@
                                 sqlToUserID, rest];
       location = [folder aclLocation];
       ac = [cm acquireOpenChannelForURL: location];
-      sql = [NSString stringWithFormat: @"UPDATE %@ SET c_object = '%@'",
-                      [location gcsTableName], newObjectPath];
+      if ([GCSFolderManager singleStoreMode])
+        sql = [NSString stringWithFormat: @"UPDATE %@ SET c_object = '%@' WHERE c_folder_id = %@",
+                        [location gcsTableName], newObjectPath, folderID];
+      else
+        sql = [NSString stringWithFormat: @"UPDATE %@ SET c_object = '%@'",
+                        [location gcsTableName], newObjectPath];
       [ac evaluateExpressionX: sql];
       [cm releaseChannel: ac  immediately: YES];
     }
@@ -470,37 +475,48 @@
   sqlFromUserID = [fromUserID asSafeSQLString];
   sqlToUserID = [toUserID asSafeSQLString];
 
-  sql = [NSString stringWithFormat: @"SELECT c_path FROM %@"
+  sql = [NSString stringWithFormat: @"SELECT c_path, c_folder_id FROM %@"
                   @" WHERE c_path2 = '%@'",
                   [folderLocation gcsTableName], sqlToUserID];
   [fc evaluateExpressionX: sql];
   attrs = [fc describeResults: NO];
   while ((row = [fc fetchAttributes: attrs withZone: NULL]))
     [self _updateLocalACLsForPath: [row objectForKey: @"c_path"]
+                      andFolderID: [row objectForKey: @"c_folder_id"]
                       fromSQLUser: sqlFromUserID
                         toSQLUser: sqlToUserID];
   [fc cancelFetch];
   [cm releaseChannel: fc  immediately: YES];
 }
 
-- (void) _updateForeignACLsForLocation: (NSString *) locationString
-                           fromSQLUser: (NSString *) sqlFromUserID
-                             toSQLUser: (NSString *) sqlToUserID
+- (void) _updateForeignACLsForPath: (NSString *) path
+                       andFolderID: (NSString *) folderID
+                       fromSQLUser: (NSString *) sqlFromUserID
+                         toSQLUser: (NSString *) sqlToUserID
 {
-  NSAutoreleasePool *pool;
-  NSURL *location;
   GCSChannelManager *cm;
+  GCSFolder *folder;
+  GCSFolderManager *fm;
   EOAdaptorChannel *tc;
+  NSAutoreleasePool *pool;
   NSString *sql;
+  NSURL *location;
 
   pool = [NSAutoreleasePool new];
 
-  cm = [[GCSFolderManager defaultFolderManager] channelManager];
-
-  location = [NSURL URLWithString: locationString];
+  fm = [GCSFolderManager defaultFolderManager];
+  cm = [fm channelManager];
+  folder = [fm folderAtPath: path];
+  location = [folder aclLocation];
 
   tc = [cm acquireOpenChannelForURL: location];
-  sql = [NSString stringWithFormat: @"UPDATE %@ SET c_uid = '%@'"
+  if ([GCSFolderManager singleStoreMode])
+    sql = [NSString stringWithFormat: @"UPDATE %@ SET c_uid = '%@'"
+                     @" WHERE c_uid = '%@'",
+                     [location gcsTableName],
+                     sqlToUserID, sqlFromUserID];
+  else
+    sql = [NSString stringWithFormat: @"UPDATE %@ SET c_uid = '%@'"
                      @" WHERE c_uid = '%@'",
                      [location gcsTableName],
                      sqlToUserID, sqlFromUserID];
@@ -527,15 +543,16 @@
   sqlFromUserID = [fromUserID asSafeSQLString];
   sqlToUserID = [toUserID asSafeSQLString];
 
-  sql = [NSString stringWithFormat: @"SELECT c_acl_location FROM %@"
+  sql = [NSString stringWithFormat: @"SELECT c_path, c_folder_id FROM %@"
                   @" WHERE c_path2 != '%@'",
                   [folderLocation gcsTableName], sqlToUserID];
   [fc evaluateExpressionX: sql];
   attrs = [fc describeResults: NO];
   while ((row = [fc fetchAttributes: attrs withZone: NULL]))
-    [self _updateForeignACLsForLocation: [row objectForKey: @"c_acl_location"]
-                            fromSQLUser: sqlFromUserID
-                              toSQLUser: sqlToUserID];
+    [self _updateForeignACLsForPath: [row objectForKey: @"c_path"]
+                        andFolderID: [row objectForKey: @"c_folder_id"]
+                        fromSQLUser: sqlFromUserID
+                          toSQLUser: sqlToUserID];
   [fc cancelFetch];
   [cm releaseChannel: fc  immediately: YES];
 }
