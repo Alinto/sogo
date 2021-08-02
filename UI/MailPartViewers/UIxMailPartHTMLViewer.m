@@ -562,7 +562,30 @@ _xmlCharsetForCharset (NSString *charset)
 		       [name isEqualToString: @"onfocus"] ||
 		       [name isEqualToString: @"onreset"] ||
 		       [name isEqualToString: @"onselect"] ||
-		       [name isEqualToString: @"onsubmit"]) 
+		       [name isEqualToString: @"onsubmit"] ||
+
+                       // Media Events
+                       [name isEqualToString: @"oncanplay"] ||
+                       [name isEqualToString: @"oncanplaythrough"] ||
+                       [name isEqualToString: @"oncuechange"] ||
+                       [name isEqualToString: @"ondurationchange"] ||
+                       [name isEqualToString: @"onemptied"] ||
+                       [name isEqualToString: @"onended"] ||
+                       [name isEqualToString: @"onloadeddata"] ||
+                       [name isEqualToString: @"onloadedmetadata"] ||
+                       [name isEqualToString: @"onloadstart"] ||
+                       [name isEqualToString: @"onpause"] ||
+                       [name isEqualToString: @"onplay"] ||
+                       [name isEqualToString: @"onplaying"] ||
+                       [name isEqualToString: @"onprogress"] ||
+                       [name isEqualToString: @"onratechange"] ||
+                       [name isEqualToString: @"onseeked"] ||
+                       [name isEqualToString: @"onseeking"] ||
+                       [name isEqualToString: @"onstalled"] ||
+                       [name isEqualToString: @"onsuspend"] ||
+                       [name isEqualToString: @"ontimeupdate"] ||
+                       [name isEqualToString: @"onvolumechange"] ||
+                       [name isEqualToString: @"onwaiting"])
 		{
 		  skipAttribute = YES;
 		}
