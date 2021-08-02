@@ -737,13 +737,16 @@
             data.encrypt = true;
         }
         if (data.isHTML) {
-          // Sanitize HTML replies to properly display quoted content in CKEditor
-          var html = angular.element('<div>' + data.text + '</div>');
-          html.find('meta').remove();
-          html.find('link').remove();
-          html.find('base').remove();
-          html.find('title').remove();
-          data.text = html.html();
+          // Sanitize HTML replies to properly display quoted content in CKEditor.
+          // Don't use the DOM to avoid triggering any event.
+          var html = data.text;
+          html = html.replace(/<\/?html[^>]*>/g, '');
+          html = html.replace(/<\/?body[^>]*>/g, '');
+          html = html.replace(/<meta[^>]*>.*<\/meta>/g, '');
+          html = html.replace(/<link[^>]*>.*<\/link>/g, '');
+          html = html.replace(/<base[^>]*>.*<\/base>/g, '');
+          html = html.replace(/<title[^>]*>.*<\/title>/g, '');
+          data.text = html;
         }
         angular.extend(message.editable, data);
 
