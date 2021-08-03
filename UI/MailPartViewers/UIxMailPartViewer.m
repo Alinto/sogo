@@ -249,9 +249,10 @@
   _st = [_st lowercaseString];
   
   if ([_mt isEqualToString:@"image"]) {
-    if ([_st isEqualToString:@"gif"])  return @"gif";
-    if ([_st isEqualToString:@"jpeg"]) return @"jpg";
-    if ([_st isEqualToString:@"png"])  return @"png";
+    if ([_st isEqualToString:@"gif"])      return @"gif";
+    if ([_st isEqualToString:@"jpeg"])     return @"jpg";
+    if ([_st isEqualToString:@"png"])      return @"png";
+    if ([_st isEqualToString:@"svg+xml"])  return @"svg";
   }
   else if ([_mt isEqualToString:@"text"]) {
     if ([_st isEqualToString:@"plain"])    return @"txt";
@@ -260,10 +261,10 @@
     if ([_st isEqualToString:@"x-vcard"])  return @"vcf";
   }
   else if ([_mt isEqualToString:@"message"]) {
-    if ([_st isEqualToString:@"rfc822"]) return @"eml";
+    if ([_st isEqualToString:@"rfc822"])   return @"eml";
   }
   else if ([_mt isEqualToString:@"application"]) {
-    if ([_st isEqualToString:@"pdf"]) return @"pdf";
+    if ([_st isEqualToString:@"pdf"])      return @"pdf";
   }
   return nil;
 }
@@ -326,8 +327,12 @@
 - (NSString *) _pathForAttachmentOrDownload: (BOOL) forDownload
 {
   SOGoMailBodyPart *bodyPart;
-  NSString *s, *attachment;
+  NSString *st, *s, *attachment;
   NSMutableString *url;
+
+  st = [[bodyInfo valueForKey:@"subtype"] lowercaseString];
+  if (!forDownload && [st isEqualToString: @"svg+xml"])
+    return nil;
 
   bodyPart = [self clientPart];
   s = [[self clientObject] baseURLInContext: [self context]];

@@ -47,8 +47,7 @@
 
   s = [[info objectForKey:@"disposition"] objectForKey: @"type"];
 
-  shouldDisplay = (s && ([s caseInsensitiveCompare: @"ATTACHMENT"]
-			 == NSOrderedSame));
+  shouldDisplay = (s && ([s caseInsensitiveCompare: @"ATTACHMENT"] == NSOrderedSame));
   
   if (!shouldDisplay && !textPart)
     shouldDisplay = ([[info objectForKey: @"bodyId"] length] ? YES : NO);
@@ -219,8 +218,8 @@ static BOOL showNamedTextAttachmentsInline = NO;
   if ([mt isEqualToString: @"image"] &&
       !([st isEqualToString: @"tiff"] || [st isEqualToString: @"pdf"]))
     {
-      if ([self _shouldDisplayAsAttachment: _info  textPart: NO])
-	return [self linkViewer];
+      if ([self _shouldDisplayAsAttachment: _info  textPart: NO] || [st isEqualToString: @"svg+xml"])
+        return [self linkViewer];
      
       return [self imageViewer];
     }

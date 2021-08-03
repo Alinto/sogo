@@ -15,10 +15,10 @@
       <div class="md-flex sg-attachment-size">
         <var:string value="bodyInfo.size" formatter="sizeFormatter"/>
       </div>
-      <md-button class="sg-icon-button" var:href="pathToAttachment" target="_blank">
+      <var:if condition="pathToAttachment.length"><md-button class="sg-icon-button" var:href="pathToAttachment" target="_blank">
         <md-tooltip md-direction="left"><var:string label:value="View Attachment"/></md-tooltip>
         <md-icon>open_in_new</md-icon>
-      </md-button>
+      </md-button></var:if>
       <md-button class="sg-icon-button" var:href="pathForDownload">
         <md-tooltip md-direction="left"><var:string label:value="Save Attachment"/></md-tooltip>
         <md-icon>file_download</md-icon>

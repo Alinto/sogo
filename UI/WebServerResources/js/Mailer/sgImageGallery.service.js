@@ -81,7 +81,7 @@
         partSrc = angular.element(this.message.$content()[partIndex].content).find('img')[0].src;
 
     var images = _.filter(this.message.attachmentAttrs, function(attrs) {
-      return attrs.mimetype.indexOf('image/') === 0;
+      return attrs.mimetype.indexOf('image/') === 0 && attrs.mimetype.indexOf('svg+xml') < 0;
     });
 
     var selectedIndex = _.findIndex(images, function(image) {
