@@ -1,6 +1,6 @@
 /* SOGoSAML2Actions.m - this file is part of SOGo
  *
- * Copyright (C) 2012-2014 Inverse inc
+ * Copyright (C) 2012-2021 Inverse inc
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSString+misc.h>
 
+#import <SOGo/NSString+Crypto.h>
 #import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoSAML2Session.h>
 #import <SOGo/SOGoSession.h>
@@ -159,10 +160,14 @@
   WOResponse *response;
   SoApplication *application;
   SOGoSAML2Session *newSession;
-  WOCookie *authCookie;
+  WOCookie *authCookie, *xsrfCookie;
+  NSArray *creds;
   NSString *login, *oldLocation, *newLocation;
   SOGoWebAuthenticator *auth;
 
+  response = [context response];
+  [response setHeader: @"text/plain; charset=utf-8"
+               forKey: @"content-type"];
   rq = [context request];
   if ([[rq method] isEqualToString: @"POST"])
     {
@@ -176,16 +181,25 @@
                                 andPassword: [newSession identifier]
                                   inContext: context];
 
+      // We prepare the XSRF protection cookie
+      creds = [auth parseCredentials: [authCookie value]];
+      xsrfCookie = [WOCookie cookieWithName: @"XSRF-TOKEN"
+                                      value: [[SOGoSession valueForSessionKey: [creds lastObject]] asSHA1String]];
+      [xsrfCookie setPath: [NSString stringWithFormat: @"/%@/", [[context request] applicationName]]];
+      [response addCookie: xsrfCookie];
+
       oldLocation = [[context clientObject] baseURLInContext: context];
       newLocation = [NSString stringWithFormat: @"%@/%@",
                               oldLocation, [login stringByEscapingURL]];
 
-      response = [context response];
       [response setStatus: 302];
-      [response setHeader: @"text/plain; charset=utf-8"
-                   forKey: @"content-type"];
       [response setHeader: newLocation forKey: @"location"];
       [response addCookie: authCookie];
+    }
+  else
+    {
+      [response setStatus: 500];
+      [response appendContentString: @"Missing POST"];
     }
 
   return response;

@@ -1374,14 +1374,12 @@ connection properly.
 Authenticating using SAML2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-SOGo natively supports SAML2 authentication. Please refer to the
-documentation of your identity provider and the SAML2 configuration keys
-that are listed above for proper setup. Make sure
-_SOGoXSRFValidationEnabled_ is set to `NO`. Once a SOGo instance is
-configured properly, the metadata for that instance can be retrieved
-from `http://<hostname>/SOGo/saml2-metadata` for registration with the
-identity provider. SOGo will dynamically generate the metadata based on
-the SOGoSAML2CertificateLocation's content and the SOGo server name.
+SOGo natively supports SAML2 authentication. Please refer to the documentation of your identity
+provider and the SAML2 configuration keys that are listed above for proper setup. Once a SOGo
+instance is configured properly, the metadata for that instance can be retrieved from
+`http://<hostname>/SOGo/saml2-metadata` for registration with the identity provider. SOGo will
+dynamically generate the metadata based on the SOGoSAML2CertificateLocation's content and the SOGo
+server name.
 
 When using https://simplesamlphp.org/[SimpleSAMLphp], make sure the
 convert OID to names by modifying your
@@ -3138,9 +3136,8 @@ current version of SOGo from the previous release.
 [cols="100a"]
 |=======================================================================
 h|5.1.0
-|The XSRF protection is now enabled by default in SOGo. If you use a single
-sign-on mechanisim such as C.A.S. or SAML2, you need to disable XSRF by adding
-`SOGoXSRFValidationEnabled = NO` to your configuration file.
+|The XSRF protection is now enabled by default in SOGo. If you use the C.A.S.  mechanisim, you need
+to disable XSRF by adding `SOGoXSRFValidationEnabled = NO` to your configuration file.
 
 h|5.0.0
 |Peer is now verified for TLS connections (SMTP/IMAP/Sieve). If you enabled
