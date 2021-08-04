@@ -289,11 +289,24 @@ static NSString *inboxFolderName = @"INBOX";
       if (quota != 0 && inboxQuota != nil)
 	{
 	  // A soft quota ratio is imposed for all users
-	  quota = quota * [(NSNumber*)[inboxQuota objectForKey: @"maxQuota"] intValue];
-	  inboxQuota = [NSDictionary dictionaryWithObjectsAndKeys:
-					[NSNumber numberWithLong: (long)(quota+0.5)], @"maxQuota",
-                                         [NSNumber numberWithLong: [[inboxQuota objectForKey: @"usedSpace"] longLongValue]], @"usedSpace",
-				     nil];
+          if ([[inboxQuota allKeys] containsObject: @"maxQuota"])
+            {
+              // Storage quota
+              quota = quota * [(NSNumber*)[inboxQuota objectForKey: @"maxQuota"] intValue];
+              inboxQuota = [NSDictionary dictionaryWithObjectsAndKeys:
+                                             [NSNumber numberWithLong: (long)(quota+0.5)], @"maxQuota",
+                                             [NSNumber numberWithLong: [[inboxQuota objectForKey: @"usedSpace"] longLongValue]], @"usedSpace",
+                                         nil];
+            }
+          else if ([[inboxQuota allKeys] containsObject: @"maxMessages"])
+            {
+              // Messages quota
+              quota = quota * [(NSNumber*)[inboxQuota objectForKey: @"maxMessages"] intValue];
+              inboxQuota = [NSDictionary dictionaryWithObjectsAndKeys:
+                                             [NSNumber numberWithLong: (long)(quota+0.5)], @"maxMessages",
+                                             [NSNumber numberWithLong: [[inboxQuota objectForKey: @"messagesCount"] longLongValue]], @"messagesCount",
+                                         nil];
+            }
 	}
     }
 

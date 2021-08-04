@@ -319,6 +319,7 @@
 "Operation failed" = "Operation failed";
 "Quota" = "Quota:";
 "quotasFormat" = "%{0}% used on %{1} MB";
+"messageQuotasFormat" = "%{0}% of %{1} msgs";
 "Unable to move/delete folder." = "Unable to move/delete folder.";
 
 /* Alternative operation when folder cannot be deleted */

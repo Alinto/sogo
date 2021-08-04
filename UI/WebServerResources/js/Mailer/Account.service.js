@@ -439,9 +439,16 @@
   Account.prototype.updateQuota = function(data) {
     var percent, format, description;
 
-    percent = (Math.round(data.usedSpace * 10000 / data.maxQuota) / 100);
-    format = l("quotasFormat");
-    description = format.formatted(percent, Math.round(data.maxQuota/10.24)/100);
+    if (data.maxQuota) {
+      percent = (Math.round(data.usedSpace * 10000 / data.maxQuota) / 100);
+      format = l("quotasFormat");
+      description = format.formatted(percent, Math.round(data.maxQuota/10.24)/100);
+    }
+    else if (data.maxMessages) {
+      percent = (Math.round(data.messagesCount * 10000 / data.maxMessages) / 100);
+      format = l("messageQuotasFormat");
+      description = format.formatted(percent, data.maxMessages);
+    }
 
     this.$quota = { percent: percent, description: description };
   };
