@@ -32,12 +32,18 @@
 #import <NGMime/NGMimeMultipartBody.h>
 
 #import <SOGo/RTFHandler.h>
+#import <SOGo/SOGoBuild.h>
+#import <SOGo/SOGoSystemDefaults.h>
 
 #import <SoObjects/Mailer/NSData+SMIME.h>
 
 #import <ytnef.h>
 
 #import "SOGoTnefMailBodyPart.h"
+
+#define UPR_TO_ATTENDEES_STRING  0x823B
+#define UPR_CC_ATTENDEES_STRING  0x823C
+#define UPR_ALL_ATTENDEES_STRING 0x8238
 
 /*
   SOGoTnefMailBodyPart
@@ -48,6 +54,114 @@
   See the superclass for more information on part objects.
 */
 
+unsigned char GetRruleCount(unsigned char a, unsigned char b) {
+  return ((a << 8) | b);
+}
+
+char *GetRruleDayname(unsigned char a) {
+  static char daystring[25];
+
+  *daystring = 0;
+
+  if (a & 0x01) {
+    strcat(daystring, "SU,");
+  }
+  if (a & 0x02) {
+    strcat(daystring, "MO,");
+  }
+  if (a & 0x04) {
+    strcat(daystring, "TU,");
+  }
+  if (a & 0x08) {
+    strcat(daystring, "WE,");
+  }
+  if (a & 0x10) {
+    strcat(daystring, "TH,");
+  }
+  if (a & 0x20) {
+    strcat(daystring, "FR,");
+  }
+  if (a & 0x40) {
+    strcat(daystring, "SA,");
+  }
+
+  if (strlen(daystring)) {
+    daystring[strlen(daystring) - 1] = 0;
+  }
+
+  return (daystring);
+}
+
+unsigned char GetRruleMonthNum(unsigned char a, unsigned char b) {
+  switch (a) {
+    case 0x00:
+      switch (b) {
+        case 0x00:
+          // Jan
+          return (1);
+        case 0xA3:
+          // May
+          return (5);
+        case 0xAE:
+          // Nov
+          return (11);
+      }
+      break;
+    case 0x60:
+      switch (b) {
+        case 0xAE:
+          // Feb
+          return (2);
+        case 0x51:
+          // Jun
+          return (6);
+      }
+      break;
+    case 0xE0:
+      switch (b) {
+        case 0x4B:
+          // Mar
+          return (3);
+        case 0x56:
+          // Sep
+          return (9);
+      }
+      break;
+    case 0x40:
+      switch (b) {
+        case 0xFA:
+          // Apr
+          return (4);
+      }
+      break;
+    case 0x20:
+      if (b == 0xFA) {
+        // Jul
+        return (7);
+      }
+      break;
+    case 0x80:
+      if (b == 0xA8) {
+        // Aug
+        return (8);
+      }
+      break;
+    case 0xA0:
+      if (b == 0xFF) {
+        // Oct
+        return (10);
+      }
+      break;
+    case 0xC0:
+      if (b == 0x56) {
+        return (12);
+      }
+  }
+
+  // Error
+  return (0);
+}
+
 @implementation SOGoTnefMailBodyPart
 
 /* Overwritten methods */
@@ -56,6 +170,7 @@
 {
   if ((self = [super init]))
     {
+      debugOn = [[SOGoSystemDefaults sharedSystemDefaults] tnefDecoderDebugEnabled];
       part = nil;
       filename = nil;
       bodyParts = [[NGMimeMultipartBody alloc] init];
@@ -155,34 +270,46 @@
 - (void) decodeBLOB
 {
   NSData *data;
+  NSEnumerator *list;
+  NSString *messageClass;
   NSString *partName, *type, *subtype;
+  NSString *value, *attendee;
+  RTFHandler *handler;
+
+  DWORD signature;
+  DDWORD *classification;
+  dtr datetime;
+  TNEFStruct tnef;
   variableLength *attachmentName;
   variableLength *filedata;
+  variableLength buf;
 
   [self setPart: nil];
   partName = nil;
   data = [self fetchBLOB];
 
-  DWORD signature;
   memcpy(&signature, [data bytes], sizeof(DWORD));
   if (TNEFCheckForSignature(signature) == 0)
     {
-      TNEFStruct tnef;
-
       TNEFInitialize(&tnef);
       tnef.Debug = 0;
       if (TNEFParseMemory((unsigned char *)[data bytes], [data length], &tnef) != -1)
         {
-          // unsigned int count = 0;
+          messageClass = [NSString stringWithCString: tnef.messageClass];
 
-          if (strcmp((char *)tnef.messageClass, "IPM.Microsoft Mail.Note") == 0)
+          if (debugOn)
+            {
+              NSLog(@"TNEF message class: %@", messageClass);
+              MAPIPrint(&tnef.MapiProperties);
+            }
+
+          if ([messageClass isEqualToString: @"IPM.Microsoft Mail.Note"])
             {
               if (tnef.subject.size > 0)
                 {
                   filedata = MAPIFindProperty(&(tnef.MapiProperties), PROP_TAG(PT_BINARY, PR_BODY_HTML));
                   if (filedata != MAPI_UNDEFINED)
                     {
-                      // count++;
                       partName = [NSString stringWithFormat: @"%s.html", tnef.subject.data];
                       data = [NSData dataWithBytes: filedata->data length: filedata->size];
                     }
@@ -191,12 +318,9 @@
                       filedata = MAPIFindProperty(&(tnef.MapiProperties), PROP_TAG(PT_BINARY, PR_RTF_COMPRESSED));
                       if (filedata != MAPI_UNDEFINED)
                         {
-                          RTFHandler *handler;
-                          variableLength buf;
                           buf.data = DecompressRTF(filedata, &(buf.size));
                           if (buf.data != NULL)
                             {
-                              // count++;
                               partName = [NSString stringWithFormat: @"%s.html", tnef.subject.data];
                               data = [NSData dataWithBytes: buf.data length: buf.size];
 
@@ -215,11 +339,338 @@
                     }
                 }
             }
+          else if ([messageClass isEqualToString: @"IPM.Microsoft Schedule.MtgRespA"] || // tentative response
+                   [messageClass isEqualToString: @"IPM.Microsoft Schedule.MtgRespP"] || // positive (accepted) response
+                   [messageClass isEqualToString: @"IPM.Microsoft Schedule.MtgRespN"] || // negative (declined) response
+                   [messageClass isEqualToString: @"IPM.Microsoft Schedule.MtgReq"])     // request (invitation)
+            {
+              // Meeting object -- construct text/calendar part
+
+              // Parse HTML body, if any
+              filedata = MAPIFindProperty(&(tnef.MapiProperties), PROP_TAG(PT_BINARY, PR_BODY_HTML));
+              if (filedata != MAPI_UNDEFINED && filedata->size > 0)
+                {
+                  partName = [NSString stringWithFormat: @"%s.html", tnef.subject.data];
+                  data = [NSData dataWithBytes: filedata->data length: filedata->size];
+                  [self bodyPartForData: data
+                               withType: @"text"
+                             andSubtype: @"html"];
+                }
+
+              // Create ics attachment
+              NSMutableString *vcalendar = [NSMutableString stringWithString: @"BEGIN:VCALENDAR\n"];
+              BOOL isRequest = [messageClass isEqualToString: @"IPM.Microsoft Schedule.MtgReq"];
+
+              if (isRequest)
+                [vcalendar appendString: @"METHOD:REQUEST\n"];
+              else
+                [vcalendar appendString: @"METHOD:REPLY\n"];
+              [vcalendar appendFormat: @"PRODID:-//Inverse inc./SOGo %@//EN\n", SOGoVersion];
+              [vcalendar appendString: @"VERSION:2.0\n"];
+              [vcalendar appendString: @"BEGIN:VEVENT\n"];
+
+              // UID
+              // TODO: Probably wrong, probably irrelevant
+              filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_BINARY, 0x3));
+              if (filedata == MAPI_UNDEFINED)
+                filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_BINARY, 0x23));
+              if (filedata != MAPI_UNDEFINED && filedata->size > 1)
+                {
+                  int i;
+                  [vcalendar appendString: @"UID:"];
+                  for (i = 0; i < filedata->size; i++)
+                    {
+                      [vcalendar appendFormat: @"%02X", (unsigned char)filedata->data[i]];
+                    }
+                  [vcalendar appendString: @"\n"];
+                }
+
+              // Sequence
+              filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_LONG, 0x8201));
+              if (filedata != MAPI_UNDEFINED)
+                {
+                  [vcalendar appendFormat: @"SEQUENCE:%i\n", (int)*filedata->data];
+                }
+
+              // Attendee email
+              if (isRequest)
+                {
+                  // Organizer
+                  filedata = MAPIFindProperty(&(tnef.MapiProperties), PROP_TAG(PT_BINARY, PR_SENDER_SEARCH_KEY));
+                  if (filedata == MAPI_UNDEFINED)
+                    {
+                      filedata = MAPIFindProperty(&(tnef.MapiProperties), PROP_TAG(PT_UNICODE, PR_SENT_REPRESENTING_EMAIL_ADDRESS));
+                    }
+                  if (filedata != MAPI_UNDEFINED && filedata->size > 1)
+                    {
+                      NSArray *components;
+                      NSString *email, *cn;
+                      email = [NSString stringWithUTF8String: (const char *)filedata->data];
+                      components = [email componentsSeparatedByString: @":"];
+                      email = [components objectAtIndex: 0];
+
+                      if ([components count] > 1)
+                        cn = [components objectAtIndex: 1];
+                      else
+                        {
+                          filedata = MAPIFindProperty(&(tnef.MapiProperties), PROP_TAG(PT_UNICODE, PR_SENT_REPRESENTING_NAME));
+                          if (filedata != MAPI_UNDEFINED && filedata->size > 1)
+                            cn = [NSString stringWithUTF8String: (const char *)filedata->data];
+                          else
+                            cn = email;
+                        }
+                      [vcalendar appendFormat: @"ORGANIZER;cn=\"%@\":mailto:%@\n", cn, email];
+                    }
+
+                  // Attendees
+                  filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_STRING8, UPR_TO_ATTENDEES_STRING));
+                  if (filedata == MAPI_UNDEFINED)
+                    {
+                      filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_UNICODE, UPR_TO_ATTENDEES_STRING));
+                    }
+                  if (filedata == MAPI_UNDEFINED)
+                    {
+                      filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_STRING8, UPR_ALL_ATTENDEES_STRING));
+                    }
+                  if (filedata == MAPI_UNDEFINED)
+                    {
+                      filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_UNICODE, UPR_ALL_ATTENDEES_STRING));
+                    }
+                  if (filedata != MAPI_UNDEFINED && filedata->size > 1)
+                    {
+                      // Required attendees
+                      value = [NSString stringWithUTF8String: (const char *)filedata->data];
+                      list = [[value componentsSeparatedByString: @";"] objectEnumerator];
+                      while ((attendee = [list nextObject]))
+                        {
+                          attendee = [attendee stringByTrimmingSpaces];
+                          [vcalendar appendFormat: @"ATTENDEE;PARTSTAT=NEEDS-ACTION;ROLE=REQ-PARTICIPANT;RSVP=TRUE;CN=\"%@\":MAILTO:%@\n",
+                                     attendee, attendee];
+                        }
+
+                      // Optional attendees
+                      filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_STRING8, UPR_CC_ATTENDEES_STRING));
+                      if (filedata == MAPI_UNDEFINED)
+                        {
+                          filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_UNICODE, UPR_CC_ATTENDEES_STRING));
+                        }
+                      if (filedata != MAPI_UNDEFINED && filedata->size > 1)
+                        {
+                          value = [NSString stringWithUTF8String: (const char *)filedata->data];
+                          if ([value length])
+                            {
+                              list = [[value componentsSeparatedByString: @";"] objectEnumerator];
+                              while ((attendee = [list nextObject]))
+                                {
+                                  attendee = [attendee stringByTrimmingSpaces];
+                                  [vcalendar appendFormat: @"ATTENDEE;PARTSTAT=NEEDS-ACTION;ROLE=OPT-PARTICIPANT;RSVP=TRUE;CN=\"%@\":MAILTO:%@\n",
+                                             attendee, attendee];
+                                }
+                            }
+                        }
+                    }
+                }
+              else
+                {
+                  // Meeting response
+                  filedata = MAPIFindProperty(&(tnef.MapiProperties), PROP_TAG(PT_UNICODE, PR_SENT_REPRESENTING_EMAIL_ADDRESS));
+                  if (filedata == MAPI_UNDEFINED)
+                    {
+                      filedata = MAPIFindProperty(&(tnef.MapiProperties), PROP_TAG(PT_UNICODE, PR_SENDER_SMTP_ADDRESS));
+                    }
+                  if (filedata != MAPI_UNDEFINED && filedata->size > 1)
+                    {
+                      NSString *email, *cn, *partstat;
+                      email = [NSString stringWithUTF8String: (const char *)filedata->data];
+                      filedata = MAPIFindProperty(&(tnef.MapiProperties), PROP_TAG(PT_UNICODE, PR_SENT_REPRESENTING_NAME));
+                      if (filedata == MAPI_UNDEFINED)
+                        {
+                          filedata = MAPIFindProperty(&(tnef.MapiProperties), PROP_TAG(PT_UNICODE, PR_SENDER_NAME));
+                        }
+                      if (filedata != MAPI_UNDEFINED && filedata->size > 1)
+                        cn = [NSString stringWithUTF8String: (const char *)filedata->data];
+                      else
+                        cn = email;
+
+                      switch ([messageClass characterAtIndex: [messageClass length] - 1])
+                        {
+                        case 'N':
+                          partstat = @"DECLINED";
+                          break;
+                        case 'A':
+                          partstat = @"TENTATIVE";
+                          break;
+                        default:
+                          partstat = @"ACCEPTED";
+                        }
+                      [vcalendar appendFormat: @"ATTENDEE;PARTSTAT=%@;CN=\"%@\":MAILTO:%@\n", partstat, cn, email];
+                    }
+                }
+
+              // Summary
+              filedata = MAPIFindProperty(&(tnef.MapiProperties), PROP_TAG(PT_STRING8, PR_CONVERSATION_TOPIC));
+              if (filedata == MAPI_UNDEFINED)
+                {
+                  filedata = MAPIFindProperty(&(tnef.MapiProperties), PROP_TAG(PT_UNICODE, PR_CONVERSATION_TOPIC));
+                }
+              if (filedata != MAPI_UNDEFINED && filedata->size > 1)
+                {
+                  [vcalendar appendFormat: @"SUMMARY:%@\n", [NSString stringWithUTF8String: (const char *)filedata->data]];
+                }
+
+              // Description
+              filedata = MAPIFindProperty(&(tnef.MapiProperties), PROP_TAG(PT_STRING8, 0x3fd9));
+              if (filedata == MAPI_UNDEFINED)
+                {
+                  filedata = MAPIFindProperty(&(tnef.MapiProperties), PROP_TAG(PT_UNICODE, 0x3fd9));
+                }
+              if (filedata != MAPI_UNDEFINED && filedata->size > 1)
+                {
+                  [vcalendar appendFormat: @"DESCRIPTION:%@\n", [NSString stringWithUTF8String: (const char *)filedata->data]];
+                }
+
+              // Location
+              filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_STRING8, 0x0002));
+              if (filedata == MAPI_UNDEFINED)
+                filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_STRING8, 0x8208));
+              if (filedata == MAPI_UNDEFINED)
+                filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_UNICODE, 0x0002));
+              if (filedata == MAPI_UNDEFINED)
+                filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_UNICODE, 0x8208));
+              if (filedata != MAPI_UNDEFINED && filedata->size > 1)
+                {
+                  [vcalendar appendFormat: @"LOCATION: %@\n", [NSString stringWithUTF8String: (const char *)filedata->data]];
+                }
+
+              // Date start
+              filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_SYSTIME, 0x820d));
+              if (filedata == MAPI_UNDEFINED)
+                filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_SYSTIME, 0x8516));
+              if (filedata != MAPI_UNDEFINED && filedata->size > 1)
+                {
+                  MAPISysTimetoDTR(filedata->data, &datetime);
+                  [vcalendar appendFormat: @"DTSTART:%04i%02i%02iT%02i%02i%02iZ\n",
+                        datetime.wYear, datetime.wMonth, datetime.wDay, datetime.wHour, datetime.wMinute, datetime.wSecond];
+                }
+
+              // Date end
+              filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_SYSTIME, 0x820e));
+              if (filedata == MAPI_UNDEFINED)
+                filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_SYSTIME, 0x8517));
+              if (filedata != MAPI_UNDEFINED && filedata->size > 1)
+                {
+                  MAPISysTimetoDTR(filedata->data, &datetime);
+                  [vcalendar appendFormat: @"DTEND:%04i%02i%02iT%02i%02i%02iZ\n",
+                        datetime.wYear, datetime.wMonth, datetime.wDay, datetime.wHour, datetime.wMinute, datetime.wSecond];
+                }
+
+              // Date stamp
+              filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_SYSTIME, 0x8202));
+              if (filedata == MAPI_UNDEFINED)
+                filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_SYSTIME, 0x001a));
+              if (filedata != MAPI_UNDEFINED && filedata->size > 1)
+                {
+                  MAPISysTimetoDTR(filedata->data, &datetime);
+                  [vcalendar appendFormat: @"DTSTAMP:%04i%02i%02iT%02i%02i%02iZ\n",
+                        datetime.wYear, datetime.wMonth, datetime.wDay, datetime.wHour, datetime.wMinute, datetime.wSecond];
+                }
+
+              // Classification
+              filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_BOOLEAN, 0x8506));
+              if (filedata != MAPI_UNDEFINED)
+                {
+                  classification = (DDWORD *)filedata->data;
+                  if (*classification == 1)
+                    [vcalendar appendString: @"CLASS:PRIVATE\n"];
+                  else
+                    [vcalendar appendString: @"CLASS:PUBLIC\n"];
+                }
+
+              // Repeating rule
+              filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_BINARY, 0x8216));
+              if (filedata != MAPI_UNDEFINED && filedata->size >= 0x1F)
+                {
+                  NSMutableString *rrule = [NSMutableString string];
+                  unsigned char *recurData = filedata->data;
+
+                  // [vcalendar appendString: @"RRULE:FREQ="];
+                  if (recurData[0x04] == 0x0A)
+                    {
+                      [rrule appendString: @"DAILY"];
+                      if (recurData[0x16] == 0x23 || recurData[0x16] == 0x22 || recurData[0x16] == 0x21)
+                        {
+                          filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_I2, 0x0011));
+                          if (filedata != MAPI_UNDEFINED)
+                            [rrule appendFormat: @";INTERVAL=%d", *(filedata->data)];
+                          if (recurData[0x16] == 0x22 || recurData[0x16] == 0x21)
+                            [rrule appendFormat: @";COUNT=%d", GetRruleCount(recurData[0x1B], recurData[0x1A])];
+                        }
+                      else if (recurData[0x16] == 0x3E)
+                        {
+                          [rrule appendString: @";BYDAY=MO,TU,WE,TH,FR"];
+                          if (recurData[0x1A] == 0x22 || recurData[0x1A] == 0x21)
+                            [rrule appendFormat: @";COUNT=%d", GetRruleCount(recurData[0x1F], recurData[0x1E])];
+
+                        }
+                    }
+                  else if (recurData[0x04] == 0x0B)
+                    {
+                      [rrule appendFormat: @"WEEKLY;INTERVAL=%d;BYDAY=%s", recurData[0x0E], GetRruleDayname(recurData[0x16])];
+                      if (recurData[0x1A] == 0x22 || recurData[0x1A] == 0x21)
+                        [rrule appendFormat: @";COUNT=%d", GetRruleCount(recurData[0x1F], recurData[0x1E])];
+                    }
+                  else if (recurData[0x04] == 0x0C)
+                    {
+                      [rrule appendString: @"MONTHLY"];
+                      if (recurData[0x06] == 0x02)
+                        {
+                          [rrule appendFormat: @";INTERVAL=%d;BYMONTHDAY=%d", recurData[0x0E], recurData[0x16]];
+                          if (recurData[0x1A] == 0x22 || recurData[0x1A] == 0x21)
+                            [rrule appendFormat: @";COUNT=%d", GetRruleCount(recurData[0x1F], recurData[0x1E])];
+                        }
+                      else if (recurData[0x06] == 0x03)
+                        {
+                          [rrule appendFormat: @";BYDAY=%s;BYSETPOS=%d;INTERVAL=%d",
+                                     GetRruleDayname(recurData[0x16]),
+                                     recurData[0x1A] == 0x05 ? -1 : recurData[0x1A],
+                                     recurData[0x0E]];
+                          if (recurData[0x1E] == 0x22 || recurData[0x1E] == 0x21)
+                            [rrule appendFormat: @";COUNT=%d", GetRruleCount(recurData[0x23], recurData[0x22])];
+                        }
+                    }
+                  else if (recurData[0x04] == 0x0D)
+                    {
+                      [rrule appendFormat: @"YEARLY;BYMONTH=%d", GetRruleMonthNum(recurData[0x0A], recurData[0x0B])];
+                      if (recurData[0x06] == 0x02)
+                          [rrule appendFormat: @";BYMONTHDAY=%d", recurData[0x16]];
+                      else if (recurData[0x06] == 0x03)
+                        [rrule appendFormat: @";BYDAY=%s;BYSETPOS=%d",
+                               GetRruleDayname(recurData[0x16]),
+                               recurData[0x1A] == 0x05 ? -1 : recurData[0x1A]];
+                      if (recurData[0x1E] == 0x22 || recurData[0x1E] == 0x21)
+                        [rrule appendFormat: @";COUNT=%d", GetRruleCount(recurData[0x23], recurData[0x22])];
+                    }
+
+                  if ([rrule length])
+                    [vcalendar appendFormat: @"RRULE:FREQ=%@\n", rrule];
+                }
+
+              [vcalendar appendString: @"END:VEVENT\n"];
+              [vcalendar appendString: @"END:VCALENDAR"];
+
+              if (debugOn)
+                NSLog(@"TNEF reconstructed vCalendar:\n%@", vcalendar);
+
+              [self bodyPartForData: [vcalendar dataUsingEncoding: NSUTF8StringEncoding]
+                           withType: @"text"
+                         andSubtype: @"calendar"];
+
+            }
           // Other classes to handle:
           //
           //   IPM.Contact
           //   IPM.Task
-          //   IPM.Microsoft Schedule.MtgReq
+          //   IPM.Microsoft Schedule.MtgCncl
           //   IPM.Appointment
           //
 
@@ -298,7 +749,7 @@
 
                       if (attachmentName->size > 1)
                         {
-                          partName = [NSString stringWithUTF8String: attachmentName->data];
+                          partName = [NSString stringWithUTF8String: (const char *)attachmentName->data];
 
                           type = @"application";
                           subtype = @"octet-stream";
@@ -306,7 +757,7 @@
                           prop = MAPIFindProperty(&(p->MAPI), PROP_TAG(PT_UNICODE, PR_ATTACH_MIME_TAG));
                           if (prop != MAPI_UNDEFINED)
                             {
-                              NSString *mime = [NSString stringWithUTF8String: prop->data];
+                              NSString *mime = [NSString stringWithUTF8String: (const char *)prop->data];
                               NSArray *pair = [mime componentsSeparatedByString: @"/"];
                               if ([pair count] == 2)
                                 {
@@ -323,7 +774,7 @@
                               prop = MAPIFindProperty(&(p->MAPI), PROP_TAG(PT_STRING8, PR_ATTACH_EXTENSION));
                               if (prop != MAPI_UNDEFINED)
                                 {
-                                  NSString *ext = [NSString stringWithUTF8String: prop->data];
+                                  NSString *ext = [NSString stringWithUTF8String: (const char *)prop->data];
                                   if ([ext caseInsensitiveCompare: @".txt"] == NSOrderedSame)
                                     {
                                       type = @"text";
@@ -340,7 +791,7 @@
                           prop = MAPIFindProperty(&(p->MAPI), PROP_TAG(PT_UNICODE, 0x3712)); // PR_CONTENT_IDENTIFIER?
                           if (prop != MAPI_UNDEFINED)
                             {
-                              cid = [NSString stringWithUTF8String: prop->data];
+                              cid = [NSString stringWithUTF8String: (const char *)prop->data];
                             }
 
                           NSData *attachment;

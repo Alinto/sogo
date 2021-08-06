@@ -29,6 +29,7 @@
 
 @interface SOGoTnefMailBodyPart : SOGoMailBodyPart
 {
+  BOOL debugOn;
   NSData *part;
   NSString *filename;
   NGMimeMultipartBody *bodyParts;
