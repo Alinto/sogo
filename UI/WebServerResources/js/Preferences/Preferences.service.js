@@ -672,6 +672,9 @@
       }
     });
 
+    // Don't push locale definition
+    delete preferences.defaults.locale;
+
     // Merge back mail labels keys and values
     preferences.defaults.SOGoMailLabelsColors = {};
     _.forEach(preferences.defaults.SOGoMailLabelsColorsKeys, function(key, i) {
