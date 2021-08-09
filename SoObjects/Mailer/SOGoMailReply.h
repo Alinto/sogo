@@ -105,6 +105,9 @@
 @interface SOGoMailMacedonianReply : SOGoMailReply
 @end
 
+@interface SOGoMailMontenegrinReply : SOGoMailReply
+@end
+
 @interface SOGoMailNorwegianBokmalReply : SOGoMailReply
 @end
 

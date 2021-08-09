@@ -315,6 +315,18 @@
 @implementation SOGoFolderLithuanianRemovalAdvisory
 @end
 
+@implementation SOGoFolderMacedonianAdditionAdvisory
+@end
+
+@implementation SOGoFolderMacedonianRemovalAdvisory
+@end
+
+@implementation SOGoFolderMontenegrinAdditionAdvisory
+@end
+
+@implementation SOGoFolderMontenegrinRemovalAdvisory
+@end
+
 @implementation SOGoFolderNorwegianBokmalAdditionAdvisory
 @end
 

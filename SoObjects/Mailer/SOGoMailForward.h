@@ -106,6 +106,9 @@
 @interface SOGoMailMacedonianForward : SOGoMailForward
 @end
 
+@interface SOGoMailMontenegrinForward : SOGoMailForward
+@end
+
 @interface SOGoMailNorwegianBokmalForward : SOGoMailForward
 @end
 

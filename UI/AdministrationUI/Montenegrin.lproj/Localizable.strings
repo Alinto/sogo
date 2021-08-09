@@ -1,0 +1,27 @@
+/* this file is in UTF-8 format! */
+
+"Help" = "Pomoć";
+"Close" = "Zatvori";
+"Modules" = "Moduli";
+/* Modules short names */
+"ACLs" = "Liste za kontrolu pristupa";
+/* Modules titles */
+"ACLs_title" = "Upravljanje listama za kontrolu pristupa korisničkim direktorijumima";
+/* Modules descriptions */
+"ACLs_description" = "<p>Administracioni modul Liste za Kontrolu Pristupa dozvoljava vam da mijenjate liste za kontrolu pristupa za svaki korisnički Kalendar i Adresar.</p><p>Da izmijenite liste za kontrolu pristupa korisničkog direktorijuma, otkucajte ime korisnika u polju za pretragu na vrhu prozora i napravite dupli klik na željeni direktorijum.</p>";
+"Name or Email" = "Ime ili E-pošta";
+"ACLs saved" = "Lista za kontrolu pristupa je sačuvana";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Započnite pretragu da izmenite prava";
+/* Rights module: Empty search result */
+"No matching user" = "Nema podudarajućeg korisnika";
+/* Rights module: no selection */
+"No resource selected" = "Nema odabranog resursa";
+"Add User" = "Dodaj korisnika";
+"Subscribe User" = "Pretplati korisnika";
+"Rights" = "Prava";
+"Search Users" = "Pretraži korisnike";
+"users found" = "korisnici pronađeni";
+"No resource" = "Nema resursa";
+"Any Authenticated User" = "Bilo koji autentifikovani korisnik";
+"Public Access" = "Javni pristup";

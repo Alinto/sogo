@@ -143,6 +143,18 @@
 @interface SOGoFolderLithuanianRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
+@interface SOGoFolderMacedonianAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderMacedonianRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
+@interface SOGoFolderMontenegrinAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderMontenegrinRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
 @interface SOGoFolderNorwegianBokmalAdditionAdvisory : SOGoFolderAdditionAdvisory
 @end
 

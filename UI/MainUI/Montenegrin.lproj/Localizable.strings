@@ -1,0 +1,111 @@
+/* this file is in UTF-8 format! */
+
+"title" = "SOGo";
+"Username" = "Korisničko ime";
+"Password" = "Lozinka";
+"Domain" = "Domen";
+"Remember username" = "Zapamti korisničko ime";
+"Connect" = "Poveži se";
+
+/* Appears while authentication is in progress */
+"Authenticating" = "Autentifikacija";
+
+/* Appears when authentication succeeds */
+"Welcome" = "Dobrodošao/la";
+
+"Authentication Failed" = "Neuspješna autentifikacija";
+"Wrong username or password." = "Pogrešno korisničko ime i/ili lozinka.";
+"Retry" = "Pokušaj ponovo";
+"Login failed due to unhandled error case:" = "Prijavljivanje nije uspjelo zbog neobrađene greške:";
+"cookiesNotEnabled" = "Ne možete se prijaviti jer su onemogućeni kolačići u vašem pretraživaču. Molimo omogućite kolačiće u podešavanjima pretraživača i pokušajte ponovo.";
+"browserNotCompatible" = "Otkrili smo da verzija vašeg pretraživača nije podržana na ovom sajtu. Naša preporuka je da korsitite Firefox. Kliknite na link ispod da preuzmete poslednju verziju ovog pretraživača.";
+"alternativeBrowsers" = "Alternativno, možete koristiti i sljedeće kompatibilne pretraživače";
+"alternativeBrowserSafari" = "Alternativno, možete koristiti i Safari.";
+
+/* 2FA */
+"Verification Code" = "Verifikacioni kod";
+"Enter the 6-digit verification code from your TOTP application." = "Unesite 6-tocifreni verifikacioni kod iz vaše TOTP aplikacije.";
+"You provided an invalid TOTP key." = "TOTP ključ koji ste unijeli nije validan.";
+
+"Download" = "Preuzimanje";
+"Language" = "Jezik";
+"choose" = "Izaberi ...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Catalan" = "Català";
+"ChineseChina" = "简体中文";
+"ChineseTaiwan" = "正體中文";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"German" = "Deutsch";
+"Hebrew" = "עברית";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
+"Italian" = "Italiano";
+"Japanese" = "日本語";
+"Latvian" = "Latviešu";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"Montenegrin" = "Crnogorski";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
+"Russian" = "Русский";
+"Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"About" = "O";
+"AboutBox" = "Razvijen od strane Inverse-a, SOGo je potpuno funkcionalan grupver server fokusiran na skalabilnost i laku upotrebu<br/><br/>
+SOGo pruža bogati AJAX-bazirani veb interfejs i podržava više nativnih klijenata kroz korišćenje standardnih protokola kao što su CalDAV i CardDAV.<br/><br/>
+SOGo se distribuira sa licencom  <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> verzija 2 ili kasnija a delovi se distribuiraju kroz GNU LGPL verzija 2. Ovo je besplatan softver: slobodni ste da menjate i ponovo distribuirate. NEMA GARANCIJE, u meri u kojoj to dopušta zakon.<br/><br/>
+Pogledajte <a href=\"http://www.sogo.nu/en/support/community.html\">ovu stranicu</a> za različite opcije podrške.";
+"Your account was locked due to too many failed attempts." = "Vaš nalog je zaključan zbog više neuspješnih pokušaja prijave.";
+"Your account was locked due to an expired password." = "Vaš nalog je zaključan zbog istekle lozinke.";
+"Login failed due to unhandled error case" = "Prijavljivanje nije uspjelo zbog neobrađene greške:";
+"Change your Password" = "Promijenite lozinku";
+"The password was changed successfully." = "Lozinka je uspješno promijenjena.";
+"Your password has expired, please enter a new one below" = "Vaša lozinka je istekla, molimo unesite novu ispod";
+"Password must not be empty." = "Polje za lozinku ne smije biti prazno.";
+"The passwords do not match. Please try again." = "Lozinke se ne podudaraju. Molimo pokušajte ponovo.";
+"Password Grace Period" = "Grejs period lozinke";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Preostalo vam je %{0} prijava prije nego što vam bude zaključan nalog. Molimo promijenite lozinku u dijalogu podešavanja.";
+"Password about to expire" = "Lozinka uskoro ističe";
+"Your password is going to expire in %{0} %{1}." = "Vaša lozinka ističe %{0} %{1}.";
+"days" = "dani";
+"hours" = "sati";
+"minutes" = "minuti";
+"seconds" = "sekundi";
+"Password change failed" = "Neuspješna promjena lozinke";
+"Password change failed - Permission denied" = "Neuspješna promjena lozinke - Dozvola odbijena";
+"Password change failed - Insufficient password quality" = "Neuspješna promjena lozinke - Nedovoljno kvalitetna lozinka";
+"Password change failed - Password is too short" = "Neuspješna promjena lozinke - Lozinka je previše kratka";
+"Password change failed - Password is too young" = "Neuspješna promjena lozinke - Lozinka je previše svježa";
+"Password change failed - Password is in history" = "Neuspješna promjena lozinke - Lozinka je već korišćena";
+"Unhandled policy error: %{0}" = "Neobrađena greška polise: %{0}";
+"Unhandled error response" = "Neobrađeni odziv greške";
+"Password change is not supported." = "Promjena lozinke nije podržana.";
+"Unhandled HTTP error code: %{0}" = "Neobrađena greška HTTP koda: %{0}";
+"New password" = "Nova lozinka";
+"Confirmation" = "Potvrda";
+"Cancel" = "Otkaži";
+"Please wait..." = "Molimo sačekajte...";
+"Close" = "Zatvori";
+"Missing search parameter" = "Nedostaje parametar pretrage";
+"Missing type parameter" = "Nedostaje parametar tip";

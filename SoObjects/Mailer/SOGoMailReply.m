@@ -153,6 +153,9 @@
 @implementation SOGoMailMacedonianReply
 @end
 
+@implementation SOGoMailMontenegrinReply
+@end
+
 @implementation SOGoMailNorwegianBokmalReply
 @end
 

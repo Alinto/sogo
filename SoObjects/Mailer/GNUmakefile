@@ -90,6 +90,8 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailLithuanianReply.wo \
 	SOGoMailMacedonianForward.wo \
 	SOGoMailMacedonianReply.wo \
+	SOGoMailMontenegrinForward.wo \
+	SOGoMailMontenegrinReply.wo \
 	SOGoMailNorwegianBokmalForward.wo \
 	SOGoMailNorwegianBokmalReply.wo \
 	SOGoMailNorwegianNynorskForward.wo \
