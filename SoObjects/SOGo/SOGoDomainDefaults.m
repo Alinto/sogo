@@ -322,6 +322,11 @@
   return [self stringArrayForKey: @"SOGoMailListViewColumnsOrder"];
 }
 
+- (BOOL) mailCertificateEnabled
+{
+  return [self boolForKey: @"SOGoMailCertificateEnabled"];
+}
+
 - (NSArray *) superUsernames
 {
   return [self stringArrayForKey: @"SOGoSuperUsernames"];

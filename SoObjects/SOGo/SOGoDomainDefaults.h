@@ -66,6 +66,7 @@
 - (BOOL) mailKeepDraftsAfterSend;
 - (BOOL) mailAttachTextDocumentsInline;
 - (NSArray *) mailListViewColumnsOrder;
+- (BOOL) mailCertificateEnabled;
 
 - (BOOL) aclSendEMailNotifications;
 - (BOOL) appointmentSendEMailNotifications;

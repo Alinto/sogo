@@ -238,6 +238,7 @@
         </md-tab>
 
         <!-- security tab -->
+        <var:if condition="showSecurityOptions">
         <md-tab id="accountSecurityView" ng-disabled="$AccountDialogController.account.isNew" label:label="Security">
           <md-content id="accountSecurityContent" class="md-padding">
 
@@ -345,6 +346,7 @@
 
           </md-content>
         </md-tab>
+        </var:if>
 
       </md-tabs>
 

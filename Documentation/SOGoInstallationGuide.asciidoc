@@ -2082,6 +2082,12 @@ parameter _SOGoSelectedAddressBook_.
 
 Defaults to `NO` when unset.
 
+|D |SOGoMailCertificateEnabled
+|Parameter used to enable S/MIME certificate management from the account editor of the
+preferences window.
+
+Defaults to `YES` when unset.
+
 |U |SOGoSelectedAddressBook
 |Parameter used to specify the address book in which to add unknown mail
 recipients if _SOGoMailAddOutgoingAddresses_ is enabled.

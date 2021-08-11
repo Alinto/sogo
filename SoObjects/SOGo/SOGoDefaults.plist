@@ -115,6 +115,7 @@
     SOGoMailComposeMessageType = "html";
     SOGoMailComposeFontSize = "0";
     SOGoMailDisplayRemoteInlineImages = "never";
+    SOGoMailCertificateEnabled = YES;
 
     SOGoMailAutoSave = "5";
 
