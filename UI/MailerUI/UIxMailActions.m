@@ -370,4 +370,24 @@
   return response;
 }
 
+- (id <WOActionResults>) exportAction
+{
+  NSString *disposition, *source;
+  SOGoMailObject *co;
+  WOResponse *response;
+
+  co = [self clientObject];
+  source = [co contentAsString];
+
+  response = [self responseWithStatus: 200];
+  [response setHeader: @"message/rfc822; charset=utf-8"
+	    forKey: @"content-type"];
+  disposition = [NSString stringWithFormat: @"attachment; filename=\"%@.eml\"", [co nameInContainer]];
+  [response setHeader: disposition forKey: @"Content-Disposition"];
+  [response setContent: [source dataUsingEncoding: NSUTF8StringEncoding]];
+
+  return response;
+}
+
+
 @end

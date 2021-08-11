@@ -230,6 +230,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Convert To Task";
 
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Download message";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Download message (zip)";
+
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "Download all attachments";
 

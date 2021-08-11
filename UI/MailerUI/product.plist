@@ -265,6 +265,11 @@
           actionClass = "UIxMailActions";
           actionName  = "markMessageRead";
         };
+        export = {
+          protectedBy = "View";
+          actionClass = "UIxMailActions";
+          actionName  = "export";
+        };
       };
     };
 

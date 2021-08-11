@@ -864,12 +864,12 @@
   };
 
   /**
-   * @function download
+   * @function downloadArchive
    * @memberof Message.prototype
-   * @desc Download the current message
+   * @desc Download the current message as a zip archive
    * @returns a promise of the HTTP operation
    */
-  Message.prototype.download = function() {
+  Message.prototype.downloadArchive = function() {
     var data, options;
 
     data = { uids: [this.uid] };
@@ -879,12 +879,22 @@
   };
 
   /**
-   * @function downloadAttachments
+   * @function download
    * @memberof Message.prototype
-   * @desc Download an archive of all attachments
+   * @desc Download the current message as a eml file
    * @returns a promise of the HTTP operation
    */
-  Message.prototype.downloadAttachments = function() {
+  Message.prototype.download = function() {
+    return Message.$$resource.download(this.$absolutePath(), 'export');
+  };
+
+  /**
+   * @function downloadAttachments
+   * @memberof Message.prototype
+   * @desc Download a zip archive of all attachments
+   * @returns a promise of the HTTP operation
+   */
+  Message.prototype.downloadAttachmentsArchive = function() {
     var options;
 
     options = { filename: l('attachments') + "-" + this.uid + ".zip" };
