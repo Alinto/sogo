@@ -309,10 +309,10 @@ static int cssEscapingCount;
       if (c == 0x0 ||
 	  c == 0x9 ||
           c == 0xA ||
-          c == 0xD ||
-          (c >= 0x20 && c < 0x334) || // Skip overstruck diacritics
-          (c > 0x338 && c < 0xD7FF) ||
-          (c >= 0xE000 && c <= 0xFFFD) ||
+          (c >= 0x20 && c < 0x300) || // Skip combining diacritical marks
+          (c > 0x36F && c < 0xD7FF) ||
+          (c >= 0xE000 && c < 0xFE00) || // Skip variation selectors
+          (c > 0xFE0F && c <= 0xFFFD) ||
           (c >= (wchar_t)0x10000 && c <= (wchar_t)0x10FFFF))
         {
           start[j] = c;
