@@ -182,6 +182,10 @@
 //
 // Mac OS X/10.14.6 (18G6042) AddressBookCore/1
 //
+// For 10.15, we see:
+//
+// Mac OS X/10.15.7 (19H1030) AddressBookCore/1
+//
 // For 11.0, we see:
 //
 // macOS/11.0.1 (20B50) AddressBookCore/2452
