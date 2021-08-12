@@ -24,6 +24,7 @@
 
 - (NSString *) aptSummary;
 - (NSString *) aptStartDate;
+- (NSString *) aptEndDate;
 - (NSString *) calendarName;
 - (iCalPerson *) organizer;
 

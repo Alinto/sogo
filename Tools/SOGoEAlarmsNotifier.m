@@ -158,7 +158,6 @@
   WOContext *localContext;
   WOApplication *app;
   SOGoAptMailReminder *p;
-  NSString *pageName;
   WOResourceManager *rm;
 
   SOGoAppointmentFolders *folders;
@@ -188,9 +187,7 @@
   folders = [userFolder privateCalendars: @"Calendar"
                                inContext: localContext];
 
-  pageName = [NSString stringWithFormat: @"SOGoAptMail%@", @"Reminder"];
-
-  p = [app pageWithName: pageName inContext: localContext];
+  p = [app pageWithName: @"SOGoAptMailReminder" inContext: localContext];
 
   parts = [containerPath componentsSeparatedByString: @"/"];
   if ([parts count] > 4)

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2020 Inverse inc.
+  Copyright (C) 2006-2021 Inverse inc.
   Copyright (C) 2000-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -106,7 +106,8 @@
   if (!oldStartDate)
     {
       ASSIGN (oldStartDate, [[self previousApt] startDate]);
-      if (![(iCalEvent*)[self previousApt] isAllDay])
+      if ([[self previousApt] isKindOfClass: [iCalToDo class]] ||
+          ![(iCalEvent*)[self previousApt] isAllDay])
         [oldStartDate setTimeZone: viewTZ];
     }
   return oldStartDate;
@@ -117,7 +118,8 @@
   if (!newStartDate)
     {
       ASSIGN (newStartDate, [[self apt] startDate]);
-      if (![(iCalEvent*)[self apt] isAllDay])
+      if ([[self apt] isKindOfClass: [iCalToDo class]] ||
+          ![(iCalEvent*)[self apt] isAllDay])
         [newStartDate setTimeZone: viewTZ];
     }
   return newStartDate;
@@ -134,12 +136,15 @@
           endDate = [(iCalEvent*)[self previousApt] endDate];
           if ([(iCalEvent*)[self previousApt] isAllDay])
             endDate = [endDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:-1];
+          else
+            [endDate setTimeZone: viewTZ];
           ASSIGN (oldEndDate, endDate);
         }
       else
-        ASSIGN (oldEndDate, [(iCalToDo*)[self previousApt] due]);
-      if (![(iCalEvent*)[self previousApt] isAllDay])
-        [oldEndDate setTimeZone: viewTZ];
+        {
+          ASSIGN (oldEndDate, [(iCalToDo*)[self previousApt] due]);
+          [oldEndDate setTimeZone: viewTZ];
+        }
     }
   return oldEndDate;
 }
@@ -155,12 +160,15 @@
           endDate = [(iCalEvent*)[self apt] endDate];
           if ([(iCalEvent*)[self apt] isAllDay])
             endDate = [endDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:-1];
+          else
+            [endDate setTimeZone: viewTZ];
           ASSIGN (newEndDate, endDate);
         }
       else
-        ASSIGN (newEndDate, [(iCalToDo*)[self apt] due]);
-      if (![(iCalEvent*)[self apt] isAllDay])
-        [newEndDate setTimeZone: viewTZ];
+        {
+          ASSIGN (newEndDate, [(iCalToDo*)[self apt] due]);
+          [newEndDate setTimeZone: viewTZ];
+        }
     }
   return newEndDate;
 }

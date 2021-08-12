@@ -56,10 +56,17 @@ static NSCharacterSet *wsSet = nil;
 
 - (void) setupValues
 {
+  NSString *formattedDate;
+
   [super setupValues];
 
-  [values setObject: [self aptStartDate]
-             forKey: @"StartDate"];
+  formattedDate = [self aptStartDate];
+  if (![formattedDate length])
+    // Task with a due date
+    formattedDate = [self aptEndDate];
+  if ([formattedDate length])
+    [values setObject: formattedDate
+               forKey: @"StartDate"];
 }
 
 - (NSString *) getBody
@@ -112,7 +119,7 @@ static NSCharacterSet *wsSet = nil;
     [self setupValues];
 
   s = [self labelForKey: @"Reminder: \"%{Summary}\" - %{StartDate}"
-                  inContext: context];
+              inContext: context];
 
   return [values keysWithFormat: s];
 }
