@@ -51,6 +51,7 @@
 - (void)releaseChannel:(EOAdaptorChannel *)_channel;
 - (void)releaseChannel:(EOAdaptorChannel *)_channel
            immediately:(BOOL)_immediately;
+- (void) releaseAllChannels;
 
 /* checking for tables */
 

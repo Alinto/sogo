@@ -399,6 +399,27 @@ static NSTimeInterval ChannelCollectionTimer = 5 * 60;
     }
 }
 
+- (void) releaseAllChannels
+{
+  EOAdaptorChannel *channel;
+  GCSChannelHandle *handle;
+  NSEnumerator *e;
+
+  e = [busyChannels objectEnumerator];
+  while ((handle = [e nextObject]))
+    {
+      [handle retain];
+      ASSIGN (handle->lastReleaseTime, [NSCalendarDate date]);
+      [busyChannels removeObject: handle];
+      channel = [handle channel];
+      if (debugPools)
+        [self logWithFormat: @"releaseAllChannels: freeing old channel (age %ds, %p) ", (int)[handle age], channel];
+      if ([channel isOpen])
+	[channel closeChannel];
+      [handle release];
+    }
+}
+
 /* checking for tables */
 
 - (BOOL) canConnect: (NSURL *) _url

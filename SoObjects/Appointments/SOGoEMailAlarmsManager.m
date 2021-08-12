@@ -77,12 +77,12 @@
 {
   iCalCalendar *calendar;
   GCSFolder *folder;
+  GCSFolderManager *fm;
   NSDictionary *eventRecord;
 
-  folder = [[GCSFolderManager defaultFolderManager]
-             folderAtPath: [record objectForKey: @"c_path"]];
-  eventRecord = [folder
-                  recordOfEntryWithName: [record objectForKey: @"c_name"]];
+  fm = [GCSFolderManager defaultFolderManager];
+  folder = [fm folderAtPath: [record objectForKey: @"c_path"]];
+  eventRecord = [folder recordOfEntryWithName: [record objectForKey: @"c_name"]];
   calendar = [iCalCalendar parseSingleFromSource:
                        [eventRecord objectForKey: @"c_content"]];
 
@@ -203,6 +203,7 @@
   SOGoAppointmentFolder *container;
   iCalEntityObject *entity;
   GCSAlarmsFolder *af;
+  GCSFolderManager *fm;
   iCalAlarm *alarm;
   NSMutableArray *alarms;
   NSDictionary *record;
@@ -210,7 +211,8 @@
   int count, max;
   NSString *owner;
 
-  af = [[GCSFolderManager defaultFolderManager] alarmsFolder];
+  fm = [GCSFolderManager defaultFolderManager];
+  af = [fm alarmsFolder];
   records = [af recordsForEntriesFromDate: fromDate toDate: toDate];
   max = [records count];
   alarms = [NSMutableArray arrayWithCapacity: max];
