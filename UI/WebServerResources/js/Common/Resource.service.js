@@ -277,7 +277,7 @@
           fileName = options.filename;
         }
         else {
-          getFileNameFromHeader(headers('content-disposition'));
+          fileName = getFileNameFromHeader(headers('content-disposition'));
         }
         saveAs(blob, fileName);
       }
