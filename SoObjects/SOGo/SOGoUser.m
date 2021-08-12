@@ -945,7 +945,7 @@
   [mailAccount setObject: delegates  forKey: @"delegates"];
 
   // 9. Security
-  if ([[_defaults mailCertificate] length])
+  if ([[self domainDefaults] mailCertificateEnabled] && [[_defaults mailCertificate] length])
     {
       security = [NSMutableDictionary new];
 

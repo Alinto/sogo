@@ -231,15 +231,15 @@
                     <var:string label:value="Return Receipt"/>
                   </sg-checkmark>
                 </md-menu-item>
-                <md-menu-item>
+                <md-menu-item ng-show="editor.account.$hasCertificate()">
                   <md-button class="md-primary" ng-disabled="true" ng-bind="::'Security' | loc"><!-- Security --></md-button>
                 </md-menu-item>
-                <md-menu-item>
+                <md-menu-item ng-show="::editor.account.$hasCertificate()">
                   <sg-checkmark ng-model="editor.message.editable.sign">
                     <var:string label:value="Sign"/>
                   </sg-checkmark>
                 </md-menu-item>
-                <md-menu-item>
+                <md-menu-item ng-show="::editor.account.$hasCertificate()">
                   <sg-checkmark ng-model="editor.message.editable.encrypt">
                     <var:string label:value="Encrypt"/>
                   </sg-checkmark>
@@ -248,7 +248,7 @@
                   <md-button class="md-primary" ng-disabled="true"><var:string label:value="Priority"/></md-button>
                 </md-menu-item>
                 <md-menu-item>
-                  <md-button ng-click="editor.message.editable.priority = 1">
+                  <md-button ng-click="::editor.message.editable.priority = 1">
                     <md-icon>{{ editor.message.editable.priority == 1 ? 'check' : null }}</md-icon>
                     <var:string label:value="highest"/>
                   </md-button>
@@ -286,7 +286,7 @@
         <!-- MESSAGE CONTENT -->
         <md-input-container class="md-block sg-mail-editor-content">
           <textarea name="content" class="plain-text"
-                    ng-if="editor.composeType == 'text'"
+                    ng-if="::(editor.composeType == 'text')"
                     rows="9"
                     ng-model="editor.message.editable.text"
                     ng-focus="editor.onTextFocus($event)"
@@ -296,7 +296,7 @@
                     sg-autogrow="true"
                     md-detect-hidden="md-detect-hidden"><!-- plain text editor --></textarea>
           <sg-ckeditor id="message-content"
-                       ng-if="editor.composeType == 'html'"
+                       ng-if="::(editor.composeType == 'html')"
                        config="editor.ckConfig"
                        on-instance-ready="editor.onHTMLReady($editor)"
                        on-focus="editor.onHTMLFocus($editor)"

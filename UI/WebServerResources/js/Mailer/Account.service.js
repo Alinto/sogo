@@ -393,6 +393,16 @@
   };
 
   /**
+   * @function $hasCertificate
+   * @memberof Account.prototype
+   * @desc Return true if the user has a S/MIME certificate for this account
+   * @returns a boolean value
+   */
+  Account.prototype.$hasCertificate = function() {
+    return this.security && this.security.hasCertificate;
+  };
+
+  /**
    * @function $certificate
    * @memberof Account.prototype
    * @desc View the S/MIME certificate details associated to the account.
@@ -401,7 +411,7 @@
   Account.prototype.$certificate = function() {
     var _this = this;
 
-    if (this.security && this.security.hasCertificate) {
+    if (this.$hasCertificate()) {
       if (this.$$certificate)
         return Account.$q.when(this.$$certificate);
       else {

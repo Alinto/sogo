@@ -410,7 +410,7 @@ static SoProduct *preferencesProduct = nil;
         {
           auxAccount = [accounts objectAtIndex: i];
           security = [auxAccount objectForKey: @"security"];
-          if (security)
+          if (security && [domainDefaults mailCertificateEnabled])
             {
               limitedSecurity = [NSMutableDictionary dictionaryWithDictionary: security];
               if ([limitedSecurity objectForKey: @"certificate"])
