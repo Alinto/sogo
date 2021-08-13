@@ -189,7 +189,17 @@
                          [self className], @"type",
                        type, @"contentType",
                        [[self generateResponse] contentAsString], @"content",
+                       [self filenameForDisplay], @"filename",
+                       [self preferredPathExtension], @"extension",
+                       [[self sizeFormatter] stringForObjectValue: [bodyInfo objectForKey: @"size"]], @"size",
+                       [self pathToAttachment], @"viewURL",
+                       [self pathForDownload], @"downloadURL",
                        nil];
+}
+
+- (NSDictionary *) attachmentIds
+{
+  return attachmentIds;
 }
 
 //

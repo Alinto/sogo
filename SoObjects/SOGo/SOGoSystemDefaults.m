@@ -1,6 +1,6 @@
 /* SOGoSystemDefaults.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2015 Inverse inc.
+ * Copyright (C) 2009-2021 Inverse inc.
  * Copyright (C) 2012 Jeroen Dekkers <jeroen@dekkers.ch>
  *
  * This file is free software; you can redistribute it and/or modify
@@ -432,6 +432,11 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
 - (BOOL) easDebugEnabled
 {
   return [self boolForKey: @"SOGoEASDebugEnabled"];
+}
+
+- (BOOL) tnefDecoderDebugEnabled
+{
+  return [self boolForKey: @"SOGoTnefDecoderDebugEnabled"];
 }
 
 - (BOOL) xsrfValidationEnabled

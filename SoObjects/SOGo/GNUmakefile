@@ -21,6 +21,7 @@ SOGo_HEADER_FILES = \
 	EOBitmaskQualifier.h 		\
 	EOQualifier+SOGoCacheObject.h 	\
 	GCSSpecialQueries+SOGoCacheObject.h \
+	RTFHandler.h                    \
 	SOGoCache.h			\
 	SOGoCacheGCSFolder.h		\
 	SOGoCacheGCSObject.h		\
@@ -100,6 +101,7 @@ SOGo_OBJC_FILES = \
 	EOBitmaskQualifier.m		\
 	EOQualifier+SOGoCacheObject.m	\
 	GCSSpecialQueries+SOGoCacheObject.m \
+	RTFHandler.m                    \
 	SOGoCache.m			\
 	SOGoCacheGCSFolder.m		\
 	SOGoCacheGCSObject.m		\

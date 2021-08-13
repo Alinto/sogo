@@ -26,6 +26,7 @@
     SOGoMemcachedHost = "localhost";
 
     SOGoUIxDebugEnabled = NO;
+    SOGoTnefDecoderDebugEnabled = NO;
 
     SOGoLDAPContactInfoAttribute = "description";
 

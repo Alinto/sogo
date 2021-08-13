@@ -361,9 +361,23 @@
                 };
               }
             }
-            _.forEach(part.content, function(mixedPart) {
-              _visit(mixedPart);
+            var winmail = _.find(part.content, function(mixedPart) {
+              // Ignore empty content -- that could mean a decoding error server-side.
+              return mixedPart.type == 'UIxMailPartTnefViewer' && mixedPart.content.length > 0;
             });
+
+            if (winmail && !_.find(part.content, function(mixedPart) {
+              return mixedPart.type == 'UIxMailPartAlternativeViewer';
+            })) {
+              // If there's no alternate part in the message, show the winmail.dat attachment only.
+              // Otherwise, show all parts.
+              _visit(winmail);
+            }
+            else {
+              _.forEach(part.content, function(mixedPart) {
+                _visit(mixedPart);
+              });
+            }
           }
           else {
             if (angular.isUndefined(part.safeContent)) {

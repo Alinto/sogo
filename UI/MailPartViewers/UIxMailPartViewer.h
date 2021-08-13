@@ -69,6 +69,7 @@
 - (SOGoMailBodyPart *) clientPart;
 - (id) renderedPart;
 
+- (NSDictionary *) attachmentIds;
 - (void) setAttachmentIds: (NSDictionary *) newAttachmentIds;
 
 - (NSData *)flatContent;
