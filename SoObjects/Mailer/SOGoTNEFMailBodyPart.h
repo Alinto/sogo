@@ -19,14 +19,14 @@
   02111-1307, USA.
 */
 
-#ifndef __Mailer_SOGoTnefMailBodyPart_H__
-#define __Mailer_SOGoTnefMailBodyPart_H__
+#ifndef __Mailer_SOGoTNEFMailBodyPart_H__
+#define __Mailer_SOGoTNEFMailBodyPart_H__
 
 #import "SOGoMailBodyPart.h"
 
 @class NGMimeBodyPart;
 
-@interface SOGoTnefMailBodyPart : SOGoMailBodyPart
+@interface SOGoTNEFMailBodyPart : SOGoMailBodyPart
 {
   BOOL debugOn;
   NSData *part;
@@ -50,4 +50,4 @@
 
 @end
 
-#endif /* __Mailer_SOGoTnefMailBodyPart_H__ */
+#endif /* __Mailer_SOGoTNEFMailBodyPart_H__ */

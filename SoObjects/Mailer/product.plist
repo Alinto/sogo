@@ -59,7 +59,7 @@
     SOGoMessageMailBodyPart = {
       superclass    = "SOGoMailBodyPart";
     };
-    SOGoTnefMailBodyPart = {
+    SOGoTNEFMailBodyPart = {
       superclass    = "SOGoMailBodyPart";
     };
     SOGoCalendarMailBodyPart = {

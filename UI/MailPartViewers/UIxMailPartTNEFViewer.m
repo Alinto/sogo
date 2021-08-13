@@ -28,12 +28,12 @@
 #import <NGMime/NGMimeType.h>
 
 #import <SoObjects/Mailer/NSString+Mail.h>
-#import <SoObjects/Mailer/SOGoTnefMailBodyPart.h>
+#import <SoObjects/Mailer/SOGoTNEFMailBodyPart.h>
 
 #import "UIxMailRenderingContext.h"
-#import "UIxMailPartTnefViewer.h"
+#import "UIxMailPartTNEFViewer.h"
 
-@implementation UIxMailPartTnefViewer
+@implementation UIxMailPartTNEFViewer
 
 
 - (void) _attachmentIdsFromBodyPart: (id) thePart
@@ -84,10 +84,10 @@
   NSArray *parts;
   NSInteger i, max;
   NSMutableArray *renderedParts;
-  SOGoTnefMailBodyPart *tnefPart;
+  SOGoTNEFMailBodyPart *tnefPart;
   id viewer, info;
 
-  tnefPart = (SOGoTnefMailBodyPart *)[self clientPart];
+  tnefPart = (SOGoTNEFMailBodyPart *)[self clientPart];
   parts = [[tnefPart bodyParts] parts];
   max = [parts count];
   renderedParts = [NSMutableArray arrayWithCapacity: max];
@@ -126,4 +126,4 @@
                        nil];
 }
 
-@end /* UIxMailPartTnefViewer */
+@end /* UIxMailPartTNEFViewer */

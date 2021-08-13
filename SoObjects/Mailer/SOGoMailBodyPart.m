@@ -588,7 +588,7 @@ static BOOL debugOn = NO;
   else if ([mimeType isEqualToString: @"message/rfc822"])
     classString = @"SOGoMessageMailBodyPart";
   else if ([mimeType isEqualToString: @"application/ms-tnef"])
-    classString = @"SOGoTnefMailBodyPart";
+    classString = @"SOGoTNEFMailBodyPart";
   else
     {
       classString = @"SOGoMailBodyPart";

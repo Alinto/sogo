@@ -25,7 +25,7 @@ MailPartViewers_OBJC_FILES += \
 	UIxMailPartAlternativeViewer.m	\
 	UIxMailPartMessageViewer.m	\
 	UIxMailPartICalViewer.m		\
-	UIxMailPartTnefViewer.m		\
+	UIxMailPartTNEFViewer.m		\
 	\
 	UIxMailPartICalActions.m
 

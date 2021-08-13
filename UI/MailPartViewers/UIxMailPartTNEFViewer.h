@@ -1,4 +1,4 @@
-/* UIxMailPartTnefViewer.h - this file is part of SOGo
+/* UIxMailPartTNEFViewer.h - this file is part of SOGo
  *
  * Copyright (C) 2021 Inverse inc.
  *
@@ -23,7 +23,7 @@
 
 #import "UIxMailPartMixedViewer.h"
 
-@interface UIxMailPartTnefViewer : UIxMailPartMixedViewer
+@interface UIxMailPartTNEFViewer : UIxMailPartMixedViewer
 {
 }
 

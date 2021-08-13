@@ -176,7 +176,7 @@ static BOOL showNamedTextAttachmentsInline = NO;
 
 - (WOComponent *) tnefViewer
 {
-  return [viewer pageWithName: @"UIxMailPartTnefViewer"];
+  return [viewer pageWithName: @"UIxMailPartTNEFViewer"];
 }
 
 /* main viewer selection */

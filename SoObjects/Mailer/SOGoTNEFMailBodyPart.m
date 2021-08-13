@@ -39,14 +39,14 @@
 
 #import <ytnef.h>
 
-#import "SOGoTnefMailBodyPart.h"
+#import "SOGoTNEFMailBodyPart.h"
 
 #define UPR_TO_ATTENDEES_STRING  0x823B
 #define UPR_CC_ATTENDEES_STRING  0x823C
 #define UPR_ALL_ATTENDEES_STRING 0x8238
 
 /*
-  SOGoTnefMailBodyPart
+  SOGoTNEFMailBodyPart
 
   A specialized SOGoMailBodyPart subclass for application/ms-tnef attachments. Can
   be used to attach special SoMethods.
@@ -162,7 +162,7 @@ unsigned char GetRruleMonthNum(unsigned char a, unsigned char b) {
   return (0);
 }
 
-@implementation SOGoTnefMailBodyPart
+@implementation SOGoTNEFMailBodyPart
 
 /* Overwritten methods */
 
@@ -951,4 +951,4 @@ unsigned char GetRruleMonthNum(unsigned char a, unsigned char b) {
   return bodyPart;
 }
 
-@end /* SOGoTnefMailBodyPart */
+@end /* SOGoTNEFMailBodyPart */
