@@ -174,7 +174,6 @@ unsigned char GetRruleMonthNum(unsigned char a, unsigned char b) {
       part = nil;
       filename = nil;
       bodyParts = [[NGMimeMultipartBody alloc] init];
-      [bodyParts retain];
     }
 
   return self;
@@ -697,13 +696,13 @@ unsigned char GetRruleMonthNum(unsigned char a, unsigned char b) {
                   isRealAttachment = YES;
 
                   TNEFStruct emb_tnef;
-                  DWORD signature;
+                  DWORD object_signature;
 
                   if (isObject)
                     {
                       // This is an "embedded object", so skip the 16-byte identifier first.
-                      memcpy(&signature, filedata->data + 16, sizeof(DWORD));
-                      if (TNEFCheckForSignature(signature) == 0) {
+                      memcpy(&object_signature, filedata->data + 16, sizeof(DWORD));
+                      if (TNEFCheckForSignature(object_signature) == 0) {
                         TNEFInitialize(&emb_tnef);
                         emb_tnef.Debug = tnef.Debug;
                         if (TNEFParseMemory(filedata->data + 16, filedata->size - 16, &emb_tnef) != -1)
@@ -715,8 +714,8 @@ unsigned char GetRruleMonthNum(unsigned char a, unsigned char b) {
                     }
                   else
                     {
-                      memcpy(&signature, filedata->data, sizeof(DWORD));
-                      if (TNEFCheckForSignature(signature) == 0) {
+                      memcpy(&object_signature, filedata->data, sizeof(DWORD));
+                      if (TNEFCheckForSignature(object_signature) == 0) {
                         TNEFInitialize(&emb_tnef);
                         emb_tnef.Debug = tnef.Debug;
                         if (TNEFParseMemory(filedata->data, filedata->size, &emb_tnef) != -1)
