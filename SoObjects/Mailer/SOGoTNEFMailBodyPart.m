@@ -17,6 +17,9 @@
   License along with OGo; see the file COPYING.  If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
+
+  The following code is a derivative work of the code from the Yerase's TNEF
+  Stream Reader which is licensed GPLv2.
 */
 
 #import <Foundation/NSArray.h>
