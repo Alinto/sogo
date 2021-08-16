@@ -93,6 +93,9 @@
 @implementation SOGoMailBrazilianPortugueseReply
 @end
 
+@implementation SOGoMailBulgarianReply
+@end
+
 @implementation SOGoMailCatalanReply
 @end
 

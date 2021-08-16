@@ -225,10 +225,22 @@
 
 @end
 
+@implementation SOGoFolderArabicAdditionAdvisory
+@end
+
+@implementation SOGoFolderArabicRemovalAdvisory
+@end
+
 @implementation SOGoFolderBrazilianPortugueseAdditionAdvisory
 @end
 
 @implementation SOGoFolderBrazilianPortugueseRemovalAdvisory
+@end
+
+@implementation SOGoFolderBulgarianAdditionAdvisory
+@end
+
+@implementation SOGoFolderBulgarianRemovalAdvisory
 @end
 
 @implementation SOGoFolderCzechAdditionAdvisory

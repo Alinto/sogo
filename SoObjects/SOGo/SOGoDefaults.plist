@@ -45,7 +45,7 @@
     SOGoSupportedLanguages = (
         "Arabic",
         "Basque",
-        "BrazilianPortuguese",
+        "Bulgarian",
         "Catalan",
         "ChineseChina",
         "ChineseTaiwan",
@@ -71,6 +71,7 @@
         "NorwegianNynorsk",
         "Polish",
         "Portuguese",
+        "BrazilianPortuguese",
         "Romanian",
         "Russian",
         "Serbian",

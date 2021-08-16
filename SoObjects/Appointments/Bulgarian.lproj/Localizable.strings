@@ -1,0 +1,79 @@
+"Inviting the following persons is prohibited:" = "Покана на следните лица е забранена:";
+"Personal Calendar" = "Личен календар";
+vevent_class0 = "(Публично събитие)";
+vevent_class1 = "(Частно събитие)";
+vevent_class2 = "(Поверително събитие)";
+
+vtodo_class0 = "(Публична задача)";
+vtodo_class1 = "(Частна задача)";
+vtodo_class2 = "(Поверителна задача)";
+
+/* Receipts */
+"The event \"%{Summary}\" was created" = "Събитието \"%{Summary}\" беше създадено";
+"The event \"%{Summary}\" was deleted" = "Събитието \"%{Summary}\" беше изтрито";
+"The event \"%{Summary}\" was updated" = "Събитието \"%{Summary}\" беше обновено";
+"The following attendees(s) were notified" = "Следният(ите) участник(ици) бяха уведомени";
+"The following attendees(s) were added" = "Следният(ите) участник(ици) бяха добавени";
+"The following attendees(s) were removed" = "Следният(ите) участник(ици) бяха премахнати";
+
+/* IMIP messages */
+"calendar_label" = "Календар";
+"startDate_label" = "Начало";
+"endDate_label" = "Край";
+"time_label" = "Време";
+"to_label" = "до";
+"due_label" = "Крайна дата";
+"location_label" = "Място";
+"summary_label" = "Обобщение";
+"comment_label" = "Коментар";
+"organizer_label" = "Организатор";
+"attendee_label" = "Участник";
+
+/* Invitation */
+"Event Invitation: \"%{Summary}\"" = "Покана за събитие: \"%{Summary}\"";
+"(sent by %{SentBy}) " = "(изпратена от %{SentBy}) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} Ви кани на %{Summary}.\n\nНачало: %{StartDate}\nКрай: %{EndDate}\nОписание: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} Ви кани на %{Summary}.\n\nНачало: %{StartDate} от %{StartTime}\nКрай: %{EndDate} от %{EndTime}\nОписание: %{Description}";
+
+/* Deletion */
+"Event Cancelled: \"%{Summary}\"" = "Отменено събитие: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText} отмени това събитие: %{Summary}.\n\nНачало: %{StartDate}\nКрай: %{EndDate}\nОписание: %{Description}";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText} отмени това събитие: %{Summary}.\n\nНачало: %{StartDate} от %{StartTime}\nКрай: %{EndDate} от %{EndTime}\nОписание: %{Description}";
+
+/* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "Ангажимента \"%{Summary}\" за %{OldStartDate} беше променен";
+"The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
+= "Ангажимента \"%{Summary}\" за %{OldStartDate} от %{OldStartTime} беше променен";
+"The following parameters have changed in the \"%{Summary}\" meeting:"
+= "Променени са следните параметри за \"%{Summary}\":";
+"Please accept or decline those changes."
+= "Моля, потвърдете или отхвърлете тези промени.";
+
+/* Reply */
+"Accepted invitation: \"%{Summary}\"" = "Потвърдена покана: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "Отхвърлена покана: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Упълномощена покана: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "Все още няма взето решение на покана: \"%{Summary}\"";
+"%{Attendee} %{SentByText}has accepted your event invitation."
+= "%{Attendee} %{SentByText} потвърди поканата за събитие.";
+"%{Attendee} %{SentByText}has declined your event invitation."
+= "%{Attendee} %{SentByText} отказа поканата за събитие.";
+"%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
+= "%{Attendee} %{SentByText} отхвърли упълномощена покана на %{Delegate}.";
+"%{Attendee} %{SentByText}has not yet decided upon your event invitation."
+= "%{Attendee} %{SentByText} все още няма решение на поканата за събитие.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Напомняне: \"%{Summary}\" - %{StartDate}";
+
+/* Resources */
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Няма достъп до ресурсите: \"%{Cn} %{SystemEmail}\"";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Максимален брой едновременни записвания (%{NumberOfSimultaneousBookings}) достижим ресурс \"%{Cn} %{SystemEmail}\". Конфликтно е събитие \"%{EventTitle}\", с начало %{StartDate}.";
+
+/* Participation role */
+"Your participation is required to this event" = "Вашето присъствие е необходимо за това събитие";
+"Your participation is optional to this event" = "Вашето присъствие е пожелателно за това събитие";
+"Your participation is not required to this event" = "Вашето присъствие не е необходимо за това събитие";

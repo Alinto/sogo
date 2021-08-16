@@ -45,6 +45,9 @@
 @interface SOGoMailBrazilianPortugueseReply : SOGoMailReply
 @end
 
+@interface SOGoMailBulgarianReply : SOGoMailReply
+@end
+
 @interface SOGoMailCatalanReply : SOGoMailReply
 @end
 

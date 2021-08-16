@@ -51,6 +51,8 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailArabicReply.wo \
 	SOGoMailBrazilianPortugueseForward.wo \
 	SOGoMailBrazilianPortugueseReply.wo \
+	SOGoMailBulgarianForward.wo \
+	SOGoMailBulgarianReply.wo \
 	SOGoMailCatalanForward.wo \
 	SOGoMailCatalanReply.wo \
 	SOGoMailChineseChinaForward.wo \

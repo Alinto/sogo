@@ -294,6 +294,9 @@
 @implementation SOGoMailBrazilianPortugueseForward
 @end
 
+@implementation SOGoMailBulgarianForward
+@end
+
 @implementation SOGoMailCatalanForward
 @end
 

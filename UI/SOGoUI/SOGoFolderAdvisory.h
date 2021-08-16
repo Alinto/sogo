@@ -53,10 +53,22 @@
 @interface SOGoFolderRemovalAdvisory : SOGoFolderAdvisory
 @end
 
+@interface SOGoFolderArabicAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderArabicRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
 @interface SOGoFolderBrazilianPortugueseAdditionAdvisory : SOGoFolderAdditionAdvisory
 @end
 
 @interface SOGoFolderBrazilianPortugueseRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
+@interface SOGoFolderBulgarianAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderBulgarianRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
 @interface SOGoFolderCzechAdditionAdvisory : SOGoFolderAdditionAdvisory

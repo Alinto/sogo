@@ -1,0 +1,27 @@
+/* this file is in UTF-8 format! */
+
+"Help" = "Помощ";
+"Close" = "Затваряне";
+"Modules" = "Модули";
+/* Modules short names */
+"ACLs" = "ACLs";
+/* Modules titles */
+"ACLs_title" = "Управление контрола на достъп до потребителски папки";
+/* Modules descriptions */
+"ACLs_description" = "<p>Администрацията на списъците за контрол на достъпа (ACLs) дава възможност за определяне на достъпа до всеки потребителски клендар и адресна книга.</p><p> За да контролирате достъпа до потребителска папка, напишете потребителското име на собственика в търсачката в горната част на прозореца кликнете двапъти върху желаната папка.</p?";
+"Name or Email" = "Име или имейл";
+"ACLs saved" = "ACL-ите бяха запазени";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Начало на търсене за редактиране на правата";
+/* Rights module: Empty search result */
+"No matching user" = "Не съотвестващ потребител";
+/* Rights module: no selection */
+"No resource selected" = "Няма избран ресурс";
+"Add User" = "Добави потребител";
+"Subscribe User" = "Потребителско вписване";
+"Rights" = "Права";
+"Search Users" = "Търсене потребител";
+"users found" = "открити потребителя";
+"No resource" = "Без ресурс";
+"Any Authenticated User" = "Всеки ототризиран потребител";
+"Public Access" = "Публичен достъп";

@@ -1,0 +1,464 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "Създаване";
+"Empty Trash" = "Изпразване на кошчето";
+"Delete"      = "Изтриване";
+"Expunge"     = "Задраскване";
+"Forward"     = "Препращане";
+"Get Mail"    = "Проверка на пощата";
+"Junk"        = "Спам";
+"Not junk"    = "Не е боклук";
+"Reply"       = "Отговор";
+"Reply All"   = "Отговор до всички";
+"Print"       = "Печат";
+"Stop"        = "Стоп";
+"Write"       = "Пиши";
+"Search"      = "Търсене";
+"Send" = "Изпращане";
+"Contacts" = "Контакти";
+"Attach" = "Прикачи";
+"Save" = "Запазване";
+"Options" = "Свойства";
+"Close" = "Затваряне";
+"Size" = "Размер";
+
+/* Tooltips */
+"Send this message now" = "Изпрати писмото сега";
+"Select a recipient from an Address Book" = "Избери получател от адресната книга";
+"Include an attachment" = "Добавяне на файл";
+"Save this message" = "Записване на писмото";
+"Get new messages" = "Получаване на нови писма";
+"Create a new message" = "Ново писмо";
+"Go to address book" = "Адресна книга";
+"Reply to the message" = "Отговор";
+"Reply to sender and all recipients" = "Отговори на подателя и на всички получатели";
+"Forward selected message" = "Препрати избраното писмо";
+"Delete selected message or folder" = "Изтрий избраното писмо или папка";
+"Print this message" = "Разпечатай писмото";
+"Stop the current transfer" = "Спри текущата операция";
+"Attachment" = "Прикачени";
+"Unread" = "Непрочетени";
+"Flagged" = "Отбелязано с флаг";
+"Search multiple mailboxes" = "Търсене на множество пощенски кутии";
+
+/* Main Frame  */
+"Home"                 = "Начало";
+"Calendar"             = "Календар";
+"Addressbook"          = "Адресна книга";
+"Mail"                 = "Поща";
+"Right Administration" = "Администраторски права";
+"Help" = "Помощ";
+
+/* Mail account main windows */
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Добре дошли. Използвайте списъка от ляво, за да проверите вашите пощенски кутии.";
+"Read messages"       = "Четене на писмата";
+
+/* Tooltip for fab button */
+"Write a new message" = "Ново писмо";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Напиши съобщението в нов прозорец";
+
+"Share" = "Споделяне";
+"Account" = "Профил";
+"Shared Account" = "Споелен профил";
+
+/* A mailbox is selected, but no message (only shown on large screens) */
+"No message selected" = "Няма избрано съобщение";
+
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "Няма избрана пощенска кутия";
+
+"An error occured while communicating with the mail server" = "Възникна грешка в комуникацията с пощенският сървър";
+
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "Папката компресирана";
+/* Empty Trash success message */
+"Trash emptied" = "Кошчето изпразнено";
+
+/* acls */
+"Access rights to" = "Право на достъп за";
+"For user" = "За потребител";
+"Any Authenticated User" = "Всеки оторизиран потребител";
+"List and see this folder" = "Прегледай папката";
+"Read mails from this folder" = "Четене на писмата в тази папка";
+"Mark mails read and unread" = "Маркирай писмата като прочетени и непрочетени";
+"Modify the flags of the mails in this folder" = "Промяна на флаговете на писмата в папката";
+"Insert, copy and move mails into this folder" = "Въвеждане, копиране и преместванв на писмата в тази папка";
+"Post mails" = "Изпращане на писмата";
+"Add subfolders to this folder" = "Добавяне на поддиректории";
+"Remove this folder" = "Изтриване на папката";
+"Erase mails from this folder" = "Изтриване на писмата от папката";
+"Expunge this folder" = "Маркиране на писмата като изтрити";
+"Export This Folder" = "Експортиране на тази папка ";
+"Modify the acl of this folder" = "Промяна на правата за достъп към папката";
+"Saved Messages.zip" = "Saved Messages.zip";
+"Update" = "Обновяване";
+"Cancel" = "Отмяна";
+
+/* Mail edition */
+"From"          = "От";
+"Subject"       = "Тема:";
+"To"            = "До";
+"Cc"            = "Копие";
+"Bcc"           = "Скрито копие";
+"Reply-To"	= "Отговор до";
+"Add address"   = "Добави адрес";
+"Body"          = "Тяло";
+"Open" = "Отвори";
+"Select All" = "Избери всички";
+"Select Message" = "Избери съобщение";
+"Attach Web Page..." = "Добави web страница";
+"file" = "файл";
+"files" = "файла";
+"Save all" = "Запис на всички";
+"to"            = "До";
+"cc"            = "Копие";
+"bcc"           = "Скрито копие";
+"Add a recipient" = "Добави получател";
+"Edit Draft..." = "Редактирай чернова";
+"Load Images" = "Зареди писмо";
+"Return Receipt" = "Уверение че е получено";
+"Choose which identity to send this message from" = "Изберете от чие име да бъде изпратено това съобщение";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Подателят желае да бъде уведомен, когато прочетете това писмо. Да уведомя ли подателя?";
+"Return Receipt (displayed) - %@"= "Потвърждение за получаване - %@";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Това е обратна разписка за имейла който изпрати на %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.";
+"Security" = "Сигурност";
+"Sign" = "Подпис";
+"Encrypt" = "Криптирай";
+"Priority" = "Приоритет";
+"highest" = "Най-висок";
+"high" = "Висок";
+"normal" = "Нормален";
+"low" = "Нисък";
+"lowest" = "Най-нисък";
+"This mail is being sent from an unsecure network!" = "Този имейл е изпратен от незащитен мрежа!";
+"Address Book" = "Списък контакти";
+"Search For" = "Търсене за";
+
+/* Popup "show" */
+"all"     = "всички";
+"read"    = "прочетено";
+"unread"  = "непрочетени";
+"deleted" = "изтрито";
+"flagged" = "с флаг";
+
+/* MailListView */
+"Sender" = "Подател";
+"Subject or Sender" = "Обект или Подател";
+"To or Cc" = "До или ЯК";
+"Entire Message" = "Цялото съобщение";
+"Date"          = "Дата";
+"View"          = "Преглед";
+"All"           = "Всичко";
+"No message"    = "Няма съобщение";
+"messages"      = "съобщения";
+"Yesterday"     = "Вчера";
+"first"         = "Първо";
+"previous"      = "Предишно";
+"next"          = "Следващо";
+"last"          = "Последно";
+"msgnumber_to"  = "до";
+"msgnumber_of"  = "от";
+"Mark Unread" = "Маркирай като непрочетени";
+"Mark Read"   = "Маркира прочетени";
+"Untitled" = "Без заглавие";
+
+/* Tree */
+"SentFolderName"   = "Изпратени";
+"TrashFolderName"  = "Кошче";
+"InboxFolderName"  = "Входящи";
+"DraftsFolderName" = "Чернови";
+"JunkFolderName" = "Спам";
+"SieveFolderName"  = "Филтри";
+"Folders"          = "Папки"; /* title line */
+
+/* MailMoveToPopUp */
+"MoveTo"        = "Преместване;";
+
+/* Address Popup menu */
+"Add to Address Book..." = "Добави към Списък с контакти ...";
+"Successfully created card" = "Успешно създаване на карта";
+"Compose Mail To" = "Създаване имейл до";
+"Create Filter From Message..." = "Създаване на филтър от съобщение ...";
+
+/* Image Popup menu */
+"Save Image" = "Запис изображение";
+"Save Attachment" = "Запис прикачени";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "Отвори в нов прозорец";
+"Copy Folder Location" = "Копира локация на папка";
+"Subscribe..." = "Вписване ...";
+"Mark Folder Read" = "Маркира прочетени папки";
+"New Folder..." = "Нова папка ...";
+"Compact This Folder" = "Компресиране на тази папка";
+"Search Messages..." = "Търсене съобщения ...";
+"Sharing..." = "Споделяне ...";
+"New Subfolder..." = "Нова подпапка ...";
+"Rename Folder..." = "Преименуване на папка ...";
+"Delete Folder" = "Изтриване на папка";
+"Use This Folder For" = "Ползване на тази папка за";
+"Get Messages for Account" = "Взема съобщения за профил";
+"Properties..." = "Свойства ...";
+"Delegation..." = "Пълномощно ...";
+
+/* Use This Folder menu */
+"Sent Messages" = "Изпращане на съобщения";
+"Drafts" = "Чернови";
+"Deleted Messages" = "Изтрити съобщения";
+"Junk Messages" = "Спам съобщения";
+
+/* Message list popup menu */
+"Open Message In New Window" = "Отваряне на съобщения в нов прозорец";
+"Reply to Sender Only" = "Отговор само на подателя";
+"Reply to All" = "Отговор на всички";
+"Edit As New..." = "Редактиране като ново ...";
+"Move To" = "Преместване към";
+"Copy To" = "Копиране към";
+"Label" = "Етикет";
+"Mark" = "Маркиране";
+"Save As..." = "Запис като ...";
+"Print Preview" = "Преглед печат";
+"View Message Source" = "Преглед на изходния код на съобщението";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "Превърни в събитие";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "Превърни в задача";
+
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Свали съобщението";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Свали съобщението (zip файл)";
+
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Изтегли всички прикачени файлове";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "Прикачени файлове";
+
+"Print..." = "Печат ...";
+"Delete Message" = "Изтриване на съобщение";
+"Delete Selected Messages" = "Изтриване на избраните съобщения";
+"Mark the selected messages as junk" = "Маркирай избраните писма като спам";
+"Mark the selected messages as not junk" = "Маркирай избраните съобщения че не са Спам";
+
+/* Text appended to the recipients list when there are too many recipients */
+"and %{0} more..." = "и %{0} още...";
+
+/* Button label to hide extended list of recipients */
+"Hide" = "Скрий";
+
+/* Number of selected messages in list */
+"selected" = "избрано";
+
+/* Date formatting from one time to another time */
+"to_time" = "до";
+
+/* Date formatting from one day to another day */
+"to_date" = "до";
+
+/* Encrypted message notification */
+"This message is encrypted" = "Съобщението е криптирано";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Това съобщение не може да бъде декодирано. Моля, уверете се, че сте качили сертификата си S / MIME от модула за предпочитания за електронна поща.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Не може да се провери подписът на съобщението";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "Съобщението бе променено";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Грешка при четенето на сертификата. Моля, инсталирайте нов сертификат.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "Няма сертификат, свързан с профил.";
+
+/* Invalid message signature */
+"Digital signature is not valid" = "Невалиден цифров подпис";
+
+/* Valid message signature */
+"Message is signed" = "Съобщението е подписано";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Невалиден цифров подпис";
+
+"This Folder" = "Тази папка";
+
+/* Label popup menu */
+"None" = "Нищо";
+
+/* Mark popup menu */
+"As Read" = "Като прочетено";
+"Thread As Read" = "В продължение като прочетено";
+"As Read By Date..." = "Като прочетено от дата ...";
+"All Read" = "Всички прочетени";
+"Flag" = "Флаг";
+"As Junk" = "Като боклук";
+"As Not Junk" = "Не като боклук";
+"Run Junk Mail Controls" = "Контрол на боклука в пощата";
+"Search messages in" = "Търсене на съобщения в";
+"Search" = "Търсене";
+"Search subfolders" = "Търсене на подпапки";
+"Match any of the following" = "Съвпадение по някое от следните";
+"Match all of the following" = "Съвпадение по всички от следните";
+"contains" = "съдържа";
+"does not contain" = "не съдържа";
+"No matches found" = "Няма открити съвпадения";
+"results found" = "открити резултати";
+"result found" = "открит резултат";
+"Please specify at least one filter" = "Моля, посочете поне един филтър";
+
+/* Folder operations */
+"Name" = "Име";
+"Enter the new name of your folder"
+ ="Въведи новото име на твоята папка";
+"Do you really want to move this folder into the trash ?"
+ = "Наистина ли искате да преместите тази папка в кошчето ?";
+"Operation failed" = "Неуспешна операция";
+"Quota" = "Квота :";
+"quotasFormat" = "%{0}% ползвани от %{1} MB";
+"messageQuotasFormat" = "%{0}% от %{1} съобщения";
+"Unable to move/delete folder." = "Папката не може да бъде преместена / изтрита.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "Пощенската кутия не можа да бъде преместена в кошчето. Искате ли да я изтриете веднага?";
+
+/* Confirmation message when deleting multiple messages */
+"Are you sure you want to delete the selected messages?" = "Сигурни ли сте, че искате да изтриете избраните съобщения?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} съобщение(я) копирани";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} съобщение(я)  преместени";
+
+"Please select a message." = "Моля, изберете съобщение.";
+"Please select a message to print." = "Моля, изберете съобщение за печат.";
+"Please select only one message to print." = "Моля, изберете само едно съобщение за печат.";
+"The message you have selected doesn't exist anymore." = "Съобщението, което сте избрали вече не съществува.";
+"The folder with name \"%{0}\" could not be created."
+= "Папката с име \"%{0}\" не можа да бъде създадена.";
+"This folder could not be renamed to \"%{0}\"."
+= "Тази папка не можа да бъде преименувана на \"%{0}\".";
+"The folder could not be deleted."
+= "Папката не можа да бъде изтрита.";
+"The trash could not be emptied."
+= "Кошчето не можа да бъде изпразнено.";
+"The folder functionality could not be changed."
+= "Функционалността на папката не можа да се промени.";
+"You need to choose a non-virtual folder!" = "Необходимо е да изберете не виртуална папка !";
+"Moving a message into its own folder is impossible!"
+= "Преместване на съобщение в своя папка е невъзможно !";
+"Copying a message into its own folder is impossible!"
+= "Копиране на съобщение в собствена папка е невъзможно !";
+
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "Съобщенията не могат да бъдат преместени в кошчето. Бихте ли искали да ги изтриете веднага?";
+
+/* Message editing */
+"Please specify a subject." = "Моля задайте тема";
+"error_missingsubject" = "Съобщението е без тема. Сигурни ли, сте че искате да го изпратите ?";
+"error_missingrecipients" = "Моля, посочете поне един получател.";
+"Send Anyway" = "Изпрати въпреки това";
+"Error while saving the draft" = "Грешка при запазване на черновата";
+
+/* Error when uploading a file attachment */
+"Error while uploading the file \"%{0}\":" = "Грешка при качването на файла \"%{0}\":";
+"There is an active file upload. Closing the window will interrupt it." = "Активно е качване на файл. Затварянето на прозореца ще го прекъсне.";
+"Message is too big" = "Съобщението е прекалено голямо";
+
+/* Appears while sending the message */
+"Sending" = "Изпращане";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Изпратено";
+
+"cannot send message: (smtp) all recipients discarded" = "Не може да се изпрати съобщение: всички получатели са невалидни.";
+"cannot send message (smtp) - recipients discarded" = "Не може да се изпрати съобщение. Следните получатели са невалидни";
+"cannot send message: (smtp) error when connecting" = "Не може да се изпрати съобщение: грешка при свързване със SMTP сървър.";
+
+/* Contacts list in mail editor */
+"Email" = "Имейл";
+"More mail options" = "Още имейл опции";
+"Delegation" = "Упълномощаване";
+"Add User" = "Добави потребител";
+"Add a tag" = "Добави етикет";
+"reply" = "отговор";
+"Edit" = "Редактиране";
+"Yes" = "Да";
+"No" = "Не";
+"Location" = "Местоположение";
+"Rename" = "Преименуване";
+"Compact" = "Сбито";
+"Export" = "Експортиране";
+"Set as Drafts" = "Задаване като чернова";
+"Set as Sent" = "Задаване като изпратено";
+"Set as Trash" = "Задаване като кош";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "Отбелязано като Спам";
+
+"Sort" = "Сортиране";
+"Order Received" = "Поръчката приета";
+"Descending Order" = "Обратен азбучен ред";
+"Back" = "Назад";
+"Copy messages" = "Копиране съобщения";
+"More messages options" = "Още опции за съобщения";
+"Mark as Unread" = "Маркиране като непрочетено";
+"Mark as Read" = "Маркирай като прочетено";
+"Closing Window ..." = "Затваряне на прозореца ...";
+"Tried to send too many mails. Please wait." = "Опит за изпращане на твърде много писма. Моля, изчакайте.";
+"View Mail" = "Преглед на поща";
+"This message contains external images." = "Това съобщение съдържа външни изображения.";
+"Expanded" = "Разширен";
+"Add a Criteria" = "Добавяне критерии";
+"More search options" = "Още опции търсене";
+"Your email has been saved" = "Вашият Имейл е запаметен";
+"Your email has been sent" = "Вашият Имейл е изпратен";
+"Folder compacted" = "Папката компресирана";
+
+/* Advanced search */
+"Enter Subject" = "Въведете тема";
+"Enter From" = "Въведете изпращач";
+"Enter To" = "Въведете получател";
+"Enter Cc" = "Въведете получатели на копие";
+"Enter Body" = "Въведете основен текст";
+"match" = "съвпада";
+"does not match" = "не съвпада";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Обхват на търсенето";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Управление на абонаментите";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "филтър";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

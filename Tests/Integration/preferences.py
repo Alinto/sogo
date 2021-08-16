@@ -13,7 +13,7 @@ DEBUG=False
 
 # must be kept in sync with SoObjects/SOGo/SOGoDefaults.plist
 # this should probably be fetched magically...
-SOGoSupportedLanguages = [ "Arabic", "Basque", "Catalan", "ChineseChina", "ChineseTaiwan", "Croatian",
+SOGoSupportedLanguages = [ "Arabic", "Basque", "Bulgarian", "Catalan", "ChineseChina", "ChineseTaiwan", "Croatian",
                            "Czech", "Dutch", "Danish", "Welsh", "English", "Finnish",
                            "SpanishSpain", "SpanishArgentina", "French", "German", "Hebrew",
                            "Hungarian", "Indonesian", "Icelandic", "Italian", "Japanese",

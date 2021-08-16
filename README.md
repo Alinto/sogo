@@ -35,6 +35,7 @@ SOGo and its associated components are available in various languages. The follo
 * [ar] Arabic - Anass Ahmed
 * [eu] Basque - Gorka Gonzalez
 * [pr_BR] Brazilian Portuguese - Alexandre Marcilio
+* [bg] Bulgarian - Todor Todorov
 * [ca] Catalan - Hector M. Rulot Segovia
 * [zh_CN] Chinese (China) - Thomas Kuiper
 * [zh_TW] Chinese (Taiwan)
@@ -54,6 +55,7 @@ SOGo and its associated components are available in various languages. The follo
 * [lv] Latvian - Juris Balandis
 * [lt] Lithuanian - Mantas Liobė
 * [mk_MK] Macedonian - Miroslav Jovanovic
+* [sr_ME] Montenegrin - Ivan Pleskonjić
 * [nb_NO] Norwegian (Bokmål) - Jan Ivar Karlsen
 * [nn_NO] Norwegian (Nynorsk) - Altibox
 * [pl] Polish - Paweł Bogusławski

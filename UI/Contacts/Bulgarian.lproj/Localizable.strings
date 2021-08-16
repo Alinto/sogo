@@ -1,0 +1,364 @@
+/* this file is in UTF-8 format! */
+
+"Contact" = "Контакт";
+"Address" = "Адрес";
+"Photos" = "Снимки";
+"Other" = "Други";
+"Address Books" = "Адресна книга";
+"Addressbook" = "Адресник";
+"Addresses" = "Адреси";
+"Update" = "Обнови";
+"Cancel" = "Прекрати";
+"Common" = "Общ";
+"Contact editor" = "Редактиране на контактите";
+"Contact viewer" = "Преглед на контактите";
+"Email" = "Електронна поща";
+"Screen Name" = "Потребителско име";
+"Extended" = "Разширено";
+"Fax" = "Fax";
+"Firstname" = "Име";
+"Home" = "Домашен адрес";
+"HomePhone" = "Домашен телефон";
+"Lastname" = "Фамилия";
+"Location" = "Местоположение";
+"Add a category" = "Добавяне категория";
+"MobilePhone" = "Мобилен телефон";
+"Name" = "Име";
+"OfficePhone" = "Служебен телефон";
+"Organization" = "Организация";
+"Work Phone" = "Служебен телефон";
+"Cell" = "Клетка";
+"Pager" = "Пейджър";
+"Pref" = "Предпочитание";
+"Phone" = "телефон";
+"Phones" = "телефони";
+"Postal" = "Пощенски адрес";
+"Save" = "Запиши";
+"Internet" = "Интернет";
+"Unit" = "Отдел";
+"delete" = "Изтрий";
+"edit" = "редактирай";
+"invalidemailwarn" = "Посоченият e-mail адрес е невалиден!";
+"new" = "Ново";
+"Preferred Phone" = "Предпочитан телефон";
+"Move To" = "Премести в";
+"Copy To" = "Копирай в";
+"Add to" = "Добавяне към";
+"To" = "До";
+"Carbon Copy (Cc)" = "Копие до:";
+"Blind Carbon Copy (Bcc)" = "Сляпо копие (Bcc)";
+
+/* Search scope: name fields */
+"name" = "Име";
+
+/* Search scope: name fields */
+"c_cn" = "Име";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "Резервен Имейл";
+
+/* Search scope: screen name field */
+"nsaimid" = "Потребителско име";
+
+/* Search scope: mail fields */
+"mail" = "Поща";
+
+/* Search scope: mail fields */
+"c_mail" = "Поща";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Телефон";
+
+/* Search scope: telephone field */
+"homephone" = "Телефон";
+
+/* Search scope: mobile field */
+"mobile" = "Мобилно";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Fax";
+
+/* Search scope: pager field */
+"pager" = "Пейджър";
+
+/* Search scope: categories field */
+"c_categories" = "Категориии:";
+
+/* Search scope: categories field */
+"vcardcategories" = "Категории";
+
+/* Search scope: title field */
+"title" = "Обръщение";
+
+/* Search scope: organization field */
+"c_o" = "Организация";
+
+/* Search scope: organization field */
+"o" = "Организация";
+
+/* Search scope: department field */
+"ou" = "Отдел";
+
+/* Search scope: city field */
+"l" = "Град";
+
+/* Search scope: country field */
+"c" = "Държава";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Домашен адрес";
+
+/* Search scope: state/province field */
+"st" = "Област";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Област";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "Пощенски код";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "Пощенски код";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "Държава";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Домашен адрес";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Web страница";
+
+/* Search scope: note field */
+"description" = "Забележка";
+
+/* Subheader of empty addressbook */
+"No contact" = "Без контакт";
+
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Начало на търсене от списъка с контакти";
+
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "контакти";
+
+/* No contact matching search criteria */
+"No matching contact" = "Няма съвпадащи контакти";
+
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "съвпадащи контакти";
+
+/* Number of selected contacts in list */
+"selected" = "избрано";
+
+/* Empty right pane */
+"No contact selected" = "Няма избран контакт";
+
+/* Tooltips */
+"Create a new address book card" = "Нова визитна картичка";
+"Create a new list" = "Нов списък";
+"Edit the selected card" = "Редактирай избраната картичка";
+"Send a mail message" = "Изпрати поща";
+"Delete selected card or address book" = "Изтрий избрания контакт от адресната книга";
+"Reload all contacts" = "Презареди всички контакти";
+"htmlMailFormat_UNKNOWN" = "Непознат";
+"htmlMailFormat_FALSE" = "Текст";
+"htmlMailFormat_TRUE" = "HTML";
+"Name or Email" = "Име или e-mail адрес";
+"Category" = "Категория";
+"Personal Addressbook" = "Лична адресна книга";
+"Search in Addressbook" = "Търси в адресната книга";
+"New Card" = "Нов контакт";
+"New List" = "Нов списък";
+"Edit" = "Редактиране";
+"Properties" = "Свойства";
+"Sharing..." = "Споделяне";
+"Write" = "Запиши";
+"Delete" = "Изтрий";
+"Instant Message" = "Бързо съобщение";
+"Add..." = "Добави";
+"Remove" = "Премахни";
+"Please wait..." = "Моля, почакайте";
+"No possible subscription" = "Проблем при оторизирането";
+"Preferred" = "Избрани";
+"Display" = "Показване";
+"Display Name" = "Показване име";
+"Additional Email" = "Допълнителен имейл";
+"Phone Number" = "Телефонен номер";
+"Prefers to receive messages formatted as" = "Предпочитан формат за получаване на писма като";
+"Categories" = "Категории";
+"First" = "Първо";
+"Last" = "Последно";
+"Nickname" = "Псевдоним";
+"Telephone" = "Телефон";
+"Work" = "Работа";
+"Mobile" = "Мобилно";
+"Pager" = "Пейджър";
+
+/* categories */
+"contacts_category_labels" = "Колега, Конкурент, Клиент, Приятел, Член на семейството, Бизнес партньор, Доставчик, Преса, VIP";
+"New category" = "Нова категория";
+
+/* adresses */
+"Title" = "Обръщение";
+"Service" = "Услуга";
+"Company" = "Фирма";
+"Department" = "Отдел";
+"City" = "Град";
+"State_Province" = "Област";
+"ZIP_Postal Code" = "Пощенски код";
+"Country" = "Страна";
+"Web Page" = "Web страница";
+"Other Infos" = "Друга информация";
+"Note" = "Забележка";
+"Timezone" = "Времева зона";
+"Birthday" = "Рожден ден";
+"Birthday (yyyy-mm-dd)" = "Рожден ден (ГГГГ-ММ-ДД)";
+"Freebusy URL" = "URL адрес, заетост";
+"Add as..." = "Добави като:";
+"Recipient" = "Получател";
+"Carbon Copy" = "Копие до:";
+"Blind Carbon Copy" = "Blind Carbon Copy";
+"New Addressbook..." = "Нова адресна книга...";
+"Subscribe to an Addressbook..." = "Абонамент за адресна книга...";
+"Remove the selected Addressbook" = "Премахни избраната адресна книга";
+"Subscribe to a shared folder" = "Абониране към споделена папка";
+"Search User" = "Търсене потребител";
+"Name of the Address Book" = "Име на адресната книга";
+"Are you sure you want to delete the selected address book?"
+= "Сигурни ли сте, че искате да премахнете избраната адресна книга?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "Сигурни ли сте, че искате да премахнете избраната адресна книга?";
+"You cannot remove nor unsubscribe from a public addressbook."
+= "Не можете да премахнете нито да се отпишете от публична адресна книга.";
+"You cannot remove nor unsubscribe from your personal addressbook."
+= "Не можете да премахнете нито да се отпишете от собствената си адресна книга.";
+"Are you sure you want to delete the selected contacts?"
+= "Сигурни ли сте, че искате да изтриете избрания контакт?";
+"Are you sure you want to delete the card of %{0}?" = "Наистина ли искате да изтриете картата на % {0}?";
+"You cannot delete the card of \"%{0}\"."
+= "Не можете да изтриете запис %{0}\".";
+"You cannot subscribe to a folder that you own!"
+= "Не можете да се абонирате за папка, която притежавате.";
+"Unable to subscribe to that folder!"
+= "Не можете да се абонирате за тази папка!";
+
+/* security */
+"Security" = "Сигурност";
+"Uninstall" = "Деинсталиране";
+"Error reading the card certificate." = "Грешка при четене на сертификата от картата.";
+"No certificate associated to card." = "Няма сертификат в картата.";
+
+/* acls */
+"Access rights to" = "Право на достъп за";
+"For user" = "За потребител";
+"Any Authenticated User" = "Всеки оторизиран потребител";
+"Public Access" = "Публичен достъп";
+"This person can add cards to this addressbook."
+= "Този потребител може да добавя контакти в тази адресна книга.";
+"This person can edit the cards of this addressbook."
+= "Този потребител може да редактира контактите в тази адресна книга.";
+"This person can list the content of this addressbook."
+= "Този потребител може да разглежда съдържаниети на тази адресна книга.";
+"This person can read the cards of this addressbook."
+= "Този потребител може да разглежда контактите в тази адресна книга.";
+"This person can erase cards from this addressbook."
+= "Този потребител може да изтрива контакти от тази адресна книга.";
+"The selected contact has no email address."
+= "Избраният контакт няма e-mail адрес.";
+"Please select a contact." = "Моля, изберете контакт.";
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} карта(и) копирани";
+"%{0} card(s) moved" = "%{0} карта(и) преместени";
+"SoAccessDeniedException" = "Не можете да пишете в тази адресна книга.";
+"Forbidden" = "Забранен";
+"Invalid Contact" = "Избраният контакт не съществува вече.";
+"Unknown Destination Folder" = "Избраната адресна книга вече не съществува.";
+
+/* Lists */
+"List details" = "Списък подробности";
+"List name" = "Списък име";
+"List nickname" = "Списък псевдоним";
+"List description" = "Списък описание";
+"Members" = "Членове";
+"Contacts" = "Контакти";
+"Add" = "Добави";
+"Lists can't be moved or copied." = "Списъкът не може да бъде местен или копиран.";
+"Export" = "Експорт";
+"Export Address Book..." = "Експортиране на адресната книга";
+"View Raw Source" = "Преглед на изходния код";
+
+/* Import */
+"Import Cards" = "Внасяне на контакт";
+"Select a vCard or LDIF file." = "Изберете vCard или LDIF.";
+"Upload" = "Качване";
+"Uploading" = "Качване";
+"Done" = "Готово";
+"An error occured while importing contacts." = "Грешка при внасянето на контактите.";
+"No card was imported." = "Николко акаунта не бяха импортирани.";
+"A total of %{0} cards were imported in the addressbook." = "%{0} записа бяха внесени в адресната книга.";
+"Reload" = "Презареждане";
+
+/* Properties window */
+"Address Book Name" = "Име списък с контакти";
+"Links to this Address Book" = "Връзка към този Списък с контакти";
+"Authenticated User Access" = "Всеки оторизиран потребител";
+"CardDAV URL" = "CardDAV адрес";
+"Options" = "Опции";
+"Rename" = "Преименуване";
+"Subscriptions" = "Абониране";
+"Global Addressbooks" = "Глобални списъци с контакти";
+"Search" = "Търсене";
+"Sort" = "Сортиране";
+"Descending Order" = "Обратен азбучен ред";
+"Back" = "Назад";
+"Select All" = "Избор всички";
+"Copy contacts" = "Копиране контакти";
+"More messages options" = "Още опции на за съобщения";
+"New Contact" = "Нов контакт";
+"Close" = "Затваряне";
+"More contact options" = "Още опции контакти";
+"Organization Unit" = "Организация";
+"Add Organizational Unit" = "Добавяне организация";
+"Type" = "Тип";
+"Email Address" = "Имейл адрес";
+"New Email Address" = "Нов имейл адрес";
+"New Phone Number" = "Нов телефонен номер";
+"URL" = "URL адрес";
+"New URL" = "Нов URL адрес";
+"street" = "улица";
+"street (continued)" = "улица (продължение)";
+"Postoffice" = "Пощенска кутия";
+"Region" = "Област";
+"Postal Code" = "Пощенски код";
+"New Address" = "Нов адрес";
+"Reset" = "Възстановяване";
+"Description" = "Описание";
+"Add Member" = "Добавяне член";
+"Subscribe" = "Абониране";
+"Add Birthday" = "Добавяне рожден ден";
+"Import" = "Импортиране";
+"More options" = "Още опции";
+"Role" = "Роля";
+"Add Screen Name" = "Добавяне име за показване";
+"Custom 1" = "Потребителски 1";
+"Custom 2" = "Потребителски ...";
+"Custom 3" = "Потребителски 3";
+"Custom 4" = "Потребителски 4";
+"Custom Value" = "Потребителска стойност";
+"New Custom Value" = "Нова потребителска стойност";
+"Synchronization" = "Синхронизиране";
+"Synchronize" = "Синхронизирам";
+"Sucessfully subscribed to address book" = "Успешно се абонирахте за адресната книга";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "Обхват на търсенето";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Превключване на елемент";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

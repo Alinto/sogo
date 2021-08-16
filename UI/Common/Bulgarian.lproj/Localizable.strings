@@ -1,0 +1,215 @@
+/* this file is in UTF-8 format! */
+
+/* toolbars */
+"Save" = "Запиши";
+"Close" = "Затвори";
+"Edit User Rights" = "Промяна правата на потребителя";
+"Home" = "Начало";
+"Calendar" = "Календар";
+"Address Book"  = "Адресна книга";
+"Mail" = "Поща";
+"Preferences" = "Настройки";
+"Administration" = "Администриране";
+"Disconnect" = "Изход";
+"Toggle Menu" = "Превключва меню";
+"Right Administration" = "Управление на достъпа";
+"Log Console (dev.)" = "Конзола (dev.)";
+"User" = "Потребител";
+"Vacation message is enabled" = "Съобщение за отпуска - включено.";
+"Help" = "Помощ";
+"noJavascriptError" = "SOGo изисква Javascript. Моля разрешете го в опциите на браузера.";
+"noJavascriptRetry" = "Опитайте отново";
+"Owner" = "Собственик";
+"Publish the Free/Busy information" = "Публикувай ниформация за заето/свободно време.";
+"Add..." = "Добави...";
+"Remove" = "Изтрий";
+"Subscribe User" = "Потребител вход";
+"Any Authenticated User" = "Всеки оторизиран потребител";
+"Public Access" = "Публичен достъп";
+"Any user not listed above" = "Всеки потребител, неоказан по-горе.";
+"Anybody accessing this resource from the public area" = "Всеки, достъпващ този ресурс от публично място";
+"Sorry, the user rights can not be configured for that object." = "Правата за достъп не могат да бъдат конфигурирани за този обект.";
+"Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
+     = "Всеки потребител на тази система ще получи достъп до вашата пощенска кутия  \"%{0}\". Сигурни ли сте, че имате доверие на всички?";
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
+     = "Всеки потребител на тази система ще получи достъп до вашия календар  \"%{0}\". Сигурни ли сте, че имате доверие на всички?";
+"Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Всеки потребител на Интернет може да получи достъп до вашия календар  \"%{0}\", даже и да няма акаунт в тази ситема. Подходяща ли е тази информация за публичен достъп?";
+"Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
+     = "Всеки потребител на тази система ще получи достъп до вашата адресна книга \"%{0}\". Сигурни ли сте, че имате доверие на всички?";
+"Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Всеки потребител на Интернет може да получи достъп до вашата адресна книга \"%{0}\", даже и да няма акаунт в тази ситема. одходяща ли е тази информация за публичен достъп?";
+"Give Access" = "Дайте достъп";
+"Keep Private" = "Поверително";
+
+/* generic.js */
+"Unable to subscribe to that folder!"
+        = "Не можете да получите достъп до папката.";
+"You cannot subscribe to a folder that you own!"
+        = "Не може да се абонирате за папка, която притежавате!";
+"Unable to unsubscribe from that folder!"
+        = "Не може да се освободи папката!";
+"You cannot unsubscribe from a folder that you own!"
+        = "Не може да  освободите папка, на която сте собственик!";
+"Unable to rename that folder!" = "Папката не може да се преименува!";
+"You have already subscribed to that folder!"
+        = "Вече имате достъп до папката!";
+"The user rights cannot be edited for this object!"
+        = "Не могат да се променят потребителските права за този обект!";
+"A folder by that name already exists." = "Вече съществува папка с това име.";
+"You cannot create a list in a shared address book."
+        = "Не можете да създадете списък в споделена адресна книга.";
+"Warning" = "Внимание";
+"Can't contact server" = "Възникна грешка при свързването със сървъра. Моля, опитайте отново по-късно.";
+"You are not allowed to access this module or this system. Please contact your system administrator."
+= "Нямате разрешение за достъп до този модул. Моля, свържете се със системния администратор.";
+"You don't have the required privileges to perform the operation."
+= "Нямате необходимете права за да извършите тази операция.";
+"noEmailForDelegation" = "Трябва да посочите адрес, на който да изпратите поканата.";
+"delegate is organizer" = "Това е организатор. Моля изберете друг делегат.";
+"delegate is a participant" = "Поканеният вече е участник.";
+"delegate is a group" = "Указаният адрес е адрес на група. Можете да каните само отделни лица.";
+
+/* common buttons */
+"OK" = "ОК";
+"Cancel" = "Отмяна";
+"Yes" = "Да";
+"No" = "Не";
+
+/* generic messages */
+"Error" = "Грешка";
+"Success" = "Успешно";
+
+/* confirmation dialog box */
+"Confirmation" = "Потвърждение";
+
+/* alarms */
+"Reminder" = "Напомняне";
+"Start" = "Начало";
+"Due Date" = "Крайна дата";
+"Location" = "Местоположение";
+"Snooze" = "Отложи за";
+"Snooze for " = "Отложи за";
+"5 minutes" = "5 минути";
+"10 minutes" = "10 минути";
+"15 minutes" = "15 минути";
+"30 minutes" = "30 минути";
+"45 minutes" = "45 минути";
+"1 hour" = "1 час";
+"1 day" = "1 ден";
+
+/* mail labels */
+"Important" = "Важно";
+"Work" = "Работа";
+"Personal" = "Персонал";
+"To Do" = "За правене";
+"Later" = "По-късно";
+"Return Receipt Sent" = "Обратна разписка, Изпратено";
+"a2_Sunday" = "Не.";
+"a2_Monday" = "Пон.";
+"a2_Tuesday" = "Вт.";
+"a2_Wednesday" = "Ср.";
+"a2_Thursday" = "Чет.";
+"a2_Friday" = "Пет.";
+"a2_Saturday" = "Съб.";
+"Access Rights" = "Права на достъп";
+"Add User" = "Добави потребител";
+"Loading" = "Зареждане";
+"No such user." = "Няма такъв потребител.";
+"You cannot (un)subscribe to a folder that you own!" = "Не може да се (де)абонирате за папка, която сте собственик!";
+
+/* SMIME Certificate field */
+"S/MIME Certificate" = "S/MIME Сертификат";
+"Subject Name" = "Заглавие на темата";
+"Issuer" = "Издател";
+"countryName" = "Държава";
+"organizationName" = "Организация";
+"organizationalUnitName" = "Организация";
+"commonName" = "Име";
+"emailAddress" = "Имейл адрес";
+
+/* Authentication username */
+"Username" = "Потребител";
+
+/* Authentication password */
+"Password" = "Парола";
+
+/* Authentication failed */
+"Wrong username or password." = "Грешен потребител или парола";
+
+/* Error message displayed bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Въведете поне %{minimumSearchLength} символа";
+
+/* Error message displayed when a file upload exceeds WOMaxUploadSize */
+"File size upload limit reached" = "Надхвърлено ограничението за качване ";
+
+/* Generic server error */
+"An error occured, please try again." = "Възникна грешка, моля опитайте отново.";
+
+/* Open datepicker */
+"Open Calendar" = "Отвори календара";
+
+/* Toggle visibility (ex: mail account in left navigation menu) */
+"Toggle visibility" = "Включване видимост";
+
+"Keyboard Shortcuts" = "Бързи клавиши";
+
+/* Aria label for avatar button to select and unselect an item */
+"Toggle item" = "Подмени елемент";
+
+/* Toggle multiple items at the same time (hotkeys cheatsheet) */
+"Toggle range of items" = "Превключване на елементи";
+
+/* Question mark shows list of hotkeys */
+"Show or hide this help" = "Покажи или скрий тази помощ";
+
+/* Space key */
+"key_space" = "space";
+
+/* Delete key */
+"key_delete" = "изтрий";
+
+/* Shift and space key */
+"key_shift+space" = "shift + space";
+
+/* Up arrow key */
+"key_up" = "↑";
+
+/* Down arrow key */
+"key_down" = "↓";
+
+/* Left arrow key */
+"key_left" = "←";
+
+/* Right arrow key */
+"key_right" = "→";
+
+/* Shift and up arrow combo keys */
+"key_shift+up" = "shift + ↑";
+
+/* Shift and down arrow combo keys */
+"key_shift+down" = "shift + ↓";
+
+/* Backspace key */
+"key_backspace" = "⌫";
+
+/* Hotkey to start a search */
+"hotkey_search" = "s";
+
+/* Hotkey description to select next list item */
+"View next item" = "Виж следващ обект";
+
+/* Hotkey description to select previous list item */
+"View previous item" = "Виж предишен обект";
+
+/* Hotkey description to add next list item to selection */
+"Add next item to selection" = "Добави следващ обект към избраните";
+
+/* Hotkey description to add previous list item to selection */
+"Add previous item to selection" = "Добави предишния обект към избраните";
+
+/* Hotkey description to move backward in current view */
+"Move backward" = "Преместване назад";
+
+/* Hotkey description to move forward in current view */
+"Move forward" = "Преместване напред";
