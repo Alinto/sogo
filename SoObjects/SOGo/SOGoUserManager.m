@@ -293,10 +293,8 @@ static Class NSNullK;
 
   if (!domain) return NO;
 
-  ids = [_sources allKeys];
+  ids = [[SOGoSystemDefaults sharedSystemDefaults] domainIds];
   if ([ids containsObject: domain])
-    // FIXME check SOGoMailDomain?
-    // Now source id is being considered as the domain
     return YES;
 
   sd = [SOGoSystemDefaults sharedSystemDefaults];
@@ -547,7 +545,7 @@ static Class NSNullK;
 
   username = _login;
 
-  if (*_domain)
+  if (*_domain && ![*_domain isKindOfClass: NSNullK])
     {
       if ([_login rangeOfString: @"@"].location == NSNotFound)
         username = [NSString stringWithFormat: @"%@@%@", _login, *_domain];
@@ -560,6 +558,7 @@ static Class NSNullK;
       // sources if SOGoLoginDomains isn't specified. This is also true if the user is
       // using DAV or EAS.
       r = [username rangeOfString: @"@"];
+      *_domain = nil;
 
       if (r.location != NSNotFound)
         {
