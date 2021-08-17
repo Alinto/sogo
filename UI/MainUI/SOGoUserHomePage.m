@@ -66,6 +66,7 @@
   SOGoSystemDefaults *sd;
   SOGoDomainDefaults *dd;
   SOGoUserDefaults *ud;
+  BOOL moduleIsValid;
   NSArray *filters;
   NSURL *moduleURL;
 
@@ -74,13 +75,16 @@
   ud = [[context activeUser] userDefaults];
 
   loginModule = [ud loginModule];
-  if (!([loginModule isEqualToString: @"Calendar"]
-        || [loginModule isEqualToString: @"Contacts"]
-        || [loginModule isEqualToString: @"Mail"])
-      || ![[context activeUser] canAccessModule: loginModule])
+  moduleIsValid = ([loginModule isEqualToString: @"Calendar"] ||
+                   [loginModule isEqualToString: @"Contacts"] ||
+                   [loginModule isEqualToString: @"Mail"]);
+  if (!moduleIsValid)
     {
-      [self errorWithFormat: @"login module '%@' not accepted (must be"
+      [self errorWithFormat: @"login module '%@' not accepted (must be "
             @"'Calendar', 'Contacts' or 'Mail')", loginModule];
+    }
+  if (!moduleIsValid || ![[context activeUser] canAccessModule: loginModule])
+    {
       loginModule = @"Contacts";
     }
 
