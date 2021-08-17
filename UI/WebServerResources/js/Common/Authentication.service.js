@@ -31,7 +31,7 @@
 
       userName = username;
       if (domain)
-        userName += '@' + domain.value;
+        userName += '@' + domain;
       address = '' + window.location.href;
       baseAddress = ApplicationBaseURL + encodeURIComponent(userName);
       if (baseAddress[0] == '/') {
