@@ -1,5 +1,58 @@
 # Changelog
 
+## [5.2.0](https://github.com/inverse-inc/sogo/compare/SOGo-5.1.1...SOGo-5.2.0) (2021-08-18)
+
+### Features
+
+* **mail:** download message as .eml file ([ef5e777](https://github.com/inverse-inc/sogo/commit/ef5e7775cdb030ecd8354cfa2c9ec934c9055909))
+* **mail:** initial support for ms-tnef (winmail.dat) body part ([045f134](https://github.com/inverse-inc/sogo/commit/045f134321e220055b16a0b41e318449cdd3ef09)), closes [#2242](https://sogo.nu/bugs/view.php?id=2242) [#4503](https://sogo.nu/bugs/view.php?id=4503)
+* **mail:** new parameter to disable S/MIME certificates ([545cfe5](https://github.com/inverse-inc/sogo/commit/545cfe58c6cf45032b2fc585ad1a40efc7eccf09))
+
+### Bug Fixes
+
+* **calendar(dav):** add method attribute to content-type of iTIP reply ([e08be0d](https://github.com/inverse-inc/sogo/commit/e08be0d00615e39906ef0c96c86dcce03782792b)), closes [#5320](https://sogo.nu/bugs/view.php?id=5320)
+* **calendar(web):** search in all user's calendars for iMIP reply ([0aabd45](https://github.com/inverse-inc/sogo/commit/0aabd45c047540a7489e380a27db053918fcfd12))
+* **core:** improve logged error when module is invalid ([aa59aa9](https://github.com/inverse-inc/sogo/commit/aa59aa9c47b7da6dc6d1bbcf74c7d34d4555dfe9))
+* **core:** properly validate domain using "domains" keys ([a370aa7](https://github.com/inverse-inc/sogo/commit/a370aa70f29f008af85520fdfed7d7d909791885))
+* **core:** remove CR, diacritical marks, variation selectors ([90752c4](https://github.com/inverse-inc/sogo/commit/90752c43822d1b9c6e034a5c40aed6bc1533f571))
+* **css:** improve display of category colors (Calendar & Mail) ([322226b](https://github.com/inverse-inc/sogo/commit/322226bd81b9f8716c69e4898a3b3d7698be4fbf)), closes [#5337](https://sogo.nu/bugs/view.php?id=5337)
+* **login(js):** fix domain in redirect URL ([7e63452](https://github.com/inverse-inc/sogo/commit/7e63452141eaa20eb21209fed1e7ed1555e15784))
+* **mail:** add support for messages quota ([a1273f1](https://github.com/inverse-inc/sogo/commit/a1273f1097898a27c5740351ce7b73a2a7a2147c)), closes [#5365](https://sogo.nu/bugs/view.php?id=5365)
+* **mail:** don't render SVG attachments ([40b570c](https://github.com/inverse-inc/sogo/commit/40b570cc12d58ae53469520c4f64384c60d7684e)), closes [#5371](https://sogo.nu/bugs/view.php?id=5371)
+* **mail:** fix end date of all-day event in mail notifications ([694ffa7](https://github.com/inverse-inc/sogo/commit/694ffa74ba8989c36931f979b0e57b07493aef61)), closes [#4145](https://sogo.nu/bugs/view.php?id=4145)
+* **mail:** improve performance of listing all mailboxes ([54548c5](https://github.com/inverse-inc/sogo/commit/54548c550ffa601bafe6e354f627100ecec5924e))
+* **mail:** remove media event handlers from HTML messages ([69972f7](https://github.com/inverse-inc/sogo/commit/69972f725c60ce82236a7281b11a83a4a6151111)), closes [#5369](https://sogo.nu/bugs/view.php?id=5369)
+* **mail:** return unseen count of mailbox in msgs operations ([a352256](https://github.com/inverse-inc/sogo/commit/a35225631a14b6663bf6e237033563e714dab232))
+* **mail(css):** always show tag dots in messages list ([d13e153](https://github.com/inverse-inc/sogo/commit/d13e1534a8dfea2880c0d32c72fd7f8c00212efe))
+* **mail(html):** format links in comment of Calendar invitations ([2771fe1](https://github.com/inverse-inc/sogo/commit/2771fe180e522e473e8d554b3365a318b45e39c8))
+* **mail(js):** avoid using the DOM when sanitizing incoming html ([8947f29](https://github.com/inverse-inc/sogo/commit/8947f29c09594a5e139c70ef64be5cf153dcade9)), closes [#5369](https://sogo.nu/bugs/view.php?id=5369)
+* **mail(js):** force reload of UIDs when cancelling search ([b969ca4](https://github.com/inverse-inc/sogo/commit/b969ca4b499c2304a085179d5f03f859745b5088))
+* **mail(js):** hide sign and encrypt options if not usable ([eb46415](https://github.com/inverse-inc/sogo/commit/eb464157113021f6771b171c23bb638d9efced25))
+* **mail(js):** respect thread level while loading headers ([2d16456](https://github.com/inverse-inc/sogo/commit/2d16456bb505409c6cb14ca4a2c009e7852d2dd9))
+* **mail(js):** update visible msgs list when adding new msgs ([0599922](https://github.com/inverse-inc/sogo/commit/0599922016dabeb5890277e12e36fcef6312250d))
+* **mail(web):** don't try to fetch headers if mailbox is empty ([9cf67d0](https://github.com/inverse-inc/sogo/commit/9cf67d0b5ca90541628ab9a6c1244e08af890b85))
+* **preferences(js):** don't save locale definition ([e140bd0](https://github.com/inverse-inc/sogo/commit/e140bd0379d050f5ba2fc5bce6fd2fe6cf12a37d))
+* **saml:** add XSRF-TOKEN cookie in valid SAML login ([5f6cacc](https://github.com/inverse-inc/sogo/commit/5f6cacc8592750e6fcfdaef6b3dd23c5cd4f5ce4))
+* **web(js):** get filename from content-disposition header ([7d07dda](https://github.com/inverse-inc/sogo/commit/7d07ddaffdef16c8ca6c7cbf63ce7a63a5b1e66d))
+
+### Localization
+
+* **bg:** add Bulgarian translation ([ebf2a80](https://github.com/inverse-inc/sogo/commit/ebf2a80654c12875e31be826ed32c1758d9d8c19), [eb18249](https://github.com/inverse-inc/sogo/commit/eb18249d2b66d69356c8d59b99fac2cc74c27d27))
+* **de:** update German translation ([8bdae88](https://github.com/inverse-inc/sogo/commit/8bdae88ec3189df1d5e5859033df22cfa5fb6e00))
+* **fr:** update French translation ([1246469](https://github.com/inverse-inc/sogo/commit/1246469ee14c942b59f51fedb178e86c810f2c5f))
+* **pl:** update Polish translation ([6b6b733](https://github.com/inverse-inc/sogo/commit/6b6b7334c202ef93aff97ef9e3a4754c4e90821e))
+* **sr_SR:** add Montenegrin translation ([3cc29b4](https://github.com/inverse-inc/sogo/commit/3cc29b40183b2e3a8aad19f0a427229e9c9ed6d5))
+* **sr_SR:** use sr_ME instead of cnr for Montenegrin locale ([36100b0](https://github.com/inverse-inc/sogo/commit/36100b0419a6a1828bbf9267091701af50426f57))
+
+### Enhancements
+
+* **doc:** replace xsltproc/fop by asciidoctor-pdf ([1345022](https://github.com/inverse-inc/sogo/commit/134502223e9edb51690672f108b29777e3b66f2c))
+* **mail:** replace "Google Authenticator" with more general vocabulary ([9ae9fa0](https://github.com/inverse-inc/sogo/commit/9ae9fa094ea903c2f79bf29fe8b7f27c0170f170)), closes [#5294](https://sogo.nu/bugs/view.php?id=5294)
+* **mail(js):** delay instantiation of Message objects on load ([bc58bd1](https://github.com/inverse-inc/sogo/commit/bc58bd1cb095d5901737af4f8271b364413127d0))
+* **mail(js):** improvements for md-virtual-repeat ([d285411](https://github.com/inverse-inc/sogo/commit/d285411ef30bb7897ef18394b2d9f1c0f2f7daee))
+* **mail(js):** various optimizations ([a9c6f09](https://github.com/inverse-inc/sogo/commit/a9c6f09273e83bb7d270569b84784c739b5b8ae1))
+* **web:** replace SOGoGoogleAuthenticatorEnabled with ([20b2fd5](https://github.com/inverse-inc/sogo/commit/20b2fd5e4573392e374f465d63cb34346f17f2f6)), closes [#5294](https://sogo.nu/bugs/view.php?id=5294)
+
 ### [5.1.1](https://github.com/inverse-inc/sogo/compare/SOGo-5.1.0...SOGo-5.1.1) (2021-06-01)
 
 ### Bug Fixes
