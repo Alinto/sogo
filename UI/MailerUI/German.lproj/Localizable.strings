@@ -230,6 +230,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "In Aufgabe umwandeln";
 
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Nachricht herunterladen";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Nachricht herunterladen (zip)";
+
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "Alle Anhänge herunterladen";
 
@@ -250,6 +256,12 @@
 
 /* Number of selected messages in list */
 "selected" = "ausgewählt";
+
+/* Date formatting from one time to another time */
+"to_time" = "an";
+
+/* Date formatting from one day to another day */
+"to_date" = "an";
 
 /* Encrypted message notification */
 "This message is encrypted" = "Diese Nachricht ist verschlüsselt.";
@@ -313,6 +325,7 @@
 "Operation failed" = "Operation fehlgeschlagen.";
 "Quota" = "Quota:";
 "quotasFormat" = "%{0}% von %{1} MB verwendet";
+"messageQuotasFormat" = "%{0}% von %{1} Nachrichten";
 "Unable to move/delete folder." = "Kann den Ordner nicht verschieben/löschen.";
 
 /* Alternative operation when folder cannot be deleted */
