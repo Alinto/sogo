@@ -136,8 +136,14 @@
   NSArray *type;
 
   resourceType = [NSMutableArray arrayWithArray: [super davResourceType]];
+
+  // CARDDAV:addressbook
+  // https://datatracker.ietf.org/doc/html/rfc6352#section-5.2
   type = [NSArray arrayWithObjects: @"addressbook", XMLNS_CARDDAV, nil];
   [resourceType addObject: type];
+
+  // CARDDAV:directory
+  // https://datatracker.ietf.org/doc/html/draft-daboo-carddav-directory-gateway-02#section-4.1
   type = [NSArray arrayWithObjects: @"directory", XMLNS_CARDDAV, nil];
   [resourceType addObject: type];
 

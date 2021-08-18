@@ -480,6 +480,7 @@ convention:
   max = [elements count];
   if (max > 0)
     {
+      // We convert two email addresses at most
       workMail = [self _simpleValueForType: @"work"
                                    inArray: elements excluding: nil];
       homeMail = [self _simpleValueForType: @"home"
@@ -539,6 +540,11 @@ convention:
     }
 }
 
+/**
+ * Convert vCard to LDIF using the Mozilla LDAP Address Book Schema
+ *
+ *  https://wiki.mozilla.org/MailNews:Mozilla_LDAP_Address_Book_Schema
+ */
 - (NSMutableDictionary *) asLDIFRecord
 {
   NSArray *elements, *categories;
