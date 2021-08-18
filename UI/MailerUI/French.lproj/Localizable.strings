@@ -230,6 +230,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Convertir en tâche";
 
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Télécharger le message";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Télécharger le message (zip)";
+
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "Télécharger les pièces jointes";
 
@@ -319,6 +325,7 @@
 "Operation failed" = "L'opération a échoué.";
 "Quota" = "Quota";
 "quotasFormat" = "%{0}% utilisé sur %{1} MO";
+"messageQuotasFormat" = "%{0}% utilisé sur %{1} msgs";
 "Unable to move/delete folder." = "Impossible de déplacer ou supprimer le dossier.";
 
 /* Alternative operation when folder cannot be deleted */
