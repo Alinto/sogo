@@ -3416,7 +3416,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSArray *vtimezones;
   NSMutableArray *components;
   NSMutableDictionary *timezones, *uids;
-  NSString *tzId, *uid, *originalUid;
+  NSString *uid, *originalUid;
   iCalEntityObject *element;
   iCalTimeZone *timezone;
   iCalCalendar *masterCalendar;
