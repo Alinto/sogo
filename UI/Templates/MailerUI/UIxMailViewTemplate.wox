@@ -41,7 +41,7 @@
             <md-icon>reply</md-icon>
           </md-button>
           <md-button class="sg-icon-button"
-                     ng-show="viewer.message.allowReplyAll()"
+                     ng-show="::viewer.message.allowReplyAll()"
                      ng-click="viewer.replyAll($event)"
                      label:aria-label="Reply All">
             <md-tooltip md-direction="bottom"><var:string label:value="Reply to sender and all recipients"/></md-tooltip>
@@ -92,7 +92,7 @@
                   <var:string label:value="Download message (zip)"/>
                 </md-button>
               </md-menu-item>
-              <md-menu-item ng-show="::viewer.message.attachmentAttrs.length">
+              <md-menu-item ng-show="::viewer.message.hasAttachments()">
                 <md-button label:aria-label="Download all attachments"
                            ng-click="viewer.message.downloadAttachmentsArchive()">
                   <var:string label:value="Download all attachments"/>

@@ -557,6 +557,22 @@
   };
 
   /**
+   * @function hasAttachments
+   * @memberof Message.prototype
+   * @returns true if there's one ore more attached files
+   */
+  Message.prototype.hasAttachments = function(content) {
+    var _this = this;
+
+    return !!_.find(content || this.parts.content, function(part) {
+      if (angular.isArray(part.content)) {
+        return _this.hasAttachments(part.content);
+      }
+      return part.type == 'UIxMailPartLinkViewer' || part.type == 'UIxMailPartImageViewer';
+    });
+  };
+
+  /**
    * @function $deleteAttachment
    * @memberof Message.prototype
    * @desc Delete an attachment from a message being composed
