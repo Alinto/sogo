@@ -16,6 +16,7 @@ import {
 } from 'tsdav'
 import { formatProps, getDAVAttribute } from 'tsdav/dist/util/requestHelpers';
 import { makeCollection } from 'tsdav/dist/collection';
+import { fetch } from 'cross-fetch'
 import config from './config'
 
 class WebDAV {
@@ -53,6 +54,21 @@ class WebDAV {
       filename: filename,
       iCalString: calendar
     })
+  }
+
+  postCaldav(resource, vcalendar, originator, recipients) {
+    let localHeaders = { 'content-type': 'text/calendar; charset=utf-8'}
+
+    if (originator)
+      localHeaders.originator = originator
+    if (recipients && recipients.length > 0)
+      localHeaders.recipients = recipients.join(',')
+
+    return fetch(this.serverUrl + resource, {
+        method: 'POST',
+        body: vcalendar,
+        headers: { ...this.headers, ...localHeaders }
+      })
   }
 
   getEvent(resource, filename) {

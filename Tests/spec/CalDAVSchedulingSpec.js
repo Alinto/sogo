@@ -25,15 +25,15 @@ describe('create, read, modify, delete tasks for regular user', function() {
 
   let icsList = []
 
-  const _getEvent = async function(client, calendar, filename, expectedCode = 200) {
-    const [{ status, raw }] = await client.getEvent(calendar, filename)
+  const _getEvent = async function(client, calendarName, filename, expectedCode = 200) {
+    const [{ status, raw }] = await client.getEvent(calendarName, filename)
     expect(status).toBe(expectedCode)
     if (status <= 300)
       return new ICAL.Component(ICAL.parse(raw))
   }
 
-  const _getAllEvents = async function(client, calendar, expectedCode = 207) {
-    const results = await client.propfindCollection(calendar)
+  const _getAllEvents = async function(client, calendarName, expectedCode = 207) {
+    const results = await client.propfindCollection(calendarName)
     const hrefs = results.filter(r => r.href).map(r => r.href)
 
     return hrefs
@@ -41,7 +41,7 @@ describe('create, read, modify, delete tasks for regular user', function() {
 
   const _newDateTimeProperty = function(propertyName, dateObject = new Date()) {
     let property = new ICAL.Property(propertyName)
-    property.setParameter('tzid', 'America/Montreal')
+    property.setParameter('tzid', 'America/Toronto')
     property.setValue(ICAL.Time.fromJSDate(dateObject))
 
     return property
@@ -68,10 +68,18 @@ describe('create, read, modify, delete tasks for regular user', function() {
     return vcalendar
   }
 
-  const _putEvent = async function(client, calendar, filename, event, expectedCode = 201) {
-    const response = await client.createCalendarObject(calendar, filename, event.toString())
+  const _putEvent = async function(client, calendarName, filename, event, expectedCode = 201) {
+    const response = await client.createCalendarObject(calendarName, filename, event.toString())
     expect(response.status)
       .withContext(`Event creation returns code ${expectedCode}`)
+      .toBe(expectedCode)
+    return response
+  }
+
+  const _postEvent = async function(client, outbox, vcalendar, originator, recipients, expectedCode = 200) {
+    const response = await client.postCaldav(outbox, vcalendar, originator, recipients)
+    expect(response.status)
+      .withContext(`Event post returns code ${expectedCode}`)
       .toBe(expectedCode)
     return response
   }
@@ -83,12 +91,42 @@ describe('create, read, modify, delete tasks for regular user', function() {
     return response
   }
 
-  const _deleteAllEvents = async function(client, calendar, expectedCode = 204) {
-    const hrefs = await _getAllEvents(client, calendar)
+  const _deleteAllEvents = async function(client, calendarName, expectedCode = 204) {
+    const hrefs = await _getAllEvents(client, calendarName)
     for (const href of hrefs) {
       await _deleteEvent(client, href) // ignore returned code
     }
     return hrefs
+  }
+
+  const _compareAttendees = function(vcalendar1, vcalendar2) {
+    const vevent1 = vcalendar1.getFirstSubcomponent('vevent')
+    const vevent2 = vcalendar2.getFirstSubcomponent('vevent')
+    const attendeeToString = function(a) {
+      const email = a.getFirstValue()
+      const partstat = a.getParameter('partstat')
+      const delegatedto = a.getParameter('delegated-to') || '(none)'
+      const delegatedfrom = a.getParameter('delegated-from') || '(none)'
+      return `${email}/${partstat}/${delegatedto}/${delegatedfrom}`
+    }
+    const attendees1 = vevent1.getAllProperties('attendee').map(attendeeToString)
+    const attendees2 = vevent2.getAllProperties('attendee').map(attendeeToString)
+
+    expect(attendees1.length)
+      .withContext(`'vcalendar1' has attendees`)
+      .toBeGreaterThan(0)
+    expect(attendees2.length)
+    .withContext(`'vcalendar2' has attendees`)
+    .toBeGreaterThan(0)
+    expect(attendees1.length)
+    .withContext(`'vcalendar1' and 'vcalendar2' have the same number of attendees`)
+    .toBe(attendees2.length)
+
+    for (let attendee of attendees1) {
+      expect(attendees2.indexOf(attendee))
+        .withContext(`${attendee} from 'vcalendar1' is found in 'vcalendar2`)
+        .toBeGreaterThanOrEqual(0)
+    }
   }
 
   beforeAll(async function() {
@@ -117,181 +155,187 @@ describe('create, read, modify, delete tasks for regular user', function() {
   // CalDAVSchedulingTest
 
   it('add attendee after event creation', async function() {
-    // make sure the event doesn't exist
     const icsName = 'test-add-attendee.ics'
     icsList.push(icsName)
+
+    let vcalendar, vcalendarAttendee
+    let vevent, veventAttendee, organizer, attendee
+
+    // make sure the event doesn't exist
     await _deleteEvent(webdav, userCalendar + icsName)
     await _deleteEvent(webdavAttendee1, attendee1Calendar + icsName)
 
-    // 1. create an event in the organiser's calendar
-    let calendar = _newEvent('Test add attendee', 'Test add attendee')
-    let event = calendar.getFirstSubcomponent('vevent')
-    let organizer = new ICAL.Property('organizer')
+    // 1. create an event in the organizer's calendar
+    vcalendar = _newEvent('Test add attendee', 'Test add attendee')
+    vevent = vcalendar.getFirstSubcomponent('vevent')
+    organizer = new ICAL.Property('organizer')
     organizer.setParameter('cn', user.displayname)
     organizer.setValue(user.email)
-    event.addProperty(organizer)
-    await _putEvent(webdav, userCalendar, icsName, calendar)
+    vevent.addProperty(organizer)
+    await _putEvent(webdav, userCalendar, icsName, vcalendar)
 
     // 2. add an attendee
-    calendar.addPropertyWithValue('method', 'REQUEST')
-    let attendee = new ICAL.Property('attendee')
+    vcalendar.addPropertyWithValue('method', 'REQUEST')
+    attendee = new ICAL.Property('attendee')
     attendee.setParameter('cn', attendee1.displayname)
     attendee.setParameter('rsvp', 'TRUE')
     attendee.setParameter('partstat', 'NEEDS-ACTION')
     attendee.setValue(attendee1.email)
-    event.addProperty(attendee)
-    await _putEvent(webdav, userCalendar, icsName, calendar, 204)
+    vevent.addProperty(attendee)
+    await _putEvent(webdav, userCalendar, icsName, vcalendar, 204)
 
     // 3. verify that the attendee has the event
-    let attendeeCalendar = await _getEvent(webdavAttendee1, attendee1Calendar, icsName)
+    vcalendarAttendee = await _getEvent(webdavAttendee1, attendee1Calendar, icsName)
 
     // 4. make sure the received event match the original one
-    let attendeeEvent = attendeeCalendar.getFirstSubcomponent('vevent')
-    expect(attendeeEvent.getFirstProperty('uid').getFirstValue())
-      .toBe(event.getFirstProperty('uid').getFirstValue())
+    veventAttendee = vcalendarAttendee.getFirstSubcomponent('vevent')
+    expect(veventAttendee.getFirstProperty('uid').getFirstValue())
+      .withContext(`UID in organizer's calendar and attendees's calendar are identical`)
+      .toBe(vevent.getFirstProperty('uid').getFirstValue())
   })
 
   it('Remove attendee after event creation', async function() {
     const icsName = 'test-remove-attendee.ics'
     icsList.push(icsName)
 
+    let vcalendar, vcalendarNoAttendee, vcalendarAttendee
+    let vevent, veventAttendee, organizer, attendee
+
     // make sure the event doesn't exist
     await _deleteEvent(webdav, userCalendar + icsName)
     await _deleteEvent(webdavAttendee1, attendee1Calendar + icsName)
 
-    // 1. create an event in the organiser's calendar
-    let calendar = _newEvent('Test uninvite attendee', 'Test uninvite attendee')
-    let event = calendar.getFirstSubcomponent('vevent')
-    let organizer = new ICAL.Property('organizer')
+    // 1. create an event in the organizer's calendar
+    vcalendar = _newEvent('Test uninvite attendee', 'Test uninvite attendee')
+    vevent = vcalendar.getFirstSubcomponent('vevent')
+    organizer = new ICAL.Property('organizer')
     organizer.setParameter('cn', user.displayname)
     organizer.setValue(user.email)
-    event.addProperty(organizer)
-    await _putEvent(webdav, userCalendar, icsName, calendar)
+    vevent.addProperty(organizer)
+    await _putEvent(webdav, userCalendar, icsName, vcalendar)
 
     // keep a copy around for updates without other attributes
-    let noAttendeeEvent = ICAL.Component.fromString(calendar.toString())
+    vcalendarNoAttendee = ICAL.Component.fromString(vcalendar.toString())
 
     // 2. add an attendee
-    calendar.addPropertyWithValue('method', 'REQUEST')
-    let attendee = new ICAL.Property('attendee')
+    vcalendar.addPropertyWithValue('method', 'REQUEST')
+    attendee = new ICAL.Property('attendee')
     attendee.setParameter('cn', attendee1.displayname)
     attendee.setParameter('rsvp', 'TRUE')
     attendee.setParameter('partstat', 'NEEDS-ACTION')
     attendee.setValue(attendee1.email)
-    event.addProperty(attendee)
-    await _putEvent(webdav, userCalendar, icsName, calendar, 204)
+    vevent.addProperty(attendee)
+    await _putEvent(webdav, userCalendar, icsName, vcalendar, 204)
 
     // 3. verify that the attendee has the event
-    let attendeeCalendar = await _getEvent(webdavAttendee1, attendee1Calendar, icsName)
+    vcalendarAttendee = await _getEvent(webdavAttendee1, attendee1Calendar, icsName)
 
     // 4. make sure the received event match the original one
-    let attendeeEvent = attendeeCalendar.getFirstSubcomponent('vevent')
-    expect(attendeeEvent.getFirstProperty('uid').getFirstValue())
-      .toBe(event.getFirstProperty('uid').getFirstValue())
+    veventAttendee = vcalendarAttendee.getFirstSubcomponent('vevent')
+    expect(veventAttendee.getFirstProperty('uid').getFirstValue())
+      .toBe(vevent.getFirstProperty('uid').getFirstValue())
 
     // 5. uninvite the attendee - put the event back without the attendee
-    event = noAttendeeEvent.getFirstSubcomponent('vevent')
-    event.addProperty(_newDateTimeProperty('last-modified'))
-    await _putEvent(webdav, userCalendar, icsName, noAttendeeEvent, 204)
+    vevent = vcalendarNoAttendee.getFirstSubcomponent('vevent')
+    vevent.addProperty(_newDateTimeProperty('last-modified'))
+    await _putEvent(webdav, userCalendar, icsName, vcalendarNoAttendee, 204)
 
     // 6. verify that the attendee doesn't have the event anymore
     await _getEvent(webdavAttendee1, attendee1Calendar, icsName, 404)
   })
 
   it('try to overbook a resource', async function() {
-    let calendar, event, organizer, attendee
+    const icsName = 'test-no-overbook.ics'
+    const obIcsName = 'test-no-overbook-overlap.ics'
+    icsList.push(icsName, obIcsName)
+
+    let vcalendar, vevent, organizer, attendee
 
     // make sure there are no events in the resource calendar
     await _deleteAllEvents(webdav_su, resourceNoOverbookCalendar)
 
     // make sure the events don't exist
-    const icsName = 'test-no-overbook.ics'
-    icsList.push(icsName)
     await _deleteEvent(webdav, userCalendar + icsName)
-
-    const obIcsName = 'test-no-overbook-overlap.ics'
-    icsList.push(obIcsName)
     await _deleteEvent(webdav, userCalendar + obIcsName)
 
-    // 1. create an event in the organiser's calendar
-    calendar = _newEvent('Test no overbook', 'Test no overbook')
-    event = calendar.getFirstSubcomponent('vevent')
+    // 1. create an event in the organizer's calendar
+    vcalendar = _newEvent('Test no overbook', 'Test no overbook')
+    vevent = vcalendar.getFirstSubcomponent('vevent')
     organizer = new ICAL.Property('organizer')
     organizer.setParameter('cn', user.displayname)
     organizer.setValue(user.email)
-    event.addProperty(organizer)
+    vevent.addProperty(organizer)
     attendee = new ICAL.Property('attendee')
     attendee.setParameter('cn', resourceNoOverbook.displayname)
     attendee.setParameter('rsvp', 'TRUE')
     attendee.setParameter('partstat', 'NEEDS-ACTION')
     attendee.setValue(resourceNoOverbook.email)
-    event.addProperty(attendee)
-    await _putEvent(webdav, userCalendar, icsName, calendar)
+    vevent.addProperty(attendee)
+    await _putEvent(webdav, userCalendar, icsName, vcalendar)
 
     // 2. create a second event overlapping the first one
-    calendar = _newEvent('Test no overbook - overlap', 'Test no overbook - overlap')
-    event = calendar.getFirstSubcomponent('vevent')
+    vcalendar = _newEvent('Test no overbook - overlap', 'Test no overbook - overlap')
+    vevent = vcalendar.getFirstSubcomponent('vevent')
     organizer = new ICAL.Property('organizer')
     organizer.setParameter('cn', user.displayname)
     organizer.setValue(user.email)
-    event.addProperty(organizer)
+    vevent.addProperty(organizer)
     attendee = new ICAL.Property('attendee')
     attendee.setParameter('cn', resourceNoOverbook.displayname)
     attendee.setParameter('rsvp', 'TRUE')
     attendee.setParameter('partstat', 'NEEDS-ACTION')
     attendee.setValue(resourceNoOverbook.email)
-    event.addProperty(attendee)
+    vevent.addProperty(attendee)
 
     // put the event - should trigger a 409
-    await _putEvent(webdav, userCalendar, obIcsName, calendar, 409)
+    await _putEvent(webdav, userCalendar, obIcsName, vcalendar, 409)
   })
 
   it('try to overbook a resource - multiplebookings=0', async function() {
-    let calendar, event, organizer, attendee
+    const icsName = 'test-can-overbook.ics'
+    const obIcsName = 'test-can-overbook-overlap.ics'
+    icsList.push(icsName, obIcsName)
+
+    let vcalendar, vevent, organizer, attendee
 
     // make sure there are no events in the resource calendar
     await _deleteAllEvents(webdav_su, resourceCanOverbookCalendar)
 
     // make sure the events don't exist
-    const icsName = 'test-can-overbook.ics'
-    icsList.push(icsName)
     await _deleteEvent(webdav, userCalendar + icsName)
-
-    const obIcsName = 'test-can-overbook-overlap.ics'
-    icsList.push(obIcsName)
     await _deleteEvent(webdav, userCalendar + obIcsName)
 
-    // 1. create an event in the organiser's calendar
-    calendar = _newEvent('Test can overbook', 'Test can overbook')
-    event = calendar.getFirstSubcomponent('vevent')
+    // 1. create an event in the organizer's calendar
+    vcalendar = _newEvent('Test can overbook', 'Test can overbook')
+    vevent = vcalendar.getFirstSubcomponent('vevent')
     organizer = new ICAL.Property('organizer')
     organizer.setParameter('cn', user.displayname)
     organizer.setValue(user.email)
-    event.addProperty(organizer)
+    vevent.addProperty(organizer)
     attendee = new ICAL.Property('attendee')
     attendee.setParameter('cn', resourceCanOverbook.displayname)
     attendee.setParameter('rsvp', 'TRUE')
     attendee.setParameter('partstat', 'NEEDS-ACTION')
     attendee.setValue(resourceCanOverbook.email)
-    event.addProperty(attendee)
-    await _putEvent(webdav, userCalendar, icsName, calendar)
+    vevent.addProperty(attendee)
+    await _putEvent(webdav, userCalendar, icsName, vcalendar)
 
     // 2. create a second event overlapping the first one
-    calendar = _newEvent('Test can overbook - overlap', 'Test can overbook - overlap')
-    event = calendar.getFirstSubcomponent('vevent')
+    vcalendar = _newEvent('Test can overbook - overlap', 'Test can overbook - overlap')
+    vevent = vcalendar.getFirstSubcomponent('vevent')
     organizer = new ICAL.Property('organizer')
     organizer.setParameter('cn', user.displayname)
     organizer.setValue(user.email)
-    event.addProperty(organizer)
+    vevent.addProperty(organizer)
     attendee = new ICAL.Property('attendee')
     attendee.setParameter('cn', resourceCanOverbook.displayname)
     attendee.setParameter('rsvp', 'TRUE')
     attendee.setParameter('partstat', 'NEEDS-ACTION')
     attendee.setValue(resourceCanOverbook.email)
-    event.addProperty(attendee)
+    vevent.addProperty(attendee)
 
     // put the event - should be fine since we can overbook this one
-    await _putEvent(webdav, userCalendar, obIcsName, calendar)
+    await _putEvent(webdav, userCalendar, obIcsName, vcalendar)
   })
 
   it('Resource booking overlap detection - bug #1837', async function() {
@@ -306,20 +350,19 @@ describe('create, read, modify, delete tasks for regular user', function() {
     // 4. Create recurring event overlapping the previous recurring event
     //    (should fail)
 
-    let calendar, event, organizer, attendee, rrule, recur
-    let noOverlapCalendar, nstartdate, nenddate
+    const icsName = 'test-res-overlap-detection.ics'
+    const overlapIcsName = 'test-res-overlap-detection-overlap.ics'
+    icsList.push(icsName, overlapIcsName)
+
+    let vcalendar, vcalendarNoOverlap
+    let vevent, organizer, attendee, rrule, recur, nstartdate, nenddate
 
     // make sure there are no events in the resource calendar
     await _deleteAllEvents(webdav_su, resourceNoOverbookCalendar)
 
     // make sure the event doesn't exist
-    const icsName = 'test-res-overlap-detection.ics'
-    icsList.push(icsName)
     await _deleteEvent(webdav, userCalendar + icsName)
-
-    const overlapIcsName = 'test-res-overlap-detection-overlap.ics'
-    icsList.push(overlapIcsName)
-    await _deleteEvent(webdav, attendee1Calendar + overlapIcsName) // TODO: validate calendar
+    await _deleteEvent(webdav, attendee1Calendar + overlapIcsName)
 
     const noOverlapRecurringIcsName = 'test-res-overlap-detection-nooverlap.ics'
     icsList.push(noOverlapRecurringIcsName)
@@ -330,70 +373,70 @@ describe('create, read, modify, delete tasks for regular user', function() {
     await _deleteEvent(webdav, userCalendar + overlapRecurringIcsName)
 
     // 1. create recurring event with resource
-    calendar = _newEvent('Recurring event with resource', 'Recurring event with resource')
-    event = calendar.getFirstSubcomponent('vevent')
+    vcalendar = _newEvent('Recurring event with resource', 'Recurring event with resource')
+    vevent = vcalendar.getFirstSubcomponent('vevent')
     rrule = new ICAL.Property('rrule')
     recur = new ICAL.Recur({ freq: 'DAILY', count: 5 })
     rrule.setValue(recur)
-    event.addProperty(rrule)
+    vevent.addProperty(rrule)
     organizer = new ICAL.Property('organizer')
     organizer.setParameter('cn', user.displayname)
     organizer.setValue(user.email)
-    event.addProperty(organizer)
+    vevent.addProperty(organizer)
     attendee = new ICAL.Property('attendee')
     attendee.setParameter('cn', resourceNoOverbook.displayname)
     attendee.setParameter('rsvp', 'TRUE')
     attendee.setParameter('partstat', 'NEEDS-ACTION')
     attendee.setValue(resourceNoOverbook.email)
-    event.addProperty(attendee)
+    vevent.addProperty(attendee)
 
     // keep a copy around for #3
-    noOverlapCalendar = ICAL.Component.fromString(calendar.toString())
+    vcalendarNoOverlap = ICAL.Component.fromString(vcalendar.toString())
 
-    await _putEvent(webdav, userCalendar, icsName, calendar)
+    await _putEvent(webdav, userCalendar, icsName, vcalendar)
 
     // 2. Create single event overlaping one instance for the previous event
-    calendar = _newEvent('Recurring event with resource - overlap', 'Recurring event with resource - overlap')
-    event = calendar.getFirstSubcomponent('vevent')
+    vcalendar = _newEvent('Recurring event with resource - overlap', 'Recurring event with resource - overlap')
+    vevent = vcalendar.getFirstSubcomponent('vevent')
     organizer = new ICAL.Property('organizer')
     organizer.setParameter('cn', attendee1.displayname)
     organizer.setValue(attendee1.email)
-    event.addProperty(organizer)
+    vevent.addProperty(organizer)
     attendee = new ICAL.Property('attendee')
     attendee.setParameter('cn', resourceNoOverbook.displayname)
     attendee.setParameter('rsvp', 'TRUE')
     attendee.setParameter('partstat', 'NEEDS-ACTION')
     attendee.setValue(resourceNoOverbook.email)
-    event.addProperty(attendee)
+    vevent.addProperty(attendee)
 
     // should fail
-    await _putEvent(webdavAttendee1, attendee1Calendar, overlapIcsName, calendar, 409)
+    await _putEvent(webdavAttendee1, attendee1Calendar, overlapIcsName, vcalendar, 409)
 
     // 3. Create recurring event which _doesn't_ overlap the first event
     //    (should be OK, used to fail pre1.3.17)
     // shift the start date to one hour after the original event end time
-    event = noOverlapCalendar.getFirstSubcomponent('vevent')
-    nstartdate = event.getFirstProperty('dtend').getFirstValue().toJSDate()
+    vevent = vcalendarNoOverlap.getFirstSubcomponent('vevent')
+    nstartdate = vevent.getFirstProperty('dtend').getFirstValue().toJSDate()
     nstartdate = new Date(nstartdate.getTime() + 1000*60*60)
     nenddate = new Date(nstartdate.getTime() + 1000*60*60)
-    event.removeProperty('dtstart')
-    event.removeProperty('dtend')
-    event.addProperty(_newDateTimeProperty('dtstart', nstartdate))
-    event.addProperty(_newDateTimeProperty('dtend', nenddate))
-    event.updatePropertyWithValue('uid', 'recurring - nooverlap')
-    await _putEvent(webdav, userCalendar, noOverlapRecurringIcsName, noOverlapCalendar)
+    vevent.removeProperty('dtstart')
+    vevent.removeProperty('dtend')
+    vevent.addProperty(_newDateTimeProperty('dtstart', nstartdate))
+    vevent.addProperty(_newDateTimeProperty('dtend', nenddate))
+    vevent.updatePropertyWithValue('uid', 'recurring - nooverlap')
+    await _putEvent(webdav, userCalendar, noOverlapRecurringIcsName, vcalendarNoOverlap)
 
     // 4. Create recurring event overlapping the previous recurring event
     //    should fail with a 409
-    nstartdate = event.getFirstProperty('dtstart').getFirstValue().toJSDate()
+    nstartdate = vevent.getFirstProperty('dtstart').getFirstValue().toJSDate()
     nstartdate = new Date(nstartdate.getTime() + 1000*60*5)
     nenddate = new Date(nstartdate.getTime() + 1000*60*60)
-    event.removeProperty('dtstart')
-    event.removeProperty('dtend')
-    event.addProperty(_newDateTimeProperty('dtstart', nstartdate))
-    event.addProperty(_newDateTimeProperty('dtend', nenddate))
-    event.updatePropertyWithValue('uid', 'recurring - nooverlap')
-    await _putEvent(webdav, userCalendar, overlapRecurringIcsName, noOverlapCalendar, 409)
+    vevent.removeProperty('dtstart')
+    vevent.removeProperty('dtend')
+    vevent.addProperty(_newDateTimeProperty('dtstart', nstartdate))
+    vevent.addProperty(_newDateTimeProperty('dtend', nenddate))
+    vevent.updatePropertyWithValue('uid', 'recurring - nooverlap')
+    await _putEvent(webdav, userCalendar, overlapRecurringIcsName, vcalendarNoOverlap, 409)
   })
 
   it('RRULE exception invitation dance', async function() {
@@ -410,15 +453,16 @@ describe('create, read, modify, delete tasks for regular user', function() {
     //    the event disappears from bob's calendar
     //    bob isn't in the master+exception event
 
-    let vcalendar, vevent, summary, uid, rrule, recur
-    let originalStartDate, originalEndDate
-
     const icsName = 'test-rrule-exception-invitation-dance.ics'
     icsList.push(icsName)
+
+    let vcalendar, vcalendarOrganizer, vcalendarAttendee, vevents, vevent, veventMaster, veventException
+    let recurrenceId, summary, uid, organizer, attendees, attendee, rrule, recur, originalStartDate
 
     await _deleteEvent(webdav, userCalendar + icsName)
     await _deleteEvent(webdav, attendee1Calendar + icsName)
 
+    // 1.  create a recurring event in the organizer's calendar
     summary = 'Test reccuring exception invite cancel'
     uid = 'Test-recurring-exception-invite-cancel'
     vcalendar = _newEvent(summary, uid)
@@ -431,52 +475,51 @@ describe('create, read, modify, delete tasks for regular user', function() {
     await _putEvent(webdav, userCalendar, icsName, vcalendar)
 
     // read the event back from the server
-    let vcalendarOrganizer = await _getEvent(webdav, userCalendar, icsName)
+    vcalendarOrganizer = await _getEvent(webdav, userCalendar, icsName)
 
     // 2. Add an exception to the master event and invite attendee1 to it
     vevent = vcalendarOrganizer.getFirstSubcomponent('vevent')
     vevent.removeProperty('last-modified')
     vevent.addProperty(_newDateTimeProperty('last-modified'))
     originalStartDate = vevent.getFirstPropertyValue('dtstart')
-    originalEndDate = vevent.getFirstPropertyValue('dtend')
 
-    let veventEx = new ICAL.Component('vevent')
-    veventEx.addProperty(_newDateTimeProperty('created'))
-    veventEx.addProperty(_newDateTimeProperty('last-modified'))
-    veventEx.addProperty(_newDateTimeProperty('dtstamp'))
-    veventEx.addPropertyWithValue('uid', uid)
-    veventEx.addPropertyWithValue('summary', summary)
-    veventEx.addPropertyWithValue('transp', 'OPAQUE')
-    veventEx.addPropertyWithValue('description', 'Exception')
-    veventEx.addPropertyWithValue('sequence', '1')
-    veventEx.addProperty(vevent.getFirstProperty('dtstart'))
-    veventEx.addProperty(vevent.getFirstProperty('dtend'))
+    veventException = new ICAL.Component('vevent')
+    veventException.addProperty(_newDateTimeProperty('created'))
+    veventException.addProperty(_newDateTimeProperty('last-modified'))
+    veventException.addProperty(_newDateTimeProperty('dtstamp'))
+    veventException.addPropertyWithValue('uid', uid)
+    veventException.addPropertyWithValue('summary', summary)
+    veventException.addPropertyWithValue('transp', 'OPAQUE')
+    veventException.addPropertyWithValue('description', 'Exception')
+    veventException.addPropertyWithValue('sequence', '1')
+    veventException.addProperty(vevent.getFirstProperty('dtstart'))
+    veventException.addProperty(vevent.getFirstProperty('dtend'))
     // out of laziness, add the exception for the first occurence of the event
-    let recurrenceId = new ICAL.Property('recurrence-id')
+    recurrenceId = new ICAL.Property('recurrence-id')
     recurrenceId.setParameter('tzid', originalStartDate.timezone)
     recurrenceId.setValue(originalStartDate)
-    veventEx.addProperty(recurrenceId)
+    veventException.addProperty(recurrenceId)
 
     // 2.1 Add attendee1 and organizer to the exception
-    let organizer = new ICAL.Property('organizer')
+    organizer = new ICAL.Property('organizer')
     organizer.setParameter('cn', user.displayname)
     organizer.setParameter('partstat', 'ACCEPTED')
     organizer.setValue(user.email)
-    veventEx.addProperty(organizer)
-    let attendee = new ICAL.Property('attendee')
+    veventException.addProperty(organizer)
+    attendee = new ICAL.Property('attendee')
     attendee.setParameter('cn', attendee1.displayname)
     attendee.setParameter('rsvp', 'TRUE')
     attendee.setParameter('role', 'REQ-PARTICIPANT')
     attendee.setParameter('partstat', 'NEEDS-ACTION')
     attendee.setValue(attendee1.email)
-    veventEx.addProperty(attendee)
-    vcalendarOrganizer.addSubcomponent(veventEx)
+    veventException.addProperty(attendee)
+    vcalendarOrganizer.addSubcomponent(veventException)
 
     await _putEvent(webdav, userCalendar, icsName, vcalendarOrganizer, 204)
 
     // 3. Make sure the attendee got the event
-    let vcalendarAttendee = await _getEvent(webdavAttendee1, attendee1Calendar, icsName)
-    let vevents = vcalendarAttendee.getAllSubcomponents('vevent')
+    vcalendarAttendee = await _getEvent(webdavAttendee1, attendee1Calendar, icsName)
+    vevents = vcalendarAttendee.getAllSubcomponents('vevent')
     expect(vevents.length)
       .withContext('vEvents count in the calendar of the attendee')
       .toBe(1)
@@ -484,7 +527,7 @@ describe('create, read, modify, delete tasks for regular user', function() {
     expect(vevent.getFirstPropertyValue('recurrence-id'))
       .withContext('The vEvent of the attendee has a RECURRENCE-ID')
       .toBeTruthy()
-    let attendees = vevent.getAllProperties('attendee')
+    attendees = vevent.getAllProperties('attendee')
     expect(attendees.length)
       .withContext('Attendees count in the calendar of the attendee')
       .toBe(1)
@@ -503,7 +546,6 @@ describe('create, read, modify, delete tasks for regular user', function() {
     expect(vevents.length)
       .withContext('vEvents count in the calendar of the organizer')
       .toBe(2)
-    let veventMaster, veventException
     for (vevent of vevents) {
       if (vevent.getFirstPropertyValue('recurrence-id')) {
         veventException = vevent
@@ -528,5 +570,385 @@ describe('create, read, modify, delete tasks for regular user', function() {
     vcalendarOrganizer.removeSubcomponent(veventException)
     await _putEvent(webdav, userCalendar, icsName, vcalendarOrganizer, 204)
     await _getEvent(webdavAttendee1, attendee1Calendar, icsName, 404)
+  })
+
+  it ('RRULE invitation delete exdate dance', async function() {
+    // Workflow:
+    //   Create an recurring event and invite Bob
+    //   Add an exdate to the master event
+    //   Verify that the exdate has propagated to Bob's calendar
+    //   Add an exdate to bob's version of the event
+    //   Verify that an exception has been created in the org's calendar and that bob is 'declined'
+
+    const icsName = 'test-rrule-invitation-deleted-exdate-dance.ics'
+    icsList.push(icsName)
+
+    let summary, uid, rrule, recur, organizer, attendees, attendee, nstartdate, exdate, offset
+    let vcalendar, vcalendarOrganizer, vcalendarAttendee, vevent, vevents, veventMaster, veventException
+
+    await _deleteEvent(webdav, userCalendar + icsName)
+    await _deleteEvent(webdavAttendee1, attendee1Calendar + icsName)
+
+    // 1. create a recurring event in the organizer's calendar
+    summary = 'Test rrule invitation deleted exdate dance'
+    uid = 'Test-rrule-invitation-deleted-exdate-dance'
+    vcalendar = _newEvent(summary, uid)
+    vevent = vcalendar.getFirstSubcomponent('vevent')
+    rrule = new ICAL.Property('rrule')
+    recur = new ICAL.Recur({ freq: 'DAILY', count: 5 })
+    rrule.setValue(recur)
+    vevent.addProperty(rrule)
+    organizer = new ICAL.Property('organizer')
+    organizer.setParameter('cn', user.displayname)
+    organizer.setParameter('partstat', 'ACCEPTED')
+    organizer.setValue(user.email)
+    vevent.addProperty(organizer)
+    attendee = new ICAL.Property('attendee')
+    attendee.setParameter('cn', attendee1.displayname)
+    attendee.setParameter('rsvp', 'TRUE')
+    attendee.setParameter('role', 'REQ-PARTICIPANT')
+    attendee.setParameter('partstat', 'NEEDS-ACTION')
+    attendee.setValue(attendee1.email)
+    vevent.addProperty(attendee)
+
+    await _putEvent(webdav, userCalendar, icsName, vcalendar)
+
+    // 2. Make sure the attendee got it
+    await _getEvent(webdavAttendee1, attendee1Calendar, icsName)
+
+    // 3. Add exdate to master event
+    vcalendarOrganizer = await _getEvent(webdav, userCalendar, icsName)
+    vevent = vcalendarOrganizer.getFirstSubcomponent('vevent')
+    nstartdate = vevent.getFirstProperty('dtstart').getFirstValue().toJSDate()
+    offset = nstartdate.getTimezoneOffset()
+    exdate = new Date(nstartdate.getTime() - offset*60*1000)
+    exdate = ICAL.Time.fromJSDate(exdate)
+    exdate = exdate.convertToZone(ICAL.Timezone.utcTimezone)
+    vevent.addPropertyWithValue('exdate', exdate)
+
+    await _putEvent(webdav, userCalendar, icsName, vcalendarOrganizer, 204)
+
+    // 4. make sure the attendee has the exdate
+    vcalendarAttendee = await _getEvent(webdavAttendee1, attendee1Calendar, icsName)
+    vevent = vcalendarAttendee.getFirstSubcomponent('vevent')
+    expect(vevent.getFirstProperty('exdate').getFirstValue().toICALString())
+      .withContext(`Exdate is in attendee's calendar`)
+      .toEqual(exdate.toICALString())
+
+    // 5. Create an exdate in the attendee's calendar
+    exdate = new Date(nstartdate.getTime() + offset*60*1000 + 1000*60*60*24*2)
+    exdate = ICAL.Time.fromJSDate(exdate)
+    exdate = exdate.convertToZone(ICAL.Timezone.utcTimezone)
+    vevent.addPropertyWithValue('exdate', exdate)
+    vevent.removeProperty('last-modified')
+    vevent.addProperty(_newDateTimeProperty('last-modified'))
+
+    await _putEvent(webdavAttendee1, attendee1Calendar, icsName, vcalendarAttendee, 204)
+
+    // 6. Make sure the attendee is:
+    //  needs-action in master event
+    //  declined in the new exception created by the exdate above
+    vcalendarOrganizer = await _getEvent(webdav, userCalendar, icsName)
+    vevents = vcalendarOrganizer.getAllSubcomponents('vevent')
+    for (vevent of vevents) {
+      if (vevent.getFirstPropertyValue('recurrence-id'))
+        veventException = vevent
+      else
+        veventMaster = vevent
+    }
+
+    attendees = veventMaster.getAllProperties('attendee')
+    expect(attendees.length)
+      .withContext('Attendees count in the calendar of the master event')
+      .toBe(1)
+    attendee = attendees[0]
+    expect(attendee.getParameter('partstat'))
+      .withContext('Partstat of attendee is need-actions for the master event')
+      .toBe('NEEDS-ACTION')
+
+    expect(veventException).toBeTruthy()
+    attendees = veventException.getAllProperties('attendee')
+    expect(attendees.length)
+      .withContext('Attendees count in the calendar of the exception event')
+      .toBe(1)
+    attendee = attendees[0]
+    expect(attendee.getParameter('partstat'))
+      .withContext('Partstat of attendee is declined for the exception')
+      .toBe('DECLINED')
+  })
+
+  it('iCal organizer is attendee - bug #1839', async function() {
+    const icsName = 'test-organizer-is-attendee.ics'
+    icsList.push(icsName)
+
+    let summary, uid
+    let vcalendar, vcalendarOrganizer, vevent, organizer, attendee, attendees
+
+    await _deleteEvent(webdav, userCalendar + icsName)
+    await _deleteEvent(webdavAttendee1, attendee1Calendar + icsName)
+
+    // 1.  create a recurring event in the organizer's calendar
+    summary = 'Test organizer is attendee'
+    uid = 'Test-organizer-is-attendee'
+    vcalendar = _newEvent(summary, uid)
+    vevent = vcalendar.getFirstSubcomponent('vevent')
+    organizer = new ICAL.Property('organizer')
+    organizer.setParameter('cn', user.displayname)
+    organizer.setParameter('partstat', 'ACCEPTED')
+    organizer.setValue(user.email)
+    vevent.addProperty(organizer)
+    attendee = new ICAL.Property('attendee')
+    attendee.setParameter('cn', attendee1.displayname)
+    attendee.setParameter('rsvp', 'TRUE')
+    attendee.setParameter('role', 'REQ-PARTICIPANT')
+    attendee.setParameter('partstat', 'NEEDS-ACTION')
+    attendee.setValue(attendee1.email)
+    vevent.addProperty(attendee)
+
+    // 1.1 add the organizer as an attendee
+    attendee = new ICAL.Property('attendee')
+    attendee.setParameter('cn', user.displayname)
+    attendee.setParameter('rsvp', 'TRUE')
+    attendee.setParameter('role', 'REQ-PARTICIPANT')
+    attendee.setParameter('partstat', 'ACCEPTED')
+    attendee.setValue(user.email)
+    vevent.addProperty(attendee)
+    // console.debug(`Test organizer is attendee =\n${vcalendar.toString()}`)
+
+    await _putEvent(webdav, userCalendar, icsName, vcalendar)
+
+    // 2. Fetch the event and make sure the organizer is not in the attendee list anymore
+    vcalendarOrganizer = await _getEvent(webdav, userCalendar, icsName)
+    vevent = vcalendarOrganizer.getFirstSubcomponent('vevent')
+    attendees = vevent.getAllProperties('attendee')
+    for (attendee of attendees) {
+      expect(attendee.getFirstValue())
+        .withContext(`Organizer is not an attendee`)
+        .not.toBe(user.email)
+    }
+  })
+
+  it('PUT 2 events with the same UID - bug #1853', async function () {
+    const icsName = 'test-same-uid.ics'
+    const conflictIcsName = 'test-same-uid-conflict.ics'
+    icsList.push(icsName, conflictIcsName)
+
+    await _deleteEvent(webdav, userCalendar + icsName)
+    await _deleteEvent(webdav, userCalendar + conflictIcsName)
+
+    let summary, uid
+    let vcalendar
+
+    // 1. create simple event
+    summary = 'Test same uid'
+    uid = 'Test-same-uid'
+    vcalendar = _newEvent(summary, uid)
+
+    await _putEvent(webdav, userCalendar, icsName, vcalendar)
+
+    // PUT the same event with a new filename - should trigger a 409
+    await _putEvent(webdav, userCalendar, conflictIcsName, vcalendar, 409)
+  })
+
+  it('invitation delegation', async function () {
+    const icsName = 'test-delegation.ics'
+    icsList.push(icsName)
+
+    let vcalendarInvitation, vcalendarInvitationAttendee, vcalendarInvitationDelegate, vcalendarInvitationOrganizer, vcalendarCancellation
+    let vevent, organizer, attendee, attendees, delegate
+
+    // the invitation must not exist
+    await _deleteEvent(webdav, userCalendar + icsName)
+    await _deleteEvent(webdavAttendee1, attendee1Calendar + icsName)
+    await _deleteEvent(webdavAttendee1Delegate, attendee1DelegateCalendar + icsName)
+
+    // 1. org -> attendee => org: 1, attendee: 1 (pst=N-A), delegate: 0
+    vcalendarInvitation = _newEvent()
+    vcalendarInvitation.addPropertyWithValue('method', 'REQUEST')
+    vevent = vcalendarInvitation.getFirstSubcomponent('vevent')
+    organizer = new ICAL.Property('organizer')
+    organizer.setParameter('cn', user.displayname)
+    organizer.setValue(user.email)
+    vevent.addProperty(organizer)
+    attendee = new ICAL.Property('attendee')
+    attendee.setParameter('cn', attendee1.displayname)
+    attendee.setParameter('rsvp', 'TRUE')
+    attendee.setParameter('partstat', 'NEEDS-ACTION')
+    attendee.setValue(attendee1.email)
+    vevent.addProperty(attendee)
+
+    await _postEvent(webdav, userCalendar, vcalendarInvitation, user.email, [attendee1.email])
+
+    vcalendarInvitation.removeProperty('method')
+    await _putEvent(webdav, userCalendar, icsName, vcalendarInvitation)
+
+    vcalendarInvitationAttendee = await _getEvent(webdavAttendee1, attendee1Calendar, icsName)
+    _compareAttendees(vcalendarInvitationAttendee, vcalendarInvitation)
+
+    // 2. attendee delegates to delegate
+    //    => org: 1 (updated), attendee: 1 (updated,pst=D),
+    //       delegate: 1 (new,pst=N-A)
+    vcalendarInvitation.addPropertyWithValue('method', 'REQUEST')
+    attendee.setParameter('partstat', 'DELEGATED')
+    attendee.setParameter('delegated-to', attendee1Delegate.email)
+    delegate = new ICAL.Property('attendee')
+    delegate.setParameter('delegated-from', attendee1.email)
+    delegate.setParameter('cn', attendee1Delegate.displayname)
+    delegate.setParameter('rsvp', 'TRUE')
+    delegate.setParameter('partstat', 'NEEDS-ACTION')
+    delegate.setValue(attendee1Delegate.email)
+    vevent.addProperty(delegate)
+
+    await _postEvent(webdavAttendee1, attendee1Calendar, vcalendarInvitation, attendee1.email, [attendee1Delegate.email])
+
+    vcalendarInvitation.updatePropertyWithValue('method', 'REPLY')
+    await _postEvent(webdavAttendee1, attendee1Calendar, vcalendarInvitation, attendee1.email, [user.email])
+
+    vcalendarInvitation.removeProperty('method')
+    await _putEvent(webdavAttendee1, attendee1Calendar, icsName, vcalendarInvitation, 204)
+
+    vcalendarInvitationDelegate = await _getEvent(webdavAttendee1Delegate, attendee1DelegateCalendar, icsName)
+    _compareAttendees(vcalendarInvitationDelegate, vcalendarInvitation)
+
+    // 3. delegate accepts
+    //    => org: 1 (updated), attendee: 1 (updated,pst=D),
+    //       delegate: 1 (accepted,pst=A)
+    vcalendarInvitation.updatePropertyWithValue('method', 'REQUEST')
+    delegate.setParameter('partstat', 'ACCEPTED')
+    await _postEvent(webdavAttendee1Delegate, attendee1DelegateCalendar, vcalendarInvitation, attendee1Delegate.email, [user.email, attendee1.email])
+    vcalendarInvitation.removeProperty('method')
+    await _putEvent(webdavAttendee1Delegate, attendee1DelegateCalendar, icsName, vcalendarInvitation, 204)
+
+    vcalendarInvitationOrganizer = await _getEvent(webdav, userCalendar, icsName)
+    _compareAttendees(vcalendarInvitationOrganizer, vcalendarInvitation)
+
+    // 4. attendee accepts
+    // => org: 1 (updated), attendee: 1 (updated,pst=A),
+    //    delegate: 0 (cancelled, deleted)
+    vcalendarCancellation = _newEvent()
+    vcalendarCancellation.addPropertyWithValue('method', 'CANCEL')
+    attendees = vevent.getAllProperties('attendee')
+    vevent = vcalendarCancellation.getFirstSubcomponent('vevent')
+    vevent.updatePropertyWithValue('sequence', '1')
+    vevent.addProperty(ICAL.Property.fromString(organizer.toICALString()))
+    for (attendee of attendees) {
+      vevent.addProperty(ICAL.Property.fromString(attendee.toICALString()))
+    }
+    await _postEvent(webdavAttendee1, attendee1Calendar, vcalendarCancellation, attendee1.email, [attendee1Delegate.email])
+
+    vevent = vcalendarInvitation.getFirstSubcomponent('vevent')
+    for (attendee of attendees) {
+      if (attendee.getParameter('delegated-to')) {
+        // console.debug(`delegated-to = ${attendee.toICALString()}`)
+        attendee.removeParameter('delegated-to')
+        attendee.setParameter('partstat', 'ACCEPTED')
+      } else {
+        // Remove delegate attendee
+        vevent.removeProperty(attendee)
+      }
+    }
+    vcalendarInvitation.addPropertyWithValue('method', 'REPLY')
+    await _postEvent(webdavAttendee1, attendee1Calendar, vcalendarInvitation, attendee1.email, [user.email])
+
+    vcalendarInvitation.removeProperty('method')
+    await _putEvent(webdavAttendee1, attendee1Calendar, icsName, vcalendarInvitation, 204)
+
+    vcalendarInvitationOrganizer = await _getEvent(webdav, userCalendar, icsName)
+    _compareAttendees(vcalendarInvitationOrganizer, vcalendarInvitation)
+
+    // vcalendarInvitationDelegate = await _getEvent(webdavAttendee1Delegate, attendee1DelegateCalendar, icsName, 404)
+
+    // 5. org updates inv.
+    //    => org: 1 (updated), attendee: 1 (updated), delegate: 0
+    vcalendarInvitation.updatePropertyWithValue('method', 'REQUEST')
+    vevent.updatePropertyWithValue('sequence', '1')
+    vevent.updatePropertyWithValue('last-modified', _newDateTimeProperty('last-modified').getFirstValue())
+    vevent.updatePropertyWithValue('dtstamp', _newDateTimeProperty('dtstamp').getFirstValue())
+    attendee = vevent.getFirstProperty('attendee')
+    attendee.setParameter('partstat', 'NEEDS-ACTION')
+
+    await _postEvent(webdav, userCalendar, vcalendarInvitation, user.email, [attendee1.email])
+
+    vcalendarInvitation.removeProperty('method')
+    await _putEvent(webdav, userCalendar, icsName, vcalendarInvitation, 204)
+
+    vcalendarInvitationAttendee = await _getEvent(webdavAttendee1, attendee1Calendar, icsName)
+    _compareAttendees(vcalendarInvitationAttendee, vcalendarInvitation)
+
+    // 6. attendee delegates to delegate
+    //    => org: 1 (updated), attendee: 1 (updated), delegate: 1 (new)
+    vcalendarInvitation.updatePropertyWithValue('method', 'REQUEST')
+    attendee.setParameter('partstat', 'DELEGATED')
+    attendee.setParameter('delegated-to', attendee1Delegate.email)
+    delegate = new ICAL.Property('attendee')
+    delegate.setParameter('delegated-from', attendee1.email)
+    delegate.setParameter('cn', attendee1Delegate.displayname)
+    delegate.setParameter('rsvp', 'TRUE')
+    delegate.setParameter('partstat', 'NEEDS-ACTION')
+    delegate.setValue(attendee1Delegate.email)
+    vevent.addProperty(delegate)
+
+    await _postEvent(webdavAttendee1, attendee1Calendar, vcalendarInvitation, attendee1.email, [attendee1Delegate.email])
+    vcalendarInvitation.updatePropertyWithValue('method', 'REPLY')
+    await _postEvent(webdavAttendee1, attendee1Calendar, vcalendarInvitation, attendee1.email, [user.email])
+    vcalendarInvitation.removeProperty('method')
+    await _putEvent(webdavAttendee1, attendee1Calendar, icsName, vcalendarInvitation, 204)
+
+    vcalendarInvitationOrganizer = await _getEvent(webdav, userCalendar, icsName)
+    _compareAttendees(vcalendarInvitationOrganizer, vcalendarInvitation)
+
+    vcalendarInvitationDelegate = await _getEvent(webdavAttendee1Delegate, attendee1DelegateCalendar, icsName)
+    _compareAttendees(vcalendarInvitationDelegate, vcalendarInvitation)
+
+    // 7. delegate accepts
+    //    => org: 1 (updated), attendee: 1 (updated), delegate: 1 (accepted)
+    vcalendarInvitation.updatePropertyWithValue('method', 'REPLY')
+    delegate.setParameter('partstat', 'ACCEPTED')
+    await _postEvent(webdavAttendee1Delegate, attendee1DelegateCalendar, vcalendarInvitation, attendee1Delegate.email, [user.email, attendee1.email])
+    vcalendarInvitation.removeProperty('method')
+    await _putEvent(webdavAttendee1Delegate, attendee1DelegateCalendar, icsName, vcalendarInvitation, 204)
+
+    vcalendarInvitationOrganizer = await _getEvent(webdav, userCalendar, icsName)
+    _compareAttendees(vcalendarInvitationOrganizer, vcalendarInvitation)
+    vcalendarInvitationAttendee = await _getEvent(webdavAttendee1, attendee1Calendar, icsName)
+    _compareAttendees(vcalendarInvitationAttendee, vcalendarInvitation)
+
+    // 8. org updates inv.
+    //    => org: 1 (updated), attendee: 1 (updated,partstat unchanged),
+    //       delegate: 1 (updated,partstat reset)
+    vcalendarInvitation.updatePropertyWithValue('method', 'REQUEST')
+    vevent.updatePropertyWithValue('sequence', '2')
+    vevent.updatePropertyWithValue('last-modified', _newDateTimeProperty('last-modified').getFirstValue())
+    vevent.updatePropertyWithValue('dtstamp', _newDateTimeProperty('dtstamp').getFirstValue())
+    delegate.setParameter('partstat', 'NEEDS-ACTION')
+
+    await _postEvent(webdav, userCalendar, vcalendarInvitation, user.email, [attendee1.email, attendee1DelegateCalendar.email])
+
+    vcalendarInvitation.removeProperty('method')
+    await _putEvent(webdav, userCalendar, icsName, vcalendarInvitation, 204)
+
+    vcalendarInvitationAttendee = await _getEvent(webdavAttendee1, attendee1Calendar, icsName)
+    _compareAttendees(vcalendarInvitationAttendee, vcalendarInvitation)
+
+    vcalendarInvitationDelegate = await _getEvent(webdavAttendee1Delegate, attendee1DelegateCalendar, icsName)
+    _compareAttendees(vcalendarInvitationDelegate, vcalendarInvitation)
+
+    // 9. org cancels invitation
+    //    => org: 1 (updated), attendee: 0 (cancelled, deleted),
+    //       delegate: 0 (cancelled, deleted)
+    vcalendarInvitation.updatePropertyWithValue('method', 'CANCEL')
+    vevent.updatePropertyWithValue('sequence', '3')
+    vevent.updatePropertyWithValue('last-modified', _newDateTimeProperty('last-modified').getFirstValue())
+    vevent.updatePropertyWithValue('dtstamp', _newDateTimeProperty('dtstamp').getFirstValue())
+
+    await _postEvent(webdav, userCalendar, vcalendarInvitation, user.email, [attendee1.email, attendee1DelegateCalendar.email])
+
+    vcalendarInvitation.removeProperty('method')
+    vevent.removeProperty(attendee)
+    vevent.removeProperty(delegate)
+    await _putEvent(webdav, userCalendar, icsName, vcalendarInvitation, 204)
+
+    vcalendarInvitationAttendee = await _getEvent(webdavAttendee1, attendee1Calendar, icsName, 404)
+    vcalendarInvitationDelegate = await _getEvent(webdavAttendee1Delegate, attendee1DelegateCalendar, icsName, 404)
   })
 })
