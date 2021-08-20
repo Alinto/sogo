@@ -83,6 +83,29 @@ class WebDAV {
     })
   }
 
+  propfindWebdav(resource, properties, depth = 0) {
+    const formattedProperties = properties.map(p => {
+      return { [`i:${p}`]: '' }
+    })
+    return davRequest({
+      url: this.serverUrl + resource,
+      init: {
+        method: 'PROPFIND',
+        headers: { ...this.headers, depth: new String(depth) },
+        namespace: DAVNamespaceShorthandMap[DAVNamespace.DAV],
+        body: {
+          propfind: {
+            _attributes: {
+              ...getDAVAttribute([DAVNamespace.DAV]),
+              'xmlns:i': 'urn:inverse:params:xml:ns:inverse-dav'
+            },
+            prop: formattedProperties
+          }
+        }
+      }
+    })
+  }
+
   propfindEvent(resource) {
     return propfind({
       url: this.serverUrl + resource,
@@ -264,15 +287,21 @@ class WebDAV {
     })
   }
 
-  proppatchWebdav(resource, properties) {
+  proppatchWebdav(resource, properties, depth = 0) {
     const formattedProperties = Object.keys(properties).map(p => {
-      return { [`i:${p}`]: properties[p] }
+      if (typeof properties[p] == 'object') {
+        return { [`i:${p}`]: properties[p].map(pp => {
+          const [ key ] = Object.keys(pp)
+          return { [`i:${key}`]: pp[key] || '' }
+        })}
+      }
+      return { [`i:${p}`]: properties[p] || '' }
     })
     return davRequest({
       url: this.serverUrl + resource,
       init: {
         method: 'PROPPATCH',
-        headers: this.headers,
+        headers: { ...this.headers, depth: new String(depth) },
         namespace: DAVNamespaceShorthandMap[DAVNamespace.DAV],
         body: {
           propertyupdate: {

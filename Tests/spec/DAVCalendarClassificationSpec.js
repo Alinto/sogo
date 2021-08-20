@@ -1,7 +1,7 @@
 import config from '../lib/config'
 import WebDAV from '../lib/WebDAV'
 
-describe('default classification', function() {
+describe('calendar classification', function() {
   const webdav = new WebDAV(config.username, config.password)
 
   const _setClassification = async function(component, classification = '') {
