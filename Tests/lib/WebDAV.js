@@ -264,6 +264,31 @@ class WebDAV {
     })
   }
 
+  proppatchWebdav(resource, properties) {
+    const formattedProperties = Object.keys(properties).map(p => {
+      return { [`i:${p}`]: properties[p] }
+    })
+    return davRequest({
+      url: this.serverUrl + resource,
+      init: {
+        method: 'PROPPATCH',
+        headers: this.headers,
+        namespace: DAVNamespaceShorthandMap[DAVNamespace.DAV],
+        body: {
+          propertyupdate: {
+            _attributes: {
+              ...getDAVAttribute([DAVNamespace.DAV]),
+              'xmlns:i': 'urn:inverse:params:xml:ns:inverse-dav'
+            },
+            set: {
+              prop: formattedProperties
+            }
+          }
+        }
+      }
+    })
+  }
+
   currentUserPrivilegeSet(resource) {
     return propfind({
       url: this.serverUrl + resource,
