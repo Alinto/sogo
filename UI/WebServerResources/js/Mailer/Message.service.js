@@ -915,7 +915,10 @@
    * @returns a promise of the HTTP operation
    */
   Message.prototype.download = function() {
-    return Message.$$resource.download(this.$absolutePath(), 'export');
+    var options;
+
+    options = { filename: this.subject + '.eml' };
+    return Message.$$resource.download(this.$absolutePath(), 'export', undefined, options);
   };
 
   /**
