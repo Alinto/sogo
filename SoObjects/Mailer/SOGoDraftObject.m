@@ -28,6 +28,7 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest+So.h>
 #import <NGExtensions/NGBase64Coding.h>
+#import <NGExtensions/NGQuotedPrintableCoding.h>
 #import <NGExtensions/NSFileManager+Extensions.h>
 #import <NGExtensions/NGHashMap.h>
 #import <NGExtensions/NSNull+misc.h>
@@ -1270,11 +1271,12 @@ static NSString    *userAgent      = nil;
   map = [[[NGMutableHashMap alloc] initWithCapacity: 1] autorelease];
 
   [map setObject: contentTypeValue forKey: @"content-type"];
+  [map setObject: @"quoted-printable" forKey: @"content-transfer-encoding"];
 
    /* prepare body content */
   bodyPart = [[[NGMimeBodyPart alloc] initWithHeader:map] autorelease];
 
-  plainText = [text htmlToText];
+  plainText = [[text htmlToText] stringByEncodingQuotedPrintable];
   [bodyPart setBody: plainText];
 
   return bodyPart;
@@ -1297,12 +1299,15 @@ static NSString    *userAgent      = nil;
 
   // TODO: set charset in header!
   if (text)
-    [map setObject: (isHTML ? htmlContentTypeValue : contentTypeValue)
-            forKey: @"content-type"];
+    {
+      [map setObject: (isHTML ? htmlContentTypeValue : contentTypeValue)
+              forKey: @"content-type"];
+      [map setObject: @"quoted-printable" forKey: @"content-transfer-encoding"];
+    }
 
   /* prepare body content */
   bodyPart = [[[NGMimeBodyPart alloc] initWithHeader:map] autorelease];
-  [bodyPart setBody: text];
+  [bodyPart setBody: [text stringByEncodingQuotedPrintable]];
 
   return bodyPart;
 }
