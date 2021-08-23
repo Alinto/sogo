@@ -93,7 +93,7 @@
               <md-list-item
                   class="sg-mailbox-list-item md-clickable md-default-theme md-background md-hue-1"
                   ng-class="{'md-bg sg-selected': folder.id == app.service.selectedFolder.id}"
-                  md-virtual-repeat="folder in account" md-item-size="48" md-on-demand="md-on-demand"
+                  md-virtual-repeat="folder in account" md-item-size="40" md-on-demand="md-on-demand"
                   sg-mailbox="folder"
                   sg-droppable="app.isDroppableFolder(dragFolder, folder)"
                   sg-drop="app.dragSelectedMessages(dragFolder, folder, dragMode)">
