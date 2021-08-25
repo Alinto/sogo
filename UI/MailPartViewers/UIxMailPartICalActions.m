@@ -35,6 +35,7 @@
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 
 #import <Appointments/iCalEvent+SOGo.h>
+#import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/iCalPerson+SOGo.h>
 #import <Appointments/SOGoAppointmentObject.h>
 #import <Appointments/SOGoAppointmentFolder.h>
@@ -331,6 +332,7 @@
 {
   iCalEvent *emailEvent;
   SOGoAppointmentObject *eventObject;
+  SOGoUser *user;
   WOResponse *response;
 
   emailEvent = [self _emailEvent];
@@ -339,6 +341,12 @@
       eventObject = [self _eventObjectWithUID: [emailEvent uid]];      
       if ([eventObject isNew])
 	{
+          user = [context activeUser];
+          if (![emailEvent userIsOrganizer: user] && ![emailEvent userIsAttendee: user])
+            {
+              [emailEvent setOrganizer: nil];
+              [emailEvent removeAllAttendees];
+            }
 	  [eventObject saveCalendar: [emailEvent parent]];
 	  response = [self responseWith204];
 	}

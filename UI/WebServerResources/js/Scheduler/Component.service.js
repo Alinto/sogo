@@ -599,9 +599,9 @@
       this.repeat.end = 'never';
     this.$hasCustomRepeat = this.hasCustomRepeat();
 
+    var type = (this.type == 'appointment')? 'Events' : 'Tasks';
     if (this.isNew) {
       // Set default values
-      var type = (this.type == 'appointment')? 'Events' : 'Tasks';
 
       // Set default classification
       this.classification = Component.$Preferences.defaults['SOGoCalendar' + type + 'DefaultClassification'].toLowerCase();
@@ -618,8 +618,13 @@
       // Set notitifications
       this.sendAppointmentNotifications = Component.$Preferences.defaults.SOGoAppointmentSendEMailNotifications;
     }
-    else if (angular.isUndefined(data.$hasAlarm)) {
-      this.$hasAlarm = angular.isDefined(data.alarm);
+    else {
+      if (angular.isUndefined(data.$hasAlarm)) {
+        this.$hasAlarm = angular.isDefined(data.alarm);
+      }
+      if (angular.isUndefined(data.classification)) {
+        this.classification = Component.$Preferences.defaults['SOGoCalendar' + type + 'DefaultClassification'].toLowerCase();
+      }
     }
 
     // Allow the component to be moved to a different calendar

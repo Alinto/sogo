@@ -151,6 +151,16 @@
                 <var:string value="organizerDisplayName" />
               </a>
               <var:string label:value="request_info_no_attendee" />
+              <var:if condition="hasCalendarAccess">
+	        <var:if condition="isEventStoredInCalendar" const:negate="YES">
+                  <!-- Add event to calendar even if the user is not invite -->
+	          <div layout="row" layout-align="start center">
+                    <md-button class="md-raised" type="button" ng-click="iCalendarAction('addToCalendar')">
+                      <var:string label:value="Add to calendar" />
+                    </md-button>
+                  </div>
+                </var:if>
+              </var:if>
             </p>
           </var:if>
 
@@ -182,8 +192,7 @@
         </var:if>
 
         <!-- IMIP CANCEL - sent to attendees to notify of the attendee
-             being removed or the
-	     event being deleted -->
+             being removed or the event being deleted -->
         <var:if condition="inCalendar.method.uppercaseString" const:value="CANCEL">
           <p><var:string label:value="cancel_info_text" /></p>
 	  <var:if condition="isEventStoredInCalendar">
@@ -255,15 +264,15 @@
             <label class="pseudo-input-label"><var:string label:value="Attendees"/></label>
             <!-- md-contact-chips don't support "readonly", so we build them using md-chips
                  in readonly mode and a template similar to the one of md-contact-chips -->
-            <md-chips class="md-contact-chips sg-readonly"
+            <md-chips class="md-contact-chips sg-readonly sg-with-secondary"
                       ng-model="::part.participants"
                       readonly="true">
               <md-chip-template>
                 <div class="md-contact-avatar">
-                  <sg-avatar-image sg-email="$chip.email" size="32">person</sg-avatar-image>
+                  <sg-avatar-image sg-email="$chip.email" size="26">person</sg-avatar-image>
                 </div>
                 <div class="md-contact-name">{{$chip.name}}</div>
-                <md-icon ng-class="'icon-' + $chip.partstat"><!-- partstat --></md-icon>
+                <md-icon class="sg-secondary" ng-class="'icon-' + $chip.partstat"><!-- partstat --></md-icon>
               </md-chip-template>
             </md-chips>
           </div>
