@@ -1,5 +1,5 @@
 import config from '../lib/config'
-import WebDAV from '../lib/WebDAV'
+import { default as WebDAV, DAVInverse } from '../lib/WebDAV'
 
 describe('calendar classification', function() {
   const webdav = new WebDAV(config.username, config.password)
@@ -8,7 +8,7 @@ describe('calendar classification', function() {
     const resource = `/SOGo/dav/${config.username}/Calendar/`
     const properties = { [`${component}-default-classification`]: classification }
 
-    const results = await webdav.proppatchWebdav(resource, properties)
+    const results = await webdav.proppatchWebdav(resource, properties, DAVInverse)
     expect(results.length)
       .withContext(`Set ${component} classification to ${classification}`)
       .toBe(1)

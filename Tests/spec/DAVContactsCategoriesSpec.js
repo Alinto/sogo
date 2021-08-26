@@ -1,5 +1,5 @@
 import config from '../lib/config'
-import WebDAV from '../lib/WebDAV'
+import { default as WebDAV, DAVInverse } from '../lib/WebDAV'
 
 describe('contacts categories', function() {
   const webdav = new WebDAV(config.username, config.password)
@@ -11,7 +11,7 @@ describe('contacts categories', function() {
     })
     const properties = { 'contacts-categories': elements.length ? elements : '' }
 
-    const results = await webdav.proppatchWebdav(resource, properties)
+    const results = await webdav.proppatchWebdav(resource, properties, DAVInverse)
     expect(results.length)
       .withContext(`Set contacts categories to ${categories.join(', ')}`)
       .toBe(1)
@@ -23,7 +23,7 @@ describe('contacts categories', function() {
     const resource = `/SOGo/dav/${config.username}/Contacts/`
     const properties = ['contacts-categories']
 
-    const results = await webdav.propfindWebdav(resource, properties)
+    const results = await webdav.propfindWebdav(resource, properties, DAVInverse)
     expect(results.length)
       .toBe(1)
     const { props: { contactsCategories: { category } = {} } = {} } = results[0]

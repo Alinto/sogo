@@ -114,6 +114,35 @@ class TestUtility {
     return this.setupRights(resource, username, sogoRights)
   }
 
+  _subscriptionOperation(resource, subscribers, operation) {
+    return davRequest({
+      url: `${this.webdav.serverUrl}${resource}`,
+      init: {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/xml; charset="utf-8"',
+          ...this.webdav.headers
+        },
+        body: {
+          [operation]: {
+            _attributes: {
+              xmlns: 'urn:inverse:params:xml:ns:inverse-dav',
+              users: subscribers.join(',')
+            }
+          }
+        }
+      }
+    })
+  }
+
+  subscribe(resource, subscribers) {
+    return this._subscriptionOperation(resource, subscribers, 'subscribe')
+  }
+
+  unsubscribe(resource, subscribers) {
+    return this._subscriptionOperation(resource, subscribers, 'unsubscribe')
+  }
+
   versitDict(cal) {
     const comp = ICAL.Component.fromString(cal)
     let props = {}
