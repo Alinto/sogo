@@ -1757,7 +1757,8 @@ Defaults to `YES` when unset.
 
 |ModulesConstraints (optional)
 |Limits the access of any module through a constraint based on a SQL
-column; must be a dictionary with keys `Mail`, and/or `Calendar`,
+column whose value is a string (e.g. char or varchat column type);
+must be a dictionary with keys `Mail`, and/or `Calendar`,
 and/or `ActiveSync` for example:
 
 ----
