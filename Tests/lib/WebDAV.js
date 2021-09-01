@@ -71,10 +71,10 @@ class WebDAV {
       localHeaders.recipients = recipients.join(',')
 
     return fetch(this.serverUrl + resource, {
-        method: 'POST',
-        body: vcalendar,
-        headers: { ...this.headers, ...localHeaders }
-      })
+      method: 'POST',
+      body: vcalendar,
+      headers: { ...this.headers, ...localHeaders }
+    })
   }
 
   getEvent(resource, filename) {
@@ -232,7 +232,7 @@ class WebDAV {
   // http://tools.ietf.org/html/rfc3253.html#section-3.8
   expendProperty(resource, properties) {
     return davRequest({
-      url: `${this.serverUrl}/${resource}`,
+      url: this.serverUrl + resource,
       init: {
         method: 'REPORT',
         namespace: DAVNamespaceShorthandMap[DAVNamespace.DAV],
@@ -251,7 +251,7 @@ class WebDAV {
 
   syncColletion(resource) {
     return davRequest({
-      url: `${this.serverUrl}/${resource}`,
+      url: this.serverUrl + resource,
       init: {
         method: 'REPORT',
         namespace: DAVNamespaceShorthandMap[DAVNamespace.DAV],
@@ -272,7 +272,7 @@ class WebDAV {
   syncQuery(resource, token = '', properties) {
     const formattedProperties = properties.map(p => { return { name: p, namespace: DAVNamespace.DAV } })
     return syncCollection({
-      url: `${this.serverUrl}/${resource}`,
+      url: this.serverUrl + resource,
       props: formattedProperties,
       syncLevel: 1,
       syncToken: token,

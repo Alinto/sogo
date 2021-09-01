@@ -53,7 +53,9 @@ END:VCALENDAR`
 
   const _checkViewEventRight = function(operation, event, eventClass, right) {
     if (right) {
-      expect(event).toBeTruthy()
+      expect(event)
+        .withContext(`Returned event during operation '${operation}'`)
+        .toBeTruthy()
       if (['v', 'r', 'm'].includes(right)) {
         const iscClass = classToICSClass[eventClass]
         const expectedEvent = utility.formatTemplate(event_template, {
@@ -338,7 +340,9 @@ END:VCALENDAR`
   const _testEventRight = async function(eventClass, rights) {
     const right = Object.keys(rights).includes(eventClass) ? rights[eventClass] : undefined
 
-    let event = await _getEvent(eventClass)
+    let event
+
+    event = await _getEvent(eventClass)
     _checkViewEventRight('GET', event, eventClass, right)
 
     event = await _propfindEvent(eventClass)
@@ -372,7 +376,9 @@ END:VCALENDAR`
   const _testRights = async function(rights) {
     const results = await utility.setupCalendarRights(resource, config.subscriber_username, rights)
     expect(results.length).toBe(1)
-    expect(results[0].status).toBe(204)
+    expect(results[0].status)
+      .withContext(`Setup rights (${JSON.stringify(rights)}) on ${resource}`)
+      .toBe(204)
     await _testCreate(rights)
     await _testCollectionDAVAcl(rights)
     await _testEventRight('pu', rights)
@@ -393,7 +399,9 @@ END:VCALENDAR`
         'filename': eventFilename
       })
       let response = await webdav.createCalendarObject(resource, eventFilename, event)
-      expect(response.status).toBe(201)
+      expect(response.status)
+        .withContext(`HTTP status when creating event with ${c} class`)
+        .toBe(201)
       // Create task for each class
       const taskFilename = `${c.toLowerCase()}-task.ics`
       const task = utility.formatTemplate(task_template, {
@@ -401,7 +409,9 @@ END:VCALENDAR`
         'filename': taskFilename
       })
       response = await webdav.createCalendarObject(resource, taskFilename, task)
-      expect(response.status).toBe(201)
+      expect(response.status)
+        .withContext(`HTTP status when creating task with ${c} class`)
+        .toBe(201)
     }
   })
 

@@ -99,11 +99,17 @@ describe('WebDAV', function() {
     expect(results.length).toBe(1)
     results.forEach(o => {
       const { props = {} } = o
-      expect(o.status).toBe(207)
+      expect(o.status)
+        .withContext(`HTTP status code when expanding properties`)
+        .toBe(207)
       Object.keys(outcomes).forEach(p => {
         const { response: { href, propstat: { prop: { displayname }} }} = props[p]
-        expect(href).toBe(outcomes[p].href)
-        expect(displayname).toBe(outcomes[p].displayname)
+        expect(href)
+          .withContext(`Result of expand-property for href`)
+          .toBe(outcomes[p].href)
+        expect(displayname)
+          .withContext(`Result of expand-property for displayname`)
+          .toBe(outcomes[p].displayname)
       })
     })
   })
