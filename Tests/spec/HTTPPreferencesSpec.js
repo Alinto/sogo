@@ -3,15 +3,9 @@ import Preferences from '../lib/Preferences'
 
 const prefs = new Preferences(config.username, config.password)
 
-beforeAll(async function() {
-  // because if not set in vacation will not be found later
-  // we must make sure they are there at the start
-  await prefs.setOrCreate('autoReplyText', '', ['defaults', 'Vacation'])
-  await prefs.setOrCreate('PreventInvitations', 0, ['settings', 'Calendar'])
-  await prefs.setOrCreate('PreventInvitationsWhitelist', {}, ['settings', 'Calendar'])
-})
-
 describe('preferences', function() {
+
+  // preferencesTest
 
   const _setTextPref = async function(prefText) {
     await prefs.set('autoReplyText', prefText)
@@ -22,7 +16,13 @@ describe('preferences', function() {
       .toEqual(prefText)
   }
 
-  // preferencesTest
+  beforeAll(async function() {
+    // because if not set in vacation will not be found later
+    // we must make sure they are there at the start
+    await prefs.setOrCreate('autoReplyText', '', ['defaults', 'Vacation'])
+    await prefs.setOrCreate('PreventInvitations', 0, ['settings', 'Calendar'])
+    await prefs.setOrCreate('PreventInvitationsWhitelist', {}, ['settings', 'Calendar'])
+  })
 
   it('Set/get a text preference - normal characters', async function() {
     await _setTextPref('defaultText')

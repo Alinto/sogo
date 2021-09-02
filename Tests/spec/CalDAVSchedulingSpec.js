@@ -39,35 +39,6 @@ describe('create, read, modify, delete tasks for regular user', function() {
     return hrefs
   }
 
-  const _newDateTimeProperty = function(propertyName, dateObject = new Date()) {
-    let property = new ICAL.Property(propertyName)
-    property.setParameter('tzid', 'America/Toronto')
-    property.setValue(ICAL.Time.fromJSDate(dateObject))
-
-    return property
-  }
-
-  const _newEvent = function(summary = 'test event', uid = 'test', transp = 'OPAQUE') {
-    const vcalendar = new ICAL.Component('vcalendar')
-    const vevent = new ICAL.Component('vevent')
-    const now = new Date()
-    const later = new Date(now.getTime() + 1000*60*60)
-
-    vcalendar.addSubcomponent(vevent)
-    vevent.addPropertyWithValue('uid', uid)
-    vevent.addPropertyWithValue('summary', summary)
-    vevent.addPropertyWithValue('transp', transp)
-    vevent.addProperty(_newDateTimeProperty('dtstart', now))
-    vevent.addProperty(_newDateTimeProperty('dtend', later))
-    vevent.addProperty(_newDateTimeProperty('dtstamp', now))
-    vevent.addProperty(_newDateTimeProperty('last-modified', now))
-    vevent.addProperty(_newDateTimeProperty('created', now))
-    vevent.addPropertyWithValue('class', 'PUBLIC')
-    vevent.addPropertyWithValue('sequence', '0')
-
-    return vcalendar
-  }
-
   const _putEvent = async function(client, calendarName, filename, event, expectedCode = 201) {
     const response = await client.createCalendarObject(calendarName, filename, event.toString())
     expect(response.status)
@@ -166,7 +137,7 @@ describe('create, read, modify, delete tasks for regular user', function() {
     await _deleteEvent(webdavAttendee1, attendee1Calendar + icsName)
 
     // 1. create an event in the organizer's calendar
-    vcalendar = _newEvent('Test add attendee', 'Test add attendee')
+    vcalendar = utility.createCalendar('Test add attendee', 'Test add attendee')
     vevent = vcalendar.getFirstSubcomponent('vevent')
     organizer = new ICAL.Property('organizer')
     organizer.setParameter('cn', user.displayname)
@@ -206,7 +177,7 @@ describe('create, read, modify, delete tasks for regular user', function() {
     await _deleteEvent(webdavAttendee1, attendee1Calendar + icsName)
 
     // 1. create an event in the organizer's calendar
-    vcalendar = _newEvent('Test uninvite attendee', 'Test uninvite attendee')
+    vcalendar = utility.createCalendar('Test uninvite attendee', 'Test uninvite attendee')
     vevent = vcalendar.getFirstSubcomponent('vevent')
     organizer = new ICAL.Property('organizer')
     organizer.setParameter('cn', user.displayname)
@@ -237,7 +208,7 @@ describe('create, read, modify, delete tasks for regular user', function() {
 
     // 5. uninvite the attendee - put the event back without the attendee
     vevent = vcalendarNoAttendee.getFirstSubcomponent('vevent')
-    vevent.addProperty(_newDateTimeProperty('last-modified'))
+    vevent.addProperty(utility.createDateTimeProperty('last-modified'))
     await _putEvent(webdav, userCalendar, icsName, vcalendarNoAttendee, 204)
 
     // 6. verify that the attendee doesn't have the event anymore
@@ -259,7 +230,7 @@ describe('create, read, modify, delete tasks for regular user', function() {
     await _deleteEvent(webdav, userCalendar + obIcsName)
 
     // 1. create an event in the organizer's calendar
-    vcalendar = _newEvent('Test no overbook', 'Test no overbook')
+    vcalendar = utility.createCalendar('Test no overbook', 'Test no overbook')
     vevent = vcalendar.getFirstSubcomponent('vevent')
     organizer = new ICAL.Property('organizer')
     organizer.setParameter('cn', user.displayname)
@@ -274,7 +245,7 @@ describe('create, read, modify, delete tasks for regular user', function() {
     await _putEvent(webdav, userCalendar, icsName, vcalendar)
 
     // 2. create a second event overlapping the first one
-    vcalendar = _newEvent('Test no overbook - overlap', 'Test no overbook - overlap')
+    vcalendar = utility.createCalendar('Test no overbook - overlap', 'Test no overbook - overlap')
     vevent = vcalendar.getFirstSubcomponent('vevent')
     organizer = new ICAL.Property('organizer')
     organizer.setParameter('cn', user.displayname)
@@ -306,7 +277,7 @@ describe('create, read, modify, delete tasks for regular user', function() {
     await _deleteEvent(webdav, userCalendar + obIcsName)
 
     // 1. create an event in the organizer's calendar
-    vcalendar = _newEvent('Test can overbook', 'Test can overbook')
+    vcalendar = utility.createCalendar('Test can overbook', 'Test can overbook')
     vevent = vcalendar.getFirstSubcomponent('vevent')
     organizer = new ICAL.Property('organizer')
     organizer.setParameter('cn', user.displayname)
@@ -321,7 +292,7 @@ describe('create, read, modify, delete tasks for regular user', function() {
     await _putEvent(webdav, userCalendar, icsName, vcalendar)
 
     // 2. create a second event overlapping the first one
-    vcalendar = _newEvent('Test can overbook - overlap', 'Test can overbook - overlap')
+    vcalendar = utility.createCalendar('Test can overbook - overlap', 'Test can overbook - overlap')
     vevent = vcalendar.getFirstSubcomponent('vevent')
     organizer = new ICAL.Property('organizer')
     organizer.setParameter('cn', user.displayname)
@@ -373,7 +344,7 @@ describe('create, read, modify, delete tasks for regular user', function() {
     await _deleteEvent(webdav, userCalendar + overlapRecurringIcsName)
 
     // 1. create recurring event with resource
-    vcalendar = _newEvent('Recurring event with resource', 'Recurring event with resource')
+    vcalendar = utility.createCalendar('Recurring event with resource', 'Recurring event with resource')
     vevent = vcalendar.getFirstSubcomponent('vevent')
     rrule = new ICAL.Property('rrule')
     recur = new ICAL.Recur({ freq: 'DAILY', count: 5 })
@@ -396,7 +367,7 @@ describe('create, read, modify, delete tasks for regular user', function() {
     await _putEvent(webdav, userCalendar, icsName, vcalendar)
 
     // 2. Create single event overlaping one instance for the previous event
-    vcalendar = _newEvent('Recurring event with resource - overlap', 'Recurring event with resource - overlap')
+    vcalendar = utility.createCalendar('Recurring event with resource - overlap', 'Recurring event with resource - overlap')
     vevent = vcalendar.getFirstSubcomponent('vevent')
     organizer = new ICAL.Property('organizer')
     organizer.setParameter('cn', attendee1.displayname)
@@ -421,8 +392,8 @@ describe('create, read, modify, delete tasks for regular user', function() {
     nenddate = new Date(nstartdate.getTime() + 1000*60*60)
     vevent.removeProperty('dtstart')
     vevent.removeProperty('dtend')
-    vevent.addProperty(_newDateTimeProperty('dtstart', nstartdate))
-    vevent.addProperty(_newDateTimeProperty('dtend', nenddate))
+    vevent.addProperty(utility.createDateTimeProperty('dtstart', nstartdate))
+    vevent.addProperty(utility.createDateTimeProperty('dtend', nenddate))
     vevent.updatePropertyWithValue('uid', 'recurring - nooverlap')
     await _putEvent(webdav, userCalendar, noOverlapRecurringIcsName, vcalendarNoOverlap)
 
@@ -433,8 +404,8 @@ describe('create, read, modify, delete tasks for regular user', function() {
     nenddate = new Date(nstartdate.getTime() + 1000*60*60)
     vevent.removeProperty('dtstart')
     vevent.removeProperty('dtend')
-    vevent.addProperty(_newDateTimeProperty('dtstart', nstartdate))
-    vevent.addProperty(_newDateTimeProperty('dtend', nenddate))
+    vevent.addProperty(utility.createDateTimeProperty('dtstart', nstartdate))
+    vevent.addProperty(utility.createDateTimeProperty('dtend', nenddate))
     vevent.updatePropertyWithValue('uid', 'recurring - nooverlap')
     await _putEvent(webdav, userCalendar, overlapRecurringIcsName, vcalendarNoOverlap, 409)
   })
@@ -465,7 +436,7 @@ describe('create, read, modify, delete tasks for regular user', function() {
     // 1.  create a recurring event in the organizer's calendar
     summary = 'Test reccuring exception invite cancel'
     uid = 'Test-recurring-exception-invite-cancel'
-    vcalendar = _newEvent(summary, uid)
+    vcalendar = utility.createCalendar(summary, uid)
     vevent = vcalendar.getFirstSubcomponent('vevent')
     rrule = new ICAL.Property('rrule')
     recur = new ICAL.Recur({ freq: 'DAILY', count: 5 })
@@ -480,13 +451,13 @@ describe('create, read, modify, delete tasks for regular user', function() {
     // 2. Add an exception to the master event and invite attendee1 to it
     vevent = vcalendarOrganizer.getFirstSubcomponent('vevent')
     vevent.removeProperty('last-modified')
-    vevent.addProperty(_newDateTimeProperty('last-modified'))
+    vevent.addProperty(utility.createDateTimeProperty('last-modified'))
     originalStartDate = vevent.getFirstPropertyValue('dtstart')
 
     veventException = new ICAL.Component('vevent')
-    veventException.addProperty(_newDateTimeProperty('created'))
-    veventException.addProperty(_newDateTimeProperty('last-modified'))
-    veventException.addProperty(_newDateTimeProperty('dtstamp'))
+    veventException.addProperty(utility.createDateTimeProperty('created'))
+    veventException.addProperty(utility.createDateTimeProperty('last-modified'))
+    veventException.addProperty(utility.createDateTimeProperty('dtstamp'))
     veventException.addPropertyWithValue('uid', uid)
     veventException.addPropertyWithValue('summary', summary)
     veventException.addPropertyWithValue('transp', 'OPAQUE')
@@ -592,7 +563,7 @@ describe('create, read, modify, delete tasks for regular user', function() {
     // 1. create a recurring event in the organizer's calendar
     summary = 'Test rrule invitation deleted exdate dance'
     uid = 'Test-rrule-invitation-deleted-exdate-dance'
-    vcalendar = _newEvent(summary, uid)
+    vcalendar = utility.createCalendar(summary, uid)
     vevent = vcalendar.getFirstSubcomponent('vevent')
     rrule = new ICAL.Property('rrule')
     recur = new ICAL.Recur({ freq: 'DAILY', count: 5 })
@@ -641,7 +612,7 @@ describe('create, read, modify, delete tasks for regular user', function() {
     exdate = exdate.convertToZone(ICAL.Timezone.utcTimezone)
     vevent.addPropertyWithValue('exdate', exdate)
     vevent.removeProperty('last-modified')
-    vevent.addProperty(_newDateTimeProperty('last-modified'))
+    vevent.addProperty(utility.createDateTimeProperty('last-modified'))
 
     await _putEvent(webdavAttendee1, attendee1Calendar, icsName, vcalendarAttendee, 204)
 
@@ -690,7 +661,7 @@ describe('create, read, modify, delete tasks for regular user', function() {
     // 1.  create a recurring event in the organizer's calendar
     summary = 'Test organizer is attendee'
     uid = 'Test-organizer-is-attendee'
-    vcalendar = _newEvent(summary, uid)
+    vcalendar = utility.createCalendar(summary, uid)
     vevent = vcalendar.getFirstSubcomponent('vevent')
     organizer = new ICAL.Property('organizer')
     organizer.setParameter('cn', user.displayname)
@@ -742,7 +713,7 @@ describe('create, read, modify, delete tasks for regular user', function() {
     // 1. create simple event
     summary = 'Test same uid'
     uid = 'Test-same-uid'
-    vcalendar = _newEvent(summary, uid)
+    vcalendar = utility.createCalendar(summary, uid)
 
     await _putEvent(webdav, userCalendar, icsName, vcalendar)
 
@@ -763,7 +734,7 @@ describe('create, read, modify, delete tasks for regular user', function() {
     await _deleteEvent(webdavAttendee1Delegate, attendee1DelegateCalendar + icsName)
 
     // 1. org -> attendee => org: 1, attendee: 1 (pst=N-A), delegate: 0
-    vcalendarInvitation = _newEvent()
+    vcalendarInvitation = utility.createCalendar()
     vcalendarInvitation.addPropertyWithValue('method', 'REQUEST')
     vevent = vcalendarInvitation.getFirstSubcomponent('vevent')
     organizer = new ICAL.Property('organizer')
@@ -825,7 +796,7 @@ describe('create, read, modify, delete tasks for regular user', function() {
     // 4. attendee accepts
     // => org: 1 (updated), attendee: 1 (updated,pst=A),
     //    delegate: 0 (cancelled, deleted)
-    vcalendarCancellation = _newEvent()
+    vcalendarCancellation = utility.createCalendar()
     vcalendarCancellation.addPropertyWithValue('method', 'CANCEL')
     attendees = vevent.getAllProperties('attendee')
     vevent = vcalendarCancellation.getFirstSubcomponent('vevent')
@@ -862,8 +833,8 @@ describe('create, read, modify, delete tasks for regular user', function() {
     //    => org: 1 (updated), attendee: 1 (updated), delegate: 0
     vcalendarInvitation.updatePropertyWithValue('method', 'REQUEST')
     vevent.updatePropertyWithValue('sequence', '1')
-    vevent.updatePropertyWithValue('last-modified', _newDateTimeProperty('last-modified').getFirstValue())
-    vevent.updatePropertyWithValue('dtstamp', _newDateTimeProperty('dtstamp').getFirstValue())
+    vevent.updatePropertyWithValue('last-modified', utility.createDateTimeProperty('last-modified').getFirstValue())
+    vevent.updatePropertyWithValue('dtstamp', utility.createDateTimeProperty('dtstamp').getFirstValue())
     attendee = vevent.getFirstProperty('attendee')
     attendee.setParameter('partstat', 'NEEDS-ACTION')
 
@@ -918,8 +889,8 @@ describe('create, read, modify, delete tasks for regular user', function() {
     //       delegate: 1 (updated,partstat reset)
     vcalendarInvitation.updatePropertyWithValue('method', 'REQUEST')
     vevent.updatePropertyWithValue('sequence', '2')
-    vevent.updatePropertyWithValue('last-modified', _newDateTimeProperty('last-modified').getFirstValue())
-    vevent.updatePropertyWithValue('dtstamp', _newDateTimeProperty('dtstamp').getFirstValue())
+    vevent.updatePropertyWithValue('last-modified', utility.createDateTimeProperty('last-modified').getFirstValue())
+    vevent.updatePropertyWithValue('dtstamp', utility.createDateTimeProperty('dtstamp').getFirstValue())
     delegate.setParameter('partstat', 'NEEDS-ACTION')
 
     await _postEvent(webdav, userCalendar, vcalendarInvitation, user.email, [attendee1.email, attendee1DelegateCalendar.email])
@@ -938,8 +909,8 @@ describe('create, read, modify, delete tasks for regular user', function() {
     //       delegate: 0 (cancelled, deleted)
     vcalendarInvitation.updatePropertyWithValue('method', 'CANCEL')
     vevent.updatePropertyWithValue('sequence', '3')
-    vevent.updatePropertyWithValue('last-modified', _newDateTimeProperty('last-modified').getFirstValue())
-    vevent.updatePropertyWithValue('dtstamp', _newDateTimeProperty('dtstamp').getFirstValue())
+    vevent.updatePropertyWithValue('last-modified', utility.createDateTimeProperty('last-modified').getFirstValue())
+    vevent.updatePropertyWithValue('dtstamp', utility.createDateTimeProperty('dtstamp').getFirstValue())
 
     await _postEvent(webdav, userCalendar, vcalendarInvitation, user.email, [attendee1.email, attendee1DelegateCalendar.email])
 
