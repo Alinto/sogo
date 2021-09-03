@@ -112,7 +112,6 @@
   [headers addObject: @"high" forKey: @"Importance"];
   [headers addObject: @"1" forKey: @"X-Priority"];
   [headers setObject: @"text/html; charset=\"utf-8\"" forKey: @"Content-Type"];
-  [headers setObject: @"quoted-printable" forKey: @"Content-Transfer-Encoding"];
 
   identity = [owner primaryIdentity];
   fullName = [identity objectForKey: @"fullName"];
@@ -153,7 +152,7 @@
 {
   NGMutableHashMap *headers;
   NSArray *parts;
-  NSData *content, *qpContent;
+  NSData *content;
   SOGoMailer *mailer;
   NSString *subject;
   SOGoUser *owner;
@@ -208,9 +207,8 @@
   subject = [p getSubject];
 
   headers = [self _headersForAlarm: alarm withOwner: owner withSubject: subject];
-  qpContent = [content dataByEncodingQuotedPrintable];
   [self _sendMessageWithHeaders: headers
-                        content: qpContent
+                        content: content
                              to: [owner primaryIdentity]
                      withMailer: mailer];
 }
