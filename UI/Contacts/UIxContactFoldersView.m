@@ -1,6 +1,6 @@
 /* UIxContactFoldersView.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2016 Inverse inc.
+ * Copyright (C) 2006-2021 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@
 
 
 #import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoSource.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
@@ -283,7 +284,7 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
   NSString *userLogin, *owner;
   NSArray *folders, *allACLs;
   NSDictionary *folderAttrs;
-  id <SOGoContactFolder> currentFolder;
+  SOGoFolder <SOGoContactFolder> *currentFolder;
 
   BOOL objectCreator, objectEditor, objectEraser, synchronize;
   int max, i;
@@ -305,11 +306,11 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
       if ([currentFolder respondsToSelector: @selector(cardDavURL)])
         {
           urls = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                        [currentFolder cardDavURL], @"cardDavURL",
+                                        [(SOGoContactGCSFolder *)currentFolder cardDavURL], @"cardDavURL",
                                       nil];
           if ([self isPublicAccessEnabled])
             {
-              [urls setObject: [currentFolder publicCardDavURL] forKey: @"publicCardDavURL"];
+              [urls setObject: [(SOGoContactGCSFolder *)currentFolder publicCardDavURL] forKey: @"publicCardDavURL"];
             }
         }
 
@@ -323,7 +324,7 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
                                [NSNumber numberWithBool: objectEraser], @"objectEraser", nil];
 
       if ([currentFolder isKindOfClass: SOGoGCSFolderK])
-        synchronize = [currentFolder synchronize];
+        synchronize = [(SOGoGCSFolder *)currentFolder synchronize];
       else
         synchronize = NO;
 
@@ -339,12 +340,12 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
                                   owner, @"owner",
                                   [NSNumber numberWithBool: [currentFolder isKindOfClass: SOGoGCSFolderK]], @"isEditable",
                                   [NSNumber numberWithBool: [currentFolder isKindOfClass: SOGoContactSourceFolderK]
-                                            && ![currentFolder isPersonalSource]], @"isRemote",
+                                            && ![(SOGoContactSourceFolder *)currentFolder isPersonalSource]], @"isRemote",
                                   [NSNumber numberWithBool: [currentFolder isKindOfClass: SOGoContactSourceFolderK]
-                                            && [currentFolder listRequiresDot]], @"listRequiresDot",
+                                            && [(SOGoContactSourceFolder *)currentFolder listRequiresDot]], @"listRequiresDot",
                                   acls, @"acls",
                                   urls, @"urls",
-                                  [currentFolder searchFields], @"searchFields",
+                                  [(<SOGoSource>)currentFolder searchFields], @"searchFields",
                                   nil];
       [foldersAttrs addObject: folderAttrs];
     }
