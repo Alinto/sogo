@@ -82,16 +82,19 @@
   md-card,
   md-card-content,
   md-card-content pre,
+  .view,
   .view-detail .sg-reversible,
   .view-detail .sg-reversible:not(.sg-flip) .sg-face,
   .view-detail .sg-reversible.sg-flip .sg-back,
   .sg-block-print {
     display: block !important;
     height: auto !important;
+    max-height: none !important;
     min-height: auto !important;
     overflow: visible !important;
     position: relative !important;
     flex: none;
+    transform: none !important;
   }
 
   // Remove shadow from Cards
