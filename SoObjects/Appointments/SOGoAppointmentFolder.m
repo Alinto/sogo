@@ -3367,7 +3367,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   // we generate a new UID based on a GUID
   uid = [event uid];
 
-  if ([uid rangeOfCharacterFromSet: [NSCharacterSet characterSetWithCharactersInString: @"+/"]].location != NSNotFound)
+  if (![uid length] ||
+      [uid rangeOfCharacterFromSet: [NSCharacterSet characterSetWithCharactersInString: @"+/"]].location != NSNotFound)
     {
       uid = [self globallyUniqueObjectId];
       [event setUid: uid];
