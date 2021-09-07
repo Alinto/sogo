@@ -143,7 +143,7 @@
     Account.$$resource.post('', 'unseenCount', {mailboxes: unseenCountFolders}).then(function(data) {
       _.forEach(Account.$accounts, function(account) {
         _.forEach(account.$$flattenMailboxes, function(mailbox) {
-          if (data[mailbox.id]) {
+          if (angular.isDefined(data[mailbox.id])) {
             mailbox.unseenCount = data[mailbox.id];
           }
         });
