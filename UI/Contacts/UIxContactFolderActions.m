@@ -370,6 +370,11 @@ static NSArray *photoTags = nil;
 
       // TODO: shall we add .vcf as in [SOGoContactGCSEntry copyToFolder:]
       uid = [card uid];
+      if (![uid length])
+        {
+          uid = [folder globallyUniqueObjectId];
+          [card setUid: uid];
+        }
       contact = [SOGoContactGCSEntry objectWithName: uid
                                         inContainer: folder];
       [contact setIsNew: YES];
