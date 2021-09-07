@@ -87,11 +87,17 @@
       value = [(iCalEvent *) apt propertyValue: property];
       if ([valueType isEqualToString: @"date"])
         {
-          [value setTimeZone: viewTZ];
-          if ([apt isAllDay])
-            value = [_dateFormatter formattedDate: value];
+          if ([(iCalEvent *) apt isAllDay])
+            {
+              if ([property isEqualToString: @"endDate"])
+                value = [(NSCalendarDate *) value dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:-1];
+              value = [_dateFormatter formattedDate: value];
+            }
           else
-            value = [_dateFormatter formattedDateAndTime: value];
+            {
+              [value setTimeZone: viewTZ];
+              value = [_dateFormatter formattedDateAndTime: value];
+            }
         }
     }
   else
@@ -106,8 +112,8 @@
   NSArray *updatedProperties;
   int count, max;
 
-  updatedProperties = [[iCalEventChanges changesFromEvent: previousApt
-                                                  toEvent: apt]
+  updatedProperties = [[iCalEventChanges changesFromEvent: (iCalEvent *) previousApt
+                                                  toEvent: (iCalEvent *) apt]
                         updatedProperties];
   max = [updatedProperties count];
   for (count = 0; count < max; count++)
@@ -170,7 +176,7 @@
   [values setObject: [localDateFormatter shortFormattedDate: date]
              forKey: @"OldStartDate"];
 
-  if (![apt isAllDay])
+  if (![(iCalEvent *) apt isAllDay])
     [values setObject: [localDateFormatter formattedTime: date]
                forKey: @"OldStartTime"];
 
