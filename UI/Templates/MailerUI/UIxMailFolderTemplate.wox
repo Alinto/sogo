@@ -109,7 +109,7 @@
               <sg-checkmark
                   label:aria-label="Descending Order"
                   ng-model="mailbox.service.$query.asc"
-                  ng-change="mailbox.selectedFolder.$filter()"
+                  ng-change="mailbox.selectedFolder.$filter(mailbox.service.$query)"
                   sg-true-value="0"
                   sg-false-value="1"><var:string label:value="Descending Order"/></sg-checkmark>
             </md-menu-item>
