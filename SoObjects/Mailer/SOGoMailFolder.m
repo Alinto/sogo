@@ -100,6 +100,22 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   return [modseq1 compare: modseq2];
 }
 
+static NSComparisonResult _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
+{
+  NSString *uid1, *uid2;
+  NSUInteger pos1, pos2;
+
+  uid1 = [entry1 objectForKey: @"uid"];
+  uid2 = [entry2 objectForKey: @"uid"];
+  pos1 = [uids indexOfObject: uid1];
+  pos2 = [uids indexOfObject: uid2];
+
+  if (pos1 > pos2)
+    return NSOrderedDescending;
+  else
+    return NSOrderedAscending;
+}
+
 @interface NGImap4Connection (PrivateMethods)
 
 - (NSString *) imap4FolderNameForURL: (NSURL *) url;
@@ -2343,6 +2359,11 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
          entries with a MODSEQ of 0 */
       fetchResults = [fetchResults sortedArrayUsingFunction: _compareFetchResultsByMODSEQ
                                                     context: NULL];
+    }
+  else
+    {
+      fetchResults = [fetchResults sortedArrayUsingFunction: (int(*)(id, id, void*))_compareFetchResultsByUID
+                                                    context: uids];
     }
 
   for (i = 0; i < [fetchResults count]; i++)
