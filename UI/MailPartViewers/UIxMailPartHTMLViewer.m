@@ -113,7 +113,7 @@ _xmlCharsetForCharset (NSString *charset)
   NSMutableString *result;
   NSMutableString *css;
   NSDictionary *attachmentIds;
-  int ignoredContent;
+  int ignoredContent, embeddedCSSLevel;
   NSString *ignoreTag;
   BOOL inBody;
   BOOL inStyle;
@@ -210,6 +210,7 @@ _xmlCharsetForCharset (NSString *charset)
   inStyle = NO;
   inCSSDeclaration = NO;
   hasEmbeddedCSS = NO;
+  embeddedCSSLevel = 0;
 }
 
 - (void) endDocument
@@ -347,21 +348,12 @@ _xmlCharsetForCharset (NSString *charset)
         {
           if (*currentChar == '}')
             {
+              // Prefix CSS rule including ending curly bracket
               inCSSDeclaration = NO;
-              if (hasEmbeddedCSS)
-                {
-                  // End of at-rule definition; remove it from the stylesheet
-                  hasEmbeddedCSS = NO;
-                  start = currentChar + 1;
-                }
-              else
-                {
-                  // Prefix CSS rule including ending curly bracket
-                  length = (currentChar - start) + 1;
-                  [declaration appendString: [NSString stringWithCharacters: start length: length]];
-                  [css appendString: declaration];
-                  start = currentChar + 1;
-                }
+              length = (currentChar - start) + 1;
+              [declaration appendString: [NSString stringWithCharacters: start length: length]];
+              [css appendString: declaration];
+              start = currentChar + 1;
             }
           else if (*currentChar == ';')
             {
@@ -389,53 +381,63 @@ _xmlCharsetForCharset (NSString *charset)
         {
           if (*currentChar == '{')
             {
-              // Start of rule declaration
-              inCSSDeclaration = YES;
-              if (!hasEmbeddedCSS)
+              if (hasEmbeddedCSS)
                 {
+                  embeddedCSSLevel++;
+                }
+              else
+                {
+                  // Start of rule declaration
+                  inCSSDeclaration = YES;
                   length = (currentChar - start);
                   [rule appendFormat: @".SOGoHTMLMail-CSS-Delimiter %@ {",
                         [NSString stringWithCharacters: start length: length]];
                   [css appendString: rule];
+                  rule = [NSMutableString string];
+                  declaration = [NSMutableString string];
                 }
-              rule = [NSMutableString string];
-              declaration = [NSMutableString string];
               start = currentChar + 1;
             }
           if (*currentChar == '}')
             {
-              // CSS syntax error: ending declaration character while not in a CSS declaration.
-              // Ignore eveything from last CSS declaration.
-              start = currentChar + 1;
-              rule = [NSMutableString string];
-            }
-          else if (hasEmbeddedCSS)
-            {
-              if (*currentChar == ';')
+              if (hasEmbeddedCSS)
                 {
-                  // End of at-rule definition; remove it from the stylesheet
-                  hasEmbeddedCSS = NO;
-                  start = currentChar + 1;
+                  embeddedCSSLevel--;
+                  if (embeddedCSSLevel <= 0)
+                    hasEmbeddedCSS = NO;
                 }
+              else
+                {
+                  // CSS syntax error: ending declaration character while not in a CSS declaration.
+                  // Ignore eveything from last CSS declaration.
+                  rule = [NSMutableString string];
+                }
+              start = currentChar + 1;
             }
           else if (*currentChar == ',')
             {
-              // Prefix CSS selector
-              length = (currentChar - start);
-              [rule appendFormat: @" .SOGoHTMLMail-CSS-Delimiter %@,",
-                    [NSString stringWithCharacters: start length: length]];
+              if (!hasEmbeddedCSS)
+                {
+                  // Prefix CSS selector
+                  length = (currentChar - start);
+                  [rule appendFormat: @" .SOGoHTMLMail-CSS-Delimiter %@,",
+                        [NSString stringWithCharacters: start length: length]];
+                }
               start = currentChar + 1;
             }
           else if (*currentChar == '@')
             {
               // Start of at-rule definition
               hasEmbeddedCSS = YES;
+              embeddedCSSLevel = 0;
             }
         }
     }
   if (currentChar > start)
-    [css appendString: [NSString stringWithCharacters: start
-                                               length: (currentChar - start)]];
+    {
+      [css appendString: [NSString stringWithCharacters: start
+                                                 length: (currentChar - start)]];
+    }
 }
 
 - (void) startElement: (NSString *) _localName
