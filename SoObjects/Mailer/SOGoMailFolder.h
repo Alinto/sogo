@@ -70,6 +70,10 @@
 - (NSArray *) fetchUIDs: (NSArray *) _uids parts: (NSArray *) _parts;
 - (NSArray *) fetchUIDsOfVanishedItems: (uint64_t) modseq;
 
+- (WOResponse *) moveUIDs: (NSArray *) uids
+		 toFolder: (NSString *) destinationFolder
+		inContext: (id) localContext
+                 keepCopy: (BOOL) copy;
 - (WOResponse *) copyUIDs: (NSArray *) uids
 		 toFolder: (NSString *) destinationFolder
 		inContext: (id) localContext;

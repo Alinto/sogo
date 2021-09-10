@@ -78,6 +78,7 @@ typedef enum {
 - (BOOL) hasCapability: (NSString *) capability;
 - (BOOL) supportsQuotas;
 - (BOOL) supportsQResync;
+- (BOOL) supportsMove;
 
 - (id) getInboxQuota;
 - (NSException *) updateFilters;

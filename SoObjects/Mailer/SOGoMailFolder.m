@@ -637,6 +637,27 @@ static NSComparisonResult _compareFetchResultsByUID (id entry1, id entry2, NSArr
 		 toFolder: (NSString *) destinationFolder
 		inContext: (id) localContext
 {
+  return [self moveUIDs: uids
+               toFolder: destinationFolder
+              inContext: localContext
+               keepCopy: YES];
+}
+
+- (WOResponse *) moveUIDs: (NSArray *) uids
+		 toFolder: (NSString *) destinationFolder
+		inContext: (id) localContext
+{
+  return [self moveUIDs: uids
+               toFolder: destinationFolder
+              inContext: localContext
+               keepCopy: NO];
+}
+
+- (WOResponse *) moveUIDs: (NSArray *) uids
+		 toFolder: (NSString *) destinationFolder
+		inContext: (id) localContext
+                 keepCopy: (BOOL) copy
+{
   NSArray *folders;
   NSString *currentFolderName, *currentAccountName, *destinationAccountName;
   NSMutableString *imapDestinationFolder;
@@ -673,15 +694,35 @@ static NSComparisonResult _compareFetchResultsByUID (id entry1, id entry2, NSArr
                 result = [[self imap4Connection] createMailbox: imapDestinationFolder
                                                          atURL: [[self mailAccountFolder] imap4URL]];
               if (!result || [result boolValue])
-                result = [client copyUids: uids toFolder: imapDestinationFolder];
+                {
+                  if (copy || ![[self mailAccountFolder] supportsMove])
+                    result = [client copyUids: uids toFolder: imapDestinationFolder];
+                  else
+                    result = [client moveUids: uids toFolder: imapDestinationFolder];
+                }
 
               if ([[result valueForKey: @"result"] boolValue])
-                result = nil;
+                {
+                  result = nil;
+                  if (!copy && ![[self mailAccountFolder] supportsMove])
+                    {
+                      // Server doesn't support MOVE -- delete messages
+                      result = [client storeFlags: [NSArray arrayWithObject: @"Deleted"]
+                                          forUIDs: uids addOrRemove: YES];
+                      if ([[result valueForKey: @"result"] boolValue])
+                        {
+                          [self markForExpunge];
+                          result = nil;
+                        }
+                    }
+                }
               else
-                result = [NSException exceptionWithHTTPStatus: 500
-                                                       reason: [[[result objectForKey: @"RawResponse"]
-                                                                  objectForKey: @"ResponseResult"]
-                                                                 objectForKey: @"description"]];
+                {
+                  result = [NSException exceptionWithHTTPStatus: 500
+                                                         reason: [[[result objectForKey: @"RawResponse"]
+                                                                    objectForKey: @"ResponseResult"]
+                                                                   objectForKey: @"description"]];
+                }
             }
           else
             {
@@ -755,36 +796,6 @@ static NSComparisonResult _compareFetchResultsByUID (id entry1, id entry2, NSArr
   else
     result = [NSException exceptionWithHTTPStatus: 500
                                            reason: @"Invalid destination."];
-
-  return result;
-}
-
-- (WOResponse *) moveUIDs: (NSArray *) uids
-		 toFolder: (NSString *) destinationFolder
-		inContext: (id) localContext
-{
-  id result;
-  NGImap4Client *client;
-
-  client = [[self imap4Connection] client];
-  if (client)
-    {
-      result = [self copyUIDs: uids toFolder: destinationFolder inContext: localContext];
-      if (![result isNotNull])
-        {
-          result = [client storeFlags: [NSArray arrayWithObject: @"Deleted"]
-                              forUIDs: uids addOrRemove: YES];
-          if ([[result valueForKey: @"result"] boolValue])
-            {
-              [self markForExpunge];
-              result = nil;
-            }
-        }
-    }
-  else
-    result = [NSException exceptionWithName: @"SOGoMailException"
-                                     reason: @"IMAP connection is invalid"
-                                   userInfo: nil];
 
   return result;
 }
