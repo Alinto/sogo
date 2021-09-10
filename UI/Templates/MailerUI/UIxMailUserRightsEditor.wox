@@ -9,6 +9,14 @@
 
   <div class="mailUserRights" layout="column">
     
+    <md-checkbox name="userCanViewFolder"
+                 ng-model="acl.selectedUser.rights.userCanViewFolder"
+                 ng-change="acl.confirmChange(acl.selectedUser)"
+                 ng-true-value="1"
+                 ng-false-value="0">
+      <var:string label:value="View this folder" />
+    </md-checkbox>
+
     <md-checkbox name="userCanReadMails"
                  ng-model="acl.selectedUser.rights.userCanReadMails"
                  ng-change="acl.confirmChange(acl.selectedUser)"

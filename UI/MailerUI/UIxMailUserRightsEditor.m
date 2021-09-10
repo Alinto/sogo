@@ -36,6 +36,11 @@
   return ([account imapAclStyle] == rfc4314);
 }
 
+- (BOOL) userCanViewFolder
+{
+  return [userRights containsObject: SOGoRole_FolderViewer];
+}
+
 - (void) setUserCanReadMails: (BOOL) userCanReadMails
 {
   if (userCanReadMails)
@@ -169,6 +174,7 @@
 - (NSDictionary *) userRightsForObject
 {
   return [NSDictionary dictionaryWithObjectsAndKeys:
+                           [NSNumber numberWithBool:[self userCanViewFolder]], @"userCanViewFolder",
                            [NSNumber numberWithBool:[self userCanReadMails]], @"userCanReadMails",
                            [NSNumber numberWithBool:[self userCanMarkMailsRead]], @"userCanMarkMailsRead",
                            [NSNumber numberWithBool:[self userCanWriteMails]], @"userCanWriteMails",
@@ -184,6 +190,11 @@
 
 - (void) updateRights: (NSDictionary *) newRights
 {
+  if ([[newRights objectForKey: @"userCanViewFolder"] boolValue])
+    [self appendRight: SOGoRole_FolderViewer];
+  else
+    [self removeRight: SOGoRole_FolderViewer];
+
   if ([[newRights objectForKey: @"userCanReadMails"] boolValue])
     [self appendRight: SOGoRole_ObjectViewer];
   else

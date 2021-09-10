@@ -1326,6 +1326,8 @@ static NSComparisonResult _compareFetchResultsByUID (id entry1, id entry2, NSArr
       switch ([imapAcls characterAtIndex: count])
 	{
 	case 'l':
+	  [SOGoAcls addObjectUniquely: SOGoRole_FolderViewer];
+          break;
 	case 'r':
 	  [SOGoAcls addObjectUniquely: SOGoRole_ObjectViewer];
 	  break;
@@ -1408,11 +1410,10 @@ static NSComparisonResult _compareFetchResultsByUID (id entry1, id entry2, NSArr
   acls = [sogoAcls objectEnumerator];
   while ((currentAcl = [acls nextObject]))
     {
-      if ([currentAcl isEqualToString: SOGoRole_ObjectViewer])
-	{
-	  [imapAcls appendFormat: @"lr"];
-	  character = 0;
-	}
+      if ([currentAcl isEqualToString: SOGoRole_FolderViewer])
+	character = 'l';
+      else if ([currentAcl isEqualToString: SOGoRole_ObjectViewer])
+	character = 'r';
       else if ([currentAcl isEqualToString: SOGoMailRole_SeenKeeper])
 	character = 's';
       else if ([currentAcl isEqualToString: SOGoMailRole_Writer])
