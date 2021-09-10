@@ -687,10 +687,8 @@ static NSComparisonResult _compareFetchResultsByUID (id entry1, id entry2, NSArr
           if ([destinationAccountName isEqualToString: currentAccountName])
             {
               // We make sure the destination IMAP folder exist, if not, we create it.
-              result = [[client status: imapDestinationFolder
-                                 flags: [NSArray arrayWithObject: @"UIDVALIDITY"]]
-                         objectForKey: @"result"];
-              if (![result boolValue])
+              result = [[[client list: @"" pattern: imapDestinationFolder] objectForKey: @"list"] objectForKey: imapDestinationFolder];
+              if (!result)
                 result = [[self imap4Connection] createMailbox: imapDestinationFolder
                                                          atURL: [[self mailAccountFolder] imap4URL]];
               if (!result || [result boolValue])
