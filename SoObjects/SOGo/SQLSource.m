@@ -420,7 +420,7 @@
           recordValue = [record objectForKey: currentMatch];
           result = NO;
 
-          if ([recordValue caseInsensitiveMatches: currentValue])
+          if ([recordValue isNotNull] && [recordValue caseInsensitiveMatches: currentValue])
             result = YES;
         }
     }
