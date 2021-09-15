@@ -765,10 +765,8 @@
   headerMap = [NGMutableHashMap hashMapWithCapacity: 3];
   [headerMap setObject: @"urn:content-classes:calendarmessage"  forKey: @"Content-Class"];
   [headerMap setObject: header forKey: @"content-type"];
-  [headerMap setObject: @"quoted-printable"
-                forKey: @"content-transfer-encoding"];
   bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
-  [bodyPart setBody: [objectData dataByEncodingQuotedPrintable]];
+  [bodyPart setBody: objectData];
 
   return bodyPart;
 }
