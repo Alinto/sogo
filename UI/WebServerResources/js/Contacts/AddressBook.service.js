@@ -850,8 +850,10 @@
    * @param {promise} futureHeadersData - a promise of the metadata of some cards
    */
   AddressBook.prototype.$unwrapHeaders = function(futureHeadersData) {
-    var _this = this;
+    var _this = this,
+        deferred = AddressBook.$q.defer();
 
+    this.$futureHeadersData = deferred.promise;
     futureHeadersData.then(function(data) {
       AddressBook.$timeout(function() {
         var headers, j;
@@ -867,8 +869,13 @@
             }
           });
         }
+        deferred.resolve(_this.$cards);
       });
+    }, function() {
+      deferred.reject();
     });
+
+    return this.$futureHeadersData;
   };
 
   /**

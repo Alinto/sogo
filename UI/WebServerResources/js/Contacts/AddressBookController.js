@@ -380,6 +380,7 @@
     };
 
     this.newMessageWithSelectedCards = function($event, recipientsField) {
+      var selectedFolder = this.selectedFolder;
       var selectedCards = _.filter(this.selectedFolder.$cards, function(card) { return card.selected; });
       var promises = [], recipients = [];
 
@@ -401,8 +402,20 @@
             }));
           }
         }
-        else if (card.c_mail.length) {
-          recipients.push(card.$shortFormat());
+        else if (card.$loaded == Card.STATUS.LOADED) {
+          if (card.c_mail) {
+            recipients.push(card.$shortFormat());
+          }
+        }
+        else if (selectedFolder.$loadCard(card)) {
+          promises.push(selectedFolder.$futureHeadersData.then(function() {
+            var i = selectedFolder.idsMap[card.id];
+            if (angular.isDefined(i)) {
+              var loadedCard = selectedFolder.$cards[i];
+              if (loadedCard.c_mail)
+                recipients.push(loadedCard.$shortFormat());
+            }
+          }));
         }
       });
 
