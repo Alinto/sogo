@@ -1989,7 +1989,7 @@ static NSArray *childRecordFields = nil;
   components = [NSMutableArray arrayWithCapacity: max];
   for (count = 0; count < max; count++)
     {
-      currentName = [cNames objectAtIndex: count];
+      currentName = [[cNames objectAtIndex: count] asSafeSQLString];
       queryNameLength = idQueryOverhead + [currentName length];
       if ((currentSize + queryNameLength)
 	  > maxQuerySize)
@@ -2003,8 +2003,11 @@ static NSArray *childRecordFields = nil;
       currentSize += queryNameLength;
     }
 
-  records = [self _fetchComponentsWithNames: currentNames fields: fields];
-  [components addObjectsFromArray: records];
+  if ([currentNames count])
+    {
+      records = [self _fetchComponentsWithNames: currentNames fields: fields];
+      [components addObjectsFromArray: records];
+    }
 
 //   NSLog (@"/fetching components matching names");
 
