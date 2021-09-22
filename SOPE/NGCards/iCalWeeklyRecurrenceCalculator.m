@@ -135,7 +135,8 @@
              [currentStartDate compare: endDate] == NSOrderedSame)
         {
           currentEndDate = [currentStartDate addTimeInterval: [firstRange duration]];
-          if ([startDate compare: currentEndDate] == NSOrderedAscending)
+          if ([startDate compare: currentEndDate] == NSOrderedAscending ||
+              ([firstRange duration] == 0 && [startDate compare: currentEndDate] == NSOrderedSame))
             {
               NGCalendarDateRange *r;
 

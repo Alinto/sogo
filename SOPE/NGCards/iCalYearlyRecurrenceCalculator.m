@@ -216,7 +216,8 @@
 					   months: 0
 					     days: 0];
 	      [start setTimeZone: [firStart timeZone]];
-              if ([start compare: rEnd] == NSOrderedAscending)
+              if ([start compare: rEnd] == NSOrderedAscending ||
+                  ([firstRange duration] == 0 && [start compare: rEnd] == NSOrderedSame))
                 {
                   end = [start addTimeInterval: [firstRange duration]];
                   r = [NGCalendarDateRange calendarDateRangeWithStartDate: start
