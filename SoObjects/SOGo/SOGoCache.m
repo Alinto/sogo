@@ -373,7 +373,7 @@ static memcached_st *handle = NULL;
       keyData = [key dataUsingEncoding: NSUTF8StringEncoding];
       rc = memcached_delete (handle, [keyData bytes], [keyData length],
                              0);
-      if (rc != MEMCACHED_SUCCESS)
+      if (rc != MEMCACHED_SUCCESS && rc != MEMCACHED_NOTFOUND)
         [self errorWithFormat: (@"failure deleting cached value for key"
                                 @" '%@'"),
               key];
