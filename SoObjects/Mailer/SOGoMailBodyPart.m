@@ -58,7 +58,7 @@ static BOOL debugOn = NO;
       /* The following disabled code should not be needed, except if we use
          annotations (see davEntityTag below) */
       // if (![[ud objectForKey: @"SOGoMailDisableETag"] boolValue]) {
-      
+
       mailETag = [[NSString alloc] initWithFormat:@"\"imap4url_%@_%@_%@\"",
                                    UIX_MAILER_MAJOR_VERSION,
                                    UIX_MAILER_MINOR_VERSION,
@@ -113,17 +113,17 @@ static BOOL debugOn = NO;
 {
   NSMutableArray *p;
   id obj;
-  
+
   if (pathToPart != nil)
     return ([pathToPart isNotNull] ? (id)pathToPart : nil);
-  
+
 #warning partToPart should be populated directly
   p = [[NSMutableArray alloc] initWithCapacity:8];
-  for (obj = self; [obj isKindOfClass:[SOGoMailBodyPart class]]; 
+  for (obj = self; [obj isKindOfClass:[SOGoMailBodyPart class]];
        obj = [obj container]) {
     [p insertObject:[obj bodyPartName] atIndex:0];
   }
-  
+
   pathToPart = [p copy];
   [p release];
   return pathToPart;
@@ -133,7 +133,7 @@ static BOOL debugOn = NO;
 {
   if (identifier != nil)
     return ([identifier isNotNull] ? (id)identifier : nil);
-  
+
   identifier =
     [[[self bodyPartPath] componentsJoinedByString:@"."] copy];
   return identifier;
@@ -233,21 +233,35 @@ static BOOL debugOn = NO;
     }
   else
     {
+      obj = nil;
       infos = [self partInfo];
       subParts = [infos objectForKey: @"parts"];
       if (!subParts)
         subParts = [[infos objectForKey: @"body"] objectForKey: @"parts"];
-
-      if (nbr > 0 && nbr < ([subParts count] + 1))
+      if (!subParts)
+      {
+        subPart = [infos objectForKey: @"body"];
+        if (subPart)
+          {
+            mimeType = [subPart keysWithFormat: @"%{type}/%{subtype}"];
+            clazz = [[self class] bodyPartClassForMimeType: mimeType
+                                                inContext: localContext];
+            obj = [clazz objectWithName: key inContainer: self];
+          }
+      }
+      if (!obj)
         {
-          subPart = [subParts objectAtIndex: nbr - 1];
-          mimeType = [subPart keysWithFormat: @"%{type}/%{subtype}"];
-          clazz = [[self class] bodyPartClassForMimeType: mimeType
-                                               inContext: localContext];
-          obj = [clazz objectWithName: key inContainer: self];
+          if (nbr > 0 && nbr < ([subParts count] + 1))
+            {
+              subPart = [subParts objectAtIndex: nbr - 1];
+              mimeType = [subPart keysWithFormat: @"%{type}/%{subtype}"];
+              clazz = [[self class] bodyPartClassForMimeType: mimeType
+                                                  inContext: localContext];
+              obj = [clazz objectWithName: key inContainer: self];
+            }
+          else
+            obj = self;
         }
-      else
-        obj = self;
     }
 
   return obj;
@@ -256,7 +270,7 @@ static BOOL debugOn = NO;
 - (NSString *) filename
 {
   [self partInfo];
-  
+
   return [partInfo filename];
 }
 
@@ -281,7 +295,7 @@ static BOOL debugOn = NO;
 	  acquire: (BOOL) _flag
 {
   id obj;
- 
+
   /* first check attributes directly bound to the application */
   obj = [super lookupName:_key inContext:_ctx acquire:NO];
   if (!obj)
@@ -301,7 +315,7 @@ static BOOL debugOn = NO;
 	obj = self;
     }
 
-  return obj;      
+  return obj;
 }
 
 /* fetch */
@@ -311,7 +325,7 @@ static BOOL debugOn = NO;
   // HEADER, HEADER.FIELDS, HEADER.FIELDS.NOT, MIME, TEXT
   NSString *enc;
   NSData *data;
-  
+
   data = [[self imap4Connection] fetchContentOfBodyPart: [self bodyPartIdentifier]
                                                   atURL: [self imap4URL]
                                                withPeek: withPeek];
@@ -319,7 +333,7 @@ static BOOL debugOn = NO;
 
   /* check for content encodings */
   enc = [[self partInfo] valueForKey: @"encoding"];
- 
+
   /* if we haven't found one, check out the main message's encoding
      as we could be trying to fetch the message's content as a part */
   if (!enc)
@@ -329,7 +343,7 @@ static BOOL debugOn = NO;
   if (enc)
     {
       enc = [enc lowercaseString];
-      
+
       if ([enc isEqualToString: @"base64"])
 	data = [data dataByDecodingBase64];
       else if ([enc isEqualToString: @"quoted-printable"])
@@ -414,18 +428,18 @@ static BOOL debugOn = NO;
   NSDictionary *parameters;
   NSEnumerator *ke;
   NSString     *pn;
-    
+
   if (![_info isNotNull])
     return nil;
-  
+
   mt = [_info valueForKey:@"type"];    if (![mt isNotNull]) return nil;
   st = [_info valueForKey:@"subtype"]; if (![st isNotNull]) return nil;
-  
+
   type = [NSMutableString stringWithCapacity:16];
   [type appendString:[mt lowercaseString]];
   [type appendString:@"/"];
   [type appendString:[st lowercaseString]];
-  
+
   parameters = [_info valueForKey:@"parameterList"];
   ke = [parameters keyEnumerator];
   while ((pn = [ke nextObject]) != nil) {
@@ -442,13 +456,13 @@ static BOOL debugOn = NO;
 {
   if ([pe length] == 0)
     return @"application/octet-stream";
-  
+
   /* TODO: add some map */
   if ([pe isEqualToString:@"gif"]) return @"image/gif";
   if ([pe isEqualToString:@"png"]) return @"image/png";
   if ([pe isEqualToString:@"jpg"]) return @"image/jpeg";
   if ([pe isEqualToString:@"txt"]) return @"text/plain";
-  
+
   return @"application/octet-stream";
 }
 
@@ -457,15 +471,15 @@ static BOOL debugOn = NO;
   // TODO: what about the content-type and other headers?
   //       => we could pass them in as the extension? (eg generate 1.gif!)
   NSString *parts, *contentType, *extension;
-  
+
   /* try type from body structure info */
-  
+
   if (asAttachment)
     contentType = @"application/octet-stream";
   else {
     parts = [self contentTypeForBodyPartInfo: [self partInfo]];
     contentType = [[parts componentsSeparatedByString: @";"] objectAtIndex: 0];
-  
+
     if (![contentType length])
       {
 	extension = [[self nameInContainer] pathExtension];
@@ -484,7 +498,7 @@ static BOOL debugOn = NO;
   NSData     *data;
   NSString   *etag, *mimeType, *fileName;
   id response;
-  
+
   error = [self matchesRequestConditionInContext: localContext];
   if (error)
     {
@@ -492,24 +506,24 @@ static BOOL debugOn = NO;
     }
   else
     {
-//   [self debugWithFormat: @"should fetch body part: %@", 
+//   [self debugWithFormat: @"should fetch body part: %@",
 // 	[self bodyPartIdentifier]];
       data = [self fetchBLOB];
       if (data)
 	{
 //   [self debugWithFormat:@"  fetched %d bytes: %@", [data length],
 // 	[self partInfo]];
-  
+
   // TODO: wrong, could be encoded
 	  response = [localContext response];
 	  mimeType = [self davContentType];
 	  if ([mimeType isEqualToString: @"application/x-xpinstall"])
 	    mimeType = @"application/octet-stream";
-	  
+
 	  [response setHeader: mimeType forKey: @"content-type"];
 	  [response setHeader: [NSString stringWithFormat:@"%d", (int)[data length]]
 		    forKey: @"content-length"];
-  
+
 	  if (asAttachment)
 	    {
 	      fileName = [self filename];
@@ -522,7 +536,7 @@ static BOOL debugOn = NO;
 	  etag = [self davEntityTag];
 	  if (etag)
 	    [response setHeader: etag forKey: @"etag"];
-	  
+
 	  [response setContent: data];
 	}
       else
@@ -539,11 +553,11 @@ static BOOL debugOn = NO;
 		    inContext: (id) _ctx
 {
   NSString *pe;
-  
+
   pe = [_key pathExtension];
   if (![pe isNotNull] || [pe length] == 0)
     return self;
-  
+
   /* hard coded for now */
 
   switch ([pe length]) {
