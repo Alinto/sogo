@@ -1,6 +1,6 @@
 /* LDAPSource.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2019 Inverse inc.
+ * Copyright (C) 2007-2021 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -437,7 +437,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 //
 //
 //
-- (NGLdapConnection *) _ldapConnection
+- (id) connection
 {
   NGLdapConnection *ldapConnection;
   NSString *value, *key;
@@ -490,6 +490,11 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   NS_ENDHANDLER;
 
   return ldapConnection;
+}
+
+- (NGLdapConnection *) _ldapConnection
+{
+  return (NGLdapConnection *)[self connection];
 }
 
 - (NSString *) domain
@@ -1317,11 +1322,12 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 }
 
 - (NGLdapEntry *) _lookupLDAPEntry: (EOQualifier *) theQualifier
+		   usingConnection: (id) connection
 {
   NGLdapConnection *ldapConnection;
   NSEnumerator *entries;
 
-  ldapConnection = [self _ldapConnection];
+  ldapConnection = (NGLdapConnection *)connection;
 
   if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
     entries = [ldapConnection baseSearchAtBaseDN: _baseDN
@@ -1339,8 +1345,15 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   return [entries nextObject];
 }
 
+- (NGLdapEntry *) _lookupLDAPEntry: (EOQualifier *) theQualifier
+{
+  return [self _lookupLDAPEntry: theQualifier
+		usingConnection: [self _ldapConnection]];
+}
+
 - (NSDictionary *) lookupContactEntry: (NSString *) theID
                              inDomain: (NSString *) theDomain
+		      usingConnection: (id) connection
 {
   NGLdapEntry *ldapEntry;
   EOQualifier *qualifier;
@@ -1354,12 +1367,21 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
       s = [NSString stringWithFormat: @"(%@='%@')",
                     _IDField, SafeLDAPCriteria(theID)];
       qualifier = [EOQualifier qualifierWithQualifierFormat: s];
-      ldapEntry = [self _lookupLDAPEntry: qualifier];
+      ldapEntry = [self _lookupLDAPEntry: qualifier
+			 usingConnection: connection];
       if (ldapEntry)
         ldifRecord = [self _convertLDAPEntryToContact: ldapEntry];
     }
 
   return ldifRecord;
+}
+
+- (NSDictionary *) lookupContactEntry: (NSString *) theID
+                             inDomain: (NSString *) theDomain
+{
+  return [self lookupContactEntry: theID
+			 inDomain: theDomain
+		  usingConnection: [self _ldapConnection]];
 }
 
 - (NSDictionary *) lookupContactEntryWithUIDorEmail: (NSString *) uid

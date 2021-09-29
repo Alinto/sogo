@@ -429,16 +429,27 @@
              forKey: [NSString stringWithFormat: @"%@Access", module]];
 }
 
+- (id) connection
+{
+  EOAdaptorChannel *channel;
+  GCSChannelManager *cm;
+
+  cm = [GCSChannelManager defaultChannelManager];
+  channel = [cm acquireOpenChannelForURL: _viewURL];
+
+  return channel;
+}
+
 - (NSDictionary *) _lookupContactEntry: (NSString *) theID
                          considerEmail: (BOOL) b
                               inDomain: (NSString *) domain
+		       usingConnection: (id) connection
 {
   NSMutableDictionary *response;
   NSMutableArray *qualifiers;
   NSArray *fieldNames;
   EOAdaptorChannel *channel;
   EOQualifier *loginQualifier, *domainQualifier, *qualifier;
-  GCSChannelManager *cm;
   NSMutableString *sql;
   NSString *value, *field;
   NSException *ex;
@@ -447,8 +458,7 @@
   response = nil;
 
   theID = [theID stringByReplacingString: @"'"  withString: @"''"];
-  cm = [GCSChannelManager defaultChannelManager];
-  channel = [cm acquireOpenChannelForURL: _viewURL];
+  channel = (EOAdaptorChannel *)connection;
   if (channel)
     {
       qualifiers = [NSMutableArray arrayWithCapacity: [_loginFields count] + 1];
@@ -659,7 +669,6 @@
         }
       else
         [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
-      [cm releaseChannel: channel];
     }
   else
     [self errorWithFormat:@"failed to acquire channel for URL: %@",
@@ -669,10 +678,43 @@
 }
 
 
-- (NSDictionary *) lookupContactEntry: (NSString *) theID
-                             inDomain: (NSString *) domain
+- (NSDictionary *) _lookupContactEntry: (NSString *) theID
+                         considerEmail: (BOOL) b
+                              inDomain: (NSString *) domain
 {
-  return [self _lookupContactEntry: theID  considerEmail: NO inDomain: domain];
+  EOAdaptorChannel *channel;
+  GCSChannelManager *cm;
+  NSDictionary *response;
+
+  cm = [GCSChannelManager defaultChannelManager];
+  channel = (EOAdaptorChannel *)[self connection];
+
+  response = [self _lookupContactEntry: theID
+			 considerEmail: b
+			      inDomain: domain
+		       usingConnection: channel];
+  if (channel)
+    [cm releaseChannel: channel];
+
+  return response;
+}
+
+- (NSDictionary *) lookupContactEntry: (NSString *) theID
+			     inDomain: (NSString *) domain
+		      usingConnection: (id) connection
+{
+  return [self _lookupContactEntry: theID
+		     considerEmail: NO
+			  inDomain: domain
+		   usingConnection: connection];
+}
+
+- (NSDictionary *) lookupContactEntry: (NSString *) theID
+			     inDomain: (NSString *) domain
+{
+  return [self _lookupContactEntry: theID
+		     considerEmail: NO
+			  inDomain: domain];
 }
 
 - (NSDictionary *) lookupContactEntryWithUIDorEmail: (NSString *) entryID

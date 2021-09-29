@@ -1,6 +1,6 @@
 /* SOGoContactSourceFolder.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2016 Inverse inc.
+ * Copyright (C) 2006-2021 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -351,7 +351,7 @@
     {
       [newRecord setObject: @"vcard" forKey: @"c_component"];
     }
-  
+
   // Custom attribute for resource lookups. See LDAPSource.m.
   data = [oldRecord objectForKey: @"isResource"];
   if (data)
@@ -375,7 +375,7 @@
   if ([recordSource conformsToProtocol: @protocol (SOGoDNSource)] &&
       [[(NSObject <SOGoDNSource>*) recordSource MSExchangeHostname] length])
     [newRecord setObject: [NSNumber numberWithInt: 1] forKey: @"isMSExchange"];
-  
+
   return newRecord;
 }
 
@@ -652,9 +652,10 @@
   NSString **propertiesArray;
   NSMutableString *buffer;
   NSDictionary *object;
+  id connection;
 
   unsigned int count, max, propertiesCount;
-  
+
   baseURL = [self davURLAsString];
 #warning review this when fixing http://www.scalableogo.org/bugs/view.php?id=276
   if (![baseURL hasSuffix: @"/"])
@@ -666,12 +667,15 @@
   max = [refs length];
   buffer = [NSMutableString stringWithCapacity: max*512];
   domain = [[context activeUser] domain];
+  connection = [source connection];
   for (count = 0; count < max; count++)
     {
       element = [refs objectAtIndex: count];
       url = [[[element firstChild] nodeValue] stringByUnescapingURL];
       cname = [self _deduceObjectNameFromURL: url fromBaseURL: baseURL];
-      object = [source lookupContactEntry: cname inDomain: domain];
+      object = [source lookupContactEntry: cname
+				 inDomain: domain
+			  usingConnection: connection];
       if (object)
         [self appendObject: object
                 properties: propertiesArray

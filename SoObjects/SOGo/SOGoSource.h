@@ -1,8 +1,6 @@
 /* SOGoSource.h - this file is part of SOGo
  *
- * Copyright (C) 2009-2012 Inverse inc.
- *
- * Author: Ludovic Marcotte <lmarcotte@inverse.ca>
+ * Copyright (C) 2009-2021 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,6 +39,8 @@
 - (NSString *) domain;
 - (NSArray *) searchFields;
 
+- (id) connection;
+
 /* requires a "." to obtain the full list of contacts */
 - (void) setListRequiresDot: (BOOL) aBool;
 - (BOOL) listRequiresDot;
@@ -58,6 +58,9 @@
 
 - (NSDictionary *) lookupContactEntry: (NSString *) theID
                              inDomain: (NSString *) domain;
+- (NSDictionary *) lookupContactEntry: (NSString *) theID
+                             inDomain: (NSString *) domain
+		      usingConnection: (id) connection;
 - (NSDictionary *) lookupContactEntryWithUIDorEmail: (NSString *) entryID
                                            inDomain: (NSString *) domain;
 
