@@ -527,12 +527,15 @@
   currentValue = values;
   while (*currentProperty)
     {
+      *values = nil;
       methodSel = SOGoSelectorForPropertyGetter (*currentProperty);
       if (methodSel && [ldifEntry respondsToSelector: methodSel])
-        *currentValue = [[ldifEntry performSelector: methodSel]
-                          safeStringByEscapingXMLString];
+        {
+          *currentValue = [[ldifEntry performSelector: methodSel]
+                            safeStringByEscapingXMLString];
+          currentValue++;
+        }
       currentProperty++;
-      currentValue++;
     }
 
 //    NSLog (@"/_properties:ofObject:: %@", [NSDate date]);
