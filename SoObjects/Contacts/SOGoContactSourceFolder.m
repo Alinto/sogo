@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
@@ -650,6 +651,7 @@
                        matchingURLs: (id <DOMNodeList>) refs
                          toResponse: (WOResponse *) response
 {
+  NSAutoreleasePool *pool;
   NSObject <DOMElement> *element;
   NSString *url, *baseURL, *cname, *domain;
   NSString **propertiesArray;
@@ -668,9 +670,10 @@
   propertiesCount = [properties count];
 
   max = [refs length];
-  buffer = [NSMutableString stringWithCapacity: max*512];
+  buffer = [[NSMutableString alloc] initWithCapacity: max*512];
   domain = [[context activeUser] domain];
   connection = [source connection];
+  pool = [[NSAutoreleasePool alloc] init];
   for (count = 0; count < max; count++)
     {
       element = [refs objectAtIndex: count];
@@ -688,8 +691,15 @@
       else
         [self appendMissingObjectRef: url
                             toBuffer: buffer];
+      if (count % 10 == 0)
+	{
+	  RELEASE(pool);
+	  pool = [[NSAutoreleasePool alloc] init];
+	}
     }
+  RELEASE(pool);
   [response appendContentString: buffer];
+  RELEASE(buffer);
 //   NSLog (@"/adding properties with url");
 
   NSZoneFree (NULL, propertiesArray);

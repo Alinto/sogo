@@ -1,6 +1,6 @@
 /* SQLSource.h - this file is part of SOGo
  *
- * Copyright (C) 2009-2020 Inverse inc.
+ * Copyright (C) 2009-2021 Inverse inc.
  *
  * This file is part of SOGo.
  *
