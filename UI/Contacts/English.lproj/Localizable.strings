@@ -221,7 +221,7 @@
 "New Addressbook..." = "New Addressbook...";
 "Subscribe to an Addressbook..." = "Subscribe to an Addressbook...";
 "Remove the selected Addressbook" = "Remove the selected Addressbook";
-"Subscribe to a shared folder" = "Subscribe to a shared folder";
+"Subscribe to a shared contact" = "Subscribe to a shared addressbook";
 "Search User" = "Search User";
 "Name of the Address Book" = "Name of the Address Book";
 "Are you sure you want to delete the selected address book?"

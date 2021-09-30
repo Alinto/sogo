@@ -9,7 +9,7 @@
   <md-dialog flex="50" flex-sm="80" flex-xs="100">
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <div class="sg-md-title md-flex"><var:string label:value="Subscribe to a shared folder"/></div>
+        <div class="sg-md-title md-flex">{{ 'Subscribe to a shared ' + subscribe.folderType | loc }}</div>
         <md-button class="md-icon-button" ng-click="subscribe.close()">
           <md-icon label:aria-label="Close">close</md-icon>
         </md-button>
