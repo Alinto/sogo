@@ -691,7 +691,7 @@
       else
         [self appendMissingObjectRef: url
                             toBuffer: buffer];
-      if (count % 10 == 0)
+      if (count > 0 && count % 10 == 0)
 	{
 	  RELEASE(pool);
 	  pool = [[NSAutoreleasePool alloc] init];

@@ -17,6 +17,9 @@
  * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+#import <Foundation/NSAutoreleasePool.h>
+
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
@@ -1202,6 +1205,7 @@ static Class NSNullK;
                             matching: (NSString *) filter
                             inDomain: (NSString *) domain
 {
+  NSAutoreleasePool *pool;
   NSMutableArray *contacts;
   NSEnumerator *sources;
   NSString *sourceID;
@@ -1211,11 +1215,13 @@ static Class NSNullK;
   sources = [sourcesList objectEnumerator];
   while ((sourceID = [sources nextObject]))
     {
+      pool = [[NSAutoreleasePool alloc] init];
       currentSource = [_sources objectForKey: sourceID];
       [contacts addObjectsFromArray:
                   [currentSource fetchContactsMatching: filter
                                           withCriteria: nil
                                               inDomain: domain]];
+      RELEASE(pool);
     }
 
   return [self _compactAndCompleteContacts: [contacts objectEnumerator]];

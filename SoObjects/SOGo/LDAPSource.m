@@ -1288,11 +1288,13 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
                        withCriteria: (NSArray *) criteria
                            inDomain: (NSString *) theDomain
 {
+  NSAutoreleasePool *pool;
   NGLdapConnection *ldapConnection;
   NGLdapEntry *currentEntry;
   NSEnumerator *entries;
   NSMutableArray *contacts;
   EOQualifier *qualifier;
+  unsigned int i;
 
   contacts = [NSMutableArray array];
 
@@ -1313,9 +1315,21 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
         entries = [ldapConnection deepSearchAtBaseDN: _baseDN
                                            qualifier: qualifier
                                           attributes: _lookupFields];
+
+      i = 0;
+      pool = [NSAutoreleasePool new];
       while ((currentEntry = [entries nextObject]))
-        [contacts addObject:
-                    [self _convertLDAPEntryToContact: currentEntry]];
+        {
+          [contacts addObject:
+                      [self _convertLDAPEntryToContact: currentEntry]];
+          i++;
+          if (i % 10 == 0)
+            {
+              [pool release];
+              pool = [NSAutoreleasePool new];
+            }
+        }
+      [pool release];
     }
 
   return contacts;
