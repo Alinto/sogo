@@ -48,7 +48,7 @@
   s = [[info objectForKey:@"disposition"] objectForKey: @"type"];
 
   shouldDisplay = (s && ([s caseInsensitiveCompare: @"ATTACHMENT"] == NSOrderedSame));
-  
+
   if (!shouldDisplay && !textPart)
     shouldDisplay = ([[info objectForKey: @"bodyId"] length] ? YES : NO);
 
@@ -199,7 +199,7 @@ static BOOL showNamedTextAttachmentsInline = NO;
 	return [self signedViewer];
       else if ([st isEqualToString: @"alternative"])
 	return [self alternativeViewer];
-    
+
       if ([st isEqualToString: @"report"])
 	/* this is used by mail-delivery reports */
 	return [self mixedViewer];
@@ -209,15 +209,15 @@ static BOOL showNamedTextAttachmentsInline = NO;
       if ([st isEqualToString: @"plain"] || [st isEqualToString: @"html"]) {
 	if (!showNamedTextAttachmentsInline && [self _shouldDisplayAsAttachment: _info  textPart: YES])
 	  return [self linkViewer];
-      
+
 	return [st isEqualToString: @"html"]
 	  ? [self htmlViewer] : [self textViewer];
       }
-    
+
       if ([st isEqualToString:@"calendar"])
 	return [self iCalViewer];
     }
-  
+
   // TIFF files aren't well-supported and Thunderbird sometimes send PDF
   // files over as image/pdf !
   if ([mt isEqualToString: @"image"] &&
@@ -225,22 +225,22 @@ static BOOL showNamedTextAttachmentsInline = NO;
     {
       if ([self _shouldDisplayAsAttachment: _info  textPart: NO] || [st isEqualToString: @"svg+xml"])
         return [self linkViewer];
-     
+
       return [self imageViewer];
     }
-  
+
   if ([mt isEqualToString: @"message"] && [st isEqualToString: @"rfc822"])
     return [self messageViewer];
-  
+
   if ([mt isEqualToString: @"message"] &&
       [st isEqualToString: @"delivery-status"]) {
     /*
       Content-Description: Delivery error report
       Content-Type: message/delivery-status
-      
+
       Reporting-MTA: dns; mail.opengroupware.org
       Arrival-Date: Mon, 18 Jul 2005 12:08:43 +0200 (CEST)
-      
+
       Final-Recipient: rfc822; ioioi@plop.com
       Action: failed
       Status: 5.0.0
@@ -317,10 +317,10 @@ static NSString *MRK = @"UIxMailRenderingContext";
 - (UIxMailRenderingContext *) popMailRenderingContext
 {
   UIxMailRenderingContext *mctx;
-  
+
   if ((mctx = [self objectForKey:MRK]) == nil)
     return nil;
-  
+
   mctx = [[mctx retain] autorelease];
   [self removeObjectForKey:MRK];
   return mctx;

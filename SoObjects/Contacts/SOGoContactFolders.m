@@ -495,8 +495,7 @@ Class SOGoContactSourceFolderK;
                                                          ascending: YES];
       descriptors = [NSArray arrayWithObjects: commonNameDescriptor, nil];
       [commonNameDescriptor release];
-    sortedContacts = [[uniqueContacts allValues]
-                       sortedArrayUsingDescriptors: descriptors];
+      sortedContacts = [[uniqueContacts allValues] sortedArrayUsingDescriptors: descriptors];
     }
   else
     sortedContacts = [NSArray array];

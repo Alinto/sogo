@@ -1239,10 +1239,9 @@ static Class NSNullK;
 - (NSArray *) fetchUsersMatching: (NSString *) filter
                         inDomain: (NSString *) domain
 {
-  return [self
-           _fetchEntriesInSources: [self authenticationSourceIDsInDomain: domain]
-                         matching: filter
-                         inDomain: domain];
+  return [self _fetchEntriesInSources: [self authenticationSourceIDsInDomain: domain]
+                             matching: filter
+                             inDomain: domain];
 }
 
 - (NSString *) getLoginForDN: (NSString *) theDN

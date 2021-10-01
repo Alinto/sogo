@@ -52,8 +52,7 @@
  * There's no GUI to defined such conditions, so there's no
  * problem for now.
  */
-- (NSArray *)
- recurrenceRangesWithinCalendarDateRange: (NGCalendarDateRange *) _r
+- (NSArray *) recurrenceRangesWithinCalendarDateRange: (NGCalendarDateRange *) _r
 {
   NSMutableArray *ranges;
   NSCalendarDate *firStart, *startDate, *endDate, *currentStartDate, *currentEndDate;
