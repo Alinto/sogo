@@ -108,6 +108,7 @@
     };
 
     vm.close = function() {
+      User.$query = null;
       $mdDialog.hide();
     };
   }
