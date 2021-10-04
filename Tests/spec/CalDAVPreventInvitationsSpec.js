@@ -16,7 +16,7 @@ let icsName, icsList, vcalendar
 describe('PreventInvitationsWhitelist user setting', function() {
 
   const _getEvent = async function(client, calendarName, filename, expectedCode = 200) {
-    const [{ status, headers, raw }] = await client.getEvent(calendarName, filename)
+    const [{ status, headers, raw }] = await client.getObject(calendarName, filename)
     expect(status).toBe(expectedCode)
     if (status <= 300)
       return new ICAL.Component(ICAL.parse(raw))

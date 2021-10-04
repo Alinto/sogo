@@ -98,7 +98,7 @@ END:VCALENDAR`
   const _getEvent = async function(eventClass, isInvitation = false) {
     const iscClass = classToICSClass[eventClass].toLowerCase()
     const filename = (isInvitation ? `invitation-${iscClass}` : iscClass) + '-event.ics'
-    const [{ status, raw = '' }] = await webdav_subscriber.getEvent(resource, filename)
+    const [{ status, raw = '' }] = await webdav_subscriber.getObject(resource, filename)
 
     if (status == 200)
       return raw.replace(/\r\n/g,'\n')
@@ -303,7 +303,7 @@ END:VCALENDAR`
         })
       }
       const event = await _getEvent(eventClass, true)
-      expect(utility.calendarsAreEqual(expectedEvent, event))
+      expect(utility.componentsAreEqual(expectedEvent, event))
         .withContext('Calendars of organizer and attendee are identical')
         .toBe(true)
     }

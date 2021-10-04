@@ -77,9 +77,16 @@ class WebDAV {
     })
   }
 
-  getEvent(resource, filename) {
+  getObject(resource, filename) {
+    let url
+    if (resource.match(/^http/))
+      url = resource
+    else
+      url = this.serverUrl + resource
+    if (filename)
+      url += filename
     return davRequest({
-      url: this.serverUrl + resource + filename,
+      url,
       init: {
         method: 'GET',
         headers: this.headers,
@@ -380,7 +387,7 @@ class WebDAV {
     })
   }
 
-  makeAddressBook(resource) {
+  makeCollection(resource) {
     return makeCollection({
       url: this.serverUrl + resource,
       headers: this.headers

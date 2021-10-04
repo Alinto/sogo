@@ -26,7 +26,7 @@ describe('create, read, modify, delete tasks for regular user', function() {
   let icsList = []
 
   const _getEvent = async function(client, calendarName, filename, expectedCode = 200) {
-    const [{ status, raw }] = await client.getEvent(calendarName, filename)
+    const [{ status, raw }] = await client.getObject(calendarName, filename)
     expect(status).toBe(expectedCode)
     if (status <= 300)
       return new ICAL.Component(ICAL.parse(raw))

@@ -143,8 +143,8 @@ class TestUtility {
     return this._subscriptionOperation(resource, subscribers, 'unsubscribe')
   }
 
-  versitDict(cal) {
-    const comp = ICAL.Component.fromString(cal)
+  versitDict(component) {
+    const comp = ICAL.Component.fromString(component)
     let props = {}
 
     for (const prop of comp.getAllProperties()) {
@@ -158,9 +158,9 @@ class TestUtility {
     return props
   }
 
-  calendarsAreEqual(cal1, cal2) {
-    const props1 = this.versitDict(cal1)
-    const props2 = this.versitDict(cal2)
+  componentsAreEqual(comp1, comp2) {
+    const props1 = this.versitDict(comp1)
+    const props2 = this.versitDict(comp2)
     for (const prop of Object.keys(props1)) {
       if (props1[prop] != props2[prop]) {
         console.debug(`Difference detected in ${prop}:\n\t1: ${props1[prop]}\n\t2: ${props2[prop]}`)

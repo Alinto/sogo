@@ -55,7 +55,7 @@ END:VCALENDAR`
 
     // 2. Read - GET
 
-    results = await webdav_su.getEvent(resource, filename)
+    results = await webdav_su.getObject(resource, filename)
     expect(results.length).toBe(1)
     expect(results[0].raw.replace(/\r\n/g,'\n')).toBe(event)
 

@@ -198,7 +198,7 @@ END:VCARD`
 
   beforeEach(async function() {
     await webdav.deleteObject(resource)
-    await webdav.makeAddressBook(resource)
+    await webdav.makeCollection(resource)
     await _putCard(webdav, 'old.vcf', 201)
   })
 
