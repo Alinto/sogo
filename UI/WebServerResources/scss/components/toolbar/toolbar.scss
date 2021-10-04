@@ -14,15 +14,12 @@ $toolbar-padding: $mg;
 // must be declare in containers with sg-padded
 md-toolbar {
   z-index: $z-index-toolbar;
-  // dirty fix to override angular-material botchy typography
-  font-size: 1em !important;
   // No transition when switching toolbars
   transition-duration: 0s;
 }
 
 .md-toolbar-tools {
-  // dirty fix to override angular-material botchy typography
-  font-size: 1em !important;
+  font-size: $subhead-font-size-base;
 }
 
 md-toolbar,

@@ -268,9 +268,10 @@
    * @memberof Card.prototype
    * @desc Save the card to the server.
    */
-  Card.prototype.$save = function() {
+  Card.prototype.$save = function(options) {
     var _this = this,
-        action = 'saveAsContact';
+        action = 'saveAsContact',
+        data;
 
     if (this.c_component == 'vlist') {
       action = 'saveAsList';
@@ -279,11 +280,16 @@
       });
     }
 
+    data = this.$omit();
+    if (options && options.ignoreDuplicate) {
+      angular.extend(data, options);
+    }
+
     return Card.$$resource.save([
       Card.encodeUri(this.pid),
       Card.encodeUri(this.id) || '_new_'
     ].join('/'),
-                                this.$omit(),
+                                data,
                                 { action: action })
       .then(function(data) {
         // Format birthdate

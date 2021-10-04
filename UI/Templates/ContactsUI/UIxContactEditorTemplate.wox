@@ -8,37 +8,38 @@
 
   <div layout="column" class="layout-fill sg-reversible">
     <md-card style="overflow: hidden">
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button ng-click="toggleCenter()"
+                       class="sg-icon-button md-primary md-hue-1 hide show-gt-xs"
+                       aria-hidden="true">
+              <md-icon>{{ centerIsClose ? 'fullscreen_exit' : 'fullscreen' }}</md-icon>
+            </md-button>
+          <md-icon class="material-icons sg-icon-toolbar-bg">contacts</md-icon>
+          <div class="sg-md-title md-flex" ng-bind-html="editor.card.$fullname({html: true})"><!-- computed fullname --></div>
+          <md-button class="sg-icon-button"
+                     label:aria-label="Cancel"
+                     ng-click="editor.cancel()">
+            <md-icon>close</md-icon>
+          </md-button>
+          <md-button class="sg-icon-button"
+                     label:aria-label="Reset"
+                     ng-click="editor.reset(contactForm)">
+            <md-icon>undo</md-icon>
+          </md-button>
+          <md-button class="sg-icon-button"
+                     label:aria-label="Save"
+                     type="submit"
+                     ng-disabled="contactForm.$pristine || contactForm.$invalid || contactForm.$submitted || editor.duplicatedCard"
+                     ng-click="editor.save(contactForm)">
+            <md-icon>save</md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
       <md-card-actions flex-none="flex-none" layout="row" layout-align="end center">
-        <md-button ng-click="toggleCenter()"
-                   class="md-icon-button md-primary md-hue-1 hide show-gt-xs"
-                   aria-hidden="true">
-          <md-icon>{{ centerIsClose ? 'fullscreen_exit' : 'fullscreen' }}</md-icon>
-        </md-button>
         <div class="md-flex"><!-- spacer --></div>
-        <md-button class="md-icon-button"
-                   label:aria-label="Cancel"
-                   ng-click="editor.cancel()">
-          <md-icon>close</md-icon>
-        </md-button>
-        <md-button class="md-icon-button"
-                   label:aria-label="Reset"
-                   ng-click="editor.reset(contactForm)">
-          <md-icon>undo</md-icon>
-        </md-button>
-        <md-button class="md-icon-button"
-                   label:aria-label="Save"
-                   type="submit"
-                   ng-disabled="contactForm.$pristine || contactForm.$invalid || contactForm.$submitted"
-                   ng-click="editor.save(contactForm)">
-          <md-icon>save</md-icon>
-        </md-button>
       </md-card-actions>
       <md-card-content>
-        <hgroup class="header">
-          <div class="sg-md-display-2--thin" ng-bind-html="editor.card.$fullname()"><!-- fullname --></div>
-          <div class="sg-md-display-2-subheader--thin">{{editor.card.$description()}}</div>
-        </hgroup>
-
         <form class="md-inline-form" name="contactForm"
               ng-submit="editor.save(contactForm)">
 
@@ -472,6 +473,25 @@
           </div>
         </form>
       </md-card-content>
+      <md-card-actions class="md-default-theme md-bg md-warn md-padding sg-dialog-message ng-hide"
+                         ng-show="editor.duplicatedCard">
+        <div class="sg-padded--bottom" ng-bind-html="::'A similar card already exists. Would you like to save it anyway?' | loc | txt2html"><!-- warning --></div>
+        <div class="md-flex">
+          <md-icon>person</md-icon> {{ editor.duplicatedCard.$shortFormat() }}
+        </div>
+      </md-card-actions>
+      <md-card-actions class="ng-hide" layout="row" layout-align="end center" ng-show="editor.duplicatedCard">
+        <md-button type="button"
+                   ng-click="editor.edit(contactForm)">
+          <var:string label:value="Edit"/>
+        </md-button>
+        <md-button class="md-warn" type="button"
+                   label:aria-label="Save"
+                   ng-disabled="contactForm.$invalid || contactForm.$submitted"
+                   ng-click="editor.save(contactForm, { ignoreDuplicate: true })">
+          <var:string label:value="Save"/>
+        </md-button>
+      </md-card-actions>
     </md-card>
   </div>
 </container>

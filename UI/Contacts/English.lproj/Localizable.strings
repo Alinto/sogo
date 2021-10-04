@@ -350,6 +350,7 @@
 "Synchronization" = "Synchronization";
 "Synchronize" = "Synchronize";
 "Sucessfully subscribed to address book" = "Successfully subscribed to address book";
+"A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Search scope";

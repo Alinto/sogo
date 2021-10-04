@@ -463,28 +463,106 @@ static Class SOGoContactGCSEntryK = Nil;
  * @apiParam {Object[]} urls               URLs
  * @apiParam {String} urls.type            Type (e.g., personal or work)
  * @apiParam {String} urls.value           URL
+ * @apiParam {Boolean} ignoreDuplicate     Don't check for similar cards
  */
 - (id <WOActionResults>) saveAction
 {
+  BOOL forceSave;
+  NSArray *similarRecords;
+  NSDictionary *params;
   SOGoContentObject <SOGoContactObject> *co;
   WORequest *request;
-  NSDictionary *params, *data;
+  id data;
+  unsigned int status;
 
+  status = 200;
+  similarRecords = [NSArray array];
   co = [self clientObject];
   card = [co vCard];
   request = [context request];
   params = [[request contentAsString] objectFromJSONString];
+  forceSave = [[params objectForKey: @"ignoreDuplicate"] boolValue];
 
   [self setAttributes: params];
-  [co save];
 
-  // Return card UID and addressbook ID in a JSON payload
-  data = [NSDictionary dictionaryWithObjectsAndKeys:
-                         [[co container] nameInContainer], @"pid",
-                         [co nameInContainer], @"id",
-                         nil];
+  if (forceSave == NO)
+    {
+      // Check if a similar card already exists in the same addressbook
+      EOKeyValueQualifier *qualifier;
+      NSEnumerator *allKeys;
+      NSMutableArray *qualifiers;
+      NSMutableDictionary *checks;
+      NSString *key;
+      id o;
 
-  return [self responseWithStatus: 200 andJSONRepresentation: data];
+      qualifiers = [NSMutableArray array];
+      checks = [NSMutableDictionary dictionary];
+
+      o = [card n];
+      if (o)
+	{
+	  NSString *lastName = [o flattenedValueAtIndex: 0 forKey: @""];
+	  NSString *firstName = [o flattenedValueAtIndex: 1 forKey: @""];
+	  if ([lastName length] > 0)
+	    [checks setObject: lastName forKey: @"c_sn"];
+	  if ([firstName length] > 0)
+	    [checks setObject: firstName forKey: @"c_givenname"];
+	}
+      o = [card fn];
+      if ([o length])
+	[checks setObject: o forKey: @"c_cn"];
+      o = [card preferredEMail];
+      if ([o length])
+	[checks setObject: o forKey: @"c_mail"];
+      o = [card preferredTel];
+      if ([o length])
+	[checks setObject: o forKey: @"c_telephonenumber"];
+
+      allKeys = [checks keyEnumerator];
+      while ((key = [allKeys nextObject]))
+	{
+	  qualifier = [[EOKeyValueQualifier alloc]
+                               initWithKey: key
+                          operatorSelector: EOQualifierOperatorCaseInsensitiveLike
+                                     value: [checks objectForKey: key]];
+	  [qualifier autorelease];
+	  [qualifiers addObject: qualifier];
+	}
+
+      if ([qualifiers count])
+	{
+          if (![self isNew])
+            {
+              // Exclude current contact
+              qualifier = [[EOKeyValueQualifier alloc]
+                               initWithKey: @"c_name"
+                            operatorSelector: EOQualifierOperatorNotEqual
+                                     value: [co nameInContainer]];
+              [qualifier autorelease];
+              [qualifiers addObject: qualifier];
+            }
+	  qualifier = [[EOAndQualifier alloc] initWithQualifierArray: qualifiers];
+	  similarRecords = [(SOGoContactGCSFolder *) [co container] lookupContactsWithQualifier: qualifier];
+	}
+    }
+
+  if ([similarRecords count])
+    {
+      status = 409;
+      data = [similarRecords objectAtIndex: 0];
+    }
+  else
+    {
+      [co save];
+
+      // Return card UID and addressbook ID in a JSON payload
+      data = [NSDictionary dictionaryWithObjectsAndKeys:
+			     [[co container] nameInContainer], @"pid",
+			   [co nameInContainer], @"id",
+			   nil];
+    }
+
+  return [self responseWithStatus: status andJSONRepresentation: data];
 }
 
 @end /* UIxContactEditor */

@@ -9,9 +9,9 @@
   <div class="sg-reversible" ng-class="{ 'sg-flip': editor.showRawSource }">
     <div class="sg-face" layout="column" layout-fill="layout-fill">
       <md-card>
-        <md-card-actions flex-none="flex-none" layout="row" layout-align="end center">
+        <md-card-actions class="md-toolbar-tools" flex-none="flex-none" layout="row" layout-align="end center">
           <md-button ng-click="toggleCenter()"
-                     class="md-icon-button md-primary md-hue-1 hide show-gt-xs"
+                     class="sg-icon-button md-primary md-hue-1 hide show-gt-xs"
                      aria-hidden="true">
             <md-icon>{{ centerIsClose ? 'fullscreen_exit' : 'fullscreen' }}</md-icon>
           </md-button>
