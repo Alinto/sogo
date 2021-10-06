@@ -1567,6 +1567,14 @@ static NSArray *reminderValues = nil;
 
   if ((v = [o objectForKey: @"settings"]))
     {
+      // Remove ReloadWebCalendars if necessary
+      NSMutableDictionary *calendarModule = [o objectForKey: @"Calendar"];
+      if (calendarModule && [calendarModule objectForKey: @"ReloadWebCalendars"] == nil)
+        {
+          calendarModule = [[user userSettings] objectForKey: @"Calendar"];
+          [calendarModule removeObjectForKey: @"ReloadWebCalendars"];
+        }
+
       [[[user userSettings] source] setValues: v];
       [[user userSettings] synchronize];
     }

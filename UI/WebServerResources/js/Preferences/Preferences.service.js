@@ -180,8 +180,30 @@
         data = {};
       }
 
-      // We convert our PreventInvitationsWhitelist hash into a array of user
       if (data.Calendar) {
+
+        // When the Calendar settings include "AutoReloadedWebCalendars", reload the Web calendars
+        // marked to be reloaded on login (AutoReloadedWebCalendars). Once completed, remove the
+        // parameter and save the settings.
+        if (data.Calendar.ReloadWebCalendars && data.Calendar.AutoReloadedWebCalendars) {
+          var reloadPromises = [];
+          _.map(data.Calendar.AutoReloadedWebCalendars, function (autoReload, id) {
+            if (autoReload) {
+              var calendarId = id.split('/')[1],
+                  deferred = Preferences.$q.defer();
+              Preferences.$$resource.quietFetch('Calendar/' + calendarId, 'reload').finally(deferred.resolve);
+              reloadPromises.push(deferred.promise);
+            }
+          });
+          Preferences.$q.all(reloadPromises).then(function() {
+            delete _this.settings.Calendar.ReloadWebCalendars;
+            Preferences.$$resource.save("Preferences", { settings: _this.$omit(true).settings }).then(function () {
+              Preferences.$rootScope.$emit('calendars:list');
+            });
+          });
+        }
+
+        // We convert our PreventInvitationsWhitelist hash into a array of user
         if (data.Calendar.PreventInvitationsWhitelist) {
           data.Calendar.PreventInvitationsWhitelist = _.map(data.Calendar.PreventInvitationsWhitelist, function(value, key) {
             var match = /^(.+)\s<(\S+)>$/.exec(value),
@@ -204,10 +226,11 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Preferences constructor
    */
-  Preferences.$factory = ['$window', '$document', '$q', '$timeout', '$log', '$state', '$mdDateLocale', '$mdToast', 'sgSettings', 'Gravatar', 'Resource', 'User', function($window, $document, $q, $timeout, $log, $state, $mdDateLocaleProvider, $mdToast, Settings, Gravatar, Resource, User) {
+  Preferences.$factory = ['$window', '$document', '$rootScope', '$q', '$timeout', '$log', '$state', '$mdDateLocale', '$mdToast', 'sgSettings', 'Gravatar', 'Resource', 'User', function($window, $document, $rootScope, $q, $timeout, $log, $state, $mdDateLocaleProvider, $mdToast, Settings, Gravatar, Resource, User) {
     angular.extend(Preferences, {
       $window: $window,
       $document: $document,
+      $rootScope: $rootScope,
       $q: $q,
       $timeout: $timeout,
       $log: $log,

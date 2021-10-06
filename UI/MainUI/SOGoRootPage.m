@@ -35,8 +35,6 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSObject+Values.h>
 
-#import <Appointments/SOGoAppointmentFolders.h>
-
 #import <SOGo/NSString+Crypto.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoBuild.h>
@@ -49,6 +47,7 @@
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserManager.h>
+#import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoWebAuthenticator.h>
 
 #if defined(MFA_CONFIG)
@@ -173,6 +172,26 @@
             andJSONRepresentation: jsonError];
 }
 
+- (void) _checkAutoReloadWebCalendars: (SOGoUser *) loggedInUser
+{
+  NSDictionary *autoReloadedWebCalendars;
+  NSMutableDictionary *moduleSettings;
+  SOGoUserSettings *us;
+
+  us = [loggedInUser userSettings];
+  moduleSettings = [us objectForKey: @"Calendar"];
+
+  if (moduleSettings)
+    {
+      autoReloadedWebCalendars = [moduleSettings objectForKey: @"AutoReloadedWebCalendars"];
+      if ([[autoReloadedWebCalendars allValues] containsObject: [NSNumber numberWithInt: 1]])
+        {
+          [moduleSettings setObject: [NSNumber numberWithBool: YES] forKey: @"ReloadWebCalendars"];
+          [us synchronize];
+        }
+    }
+}
+
 //
 //
 //
@@ -182,7 +201,6 @@
   WORequest *request;
   WOCookie *authCookie, *xsrfCookie;
   SOGoWebAuthenticator *auth;
-  SOGoAppointmentFolders *calendars;
   SOGoUserDefaults *ud;
   SOGoUser *loggedInUser;
   NSDictionary *params;
@@ -294,6 +312,8 @@
         }
 #endif
 
+      [self _checkAutoReloadWebCalendars: loggedInUser];
+
       json = [NSDictionary dictionaryWithObjectsAndKeys:
                              [loggedInUser cn], @"cn",
                                 [NSNumber numberWithInt: expire], @"expire",
@@ -323,10 +343,6 @@
 	  [ud setLanguage: language];
 	  [ud synchronize];
 	}
-
-      calendars = [loggedInUser calendarsFolderInContext: context];
-      if ([calendars respondsToSelector: @selector (reloadWebCalendars:)])
-        [calendars reloadWebCalendars: NO];
     }
   else
     {
@@ -382,7 +398,6 @@
 {
   WOResponse *response;
   NSString *login, *logoutRequest, *newLocation, *oldLocation, *ticket;
-  SOGoAppointmentFolders *calendars;
   SOGoCASSession *casSession;
   SOGoUser *loggedInUser;
   SOGoWebAuthenticator *auth;
@@ -450,9 +465,7 @@
         }
 
       loggedInUser = [SOGoUser userWithLogin: login];
-      calendars = [loggedInUser calendarsFolderInContext: context];
-      if ([calendars respondsToSelector: @selector (reloadWebCalendars:)])
-        [calendars reloadWebCalendars: NO];
+      [self _checkAutoReloadWebCalendars: loggedInUser];
     }
   else
     {
@@ -476,6 +489,7 @@
 {
   WOResponse *response;
   NSString *login, *newLocation, *oldLocation;
+  SOGoUser *loggedInUser;
   WOCookie *saml2LocationCookie;
   WORequest *rq;
 
@@ -500,6 +514,9 @@
           newLocation = [NSString stringWithFormat: @"%@%@",
                                   oldLocation, [login stringByEscapingURL]];
         }
+
+      loggedInUser = [SOGoUser userWithLogin: login];
+      [self _checkAutoReloadWebCalendars: loggedInUser];
     }
   else
     {
