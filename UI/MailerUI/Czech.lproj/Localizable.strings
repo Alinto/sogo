@@ -230,6 +230,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Převést na úkol";
 
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Stáhnout zprávu";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Stáhnout zprávu (zip)";
+
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "Stáhnout všechny přílohy";
 
@@ -250,6 +256,12 @@
 
 /* Number of selected messages in list */
 "selected" = "vybráno";
+
+/* Date formatting from one time to another time */
+"to_time" = "do";
+
+/* Date formatting from one day to another day */
+"to_date" = "do";
 
 /* Encrypted message notification */
 "This message is encrypted" = "Tato zpráva je šifrována";
@@ -313,6 +325,7 @@
 "Operation failed" = "Operace selhala";
 "Quota" = "Kvóta:";
 "quotasFormat" = "%{0}% využito z %{1} MB";
+"messageQuotasFormat" = "%{0}% z %{1} zpráv";
 "Unable to move/delete folder." = "Složku není možné přesunout/smazat.";
 
 /* Alternative operation when folder cannot be deleted */

@@ -221,7 +221,7 @@
 "New Addressbook..." = "Nová složka kontaktů...";
 "Subscribe to an Addressbook..." = "Odebírat složku kontaktů...";
 "Remove the selected Addressbook" = "Smazat složku kontaktů";
-"Subscribe to a shared folder" = "Odebírat sdílenou složku";
+"Subscribe to a shared contact" = "Odebírat sdílenou složku kontaktů";
 "Search User" = "Vyhledat uživatele";
 "Name of the Address Book" = "Název složky kontaktů";
 "Are you sure you want to delete the selected address book?"
@@ -350,6 +350,7 @@
 "Synchronization" = "Synchronizace";
 "Synchronize" = "Synchronizovat";
 "Sucessfully subscribed to address book" = "Přihlášení k odebírání adresáře kontaktů proběhlo úspěšně";
+"A similar card already exists. Would you like to save it anyway?" = "Podobný kontakt již existuje. Opravdu jej chcete uložit?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Oblast hledání";
