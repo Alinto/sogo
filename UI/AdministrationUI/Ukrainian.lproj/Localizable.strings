@@ -9,3 +9,19 @@
 "ACLs_title" = "Керування доступами до тек користувачів";
 /* Modules descriptions */
 "ACLs_description" = "<p>Адміністративний модуль списків доступів дозволяє змінювати доступи до календаря та адресної книги кожного окремого користувача.</p><p>Щоб змінити список доступу теки користувача, введіть ім’я користувача в полі пошуку нагорі цього вікни та натисніть двічі на потрібній теці.</p>";
+"Name or Email" = "Ім'я або e-mail";
+"ACLs saved" = "ACL збережені";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Почати пошук для редагування прав";
+/* Rights module: Empty search result */
+"No matching user" = "Немає відповідного користувача";
+/* Rights module: no selection */
+"No resource selected" = "Ресурс не обраний";
+"Add User" = "Додати користувача";
+"Subscribe User" = "Підписати користувача";
+"Rights" = "Права";
+"Search Users" = "Пошук користувачів";
+"users found" = "користувачів знайдено";
+"No resource" = "Немає ресурсу";
+"Any Authenticated User" = "Будь-який авторизований користувач";
+"Public Access" = "Публічний доступ";

@@ -1,47 +1,83 @@
 /* toolbar */
 "Save and Close" = "Зберегти та закрити";
 "Close" = "Закрити без збереження";
+"Preferences saved" = "Налаштування збережені";
+
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Незбережені зміни";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Ви хочете зберегти зміни внесені в конфігурацію?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Зберегти";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Не зберігати";
 
 /* tabs */
-"General" = "Загальне";
+"General" = "Загальні";
 "Calendar Options" = "Календар";
 "Contacts Options" = "Контакти";
 "Mail Options" = "Пошта";
-"IMAP Accounts" = "IMAP-записи";
+"IMAP Accounts" = "Облікові записи IMAP";
 "Vacation" = "Відпустка";
 "Forward" = "Перенаправлення";
 "Password" = "Пароль";
 "Categories" = "Категорії";
+"Appointments invitations" = "Запрошення";
 "Name" = "Назва";
 "Color" = "Колір";
 "Add" = "Додати";
 "Delete" = "Вилучити";
+
 /* contacts categories */
-"contacts_category_labels" = "Робота, Конкуренти, Клієнти, Друзі, Родина, Партнери, Постачальники, Преса, ВІП";
+"contacts_category_labels" = "Робота, Конкуренти, Клієнти, Друзі, Родина, Партнери, Постачальники, Преса, VIP";
+
 /* vacation (auto-reply) */
-"Enable vacation auto reply" = "Увімкнути повідомлення про мою відсутність";
-"Auto reply message" ="Текст автоматичної відповіді";
-"Email addresses (separated by commas)" ="Електронні адреси (розділені комами)";
+"Enable vacation auto reply" = "Увімкнути автоматичну відправку повідомлення про відпустку";
+"Enable custom auto reply subject" = "Увімкнути спеціальну тему автоматичної відповіді";
+"Auto reply subject" = "Тема повідомлення автовідповідача";
+"You can write ${subject} to insert the original subject" = "Ви може написати $ {subject} для вставки в вихідну тему";
+"Auto reply message" = "Текст автоматичної відповіді";
+"Email addresses" = "Адреси електронної пошти";
 "Add default email addresses" = "Додати адреси за замовчанням";
-"Days between responses" ="Днів між відповідями";
+"Days between responses" = "Днів між відповідями";
 "Do not send responses to mailing lists" = "Не надсилати автоматичні відповіді на адреси розсилок";
+"Enable auto reply on" = "Включити автовідповідь на";
+"First day of vacation" = "Перший день відпустки";
 "Disable auto reply on" = "Вимкнути автоматичну відповідь";
+"Last day of vacation" = "Останній день відпустки";
+"Enter date" = "Введіть дату";
+"Always send vacation message response" = "Завжди відправляти повідомлення у відповідь про відпустку";
+"The vacation message is sent prior to apply your filters." = "Повідомлення про відпустку надсилається до застосування фільтрів.";
+"Discard incoming mails during vacation" = "Не отримувати вхідні листи під час відпустки";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Повідомлення про відпустку надсилається, але вхідні повідомлення не доставляються в вашу поштову скриньку. ";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Будь ласка, зазначте Ваше повідомлення та Ваші елекронні адреси, для яких потрібно увімкнути автоматичну відповідь.";
 "Your vacation message must not end with a single dot on a line." = "Ваше повідомлення про відпустку не має закінчуватись одиничною крапкою на рядку.";
 "End date of your auto reply must be in the future."
 = "Кінцева дата автоматичної відповіді має бути у майбутньому.";
+
 /* forward messages */
 "Forward incoming messages" = "Перенаправляти вхідні повідомлення";
 "Keep a copy" = "Зберігати копію";
+"Enter an email" = "Введіть адресу електронної пошти";
+"Add another email" = "Додати ще одну адресу електронної пошти";
 "Please specify an address to which you want to forward your messages."
 = "Будь ласка, зазначте адресу, на яку потрібно перенаправляти повідомлення, адресовані Вам.";
+"You are not allowed to forward your messages to an external email address." = "Ви не можете пересилати свої повідомлення на зовнішню адресу електронної пошти.";
+"You are not allowed to forward your messages to an internal email address." = "Ви не можете пересилати свої повідомлення на внутрішні адреси електронної пошти.";
+"You are not allowed to forward your messages to this domain:" = "Ви не можете пересилати свої повідомлення на вказаний домен:";
+
 /* d & t */
-"Current Time Zone" ="Поточна часова зона";
-"Short Date Format" ="Стислий формат дати";
-"Long Date Format" ="Повний формат дати";
-"Time Format" ="Формат часу";
+"Time Zone" = "Часовий пояс";
+"Short Date Format" = "Стислий формат дати";
+"Long Date Format" = "Повний формат дати";
+"Time Format" = "Формат часу";
 "default" = "Типово";
+"Default Module" = "Модуль за замовчуванням";
+"Save" = "Зберегти";
 "shortDateFmt_0" = "%d-%b-%y";
 "shortDateFmt_1" = "%d-%m-%y";
 "shortDateFmt_2" = "%d.%m.%y";
@@ -57,8 +93,10 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%d.%m.%Y";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
-   
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
+
 "longDateFmt_0" = "%A, %B %d %Y р.";
 "longDateFmt_1" = "%B %d %Y р.";
 "longDateFmt_2" = "%A, %d %B %Y р.";
@@ -74,51 +112,71 @@
 "timeFmt_1" = "%H:%M";
 "timeFmt_2" = "";
 "timeFmt_3" = "";
+"timeFmt_4" = "";
+
+/* Timezone autocompletion */
+"No matches found." = "Не знайдено збігів.";
+
 /* calendar */
-"Week begins on" ="Тиждень починаєтья з";
-"Day start time" ="Робочий день починається о";
-"Day end time" ="Робочий день закінчується о";
+"Week begins on" = "Тиждень починаєтья з";
+"Day start time" = "Робочий день починається о";
+"Day end time" = "Робочий день закінчується о";
 "Day start time must be prior to day end time." = "Початок дня має бути ранішим за кінець дня.";
+"Week days to display" = "Дні тижня для відображення";
 "Show time as busy outside working hours" = "Показувати час зайнятим якщо поза межами робочих годин";
-"First week of year" ="Перший тиждень року";
+"First week of year" = "Перший тиждень року";
 "Enable reminders for Calendar items" = "Увімкнути нагадування подій календаря";
-"Play a sound when a reminder comes due"
-= "Програти звук у разі сповіщення";
-"Default reminder" ="Звичайне сповіщення";
+"Play a sound when a reminder comes due" = "Програти звук у разі сповіщення";
+"Default reminder" = "Оповіщення за замовчуванням";
 "firstWeekOfYear_January1" = "Починається 1 січня";
 "firstWeekOfYear_First4DayWeek" = "Перший чотириденний тиждень";
 "firstWeekOfYear_FirstFullWeek" = "Перший повний тиждень";
+"Prevent from being invited to appointments" = "Не допускати запрошення на зустрічі";
+"White list for appointment invitations" = "Білий список для запрошень на зустрічі";
+"Contacts Names" = "Імена контактів";
+"Duplicate name" = "Дублювати ім'я";
+"Calendar categories must have unique names." = "Імена категорій календаря повинні бути унікальними.";
+
 /* Default Calendar */
-"Default calendar" ="Типовий календар";
+"Default calendar" = "Календар за замовчуванням";
 "selectedCalendar" = "Вибраний календар";
 "personalCalendar" = "Особистий календар";
 "firstCalendar" = "Перший активний календар";
+"reminder_NONE" = "Не нагадувати";
 "reminder_5_MINUTES_BEFORE" = "5 хвилин";
 "reminder_10_MINUTES_BEFORE" = "10 хвилин";
 "reminder_15_MINUTES_BEFORE" = "15 хвилин";
 "reminder_30_MINUTES_BEFORE" = "30 хвилин";
+"reminder_45_MINUTES_BEFORE" = "за 45 хвилин";
 "reminder_1_HOUR_BEFORE" = "1 година";
 "reminder_2_HOURS_BEFORE" = "2 години";
-"reminder_5_HOURS_BEFORE"= "5 години";
-"reminder_15_HOURS_BEFORE"= "15 годин";
+"reminder_5_HOURS_BEFORE" = "5 години";
+"reminder_15_HOURS_BEFORE" = "15 годин";
 "reminder_1_DAY_BEFORE" = "1 день";
 "reminder_2_DAYS_BEFORE" = "2 дні";
+"reminder_1_WEEK_BEFORE" = "за 1 неділю";
+
 /* Mailer */
+"Labels" = "Мітки";
 "Label" = "Позначка";
+"IMAP Label" = "IMAP мітки";
+"Invalid label" = "Не використовуйте пробіли, а також () {}% * \"\\";
+"Duplicate label" = "Дублювати мітку";
+"IMAP labels must have unique names." = "Імена IMAP міток повинні бути унікальними.";
+"New label" = "Нова мітка";
 "Show subscribed mailboxes only" = "Показувати лише поштові скриньки, на які я підписаний";
-"Sort messages by threads" = "Сортувати повідомлення за гілками";
-"Check for new mail" = "Перевіряти нову пошту";
-"refreshview_manually" = "Вручну";
-"refreshview_every_minute" = "Щохвилини";
-"refreshview_every_2_minutes" = "Кожні 2 хвилини";
-"refreshview_every_5_minutes" = "Кожні 5 хвилин";
-"refreshview_every_10_minutes" = "Кожні 10 хвилин";
-"refreshview_every_20_minutes" = "Кожні 20 хвилин";
-"refreshview_every_30_minutes" = "Кожні 30 хвилин";
-"refreshview_once_per_hour" = "Раз на годину";
+"Synchronize only default mail folders (EAS)" = "Синхронізувати тільки поштові папки за замовчуванням (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Перевіряти кількість непрочитаних повідомлень для всіх поштових скриньок";
+"Sort messages by threads" = "Сортувати повідомлення за темами";
+"Always open mail composer" = "Завжди відкривати редактор листів";
+"Inside current window" = "Усередині поточного вікна";
+"In a popup window" = "У спливаючому вікні";
+"When sending mail, add unknown recipients to my" = "При відправці додавати невідомих одержувачів в:";
+"Address Book" = "Адресна книга";
 "Forward messages" = "Перенаправляти повідомлення";
-"messageforward_inline" = "В тілі листа";
+"messageforward_inline" = "У тілі листа";
 "messageforward_attached" = "Вкладеним файлом";
+"When replying to a message" = "При відповіді на повідомлення";
 "replyplacement_above" = "Починати мою відповідь над текстом, що цитується";
 "replyplacement_below" = "Починати мою відповідь під текстом, що цитується";
 "And place my signature" = "Та додати мій підпис";
@@ -127,46 +185,102 @@
 "Compose messages in" = "Створювати повідомлення в форматі";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Звичайний текст";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Розмір шрифта за замовчуванням";
+
+"Display remote inline images" = "Показати зображення з мережі";
+"displayremoteinlineimages_never" = "Ніколи";
+"displayremoteinlineimages_always" = "Завжди";
+"Auto save every" = "Автозбереження кожні";
+"minutes" = "хвилин";
+
+/* Contact */
+"Personal Address Book" = "Особиста адресна книга";
+"Collected Address Book" = "Зібрані адреси";
+"Contact categories must have unique names." = "Імена категорій контактів повинні бути унікальними.";
+
 /* IMAP Accounts */
+"Settings" = "Налаштування";
+"Security" = "Безпека";
+"Mail Account" = "Обліковий запис";
 "New Mail Account" = "Новий обліковий запис";
 "Server Name" = "Ім’я сервера";
 "Port" = "Порт";
+"Encryption" = "Шифрування";
+"None" = "Відсутнє";
 "User Name" = "Ім’я користувача";
 "Full Name" = "Повне ім’я";
 "Email" = "E-Mail";
+"Reply To Email" = "Відповісти на e-mail";
 "Signature" = "Підпис";
+"Identities" = "Ідентифікатори";
+"Always use the default identity when replying to messages" = "Завжди використовувати ідентифікатор за умовчанням при відповіді на повідомлення";
+"Default Identity" = "Ідентифікатор за замовчуванням";
+"New Identity" = "Новий ідентифікатор";
 "(Click to create)" = "(Клацніть, щоб додати)";
 "Please enter your signature below" = "Введіть ваш підпис нижче";
+"Please specify a valid sender address." = "Будь ласка, вкажіть правильну адресу відправника.";
+"Please specify a valid reply-to address." = "Будь ласка, вкажіть правильну адресу для відповіді.";
+"Specify a hostname other than the local host" = "Вкажіть ім'я хоста, відмінне від localhost";
+
+"No certificate installed" = "Сертифікат відсутній";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "SSL сертифікат повинен використовувати формат PKCS # 12 (PFX).";
+"Uninstall" = "Видалити";
+"Choose PKCS12 Certificate .." = "Виберіть сертифікат PKCS12...";
+"Certificate Import Password" = "Пароль імпорту сертифіката";
+"Upload" = "Завантажити";
+"When composing a message" = "При складанні повідомлення";
+"Digitally sign the message by default" = "Підписувати цифровим підписом повідомлення за замовчуванням";
+"Always try to encrypt the message" = "Завжди намагатися зашифрувати повідомлення";
+"An error occurred while importing the certificate. Verify your password." = "Помилка імпортування сертифіката. Перевірте ваш пароль.";
+
 /* Additional Parameters */
 "Additional Parameters" = "Додаткові параметри";
+
 /* password */
+"Current password" = "Поточний пароль";
 "New password" = "Новий пароль";
 "Confirmation" = "Повтор нового пароля";
 "Change" = "Змінити";
+"Passwords don't match" = "Паролі не збігаються";
+
 /* Event+task classifications */
-"Default events classification" ="Класифікація типових подій";
-"Default tasks classification" ="Класифікація типових завдань";
+"Default events classification" = "Подія за умовчанням";
+"Default tasks classification" = "Завдання за замовчуванням";
 "PUBLIC_item" = "Загальний доступ";
 "CONFIDENTIAL_item" = "Обмежений доступ";
 "PRIVATE_item" = "Приватний доступ";
+
 /* Event+task categories */
+"Calendar Category" = "Категорія календаря";
+"Add Calendar Category" = "Додати категорію календаря";
+"New category" = "Нова категорія";
+"Reset to defaults" = "Параметри за замовчуванням";
+"Remove Calendar Category" = "Видалити категорію календаря";
+"Contact Category" = "Категорія контактів";
+"Add Contact Category" = "Додати категорію контактів";
+"Remove Contact Category" = "Видалити категорію контактів";
 "category_none" = "Без категорії";
 "calendar_category_labels" = "Важливий день,День народження,Справи,Дзвінки,Клієнти,Поточне,Користувачі,Обране,Продовження,Подарунки,Свято,Думки,Зустріч,Питання,Різне,Особисте,Проекти,Публічне свято,Поточне,Постачальники,Поїздка,Відпустка";
+
 /* Default module */
 "Calendar" = "Календар";
 "Contacts" = "Адресна книга";
 "Mail" = "Електронна пошта";
 "Last" = "Останнє";
 "Default Module " = "Модуль за замовчанням";
-"Language" ="Мова";
+"SOGo Version" = "Версія SOGo";
+
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "Зберегти налаштування і перезавантажити сторінку зараз?";
+"Language" = "Мова";
 "choose" = "Choose ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
-"Bulgarian" = "Български";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
-"Croatian" = "Hrvatski";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -184,12 +298,11 @@
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
-"Montenegrin" = "Crnogorski";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
-"BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
 "Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
 "Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
@@ -202,6 +315,18 @@
 "TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
+"Refresh View" = "Оновлювати вид";
+"refreshview_manually" = "Вручну";
+"refreshview_every_minute" = "Щохвилини";
+"refreshview_every_2_minutes" = "Кожні 2 хвилини";
+"refreshview_every_5_minutes" = "Кожні 5 хвилин";
+"refreshview_every_10_minutes" = "Кожні 10 хвилин";
+"refreshview_every_20_minutes" = "Кожні 20 хвилин";
+"refreshview_every_30_minutes" = "Кожні 30 хвилин";
+"refreshview_once_per_hour" = "Раз на годину";
+"Enable Desktop Notifications" = "Включити повідомлення на робочому столі";
+
 /* Return receipts */
 "When I receive a request for a return receipt" = "Коли я отримую запит на сповіщення про прочитання";
 "Never send a return receipt" = "Ніколи не відправляти сповіщення";
@@ -212,18 +337,30 @@
 "Never send" = "Ніколи не відправляти";
 "Always send" = "Завжди відправляти";
 "Ask me" = "Спитати";
+
 /* Filters - UIxPreferences */
 "Filters" = "Фільтри";
 "Active" = "Увімкнено";
 "Move Up" = "Наверх";
 "Move Down" = "Вниз";
+"Connection error" = "Помилка з'єднання";
+"Service temporarily unavailable" = "Сервіс тимчасово недоступний";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Включити фільтр";
+
 /* Filters - UIxFilterEditor */
 "Filter name" = "Назва фільтру";
+/* Button label */
+"Add a condition" = "Додати умову";
+/* Button label */
+"Add an action" = "Додати дію";
 "For incoming messages that" = "Для вхідних повідомлень, що";
 "match all of the following rules" = "відповідають таким правилам";
 "match any of the following rules" = "відповідають будь-якому з таких правил";
 "match all messages" = "відповідають всім повідомленням";
 "Perform these actions" = "Виконати такі дії";
+"Untitled Filter" = "Фільтр без назви";
 "Subject" = "Тема";
 "From" = "Від";
 "To" = "Кому";
@@ -231,12 +368,29 @@
 "To or Cc" = "Кому або Копія";
 "Size (Kb)" = "Розмір (Кб)";
 "Header" = "Заголовок";
+"Body" = "Тіло листа";
 "Flag the message with" = "Позначити зірочкою повідомлення з";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Зірочка";
+
 "Discard the message" = "Скасувати повідомлення";
 "File the message in" = "Зберегти повідомлення як";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Поштова скринька";
+
 "Keep the message" = "Зберегти повідомлення";
 "Forward the message to" = "Пененаправити повідомлення на";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "E-Mail";
+
 "Send a reject message" = "Надіслати повідомлення про відмову в отриманні";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Повідомлення";
+
 "Send a vacation message" = "Надіслати повідомлення про відсутність";
 "Stop processing filter rules" = "Припинити обробку правил фільтру";
 "is under" = "починається";
@@ -249,17 +403,17 @@
 "does not match" = "не збігається";
 "matches regex" = "збігається з регулярним виразом";
 "does not match regex" = "не з регулярним виразом";
+/* Placeholder for the value field of a condition */
+"Value" = "Значення";
 "Seen" = "Переглянуто";
 "Deleted" = "Вилучено";
 "Answered" = "Відповіли";
 "Flagged" = "Позначено зірочкою";
 "Junk" = "Спам";
 "Not Junk" = "Не спам";
-"Label 1" = "Позначка 1";
-"Label 2" = "Позначка 2";
-"Label 3" = "Позначка 3";
-"Label 4" = "Позначка 4";
-"Label 5" = "Позначка 5";
+
+/* Password policy */
+"The password was changed successfully." = "Пароль був успішно змінений.";
 "Password must not be empty." = "Пароль не має бути порожнім";
 "The passwords do not match. Please try again." = "Паролі не співпадають. Спробуйте ще раз.";
 "Password change failed" = "Помилка під час зміни пароля.";
@@ -272,3 +426,44 @@
 "Unhandled error response" = "Невідома помилка";
 "Password change is not supported." = "Зміна паролю не підтримується.";
 "Unhandled HTTP error code: %{0}" = "Невідомий код помилки HTTP: %{0}";
+"Cancel" = "Скасувати";
+"Invitations" = "Запрошення";
+"Edit Filter" = "Редагувати фільтр";
+"Delete Filter" = "Видалити фільтр";
+"Create Filter" = "Створити фільтр";
+"Delete Label" = "Видалити мітку";
+"Create Label" = "Створити мітку";
+"Accounts" = "Облікові записи";
+"Edit Account" = "Редагувати обліковий запис";
+"Delete Account" = "Видалити обліковий запис";
+"Create Account" = "Створити обліковий запис";
+"Account Name" = "Ім'я облікового запису";
+"SSL" = "SSL";
+"TLS" = "TLS";
+
+/* Avatars */
+"Use Gravatar" = "Використовувати Gravatar";
+"Alternate Avatar" = "Альтернативний аватар";
+"none" =  "Не використовувати";
+"identicon" = "Іконка ідентифікатора";
+"monsterid" = "Монстр";
+"wavatar" = "Ваватар";
+"retro" = "Ретро";
+
+/* Animation Level */
+"Animation Level" = "Анімація";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Звичайна";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Обмежена";
+"animation_NONE" = "Вимкнена";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "Ввімкнути двухфакторную аутентифікацію за допомогою додатку";
+"You must enter this key into your TOTP application." = "Ви повинні ввести цей ключ в додаток двофакторної аутентифікації, заснованої на використанні одноразових кодів (TOTP).";
+"If you do not and you log out you will not be able to login again." = "Якщо ви цього не зробите і вийдете з системи, ви не зможете увійти знову.";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "Зовнішній скрипт Sieve активний";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve - це мова програмування, котра може бути використана для фільтрації електронної пошти. Якщо ви дозволите SOGo обробляти ваші фільтри, настройки відпустки і переадресації, ваш активний скрипт буде відключений.";
+"Let SOGo handle everything" = "Надати SOGo можливість управляти всім";

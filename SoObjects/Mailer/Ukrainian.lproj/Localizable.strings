@@ -1,2 +1,5 @@
-"SieveFolderName"  = "Теки";
 "OtherUsersFolderName"   = "Інші користувачі";
+"SharedFoldersName" = "Загальні папки";
+
+"Report: Marked messages as junk" = "Відмітити повідомлення як спам";
+"Report: Marked messages as not junk" = "Відмітити повідомлення як не спам";
