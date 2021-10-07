@@ -88,7 +88,7 @@
 "vcardcategories" = "Категории";
 
 /* Search scope: title field */
-"title" = "Обръщение";
+"title" = "Заглавие";
 
 /* Search scope: organization field */
 "c_o" = "Организация";
@@ -199,7 +199,7 @@
 "New category" = "Нова категория";
 
 /* adresses */
-"Title" = "Обръщение";
+"Title" = "Заглавие";
 "Service" = "Услуга";
 "Company" = "Фирма";
 "Department" = "Отдел";
@@ -221,7 +221,7 @@
 "New Addressbook..." = "Нова адресна книга...";
 "Subscribe to an Addressbook..." = "Абонамент за адресна книга...";
 "Remove the selected Addressbook" = "Премахни избраната адресна книга";
-"Subscribe to a shared folder" = "Абониране към споделена папка";
+"Subscribe to a shared contact" = "Абониране за споделена адресна книга";
 "Search User" = "Търсене потребител";
 "Name of the Address Book" = "Име на адресната книга";
 "Are you sure you want to delete the selected address book?"
@@ -234,7 +234,7 @@
 = "Не можете да премахнете нито да се отпишете от собствената си адресна книга.";
 "Are you sure you want to delete the selected contacts?"
 = "Сигурни ли сте, че искате да изтриете избрания контакт?";
-"Are you sure you want to delete the card of %{0}?" = "Наистина ли искате да изтриете картата на % {0}?";
+"Are you sure you want to delete the card of %{0}?" = "Наистина ли искате да изтриете картата на %{0}?";
 "You cannot delete the card of \"%{0}\"."
 = "Не можете да изтриете запис %{0}\".";
 "You cannot subscribe to a folder that you own!"
@@ -350,6 +350,7 @@
 "Synchronization" = "Синхронизиране";
 "Synchronize" = "Синхронизирам";
 "Sucessfully subscribed to address book" = "Успешно се абонирахте за адресната книга";
+"A similar card already exists. Would you like to save it anyway?" = "Подобна карта вече съществува. Искате ли да запаметите въпреки това?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Обхват на търсенето";

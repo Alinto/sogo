@@ -138,7 +138,7 @@
 /* Print view */
 "LIST" = "Списък";
 "Print Settings" = "Настройки печат";
-"Title" = "Обръщение";
+"Title" = "Заглавие";
 "Layout" = "План";
 "What to Print" = "Какво за печат";
 "Options" = "Опции";
@@ -579,7 +579,7 @@ vtodo_class2 = "(Поверителна задача)";
 "Move To" = "Премести в";
 "Copy To" = "Копирай в";
 "Subscriptions" = "Абониране";
-"Subscribe to a shared folder" = "Абониране към споделена папка";
+"Subscribe to a shared calendar" = "Абониране за споделен календар";
 "Subscribe to a web calendar..." = "Вписване към web календар ...";
 "URL of the Calendar" = "URL адрес на календар";
 "Web Calendar" = "Web календар";
