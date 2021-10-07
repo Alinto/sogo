@@ -221,7 +221,7 @@
 "New Addressbook..." = "Neues Adressbuch...";
 "Subscribe to an Addressbook..." = "Ein Adressbuch abonnieren...";
 "Remove the selected Addressbook" = "Gewähltes Adressbuch löschen";
-"Subscribe to a shared folder" = "Einen geteilten Ordner abonnieren";
+"Subscribe to a shared contact" = "Ein geteiltes Adressbuch abonnieren";
 "Search User" = "Benutzer suchen";
 "Name of the Address Book" = "Adressbuchname";
 "Are you sure you want to delete the selected address book?"
@@ -350,6 +350,7 @@
 "Synchronization" = "Synchronisierung";
 "Synchronize" = "Synchronisieren";
 "Sucessfully subscribed to address book" = "Adressbuch erfolgreich abonniert";
+"A similar card already exists. Would you like to save it anyway?" = "Es gibt bereits eine ähnliche Karte. Möchten Sie diese trotzdem speichern?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Suchbereich";
