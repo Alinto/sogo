@@ -38,11 +38,10 @@
    * @desc The factory we'll use to register with Angular.
    * @returns the Card constructor
    */
-  Card.$factory = ['$q', '$timeout', 'sgSettings', 'sgCard_STATUS', 'encodeUriFilter', 'linkyFilter', 'Resource', 'Preferences', function($q, $timeout, Settings, Card_STATUS, encodeUriFilter, linkyFilter, Resource, Preferences) {
+  Card.$factory = ['$q', '$timeout', 'sgSettings', 'sgCard_STATUS', 'encodeUriFilter', 'Resource', 'Preferences', function($q, $timeout, Settings, Card_STATUS, encodeUriFilter, Resource, Preferences) {
     angular.extend(Card, {
       STATUS: Card_STATUS,
       encodeUri: encodeUriFilter,
-      linky: linkyFilter,
       $$resource: new Resource(Settings.activeUser('folderURL') + 'Contacts', Settings.activeUser()),
       $q: $q,
       $timeout: $timeout,
@@ -335,28 +334,36 @@
   };
 
   Card.prototype.$fullname = function(options) {
-    var fn = Card.linky(this.c_cn) || '', html = options && options.html, email, names;
+    var toHtmlEntities = function (string) {
+      if (options && options.html && string && string.length > 0)
+        return string.replace(/./gm, function(s) {
+	  return "&#" + s.charCodeAt(0) + ";";
+        });
+      else
+        return string;
+    };
+    var fn = toHtmlEntities(this.c_cn) || '', html = options && options.html, email, names;
     if (fn.length === 0) {
       names = [];
       if (this.c_givenname && this.c_givenname.length > 0)
-        names.push(Card.linky(this.c_givenname));
+        names.push(toHtmlEntities(this.c_givenname));
       if (this.nickname && this.nickname.length > 0)
-        names.push((html?'<em>':'') + Card.linky(this.nickname) + (html?'</em>':''));
+        names.push((html?'<em>':'') + toHtmlEntities(this.nickname) + (html?'</em>':''));
       if (this.c_sn && this.c_sn.length > 0)
-        names.push(Card.linky(this.c_sn));
+        names.push(toHtmlEntities(this.c_sn));
       if (names.length > 0)
         fn = names.join(' ');
       else if (this.org && this.org.length > 0) {
-        fn = Card.linky(this.org);
+        fn = toHtmlEntities(this.org);
       }
       else if (this.emails && this.emails.length > 0) {
         email = _.find(this.emails, function(i) { return i.value !== ''; });
         if (email)
-          fn = Card.linky(email.value);
+          fn = toHtmlEntities(email.value);
       }
     }
     if (this.contactinfo)
-      fn += ' (' + Card.linky(this.contactinfo.split("\n").join("; ")) + ')';
+      fn += ' (' + toHtmlEntities(this.contactinfo.split("\n").join("; ")) + ')';
 
     return fn;
   };
