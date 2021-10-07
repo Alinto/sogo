@@ -24,8 +24,8 @@
 
 /* 2FA */
 "Verification Code" = "Код верификации";
-"Enter the 6-digit verification code from your TOTP application." = "Введите 6-значный код подтверждения из приложения Google Authenticator.";
-"You provided an invalid TOTP key." = "Вы ввели неверный ключ Google Authenticator.";
+"Enter the 6-digit verification code from your TOTP application." = "Введите 6-значный код подтверждения из приложения двухфакторной аутентификации.";
+"You provided an invalid TOTP key." = "Введённый TOTP-код неверен.";
 
 "Download" = "Скачать";
 "Language" = "Язык";

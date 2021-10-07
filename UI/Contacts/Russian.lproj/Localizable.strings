@@ -221,7 +221,7 @@
 "New Addressbook..." = "Новая адресная книга...";
 "Subscribe to an Addressbook..." = "Подписаться на адресную книгу...";
 "Remove the selected Addressbook" = "Удалить выбранную адресную книгу";
-"Subscribe to a shared folder" = "Подписаться на разделяемую папку.";
+"Subscribe to a shared contact" = "Подписаться на общую адресную книгу";
 "Search User" = "Поиск пользователей";
 "Name of the Address Book" = "Имя адресной книги";
 "Are you sure you want to delete the selected address book?"
@@ -350,6 +350,7 @@
 "Synchronization" = "Синхронизация";
 "Synchronize" = "Синхронизировать";
 "Sucessfully subscribed to address book" = "Успешная подписка на адресную книгу";
+"A similar card already exists. Would you like to save it anyway?" = "Подобная карточка уже существует. Вы все равно хотите сохранить?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Область поиска";

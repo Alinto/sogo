@@ -230,6 +230,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Преобразовать в задание";
 
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Загрузить сообщение";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Загрузить сообщение в формате zip";
+
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "Загрузить все вложения";
 
@@ -250,6 +256,12 @@
 
 /* Number of selected messages in list */
 "selected" = "выбран";
+
+/* Date formatting from one time to another time */
+"to_time" = "в";
+
+/* Date formatting from one day to another day */
+"to_date" = "в";
 
 /* Encrypted message notification */
 "This message is encrypted" = "Это сообщение зашифровано";
@@ -313,6 +325,7 @@
 "Operation failed" = "Операция завершилась неудачно";
 "Quota" = "Квота:";
 "quotasFormat" = "Занято %{0}% из %{1}МБ";
+"messageQuotasFormat" = "%{0}% из %{1} писем";
 "Unable to move/delete folder." = "Невозможно переместить/удалить эту папку.";
 
 /* Alternative operation when folder cannot be deleted */
