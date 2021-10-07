@@ -52,6 +52,17 @@
     if (sieveCapabilities.indexOf("imapflags") > -1 || sieveCapabilities.indexOf("imap4flags") > -1)
       this.methodLabels.addflag = l("Flag the message with");
 
+    this.methods = [
+      "fileinto",
+      "addflag",
+      "stop",
+      "keep",
+      "discard",
+      "redirect",
+      "reject"
+    ];
+    this.methods = _.intersection(this.methods, _.keys(this.methodLabels));
+
     this.numberOperatorLabels = {
       "under": l("is under"),
       "over": l("is over")
@@ -120,7 +131,7 @@
       if (!this.filter.actions)
         this.filter.actions = [];
 
-      this.filter.actions.push({ method: 'discard' });
+      this.filter.actions.push({ method: 'fileinto' });
     };
     
     this.removeMailFilterAction = function (index) {

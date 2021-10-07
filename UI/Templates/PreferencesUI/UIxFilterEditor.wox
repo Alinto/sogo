@@ -120,7 +120,7 @@
 
             <md-input-container class="md-block md-flex">
               <md-select ng-model="action.method">
-                <md-option ng-value="key" ng-repeat="(key, value) in filterEditor.methodLabels">{{ value }}</md-option>
+                <md-option ng-value="key" ng-repeat="key in filterEditor.methods">{{ filterEditor.methodLabels[key] }}</md-option>
               </md-select>
             </md-input-container>
 
