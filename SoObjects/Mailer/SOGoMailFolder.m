@@ -20,6 +20,7 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSValue.h>
 #import <Foundation/NSFileHandle.h>
 
@@ -2302,14 +2303,16 @@ static NSComparisonResult _compareFetchResultsByUID (id entry1, id entry2, NSArr
                                    threaded: (BOOL) isThreaded
 {
   EOQualifier *searchQualifier;
+  NSAutoreleasePool *pool;
   NSMutableArray *allTokens;
   NSArray *a, *uids;
   NSDictionary *d;
-  id fetchResults;
+  id fetchResults, sortedResults;
 
   int highestmodseq = 0, i;
 
   allTokens = [NSMutableArray array];
+  pool = [[NSAutoreleasePool alloc] init];
 
   if (![theSyncToken isEqualToString: @"-1"])
     {
@@ -2319,7 +2322,6 @@ static NSComparisonResult _compareFetchResultsByUID (id entry1, id entry2, NSArr
   
   // We first make sure QRESYNC is enabled
   [[self imap4Connection] enableExtensions: [NSArray arrayWithObject: @"QRESYNC"]];
-   
 
   // We fetch new messages and modified messages
   if (highestmodseq)
@@ -2367,25 +2369,26 @@ static NSComparisonResult _compareFetchResultsByUID (id entry1, id entry2, NSArr
     {
       /* NOTE: we sort items manually because Cyrus does not properly sort
          entries with a MODSEQ of 0 */
-      fetchResults = [fetchResults sortedArrayUsingFunction: _compareFetchResultsByMODSEQ
+      sortedResults = [fetchResults sortedArrayUsingFunction: _compareFetchResultsByMODSEQ
                                                     context: NULL];
     }
   else
     {
-      fetchResults = [fetchResults sortedArrayUsingFunction: (int(*)(id, id, void*))_compareFetchResultsByUID
+      sortedResults = [fetchResults sortedArrayUsingFunction: (int(*)(id, id, void*))_compareFetchResultsByUID
                                                     context: uids];
     }
 
-  for (i = 0; i < [fetchResults count]; i++)
-    { 
-      if ([[[fetchResults objectAtIndex: i] objectForKey: @"flags"] containsObject: @"deleted"] && initialLoadInProgress)
+  for (i = 0; i < [sortedResults count]; i++)
+    {
+      if ([[[sortedResults objectAtIndex: i] objectForKey: @"flags"] containsObject: @"deleted"] && initialLoadInProgress)
         continue;
 
-      d = [NSDictionary dictionaryWithObject: ([[[fetchResults objectAtIndex: i] objectForKey: @"flags"] containsObject: @"deleted"]) ? [NSNull null] : [[fetchResults objectAtIndex: i] objectForKey: @"modseq"]
-                                      forKey: [[[fetchResults objectAtIndex: i] objectForKey: @"uid"] stringValue]];
+      d = [NSDictionary dictionaryWithObject: ([[[sortedResults objectAtIndex: i] objectForKey: @"flags"] containsObject: @"deleted"]) ? [NSNull null] : [[sortedResults objectAtIndex: i] objectForKey: @"modseq"]
+                                      forKey: [[[sortedResults objectAtIndex: i] objectForKey: @"uid"] stringValue]];
       [allTokens addObject: d];
     }
   
+  [pool release];
 
   // We fetch deleted ones
   if (highestmodseq == 0)

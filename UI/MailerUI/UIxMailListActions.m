@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2015 Inverse inc.
+  Copyright (C) 2006-2021 Inverse inc.
 
   This file is part of SOGo
 
@@ -26,6 +26,7 @@
   object.
 */
 
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSTimeZone.h>
@@ -867,6 +868,7 @@
 		       inFolder: (SOGoMailFolder *) mailFolder
 {
   UIxEnvelopeAddressFormatter *addressFormatter;
+  NSAutoreleasePool *pool;
   NSMutableArray *headers, *msg, *tags;
   NSEnumerator *msgsList;
   NSArray *to, *from;
@@ -890,6 +892,8 @@
 
       msg = [NSMutableArray arrayWithObjects: @"To", @"hasAttachment", @"isFlagged", @"Subject", @"From", @"isRead", @"Priority", @"RelativeDate", @"Size", @"Flags", @"uid", @"isAnswered", @"isForwarded", nil];
       [headers addObject: msg];
+      count = 0;
+      pool = [[NSAutoreleasePool alloc] init];
       while (message)
         {
           // We must check for "umimportant" untagged responses.
@@ -976,6 +980,13 @@
           [msg addObject: [NSNumber numberWithBool: [self isMessageForwarded]]];
       
           [self setMessage: [msgsList nextObject]];
+
+          count++;
+          if (count % 10 == 0)
+            {
+              [pool release];
+              pool = [[NSAutoreleasePool alloc] init];
+            }
         }
     }
 
