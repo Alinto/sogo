@@ -53,8 +53,14 @@
         title += ' | ' + defaultWindowTitle;
         $window.document.title = title;
       });
-    };
 
+      $scope.$on('$destroy', function() {
+        if (vm.mode.search) {
+          vm.mode.search = false;
+          vm.selectedFolder.$reset({ filter: true });
+        }
+      });
+    };
 
     function _registerHotkeys(keys) {
       keys.push(sgHotkeys.createHotkey({

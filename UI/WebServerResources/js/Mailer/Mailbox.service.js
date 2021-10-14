@@ -868,13 +868,18 @@
    * @memberof Mailbox.prototype
    * @desc Reset the original state the mailbox's data.
    */
-  Mailbox.prototype.$reset = function() {
+  Mailbox.prototype.$reset = function(options) {
     var _this = this;
     angular.forEach(this.$shadowData, function(value, key) {
       delete _this[key];
     });
     angular.extend(this, this.$shadowData);
     this.$shadowData = this.$omit();
+    if (options && options.filter) {
+      this.$messages = [];
+      this.$visibleMessages = [];
+      delete this.$syncToken;
+    }
   };
 
   /**
