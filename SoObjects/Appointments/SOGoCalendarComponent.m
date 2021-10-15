@@ -234,7 +234,7 @@
 
   tags = [NSArray arrayWithObjects: @"DTSTAMP", @"DTSTART", @"DTEND", @"DUE", @"EXDATE", @"EXRULE", @"RRULE", @"RECURRENCE-ID", nil];
   uid = [[component uid] asCryptedPassUsingScheme: @"ssha256"
-                                         withSalt: [[settings userSalt] dataUsingEncoding: NSASCIIStringEncoding]
+                                         withSalt: [[settings userPublicSalt] dataUsingEncoding: NSASCIIStringEncoding]
                                       andEncoding: encHex
                                           keyPath: nil];
 

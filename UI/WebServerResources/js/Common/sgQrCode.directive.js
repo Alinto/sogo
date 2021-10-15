@@ -26,6 +26,7 @@
     function link(scope, element, attrs) {
       var width = parseInt(scope.width) || 256,
           height = parseInt(scope.height) || width,
+          // See https://github.com/google/google-authenticator/wiki/Key-Uri-Format
           uri = 'otpauth://totp/SOGo:' + Settings.activeUser('email') + '?secret=' + scope.text.replace(/=+$/, '') + '&issuer=SOGo';
       new QRCode(element[0], {
         text: uri,

@@ -97,6 +97,13 @@
               if (typeof data.totpMissingKey != 'undefined' && response.status == 202) {
                 d.resolve({totpmissingkey: 1});
               }
+              else if (typeof data.totpDisabled != 'undefined') {
+                d.resolve({
+                  cn: data.cn,
+                  url: redirectUrl(username, domain),
+                  totpdisabled: 1
+                });
+              }
               // Check password policy
               else if (typeof data.expire != 'undefined' && typeof data.grace != 'undefined') {
                 if (data.expire < 0 && data.grace > 0) {

@@ -202,6 +202,7 @@
   WOCookie *authCookie, *xsrfCookie;
   SOGoWebAuthenticator *auth;
   SOGoUserDefaults *ud;
+  SOGoUserSettings *us;
   SOGoUser *loggedInUser;
   NSDictionary *params;
   NSString *username, *password, *language, *domain, *remoteHost;
@@ -235,7 +236,7 @@
       || (expire < 0 && grace > 0)      // password expired, grace still permits login
       || (expire >= 0 && grace == -1))) // password about to expire OR ppolicy activated and passwd never changed
     {
-      NSDictionary *json;
+      NSMutableDictionary *json = [NSMutableDictionary dictionary];
 
       [self logWithFormat: @"successful login from '%@' for user '%@' - expire = %d  grace = %d", remoteHost, username, expire, grace];
 
@@ -248,9 +249,10 @@
         username = [[SOGoUserManager sharedUserManager] getUIDForEmail: username];
 
       loggedInUser = [SOGoUser userWithLogin: username];
+      ud = [loggedInUser userDefaults];
 
 #if defined(MFA_CONFIG)
-      if ([[loggedInUser userDefaults] totpEnabled])
+      if ([ud totpEnabled])
         {
           NSString *verificationCode;
 
@@ -295,29 +297,45 @@
               if (code != [verificationCode unsignedIntValue])
                 {
                   [self logWithFormat: @"Invalid TOTP key for '%@'", username];
-                  json = [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: 1]
-                                                 forKey: @"totpInvalidKey"];
+                  [json setObject: [NSNumber numberWithInt: 1]
+                           forKey: @"totpInvalidKey"];
                   return [self responseWithStatus: 403
-                        andJSONRepresentation: json];
+                            andJSONRepresentation: json];
                 }
             } //  if ([verificationCode length] == 6 && [verificationCode unsignedIntValue] > 0)
           else
             {
-              [self logWithFormat: @"Missing TOTP key for '%@', asking it..", username];
-              json = [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: 1]
-                                                 forKey: @"totpMissingKey"];
-              return [self responseWithStatus: 202
-                        andJSONRepresentation: json];
+              us = [loggedInUser userSettings];
+              if ([us dictionaryForKey: @"General"] && ![[us dictionaryForKey: @"General"] objectForKey: @"PrivateSalt"])
+                {
+                  // Since v5.3.0, a new salt is used for TOTP. If it's missing, disable TOTP and alert the user.
+                  [ud setTotpEnabled: NO];
+                  [ud synchronize];
+
+                  [self logWithFormat: @"New TOTP key for '%@' must be created", username];
+                  [json setObject: [NSNumber numberWithInt: 1]
+                           forKey: @"totpDisabled"];
+                }
+              else
+                {
+                  [self logWithFormat: @"Missing TOTP key for '%@', asking it..", username];
+                  [json setObject: [NSNumber numberWithInt: 1]
+                           forKey: @"totpMissingKey"];
+                  return [self responseWithStatus: 202
+                            andJSONRepresentation: json];
+                }
             }
         }
 #endif
 
       [self _checkAutoReloadWebCalendars: loggedInUser];
 
-      json = [NSDictionary dictionaryWithObjectsAndKeys:
-                             [loggedInUser cn], @"cn",
-                                [NSNumber numberWithInt: expire], @"expire",
-                                [NSNumber numberWithInt: grace], @"grace", nil];
+      [json setObject: [loggedInUser cn]
+               forKey: @"cn"];
+      [json setObject: [NSNumber numberWithInt: expire]
+               forKey: @"expire"];
+      [json setObject: [NSNumber numberWithInt: grace]
+               forKey: @"grace"];
 
       response = [self responseWithStatus: 200
                     andJSONRepresentation: json];
@@ -339,7 +357,6 @@
       [context setActiveUser: loggedInUser];
       if (language && [supportedLanguages containsObject: language])
 	{
-	  ud = [loggedInUser userDefaults];
 	  [ud setLanguage: language];
 	  [ud synchronize];
 	}

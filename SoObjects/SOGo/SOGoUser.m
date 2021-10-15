@@ -1138,7 +1138,7 @@
 
   size_t s_len, secret_len;
 
-  key = [[[self userSettings] userSalt] substringToIndex: 12];
+  key = [[[self userSettings] userPrivateSalt] substringToIndex: 12];
   s = [key UTF8String];
   s_len = strlen(s);
 

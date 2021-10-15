@@ -44,6 +44,11 @@
           if (data.totpmissingkey) {
             vm.loginState = 'totpcode';
           }
+          else if (data.totpdisabled) {
+            vm.loginState = 'totpdisabled';
+            vm.cn = data.cn;
+            vm.url = data.url;
+          }
           else {
             vm.loginState = 'logged';
             vm.cn = data.cn;

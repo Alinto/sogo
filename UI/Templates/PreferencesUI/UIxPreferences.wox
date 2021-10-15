@@ -252,7 +252,7 @@
               </md-checkbox>
               <div layout="row" layout-align="start center" layout-xs="column"
                    layout-padding="layout-padding" layout-margin="layout-margin"
-                   ng-show="app.preferences.defaults.SOGoTOTPEnabled">
+                   ng-show="app.preferences.defaults.SOGoTOTPEnabled == 1">
                 <div>
                   <sg-qr-code var:text="totpKey" />
                 </div>

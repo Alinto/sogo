@@ -126,8 +126,8 @@
               </div>
             </div>
 
-            <!-- TOTP Code -->
             <var:if condition="isTotpEnabled">
+            <!-- TOTP Code -->
             <div layout="row" layout-align="center center" layout-fill="layout-fill"
                  ng-switch-when="totpcode">
               <div flex="80" flex-sm="50" flex-gt-sm="40">
@@ -151,6 +151,27 @@
                              ng-click="app.login()">
                     <md-icon>arrow_forward</md-icon>
                   </md-button>
+                </div>
+              </div>
+            </div>
+            <!-- TOTP has been disabled -->
+            <div layout="row" layout-align="center center" layout-fill="layout-fill"
+                 ng-switch-when="totpdisabled">
+              <div layout="column" layout-align="center center" flex-xs="flex-xs" flex-gt-xs="50">
+                <md-icon class="md-accent md-hue-1 sg-icon--large">warning</md-icon>
+                <div class="md-default-theme md-accent md-hue-1 md-fg md-padding" ng-if="app.cn">
+                  <var:string label:value="Welcome"/> {{app.cn}}
+                </div>
+                <div class="md-padding" layout="row" layout-align="start center">
+                  <md-icon>priority_high</md-icon>
+                  <div class="md-padding">
+                    <var:string label:value="Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application."/>
+                  </div>
+                </div>
+                <div layout="row" layout-align="end center">
+                  <md-button
+                      ng-click="app.continueLogin()"
+                      sg-ripple-click="loginContent"><var:string label:value="Continue"/></md-button>
                 </div>
               </div>
             </div>
@@ -193,20 +214,25 @@
             </div>
 
             <!-- Password policy: Grace period -->
-            <div layout="column" layout-align="center center"
+            <div layout="row" layout-align="center center" layout-fill="layout-fill"
                  ng-switch-when="passwordwillexpire">
-              <md-icon class="md-accent md-hue-1 sg-icon--large">warning</md-icon>
-              <div class="md-default-theme md-accent md-hue-1 md-fg md-padding" ng-if="app.cn">
-                <var:string label:value="Welcome"/> {{app.cn}}
+              <div layout="column" layout-align="center center" flex-xs="flex-xs" flex-gt-xs="50">
+                <md-icon class="md-accent md-hue-1 sg-icon--large">warning</md-icon>
+                <div class="md-default-theme md-accent md-hue-1 md-fg md-padding" ng-if="app.cn">
+                  <var:string label:value="Welcome"/> {{app.cn}}
+                </div>
+                <div class="md-padding" layout="row" layout-align="start center">
+                  <md-icon>priority_high</md-icon>
+                  <div class="md-padding">{{app.errorMessage}}</div>
+                </div>
+                <div layout="row" layout-align="end center">
+                  <md-button
+                      ng-click="app.loginState = 'passwordexpired'"><var:string label:value="Change your Password"/></md-button>
+                  <md-button
+                      ng-click="app.continueLogin()"
+                        sg-ripple-click="loginContent"><var:string label:value="Continue"/></md-button>
+                </div>
               </div>
-              <div class="md-default-theme md-warn md-hue-1 md-bg md-padding">
-                {{app.errorMessage}}
-                <md-button class="md-raised"
-                    ng-click="app.loginState = 'passwordexpired'"><var:string label:value="Change your Password"/></md-button>
-              </div>
-              <md-button
-                  ng-click="app.continueLogin()"
-                  sg-ripple-click="loginContent"><var:string label:value="Continue"/></md-button>
             </div>
 
             <!-- Logged in -->

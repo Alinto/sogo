@@ -1,6 +1,6 @@
 /* SOGoUserSettings.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2016 Inverse inc.
+ * Copyright (C) 2009-2021 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -70,7 +70,7 @@ static Class SOGoUserProfileKlass = Nil;
   return [self _subscribedFoldersForModule: @"Contacts"];
 }
 
-- (NSString *) userSalt
+- (NSString *) userPublicSalt
 {
   NSMutableDictionary *values;
   NSString *salt;
@@ -93,5 +93,27 @@ static Class SOGoUserProfileKlass = Nil;
   return salt;
 }
 
+- (NSString *) userPrivateSalt
+{
+  NSMutableDictionary *values;
+  NSString *salt;
+
+  salt = [[self dictionaryForKey: @"General"] objectForKey: @"PrivateSalt"];
+
+  if (!salt)
+    {
+      salt = [[[NSProcessInfo processInfo] globallyUniqueString] asSHA1String];
+      values = [self objectForKey: @"General"];
+
+      if (!values)
+        values = [NSMutableDictionary dictionary];
+
+      [values setObject: salt  forKey: @"PrivateSalt"];
+      [self setObject:  values forKey: @"General"];
+      [self synchronize];
+    }
+
+  return salt;
+}
 
 @end
