@@ -163,7 +163,8 @@
 
           currentEndDate = [currentStartDate addTimeInterval: [firstRange duration]];
           if (hasRepeatCount ||
-              [startDate compare: currentEndDate] == NSOrderedAscending)
+              [startDate compare: currentEndDate] == NSOrderedAscending ||
+              ([startDate compare: currentEndDate] == NSOrderedSame && [firstRange duration] == 0))
             {
               // If the rule count is defined, stop once the count is reached.
               if ([currentStartDate compare: firStart] == NSOrderedSame)
