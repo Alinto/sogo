@@ -17,7 +17,6 @@
       this.autosave = null;
       this.autosaveDrafts = autosaveDrafts;
       this.cancel = cancel;
-      this.contactFilter = contactFilter;
       this.isFullscreen = false;
       this.hideBcc = (stateMessage.editable.bcc.length === 0);
       this.hideCc = (stateMessage.editable.cc.length === 0);
@@ -273,8 +272,8 @@
       vm.isFullscreen = !vm.isFullscreen;
     }
 
-    function contactFilter($query) {
-      return AddressBook.$filterAll($query).then(function(cards) {
+    this.contactFilter = function ($query) {
+      return AddressBook.$filterAll($query, [], {priority: 'gcs'}).then(function(cards) {
         // Divide the matching cards by email addresses so the user can select
         // the recipient address of her choice
         var explodedCards = [];
@@ -288,7 +287,7 @@
           return card.$$fullname + ' ' + card.$$email;
         });
       });
-    }
+    };
 
     this.addRecipient = function (contact, field) {
       var recipients, recipient, list, i, address;

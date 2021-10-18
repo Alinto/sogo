@@ -154,8 +154,8 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
   NSMutableArray *sortedFolders;
   NSMutableDictionary *contact, *uniqueContacts;
   unsigned int i, j, max;
-  NSSortDescriptor *commonNameDescriptor;
-  BOOL excludeGroups, excludeLists;
+  NSSortDescriptor *containerTypeDescriptor, *commonNameDescriptor;
+  BOOL excludeGroups, excludeLists, priorityGcs;
 
   searchText = [self queryParameterForKey: @"search"];
   if ([searchText length] >= [self minimumSearchLength])
@@ -163,6 +163,7 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
       // NSLog(@"Search all contacts: %@", searchText);
       excludeGroups = [[self queryParameterForKey: @"excludeGroups"] boolValue];
       excludeLists = [[self queryParameterForKey: @"excludeLists"] boolValue];
+      priorityGcs = [[self queryParameterForKey: @"priority"] isEqualToString: @"gcs"];
       domain = [[context activeUser] domain];
       folders = nil;
       NS_DURING
@@ -183,11 +184,13 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
         {
           folder = [folders objectAtIndex: i];
 	  /* We first search in LDAP folders (in case of duplicated entries in GCS folders) */
-          if ([folder isKindOfClass: SOGoContactSourceFolderK])
+          if (([folder isKindOfClass: SOGoContactSourceFolderK] && !priorityGcs) ||
+              ([folder isKindOfClass: SOGoGCSFolderK] && priorityGcs))
             [sortedFolders insertObject: folder atIndex: 0];
           else
             [sortedFolders addObject: folder];
         }
+      NSLog(@"sortedFolders = %@", sortedFolders);
       for (i = 0; i < max; i++)
         {
           folder = [sortedFolders objectAtIndex: i];
@@ -202,6 +205,16 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
               contact = [contacts objectAtIndex: j];
               [contact setObject: [folder displayName]
                           forKey: @"containerName"];
+              if (priorityGcs)
+                {
+                  // Add the container type for sorting
+                  if ([folder isKindOfClass: SOGoContactSourceFolderK])
+                    [contact setObject: @"source"
+                                forKey: @"containerType"];
+                  else
+                    [contact setObject: @"gcs"
+                                forKey: @"containerType"];
+                }
               //NSLog(@"   found %@ (%@) ? %@", [contact objectForKey: @"c_name"], mail,
               //      [contact description]);
               if (!excludeLists && [[contact objectForKey: @"c_component"]
@@ -227,10 +240,13 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
         }
       if ([uniqueContacts count] > 0)
         {
+          // Optionally return contacts from GCS address books first
+          containerTypeDescriptor = [[NSSortDescriptor alloc] initWithKey: @"containerType"
+                                                                ascending: priorityGcs?YES:NO];
           // Sort the contacts by display name
           commonNameDescriptor = [[NSSortDescriptor alloc] initWithKey: @"c_cn"
-                                                             ascending:YES];
-          descriptors = [NSArray arrayWithObjects: commonNameDescriptor, nil];
+                                                             ascending: YES];
+          descriptors = [NSArray arrayWithObjects: containerTypeDescriptor, commonNameDescriptor, nil];
           [commonNameDescriptor release];
           sortedContacts = [[uniqueContacts allValues]
                              sortedArrayUsingDescriptors: descriptors];
