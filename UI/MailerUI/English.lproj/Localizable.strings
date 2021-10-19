@@ -169,6 +169,9 @@
 /* Filter option in messages list */
 "Show unread messages only" = "Show unread messages only";
 
+/* Filter option in messages list */
+"Show flagged messages only" = "Show flagged messages only";
+
 /* Tree */
 "SentFolderName"   = "Sent";
 "TrashFolderName"  = "Trash";

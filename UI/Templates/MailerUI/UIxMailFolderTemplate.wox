@@ -73,10 +73,28 @@
         </md-button>
         <a href="#" class="sg-folder-name"
            ng-click="mailbox.searchMode($event)" ng-bind="mailbox.service.selectedFolder.$displayName"><!-- mailbox name --></a>
-        <md-button class="sg-icon-button" label:aria-label="Show unread messages only"
-                   ng-click="mailbox.selectedFolder.toggleUnseenOnly()">
-          <md-icon class="md-default-theme md-fg md-primary" ng-class="{ 'md-hue-2': mailbox.selectedFolder.$unseenOnly }" >mark_as_unread</md-icon>
-        </md-button>
+        <md-menu>
+          <md-button class="sg-icon-button" label:aria-label="Filter"
+                     ng-click="$mdMenu.open()">
+            <md-icon>filter_list</md-icon>
+          </md-button>
+          <md-menu-content width="4">
+            <md-menu-item>
+              <sg-checkmark
+                  ng-change="mailbox.selectedFolder.$filter(mailbox.service.$query)"
+                  ng-model="mailbox.selectedFolder.$unseenOnly"
+                  sg-true-value="1"
+                  sg-false-value="0"> <var:string label:value="Show unread messages only"/></sg-checkmark>
+            </md-menu-item>
+            <md-menu-item>
+              <sg-checkmark
+                  ng-change="mailbox.selectedFolder.$filter(mailbox.service.$query)"
+                  ng-model="mailbox.selectedFolder.$flaggedOnly"
+                  sg-true-value="1"
+                  sg-false-value="0"> <var:string label:value="Show flagged messages only"/></sg-checkmark>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
         <md-menu>
           <md-button class="sg-icon-button" label:aria-label="Sort"
                      ng-click="$mdMenu.open()">
@@ -283,7 +301,12 @@
             <span ng-switch-when="0"><var:string label:value="No message"/></span>
             <span ng-switch-default="true"><span ng-bind="mailbox.service.selectedFolder.getLength()"><!-- count --></span> <var:string label:value="messages"/></span>
           </div>
-          <div class="md-truncate"><md-icon ng-class="{ 'md-flip': mailbox.ascending() }">sort</md-icon> <span ng-bind="mailbox.sort() | loc"><!-- active sort --></span></div>
+          <div class="md-truncate">
+            <span ng-show="mailbox.selectedFolder.$unseenOnly"><var:string label:value="Unread"/></span>
+            <span ng-show="mailbox.selectedFolder.$flaggedOnly"><var:string label:value="Flagged"/></span>
+            <md-icon ng-class="{ 'md-flip': mailbox.ascending() }">sort</md-icon>
+            <span ng-bind="mailbox.sort() | loc"><!-- active sort --></span>
+          </div>
         </div>
       </md-subheader>
       <md-virtual-repeat-container class="md-flex" md-top-index="mailbox.selectedFolder.$topIndex">

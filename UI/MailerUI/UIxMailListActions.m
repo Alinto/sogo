@@ -427,7 +427,7 @@
   NSArray *filters;
   NSString *searchBy, *searchInput, *searchString, *match;
   NSMutableArray *qualifiers, *searchArray;
-  BOOL unseenOnly;
+  BOOL unseenOnly, flaggedOnly;
   int nbFilters, i;
   
   request = [context request];
@@ -439,6 +439,7 @@
   match = nil;
   filters = [content objectForKey: @"filters"];
   unseenOnly = [[content objectForKey: @"unseenOnly"] boolValue];
+  flaggedOnly = [[content objectForKey: @"flaggedOnly"] boolValue];
 
   if (filters)
     {
@@ -481,6 +482,11 @@
   if (unseenOnly)
     {
       searchQualifier = [EOQualifier qualifierWithQualifierFormat: @"(not (flags = %@))", @"seen"];
+      [qualifiers addObject: searchQualifier];
+    }
+  if (flaggedOnly)
+    {
+      searchQualifier = [EOQualifier qualifierWithQualifierFormat: @"(flags = %@)", @"flagged"];
       [qualifiers addObject: searchQualifier];
     }
 
