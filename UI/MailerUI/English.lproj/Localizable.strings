@@ -166,6 +166,9 @@
 "Mark Read"   = "Mark Read";
 "Untitled" = "Untitled";
 
+/* Filter option in messages list */
+"Show unread messages only" = "Show unread messages only";
+
 /* Tree */
 "SentFolderName"   = "Sent";
 "TrashFolderName"  = "Trash";

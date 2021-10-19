@@ -343,6 +343,17 @@
   };
 
   /**
+   * @function toggleUnseenOnly
+   * @memberof Mailbox.prototype
+   * @desc Toggle filter by unseen messages only. Requires a round trip to the server.
+   */
+  Mailbox.prototype.toggleUnseenOnly = function() {
+    var _this = this;
+    this.$unseenOnly = !this.$unseenOnly;
+    this.$filter(Mailbox.$query);
+  };
+
+  /**
    * @function $filter
    * @memberof Mailbox.prototype
    * @desc Fetch the messages metadata of the mailbox
@@ -393,6 +404,9 @@
       action = 'changes';
       options.syncToken = this.$syncToken;
     }
+
+    if (this.$unseenOnly)
+      options.unseenOnly = 1;
 
     // Restart the refresh timer, if needed
     if (!Mailbox.$virtualMode) {

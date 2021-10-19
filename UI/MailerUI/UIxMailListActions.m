@@ -421,29 +421,30 @@
 
 - (EOQualifier *) searchQualifier
 {
-  EOQualifier *qualifier, *searchQualifier;
+  EOQualifier *qualifier, *notDeleted, *searchQualifier;
   WORequest *request;
   NSDictionary *sortingAttributes, *content, *filter;
   NSArray *filters;
   NSString *searchBy, *searchInput, *searchString, *match;
-  NSMutableArray *searchArray;
+  NSMutableArray *qualifiers, *searchArray;
+  BOOL unseenOnly;
   int nbFilters, i;
   
   request = [context request];
   content = [[request contentAsString] objectFromJSONString];
+  notDeleted = [EOQualifier qualifierWithQualifierFormat: @"(not (flags = %@))", @"deleted"];
   qualifier = nil;
+  qualifiers = [NSMutableArray arrayWithObject: notDeleted];
   searchString = nil;
   match = nil;
   filters = [content objectForKey: @"filters"];
+  unseenOnly = [[content objectForKey: @"unseenOnly"] boolValue];
 
   if (filters)
     {
       nbFilters = [filters count];
       if (nbFilters > 0) {
         searchArray = [NSMutableArray arrayWithCapacity: nbFilters];
-        sortingAttributes = [content objectForKey: @"sortingAttributes"];
-        if (sortingAttributes)
-          match = [sortingAttributes objectForKey: @"match"]; // AND, OR
         for (i = 0; i < nbFilters; i++)
           {
             filter = [filters objectAtIndex:i];
@@ -465,36 +466,42 @@
                 [self errorWithFormat: @"Missing parameters in search filter: %@", filter];
               }
           }
+        sortingAttributes = [content objectForKey: @"sortingAttributes"];
+        if (sortingAttributes)
+          match = [sortingAttributes objectForKey: @"match"]; // AND, OR
         if ([match isEqualToString: @"OR"])
           qualifier = [[EOOrQualifier alloc] initWithQualifierArray: searchArray];
         else
           qualifier = [[EOAndQualifier alloc] initWithQualifierArray: searchArray];
+        [qualifier autorelease];
+        [qualifiers addObject: qualifier];
       }
     }
-    
+
+  if (unseenOnly)
+    {
+      searchQualifier = [EOQualifier qualifierWithQualifierFormat: @"(not (flags = %@))", @"seen"];
+      [qualifiers addObject: searchQualifier];
+    }
+
+  if ([qualifiers count] > 1)
+    {
+      qualifier = [[EOAndQualifier alloc] initWithQualifierArray: qualifiers];
+      [qualifier autorelease];
+    }
+  else
+    qualifier = notDeleted;
+
   return qualifier;
 }
 
 - (NSArray *) getSortedUIDsInFolder: (SOGoMailFolder *) mailFolder
 {
-  EOQualifier *qualifier, *fetchQualifier, *notDeleted;
-
   if (!sortedUIDs)
     {
-      notDeleted = [EOQualifier qualifierWithQualifierFormat: @"(not (flags = %@))", @"deleted"];
-      qualifier = [self searchQualifier];
-      if (qualifier)
-        {
-          fetchQualifier = [[EOAndQualifier alloc] initWithQualifiers: notDeleted, qualifier, nil];
-          [fetchQualifier autorelease];
-        }
-      else
-        fetchQualifier = notDeleted;
-
-      sortedUIDs = [mailFolder fetchUIDsMatchingQualifier: fetchQualifier
+      sortedUIDs = [mailFolder fetchUIDsMatchingQualifier: [self searchQualifier]
                                              sortOrdering: [self imap4SortOrdering]
                                                  threaded: sortByThread];
-    
       [sortedUIDs retain];
     }
 
@@ -737,6 +744,7 @@
  * @apiParam {String} filters.searchBy                       Field criteria. Either subject, from, to, cc, or body.
  * @apiParam {String} filters.searchInput                    String to match.
  * @apiParam {String} [filters.negative]                     Reverse the condition when true. Defaults to false.
+ * @apiParam {Boolean} [unseenOnly]                          Filter out seen messages when true. Defaults to false.
  *
  * @apiSuccess (Success 200) {Number} threaded               1 if threading is enabled for the user.
  * @apiSuccess (Success 200) {Number} unseenCount            Number of unread messages

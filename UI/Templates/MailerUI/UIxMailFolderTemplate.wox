@@ -73,6 +73,10 @@
         </md-button>
         <a href="#" class="sg-folder-name"
            ng-click="mailbox.searchMode($event)" ng-bind="mailbox.service.selectedFolder.$displayName"><!-- mailbox name --></a>
+        <md-button class="sg-icon-button" label:aria-label="Show unread messages only"
+                   ng-click="mailbox.selectedFolder.toggleUnseenOnly()">
+          <md-icon class="md-default-theme md-fg md-primary" ng-class="{ 'md-hue-2': mailbox.selectedFolder.$unseenOnly }" >mark_as_unread</md-icon>
+        </md-button>
         <md-menu>
           <md-button class="sg-icon-button" label:aria-label="Sort"
                      ng-click="$mdMenu.open()">
