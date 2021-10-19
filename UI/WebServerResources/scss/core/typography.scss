@@ -419,6 +419,10 @@ html p {
   text-transform: uppercase;
 }
 
+.sg-font-medium {
+  font-weight: $sg-font-medium;
+}
+
 // Date bloc in use on the toolbar
 // ----------------------------------------------------------------------------
 $today-font-size: 72px; // Visualy adjusted

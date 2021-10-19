@@ -31,7 +31,7 @@
         '    ng-click="$ctrl.selectFolder($event)"',
         '    ng-dblclick="$ctrl.editFolder($event)">',
         '    <md-icon ng-class="{ \'sg-opacity-70\': $ctrl.mailbox.isNoSelect() }">{{$ctrl.mailbox.$icon}}</md-icon>',
-        '    <span ng-bind="$ctrl.mailbox.$displayName"></span>',
+        '    <span ng-class="{ \'sg-font-medium\': $ctrl.mailbox.unseenCount }" ng-bind="$ctrl.mailbox.$displayName"></span>',
         '    <span class="sg-counter-badge ng-hide"',
         '          ng-show="$ctrl.mailbox.unseenCount"',
         '          ng-bind="$ctrl.mailbox.unseenCount"></span>',
