@@ -172,6 +172,9 @@
 /* Filter option in messages list */
 "Show flagged messages only" = "Show flagged messages only";
 
+/* Aria label for icon of labels */
+"Filtered by label" = "Filtered by label";
+
 /* Tree */
 "SentFolderName"   = "Sent";
 "TrashFolderName"  = "Trash";

@@ -32,6 +32,9 @@
       this.messageDialog = null; // also access from Message controller
       this.mode = { search: false, multiple: 0 };
 
+      if (!Mailbox.$virtualMode)
+        this.selectedFolder.getLabels(); // fetch labels from server
+
       _registerHotkeys(hotkeys);
 
       // Expunge mailbox when leaving the Mail module

@@ -424,29 +424,29 @@
   EOQualifier *qualifier, *notDeleted, *searchQualifier;
   WORequest *request;
   NSDictionary *sortingAttributes, *content, *filter;
-  NSArray *filters;
-  NSString *searchBy, *searchInput, *searchString, *match;
-  NSMutableArray *qualifiers, *searchArray;
+  NSArray *filters, *labels;
+  NSString *searchBy, *searchInput, *searchString, *match, *label;
+  NSMutableArray *qualifiers, *searchArray, *labelQualifiers;
   BOOL unseenOnly, flaggedOnly;
-  int nbFilters, i;
+  int max, i;
   
   request = [context request];
   content = [[request contentAsString] objectFromJSONString];
   notDeleted = [EOQualifier qualifierWithQualifierFormat: @"(not (flags = %@))", @"deleted"];
-  qualifier = nil;
   qualifiers = [NSMutableArray arrayWithObject: notDeleted];
   searchString = nil;
   match = nil;
   filters = [content objectForKey: @"filters"];
+  labels = [content objectForKey: @"labels"];
   unseenOnly = [[content objectForKey: @"unseenOnly"] boolValue];
   flaggedOnly = [[content objectForKey: @"flaggedOnly"] boolValue];
 
   if (filters)
     {
-      nbFilters = [filters count];
-      if (nbFilters > 0) {
-        searchArray = [NSMutableArray arrayWithCapacity: nbFilters];
-        for (i = 0; i < nbFilters; i++)
+      max = [filters count];
+      if (max > 0) {
+        searchArray = [NSMutableArray arrayWithCapacity: max];
+        for (i = 0; i < max; i++)
           {
             filter = [filters objectAtIndex:i];
             searchBy = [filter objectForKey: @"searchBy"];
@@ -488,6 +488,26 @@
     {
       searchQualifier = [EOQualifier qualifierWithQualifierFormat: @"(flags = %@)", @"flagged"];
       [qualifiers addObject: searchQualifier];
+    }
+  if (labels)
+    {
+      max = [labels count];
+      if (max > 0)
+        {
+          labelQualifiers = [NSMutableArray arrayWithCapacity: max];
+            for (i = 0; i < max; i++)
+            {
+              label = [labels objectAtIndex: i];
+              qualifier = [EOQualifier qualifierWithQualifierFormat: @"(flags = %@)", label];
+              [labelQualifiers addObject: qualifier];
+            }
+            if (max > 1)
+              {
+                qualifier = [[EOOrQualifier alloc] initWithQualifierArray: labelQualifiers];
+                [qualifier autorelease];
+              }
+            [qualifiers addObject: qualifier];
+        }
     }
 
   if ([qualifiers count] > 1)

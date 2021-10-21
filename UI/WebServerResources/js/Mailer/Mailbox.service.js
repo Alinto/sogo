@@ -400,6 +400,12 @@
     if (this.$flaggedOnly)
       options.flaggedOnly = 1;
 
+    var labels = _.filter(_.keys(this.$filteredLabels), function (k) {
+      return !!_this.$filteredLabels[k];
+    });
+    if (labels.length)
+      options.labels = labels;
+
     // Restart the refresh timer, if needed
     if (!Mailbox.$virtualMode) {
       var refreshViewCheck = Mailbox.$Preferences.defaults.SOGoRefreshViewCheck;
@@ -673,6 +679,29 @@
         message.isread = true;
       });
     });
+  };
+
+  /**
+   * @function getLabels
+   * @memberof Mailbox.prototype
+   * @desc Fetch the list of labels associated to the mailbox. Use the cached value if available.
+   * @returns a promise of the HTTP operation
+   */
+  Mailbox.prototype.getLabels = function() {
+    var _this = this;
+
+    if (this.$labels)
+      return this.$labels;
+
+    this.$filteredLabels = {};
+    return Mailbox.$$resource.fetch(this.id, 'labels').then(function(data) {
+      _this.$labels = data;
+      return _this.$labels;
+    });
+  };
+
+  Mailbox.prototype.filteredByLabel = function() {
+    return _.includes(this.$filteredLabels, 1);
   };
 
   /**

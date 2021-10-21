@@ -93,6 +93,20 @@
                   sg-true-value="1"
                   sg-false-value="0"> <var:string label:value="Show flagged messages only"/></sg-checkmark>
             </md-menu-item>
+            <md-menu-divider> <!-- divider --></md-menu-divider>
+            <md-menu-item ng-repeat="label in ::mailbox.selectedFolder.$labels track by label.imapName">
+              <sg-checkmark
+                  ng-change="mailbox.selectedFolder.$filter(mailbox.service.$query)"
+                  ng-model="mailbox.selectedFolder.$filteredLabels[label.imapName]"
+                  sg-true-value="1"
+                  sg-false-value="0">
+                <div layout="row" layout-align="start center">
+                  <div class="sg-color-chip"
+                       ng-style="{ backgroundColor: label.color || '#333' }"><!-- color --></div>
+                  {{ label.name || label.imapName }}
+                </div>
+              </sg-checkmark>
+            </md-menu-item>
           </md-menu-content>
         </md-menu>
         <md-menu>
@@ -302,6 +316,7 @@
             <span ng-switch-default="true"><span ng-bind="mailbox.service.selectedFolder.getLength()"><!-- count --></span> <var:string label:value="messages"/></span>
           </div>
           <div class="md-truncate">
+            <md-icon label:aria-label="Filtered by label" ng-show="mailbox.selectedFolder.filteredByLabel()">label_outline</md-icon>
             <span ng-show="mailbox.selectedFolder.$unseenOnly"><var:string label:value="Unread"/></span>
             <span ng-show="mailbox.selectedFolder.$flaggedOnly"><var:string label:value="Flagged"/></span>
             <md-icon ng-class="{ 'md-flip': mailbox.ascending() }">sort</md-icon>
