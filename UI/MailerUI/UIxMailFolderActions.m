@@ -987,6 +987,63 @@
   return [self _subscribeOrUnsubscribeAction: NO];
 }
 
+- (id <WOActionResults>) getLabelsAction
+{
+  NGImap4Client *client;
+  NSArray *labels, *userLabel;
+  NSDictionary *result, *userLabels, *labelRecord;
+  NSEnumerator *labelsList;
+  NSMutableArray *allLabels;
+  NSString *label;
+  SOGoMailFolder *co;
+  WOResponse *response;
+  unsigned int i;
+  static NSArray *imapKeywords = nil;
+
+  if (!imapKeywords)
+    {
+      imapKeywords = [[NSArray alloc] initWithObjects: @"ANSWERED", @"DELETED",
+                                      @"DRAFT", @"FLAGGED", @"NEW", @"OLD", @"RECENT",
+                                      @"SEEN", @"UNANSWERED", @"UNDELETED", @"UNDRAFT",
+                                      @"UNFLAGGED", @"UNSEEN", nil];
+      [imapKeywords retain];
+    }
+
+  i = 0;
+  allLabels = [NSMutableArray array];
+  co = [self clientObject];
+  client = [[co imap4Connection] client];
+  result = [client select: [[co imap4URL] path]];
+  labels = [result objectForKey: @"flags"];
+  userLabels = [[[context activeUser] userDefaults] mailLabelsColors];
+  labelsList = [[labels sortedArrayUsingSelector: @selector(compareAscending:)] objectEnumerator];
+  while ((label = [labelsList nextObject]))
+    {
+      if (![imapKeywords containsObject: [label uppercaseString]])
+        {
+          if ((userLabel = [userLabels objectForKey: label]))
+            {
+              labelRecord = [NSDictionary dictionaryWithObjectsAndKeys:
+                                            label, @"imapName",
+                                              [userLabel objectAtIndex: 0], @"name",
+                                              [userLabel objectAtIndex: 1], @"color", nil];
+              [allLabels insertObject: labelRecord atIndex: i];
+              i++;
+            }
+          else
+            {
+              labelRecord = [NSDictionary dictionaryWithObjectsAndKeys:
+                                            label, @"imapName", nil];
+              [allLabels addObject: labelRecord];
+            }
+        }
+    }
+
+  response = [self responseWithStatus: 200 andJSONRepresentation: allLabels];
+
+  return response;
+}
+
 - (WOResponse *) addOrRemoveLabelAction
 {
   WOResponse *response;

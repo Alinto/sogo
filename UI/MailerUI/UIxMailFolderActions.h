@@ -36,6 +36,7 @@
 - (WOResponse *) emptyTrashAction;
 - (WOResponse *) subscribeAction;
 - (WOResponse *) unsubscribeAction;
+- (id <WOActionResults>) getLabelsAction;
 
 @end
 
