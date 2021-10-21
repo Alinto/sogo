@@ -399,4 +399,15 @@
     return true;
   };
 
+  /**
+   * @function $reset
+   * @memberof VirtualMailbox.prototype
+   * @desc Reset the original state all mailboxes data.
+   */
+  VirtualMailbox.prototype.$reset = function(options) {
+    _.forEach(this.$mailboxes, function(mailbox) {
+      mailbox.$reset(options);
+    });
+  };
+
 })();

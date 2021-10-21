@@ -870,25 +870,6 @@
   };
 
   /**
-   * @function $reset
-   * @memberof Mailbox.prototype
-   * @desc Reset the original state the mailbox's data.
-   */
-  Mailbox.prototype.$reset = function(options) {
-    var _this = this;
-    angular.forEach(this.$shadowData, function(value, key) {
-      delete _this[key];
-    });
-    angular.extend(this, this.$shadowData);
-    this.$shadowData = this.$omit();
-    if (options && options.filter) {
-      this.$messages = [];
-      this.$visibleMessages = [];
-      delete this.$syncToken;
-    }
-  };
-
-  /**
    * @function $move
    * @memberof Mailbox.prototype
    * @desc Move the mailbox to a different parent. Will reload the mailboxes list.
@@ -933,6 +914,25 @@
    */
   Mailbox.prototype.$newMailbox = function(path, name) {
     return this.$account.$newMailbox(path, name);
+  };
+
+  /**
+   * @function $reset
+   * @memberof Mailbox.prototype
+   * @desc Reset the original state the mailbox's data.
+   */
+  Mailbox.prototype.$reset = function(options) {
+    var _this = this;
+    angular.forEach(this.$shadowData, function(value, key) {
+      delete _this[key];
+    });
+    angular.extend(this, this.$shadowData);
+    this.$shadowData = this.$omit();
+    if (options && options.filter) {
+      this.$messages = [];
+      this.$visibleMessages = [];
+      delete this.$syncToken;
+    }
   };
 
   /**

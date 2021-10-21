@@ -87,7 +87,10 @@
       if (this.editMode || this.mailbox == Mailbox.selectedFolder || this.mailbox.isNoSelect())
         return;
       Mailbox.$virtualPath = false;
-      Mailbox.$virtualMode = false;
+      if (Mailbox.$virtualMode) {
+        Mailbox.$virtualMode = false;
+        Mailbox.selectedFolder.$reset({ filter: true });
+      }
       this.accountController.selectFolder(this);
       if ($event) {
         $state.go('mail.account.mailbox', {

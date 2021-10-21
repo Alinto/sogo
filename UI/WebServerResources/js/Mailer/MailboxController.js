@@ -42,6 +42,10 @@
         _.forEach(hotkeys, function(key) {
           sgHotkeys.deregisterHotkey(key);
         });
+        if (vm.mode.search) {
+          vm.mode.search = false;
+          vm.selectedFolder.$reset({ filter: true });
+        }
       });
 
       // Update window's title with unseen messages count of selected mailbox
@@ -52,13 +56,6 @@
         title += vm.selectedFolder.$displayName;
         title += ' | ' + defaultWindowTitle;
         $window.document.title = title;
-      });
-
-      $scope.$on('$destroy', function() {
-        if (vm.mode.search) {
-          vm.mode.search = false;
-          vm.selectedFolder.$reset({ filter: true });
-        }
       });
     };
 
