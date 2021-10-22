@@ -496,7 +496,18 @@
    * @returns a promise of the HTTP operation
    */
   Message.prototype.addTag = function(tag) {
-    return this.$addOrRemoveTag('add', tag);
+    var _this = this,
+        _tag = tag.replace(/^_\$/, '$');
+    return this.$mailbox.getLabels().then(function(labels) {
+      var reload = !_.find(labels, function(label) {
+        return label.imapName == _tag;
+      });
+      return _this.$addOrRemoveTag('add', tag).then(function() {
+        if (reload)
+          // Update the list of labels for the mailbox
+          _this.$mailbox.getLabels({reload: true});
+      });
+    });
   };
 
   /**

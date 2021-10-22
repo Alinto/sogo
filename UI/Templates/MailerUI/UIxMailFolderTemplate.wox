@@ -94,7 +94,7 @@
                   sg-false-value="0"> <var:string label:value="Show flagged messages only"/></sg-checkmark>
             </md-menu-item>
             <md-menu-divider> <!-- divider --></md-menu-divider>
-            <md-menu-item ng-repeat="label in ::mailbox.selectedFolder.$labels track by label.imapName">
+            <md-menu-item ng-repeat="label in mailbox.selectedFolder.$labels track by label.imapName">
               <sg-checkmark
                   ng-change="mailbox.selectedFolder.$filter(mailbox.service.$query)"
                   ng-model="mailbox.selectedFolder.$filteredLabels[label.imapName]"

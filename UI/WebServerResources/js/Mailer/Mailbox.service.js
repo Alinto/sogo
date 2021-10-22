@@ -706,13 +706,14 @@
    * @desc Fetch the list of labels associated to the mailbox. Use the cached value if available.
    * @returns a promise of the HTTP operation
    */
-  Mailbox.prototype.getLabels = function() {
+  Mailbox.prototype.getLabels = function(options) {
     var _this = this;
 
-    if (this.$labels)
-      return this.$labels;
+    if (this.$labels && !(options && options.reload))
+      return Mailbox.$q.when(this.$labels);
 
-    this.$filteredLabels = {};
+    if (angular.isUndefined(this.$filteredLabels))
+      this.$filteredLabels = {};
     return Mailbox.$$resource.fetch(this.id, 'labels').then(function(data) {
       _this.$labels = data;
       return _this.$labels;
