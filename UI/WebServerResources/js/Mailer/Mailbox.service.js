@@ -204,7 +204,16 @@
         this.$icon = 'thumb_down';
       }
       else if (this.type == 'additional') {
+        this.$icon = 'folder';
+      }
+      else if (this.type == 'shared') {
         this.$icon = 'folder_shared';
+      }
+      else if (this.type == 'otherUsers') {
+        this.$icon = 'folder_shared';
+      }
+      else if (this.type == 'dropbox') {
+        this.$icon = 'drive_folder_upload';
       }
       else {
         this.$isSpecial = false;
@@ -512,6 +521,16 @@
    */
   Mailbox.prototype.isNoSelect = function() {
     return this.flags.indexOf('noselect') >= 0;
+  };
+
+  /**
+   * @function isWritable
+   * @memberof Mailbox.prototype
+   * @desc Checks the user can write to the mailbox
+   * @returns true if messages can be inserted
+   */
+  Mailbox.prototype.isWritable = function() {
+    return this.flags.indexOf('noselect') < 0 || this.type == 'dropbox';
   };
 
   /**

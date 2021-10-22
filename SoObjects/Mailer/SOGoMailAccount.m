@@ -447,7 +447,7 @@ static NSString *inboxFolderName = @"INBOX";
                      flags: (NSMutableArray *) flags
 {
   static NSDictionary *metadata = nil;
-  NSString *folderType, *key;
+  NSString *folderType, *key, *rights;
   SOGoUserDefaults *ud;
 
   if (!metadata)
@@ -484,7 +484,22 @@ static NSString *inboxFolderName = @"INBOX";
   else if ([folderName isEqualToString: sharedFoldersName])
     folderType = @"shared";
   else
-    folderType = @"folder";
+    {
+      folderType = @"folder";
+      if (([sharedFoldersName length] && [folderName hasPrefix: sharedFoldersName]) ||
+          ([otherUsersFolderName length] && [folderName hasPrefix: otherUsersFolderName]))
+        {
+          rights = [[self imap4Connection] myRightsForMailboxAtURL: [NSURL URLWithString: folderName]];
+          if (![rights isKindOfClass: [NSException class]] &&
+              ([rights rangeOfString: @"r"].location == NSNotFound))
+            {
+              [flags addObjectUniquely: @"noselect"];
+              if ([rights rangeOfString: @"i"].location != NSNotFound)
+                // No read but insert = dropbox
+                folderType = @"dropbox";
+            }
+        }
+    }
 
   return folderType;
 }

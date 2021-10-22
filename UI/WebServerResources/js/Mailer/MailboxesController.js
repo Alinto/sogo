@@ -271,7 +271,7 @@
     }; // delegate
 
     this.isDroppableFolder = function(srcFolder, dstFolder) {
-      return (dstFolder.id != srcFolder.id) && !dstFolder.isNoSelect();
+      return (dstFolder.id != srcFolder.id) && dstFolder.isWritable();
     };
 
     this.dragSelectedMessages = function(srcFolder, dstFolder, mode) {
