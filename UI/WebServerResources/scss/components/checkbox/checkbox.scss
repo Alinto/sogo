@@ -33,4 +33,7 @@ md-sidenav .md-dense :not(.md-dense-disabled) md-checkbox:not(.md-dense-disabled
   &.sg-checked md-icon {
     opacity: 1;
   }
+  span[ng-transclude] {
+    display: inline-block;
+  }
 }
