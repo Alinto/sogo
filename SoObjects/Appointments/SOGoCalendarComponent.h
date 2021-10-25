@@ -30,6 +30,7 @@
 @class NSString;
 
 @class iCalCalendar;
+@class iCalEntityObject;
 @class iCalEvent;
 @class iCalPerson;
 @class iCalRepeatableEntityObject;
