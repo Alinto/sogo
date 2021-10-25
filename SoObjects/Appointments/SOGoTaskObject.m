@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2014-2016 Inverse inc.
+  Copyright (C) 2006-2014-2021 Inverse inc.
 
   This file is part of SOGo.
 
@@ -21,6 +21,7 @@
 
 #import <Foundation/NSCalendarDate.h>
 
+#import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -65,6 +66,14 @@
                     baseVersion: (unsigned int) newVersion
 {
   NSException *ex;
+  iCalToDo *todo;
+
+  todo = (iCalToDo*)[theComponent firstChildWithTag: [self componentTag]];
+  [self sendReceiptEmailForObject: todo
+                   addedAttendees: nil
+                 deletedAttendees: nil
+                 updatedAttendees: nil
+                        operation: [self isNew] ? TaskCreated : TaskUpdated];
 
   ex = [super saveComponent: theComponent baseVersion: newVersion];
   [fullCalendar release];
@@ -109,6 +118,19 @@
 - (void) prepareDeleteOccurence: (iCalToDo *) occurence
 {
 
+}
+
+- (NSException *) prepareDelete
+{
+  iCalToDo *todo = [self component: NO secure: NO];
+
+  [self sendReceiptEmailForObject: todo
+                   addedAttendees: nil
+                 deletedAttendees: nil
+                 updatedAttendees: nil
+                        operation: TaskDeleted];
+
+  return [super prepareDelete];
 }
 
 - (id) PUTAction: (WOContext *) _ctx

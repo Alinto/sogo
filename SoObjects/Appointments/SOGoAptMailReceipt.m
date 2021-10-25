@@ -31,6 +31,7 @@
 
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
+#import <NGCards/iCalToDo.h>
 
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
@@ -136,7 +137,7 @@ static NSCharacterSet *wsSet = nil;
   return currentRecipient;
 }
 
-- (void) setOperation: (SOGoEventOperation) theOperation
+- (void) setOperation: (SOGoComponentOperation) theOperation
 {
   operation = theOperation;
 }
@@ -160,6 +161,21 @@ static NSCharacterSet *wsSet = nil;
 
   switch (operation)
     {
+    case TaskCreated:
+      s = [self labelForKey: @"The task \"%{Summary}\" was created"
+                  inContext: context];
+      break;
+
+    case TaskDeleted:
+      s = [self labelForKey: @"The task \"%{Summary}\" was deleted"
+                  inContext: context];
+      break;
+
+    case TaskUpdated:
+      s = [self labelForKey: @"The task \"%{Summary}\" was updated"
+                  inContext: context];
+      break;
+
     case EventCreated:
       s = [self labelForKey: @"The event \"%{Summary}\" was created"
                   inContext: context];
@@ -198,7 +214,7 @@ static NSCharacterSet *wsSet = nil;
 
   formatter = [currentUser dateFormatterInContext: context];
 
-  if ([apt isAllDay])
+  if ([apt isKindOfClass: [iCalEvent class]] && [(iCalEvent *)apt isAllDay])
     return [formatter formattedDate: tzDate];
   else
     return [NSString stringWithFormat: @"%@ - %@",
@@ -213,7 +229,10 @@ static NSCharacterSet *wsSet = nil;
 
 - (NSString *) aptEndDate
 {
-  return [self _formattedUserDate: [(iCalEvent *) apt endDate]];
+  if ([apt isKindOfClass: [iCalEvent class]])
+    return [self _formattedUserDate: [(iCalEvent *) apt endDate]];
+  else
+    return [self _formattedUserDate: [(iCalToDo *) apt due]];
 }
 
 @end

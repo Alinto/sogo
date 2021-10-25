@@ -1,8 +1,6 @@
 /* SOGoConstants.h - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
- *
- * Author: Ludovic Marcotte <lmarcotte@inverse.ca>
+ * Copyright (C) 2010-2021 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,7 +47,10 @@ typedef enum
   EventCreated = 0,
   EventDeleted = 1,
   EventUpdated = 2,
-} SOGoEventOperation;
+  TaskCreated = 3,
+  TaskDeleted = 4,
+  TaskUpdated = 5,
+} SOGoComponentOperation;
 
 typedef enum
 {
