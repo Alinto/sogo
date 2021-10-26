@@ -3142,6 +3142,10 @@ current version of SOGo from the previous release.
 
 [cols="100a"]
 |=======================================================================
+h|5.3.0
+|A new private salt must be generated for users using TOTP. When TOTP is enabled for a user, it will
+be disabled until the user configures it again, which will generate a new private salt.
+
 h|5.1.0
 |The XSRF protection is now enabled by default in SOGo. If you use the C.A.S.  mechanisim, you need
 to disable XSRF by adding `SOGoXSRFValidationEnabled = NO` to your configuration file.
