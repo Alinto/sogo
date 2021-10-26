@@ -484,6 +484,8 @@ struct GlobalObjectId {
         {
           [thePart setHeader: @"base64"  forKey: @"content-transfer-encoding"];
           [thePart setBody: [body dataByEncodingBase64]];
+          [thePart setHeader: [NSString stringWithFormat:@"%d", (int)[[thePart body] length]]
+                                         forKey: @"content-length"];
 	}
     }
 }
