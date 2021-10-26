@@ -3258,7 +3258,7 @@ void handle_eas_terminate(int signum)
   NSException *error;
   NSString *from;
 
-  authenticator = [SOGoDAVAuthenticator sharedSOGoDAVAuthenticator];
+  authenticator = [[context activeUser] authenticatorInContext: context];
   dd = [[context activeUser] domainDefaults];
   
   // We generate the Sender
