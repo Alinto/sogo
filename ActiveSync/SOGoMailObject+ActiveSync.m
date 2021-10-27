@@ -61,6 +61,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGMime/NGMimeFileData.h>
 #import <NGMime/NGMimeMultipartBody.h>
 #import <NGMime/NGMimeType.h>
+#import <NGMime/NGMimeHeaderFields.h>
 #import <NGMail/NGMimeMessageParser.h>
 #import <NGMail/NGMimeMessage.h>
 #import <NGMail/NGMimeMessageGenerator.h>
@@ -478,6 +479,14 @@ struct GlobalObjectId {
           RELEASE(fdata);
           *b = YES;
         }
+      else if ([[(NGMimeContentDispositionHeaderField *)[thePart  headerForKey: @"content-disposition"] type] hasPrefix: @"attachment"] ||
+                [[(NGMimeContentDispositionHeaderField *)[thePart  headerForKey: @"content-disposition"] type] hasPrefix: @"inline"])
+        {
+          [thePart setHeader: @"base64"  forKey: @"content-transfer-encoding"];
+          [thePart setBody: [body dataByEncodingBase64]];
+          [thePart setHeader: [NSString stringWithFormat:@"%d", (int)[[thePart body] length]]
+                                         forKey: @"content-length"];
+	}
     }
 }
 
