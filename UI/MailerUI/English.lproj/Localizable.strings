@@ -290,11 +290,17 @@
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "No certificate associated to account.";
 
-/* Invalid message signature */
+/* Invalid S/MIME signature */
 "Digital signature is not valid" = "Digital signature is not valid";
 
-/* Valid message signature */
+/* Valid S/MIME signature */
 "Message is signed" = "Message is signed";
+
+/* Valid S/MIME signature but common name doesn't match */
+"Message is signed but the certificate (%{certificateCn}) doesn't match the sender email address" = "Message is signed but the certificate (%{certificateCn}) doesn't match the sender email address";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Message is signed but the certificate doesn't match the sender email address";
 
 /* Unknown error while validating message signature */
 "Digital signature is not valid" = "Digital signature is not valid";

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2017-2019 Inverse inc.
+  Copyright (C) 2017-2021 Inverse inc.
 
   This file is part of SOGo.
 
@@ -32,6 +32,7 @@
 #import <Foundation/NSValue.h>
 
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGImap4/NGImap4EnvelopeAddress.h>
 #import <NGMime/NGMimeBodyPart.h>
 #import <NGMime/NGMimeHeaderFields.h>
 #import <NGMime/NGMimeMultipartBody.h>
@@ -44,6 +45,7 @@
 #import <SoObjects/Mailer/SOGoMailObject.h>
 #import <UI/MailerUI/WOContext+UIxMailer.h>
 
+#import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 
 #import "UIxMailRenderingContext.h"
@@ -175,15 +177,18 @@
 	  ERR_load_crypto_strings();
           SSL_load_error_strings();
           sslError = ERR_reason_error_string(err);
-          validationMessage = [[self labelForKey: [NSString stringWithUTF8String: sslError ? sslError : @"Digital signature is not valid"]] retain];
+          validationMessage = [[self labelForKey: sslError ? [NSString stringWithUTF8String: sslError] : @"Digital signature is not valid"] retain];
 #elif OPENSSL_VERSION_NUMBER < 0x10100000L
           const char* sslError;
 	  ERR_load_crypto_strings();
           SSL_load_error_strings();
           sslError = ERR_reason_error_string(err);
-          validationMessage = [[self labelForKey: [NSString stringWithUTF8String: sslError ? sslError : @"Digital signature is not valid"]] retain];
+          validationMessage = [[self labelForKey: sslError ? [NSString stringWithUTF8String: sslError] : @"Digital signature is not valid"] retain];
 #else
-	  validationMessage = [[self labelForKey: @"Digital signature is not valid"] retain];
+          const char* sslError;
+          ERR_load_ERR_strings();
+          sslError = ERR_reason_error_string(err);
+          validationMessage = [[self labelForKey: sslError ? [NSString stringWithUTF8String: sslError] : @"Digital signature is not valid"] retain];
 #endif /* HAVE_GNUTLS */
 
            BUF_MEM *bptr; //DEL
@@ -204,9 +209,49 @@
   BIO_free (obio);
 
   if (validSignature)
-    validationMessage = [NSString stringWithString: [self labelForKey: @"Message is signed"]];
+    {
+      BOOL hasMatchingAddress;
+      NSArray *pair;
+      NSDictionary *certificate, *values;
+      NSEnumerator *certificatesList, *subjectList;
+      NSString *senderAddress, *label, *value;
+
+      validationMessage = [self labelForKey: @"Message is signed"];
+      hasMatchingAddress = NO;
+      value = nil;
+      senderAddress = [[[[[self clientObject] fromEnvelopeAddresses] lastObject] baseEMail] lowercaseString];
+      certificatesList = [certificates objectEnumerator];
+      while ((certificate = [certificatesList nextObject]) && !hasMatchingAddress)
+        {
+          subjectList = [[certificate objectForKey: @"subject"] objectEnumerator];
+          while ((pair = [subjectList nextObject]) && !hasMatchingAddress)
+            {
+              label = [[pair objectAtIndex: 0] lowercaseString];
+              value = [[pair objectAtIndex: 1] lowercaseString];
+              if ([label isEqualToString: @"commonname"] && [value isEqualToString: senderAddress])
+                {
+                  hasMatchingAddress = 1;
+                }
+            }
+        }
+
+      if (!hasMatchingAddress)
+        {
+          if (value)
+            {
+              values = [NSDictionary dictionaryWithObjectsAndKeys: value, @"certificateCn", nil];
+              validationMessage = [values keysWithFormat: [self labelForKey: @"Message is signed but the certificate (%{certificateCn}) doesn't match the sender email address"]];
+            }
+          else
+            {
+              validationMessage = [self labelForKey: @"Message is signed but the certificate doesn't match the sender email address"];
+            }
+        }
+    }
   else if (!validationMessage)
-    validationMessage = [NSString stringWithString: [self labelForKey: @"Digital signature is not valid"]];
+    {
+      validationMessage = [NSString stringWithString: [self labelForKey: @"Digital signature is not valid"]];
+    }
 
   processed = YES;
   opaqueSigned = YES;
