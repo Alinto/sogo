@@ -341,7 +341,7 @@
   NSMutableString *url;
 
   st = [[bodyInfo valueForKey:@"subtype"] lowercaseString];
-  if (!forDownload && [st isEqualToString: @"svg+xml"])
+  if (!forDownload && [st hasSuffix: @"xml"])
     return nil;
 
   bodyPart = [self clientPart];
