@@ -427,6 +427,47 @@ class WebDAV {
     })
   }
 
+  mailQueryMaildav(resource, properties, filters = {}) {
+    let formattedFilters = {}
+    if (filters.constructor.toString().includes('Array')) {
+      filters.map(f => {
+        Object.keys(f).map(p => {
+          const pName = `${DAVInverseShort}:${p}`
+          if (!formattedFilters[pName])
+            formattedFilters[pName] = []
+          formattedFilters[pName].push({ _attributes: f[p] })
+        })
+      })
+    }
+    else {
+      Object.keys(filters).map(p => {
+        const pName = `${DAVInverseShort}:${p}`
+        if (!formattedFilters[pName])
+          formattedFilters[pName] = []
+        formattedFilters[pName].push({ _attributes: filters[p] })
+      })
+    }
+
+    return davRequest({
+      url: this.serverUrl + resource,
+      init: {
+        method: 'REPORT',
+        namespace: DAVNamespaceShorthandMap[DAVNamespace.DAV],
+        headers: this.headers,
+        body: {
+          [`${DAVInverseShort}:mail-query`]: {
+            _attributes: {
+              ...getDAVAttribute([DAVNamespace.DAV]),
+              [`xmlns:${DAVInverseShort}`]: DAVInverse
+            },
+            prop: formatProps(properties.map(p => { return { name: p } })),
+            [`${DAVInverseShort}:mail-filters`]: formattedFilters
+          }
+        }
+      }
+    })
+  }
+
 }
 
 export default WebDAV

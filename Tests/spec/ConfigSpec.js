@@ -2,7 +2,7 @@ import config from '../lib/config'
 
 describe('config tests', function() {
 
-  fit('required configuration parameters', async function() {
+  it('required configuration parameters', async function() {
     expect(config.hostname)
       .withContext(`Config 'hostname'`)
       .toBeDefined()

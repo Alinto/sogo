@@ -96,7 +96,7 @@ describe('CardDAV extensions', function() {
   })
 
   // https://datatracker.ietf.org/doc/html/rfc6352#section-8.7
-  fit("supports for addressbook-multiget", async function() {
+  it("supports for addressbook-multiget", async function() {
     const hrefs = Object.keys(cards).map(c => `${resource}${c}`)
     const response = await davRequest({
       url: webdav.serverUrl + resource,
