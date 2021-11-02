@@ -202,11 +202,15 @@
   if (validSignature)
     {
       BOOL hasMatchingAddress;
-      NSArray *pair;
+      NSArray *pair, *attributes;
       NSDictionary *certificate, *values;
       NSEnumerator *certificatesList, *subjectList;
       NSString *senderAddress, *label, *value;
 
+      // See https://datatracker.ietf.org/doc/html/rfc8550#section-3
+      // See https://datatracker.ietf.org/doc/html/rfc8550#section-4.4.3
+      // TODO: handle multiple email addresses in SubjectAltName
+      attributes = [NSArray arrayWithObjects: @"commonname", @"subjectaltname", @"emailaddress", nil];
       validationMessage = [self labelForKey: @"Message is signed"];
       hasMatchingAddress = NO;
       value = nil;
@@ -219,7 +223,7 @@
             {
               label = [[pair objectAtIndex: 0] lowercaseString];
               value = [[pair objectAtIndex: 1] lowercaseString];
-              if ([label isEqualToString: @"commonname"] && [value isEqualToString: senderAddress])
+              if ([attributes containsObject: label] && [value isEqualToString: senderAddress])
                 {
                   hasMatchingAddress = 1;
                 }
