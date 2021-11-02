@@ -31,6 +31,7 @@
 
 
 #import <Mailer/SOGoMailAccount.h>
+#import <Mailer/SOGoMailFolder.h>
 #import <Mailer/SOGoTrashFolder.h>
 
 #import <SOGo/NSArray+Utilities.h>
@@ -876,15 +877,25 @@
   return response;
 }
 
+- (WOResponse *) emptyJunkAction
+{
+  return [self emptySpecialFolderAction: @"junk"];
+}
+
 - (WOResponse *) emptyTrashAction
 {
+  return [self emptySpecialFolderAction: @"trash"];
+}
+
+- (WOResponse *) emptySpecialFolderAction: (NSString *) folderType
+{
   NSException *error;
-  SOGoTrashFolder *co;
+  SOGoSpecialMailFolder *co;
   SOGoMailAccount *account;
   NSEnumerator *subfolders;
   WOResponse *response;
   NGImap4Connection *connection;
-  NSString *currentName;
+  NSString *currentName, *errorMsg;
   NSDictionary *data;
 
   id quota;
@@ -909,7 +920,8 @@
     }
   if (error)
     {
-      data = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to empty the trash folder." inContext: context]
+      errorMsg = [NSString stringWithFormat: @"Unable to empty the %@ folder.", folderType];
+      data = [NSDictionary dictionaryWithObject: [self labelForKey: errorMsg inContext: context]
                                          forKey: @"message"];
       response = [self responseWithStatus: 500 andJSONRepresentation: data];
     }

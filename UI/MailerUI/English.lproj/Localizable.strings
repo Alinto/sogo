@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "Create";
 "Empty Trash" = "Empty Trash";
+"Empty Junk Folder" = "Empty Junk Folder";
 "Delete"      = "Delete";
 "Expunge"     = "Expunge";
 "Forward"     = "Forward";
@@ -73,8 +74,13 @@
 "An error occured while communicating with the mail server" = "An error occured while communicating with the mail server";
 
 /* Mailbox actions */
+
 /* Compact Folder success message */
 "Folder compacted" = "Folder compacted";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Junk folder emptied";
+
 /* Empty Trash success message */
 "Trash emptied" = "Trash emptied";
 
@@ -386,6 +392,12 @@
 "error_missingrecipients" = "Please specify at least one recipient.";
 "Send Anyway" = "Send Anyway";
 "Error while saving the draft" = "Error while saving the draft";
+
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Unable to empty the trash folder.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Unable to empty the junk folder.";
 
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Error while uploading the file \"%{0}\":";

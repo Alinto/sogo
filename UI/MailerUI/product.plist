@@ -161,6 +161,23 @@
       };
     };
 
+    SOGoJunkFolder = {
+      /* just a new toolbar, other things come from SOGoMailFolder */
+      slots = {
+        toolbar = {
+          protectedBy = "View";
+          value = "SOGoMailFolder.toolbar";
+        };
+      };
+      methods = {
+        emptyJunk = {
+          protectedBy = "View";
+          actionClass = "UIxMailFolderActions";
+          actionName = "emptyJunk";
+        };
+      };
+    };
+
     SOGoTrashFolder = {
       /* just a new toolbar, other things come from SOGoMailFolder */
       slots = {

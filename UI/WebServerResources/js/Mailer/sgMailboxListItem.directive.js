@@ -258,11 +258,19 @@
           });
         };
 
+        this.emptyJunkFolder = function() {
+          return this.emptyFolder(l('Junk folder emptied'));
+        };
+
         this.emptyTrashFolder = function() {
-          this.folder.$emptyTrash().then(function() {
+          return this.emptyFolder(l('Trash emptied'));
+        };
+
+        this.emptyFolder = function(successMsg) {
+          this.folder.$empty().then(function() {
             $mdToast.show(
               $mdToast.simple()
-                .textContent(l('Trash emptied'))
+                .textContent(successMsg)
                 .position('top right')
                 .hideDelay(3000));
           });

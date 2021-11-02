@@ -659,15 +659,16 @@
   };
 
   /**
-   * @function $emptyTrash
+   * @function $empty
    * @memberof Mailbox.prototype
    * @desc Empty the Trash folder.
    * @returns a promise of the HTTP operation
    */
-  Mailbox.prototype.$emptyTrash = function() {
-    var _this = this;
+  Mailbox.prototype.$empty = function() {
+    var _this = this,
+        action = 'empty' + this.type[0].capitalize() + this.type.substring(1);
 
-    return Mailbox.$$resource.post(this.id, 'emptyTrash').then(function(data) {
+    return Mailbox.$$resource.post(this.id, action).then(function(data) {
       // Remove all messages from the mailbox
       _this.$messages = _this.$visibleMessages = [];
       _this.uidsMap = {};
