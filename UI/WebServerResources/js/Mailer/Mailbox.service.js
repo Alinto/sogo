@@ -669,7 +669,7 @@
 
     return Mailbox.$$resource.post(this.id, 'emptyTrash').then(function(data) {
       // Remove all messages from the mailbox
-      _this.$messages = [];
+      _this.$messages = _this.$visibleMessages = [];
       _this.uidsMap = {};
       _this.unseenCount = 0;
 
