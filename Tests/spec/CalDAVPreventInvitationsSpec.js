@@ -13,11 +13,13 @@ let utility, user, attendee1, attendee1Delegate
 let userCalendar, attendee1Calendar, attendee1DelegateCalendar
 let icsName, icsList, vcalendar
 
-describe('PreventInvitationsWhitelist user setting', function() {
+describe('PreventInvitations', function() {
 
   const _getEvent = async function(client, calendarName, filename, expectedCode = 200) {
     const [{ status, headers, raw }] = await client.getObject(calendarName, filename)
-    expect(status).toBe(expectedCode)
+    expect(status)
+    .withContext(`HTTP status code when fetching event ${calendarName}${filename}`)
+    .toBe(expectedCode)
     if (status <= 300)
       return new ICAL.Component(ICAL.parse(raw))
     return false
@@ -26,7 +28,7 @@ describe('PreventInvitationsWhitelist user setting', function() {
   const _putEvent = async function(client, calendarName, filename, event, expectedCode = 201) {
     const response = await client.createCalendarObject(calendarName, filename, event.toString())
     expect(response.status)
-      .withContext(`Create event ${calendarName}${filename}`)
+      .withContext(`HTTP status code when creating event ${calendarName}${filename}`)
       .toBe(expectedCode)
     return response
   }
@@ -95,12 +97,12 @@ describe('PreventInvitationsWhitelist user setting', function() {
 
     utility = new TestUtility(webdav)
     user = await utility.fetchUserInfo(config.username)
-    attendee1 = await utility.fetchUserInfo(config.attendee1)
-    attendee1Delegate = await utility.fetchUserInfo(config.attendee1_delegate)
+    attendee1 = await utility.fetchUserInfo(config.attendee1_username)
+    attendee1Delegate = await utility.fetchUserInfo(config.attendee1_delegate_password)
 
     userCalendar = `/SOGo/dav/${config.username}/Calendar/personal/`
-    attendee1Calendar = `/SOGo/dav/${config.attendee1}/Calendar/personal/`
-    attendee1DelegateCalendar = `/SOGo/dav/${config.attendee1_delegate}/Calendar/personal/`
+    attendee1Calendar = `/SOGo/dav/${config.attendee1_username}/Calendar/personal/`
+    attendee1DelegateCalendar = `/SOGo/dav/${config.attendee1_delegate_username}/Calendar/personal/`
 
     // fetch non existing event to let sogo create the calendars in the db
     await _getEvent(webdav, userCalendar, 'nonexistent', 404)
@@ -123,7 +125,7 @@ describe('PreventInvitationsWhitelist user setting', function() {
     }
   })
 
-  it(`Set/get the PreventInvitation pref`, async function() {
+  it(`Disable, accept the invitation`, async function() {
     // First accept the invitation
     await prefs.set('PreventInvitations', 0)
     const settings = await prefs.getSettings()
@@ -135,7 +137,7 @@ describe('PreventInvitationsWhitelist user setting', function() {
     await _verifyEvent()
   })
 
-  it(`Set PreventInvitation and don't accept the Invitation`, async function() {
+  it(`Enable, refuse the invitation`, async function() {
     // Second, enable PreventInviation and refuse it
     await prefs.set('PreventInvitations', 1)
     const settings = await prefs.getSettings()
@@ -147,7 +149,7 @@ describe('PreventInvitationsWhitelist user setting', function() {
     await _verifyEvent(404)
   })
 
-  it(`Set PreventInvitation add to WhiteList and accept the Invitation`, async function() {
+  it(`Enable, update whitelist, accept the invitation`, async function() {
     // First, add the Organiser to the Attendee's whitelist
     await prefs.set('PreventInvitations', 1)
     await prefs.set('PreventInvitationsWhitelist', config.white_listed_attendee)
@@ -157,7 +159,7 @@ describe('PreventInvitationsWhitelist user setting', function() {
       .withContext(`Prevent invitations is enabled`)
       .toBe(1)
     expect(PreventInvitationsWhitelist)
-      .withContext(`Prevent invitations is enabled, one user is whitelisted`)
+      .withContext(`Prevent invitations is enabled, one user (${config.white_listed_attendee}) is whitelisted`)
       .toEqual(config.white_listed_attendee)
     // Second, try again to invite, it should work
     await _addAttendee()

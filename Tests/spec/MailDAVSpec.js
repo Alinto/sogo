@@ -1,7 +1,8 @@
 import config from '../lib/config'
-import WebDAV from '../lib/WebDAV'
+import { default as WebDAV, DAVMailHeaderShort, DAVHttpMail, DAVMailHeader } from '../lib/WebDAV'
 import TestUtility from '../lib/utilities'
 import { fetch } from 'cross-fetch'
+import { DAVNamespace, DAVNamespaceShorthandMap } from 'tsdav'
 
 const message1 = `Return-Path: <cyril@cyril.dev>
 Received: from cyril.dev (localhost [127.0.0.1])
@@ -168,7 +169,8 @@ describe('MailDAV', function() {
   const _makeMailbox = async function (path, expectedCode = 201) {
     const [lastFolder, ...parents] = path.split('/').reverse()
     let mailPath = lastFolder
-    if (parents.lenght) {
+    if (parents.length) {
+      // Prefix parent names with "folder"
       mailPath = parents.reverse().map(p => `folder${p}`).join('/') + '/' + lastFolder
     }
     const [response] = await webdav.makeCollection(resource + mailPath)
@@ -217,17 +219,51 @@ describe('MailDAV', function() {
     .toEqual(hrefs.length)
   }
 
+  const _testSort = async function (sortAttribute, expectedHrefs, ascending = true) {
+    const url = `${resource}foldertest-dav-mail`
+    const results = await webdav.mailQueryMaildav(url, ['displayname'], null, sortAttribute, ascending)
+
+    let received_count = 0
+    for (let i = 0; i < results.length; i++) {
+      let response = results[i]
+      expect(response.status)
+      .withContext(`HTTP status code when performing a mail sorting query`)
+      .toBe(207)
+      if (response.href) {
+        expect(response.href)
+        .withContext(`Sort result at position ${i} on attribute ${sortAttribute}`)
+        .toEqual(expectedHrefs[i])
+        received_count++
+      }
+    }
+    expect(received_count)
+    .withContext(`Expected number of results from mail sorting query by ${sortAttribute}`)
+    .toEqual(expectedHrefs.length)
+  }
+
+  const _testProperty = async function (url, namespace, property, expected) {
+    const [result] = await webdav.propfindWebdav(url, [property], namespace)
+    const { props: { [utility.camelCase(property)]: objectProperty }} = result
+
+    expect(objectProperty)
+    .withContext(`Property ${utility.camelCase(property)} of ${url}`)
+    .toEqual(expected)
+  }
+
   beforeAll(async function() {
     webdav = new WebDAV(config.username, config.password)
     utility = new TestUtility(webdav)
     user = await utility.fetchUserInfo(config.username)
-    mailboxesList = []
     resource = `/SOGo/dav/${config.username}/Mail/0/`
+  })
+
+  beforeEach(function() {
+    mailboxesList = []
   })
 
   afterEach(async function() {
     for (let path of mailboxesList.reverse()) {
-      await _deleteMailbox(path)
+      await _deleteMailbox(path, null)
     }
   })
 
@@ -261,7 +297,7 @@ describe('MailDAV', function() {
       .toBe(200)
   })
 
-  fit(`mail-query filters`, async function() {
+  it(`mail-query filters`, async function() {
     const mailbox = 'test-dav-mail'
     const url = `${resource}folder${mailbox}`
     let msg1Loc, msg2Loc, msg3Loc
@@ -529,4 +565,46 @@ describe('MailDAV', function() {
     }
 
   }, 30000) // increase timeout for this long test
+
+  it(`mail-query sort`, async function() {
+    const mailbox = 'test-dav-mail'
+    const url = `${resource}folder${mailbox}`
+    let msg1Loc, msg2Loc, msg3Loc
+    let filter, filters
+
+    await _makeMailbox(mailbox)
+    msg1Loc = await _putMessage(mailbox, message1);
+    msg2Loc = await _putMessage(mailbox, message2);
+    msg3Loc = await _putMessage(mailbox, message3);
+
+    await _testSort(`${DAVMailHeaderShort}:received`, [msg1Loc, msg2Loc, msg3Loc])
+    await _testSort(`${DAVMailHeaderShort}:date`, [ msg2Loc, msg1Loc, msg3Loc ])
+    await _testSort(`${DAVMailHeaderShort}:from`, [ msg1Loc, msg2Loc, msg3Loc ])
+    await _testSort(`${DAVMailHeaderShort}:to`, [ msg1Loc, msg2Loc, msg3Loc ])
+    await _testSort(`${DAVMailHeaderShort}:cc`, [ msg3Loc, msg1Loc, msg2Loc ])
+    await _testSort(`${DAVMailHeaderShort}:subject`, [ msg3Loc, msg1Loc, msg2Loc ])
+    await _testSort(`${DAVNamespaceShorthandMap[DAVNamespace.DAV]}:getcontentlength`, [ msg3Loc, msg1Loc, msg2Loc ])
+    await _testSort(`${DAVMailHeaderShort}:cc`, [ msg2Loc, msg1Loc, msg3Loc ], false)
+
+  }, 30000) // increase timeout for this long test
+
+  it(`message properties`, async function() {
+    const mailbox = 'test-dav-mail'
+    await _makeMailbox(mailbox)
+    const msg1Loc = await _putMessage(mailbox, message1);
+
+    await _testProperty(msg1Loc, DAVHttpMail, 'date', 'Mon, 28 Sep 2009 11:42:14 GMT')
+    await _testProperty(msg1Loc, DAVHttpMail, 'hasattachment', 0)
+    await _testProperty(msg1Loc, DAVHttpMail, 'read', 0)
+    await _testProperty(msg1Loc, DAVHttpMail, 'textdescription', `<![CDATA[${message1}]]>`)
+    await _testProperty(msg1Loc, DAVHttpMail, 'unreadcount', {})
+    await _testProperty(msg1Loc, DAVMailHeader, 'cc', '2message1cc@cyril.dev, user10@cyril.dev')
+    await _testProperty(msg1Loc, DAVMailHeader, 'date', 'Mon, 28 Sep 2009 11:42:14 GMT')
+    await _testProperty(msg1Loc, DAVMailHeader, 'from', 'Cyril <message1from@cyril.dev>')
+    await _testProperty(msg1Loc, DAVMailHeader, 'in-reply-to', {})
+    await _testProperty(msg1Loc, DAVMailHeader, 'message-id', '<4AC1F29sept6.5060801@cyril.dev>')
+    await _testProperty(msg1Loc, DAVMailHeader, 'references', '<4AC3BF1B.3010806@inverse.ca>')
+    await _testProperty(msg1Loc, DAVMailHeader, 'subject', 'message1subject')
+    await _testProperty(msg1Loc, DAVMailHeader, 'to', 'message1to@cyril.dev')
+  })
 })

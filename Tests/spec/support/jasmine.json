@@ -6,6 +6,9 @@
   "helpers": [
     "helpers/**/*.?(m)js"
   ],
+  "requires": [
+    "esm"
+  ],
   "stopSpecOnExpectationFailure": false,
   "random": true
 }

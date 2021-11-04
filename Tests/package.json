@@ -1,20 +1,19 @@
 {
   "name": "tests",
   "description": "This directory holds automated tests for SOGo.",
-  "type": "module",
   "devDependencies": {},
   "scripts": {
-    "test": "jasmine --require=esm"
+    "test": "jasmine"
   },
   "dependencies": {
-    "@babel/core": "^7.15.0",
-    "@babel/preset-env": "^7.15.0",
+    "@babel/core": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
     "babel-cli": "^6.26.0",
     "cookie": "^0.4.1",
     "cross-fetch": "^3.1.4",
     "esm": "^3.2.25",
     "ical.js": "^1.4.0",
-    "jasmine": "^3.8.0",
-    "tsdav": "^1.0.6"
+    "jasmine": "^3.10.0",
+    "tsdav": "^1.1.1"
   }
 }

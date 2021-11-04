@@ -91,7 +91,7 @@ class Preferences {
       return obj
     }
     for (let k of Object.keys(obj)) {
-      if (typeof obj[k] == 'object') {
+      if (obj[k] && typeof obj[k] == 'object') {
         let o = this.findKey(obj[k], key)
         if (o !== null)
           return o

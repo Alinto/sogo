@@ -22,8 +22,22 @@ import config from './config'
 
 const DAVInverse = 'urn:inverse:params:xml:ns:inverse-dav'
 const DAVInverseShort = 'i'
+const DAVMailHeader = 'urn:schemas:mailheader:'
+const DAVMailHeaderShort = 'mh'
+const DAVHttpMail = 'urn:schemas:httpmail:'
+const DAVHttpMailShort = 'hm'
+const DAVnsShortMap = {
+  [DAVInverse]: DAVInverseShort,
+  [DAVMailHeader]: DAVMailHeaderShort,
+  [DAVHttpMail]: DAVHttpMailShort,
+  ...DAVNamespaceShorthandMap
+}
 
-export { DAVInverse, DAVInverseShort }
+export {
+  DAVInverse, DAVInverseShort,
+  DAVMailHeader, DAVMailHeaderShort,
+  DAVHttpMail, DAVHttpMailShort
+}
 
 class WebDAV {
   constructor(un, pw) {
@@ -97,15 +111,20 @@ class WebDAV {
   }
 
   propfindWebdav(resource, properties, namespace = DAVNamespace.DAV, headers = {}) {
-    const nsShort = DAVNamespaceShorthandMap[namespace] || DAVInverseShort
+    const nsShort = DAVnsShortMap[namespace] || DAVInverseShort
     const formattedProperties = properties.map(p => {
       return { [`${nsShort}:${p}`]: '' }
     })
+    let url
+    if (resource.match(/^http/))
+      url = resource
+    else
+      url = this.serverUrl + resource
     if (typeof headers.depth == 'undefined') {
       headers.depth = new String(0)
     }
     return davRequest({
-      url: this.serverUrl + resource,
+      url,
       init: {
         method: 'PROPFIND',
         headers: { ...this.headers, ...headers },
@@ -427,27 +446,38 @@ class WebDAV {
     })
   }
 
-  mailQueryMaildav(resource, properties, filters = {}) {
+  mailQueryMaildav(resource, properties, filters = {}, sort, ascending = true) {
     let formattedFilters = {}
-    if (filters.constructor.toString().includes('Array')) {
-      filters.map(f => {
-        Object.keys(f).map(p => {
+    if (filters) {
+      if (filters.constructor.toString().includes('Array')) {
+        filters.map(f => {
+          Object.keys(f).map(p => {
+            const pName = `${DAVInverseShort}:${p}`
+            if (!formattedFilters[pName])
+              formattedFilters[pName] = []
+            formattedFilters[pName].push({ _attributes: f[p] })
+          })
+        })
+      }
+      else {
+        Object.keys(filters).map(p => {
           const pName = `${DAVInverseShort}:${p}`
           if (!formattedFilters[pName])
             formattedFilters[pName] = []
-          formattedFilters[pName].push({ _attributes: f[p] })
+          formattedFilters[pName].push({ _attributes: filters[p] })
         })
-      })
+      }
+      if (Object.keys(formattedFilters).length) {
+        formattedFilters = {[`${DAVInverseShort}:mail-filters`]: formattedFilters}
+      }
     }
-    else {
-      Object.keys(filters).map(p => {
-        const pName = `${DAVInverseShort}:${p}`
-        if (!formattedFilters[pName])
-          formattedFilters[pName] = []
-        formattedFilters[pName].push({ _attributes: filters[p] })
-      })
+    let formattedSort = {}
+    if (sort) {
+      formattedSort = {[`${DAVInverseShort}:sort`]: {
+        _attributes: { order: ascending ? 'ascending' : 'descending' },
+        [sort]: {}
+      }}
     }
-
     return davRequest({
       url: this.serverUrl + resource,
       init: {
@@ -458,10 +488,12 @@ class WebDAV {
           [`${DAVInverseShort}:mail-query`]: {
             _attributes: {
               ...getDAVAttribute([DAVNamespace.DAV]),
-              [`xmlns:${DAVInverseShort}`]: DAVInverse
+              [`xmlns:${DAVInverseShort}`]: DAVInverse,
+              [`xmlns:${DAVMailHeaderShort}`]: DAVMailHeader
             },
             prop: formatProps(properties.map(p => { return { name: p } })),
-            [`${DAVInverseShort}:mail-filters`]: formattedFilters
+            ...formattedFilters,
+            ...formattedSort
           }
         }
       }

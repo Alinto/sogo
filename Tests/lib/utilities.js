@@ -47,6 +47,13 @@ class TestUtility {
     return s;
   }
 
+  camelCase(snakeCase) {
+    return snakeCase.replace(/(?:^\w|[A-Z]|\b\w)/g, (char, i) =>
+      i === 0 ? char.toLowerCase() : char.toUpperCase(),
+    )
+    .replace(/[\s\-_]+/g, '')
+  }
+
   setupRights(resource, username, rights) {
     const action = (typeof rights == 'undefined') ? 'remove-user' : 'set-roles'
     return davRequest({
