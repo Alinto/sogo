@@ -296,13 +296,37 @@ class WebDAV {
   }
 
   syncQuery(resource, token = '', properties) {
-    const formattedProperties = properties.map(p => { return { name: p, namespace: DAVNamespace.DAV } })
-    return syncCollection({
-      url: this.serverUrl + resource,
-      props: formattedProperties,
-      syncLevel: 1,
-      syncToken: token,
-      headers: this.headers
+    const formattedProperties = properties.map((p) => {
+      return { [`${DAVNamespaceShorthandMap[DAVNamespace.DAV]}:${p}`]: '' }
+    });
+    let xmlBody = convert.js2xml(
+      {
+        'sync-collection': {
+          _attributes: getDAVAttribute([DAVNamespace.DAV]),
+          'sync-level': 1,
+          'sync-token': token,
+          prop: formattedProperties
+        }
+      },
+      {
+        compact: true,
+        spaces: 2,
+        elementNameFn: (name) => {
+          // add namespace to all keys without namespace
+          if (!/^.+:.+/.test(name)) {
+            return `${DAVNamespaceShorthandMap[DAVNamespace.DAV]}:${name}`
+          }
+          return name
+        }
+      }
+    )
+    return fetch(this.serverUrl + resource, {
+      headers: {
+        'Content-Type': 'application/xml; charset="utf-8"',
+        ...this.headers
+      },
+      method: 'REPORT',
+      body: xmlBody
     })
   }
 

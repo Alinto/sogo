@@ -63,6 +63,10 @@ describe('WebDAV', function() {
     const results = await webdav.principalPropertySearch(resource)
     expect(results.length).toBe(1)
     results.forEach(o => {
+      expect(o.status)
+      .withContext(`HTTP status code when a performing a property search`)
+      .toBe(207)
+      expect(o.href).toBe(`/SOGo/dav/${config.username}/`)
       expect(o.props.displayname).toBe(user.displayname)
     })
   })
