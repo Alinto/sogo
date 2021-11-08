@@ -1,3 +1,4 @@
+import cookie from 'cookie'
 import {
   DAVNamespace,
   DAVNamespaceShorthandMap,
@@ -42,7 +43,10 @@ export {
 class WebDAV {
   constructor(un, pw) {
     this.serverUrl = `http://${config.hostname}:${config.port}`
+    this.cookie = null
     if (un && pw) {
+      this.username = un
+      this.password = pw
       this.headers = getBasicAuthHeaders({
         username: un,
         password: pw
@@ -53,41 +57,58 @@ class WebDAV {
     }
   }
 
+  // Generic operations
+
+  async getAuthCookie() {
+    if (!this.cookie) {
+      const resource = `/SOGo/connect`
+      const response = await fetch(this.serverUrl + resource, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({userName: this.username, password: this.password})
+      })
+      const values = response.headers.get('set-cookie').split(/, /)
+      let authCookies = []
+      for (let v of values) {
+        let c = cookie.parse(v)
+        for (let authCookie of ['0xHIGHFLYxSOGo', 'XSRF-TOKEN']) {
+          if (Object.keys(c).includes('0xHIGHFLYxSOGo')) {
+            authCookies.push(cookie.serialize(authCookie, c[authCookie]))
+          }
+        }
+      }
+      this.cookie = authCookies.join('; ')
+    }
+    return this.cookie
+  }
+
+  async getHttp(resource) {
+    const authCookie = await this.getAuthCookie()
+    const localHeaders = { Cookie: authCookie }
+
+    return await fetch(this.serverUrl + resource, {
+      method: 'GET',
+      headers: localHeaders
+    })
+  }
+
+  async postHttp(resource, contentType = 'application/json', data = '') {
+    const authCookie = await this.getAuthCookie()
+    const localHeaders = { 'Content-Type': contentType, Cookie: authCookie }
+
+    return await fetch(this.serverUrl + resource, {
+      method: 'POST',
+      body: data,
+      headers: localHeaders
+    })
+  }
+
+  //  WebDAV operations
+
   deleteObject(resource) {
     return deleteObject({
       url: this.serverUrl + resource,
       headers: this.headers
-    })
-  }
-
-  makeCalendar(resource) {
-    return makeCalendar({
-      url: this.serverUrl + resource,
-      headers: this.headers
-    })
-  }
-
-  createCalendarObject(resource, filename, calendar) {
-    return createCalendarObject({
-      headers: this.headers,
-      calendar: { url: this.serverUrl + resource }, // DAVCalendar
-      filename: filename,
-      iCalString: calendar
-    })
-  }
-
-  postCaldav(resource, vcalendar, originator, recipients) {
-    let localHeaders = { 'content-type': 'text/calendar; charset=utf-8'}
-
-    if (originator)
-      localHeaders.originator = originator
-    if (recipients && recipients.length > 0)
-      localHeaders.recipients = recipients.join(',')
-
-    return fetch(this.serverUrl + resource, {
-      method: 'POST',
-      body: vcalendar,
-      headers: { ...this.headers, ...localHeaders }
     })
   }
 
@@ -108,6 +129,13 @@ class WebDAV {
       },
       convertIncoming: false
     })
+  }
+
+  makeCollection(resource) {
+    return makeCollection({
+      url: this.serverUrl + resource,
+      headers: this.headers
+    });
   }
 
   propfindWebdav(resource, properties, namespace = DAVNamespace.DAV, headers = {}) {
@@ -132,7 +160,13 @@ class WebDAV {
         body: {
           propfind: {
             _attributes: {
-              ...getDAVAttribute([DAVNamespace.DAV]),
+              ...getDAVAttribute([
+                DAVNamespace.CALDAV,
+                DAVNamespace.CALDAV_APPLE,
+                DAVNamespace.CALENDAR_SERVER,
+                DAVNamespace.CARDDAV,
+                DAVNamespace.DAV
+              ]),
               [`xmlns:${nsShort}`]: namespace
             },
             prop: formattedProperties
@@ -179,6 +213,151 @@ class WebDAV {
     })
   }
 
+  propfindURL(resource = '/SOGo/dav') {
+    return propfind({
+      url: this.serverUrl + resource,
+      depth: '1',
+      props: [
+        { name: 'displayname', namespace: DAVNamespace.DAV },
+        { name: 'resourcetype', namespace: DAVNamespace.DAV }
+      ],
+      headers: this.headers
+    })
+  }
+
+  propfindCollection(resource) {
+    return propfind({
+      url: this.serverUrl + resource,
+      headers: this.headers
+    })
+  }
+
+  // http://tools.ietf.org/html/rfc3253.html#section-3.8
+  expendProperty(resource, properties) {
+    return davRequest({
+      url: this.serverUrl + resource,
+      init: {
+        method: 'REPORT',
+        namespace: DAVNamespaceShorthandMap[DAVNamespace.DAV],
+        headers: this.headers,
+        body: {
+          'expand-property': {
+            _attributes: getDAVAttribute([
+              DAVNamespace.DAV,
+            ]),
+            [`${DAVNamespaceShorthandMap[DAVNamespace.DAV]}:property`]: properties
+          }
+        }
+      },
+    })
+  }
+
+  proppatchWebdav(resource, properties, namespace = DAVNamespace.DAV, headers = {}) {
+    const nsShort = DAVNamespaceShorthandMap[namespace] || DAVInverseShort
+    const formattedProperties = Object.keys(properties).map(p => {
+      if (Array.isArray(properties[p])) {
+        return { [`${nsShort}:${p}`]: properties[p].map(pp => {
+          const [ key ] = Object.keys(pp)
+          return { [`${nsShort}:${key}`]: pp[key] || '' }
+        })}
+      }
+      return { [`${nsShort}:${p}`]: properties[p] || '' }
+    })
+    if (typeof headers.depth == 'undefined') {
+      headers.depth = new String(0)
+    }
+    return davRequest({
+      url: this.serverUrl + resource,
+      init: {
+        method: 'PROPPATCH',
+        headers: { ...this.headers, ...headers },
+        namespace: DAVNamespaceShorthandMap[DAVNamespace.DAV],
+        body: {
+          propertyupdate: {
+            _attributes: {
+              ...getDAVAttribute([
+                DAVNamespace.CALDAV,
+                DAVNamespace.CALDAV_APPLE,
+                DAVNamespace.CALENDAR_SERVER,
+                DAVNamespace.CARDDAV,
+                DAVNamespace.DAV
+              ]),
+              [`xmlns:${nsShort}`]: namespace
+            },
+            set: {
+              prop: formattedProperties
+            }
+          }
+        }
+      }
+    })
+  }
+
+  currentUserPrivilegeSet(resource) {
+    return propfind({
+      url: this.serverUrl + resource,
+      depth: '0',
+      props: [
+        { name: 'current-user-privilege-set', namespace: DAVNamespace.DAV }
+      ],
+      headers: this.headers
+    })
+  }
+
+  options(resource) {
+    return davRequest({
+      url: this.serverUrl + resource,
+      init: {
+        method: 'OPTIONS',
+        headers: this.headers,
+        body: null
+      },
+      convertIncoming: false
+    })
+  }
+
+  principalCollectionSet(resource = '/SOGo/dav') {
+    return propfind({
+      url: this.serverUrl + resource,
+      depth: '0',
+      props: [{ name: 'principal-collection-set', namespace: DAVNamespace.DAV }],
+      headers: this.headers
+    })
+  }
+
+  // CalDAV operations
+
+  makeCalendar(resource) {
+    return makeCalendar({
+      url: this.serverUrl + resource,
+      headers: this.headers
+    })
+  }
+
+  createCalendarObject(resource, filename, calendar) {
+    return createCalendarObject({
+      headers: this.headers,
+      calendar: { url: this.serverUrl + resource }, // DAVCalendar
+      filename: filename,
+      iCalString: calendar
+    })
+  }
+
+  postCaldav(resource, vcalendar, originator, recipients) {
+    let localHeaders = { 'content-type': 'text/calendar; charset=utf-8'}
+
+    if (originator)
+      localHeaders.originator = originator
+    if (recipients && recipients.length > 0)
+      localHeaders.recipients = recipients.join(',')
+
+    return fetch(this.serverUrl + resource, {
+      method: 'POST',
+      body: vcalendar,
+      headers: { ...this.headers, ...localHeaders }
+    })
+  }
+
   propfindEvent(resource) {
     return propfind({
       url: this.serverUrl + resource,
@@ -198,34 +377,6 @@ class WebDAV {
         { name: 'calendar-data', namespace: DAVNamespace.CALDAV },
       ],
       objectUrls: [ this.serverUrl + resource + filename ]
-    })
-  }
-
-  principalCollectionSet(resource = '/SOGo/dav') {
-    return propfind({
-      url: this.serverUrl + resource,
-      depth: '0',
-      props: [{ name: 'principal-collection-set', namespace: DAVNamespace.DAV }],
-      headers: this.headers
-    })
-  }
-
-  propfindURL(resource = '/SOGo/dav') {
-    return propfind({
-      url: this.serverUrl + resource,
-      depth: '1',
-      props: [
-        { name: 'displayname', namespace: DAVNamespace.DAV },
-        { name: 'resourcetype', namespace: DAVNamespace.DAV }
-      ],
-      headers: this.headers
-    })
-  }
-
-  propfindCollection(resource) {
-    return propfind({
-      url: this.serverUrl + resource,
-      headers: this.headers
     })
   }
 
@@ -249,26 +400,6 @@ class WebDAV {
               }
             ],
             [`${DAVNamespaceShorthandMap[DAVNamespace.DAV]}:prop`]: formatProps([{ name: 'displayname', namespace: DAVNamespace.DAV }])
-          }
-        }
-      },
-    })
-  }
-
-  // http://tools.ietf.org/html/rfc3253.html#section-3.8
-  expendProperty(resource, properties) {
-    return davRequest({
-      url: this.serverUrl + resource,
-      init: {
-        method: 'REPORT',
-        namespace: DAVNamespaceShorthandMap[DAVNamespace.DAV],
-        headers: this.headers,
-        body: {
-          'expand-property': {
-            _attributes: getDAVAttribute([
-              DAVNamespace.DAV,
-            ]),
-            [`${DAVNamespaceShorthandMap[DAVNamespace.DAV]}:property`]: properties
           }
         }
       },
@@ -330,112 +461,15 @@ class WebDAV {
     })
   }
 
-  propfindCaldav(resource, properties, depth = 0, parseOutgoing = true) {
-    const formattedProperties = properties.map(p => { return { name: p, namespace: DAVNamespace.CALDAV } })
-    return davRequest({
-      url: this.serverUrl + resource,
-      init: {
-        method: 'PROPFIND',
-        headers: { ...this.headers, depth: new String(depth) },
-        namespace: DAVNamespaceShorthandMap[DAVNamespace.DAV],
-        body: {
-          propfind: {
-            _attributes: getDAVAttribute([
-              DAVNamespace.CALDAV,
-              DAVNamespace.CALDAV_APPLE,
-              DAVNamespace.CALENDAR_SERVER,
-              DAVNamespace.CARDDAV,
-              DAVNamespace.DAV
-            ]),
-            prop: formattedProperties.length ? formatProps(formattedProperties) : null,
-          }
-        }
-      },
-      parseOutgoing
-    })
+  propfindCaldav(resource, properties, depth = 0) {
+    return this.propfindWebdav(resource, properties, DAVNamespace.CALDAV, { depth: new String(depth) })
   }
 
   proppatchCaldav(resource, properties, headers = {}) {
-    const formattedProperties = Object.keys(properties).map(p => {
-      return { name: p, namespace: DAVNamespace.CALDAV, value: properties[p] }
-    })
-    return davRequest({
-      url: this.serverUrl + resource,
-      init: {
-        method: 'PROPPATCH',
-        headers: { ...this.headers, ...headers },
-        namespace: DAVNamespaceShorthandMap[DAVNamespace.DAV],
-        body: {
-          propertyupdate: {
-            _attributes: getDAVAttribute([
-              DAVNamespace.CALDAV,
-              DAVNamespace.CALDAV_APPLE,
-              DAVNamespace.CALENDAR_SERVER,
-              DAVNamespace.CARDDAV,
-              DAVNamespace.DAV
-            ]),
-            set: {
-              prop: formatProps(formattedProperties)
-            }
-          }
-        }
-      }
-      // parseOutgoing
-    })
+    return this.proppatchWebdav(resource, properties, DAVNamespace.CALDAV, headers)
   }
 
-  proppatchWebdav(resource, properties, namespace = DAVNamespace.DAV, headers = {}) {
-    const nsShort = DAVNamespaceShorthandMap[namespace] || DAVInverseShort
-    const formattedProperties = Object.keys(properties).map(p => {
-      if (Array.isArray(properties[p])) {
-        return { [`${nsShort}:${p}`]: properties[p].map(pp => {
-          const [ key ] = Object.keys(pp)
-          return { [`${nsShort}:${key}`]: pp[key] || '' }
-        })}
-      }
-      return { [`${nsShort}:${p}`]: properties[p] || '' }
-    })
-    if (typeof headers.depth == 'undefined') {
-      headers.depth = new String(0)
-    }
-    return davRequest({
-      url: this.serverUrl + resource,
-      init: {
-        method: 'PROPPATCH',
-        headers: { ...this.headers, ...headers },
-        namespace: DAVNamespaceShorthandMap[DAVNamespace.DAV],
-        body: {
-          propertyupdate: {
-            _attributes: {
-              ...getDAVAttribute([DAVNamespace.DAV]),
-              [`xmlns:${nsShort}`]: namespace
-            },
-            set: {
-              prop: formattedProperties
-            }
-          }
-        }
-      }
-    })
-  }
-
-  currentUserPrivilegeSet(resource) {
-    return propfind({
-      url: this.serverUrl + resource,
-      depth: '0',
-      props: [
-        { name: 'current-user-privilege-set', namespace: DAVNamespace.DAV }
-      ],
-      headers: this.headers
-    })
-  }
-
-  makeCollection(resource) {
-    return makeCollection({
-      url: this.serverUrl + resource,
-      headers: this.headers
-    });
-  }
+  // CardDAV operations
 
   getCard(resource, filename) {
     return davRequest({
@@ -458,17 +492,7 @@ class WebDAV {
     })
   }
 
-  options(resource) {
-    return davRequest({
-      url: this.serverUrl + resource,
-      init: {
-        method: 'OPTIONS',
-        headers: this.headers,
-        body: null
-      },
-      convertIncoming: false
-    })
-  }
+  // MailDAV operations
 
   mailQueryMaildav(resource, properties, filters = {}, sort, ascending = true) {
     let formattedFilters = {}

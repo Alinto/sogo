@@ -8,9 +8,6 @@ describe('webdav sync', function() {
   const webdav_su = new WebDAV(config.superuser, config.superuser_password)
   const resource = `/SOGo/dav/${config.username}/Calendar/test-webdavsync/`
 
-  beforeEach(async function() {
-  })
-
   afterEach(async function() {
     await webdav_su.deleteObject(resource)
   })
