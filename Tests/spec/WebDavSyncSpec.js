@@ -12,7 +12,7 @@ describe('webdav sync', function() {
     await webdav_su.deleteObject(resource)
   })
 
-  it("webdav sync", async function() {
+  it('webdav sync', async function() {
     const nsShort = DAVNamespaceShorthandMap[DAVNamespace.DAV].toUpperCase()
     let response, xml, token
 
@@ -23,7 +23,9 @@ describe('webdav sync', function() {
 
     response = await webdav.makeCalendar(resource)
     expect(response.length).toBe(1)
-    expect(response[0].status).toBe(201)
+    expect(response[0].status)
+    .withContext(`HTTP status code when creating a Calendar`)
+    .toBe(201)
 
     // test queries:
     //   empty collection:
@@ -36,15 +38,23 @@ describe('webdav sync', function() {
     response = await webdav.syncQuery(resource, null, [ 'getetag' ])
     xml = await response.text();
     ({ [`${nsShort}:multistatus`]: { [`${nsShort}:sync-token`]: { _text: token } } } = convert.xml2js(xml, {compact: true, nativeType: true}))
-    expect(response.status).toBe(207)
-    expect(token).toBeGreaterThanOrEqual(0)
+    expect(response.status)
+    .withContext(`HTTP status code when performing sync-query without a token`)
+    .toBe(207)
+    expect(token)
+    .withContext(`Sync query returns valid token`)
+    .toBeGreaterThanOrEqual(0)
 
     // we make sure that any token is accepted when the collection is
     // empty, but that the returned token differs
     response = await webdav.syncQuery(resource, '1234', [ 'getetag' ])
     xml = await response.text();
     ({ [`${nsShort}:multistatus`]: { [`${nsShort}:sync-token`]: { _text: token } } } = convert.xml2js(xml, {compact: true, nativeType: true}))
-    expect(response.status).toBe(207)
-    expect(token).toBeGreaterThanOrEqual(0)
+    expect(response.status)
+    .withContext(`HTTP status code when performing sync-query with a token`)
+    .toBe(207)
+    expect(token)
+    .withContext(`Sync query returns valid token`)
+    .toBeGreaterThanOrEqual(0)
   })
 })

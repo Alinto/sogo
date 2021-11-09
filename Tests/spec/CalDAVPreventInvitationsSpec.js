@@ -82,14 +82,6 @@ describe('PreventInvitations', function() {
 
   beforeAll(async function() {
     prefs = new Preferences(config.attendee1_username, config.attendee1_password)
-    const calendarPrefs = prefs.get('Calendar')
-    if (!calendarPrefs.PreventInvitationsWhitelist)
-      calendarPrefs.PreventInvitationsWhitelist = {}
-    await prefs.set('PreventInvitationsWhitelist', {})
-    if (!calendarPrefs.PreventInvitations)
-      calendarPrefs.PreventInvitations = 0
-    await prefs.set('PreventInvitations', 0)
-
     webdav = new WebDAV(config.username, config.password)
     webdav_su = new WebDAV(config.superuser, config.superuser_password)
     webdavAttendee1 = new WebDAV(config.attendee1, config.attendee1_password)
@@ -112,6 +104,16 @@ describe('PreventInvitations', function() {
     // list of ics used by the test.
     // afterAll will loop over this and wipe them in all users' calendar
     icsList = []
+  })
+
+  beforeEach(async function() {
+    const calendarPrefs = prefs.get('Calendar')
+    if (!calendarPrefs.PreventInvitationsWhitelist)
+      calendarPrefs.PreventInvitationsWhitelist = {}
+    await prefs.set('PreventInvitationsWhitelist', {})
+    if (!calendarPrefs.PreventInvitations)
+      calendarPrefs.PreventInvitations = 0
+    await prefs.set('PreventInvitations', 0)
   })
 
   afterAll(async function() {

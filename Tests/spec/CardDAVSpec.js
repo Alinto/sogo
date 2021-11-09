@@ -5,9 +5,10 @@ import TestUtility from '../lib/utilities'
 import {
   DAVNamespace,
   DAVNamespaceShorthandMap,
-  davRequest
+  davRequest,
+  formatProps,
+  getDAVAttribute
 } from 'tsdav'
-import { formatProps, getDAVAttribute } from 'tsdav/dist/util/requestHelpers';
 
 const cards = {
   'new.vcf': `BEGIN:VCARD

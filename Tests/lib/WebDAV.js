@@ -5,9 +5,10 @@ import {
 
   davRequest,
   deleteObject,
+  formatProps,
   getBasicAuthHeaders,
+  getDAVAttribute,
   propfind,
-  syncCollection,
 
   calendarMultiGet,
   createCalendarObject,
@@ -15,8 +16,6 @@ import {
 
   createVCard
 } from 'tsdav'
-import { formatProps, getDAVAttribute } from 'tsdav/dist/util/requestHelpers';
-import { makeCollection } from 'tsdav/dist/collection';
 import convert from 'xml-js'
 import { fetch } from 'cross-fetch'
 import config from './config'
@@ -132,10 +131,14 @@ class WebDAV {
   }
 
   makeCollection(resource) {
-    return makeCollection({
+    return davRequest({
       url: this.serverUrl + resource,
-      headers: this.headers
-    });
+      init: {
+        method: 'MKCOL',
+        headers: this.headers,
+        namespace: DAVNamespaceShorthandMap[DAVNamespace.DAV]
+      }
+    })
   }
 
   propfindWebdav(resource, properties, namespace = DAVNamespace.DAV, headers = {}) {
@@ -325,6 +328,42 @@ class WebDAV {
     })
   }
 
+  // https://datatracker.ietf.org/doc/html/rfc6578#section-3.2
+  syncQuery(resource, token = '', properties) {
+    const formattedProperties = properties.map((p) => {
+      return { [`${DAVNamespaceShorthandMap[DAVNamespace.DAV]}:${p}`]: '' }
+    });
+    let xmlBody = convert.js2xml(
+      {
+        'sync-collection': {
+          _attributes: getDAVAttribute([DAVNamespace.DAV]),
+          'sync-level': 1,
+          'sync-token': token,
+          prop: formattedProperties
+        }
+      },
+      {
+        compact: true,
+        spaces: 2,
+        elementNameFn: (name) => {
+          // add namespace to all keys without namespace
+          if (!/^.+:.+/.test(name)) {
+            return `${DAVNamespaceShorthandMap[DAVNamespace.DAV]}:${name}`
+          }
+          return name
+        }
+      }
+    )
+    return fetch(this.serverUrl + resource, {
+      headers: {
+        'Content-Type': 'application/xml; charset="utf-8"',
+        ...this.headers
+      },
+      method: 'REPORT',
+      body: xmlBody
+    })
+  }
+
   // CalDAV operations
 
   makeCalendar(resource) {
@@ -423,41 +462,6 @@ class WebDAV {
           }
         }
       },
-    })
-  }
-
-  syncQuery(resource, token = '', properties) {
-    const formattedProperties = properties.map((p) => {
-      return { [`${DAVNamespaceShorthandMap[DAVNamespace.DAV]}:${p}`]: '' }
-    });
-    let xmlBody = convert.js2xml(
-      {
-        'sync-collection': {
-          _attributes: getDAVAttribute([DAVNamespace.DAV]),
-          'sync-level': 1,
-          'sync-token': token,
-          prop: formattedProperties
-        }
-      },
-      {
-        compact: true,
-        spaces: 2,
-        elementNameFn: (name) => {
-          // add namespace to all keys without namespace
-          if (!/^.+:.+/.test(name)) {
-            return `${DAVNamespaceShorthandMap[DAVNamespace.DAV]}:${name}`
-          }
-          return name
-        }
-      }
-    )
-    return fetch(this.serverUrl + resource, {
-      headers: {
-        'Content-Type': 'application/xml; charset="utf-8"',
-        ...this.headers
-      },
-      method: 'REPORT',
-      body: xmlBody
     })
   }
 
