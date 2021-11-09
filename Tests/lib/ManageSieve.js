@@ -18,15 +18,15 @@ class ManageSieve {
     this.ready = false
   }
 
-  async connect() {
+  async connect(force = false) {
     let response, parsedResponse
 
-    if (!this.ready) {
+    if (!this.ready || force) {
       await this.connection.connect(this.params)
       response = await this.connection.send('CAPABILITY', { waitfor: /\b(OK|NO)/ })
       // console.debug(`ManageSieve.connect => ${response}`)
       parsedResponse = this.parseResponse(response)
-      if (!parsedResponse['OK']) {
+      if (!Object.keys(parsedResponse).includes('OK')) {
         throw new Error(`Connection failed: ${parsedResponse['NO']}`)
       }
       this.ready = true
@@ -36,17 +36,17 @@ class ManageSieve {
     }
   }
 
-  async authenticate() {
+  async authenticate(force) {
     let buff, base64, response, parsedResponse
 
-    await this.connect()
+    await this.connect(force)
 
     buff = Buffer.from(`${this.login}\0${this.authname}\0${this.password}`)
     base64 = buff.toString('base64')
-    response = await this.connection.send(`AUTHENTICATE "PLAIN" {${base64.length}+}\n${base64}`, { waitfor: /\b(OK|NO)/ })
+    response = await this.connection.send(`AUTHENTICATE "PLAIN" {${base64.length}+}\r\n${base64}`, { waitfor: /\b(OK|NO)/ })
     // console.debug(`ManageSieve.authenticate => ${response}`)
     parsedResponse = this.parseResponse(response)
-    if (!parsedResponse['OK']) {
+    if (!Object.keys(parsedResponse).includes('OK')) {
       throw new Error(`Authentication failed: ${parsedResponse['NO']}`)
     }
   }
@@ -59,7 +59,7 @@ class ManageSieve {
     response = await this.connection.send(`LISTSCRIPTS`, { waitfor: /\b(OK|NO)/ })
     parsedResponse = this.parseResponse(response)
     // console.debug(`ManageSieve.listScripts => ${JSON.stringify(parsedResponse, undefined, 2)}`)
-    if (!parsedResponse['OK']) {
+    if (!Object.keys(parsedResponse).includes('OK')) {
       throw new Error(`List scripts failed: ${parsedResponse['NO']}`)
     }
     return parsedResponse

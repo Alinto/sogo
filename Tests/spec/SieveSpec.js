@@ -47,12 +47,11 @@ describe('Sieve', function() {
     utility = new TestUtility(webdav)
     manageSieve = new ManageSieve(config.username, config.username, config.password)
     user = await utility.fetchUserInfo(config.username)
-
-    await manageSieve.authenticate()
   })
 
   beforeEach(async function() {
     await _killFilters()
+    await manageSieve.authenticate(true)
   })
 
   afterAll(async function() {
