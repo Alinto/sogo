@@ -10,7 +10,7 @@ class ManageSieve {
     this.params = {
       host: config.sieve_server,
       port: config.sieve_port,
-      shellPrompt: /\bOK "/,
+      shellPrompt: /\bOK/,
       timeout: 1500
     }
     this.connection = new Telnet()
@@ -23,7 +23,7 @@ class ManageSieve {
 
     if (!this.ready) {
       await this.connection.connect(this.params)
-      response = await this.connection.send('CAPABILITY', { waitfor: /\b(OK|NO) "/ })
+      response = await this.connection.send('CAPABILITY', { waitfor: /\b(OK|NO)/ })
       // console.debug(`ManageSieve.connect => ${response}`)
       parsedResponse = this.parseResponse(response)
       if (!parsedResponse['OK']) {
@@ -43,7 +43,7 @@ class ManageSieve {
 
     buff = Buffer.from(`${this.login}\0${this.authname}\0${this.password}`)
     base64 = buff.toString('base64')
-    response = await this.connection.send(`AUTHENTICATE "PLAIN" {${base64.length}+}\n${base64}`, { waitfor: /\b(OK|NO) "/ })
+    response = await this.connection.send(`AUTHENTICATE "PLAIN" {${base64.length}+}\n${base64}`, { waitfor: /\b(OK|NO)/ })
     // console.debug(`ManageSieve.authenticate => ${response}`)
     parsedResponse = this.parseResponse(response)
     if (!parsedResponse['OK']) {
@@ -56,7 +56,7 @@ class ManageSieve {
 
     await this.connect()
 
-    response = await this.connection.send(`LISTSCRIPTS`, { waitfor: /\b(OK|NO) "/ })
+    response = await this.connection.send(`LISTSCRIPTS`, { waitfor: /\b(OK|NO)/ })
     parsedResponse = this.parseResponse(response)
     // console.debug(`ManageSieve.listScripts => ${JSON.stringify(parsedResponse, undefined, 2)}`)
     if (!parsedResponse['OK']) {
@@ -70,7 +70,7 @@ class ManageSieve {
 
     await this.connect()
 
-    response = await this.connection.send(`GETSCRIPT "${scriptname}"`, { waitfor: /\b(OK|NO) "/ })
+    response = await this.connection.send(`GETSCRIPT "${scriptname}"`, { waitfor: /\b(OK|NO)/ })
     // console.debug(`ManageSieve.getScript(${scriptname}) => |${response}|`)
     const lengthMatch = response.match(/{([0-9]+)}\r?\n/)
     if (lengthMatch) {

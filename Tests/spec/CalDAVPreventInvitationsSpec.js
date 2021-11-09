@@ -107,17 +107,13 @@ describe('PreventInvitations', function() {
   })
 
   beforeEach(async function() {
-    const calendarPrefs = prefs.get('Calendar')
-    if (!calendarPrefs.PreventInvitationsWhitelist)
-      calendarPrefs.PreventInvitationsWhitelist = {}
-    await prefs.set('PreventInvitationsWhitelist', {})
-    if (!calendarPrefs.PreventInvitations)
-      calendarPrefs.PreventInvitations = 0
-    await prefs.set('PreventInvitations', 0)
+    await prefs.setOrCreate('PreventInvitationsWhitelist', {}, ['settings', 'Calendar'])
+    await prefs.setOrCreate('PreventInvitations', 0, ['settings', 'Calendar'])
+    await prefs.save()
   })
 
   afterAll(async function() {
-    await prefs.set('PreventInvitationsWhitelist', {})
+    await prefs.setNoSave('PreventInvitationsWhitelist', {})
     await prefs.set('PreventInvitations', 0)
     // delete all created  events from all users' calendar
     for (const ics of icsList) {
@@ -129,7 +125,6 @@ describe('PreventInvitations', function() {
 
   it(`Disable, accept the invitation`, async function() {
     // First accept the invitation
-    await prefs.set('PreventInvitations', 0)
     const settings = await prefs.getSettings()
     const { Calendar: { PreventInvitations } = {} } = settings
     expect(PreventInvitations)
