@@ -1776,6 +1776,8 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
                              forKey: @"{urn:schemas:mailheader:}references"];
       [davIMAPFieldsTable setObject: @"BODY[HEADER.FIELDS (SUBJECT)]"
                              forKey: @"{DAV:}displayname"];
+      [davIMAPFieldsTable setObject: @"RFC822.SIZE"
+                             forKey: @"{DAV:}getcontentlength"];
       [davIMAPFieldsTable setObject: @"BODY[HEADER.FIELDS (TO)]"
                              forKey: @"{urn:schemas:mailheader:}to"];
     }

@@ -1273,7 +1273,7 @@ static BOOL debugSoParts       = NO;
 
 - (NSString *) davContentLength
 {
-  return [[self fetchCoreInfos] valueForKey: @"size"];
+  return [NSString stringWithFormat: @"%@", [[self fetchCoreInfos] valueForKey: @"size"]];
 }
 
 - (NSDate *) davCreationDate
