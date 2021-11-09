@@ -31,7 +31,7 @@ Can you read me?
 --
 Cyril <cyril@cyril.dev>
 `
-const msg1Size = 874
+let msg1Size = 874
 const message2 = `Return-Path: <cyril@cyril.dev>
 Received: from cyril.dev (localhost [127.0.0.1])
          by cyril.dev (Cyrus v2.3.8-Debian-2.3.8-1) with LMTPA;
@@ -123,7 +123,7 @@ Stuff StuffStuffStuffStuff StuffStuffStuff StuffStuff
 --
 Cyril <cyril@cyril.dev>
 `
-const msg2Size = 4398
+let msg2Size = 4398
 const message3 = `Return-Path: <cyril@cyril.dev>
 Received: from cyril.dev (localhost [127.0.0.1])
          by cyril.dev (Cyrus v2.3.8-Debian-2.3.8-1) with LMTPA;
@@ -147,7 +147,7 @@ Can you read me?
 This message is just a bit larger than message1 but smaller than message2
 --
 Cyril <cyril@cyril.dev>`
-const msg3Size = 720
+let msg3Size = 720
 
 let webdav, utility
 let user, resource, mailboxesList
@@ -200,7 +200,8 @@ describe('MailDAV', function() {
   const _testFilter = async function (filter) {
     const [filters, hrefs] = filter
     const url = `${resource}foldertest-dav-mail`
-    const results = await webdav.mailQueryMaildav(url, ['displayname'], filters)
+    const results = await webdav.mailQueryMaildav(url, ['displayname', 'getcontentlength'], filters)
+    let messages = {}
 
     let received_count = 0
     for (let response of results) {
@@ -211,12 +212,15 @@ describe('MailDAV', function() {
         expect(hrefs.includes(response.href))
         .withContext(`${response.href} is returned (filter: ${JSON.stringify(filters)}, expected results: ${hrefs.join(', ')})`)
         .toBeTrue()
+        messages[response.href] = response.props
         received_count++
       }
     }
     expect(received_count)
     .withContext(`Expected number of results from mail query ${JSON.stringify(filters)}`)
     .toEqual(hrefs.length)
+
+    return messages
   }
 
   const _testSort = async function (sortAttribute, expectedHrefs, ascending = true) {
@@ -245,9 +249,17 @@ describe('MailDAV', function() {
     const [result] = await webdav.propfindWebdav(url, [property], namespace)
     const { props: { [utility.camelCase(property)]: objectProperty }} = result
 
-    expect(objectProperty)
-    .withContext(`Property ${utility.camelCase(property)} of ${url}`)
-    .toEqual(expected)
+    if (['from', 'to', 'cc'].includes(property)) {
+      const addresses = objectProperty.split(/, /).map(s => s.replace(/.*<(.+)>.*/, "$1"))
+      for (let address of expected) {
+        expect(addresses).toContain(address)
+      }
+    }
+    else {
+      expect(objectProperty)
+      .withContext(`Property ${utility.camelCase(property)} of ${url}`)
+      .toEqual(expected)
+    }
   }
 
   beforeAll(async function() {
@@ -301,12 +313,18 @@ describe('MailDAV', function() {
     const mailbox = 'test-dav-mail'
     const url = `${resource}folder${mailbox}`
     let msg1Loc, msg2Loc, msg3Loc
-    let filter, filters
+    let msgs, filter, filters
 
     await _makeMailbox(mailbox)
     msg1Loc = await _putMessage(mailbox, message1);
     msg2Loc = await _putMessage(mailbox, message2);
     msg3Loc = await _putMessage(mailbox, message3);
+
+    // Fetch messages sizes
+    msgs = await _testFilter([{}, [msg1Loc, msg2Loc, msg3Loc]])
+    msg1Size = msgs[msg1Loc].getcontentlength
+    msg2Size = msgs[msg2Loc].getcontentlength
+    msg3Size = msgs[msg3Loc].getcontentlength
 
     // 1. test filter: sent-date
     //   SENTSINCE, SENTBEFORE, SENTON
@@ -598,13 +616,13 @@ describe('MailDAV', function() {
     await _testProperty(msg1Loc, DAVHttpMail, 'read', 0)
     await _testProperty(msg1Loc, DAVHttpMail, 'textdescription', `<![CDATA[${message1}]]>`)
     await _testProperty(msg1Loc, DAVHttpMail, 'unreadcount', {})
-    await _testProperty(msg1Loc, DAVMailHeader, 'cc', '2message1cc@cyril.dev, user10@cyril.dev')
+    await _testProperty(msg1Loc, DAVMailHeader, 'cc', ['2message1cc@cyril.dev', 'user10@cyril.dev'])
     await _testProperty(msg1Loc, DAVMailHeader, 'date', 'Mon, 28 Sep 2009 11:42:14 GMT')
-    await _testProperty(msg1Loc, DAVMailHeader, 'from', 'Cyril <message1from@cyril.dev>')
+    await _testProperty(msg1Loc, DAVMailHeader, 'from', ['message1from@cyril.dev'])
     await _testProperty(msg1Loc, DAVMailHeader, 'in-reply-to', {})
     await _testProperty(msg1Loc, DAVMailHeader, 'message-id', '<4AC1F29sept6.5060801@cyril.dev>')
     await _testProperty(msg1Loc, DAVMailHeader, 'references', '<4AC3BF1B.3010806@inverse.ca>')
     await _testProperty(msg1Loc, DAVMailHeader, 'subject', 'message1subject')
-    await _testProperty(msg1Loc, DAVMailHeader, 'to', 'message1to@cyril.dev')
+    await _testProperty(msg1Loc, DAVMailHeader, 'to', ['message1to@cyril.dev'])
   })
 })
