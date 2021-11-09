@@ -47,7 +47,7 @@
            @"recent", @"seen", @"deleted", nil];
   strings = [NSArray arrayWithObjects: @"from", @"to", @"cc", 
              @"keywords", @"body", nil];
-  dates = [NSArray arrayWithObjects: @"date", @"receive-date", nil];
+  dates = [NSArray arrayWithObjects: @"date", @"receive-date", @"sent-date", nil];
 
   formats = nil;
   list = [mailFilters childNodes];
