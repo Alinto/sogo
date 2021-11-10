@@ -82,7 +82,7 @@ describe('Sieve', function() {
   it('enable vacation script - ignore lists', async function() {
     const vacationMsg = 'vacation test - ignore list'
     const daysInterval = 3
-    const mailaddr = user.email
+    const mailaddr = user.email.replace(/mailto:/, '')
     const sieveVacationIgnoreLists = `require ["vacation"];\r\nif allof ( not exists ["list-help", "list-unsubscribe", "list-subscribe", "list-owner", "list-post", "list-archive", "list-id", "Mailing-List"], not header :comparator "i;ascii-casemap" :is "Precedence" ["list", "bulk", "junk"], not header :comparator "i;ascii-casemap" :matches "To" "Multiple recipients of*" ) { vacation :days ${daysInterval} :addresses ["${mailaddr}"] text:\r\n${vacationMsg}\r\n.\r\n;\r\n}\r\n`
     let vacation
 
@@ -90,7 +90,7 @@ describe('Sieve', function() {
     vacation.enabled = 1
     await prefs.setNoSave('autoReplyText', vacationMsg)
     await prefs.setNoSave('daysBetweenResponse', daysInterval)
-    await prefs.setNoSave('autoReplyEmailAddresses', [user.email])
+    await prefs.setNoSave('autoReplyEmailAddresses', [mailaddr])
     await prefs.setNoSave('ignoreLists', 1)
     await prefs.save()
 

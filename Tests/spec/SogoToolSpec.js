@@ -6,10 +6,15 @@ const path = require('path')
 const { execSync } = require('child_process')
 
 describe('sogo-tool tests', function() {
-  let tmpdir
+  let tmpdir, userdir
+
+  beforeAll(function() {
+    const { homedir } = os.userInfo()
+    userdir = homedir
+  })
 
   beforeEach(function() {
-    tmpdir = mkdtempSync(path.join(os.tmpdir(), 'sogo-'))
+    tmpdir = mkdtempSync(path.join(homedir, 'sogo-'))
   })
 
   afterEach(function() {
