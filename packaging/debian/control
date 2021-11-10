@@ -1,7 +1,7 @@
 Source: sogo
 Priority: optional
 Maintainer: Inverse Support <support@inverse.ca>
-Build-Depends: debhelper (>= 7.0.15), gobjc | objc-compiler, libgnustep-base-dev, libsope-appserver4.9-dev, libsope-core4.9-dev, libsope-gdl1-4.9-dev, libsope-ldap4.9-dev, libsope-mime4.9-dev, libsope-xml4.9-dev, libmemcached-dev, libxml2-dev, libsbjson-dev, libssl-dev, libcurl4-openssl-dev | libcurl4-gnutls-dev, libwbxml2-dev (>= 0.11.2), liblasso3-dev (>= 2.3.5), libytnef0-dev (>= 1.9.3), libzip-dev, libsodium-dev (>= 1.0.9) | base-files (<= 9.4ubuntu4)
+Build-Depends: debhelper (>= 7.0.15), gobjc | objc-compiler, libgnustep-base-dev, libsope-appserver4.9-dev, libsope-core4.9-dev, libsope-gdl1-4.9-dev, libsope-ldap4.9-dev, libsope-mime4.9-dev, libsope-xml4.9-dev, libmemcached-dev, libxml2-dev, libsbjson-dev, libssl-dev, libcurl4-openssl-dev | libcurl4-gnutls-dev, libwbxml2-dev (>= 0.11.2), liblasso3-dev (>= 2.3.5), libytnef0-dev (>= 1.9.3), libzip-dev, libsodium-dev (>= 1.0.9) | base-files (<= 9.4ubuntu5)
 Section: web
 Standards-Version: 3.9.1
 
