@@ -3,7 +3,7 @@ import WebDAV from '../lib/WebDAV'
 import TestUtility from '../lib/utilities'
 import ICAL from 'ical.js'
 
-describe('create, read, modify, delete tasks for regular user', function() {
+describe('CalDAV Scheduling', function() {
   const webdav = new WebDAV(config.username, config.password)
   const webdav_su = new WebDAV(config.superuser, config.superuser_password)
   const webdavAttendee1 = new WebDAV(config.attendee1, config.attendee1_password)
@@ -496,7 +496,7 @@ describe('create, read, modify, delete tasks for regular user', function() {
       .toBe(1)
     vevent = vevents[0]
     expect(vevent.getFirstPropertyValue('recurrence-id'))
-      .withContext('The vEvent of the attendee has a RECURRENCE-ID')
+      .withContext(`The vEvent of the attendee has a RECURRENCE-ID`)
       .toBeTruthy()
     attendees = vevent.getAllProperties('attendee')
     expect(attendees.length)
@@ -637,7 +637,9 @@ describe('create, read, modify, delete tasks for regular user', function() {
       .withContext('Partstat of attendee is need-actions for the master event')
       .toBe('NEEDS-ACTION')
 
-    expect(veventException).toBeTruthy()
+    expect(veventException)
+    .withContext(`The vCalendar of the organizer has a vEvent with a recurrence-id: ${vcalendarOrganizer}`)
+    .toBeTruthy()
     attendees = veventException.getAllProperties('attendee')
     expect(attendees.length)
       .withContext('Attendees count in the calendar of the exception event')
