@@ -62,7 +62,7 @@ describe('Sieve', function() {
   it('enable simple vacation script', async function() {
     const vacationMsg = 'vacation test'
     const daysInterval = 5
-    const mailaddr = user.email
+    const mailaddr = user.email.replace(/mailto:/, '')
     const sieveSimpleVacation = `require ["vacation"];\r\nvacation :days ${daysInterval} :addresses ["${mailaddr}"] text:\r\n${vacationMsg}\r\n.\r\n;\r\n`
     let vacation
 
@@ -70,7 +70,7 @@ describe('Sieve', function() {
     vacation.enabled = 1
     await prefs.setNoSave('autoReplyText', vacationMsg)
     await prefs.setNoSave('daysBetweenResponse', daysInterval)
-    await prefs.setNoSave('autoReplyEmailAddresses', [user.email])
+    await prefs.setNoSave('autoReplyEmailAddresses', [mailaddr])
     await prefs.save()
 
     const createdScript = await _getSogoSieveScript()

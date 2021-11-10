@@ -624,5 +624,5 @@ describe('MailDAV', function() {
     await _testProperty(msg1Loc, DAVMailHeader, 'references', '<4AC3BF1B.3010806@inverse.ca>')
     await _testProperty(msg1Loc, DAVMailHeader, 'subject', 'message1subject')
     await _testProperty(msg1Loc, DAVMailHeader, 'to', ['message1to@cyril.dev'])
-  })
+  }, 30000) // increase timeout for this long test
 })
