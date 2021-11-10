@@ -14,7 +14,7 @@ describe('sogo-tool tests', function() {
   })
 
   beforeEach(function() {
-    tmpdir = mkdtempSync(path.join(homedir, 'sogo-'))
+    tmpdir = mkdtempSync(path.join(userdir, 'sogo-'))
   })
 
   afterEach(function() {
