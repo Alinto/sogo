@@ -26,8 +26,10 @@ describe('sogo-tool tests', function() {
 
   it('backup', async function() {
     const sudo = isRoot ? `sudo -u sogo ` : ``
-    execSync(`${sudo}sogo-tool backup ${tmpdir} ${config.username}`, (error, stdout, stderr) => {
-      expect(error).not.toBeDefined()
-    })
+    try {
+      execSync(`${sudo}sogo-tool backup ${tmpdir} ${config.username} 2>&1`)
+    } catch (err) {
+      fail(err)
+    }
   })
 })
