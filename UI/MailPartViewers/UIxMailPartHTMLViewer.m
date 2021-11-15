@@ -487,9 +487,7 @@ _xmlCharsetForCharset (NSString *charset)
             {
               skipAttribute = NO;
               name = [[_attributes nameAtIndex: count] lowercaseString];
-              if ([name hasPrefix: @"ON"])
-                skipAttribute = YES;
-              else if ([name isEqualToString: @"src"])
+              if ([name isEqualToString: @"src"])
                 {
                   value = [_attributes valueAtIndex: count];
                   if ([value hasPrefix: @"cid:"])
@@ -517,13 +515,14 @@ _xmlCharsetForCharset (NSString *charset)
                   name = [NSString stringWithFormat: @"unsafe-%@", name];
                 }
               else if ([name isEqualToString: @"href"]
-                       || [name isEqualToString: @"action"])
+                       || [name isEqualToString: @"action"]
+                       || [name isEqualToString: @"formaction"])
                 {
-                  value = [_attributes valueAtIndex: count];
-                  skipAttribute = ([value rangeOfString: @"://"].location
-                                   == NSNotFound
+                  value = [[_attributes valueAtIndex: count] lowercaseString];
+                  skipAttribute = ([value rangeOfString: @"://"].location == NSNotFound
                                    && ![value hasPrefix: @"mailto:"]
-                                   && ![value hasPrefix: @"#"]);
+                                   && ![value hasPrefix: @"#"]) ||
+                    [value hasPrefix: @"javascript:"];
                   if (!skipAttribute)
                     [resultPart appendString: @" rel=\"noopener\""];
                 }
