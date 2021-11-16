@@ -2294,7 +2294,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       //      [react on SENT-BY as someone else is acting for the organizer]
       //
       //
-      if ([[newEvent attendees] count] || [[oldEvent attendees] count])
+      int newCount = [[newEvent attendees] count], oldCount = [[oldEvent attendees] count];
+      if (newCount > 0 || oldCount > 0)
         {
           BOOL userIsOrganizer;
 
