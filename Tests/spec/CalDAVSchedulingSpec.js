@@ -554,8 +554,8 @@ describe('CalDAV Scheduling', function() {
     const icsName = 'test-rrule-invitation-deleted-exdate-dance.ics'
     icsList.push(icsName)
 
-    let summary, uid, rrule, recur, organizer, attendees, attendee, nstartdate, exdate, offset
-    let vcalendar, vcalendarOrganizer, vcalendarAttendee, vevent, vevents, veventMaster, veventException
+    let summary, uid, rrule, recur, organizer, attendees, attendee, nstartdate, exdate, tzid, timezone, offset
+    let vcalendar, vtimezone, vcalendarOrganizer, vcalendarAttendee, vevent, vevents, veventMaster, veventException
 
     await _deleteEvent(webdav, userCalendar + icsName)
     await _deleteEvent(webdavAttendee1, attendee1Calendar + icsName)
@@ -590,11 +590,18 @@ describe('CalDAV Scheduling', function() {
     // 3. Add exdate to master event
     vcalendarOrganizer = await _getEvent(webdav, userCalendar, icsName)
     vevent = vcalendarOrganizer.getFirstSubcomponent('vevent')
-    nstartdate = vevent.getFirstProperty('dtstart').getFirstValue().toJSDate()
-    offset = nstartdate.getTimezoneOffset()
-    exdate = new Date(nstartdate.getTime() - offset*60*1000)
-    exdate = ICAL.Time.fromJSDate(exdate)
-    exdate = exdate.convertToZone(ICAL.Timezone.utcTimezone)
+    nstartdate = vevent.getFirstProperty('dtstart').getFirstValue()
+
+    vtimezone = vcalendarOrganizer.getFirstSubcomponent('vtimezone')
+    tzid = vtimezone.getFirstPropertyValue('tzid')
+    timezone = new ICAL.Timezone({
+      component: vtimezone,
+      tzid
+    })
+    offset = timezone.utcOffset(nstartdate)
+
+    exdate = nstartdate.convertToZone(ICAL.Timezone.utcTimezone)
+    exdate.addDuration(new ICAL.Duration({ seconds: -offset }))
     vevent.addPropertyWithValue('exdate', exdate)
 
     await _putEvent(webdav, userCalendar, icsName, vcalendarOrganizer, 204)
@@ -607,9 +614,8 @@ describe('CalDAV Scheduling', function() {
       .toEqual(exdate.toICALString())
 
     // 5. Create an exdate in the attendee's calendar
-    exdate = new Date(nstartdate.getTime() + offset*60*1000 + 1000*60*60*24*2)
-    exdate = ICAL.Time.fromJSDate(exdate)
-    exdate = exdate.convertToZone(ICAL.Timezone.utcTimezone)
+    exdate = nstartdate.convertToZone(ICAL.Timezone.utcTimezone)
+    exdate.addDuration(new ICAL.Duration({ days: 2, seconds: -offset }))
     vevent.addPropertyWithValue('exdate', exdate)
     vevent.removeProperty('last-modified')
     vevent.addProperty(utility.createDateTimeProperty('last-modified'))
