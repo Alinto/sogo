@@ -6,14 +6,14 @@ import ICAL from 'ical.js'
 describe('CalDAV Scheduling', function() {
   const webdav = new WebDAV(config.username, config.password)
   const webdav_su = new WebDAV(config.superuser, config.superuser_password)
-  const webdavAttendee1 = new WebDAV(config.attendee1, config.attendee1_password)
+  const webdavAttendee1 = new WebDAV(config.attendee1_username, config.attendee1_password)
   const webdavAttendee1Delegate = new WebDAV(config.attendee1_delegate_username, config.attendee1_delegate_password)
 
   const utility = new TestUtility(webdav)
 
   const userCalendar = `/SOGo/dav/${config.username}/Calendar/personal/`
-  const attendee1Calendar = `/SOGo/dav/${config.attendee1}/Calendar/personal/`
-  const attendee1DelegateCalendar = `/SOGo/dav/${config.attendee1_delegate}/Calendar/personal/`
+  const attendee1Calendar = `/SOGo/dav/${config.attendee1_username}/Calendar/personal/`
+  const attendee1DelegateCalendar = `/SOGo/dav/${config.attendee1_delegate_username}/Calendar/personal/`
   const resourceNoOverbookCalendar = `/SOGo/dav/${config.resource_no_overbook}/Calendar/personal/`
   const resourceCanOverbookCalendar = `/SOGo/dav/${config.resource_can_overbook}/Calendar/personal/`
 
@@ -102,8 +102,8 @@ describe('CalDAV Scheduling', function() {
 
   beforeAll(async function() {
     user = await utility.fetchUserInfo(config.username)
-    attendee1 = await utility.fetchUserInfo(config.attendee1)
-    attendee1Delegate = await utility.fetchUserInfo(config.attendee1_delegate)
+    attendee1 = await utility.fetchUserInfo(config.attendee1_username)
+    attendee1Delegate = await utility.fetchUserInfo(config.attendee1_delegate_username)
     resourceNoOverbook = await utility.fetchUserInfo(config.resource_no_overbook)
     resourceCanOverbook = await utility.fetchUserInfo(config.resource_can_overbook)
 
