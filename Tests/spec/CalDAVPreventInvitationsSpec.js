@@ -84,7 +84,7 @@ describe('PreventInvitations', function() {
     prefs = new Preferences(config.attendee1_username, config.attendee1_password)
     webdav = new WebDAV(config.username, config.password)
     webdav_su = new WebDAV(config.superuser, config.superuser_password)
-    webdavAttendee1 = new WebDAV(config.attendee1, config.attendee1_password)
+    webdavAttendee1 = new WebDAV(config.attendee1_username, config.attendee1_password)
     webdavAttendee1Delegate = new WebDAV(config.attendee1_delegate_username, config.attendee1_delegate_password)
 
     utility = new TestUtility(webdav)
