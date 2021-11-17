@@ -90,6 +90,9 @@
   startDate = [self startDate];
   endDate = [self endDate];
   uid = [self uid];
+  if ([uid length] > 255)
+    uid = [uid substringToIndex: 255];
+
   title = [self summary];
   if (![title isNotNull])
     title = @"";
