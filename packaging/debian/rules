@@ -74,9 +74,6 @@ clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-arch-stamp
-	( cd Tests/Integration; make clean )
-	rm -f Tests/Integration/config.py
-	-find Tests -name "*.pyc" -exec rm -f {} \;
 	if [ -f config.make ]; \
 	then \
 	  $(MAKE) clean; \

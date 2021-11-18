@@ -1,8 +1,0 @@
-This directory holds automated tests for SOGo.
-
-We currrently have:
-
- - Intregation	holds all interated tests that are used to
- 	        validate overall DAV functionality right now
-
- - Unit 	holds all unit tests
