@@ -427,7 +427,7 @@ struct GlobalObjectId {
 
       body = [thePart body];
 
-      if ([body isKindOfClass: [NGMimeMultipartBody class]])
+      if ([body isKindOfClass: [NGMimeMultipartBody class]] || [body isKindOfClass: [NGMimeMessage class]])
         {
           [self _sanitizedMIMEPart: body
                          performed: b];
@@ -479,8 +479,7 @@ struct GlobalObjectId {
           RELEASE(fdata);
           *b = YES;
         }
-      else if ([[(NGMimeContentDispositionHeaderField *)[thePart  headerForKey: @"content-disposition"] type] hasPrefix: @"attachment"] ||
-                [[(NGMimeContentDispositionHeaderField *)[thePart  headerForKey: @"content-disposition"] type] hasPrefix: @"inline"])
+      else if ([body isKindOfClass: [NSData class]])
         {
           [thePart setHeader: @"base64"  forKey: @"content-transfer-encoding"];
           [thePart setBody: [body dataByEncodingBase64]];
