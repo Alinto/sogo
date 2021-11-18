@@ -1,5 +1,90 @@
 # Changelog
 
+## [5.3.0](https://github.com/inverse-inc/sogo/compare/SOGo-5.2.0...SOGo-5.3.0) (2021-11-18)
+
+### Features
+
+* **addressbook:** warn when similar contacts are found ([a14c456](https://github.com/inverse-inc/sogo/commit/a14c45680029a846759179c33743626059835520))
+* **mail:** add support for UID MOVE operation ([d1fc15b](https://github.com/inverse-inc/sogo/commit/d1fc15b3a428d16819732fa500bec312ab8b61a8))
+* **mail:** allow to directly empty junk folder ([6c56340](https://github.com/inverse-inc/sogo/commit/6c56340ba51d8f7a04ffb0522c1bb93a6bf9c771)), closes [#5224](https://sogo.nu/bugs/view.php?id=5224)
+* **mail:** filter mailbox by flagged messages ([c2f95dc](https://github.com/inverse-inc/sogo/commit/c2f95dc56a1c4ef12a5c767e99a5a29acc74f39c)), closes [#1417](https://sogo.nu/bugs/view.php?id=1417)
+* **mail:** filter mailbox by unread messages ([e5dbebb](https://github.com/inverse-inc/sogo/commit/e5dbebb10016f197d2e1646f67aeddb6ca1cd6b8)), closes [#1146](https://sogo.nu/bugs/view.php?id=1146) [#3156](https://sogo.nu/bugs/view.php?id=3156) [#4752](https://sogo.nu/bugs/view.php?id=4752)
+* **mail:** filter messages by tags (labels) ([fbb7672](https://github.com/inverse-inc/sogo/commit/fbb76722e3716117ef7fdc370fc3fd583dd3b2d8), [800e21b](https://github.com/inverse-inc/sogo/commit/800e21b05d6beef6c9151b9d7f6fedbad5e8b238)), closes [#3323](https://sogo.nu/bugs/view.php?id=3323) [#3835](https://sogo.nu/bugs/view.php?id=3835) [#5338](https://sogo.nu/bugs/view.php?id=5338)
+* **mail:** prioritize personal address books in autocompletion ([8065091](https://github.com/inverse-inc/sogo/commit/80650919b8fd526412a8b2a67470c936a55f84e4))
+
+### Bug Fixes
+
+* **addressbook(js):** load selected cards prior to display mail editor ([c6d6dc3](https://github.com/inverse-inc/sogo/commit/c6d6dc3e668826a2ef4fff21bc72bfda53cb947e))
+* **addressbook(js):** sanitize fullname when using HTML ([0b0c884](https://github.com/inverse-inc/sogo/commit/0b0c8847bab6dae2040bcda54bea3a5e94706897), [ffed88c](https://github.com/inverse-inc/sogo/commit/ffed88c0696fdde8560d035eaafbeb363d93544c)), closes [#5400](https://sogo.nu/bugs/view.php?id=5400)
+* **addressbook:** fix compilation warnings in UIxContactFoldersView.m ([9f38201](https://github.com/inverse-inc/sogo/commit/9f38201b6c8a356798868decda9f4331bba4768f))
+* **addressbook:** generate UID when importing cards if missing ([7b5cddc](https://github.com/inverse-inc/sogo/commit/7b5cddcf2dd613e3e56668837af97f1d731e9e06)), closes [#5386](https://sogo.nu/bugs/view.php?id=5386)
+* **addressbook:** properly handle unknown properties in DAV report ([4884cb3](https://github.com/inverse-inc/sogo/commit/4884cb3978c1401ff4310265ff409eb7f335f623))
+* **addressbook:** reuse LDAP connection in CardDAV report ([3da633a](https://github.com/inverse-inc/sogo/commit/3da633aebf276e9919325ae18bf5a0357f57f4ea)), closes [#5355](https://sogo.nu/bugs/view.php?id=5355)
+* **addressbook:** use pool to lower memory usage ([a073241](https://github.com/inverse-inc/sogo/commit/a073241e0f4ff9c761a7f6b25502a6000bb1bf89), [dec4f24](https://github.com/inverse-inc/sogo/commit/dec4f24aa44abccd9c311e9cbb440f32198ef3e2))
+* **calendar:** fix weekly calculator when event has no duration ([e79b01e](https://github.com/inverse-inc/sogo/commit/e79b01ebd1d673379b3ac88e0ab7052a122f39a3))
+* **calendar:** generate missing UID when importing calendar ([e43a721](https://github.com/inverse-inc/sogo/commit/e43a721f77e8388b229f23db6cd5320823ece615))
+* **calendar:** send modification notifications for tasks ([4c679f1](https://github.com/inverse-inc/sogo/commit/4c679f1f7b77fe870c549ce1fd56b86a87a21293), [1ccfa86](https://github.com/inverse-inc/sogo/commit/1ccfa865bba6e2ee444a99e4899fa21476273557))
+* **calendar:** truncate long UIDs to avoid SQL insert error ([8cec92e](https://github.com/inverse-inc/sogo/commit/8cec92ea87d5319b42f2c3f904bbf9111b8b4337))
+* **core:** don't log error when deleting an invalid key in memcached ([0716656](https://github.com/inverse-inc/sogo/commit/0716656cd4e533f2c4fc29d662b5c54afec3fc12))
+* **core:** handle null values in modules constraints of SQL sources ([f0368d0](https://github.com/inverse-inc/sogo/commit/f0368d028b7ff20f9a793d81e71e36921b3368c7))
+* **doc:** add theme for asciidoctor-pdf ([f6a50bb](https://github.com/inverse-inc/sogo/commit/f6a50bb963a8d589944c008890c6e7b8183c2cb2))
+* **eas:** handle attachments of type message/rfc822 when sanitize emails (fixes [#5427](https://sogo.nu/bugs/view.php?id=5427)) ([#304](https://sogo.nu/bugs/view.php?id=304)) ([33b2406](https://github.com/inverse-inc/sogo/commit/33b2406bf153da7c72bab83c1e4a6b1d99c8cd15))
+* **eas:** proxy authentication in _sendMail ([f70d600](https://github.com/inverse-inc/sogo/commit/f70d60004d4c0695e9c4ba4ae7d0d9051b89028e))
+* **eas:** use base64 encoding for attachments when sanitize emails + content-length ([bfcb0b9](https://github.com/inverse-inc/sogo/commit/bfcb0b923488d49a870749e63d925888e25bb3c5)), closes [#5408](https://sogo.nu/bugs/view.php?id=5408)
+* **i18n(sr_RS:** fix HTML templates ([fb22c0a](https://github.com/inverse-inc/sogo/commit/fb22c0abaf122a61e040670e8d8f4ef7fd122a59)), closes [#5339](https://sogo.nu/bugs/view.php?id=5339)
+* **mail(css):** add bold font to mailboxes with positive unseen count ([270bc2e](https://github.com/inverse-inc/sogo/commit/270bc2ed2ea383c806c4405a71c8c9b20bc9d3dd)), closes [#4277](https://sogo.nu/bugs/view.php?id=4277)
+* **mail(css):** improve CSS sanitization of at-rules ([e714a3f](https://github.com/inverse-inc/sogo/commit/e714a3f42b3be60d3ca61bf3dc0d0a68bbdc96a3)), closes [#5387](https://sogo.nu/bugs/view.php?id=5387)
+* **mail(dav):** add support for property {DAV:}getcontentlength ([9c2b3bd](https://github.com/inverse-inc/sogo/commit/9c2b3bd473f14119305bdccee148ee86a544ba97))
+* **mail(dav):** fix mail-query response ([4df5e4b](https://github.com/inverse-inc/sogo/commit/4df5e4b8fc1265cc826262f5e74ea5a3c5453277))
+* **mail(dav):** restore support for filtering by sent-date ([563f1d2](https://github.com/inverse-inc/sogo/commit/563f1d28429289316b85d54f452f3eb48f5aa6ed))
+* **mail(html):** ban "javascript:" prefix in href, action and formaction ([e99090b](https://github.com/inverse-inc/sogo/commit/e99090b6b3260a28db166b4ed62557ea8a373cb4))
+* **mail(js):** allow to add any event invitation ([56f9e3e](https://github.com/inverse-inc/sogo/commit/56f9e3e398f3baae31674e52d3a51da1dd3a0fd1))
+* **mail(js):** ban all "on*" events attributes from HTML tags ([a5c315f](https://github.com/inverse-inc/sogo/commit/a5c315fd1735c9370bc135bdd088efe6900a906d))
+* **mail(js):** fix height of mailboxes list items ([145f221](https://github.com/inverse-inc/sogo/commit/145f221552483512bc9790bdd741ee13d45660fc))
+* **mail(js):** force search when restoring mailbox during navigation ([0eb452c](https://github.com/inverse-inc/sogo/commit/0eb452c412f3c429f2adf5ae668b3059d6ff6e43))
+* **mail(js):** reload UIDs when changing sort order ([2a8d64d](https://github.com/inverse-inc/sogo/commit/2a8d64d891617cb89f67b0dc1785532982d679f7)), closes [#5385](https://sogo.nu/bugs/view.php?id=5385)
+* **mail(js):** reset mailboxes state when leaving global search ([642db85](https://github.com/inverse-inc/sogo/commit/642db852c72b6f9d13e7bb8eb1f74e5baeb63edf))
+* **mail(js):** reset messages list after emptying trash ([9622a1e](https://github.com/inverse-inc/sogo/commit/9622a1ea07bcf23cff0cd2e1c8dd155579fa9031)), closes [#5421](https://sogo.nu/bugs/view.php?id=5421)
+* **mail(js):** show "Download all attachments" menu option ([86f08a2](https://github.com/inverse-inc/sogo/commit/86f08a2380147bf0cb1ed3f618aa90b116dc838f))
+* **mail(js):** update list of labels when adding one to a message ([37d06c6](https://github.com/inverse-inc/sogo/commit/37d06c6f211fe0c61ed96a255f36bfb1b8a329b3))
+* **mail(js):** update unseen count when reaching zero ([2d25e18](https://github.com/inverse-inc/sogo/commit/2d25e180f6fbc104736037c88fedf2144e433e1a)), closes [#5381](https://sogo.nu/bugs/view.php?id=5381)
+* **mail(js):** use message subject as filename of .eml ([792d96b](https://github.com/inverse-inc/sogo/commit/792d96b36149c1627580cae1ca3d09b027a822d2))
+* **mail(web):** improve identification of mailboxes ([7c7df9b](https://github.com/inverse-inc/sogo/commit/7c7df9b47c791cd930702390ab2c51fa1c549f88))
+* **mail:** check if smime certificate matches sender address ([ab67e7d](https://github.com/inverse-inc/sogo/commit/ab67e7d27953e6bbea053bbe4fdc446cc4191329)), closes [#5407](https://sogo.nu/bugs/view.php?id=5407)
+* **mail:** check if smime certificate matches sender address ([6eb5e97](https://github.com/inverse-inc/sogo/commit/6eb5e971545830d4ee8e4ebe6299d11c97ccd96b)), closes [#5407](https://sogo.nu/bugs/view.php?id=5407)
+* **mail:** decode ms-tnef (winmail.dat) inside message/rfc822 part ([d181cc4](https://github.com/inverse-inc/sogo/commit/d181cc4d0644c048e25f8a24d4da91bb0923f28b)), closes [#5388](https://sogo.nu/bugs/view.php?id=5388)
+* **mail:** don't encode calendar mime part twice ([2c62aaf](https://github.com/inverse-inc/sogo/commit/2c62aafe70f299a2751ab84e75aa1be9c23d7e29)), closes [#5391](https://sogo.nu/bugs/view.php?id=5391) [#5393](https://sogo.nu/bugs/view.php?id=5393)
+* **mail:** don't open XML attachments in browser ([d54dca9](https://github.com/inverse-inc/sogo/commit/d54dca9a1bff08ef722fd9e2dd1d350d8ce95293))
+* **mail:** encode text MIME parts in quoted-printable ([9e364c6](https://github.com/inverse-inc/sogo/commit/9e364c647ff7ed6e3e0bab1b1b19fd3bbfd9b65e)), closes [#5378](https://sogo.nu/bugs/view.php?id=5378)
+* **mail:** encode text MIME parts in quoted-printable ([6cf3d99](https://github.com/inverse-inc/sogo/commit/6cf3d9912595dccaf5e148b7ea622e933f5c0a76)), closes [#5376](https://sogo.nu/bugs/view.php?id=5376)
+* **mail:** fix end date of all-day event in mail notifications ([ef5820b](https://github.com/inverse-inc/sogo/commit/ef5820b49bfd8f3f53b5d6e6070bc5e2c970603b)), closes [#5384](https://sogo.nu/bugs/view.php?id=5384)
+* **mail:** new action to fetch the flags of a mailbox ([175e380](https://github.com/inverse-inc/sogo/commit/175e3802b75ff1697a7631da5f60105894338250))
+* **mail:** properly sort partial fetch results (modseq) ([534bea6](https://github.com/inverse-inc/sogo/commit/534bea674bb65242fc19e4184924d4d93c5103e3)), closes [#5385](https://sogo.nu/bugs/view.php?id=5385)
+* **mail:** replace STATUS by LIST command when copying/moving msgs ([0765c72](https://github.com/inverse-inc/sogo/commit/0765c726163c8b1ac255efcf55d3c7f622379994)), closes [#4983](https://sogo.nu/bugs/view.php?id=4983)
+* **mail:** split "l" and "r" ACL attributes for IMAP mailboxes ([08581ee](https://github.com/inverse-inc/sogo/commit/08581eefab1ce57ca2a9a2a87ec8e05351130636)), closes [#4983](https://sogo.nu/bugs/view.php?id=4983)
+* **mail:** use pool to lower memory usage ([cae51dc](https://github.com/inverse-inc/sogo/commit/cae51dc4d68be6a5edde396a268be4c185974f34))
+* **preferences(js):** review order of mail filter actions ([138ee06](https://github.com/inverse-inc/sogo/commit/138ee065a24cc65f5d3db1c6e2e93500f33acd92)), closes [#5325](https://sogo.nu/bugs/view.php?id=5325)
+* **web(css):** print more than one page in Firefox ([ea6b699](https://github.com/inverse-inc/sogo/commit/ea6b6990944cd1b8e2733c94b859f1fa2003f323)), closes [#5375](https://sogo.nu/bugs/view.php?id=5375)
+* **web(js):** reset cached users when closing subscription dialog ([38b95af](https://github.com/inverse-inc/sogo/commit/38b95af9fd26170f1e91f4b0907abcd4cfad5662))
+* **web:** contextualize title in subscription dialog ([8f99965](https://github.com/inverse-inc/sogo/commit/8f999652cc1b1d65f6504a174a7cc31d700ff8c3))
+* **web:** use a distinct salt for TOTP authentication ([d751ad9](https://github.com/inverse-inc/sogo/commit/d751ad99d6ef73be26b5e2cef987964dde3226e6), [d4da1fa](https://github.com/inverse-inc/sogo/commit/d4da1facf9689766df058d8db3023767c6ece12d))
+
+### Enhancements
+
+* **calendar(web):** initiate Web calendars reload from the frontend ([f017c42](https://github.com/inverse-inc/sogo/commit/f017c42608a71279015add6d67e12675759c4a5d)), closes [#4939](https://sogo.nu/bugs/view.php?id=4939)
+* **tests:** conversion of Python integration tests to JavaScript ([1a7ba3d](https://github.com/inverse-inc/sogo/commit/1a7ba3d4efa409b53d72f1c602199f7a320d0671))
+
+### Localization
+
+* **bg_BG:** update Bulgarian translation ([f669b76](https://github.com/inverse-inc/sogo/commit/f669b764359acae0866cebeb6032a476424fc174))
+* **cs:** update Czech translation ([f10e13b](https://github.com/inverse-inc/sogo/commit/f10e13b725f9fb2e41a0c047c37fd32ca1d51f46))
+* **de:** update German translation ([5e7c9a8](https://github.com/inverse-inc/sogo/commit/5e7c9a8890ae89488520668a1f23c0c06cc55447)), closes [#5417](https://sogo.nu/bugs/view.php?id=5417)
+* **de:** update German translation ([a33cf3c](https://github.com/inverse-inc/sogo/commit/a33cf3cd67861c932f299fe52d9abc4fc0d42f68))
+* **pl:** update Polish translation ([b2b1237](https://github.com/inverse-inc/sogo/commit/b2b12375db0e08610417ab28db8b1a9c1e151c94))
+* **pt_BR:** update Brazilian Portuguese translation ([7072319](https://github.com/inverse-inc/sogo/commit/7072319ddfb79ef0933f657f26e7055a7f798f63))
+* **ru:** update Russian translation ([710fd2f](https://github.com/inverse-inc/sogo/commit/710fd2f49228efbdf3ac792494ec8a6eb438ea60))
+* **uk:** update Ukrainian translation ([e77d228](https://github.com/inverse-inc/sogo/commit/e77d228b58ea50d4c82c9ebfb6565267f2686b65))
+
 ## [5.2.0](https://github.com/inverse-inc/sogo/compare/SOGo-5.1.1...SOGo-5.2.0) (2021-08-18)
 
 ### Features
