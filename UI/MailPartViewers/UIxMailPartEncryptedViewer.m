@@ -25,6 +25,7 @@
 #include <openssl/err.h>
 #include <openssl/pkcs7.h>
 #include <openssl/x509.h>
+#include <openssl/x509v3.h>
 #endif
 
 #import <Foundation/NSDictionary.h>
@@ -96,6 +97,7 @@
 - (NSData *) _processMessageWith: (NSData *) signedData
 {
   NSData *output;
+  NSMutableArray *emails;
 
   STACK_OF(X509) *certs;
   X509_STORE *x509Store;
@@ -112,6 +114,7 @@
 
   certs = NULL;
   certificates = [NSMutableArray array];
+  emails = [NSMutableArray array];
   validationMessage = nil;
 
   if (p7)
@@ -127,8 +130,15 @@
             {
 	      BIO *buf;
 	      char p[1024];
+	      int j;
+	      STACK_OF(OPENSSL_STRING) *emlst;
 
 	      x = sk_X509_value(certs, i);
+
+	      emlst = X509_get1_email(x);
+	      for (j = 0; j < sk_OPENSSL_STRING_num(emlst); j++)
+	          [emails addObject: [[NSString stringWithUTF8String: sk_OPENSSL_STRING_value(emlst, j)] lowercaseString]];
+	      X509_email_free(emlst);
 
 	      memset(p, 0, 1024);
 	      buf = BIO_new(BIO_s_mem());
@@ -210,42 +220,13 @@
 
   if (validSignature)
     {
-      BOOL hasMatchingAddress;
-      NSArray *pair;
-      NSDictionary *certificate, *values;
-      NSEnumerator *certificatesList, *subjectList;
-      NSString *senderAddress, *label, *value;
+      NSString *senderAddress;
 
       validationMessage = [self labelForKey: @"Message is signed"];
-      hasMatchingAddress = NO;
-      value = nil;
       senderAddress = [[[[[self clientObject] fromEnvelopeAddresses] lastObject] baseEMail] lowercaseString];
-      certificatesList = [certificates objectEnumerator];
-      while ((certificate = [certificatesList nextObject]) && !hasMatchingAddress)
+      if (![emails containsObject: senderAddress])
         {
-          subjectList = [[certificate objectForKey: @"subject"] objectEnumerator];
-          while ((pair = [subjectList nextObject]) && !hasMatchingAddress)
-            {
-              label = [[pair objectAtIndex: 0] lowercaseString];
-              value = [[pair objectAtIndex: 1] lowercaseString];
-              if ([label isEqualToString: @"commonname"] && [value isEqualToString: senderAddress])
-                {
-                  hasMatchingAddress = 1;
-                }
-            }
-        }
-
-      if (!hasMatchingAddress)
-        {
-          if (value)
-            {
-              values = [NSDictionary dictionaryWithObjectsAndKeys: value, @"certificateCn", nil];
-              validationMessage = [values keysWithFormat: [self labelForKey: @"Message is signed but the certificate (%{certificateCn}) doesn't match the sender email address"]];
-            }
-          else
-            {
-              validationMessage = [self labelForKey: @"Message is signed but the certificate doesn't match the sender email address"];
-            }
+          validationMessage = [self labelForKey: @"Message is signed but the certificate doesn't match the sender email address"];
         }
     }
   else if (!validationMessage)
