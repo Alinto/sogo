@@ -234,10 +234,16 @@
 
         <!-- the user comment is used in replies -->
         <var:if condition="inEvent.userComment.isNotEmpty">
-	  <div class="linked_attachment_meta" style="background-color: white;">
-	    <var:string value="inEvent.userComment" const:insertBR="1" />
-	  </div>
-	  <br />
+          <div class="pseudo-input-container">
+            <label class="pseudo-input-label">
+              <var:string label:value="Comment"/>
+            </label>
+            <div>
+              <md-content>
+                <var:string value="inEvent.userComment.stringByDetectingURLs" const:insertBR="1" const:escapeHTML="NO"/>
+              </md-content>
+            </div>
+          </div>
         </var:if>
 
 
@@ -281,7 +287,7 @@
         <var:if condition="authorativeEvent.comment.isNotEmpty">
           <div class="pseudo-input-container">
             <label class="pseudo-input-label">
-              <var:string label:value="Comment"/>
+              <var:string label:value="Description"/>
             </label>
             <div>
               <md-content>

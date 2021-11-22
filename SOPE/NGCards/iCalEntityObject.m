@@ -172,12 +172,12 @@
 
 - (void) setUserComment: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"usercomment"] setSingleValue: _value forKey: @""];
+  [[self uniqueChildWithTag: @"comment"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) userComment
 {
-  return [[self uniqueChildWithTag: @"usercomment"] flattenedValuesForKey: @""];
+  return [[self uniqueChildWithTag: @"comment"] flattenedValuesForKey: @""];
 }
 
 - (void) setStatus: (NSString *) _value
