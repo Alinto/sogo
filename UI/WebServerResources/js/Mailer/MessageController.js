@@ -485,7 +485,10 @@
                  this.message.uid]
           .join('/'),
           wId = this.message.$absolutePath();
-      if (action) url += '/' + action;
+      if (action) {
+        wId += '/' + action;
+        url += '/' + action;
+      }
       popupWindow = $window.open(url, wId,
                                  ["width=680",
                                   "height=520",
