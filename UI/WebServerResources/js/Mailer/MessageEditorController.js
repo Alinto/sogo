@@ -30,7 +30,6 @@
         $mdConstant.KEY_CODE.COMMA,
         $mdConstant.KEY_CODE.SEMICOLON
       ];
-      this.removeAttachment = removeAttachment;
       this.sendState = false;
       this.toggleFullscreen = toggleFullscreen;
       this.firstFocus = true;
@@ -183,11 +182,14 @@
         }
     }
 
-    function removeAttachment(item, id) {
+    this.removeAttachment = function (item, id) {
+      var _this = this;
       if (item.isUploading)
         vm.uploader.cancelItem(item);
       else {
-        vm.message.$deleteAttachment(item.file.name);
+        vm.message.$deleteAttachment(item.file.name).then(function() {
+          _this.save({toast: false});
+        });
         item.remove();
       }
       // Hack to allow adding the same file again
@@ -195,7 +197,7 @@
       var element = $window.document.getElementById(id);
       if (element)
         angular.element(element).prop('value', null);
-    }
+    };
 
     function cancel() {
       if (vm.autosave)
@@ -204,12 +206,12 @@
       if (vm.message.isNew && vm.message.attachmentAttrs)
         vm.message.$mailbox.$deleteMessages([vm.message]);
 
-      $mdDialog.cancel();
+      $mdDialog.hide();
     }
 
-    this.save = function () {
+    this.save = function (options) {
       var ctrls = $parentControllers();
-      this.message.$save().then(function(data) {
+      this.message.$save().then(function() {
         vm.message.$rawSource = null;
         if (ctrls.draftMailboxCtrl) {
           // We're saving a draft from a popup window.
@@ -221,11 +223,13 @@
             }
           });
         }
-        $mdToast.show(
-          $mdToast.simple()
-            .textContent(l('Your email has been saved'))
-            .position('top right')
-            .hideDelay(3000));
+        if (!options || options.toast) {
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(l('Your email has been saved'))
+              .position('top right')
+              .hideDelay(3000));
+        }
       });
     };
 

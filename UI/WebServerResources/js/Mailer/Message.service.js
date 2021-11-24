@@ -592,7 +592,7 @@
   Message.prototype.$deleteAttachment = function(filename) {
     var data = { 'filename': filename };
     var _this = this;
-    Message.$$resource.fetch(this.$absolutePath({asDraft: true}), 'deleteAttachment', data).then(function(data) {
+    return Message.$$resource.fetch(this.$absolutePath({asDraft: true}), 'deleteAttachment', data).then(function() {
       Message.$timeout(function() {
         _this.editable.attachmentAttrs = _.filter(_this.editable.attachmentAttrs, function(attachment) {
           return attachment.filename != filename;
