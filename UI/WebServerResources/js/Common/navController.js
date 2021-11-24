@@ -50,14 +50,16 @@
       // Listen to HTTP errors broadcasted from HTTP interceptor
       $rootScope.$on('http:Error', onHttpError);
 
-      if (sgSettings.activeUser('path').calendar) {
-        // Fetch Calendar alarms
-        Preferences.getAlarms();
-      }
+      if (!isPopup) {
+        if (sgSettings.activeUser('path').calendar) {
+          // Fetch Calendar alarms
+          Preferences.getAlarms();
+        }
 
-      if (sgSettings.activeUser('path').mail) {
-        // Poll inbox for new messages
-        Preferences.pollInbox();
+        if (sgSettings.activeUser('path').mail) {
+          // Poll inbox for new messages
+          Preferences.pollInbox();
+        }
       }
     };
 
