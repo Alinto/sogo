@@ -8,7 +8,8 @@
    * @constructor
    * @param {object} futureAccountData
    */
-    function Account(futureAccountData) {
+  function Account(futureAccountData) {
+    var _this = this;
     // Data is immediately available
     if (typeof futureAccountData.then !== 'function') {
       angular.extend(this, futureAccountData);
@@ -24,7 +25,9 @@
           identity.textSignature = _.map(element.contents(), 'textContent').join(' ').trim();
         }
       });
-      Account.$log.debug('Account: ' + JSON.stringify(futureAccountData, undefined, 2));
+      _.forEach(this.$mailboxes, function(mailboxData, i, mailboxes) {
+        mailboxes[i] = new Account.$Mailbox(_this, mailboxData);
+      });
     }
     else {
       // The promise will be unwrapped first
@@ -339,7 +342,7 @@
    * @function $getMailboxByPath
    * @memberof Account.prototype
    * @desc Recursively find a mailbox using its path
-   * @returns a promise of the HTTP operation
+   * @returns the Mailbox instance or null if not found
    */
   Account.prototype.$getMailboxByPath = function(path) {
     var mailbox = null,
@@ -551,14 +554,21 @@
    * @desc Return a sanitized object used to send to the server.
    * @return an object literal copy of the Account instance
    */
-  Account.prototype.$omit = function () {
-    var account = {}, identities = [], defaultIdentity = false;
+  Account.prototype.$omit = function (deep) {
+    var account = {}, identities = [], mailboxes = [], defaultIdentity = false;
 
     angular.forEach(this, function(value, key) {
       if (key != 'constructor' && key !='identities' && key[0] != '$') {
         account[key] = angular.copy(value);
       }
     });
+
+    if (deep) {
+      _.forEach(this.$mailboxes, function(mailbox) {
+        mailboxes.push(mailbox.$omit());
+      });
+      account.$mailboxes = mailboxes;
+    }
 
     _.forEach(this.identities, function (identity) {
       if (!identity.isReadOnly)

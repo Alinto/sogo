@@ -130,13 +130,24 @@
   /**
    * @ngInject
    */
-  stateAccount.$inject = ['$q', '$stateParams', 'stateAccounts'];
-  function stateAccount($q, $stateParams, stateAccounts) {
-    var account;
+  stateAccount.$inject = ['$q', '$window', '$stateParams', 'Account', 'stateAccounts'];
+  function stateAccount($q, $window, $stateParams, Account, stateAccounts) {
+    var account = null;
 
-    account = _.find(stateAccounts, function(account) {
-      return account.id == $stateParams.accountId;
-    });
+    if ($window.opener) {
+      if ('$mailboxController' in $window.opener &&
+          'account' in $window.opener.$mailboxController &&
+          $window.opener.$mailboxController.account.id == $stateParams.accountId) {
+        // The message account is selected in the parent window
+        account = new Account($window.opener.$mailboxController.account.$omit(true));
+      }
+    }
+
+    if (!account) {
+      account = _.find(stateAccounts, function(account) {
+        return account.id == $stateParams.accountId;
+      });
+    }
     if (account) {
       return $q.when(account);
     }
@@ -163,7 +174,8 @@
           $window.opener.$mailboxController.account.id == stateAccount.id &&
           $window.opener.$mailboxController.selectedFolder.path == mailboxId) {
         // The message mailbox is opened in the parent window
-        mailbox = $window.opener.$mailboxController.selectedFolder;
+        mailbox = new Mailbox(stateAccount,
+                              $window.opener.$mailboxController.selectedFolder.$omit());
       }
     }
 
