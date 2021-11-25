@@ -103,7 +103,7 @@
     };
 
     this.canAddCustomField = function () {
-      return _.keys(this.customFields).length < 4;
+      return _.keys(this.card.customFields).length < 4;
     };
 
     this.addCustomField = function () {
@@ -111,7 +111,7 @@
         this.card.customFields = {};
 
       // Find the first 'available' custom field
-      var availableKeys = _.pullAll(['1', '2', '3', '4'], _.keys(this.customFields));
+      var availableKeys = _.pullAll(['1', '2', '3', '4'], _.keys(this.card.customFields));
       this.card.customFields[availableKeys[0]] = "";
     };
 
