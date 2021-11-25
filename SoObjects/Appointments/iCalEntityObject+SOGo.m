@@ -761,8 +761,11 @@ NSNumber *iCalDistantFutureNumber = nil;
           NSMutableArray *alarms;
 
           alarms = [NSMutableArray array];
+
+          // Compute the alarms for the next 2 years. We must cover more than 1 year since yearly alarms that are triggered
+          // 1 day before the event date require a range of at least 1 year and 1 day. Too play safe, we cover 2 years.
           start = [NSCalendarDate date];
-          end = [start addYear:1 month:0 day:0 hour:0 minute:0 second:0];
+          end = [start addYear:2 month:0 day:0 hour:0 minute:0 second:0];
           range = [NGCalendarDateRange calendarDateRangeWithStartDate: start
                                                               endDate: end];
 
@@ -832,12 +835,12 @@ NSNumber *iCalDistantFutureNumber = nil;
                                   || ([webstatus caseInsensitiveCompare: @"TRIGGERED"]
                                       != NSOrderedSame))
                                 v = delta;
-                              nextAlarmDate = [NSDate dateWithTimeIntervalSince1970: [[[alarms objectAtIndex: i] objectForKey: @"c_nextalarm"] intValue]];
+                              nextAlarmDate = [NSDate dateWithTimeIntervalSince1970: c_nextalarm];
                             }
 			  else if ((anAlarm = [self firstEmailAlarm]) && af)
 
 			    {
-			      nextAlarmDate = [NSDate dateWithTimeIntervalSince1970: [[[alarms objectAtIndex: i] objectForKey: @"c_nextalarm"] intValue]];
+			      nextAlarmDate = [NSDate dateWithTimeIntervalSince1970: c_nextalarm];
 			      email_alarm_number = [[self alarms] indexOfObject: anAlarm];
 
                               if ([anAlarm userIsAttendee: alarmOwner])
@@ -857,7 +860,7 @@ NSNumber *iCalDistantFutureNumber = nil;
         }
     }
 
-  // Don't update c_nextalarm in the quick table if it's not na email alarm
+  // Don't update c_nextalarm in the quick table if it's not an email alarm
   if ([nextAlarmDate isNotNull] && email_alarm_number < 0)
     {
       [row setObject: [NSNumber numberWithInt: [nextAlarmDate timeIntervalSince1970]]
