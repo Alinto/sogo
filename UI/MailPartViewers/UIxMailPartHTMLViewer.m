@@ -446,7 +446,7 @@ _xmlCharsetForCharset (NSString *charset)
            attributes: (id <SaxAttributes>) _attributes
 {
   unsigned int count, max;
-  NSString *name, *value, *cid, *lowerName;
+  NSString *name, *value, *cid, *lowerName, *lowerValue;
   NSMutableString *resultPart;
   BOOL skipAttribute;
 
@@ -518,11 +518,12 @@ _xmlCharsetForCharset (NSString *charset)
                        || [name isEqualToString: @"action"]
                        || [name isEqualToString: @"formaction"])
                 {
-                  value = [[_attributes valueAtIndex: count] lowercaseString];
-                  skipAttribute = ([value rangeOfString: @"://"].location == NSNotFound
-                                   && ![value hasPrefix: @"mailto:"]
-                                   && ![value hasPrefix: @"#"]) ||
-                    [value hasPrefix: @"javascript:"];
+                  value = [_attributes valueAtIndex: count];
+                  lowerValue = [value lowercaseString];
+                  skipAttribute = ([lowerValue rangeOfString: @"://"].location == NSNotFound
+                                   && ![lowerValue hasPrefix: @"mailto:"]
+                                   && ![lowerValue hasPrefix: @"#"]) ||
+                    [lowerValue hasPrefix: @"javascript:"];
                   if (!skipAttribute)
                     [resultPart appendString: @" rel=\"noopener\""];
                 }
