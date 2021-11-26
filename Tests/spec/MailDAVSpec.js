@@ -177,7 +177,7 @@ describe('MailDAV', function() {
     if (mailboxesList.indexOf(path) < 0)
       mailboxesList.push(path)
     expect(response.status)
-      .withContext(`HTTP status code when creating the mailbox ${path}`)
+      .withContext(`HTTP status code when creating the mailbox ${path} (${response.raw})`)
       .toBe(expectedCode)
   }
 
