@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2007-2014 Inverse inc.
-  Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2007-2021 Inverse inc.
 
   This file is part of SOGo.
 
@@ -31,6 +30,7 @@
 #import <NGImap4/NGImap4Client.h>
 
 #import <SOGo/SOGoCache.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/WORequest+SOGo.h>
 
@@ -134,6 +134,8 @@
   NGImap4Connection *newConnection;
   NSString *password;
   NSHost *host;
+  SOGoSystemDefaults *sd;
+  BOOL usesSSO;
 
   [self imap4URL];
 
@@ -141,7 +143,12 @@
   // for an account number greater than 0 (default account). We prevent that
   // for security reasons if admins use an IMAP trust.
   host = [NSHost hostWithName: [[self imap4URL] host]];
+
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  usesSSO = [[sd authenticationType] isEqualToString: @"cas"] || [[sd authenticationType] isEqualToString: @"saml2"];
+
   if (![[[self mailAccountFolder] nameInContainer] isEqualToString: @"0"] &&
+      usesSSO &&
       [[host address] isEqualToString: @"127.0.0.1"])
     {
       [self errorWithFormat: @"Trying to use localhost for additional IMAP account - aborting."];

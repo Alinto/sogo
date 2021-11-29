@@ -9,13 +9,13 @@
    */
   AccountDialogController.$inject = ['$timeout', '$window', '$mdConstant', '$mdDialog', 'FileUploader', 'Dialog', 'sgSettings', 'defaults', 'account', 'accountId', 'mailCustomFromEnabled'];
   function AccountDialogController($timeout, $window, $mdConstant, $mdDialog, FileUploader, Dialog, Settings, defaults, account, accountId, mailCustomFromEnabled) {
-    var vm = this;
+    var vm = this, usesSSO = $window.usesCASAuthentication || $window.usesSAML2Authentication;
 
     this.defaultPort = 143;
     this.defaults = defaults;
     this.account = account;
     this.accountId = accountId;
-    this.hostnameRE = accountId > 0 ? /^(?!(127\.0\.0\.1|localhost(?:\.localdomain)?)$)/ : /./;
+    this.hostnameRE = usesSSO && accountId > 0 ? /^(?!(127\.0\.0\.1|localhost(?:\.localdomain)?)$)/ : /./;
     this.addressesSearchText = '';
     this.emailSeparatorKeys = [
       $mdConstant.KEY_CODE.ENTER,
