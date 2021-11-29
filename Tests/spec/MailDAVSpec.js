@@ -284,8 +284,6 @@ describe('MailDAV', function() {
     await _makeMailbox('test-dav-mail-@-def')
     await _makeMailbox('test-dav-mail-%20-ghi')
     await _makeMailbox('test-dav-mail-%20-ghi', 500)
-    await _makeMailbox('test-dav-mail')
-    await _makeMailbox('test-dav-mail/test-dav-mail')
   })
 
   it(`Message creation`, async function() {
