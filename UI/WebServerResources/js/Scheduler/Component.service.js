@@ -1144,9 +1144,14 @@
    * @return a localized string
    */
   Component.prototype.repeatDescription = function() {
-    var localizedString = null;
-    if (this.repeat)
-      localizedString = l('repeat_' + this.repeat.frequency.toUpperCase());
+    var localizedString = null,
+        frequency;
+    if (this.repeat) {
+      frequency = this.repeat.frequency;
+      if (frequency == 'weekly' && this.repeat.interval == 2)
+        frequency = 'bi-weekly';
+      localizedString = l('repeat_' + frequency.toUpperCase());
+    }
 
     return localizedString;
   };
