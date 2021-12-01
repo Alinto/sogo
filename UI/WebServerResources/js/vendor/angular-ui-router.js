@@ -4,7 +4,7 @@
  *         This causes it to be incompatible with plugins that depend on @uirouter/core.
  *         We recommend switching to the ui-router-core.js and ui-router-angularjs.js bundles instead.
  *         For more information, see https://ui-router.github.io/blog/uirouter-for-angularjs-umd-bundles
- * @version v1.0.29
+ * @version v1.0.30
  * @link https://ui-router.github.io
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -1111,21 +1111,21 @@
         var _fn = isArray(fn) ? fn.slice(-1)[0] : fn;
         return (_fn && _fn.toString()) || 'undefined';
     }
-    var isRejection = Rejection.isRejectionPromise;
-    var hasToString = function (obj) {
-        return isObject(obj) && !isArray(obj) && obj.constructor !== Object && isFunction(obj.toString);
-    };
-    var stringifyPattern = pattern([
-        [isUndefined, val('undefined')],
-        [isNull, val('null')],
-        [isPromise, val('[Promise]')],
-        [isRejection, function (x) { return x._transitionRejection.toString(); }],
-        [hasToString, function (x) { return x.toString(); }],
-        [isInjectable, functionToString],
-        [val(true), identity],
-    ]);
     function stringify(o) {
         var seen = [];
+        var isRejection = Rejection.isRejectionPromise;
+        var hasToString = function (obj) {
+            return isObject(obj) && !isArray(obj) && obj.constructor !== Object && isFunction(obj.toString);
+        };
+        var stringifyPattern = pattern([
+            [isUndefined, val('undefined')],
+            [isNull, val('null')],
+            [isPromise, val('[Promise]')],
+            [isRejection, function (x) { return x._transitionRejection.toString(); }],
+            [hasToString, function (x) { return x.toString(); }],
+            [isInjectable, functionToString],
+            [val(true), identity],
+        ]);
         function format(value) {
             if (isObject(value)) {
                 if (seen.indexOf(value) !== -1)
@@ -1143,14 +1143,16 @@
         return JSON.stringify(o, function (key, value) { return format(value); }).replace(/\\"/g, '"');
     }
     /** Returns a function that splits a string on a character or substring */
-    var beforeAfterSubstr = function (char) { return function (str) {
-        if (!str)
-            return ['', ''];
-        var idx = str.indexOf(char);
-        if (idx === -1)
-            return [str, ''];
-        return [str.substr(0, idx), str.substr(idx + 1)];
-    }; };
+    var beforeAfterSubstr = function (char) {
+        return function (str) {
+            if (!str)
+                return ['', ''];
+            var idx = str.indexOf(char);
+            if (idx === -1)
+                return [str, ''];
+            return [str.substr(0, idx), str.substr(idx + 1)];
+        };
+    };
     var hostRegex = new RegExp('^(?:[a-z]+:)?//[^/]+/');
     var stripLastPathElement = function (str) { return str.replace(/\/[^/]*$/, ''); };
     var splitHash = beforeAfterSubstr('#');
