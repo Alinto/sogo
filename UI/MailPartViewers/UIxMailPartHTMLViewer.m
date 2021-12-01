@@ -520,10 +520,11 @@ _xmlCharsetForCharset (NSString *charset)
                 {
                   value = [_attributes valueAtIndex: count];
                   lowerValue = [value lowercaseString];
-                  skipAttribute = ([lowerValue rangeOfString: @"://"].location == NSNotFound
-                                   && ![lowerValue hasPrefix: @"mailto:"]
-                                   && ![lowerValue hasPrefix: @"#"]) ||
-                    [lowerValue hasPrefix: @"javascript:"];
+                  skipAttribute =
+                    ([lowerValue rangeOfString: @"://"].location == NSNotFound
+                     && ![lowerValue hasPrefix: @"mailto:"]
+                     && ![lowerValue hasPrefix: @"#"])
+                    || [lowerValue rangeOfString: @"javascript:"].location != NSNotFound;
                   if (!skipAttribute)
                     [resultPart appendString: @" rel=\"noopener\""];
                 }
