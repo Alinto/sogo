@@ -50,7 +50,7 @@
       // Listen to HTTP errors broadcasted from HTTP interceptor
       $rootScope.$on('http:Error', onHttpError);
 
-      if (!isPopup) {
+      if (!$scope.isPopup) {
         if (sgSettings.activeUser('path').calendar) {
           // Fetch Calendar alarms
           Preferences.getAlarms();
