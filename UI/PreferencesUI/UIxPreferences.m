@@ -506,6 +506,15 @@ static NSArray *reminderValues = nil;
   return iCalWeekDayString[i];
 }
 
+- (int) numberForWeekDay
+{
+  unsigned int i;
+
+  i = [[self shortWeekDaysList] indexOfObject: item];
+
+  return i;
+}
+
 //
 // Used by wox template
 //

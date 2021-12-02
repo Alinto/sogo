@@ -44,11 +44,18 @@
 "Add default email addresses" = "Add default email addresses";
 "Days between responses" = "Days between responses";
 "Do not send responses to mailing lists" = "Do not send responses to mailing lists";
+"Activation Constraints" = "Activation Constraints";
 "Enable auto reply on" = "Enable auto reply on";
 "First day of vacation" = "First day of vacation";
 "Disable auto reply on" = "Disable auto reply on";
 "Last day of vacation" = "Last day of vacation";
 "Enter date" = "Enter date";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Enable auto reply at";
+"Enter time" = "Enter time";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Disable auto reply at";
+"Enable auto reply on these days" = "Enable auto reply on these days";
 "Always send vacation message response" = "Always send vacation message response";
 "The vacation message is sent prior to apply your filters." = "The vacation message is sent prior to apply your filters.";
 "Discard incoming mails during vacation" = "Discard incoming mails during vacation";

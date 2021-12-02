@@ -17,6 +17,7 @@ class TestUtility {
         url: `${this.webdav.serverUrl}/SOGo/dav/${login}/`,
         props: [
            { name: 'displayname', namespace: DAVNamespace.DAV },
+           { name: 'calendar-timezone', namespace: DAVNamespace.CALDAV },
            { name: 'calendar-user-address-set', namespace: DAVNamespace.CALDAV }
         ],
         depth: '0',
@@ -33,7 +34,8 @@ class TestUtility {
 
       let displayname = response.props.displayname || ''
       let email = response.props.calendarUserAddressSet.href[0]
-      this.userInfo[login] = { displayname: displayname, email: email }
+      let timezone = response.props.calendarTimezone || ''
+      this.userInfo[login] = { displayname, email, timezone }
     }
     return this.userInfo[login]
   }

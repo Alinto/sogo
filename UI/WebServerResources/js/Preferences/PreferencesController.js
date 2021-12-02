@@ -587,6 +587,32 @@
 
       return r;
     };
+
+    this.toggleVacationStartTime = function() {
+      var v;
+
+      v = this.preferences.defaults.Vacation;
+
+      if (v.startTimeEnabled) {
+        // Enabling the start date
+        if (!v.startTime) {
+          v.startTime = new Date();
+        }
+      }
+    };
+
+    this.toggleVacationEndTime = function() {
+      var v;
+
+      v = this.preferences.defaults.Vacation;
+
+      if (v.endTimeEnabled) {
+        // Enabling the end date
+        if (!v.endTime) {
+          v.endTime = new Date();
+        }
+      }
+    };
   }
 
   angular

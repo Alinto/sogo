@@ -27,15 +27,23 @@ describe('Sieve', function() {
     // kill existing filters
     await prefs.setOrCreate('SOGoSieveFilters', [], ['defaults'])
     // vacation filters
+    await prefs.setOrCreate('enabled', 0, ['defaults', 'Vacation'])
     await prefs.setOrCreate('autoReplyText', '', ['defaults', 'Vacation'])
     await prefs.setOrCreate('customSubjectEnabled', 0, ['defaults', 'Vacation'])
     await prefs.setOrCreate('customSubject', '', ['defaults', 'Vacation'])
     await prefs.setOrCreate('autoReplyEmailAddresses', [], ['defaults', 'Vacation'])
     await prefs.setOrCreate('daysBetweenResponse', 7, ['defaults', 'Vacation'])
     await prefs.setOrCreate('ignoreLists', 0, ['defaults', 'Vacation'])
+    await prefs.setOrCreate('startDateEnabled', 0, ['defaults', 'Vacation'])
     await prefs.setOrCreate('startDate', 0, ['defaults', 'Vacation'])
+    await prefs.setOrCreate('startTimeEnabled', 0, ['defaults', 'Vacation'])
+    await prefs.setOrCreate('startTime', 0, ['defaults', 'Vacation'])
+    await prefs.setOrCreate('endDateEnabled', 0, ['defaults', 'Vacation'])
     await prefs.setOrCreate('endDate', 0, ['defaults', 'Vacation'])
-    await prefs.setOrCreate('enabled', 0, ['defaults', 'Vacation'])
+    await prefs.setOrCreate('endTimeEnabled', 0, ['defaults', 'Vacation'])
+    await prefs.setOrCreate('endTime', 0, ['defaults', 'Vacation'])
+    await prefs.setOrCreate('weekdaysEnabled', 0, ['defaults', 'Vacation'])
+    await prefs.setOrCreate('days', [], ['defaults', 'Vacation'])
     // forwarding filters
     await prefs.setOrCreate('forwardAddress', [], ['defaults', 'Forward'])
     await prefs.setOrCreate('keepCopy', 0, ['defaults', 'Forward'])
@@ -98,6 +106,38 @@ describe('Sieve', function() {
     expect(createdScript)
     .withContext(`sogo Sieve script`)
     .toBe(sieveVacationIgnoreLists)
+  })
+
+  it('enable vacation script - activation constraints', async function() {
+    const vacationMsg = 'vacation test - activation constraints'
+    const daysInterval = 2
+    const mailaddr = user.email.replace(/mailto:/, '')
+    const now = new Date()
+    const tomorrow = new Date(now.getTime() + 1000*60*60*24)
+    const startDate = tomorrow.getFullYear() + '-' + [
+      '0' + (tomorrow.getMonth() + 1),
+      '0' + tomorrow.getDate()
+    ].map(component => component.slice(-2)).join('-')
+    const startTime = '17:00'
+    const timezone = (user.timezone < 0 ? '-':'') + ('000' + Math.abs(user.timezone)).slice(-4)
+    const sieveVacationConstraints = `require ["vacation","date","relational"];\r\nif allof ( currentdate :value "ge" "date" "${startDate}", date :value "ge" :zone "${timezone}" "date" "time" "${startTime}:00" ) { vacation :days ${daysInterval} :addresses ["${mailaddr}"] text:\r\n${vacationMsg}\r\n.\r\n;\r\n}\r\n`
+    let vacation
+
+    vacation = await prefs.get('Vacation')
+    vacation.enabled = 1
+    await prefs.setNoSave('autoReplyText', vacationMsg)
+    await prefs.setNoSave('daysBetweenResponse', daysInterval)
+    await prefs.setNoSave('autoReplyEmailAddresses', [mailaddr])
+    await prefs.setNoSave('startDateEnabled', 1)
+    await prefs.setNoSave('startDate', tomorrow.getTime() / 1000)
+    await prefs.setNoSave('startTimeEnabled', 1)
+    await prefs.setNoSave('startTime', startTime)
+    await prefs.save()
+
+    const createdScript = await _getSogoSieveScript()
+    expect(createdScript)
+    .withContext(`sogo Sieve script`)
+    .toBe(sieveVacationConstraints)
   })
 
   it('enable simple forwarding', async function() {

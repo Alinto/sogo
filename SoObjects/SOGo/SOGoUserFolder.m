@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2007-2016 Inverse inc.
+  Copyright (C) 2007-2021 Inverse inc.
 
   SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,6 +17,7 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSTimeZone.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoSecurityManager.h>
@@ -672,6 +672,14 @@
 - (NSString *) davResourceId
 {
   return [NSString stringWithFormat: @"urn:uuid:%@", nameInContainer];
+}
+
+- (NSString *) davCalendarTimeZone
+{
+  NSTimeZone *tz = [[[context activeUser] userDefaults] timeZone];
+  int secs = [tz secondsFromGMT];
+
+  return [NSString stringWithFormat: @"%02i%02i", secs / 60 / 60, abs(secs % 60)];
 }
 
 // - (NSException *) setDavSignature: (NSString *) newSignature

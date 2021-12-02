@@ -9,7 +9,7 @@
    * @constructor
    */
   function Preferences() {
-    var _this = this, defaultsElement, settingsElement, data;
+    var _this = this, defaultsElement, settingsElement, data, time;
 
     this.nextAlarm = null;
     this.nextInboxPoll = null;
@@ -90,12 +90,37 @@
           data.Vacation.endDate = new Date(data.Vacation.startDate.getTime());
           data.Vacation.endDate.addDays(1);
         }
+        if (data.Vacation.startTime) {
+          time = data.Vacation.startTime.split(':');
+          data.Vacation.startTime = new Date();
+          data.Vacation.startTime.setHours(parseInt(time[0]), parseInt(time[1]));
+        }
+        else {
+          data.Vacation.startTimeEnabled = 0;
+          data.Vacation.startTime = new Date();
+          data.Vacation.startTime.setHours(parseInt(data.SOGoDayEndTime));
+          data.Vacation.startTime.setMinutes(0);
+        }
+        if (data.Vacation.endTime) {
+          time = data.Vacation.endTime.split(':');
+          data.Vacation.endTime = new Date();
+          data.Vacation.endTime.setHours(parseInt(time[0]), parseInt(time[1]));
+        }
+        else {
+          data.Vacation.endTimeEnabled = 0;
+          data.Vacation.endTime = new Date();
+          data.Vacation.endTime.setHours(parseInt(data.SOGoDayStartTime));
+          data.Vacation.endTime.setMinutes(0);
+        }
         if (data.Vacation.autoReplyEmailAddresses &&
             angular.isString(data.Vacation.autoReplyEmailAddresses) &&
             data.Vacation.autoReplyEmailAddresses.length)
           data.Vacation.autoReplyEmailAddresses = data.Vacation.autoReplyEmailAddresses.split(/, */);
       } else
         data.Vacation = {};
+
+      if (angular.isUndefined(data.Vacation.days))
+        data.Vacation.days = [];
 
       if ((angular.isUndefined(data.Vacation.autoReplyEmailAddresses) ||
           data.Vacation.autoReplyEmailAddresses.length == 0) &&
@@ -413,7 +438,19 @@
     if (this.inboxSyncToken)
       params.syncToken = this.inboxSyncToken;
 
-    Preferences.$$resource.post('Mail', '0/folderINBOX/changes', params).then(function(data) {
+    /**
+     * @ngInject
+     */
+    toastController.$inject = ['scope', '$mdToast', 'title', 'body'];
+    function toastController (scope, $mdToast, title, body) {
+      scope.title = title;
+      scope.body = body;
+      scope.close = function() {
+        $mdToast.hide('ok');
+      };
+    }
+
+    return Preferences.$$resource.post('Mail', '0/folderINBOX/changes', params).then(function(data) {
       if (data.syncToken) {
         _this.inboxSyncToken = data.syncToken;
         Preferences.$log.debug("New syncToken is " + _this.inboxSyncToken);
@@ -489,18 +526,6 @@
       if (refreshViewCheck && refreshViewCheck != 'manually')
         _this.nextInboxPoll = Preferences.$timeout(angular.bind(_this, _this.pollInbox), refreshViewCheck.timeInterval()*1000);
     });
-
-    /**
-     * @ngInject
-     */
-    toastController.$inject = ['scope', '$mdToast', 'title', 'body'];
-    function toastController (scope, $mdToast, title, body) {
-      scope.title = title;
-      scope.body = body;
-      scope.close = function() {
-        $mdToast.hide('ok');
-      };
-    }
   };
 
   /**
@@ -734,8 +759,9 @@
     delete preferences.defaults.SOGoMailComposeFontSizeEnabled;
 
     if (preferences.defaults.Vacation) {
-      if (preferences.defaults.Vacation.startDateEnabled)
+      if (preferences.defaults.Vacation.startDateEnabled) {
         preferences.defaults.Vacation.startDate = preferences.defaults.Vacation.startDate.getTime()/1000;
+      }
       else {
         delete preferences.defaults.Vacation.startDateEnabled;
         preferences.defaults.Vacation.startDate = 0;
@@ -745,6 +771,23 @@
       else {
         delete preferences.defaults.Vacation.endDateEnabled;
         preferences.defaults.Vacation.endDate = 0;
+      }
+
+      if (preferences.defaults.Vacation.startTimeEnabled) {
+        preferences.defaults.Vacation.startTime = preferences.defaults.Vacation.startTime.format(this.$mdDateLocaleProvider, '%H:%M');
+        // Set an end time only if a start time is defined
+        if (preferences.defaults.Vacation.endTimeEnabled)
+          preferences.defaults.Vacation.endTime = preferences.defaults.Vacation.endTime.format(this.$mdDateLocaleProvider, '%H:%M');
+        else {
+          delete preferences.defaults.Vacation.endTimeEnabled;
+          preferences.defaults.Vacation.endTime = 0;
+        }
+      }
+      else {
+        delete preferences.defaults.Vacation.startTimeEnabled;
+        preferences.defaults.Vacation.startTime = 0;
+        delete preferences.defaults.Vacation.endTimeEnabled;
+        preferences.defaults.Vacation.endTime = 0;
       }
 
       if (preferences.defaults.Vacation.autoReplyEmailAddresses)

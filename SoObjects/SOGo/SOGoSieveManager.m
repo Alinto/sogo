@@ -22,6 +22,7 @@
 
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSCharacterSet.h>
+#import <Foundation/NSTimeZone.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 
@@ -946,14 +947,14 @@ static NSString *sieveScriptName = @"sogo";
        dateCapability || [[values objectForKey: @"endDate"] intValue] > now))
     {
       NSCalendarDate *startDate, *endDate;
-      NSMutableArray *allConditions;
+      NSMutableArray *allConditions, *timeConditions;
       NSMutableString *vacation_script;
-      NSArray *addresses;
-      NSString *text, *templateFilePath, *customSubject;
+      NSArray *addresses, *weekdays;
+      NSString *text, *templateFilePath, *customSubject, *weekday, *startTime, *endTime, *timeCondition, *timeZone;
       SOGoTextTemplateFile *templateFile;
 
       BOOL ignore, alwaysSend, useCustomSubject, discardMails;
-      int days, i;
+      int days, i, seconds;
 
       allConditions = [NSMutableArray array];
       days = [[values objectForKey: @"daysBetweenResponse"] intValue];
@@ -1009,30 +1010,95 @@ static NSString *sieveScriptName = @"sogo";
           [allConditions addObject: @"not header :comparator \"i;ascii-casemap\" :matches \"To\" \"Multiple recipients of*\""];
         }
 
-      // Start date of auto-reply
-      if ([dd vacationPeriodEnabled] &&
-          [[values objectForKey: @"startDateEnabled"] boolValue] &&
-          dateCapability)
+      if ([dd vacationPeriodEnabled] && dateCapability)
         {
-          [req addObjectUniquely: @"date"];
-          [req addObjectUniquely: @"relational"];
-          startDate = [NSCalendarDate dateWithTimeIntervalSince1970:
-                                              [[values objectForKey: @"startDate"] intValue]];
-          [allConditions addObject: [NSString stringWithFormat: @"currentdate :value \"ge\" \"date\" \"%@\"",
-                                              [startDate descriptionWithCalendarFormat: @"%Y-%m-%d"]]];
-        }
+          // Start date of auto-reply
+          if ([[values objectForKey: @"startDateEnabled"] boolValue])
+            {
+              [req addObjectUniquely: @"date"];
+              [req addObjectUniquely: @"relational"];
+              startDate = [NSCalendarDate dateWithTimeIntervalSince1970:
+                                                  [[values objectForKey: @"startDate"] intValue]];
+              [allConditions addObject: [NSString stringWithFormat: @"currentdate :value \"ge\" \"date\" \"%@\"",
+                                                  [startDate descriptionWithCalendarFormat: @"%Y-%m-%d"]]];
+            }
 
-      // End date of auto-reply
-      if ([dd vacationPeriodEnabled] &&
-          [[values objectForKey: @"endDateEnabled"] boolValue] &&
-          dateCapability)
-        {
-          [req addObjectUniquely: @"date"];
-          [req addObjectUniquely: @"relational"];
-          endDate = [NSCalendarDate dateWithTimeIntervalSince1970:
-                                              [[values objectForKey: @"endDate"] intValue]];
-          [allConditions addObject: [NSString stringWithFormat: @"currentdate :value \"le\" \"date\" \"%@\"",
-                                              [endDate descriptionWithCalendarFormat: @"%Y-%m-%d"]]];
+          // End date of auto-reply
+          if ([[values objectForKey: @"endDateEnabled"] boolValue])
+            {
+              [req addObjectUniquely: @"date"];
+              [req addObjectUniquely: @"relational"];
+              endDate = [NSCalendarDate dateWithTimeIntervalSince1970:
+                                                [[values objectForKey: @"endDate"] intValue]];
+              [allConditions addObject: [NSString stringWithFormat: @"currentdate :value \"le\" \"date\" \"%@\"",
+                                                  [endDate descriptionWithCalendarFormat: @"%Y-%m-%d"]]];
+            }
+
+          seconds = [[ud timeZone] secondsFromGMT];
+          timeZone = [NSString stringWithFormat: @"%.2i%02i", seconds/60/60, seconds/60%60];
+          timeConditions = [NSMutableArray array];
+          startTime = endTime = nil;
+
+          // Start auto-reply from a specific time
+          if ([[values objectForKey: @"startTimeEnabled"] boolValue])
+            {
+              startTime = [values objectForKey: @"startTime"];
+              timeCondition = [NSString stringWithFormat: @"date :value \"ge\" :zone \"%@\" \"date\" \"time\" \"%@:00\"",
+                                        timeZone, startTime];
+              [timeConditions addObject: timeCondition];
+            }
+
+          // Stop auto-reply at a specific time
+          if ([[values objectForKey: @"endTimeEnabled"] boolValue])
+            {
+              endTime = [values objectForKey: @"endTime"];
+              timeCondition = [NSString stringWithFormat: @"date :value \"lt\" :zone \"%@\" \"date\" \"time\" \"%@:00\"",
+                                        timeZone, endTime];
+              [timeConditions addObject: timeCondition];
+            }
+
+          if (startTime && endTime)
+            {
+              [req addObjectUniquely: @"date"];
+              [req addObjectUniquely: @"relational"];
+              if ([startTime compare: endTime] == NSOrderedAscending)
+                {
+                  // Start time is before end time:
+                  //   >= startTime && < endTime
+                  [allConditions addObjectsFromArray: timeConditions];
+                }
+              else
+                {
+                  // End time is before start time:
+                  //  >= startTime || < endTime
+                  timeCondition = [NSString stringWithFormat: @"anyof ( %@ )", [timeConditions componentsJoinedByString: @", "]];
+                  [allConditions addObject: timeCondition];
+                }
+            }
+          else if ([timeConditions count])
+            {
+              [req addObjectUniquely: @"date"];
+              [req addObjectUniquely: @"relational"];
+              [allConditions addObjectsFromArray: timeConditions];
+            }
+
+          // Auto-reply during specific days
+          if ([[values objectForKey: @"weekdaysEnabled"] boolValue])
+            {
+              [req addObjectUniquely: @"date"];
+              [req addObjectUniquely: @"relational"];
+              weekdays = [values objectForKey: @"days"];
+              NSMutableString *currentWeekday = [NSMutableString stringWithString: @"currentdate :is \"weekday\" ["];
+              for (i = 0; i < [weekdays count]; i++)
+                {
+                  if (i > 0)
+                    [currentWeekday appendString: @", "];
+                  weekday = [weekdays objectAtIndex: i];
+                  [currentWeekday appendString: [weekday asSieveQuotedString]];
+                }
+              [currentWeekday appendString: @"]"];
+              [allConditions addObject: currentWeekday];
+            }
         }
 
       // Apply conditions

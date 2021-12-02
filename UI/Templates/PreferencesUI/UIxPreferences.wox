@@ -636,6 +636,16 @@
               </md-checkbox>
             </div>
 
+            <div>
+              <md-checkbox
+                  ng-model="app.preferences.defaults.SOGoMailMarkAsReadDelay"
+                  ng-true-value="1"
+                  ng-false-value="0"
+                  label:aria-label="Automatically mark messages as read">
+                <var:string label:value="Automatically mark messages as read"/>
+              </md-checkbox>
+            </div>
+
             <div class="hide-xs" layout="row" layout-align="start center" flex="50">
               <md-checkbox
                   class="md-align-top-left"
@@ -1031,17 +1041,17 @@
                 </div>
 
                 <div layout="row">
-                <md-input-container class="md-block" flex="50" flex-xs="100">
-                  <label><var:string label:value="Days between responses"/></label>
-                  <md-select label:aria-label="Days between responses"
-                             ng-model="app.preferences.defaults.Vacation.daysBetweenResponse">
-                    <var:foreach list="daysBetweenResponsesList" item="item">
-                      <md-option var:value="item">
-                        <var:string value="item"/>
-                      </md-option>
-                    </var:foreach>
-                  </md-select>
-                </md-input-container>
+                  <md-input-container class="md-block" flex="50" flex-xs="100">
+                    <label><var:string label:value="Days between responses"/></label>
+                    <md-select label:aria-label="Days between responses"
+                               ng-model="app.preferences.defaults.Vacation.daysBetweenResponse">
+                      <var:foreach list="daysBetweenResponsesList" item="item">
+                        <md-option var:value="item">
+                          <var:string value="item"/>
+                        </md-option>
+                      </var:foreach>
+                    </md-select>
+                  </md-input-container>
                 </div>
 
                 <div>
@@ -1052,50 +1062,6 @@
                     <var:string label:value="Do not send responses to mailing lists" />
                   </md-checkbox>
                 </div>
-
-                <var:if condition="isVacationPeriodEnabled">
-                  <div>
-                    <md-checkbox
-                        ng-model="app.preferences.defaults.Vacation.startDateEnabled"
-                        ng-true-value="1"
-                        ng-false-value="0"
-                        ng-change="app.toggleVacationStartDate()">
-                      <var:string label:value="Enable auto reply on" />
-                    </md-checkbox>
-                    <md-input-container>
-                      <label class="md-no-truncate"><var:string label:value="First day of vacation"/></label>
-                      <md-datepicker
-                          name="vacationStartDate"
-                          label:md-placeholder="Enter date"
-                          ng-disabled="!app.preferences.defaults.Vacation.startDateEnabled"
-                          ng-required="app.preferences.defaults.Vacation.startDateEnabled"
-                          ng-model="app.preferences.defaults.Vacation.startDate"
-                          md-date-filter="app.validateVacationStartDate"
-                          sg-reset-on-disabled="sg-reset-on-disabled"><!-- datepicker --></md-datepicker>
-                    </md-input-container>
-                  </div>
-
-                  <div>
-                    <md-checkbox
-                        ng-model="app.preferences.defaults.Vacation.endDateEnabled"
-                        ng-true-value="1"
-                        ng-false-value="0"
-                        ng-change="app.toggleVacationEndDate()">
-                      <var:string label:value="Disable auto reply on" />
-                    </md-checkbox>
-                    <md-input-container>
-                      <label class="md-no-truncate"><var:string label:value="Last day of vacation"/></label>
-                      <md-datepicker
-                          name="vacationEndDate"
-                          label:md-placeholder="Enter date"
-                          ng-disabled="!app.preferences.defaults.Vacation.endDateEnabled"
-                          ng-required="app.preferences.defaults.Vacation.endDateEnabled"
-                          ng-model="app.preferences.defaults.Vacation.endDate"
-                          md-date-filter="app.validateVacationEndDate"
-                          sg-reset-on-disabled="sg-reset-on-disabled"><!-- datepicker --></md-datepicker>
-                    </md-input-container>
-                  </div>
-                </var:if>
 
                 <div>
                   <md-checkbox
@@ -1116,6 +1082,113 @@
                     <div class="sg-hint"><var:string label:value="The vacation message is sent but incoming messages are not delivered to your inbox."/></div>
                   </md-checkbox>
                 </div>
+
+                <var:if condition="isVacationPeriodEnabled">
+                <h4 class="md-title"><var:string label:value="Activation Constraints"/></h4>
+
+                <div layout="row" layout-wrap="layout-wrap">
+                  <div class="md-block" flex="50" flex-xs="100">
+                    <md-checkbox
+                        ng-model="app.preferences.defaults.Vacation.startDateEnabled"
+                        ng-true-value="1"
+                        ng-false-value="0"
+                        ng-change="app.toggleVacationStartDate()">
+                      <var:string label:value="Enable auto reply on" />
+                    </md-checkbox>
+                    <md-input-container>
+                      <label class="md-no-truncate"><var:string label:value="First day of vacation"/></label>
+                      <md-datepicker
+                          name="vacationStartDate"
+                          label:md-placeholder="Enter date"
+                          ng-disabled="!app.preferences.defaults.Vacation.startDateEnabled"
+                          ng-required="app.preferences.defaults.Vacation.startDateEnabled"
+                          ng-model="app.preferences.defaults.Vacation.startDate"
+                          md-date-filter="app.validateVacationStartDate"
+                          sg-reset-on-disabled="sg-reset-on-disabled"><!-- datepicker --></md-datepicker>
+                    </md-input-container>
+                  </div>
+
+                  <div class="md-block" flex="50" flex-xs="100">
+                    <md-checkbox
+                        ng-model="app.preferences.defaults.Vacation.endDateEnabled"
+                        ng-true-value="1"
+                        ng-false-value="0"
+                        ng-change="app.toggleVacationEndDate()">
+                      <var:string label:value="Disable auto reply on" />
+                    </md-checkbox>
+                    <md-input-container>
+                      <label class="md-no-truncate"><var:string label:value="Last day of vacation"/></label>
+                      <md-datepicker
+                          name="vacationEndDate"
+                          label:md-placeholder="Enter date"
+                          ng-disabled="!app.preferences.defaults.Vacation.endDateEnabled"
+                          ng-required="app.preferences.defaults.Vacation.endDateEnabled"
+                          ng-model="app.preferences.defaults.Vacation.endDate"
+                          md-date-filter="app.validateVacationEndDate"
+                          sg-reset-on-disabled="sg-reset-on-disabled"><!-- datepicker --></md-datepicker>
+                    </md-input-container>
+                  </div>
+                </div>
+
+                <div layout="row" layout-wrap="layout-wrap">
+                  <div class="md-block" flex="50" flex-xs="100">
+                    <md-checkbox
+                        ng-model="app.preferences.defaults.Vacation.startTimeEnabled"
+                        ng-true-value="1"
+                        ng-false-value="0"
+                        ng-change="app.toggleVacationStartTime()">
+                      <var:string label:value="Enable auto reply at" />
+                    </md-checkbox>
+                    <md-input-container>
+                      <sg-timepicker
+                          name="vacationStartTime"
+                          label:md-placeholder="Enter time"
+                          ng-disabled="!app.preferences.defaults.Vacation.startTimeEnabled"
+                          ng-required="app.preferences.defaults.Vacation.startTimeEnabled"
+                          ng-model="app.preferences.defaults.Vacation.startTime"><!-- timepicker --></sg-timepicker>
+                    </md-input-container>
+                  </div>
+
+                  <div class="md-block" flex="50" flex-xs="100">
+                    <md-checkbox
+                        ng-disabled="!app.preferences.defaults.Vacation.startTimeEnabled"
+                        ng-model="app.preferences.defaults.Vacation.endTimeEnabled"
+                        ng-true-value="1"
+                        ng-false-value="0"
+                        ng-change="app.toggleVacationEndTime()">
+                      <var:string label:value="Disable auto reply at" />
+                    </md-checkbox>
+                    <md-input-container>
+                      <sg-timepicker
+                          name="vacationEndTime"
+                          label:md-placeholder="Enter time"
+                          ng-disabled="!app.preferences.defaults.Vacation.endTimeEnabled"
+                          ng-required="app.preferences.defaults.Vacation.endTimeEnabled"
+                          ng-model="app.preferences.defaults.Vacation.endTime"><!-- timepicker --></sg-timepicker>
+                    </md-input-container>
+                  </div>
+                </div>
+
+                <div class="sg-padded--bottom" layout="row" layout-align="start end">
+                  <md-checkbox
+                      ng-model="app.preferences.defaults.Vacation.weekdaysEnabled"
+                      ng-true-value="1"
+                      ng-false-value="0">
+                 </md-checkbox>
+                  <div class="pseudo-input-container layout-padding" flex="50" flex-sm="80" flex-xs="100">
+                    <label class="pseudo-input-label"><var:string label:value="Enable auto reply on these days"/></label>
+                    <md-grid-list md-cols="7" md-row-height="2em" md-gutter="0.5em"
+                                  ng-model="app.preferences.defaults.Vacation.days"
+                                  ng-disabled="app.preferences.defaults.Vacation.weekdaysEnabled"
+                                  sg-toggle-grid="sg-toggle-grid">
+                      <var:foreach list="shortWeekDaysList" item="item">
+                        <md-grid-tile var:value="numberForWeekDay"><var:string value="item"/></md-grid-tile>
+                      </var:foreach>
+                    </md-grid-list>
+                  </div>
+                </div>
+
+                </var:if>
 
               </div>
             </div>
