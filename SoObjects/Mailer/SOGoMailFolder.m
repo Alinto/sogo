@@ -769,6 +769,17 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
                                     [self logWithFormat: @"ERROR: Can't append message: %@", result];
                                 }
                             }
+                          if (!copy && result == nil)
+                            {
+                              // Delete messages
+                              result = [client storeFlags: [NSArray arrayWithObject: @"Deleted"]
+                                                  forUIDs: uids addOrRemove: YES];
+                              if ([[result valueForKey: @"result"] boolValue])
+                                {
+                                  [self markForExpunge];
+                                  result = nil;
+                                }
+                            }
                         }
                       else
                         {
