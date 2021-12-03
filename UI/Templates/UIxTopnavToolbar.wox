@@ -9,6 +9,8 @@
     <md-button ng-click="toggleLeft()"
                class="md-icon-button hide show-gt-md"
                label:aria-label="Toggle Menu">
+      <md-tooltip ng-if="leftIsClose" md-direction="bottom">{{ ::'Reduce' | loc }}</md-tooltip>
+      <md-tooltip ng-else="leftIsClose" md-direction="bottom">{{ ::'Expand' | loc }}</md-tooltip>
       <md-icon>{{ leftIsClose ? 'fullscreen_exit' : 'fullscreen' }}</md-icon>
     </md-button>
     <md-button ng-click="toggleLeft()"

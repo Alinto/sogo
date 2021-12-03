@@ -22,6 +22,8 @@
                      class="md-icon-button hide show-gt-xs"
                      aria-hidden="true"
                      ng-if="!isPopup">
+            <md-tooltip ng-if="centerIsClose" md-direction="bottom">{{ ::'Reduce' | loc }}</md-tooltip>
+            <md-tooltip ng-else="centerIsClose" md-direction="bottom">{{ ::'Expand' | loc }}</md-tooltip>
             <md-icon>{{ editor.isFullscreen ? 'fullscreen_exit' : 'fullscreen' }}</md-icon>
           </md-button>
           <!-- from -->

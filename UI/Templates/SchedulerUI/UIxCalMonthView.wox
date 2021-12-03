@@ -12,6 +12,8 @@
       <md-button ng-click="toggleCenter({save: true})"
                  class="md-icon-button md-primary md-hue-1 hide show-gt-xs"
                  aria-hidden="true">
+        <md-tooltip ng-if="centerIsClose" md-direction="bottom">{{ ::'Reduce' | loc }}</md-tooltip>
+        <md-tooltip ng-else="centerIsClose" md-direction="bottom">{{ ::'Expand' | loc }}</md-tooltip>
         <md-icon>{{ centerIsClose ? 'fullscreen_exit' : 'fullscreen' }}</md-icon>
       </md-button>
       <md-button class="md-icon-button"
