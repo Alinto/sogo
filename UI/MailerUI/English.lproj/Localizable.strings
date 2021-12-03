@@ -410,6 +410,9 @@
 "cannot send message: (smtp) all recipients discarded" = "Cannot send message: all recipients are invalid.";
 "cannot send message (smtp) - recipients discarded" = "Cannot send message. The following addresses are invalid";
 "cannot send message: (smtp) error when connecting" = "Cannot send message: error when connecting to the SMTP server.";
+"cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
+"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
 
 /* Contacts list in mail editor */
 "Email" = "Email";

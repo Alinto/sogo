@@ -1,6 +1,5 @@
 /*
   Copyright (C) 2007-2021 Inverse inc.
-  Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
 
@@ -19,6 +18,15 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
+
+#if defined(HAVE_OPENSSL) || defined(HAVE_GNUTLS)
+#include <openssl/ssl.h>
+#include <openssl/bio.h>
+#include <openssl/err.h>
+#include <openssl/pkcs7.h>
+#include <openssl/x509.h>
+#include <openssl/x509v3.h>
+#endif
 
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
@@ -80,8 +88,8 @@
 static NSString *contentTypeValue = @"text/plain; charset=utf-8";
 static NSString *htmlContentTypeValue = @"text/html; charset=utf-8";
 static NSString *headerKeys[] = {@"subject", @"to", @"cc", @"bcc",
-				 @"from", @"replyTo", @"message-id",
-				 nil};
+                                 @"from", @"replyTo", @"message-id",
+                                 nil};
 
 #warning -[NGImap4Connection postData:flags:toFolderURL:] should be enhanced \
   to return at least the new uid
@@ -113,7 +121,7 @@ static NSString    *userAgent      = nil;
   [MultiRelatedType retain];
 
   userAgent      = [NSString stringWithFormat: @"SOGoMail %@",
-			     SOGoVersion];
+                             SOGoVersion];
   [userAgent retain];
 }
 
@@ -177,9 +185,9 @@ static NSString    *userAgent      = nil;
   fm = [NSFileManager defaultManager];
 
   return ([fm createDirectoriesAtPath: [container userSpoolFolderPath]
-	      attributes: nil]
+                           attributes: nil]
 	  && [fm createDirectoriesAtPath: [self draftFolderPath]
-		 attributes:nil]);
+                              attributes:nil]);
 }
 
 - (NSString *) infoPath
@@ -201,7 +209,7 @@ static NSString    *userAgent      = nil;
       headerValue = [newHeaders objectForKey: headerKeys[count]];
       if (headerValue)
 	[headers setObject: headerValue
-		 forKey: headerKeys[count]];
+                    forKey: headerKeys[count]];
       else if ([headers objectForKey: headerKeys[count]])
 	[headers removeObjectForKey: headerKeys[count]];
     }
@@ -382,7 +390,7 @@ static NSString    *userAgent      = nil;
     }
   if (parent)
     [paths insertObject: [NSString stringWithFormat: @"/%@", [parent nameInContainer]]
-		atIndex: 0];
+                atIndex: 0];
 
   [self setSourceFolder: [paths componentsJoinedByString: @"/"]];
 }
@@ -415,10 +423,10 @@ static NSString    *userAgent      = nil;
 	[infos setObject: inReplyTo forKey: @"inReplyTo"];
       if (sourceIMAP4ID > -1)
 	[infos setObject: [NSString stringWithFormat: @"%i", sourceIMAP4ID]
-		  forKey: @"sourceIMAP4ID"];
+                  forKey: @"sourceIMAP4ID"];
       if (IMAP4ID > -1)
 	[infos setObject: [NSString stringWithFormat: @"%i", IMAP4ID]
-		  forKey: @"IMAP4ID"];
+                  forKey: @"IMAP4ID"];
       if (sourceURL && sourceFlag && sourceFolder)
 	{
 	  [infos setObject: sourceURL forKey: @"sourceURL"];
@@ -431,9 +439,9 @@ static NSString    *userAgent      = nil;
       else
 	{
 	  [self errorWithFormat: @"could not write info: '%@'",
-		[self infoPath]];
+                [self infoPath]];
 	  error = [NSException exceptionWithHTTPStatus:500 /* server error */
-			       reason: @"could not write draft info!"];
+                                                reason: @"could not write draft info!"];
 	}
     }
   else
@@ -441,7 +449,7 @@ static NSString    *userAgent      = nil;
       [self errorWithFormat: @"could not create folder for draft: '%@'",
             [self draftFolderPath]];
       error = [NSException exceptionWithHTTPStatus:500 /* server error */
-			   reason: @"could not create folder for draft!"];
+                                            reason: @"could not create folder for draft!"];
     }
 
   return error;
@@ -567,7 +575,7 @@ static NSString    *userAgent      = nil;
   if (!message)
     {
       error = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
-					    reason: @"Message is too big"];
+                                            reason: @"Message is too big"];
       return error;
     }
 
@@ -576,7 +584,7 @@ static NSString    *userAgent      = nil;
   if (![imap4 doesMailboxExistAtURL: [container imap4URL]])
     {
       [[self imap4Connection] createMailbox: [[self imap4Connection] imap4FolderNameForURL: [container imap4URL]]
-				      atURL: [[self mailAccountFolder] imap4URL]];
+                                      atURL: [[self mailAccountFolder] imap4URL]];
       [imap4 flushFolderHierarchyCache];
     }
 
@@ -606,7 +614,7 @@ static NSString    *userAgent      = nil;
 //
 //
 - (void) _addEMailsOfAddresses: (NSArray *) _addrs
-		       toArray: (NSMutableArray *) _ma
+                       toArray: (NSMutableArray *) _ma
 {
   NSEnumerator *addresses;
   NGImap4EnvelopeAddress *currentAddress;
@@ -728,9 +736,9 @@ static NSString    *userAgent      = nil;
 //
 //
 - (void) _fillInReplyAddresses: (NSMutableDictionary *) _info
-		    replyToAll: (BOOL) _replyToAll
+                    replyToAll: (BOOL) _replyToAll
                fromSentMailbox: (BOOL) _fromSentMailbox
-		      envelope: (NGImap4Envelope *) _envelope
+                      envelope: (NGImap4Envelope *) _envelope
 {
   /*
     The rules as implemented by Thunderbird:
@@ -877,7 +885,7 @@ static NSString    *userAgent      = nil;
   // object in a NGMimeBodyPart.
   if ([thePart isKindOfClass: [NGMimeBodyPart class]] &&
       [[[thePart contentType] type] isEqualToString: @"multipart"])
-     thePart = [thePart body];
+    thePart = [thePart body];
 
   if ([thePart isKindOfClass: [NGMimeBodyPart class]])
     {
@@ -999,10 +1007,10 @@ static NSString    *userAgent      = nil;
   h = [sourceMail mailHeaders];
   priority = [h objectForKey: @"x-priority"];
   if ([priority isNotEmpty] && [priority isKindOfClass: [NSString class]])
-      [info setObject: (NSString*)priority forKey: @"X-Priority"];
+    [info setObject: (NSString*)priority forKey: @"X-Priority"];
   receipt = [h objectForKey: @"disposition-notification-to"];
   if ([receipt isNotEmpty] && [receipt isKindOfClass: [NSString class]])
-      [info setObject: (NSString*)receipt forKey: @"Disposition-Notification-To"];
+    [info setObject: (NSString*)receipt forKey: @"Disposition-Notification-To"];
 
   ud = [[context activeUser] userDefaults];
 
@@ -1016,7 +1024,7 @@ static NSString    *userAgent      = nil;
 //
 //
 - (void) fetchMailForReplying: (SOGoMailObject *) sourceMail
-			toAll: (BOOL) toAll
+                        toAll: (BOOL) toAll
 {
   BOOL fromSentMailbox;
   NSString *msgID;
@@ -1161,7 +1169,7 @@ static NSString    *userAgent      = nil;
           fileAttrs = [fm fileAttributesAtPath: [self pathToAttachmentWithName: filename] traverseLink: YES];
           bodyPart = [self bodyPartForAttachmentWithName: filename];
           [ma addObject: [NSDictionary dictionaryWithObjectsAndKeys: filename, @"filename",
-                                       [fileAttrs objectForKey: @"NSFileSize"], @"size",
+                                            [fileAttrs objectForKey: @"NSFileSize"], @"size",
                                        bodyPart, @"part", nil]];
         }
     }
@@ -1184,7 +1192,7 @@ static NSString    *userAgent      = nil;
  * file with its mime type.
  */
 - (NSException *) saveAttachment: (NSData *) _attach
-		    withMetadata: (NSMutableDictionary *) metadata
+                    withMetadata: (NSMutableDictionary *) metadata
 {
   NSFileManager *fm;
   NSString *p, *pmime, *name, *baseName, *extension, *mimeType;
@@ -1222,7 +1230,7 @@ static NSString    *userAgent      = nil;
   if (![_attach writeToFile: p atomically: YES])
     {
       return [NSException exceptionWithHTTPStatus: 500 /* Server Error */
-			  reason: @"Could not write attachment to draft!"];
+                                           reason: @"Could not write attachment to draft!"];
     }
 
   mimeType = [metadata objectForKey: @"mimetype"];
@@ -1271,7 +1279,7 @@ static NSString    *userAgent      = nil;
 
   [map setObject: contentTypeValue forKey: @"content-type"];
 
-   /* prepare body content */
+  /* prepare body content */
   bodyPart = [[[NGMimeBodyPart alloc] initWithHeader:map] autorelease];
 
   plainText = [text htmlToText];
@@ -1360,7 +1368,7 @@ static NSString    *userAgent      = nil;
   if (mimeData)
     {
       s = [[NSString alloc] initWithData: mimeData
-			    encoding: NSUTF8StringEncoding];
+                                encoding: NSUTF8StringEncoding];
       [s autorelease];
     }
   else
@@ -1464,8 +1472,8 @@ static NSString    *userAgent      = nil;
   }
   else {
     /*
-       Note: in OGo this is done in LSWImapMailEditor.m:2477. Apparently
-             NGMimeFileData objects are not processed by the MIME generator!
+      Note: in OGo this is done in LSWImapMailEditor.m:2477. Apparently
+      NGMimeFileData objects are not processed by the MIME generator!
     */
     content = [[NSData alloc] initWithContentsOfMappedFile:p];
     [content autorelease];
@@ -1587,7 +1595,7 @@ static NSString    *userAgent      = nil;
 //
 - (NGMimeMessage *) mimeMultiPartMessageWithHeaderMap: (NGMutableHashMap *) map
                                    extractedBodyParts: (NSArray *) extractedBodyParts
-  					 andBodyParts: (NSArray *) _bodyParts
+                                         andBodyParts: (NSArray *) _bodyParts
                                              bodyOnly: (BOOL) _bodyOnly
 {
   NGMimeMessage       *message;
@@ -1723,7 +1731,7 @@ static NSString    *userAgent      = nil;
 }
 
 - (NGMutableHashMap *) mimeHeaderMapWithHeaders: (NSDictionary *) _headers
-				      excluding: (NSArray *) _exclude
+                                      excluding: (NSArray *) _exclude
 {
   NSString *s, *dateString;
   NGMutableHashMap *map;
@@ -1777,10 +1785,10 @@ static NSString    *userAgent      = nil;
 	    forKey: @"X-Forward"];
   if ([(s = [headers objectForKey: @"X-Priority"]) length] > 0)
     [map setObject: s
-	 forKey: @"X-Priority"];
+            forKey: @"X-Priority"];
   if ([(s = [headers objectForKey: @"Disposition-Notification-To"]) length] > 0)
     [map setObject: s
-	 forKey: @"Disposition-Notification-To"];
+            forKey: @"Disposition-Notification-To"];
 
   [self _addHeaders: _headers toHeaderMap: map];
 
@@ -1800,7 +1808,7 @@ static NSString    *userAgent      = nil;
 //
 //
 - (NGMimeMessage *) mimeMessageWithHeaders: (NSDictionary *) _headers
-				 excluding: (NSArray *) _exclude
+                                 excluding: (NSArray *) _exclude
                           extractingImages: (BOOL) _extractImages
                                   bodyOnly: (BOOL) _bodyOnly
 {
@@ -1923,8 +1931,8 @@ static NSString    *userAgent      = nil;
   generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
   d = [NSMutableData dataWithData: [generator generateMimeFromPart: message]];
   [d replaceBytesInRange: NSMakeRange([d length]-4, 4)
-                          withBytes: NULL
-                             length: 0];
+               withBytes: NULL
+                  length: 0];
   [d appendData: content];
 
   return d;
@@ -1975,20 +1983,63 @@ static NSString    *userAgent      = nil;
 //
 - (NSException *) sendMail
 {
+  NGMailAddress *parsedSender, *parsedRecipient;
+  NGMailAddressParser *parser;
+  NSArray *recipients;
+  NSData *certificate;
+  NSMutableArray *emails;
+  NSString *recipient, *emailAddress;
   SOGoContactFolders *contactFolders;
   SOGoUserDefaults *ud;
-  NSArray *recipients;
-  NSString *recipient;
   int i;
 
   ud = [[context activeUser] userDefaults];
 
-  // If we are trying to sign an email but we don't have a S/MIME certificate for that
-  // IMAP account, we abort
-  if ([self sign] && ![[self mailAccountFolder] certificate])
+  if ([self sign])
     {
-      return [NSException exceptionWithHTTPStatus: 500 /* server error */
-                                           reason: @"cannot sign email without certificate"]; 
+      BIO *tbio = NULL;
+      X509 *scert = NULL;
+      STACK_OF(OPENSSL_STRING) *emlst;
+      unsigned int len;
+      const char* bytes;
+
+      certificate = [[self mailAccountFolder] certificate];
+      if (!certificate)
+        {
+          // If we are trying to sign an email but we don't have a S/MIME certificate for that
+          // IMAP account, we abort
+          return [NSException exceptionWithHTTPStatus: 500 /* server error */
+                                               reason: @"cannot sign email without certificate"];
+        }
+
+      // Verify if the certificate contains the sender email
+      bytes = [certificate bytes];
+      len = [certificate length];
+      tbio = BIO_new_mem_buf((void *)bytes, len);
+      scert = PEM_read_bio_X509(tbio, NULL, 0, NULL);
+
+      if (!scert)
+        {
+          NSLog(@"FATAL: failed to read certificate for signing.");
+          return [NSException exceptionWithHTTPStatus: 500 /* server error */
+                                               reason: @"cannot sign message because the certificate can't be read"];
+        }
+
+      emails = [NSMutableArray array];
+      emlst = X509_get1_email(scert);
+      for (i = 0; i < sk_OPENSSL_STRING_num(emlst); i++)
+        [emails addObject: [[NSString stringWithUTF8String: sk_OPENSSL_STRING_value(emlst, i)] lowercaseString]];
+      X509_email_free(emlst);
+
+      parser = [NGMailAddressParser mailAddressParserWithString: [self sender]];
+      parsedSender = [parser parse];
+      emailAddress = [parsedSender address];
+
+      if (![emails containsObject: emailAddress])
+        {
+          return [NSException exceptionWithHTTPStatus: 500 /* server error */
+                                               reason: @"cannot sign message because the certificate doesn't include the specified sender address"];
+        }
     }
 
   // If we are encrypting emails, we must make sure that we have the certificate
@@ -2021,11 +2072,9 @@ static NSString    *userAgent      = nil;
 
   if ([ud mailAddOutgoingAddresses])
     {
-      NSString *emailAddress, *addressBook, *uid;
+      NSString *addressBook, *uid;
       NSArray *matchingContacts;
       SOGoContactGCSEntry *newContact;
-      NGMailAddress *parsedRecipient;
-      NGMailAddressParser *parser;
       SOGoFolder <SOGoContactFolder> *folder;
       NGVCard *card;
 
@@ -2133,7 +2182,7 @@ static NSString    *userAgent      = nil;
 
       if (!message)
         return  [NSException exceptionWithHTTPStatus: 500
-                                          reason: @"could not generate message content"];
+                                              reason: @"could not generate message content"];
 
       error = [[SOGoMailer mailerWithDomainDefaults: dd]
                   sendMailData: message
@@ -2185,11 +2234,11 @@ static NSString    *userAgent      = nil;
 
   if ([[NSFileManager defaultManager]
 	removeFileAtPath: [self draftFolderPath]
-	handler: nil])
+                 handler: nil])
     error = nil;
   else
     error = [NSException exceptionWithHTTPStatus: 500 /* server error */
-			 reason: @"could not delete draft"];
+                                          reason: @"could not delete draft"];
 
   return error;
 }
@@ -2205,7 +2254,7 @@ static NSString    *userAgent      = nil;
   if (message)
     {
       str = [[NSString alloc] initWithData: message
-			      encoding: NSUTF8StringEncoding];
+                                  encoding: NSUTF8StringEncoding];
       if (!str)
 	[self errorWithFormat: @"could not load draft as UTF-8 (data size=%d)",
 	      [message length]];
