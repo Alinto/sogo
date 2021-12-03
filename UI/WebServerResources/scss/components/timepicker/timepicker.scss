@@ -110,6 +110,45 @@ sg-timepicker {
   color: rgba(0,0,0,0.87);
 }
 
+// If the datepicker is inside of a md-input-container
+._sg-timepicker-floating-label {
+  > sg-timepicker {
+    // Prevents the ripple on the triangle from being clipped.
+    overflow: visible;
+
+    .sg-timepicker-input-container {
+      border: none;
+    }
+
+    .sg-timepicker-button {
+      // Prevents the button from wrapping around, as well as it pushing
+      // down the error messages more than they should be.
+      @include rtl(float, left, right);
+      margin-top: $button-left-right-padding * -2;
+      top: $button-left-right-padding * 2 - $md-datepicker-border-bottom-gap / 2;
+    }
+  }
+
+  .md-input {
+    float: none;
+  }
+
+  &._sg-timepicker-has-calendar-icon {
+    > label:not(.md-no-float):not(.md-container-ignore) {
+      $width-offset: $md-datepicker-triangle-button-width * 2 + $md-datepicker-button-gap;
+      $offset: $md-datepicker-triangle-button-width / 2;
+      @include rtl(right, $offset, auto);
+      @include rtl(left, auto, $offset);
+      width: calc(100% - #{$width-offset});
+    }
+
+    .md-input-message-animation {
+      $margin: $md-datepicker-triangle-button-width + $md-datepicker-button-padding * 2 + $md-datepicker-button-gap;
+      @include rtl-prop(margin-left, margin-right, $margin, auto);
+    }
+  }
+}
+
 // Container for the timepicker input.
 .sg-timepicker-input-container {
   @extend .md-datepicker-input-container;
