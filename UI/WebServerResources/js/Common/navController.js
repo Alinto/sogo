@@ -125,7 +125,7 @@
             '</md-toast>'
           ].join(''),
           hideDelay: 5000,
-          position: 'top right'
+          position: sgConstant.toastPosition
         });
       else
         $log.debug('untrap error');

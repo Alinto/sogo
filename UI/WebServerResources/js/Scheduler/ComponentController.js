@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  ComponentController.$inject = ['$rootScope', '$scope', '$q', '$mdDialog', 'Preferences', 'Calendar', 'Component', 'AddressBook', 'Account', 'stateComponent'];
-  function ComponentController($rootScope, $scope, $q, $mdDialog, Preferences, Calendar, Component, AddressBook, Account, stateComponent) {
+  ComponentController.$inject = ['$rootScope', '$scope', '$q', '$mdDialog', 'sgConstant', 'Preferences', 'Calendar', 'Component', 'AddressBook', 'Account', 'stateComponent'];
+  function ComponentController($rootScope, $scope, $q, $mdDialog, sgConstant, Preferences, Calendar, Component, AddressBook, Account, stateComponent) {
     var vm = this, component;
 
     this.$onInit = function () {
@@ -424,7 +424,7 @@
             '</md-toast>'
           ].join(''),
           hideDelay: 5000,
-          position: 'top right'
+          position: sgConstant.toastPosition
         });
       }).finally(function () {
         $timeout(scrollToStart);

@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  AddressBookController.$inject = ['$scope', '$q', '$window', '$state', '$timeout', '$mdDialog', '$mdToast', 'Account', 'Card', 'AddressBook', 'sgFocus', 'Dialog', 'sgSettings', 'sgHotkeys', 'stateAddressbooks', 'stateAddressbook'];
-  function AddressBookController($scope, $q, $window, $state, $timeout, $mdDialog, $mdToast, Account, Card, AddressBook, focus, Dialog, Settings, sgHotkeys, stateAddressbooks, stateAddressbook) {
+  AddressBookController.$inject = ['$scope', '$q', '$window', '$state', '$timeout', '$mdDialog', '$mdToast', 'Account', 'Card', 'AddressBook', 'sgFocus', 'Dialog', 'sgConstant', 'sgHotkeys', 'stateAddressbooks', 'stateAddressbook'];
+  function AddressBookController($scope, $q, $window, $state, $timeout, $mdDialog, $mdToast, Account, Card, AddressBook, focus, Dialog, sgConstant, sgHotkeys, stateAddressbooks, stateAddressbook) {
     var vm = this, hotkeys = [], sortLabels;
 
     sortLabels = {
@@ -261,7 +261,7 @@
         $mdToast.show(
           $mdToast.simple()
             .textContent(l("Lists can't be moved or copied."))
-            .position('top right')
+            .position(sgConstant.toastPosition)
             .hideDelay(2000));
 
       if (cards.length) {
@@ -284,7 +284,7 @@
           $mdToast.show(
             $mdToast.simple()
               .textContent(success)
-              .position('top right')
+              .position(sgConstant.toastPosition)
               .hideDelay(2000));
         });
       }

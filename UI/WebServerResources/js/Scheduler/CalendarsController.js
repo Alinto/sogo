@@ -163,7 +163,7 @@
          $mdToast.show(
            $mdToast.simple()
              .textContent(l('Successfully subscribed to calendar'))
-             .position('top right')
+             .position(sgConstant.toastPosition)
              .hideDelay(3000));
       });
     };

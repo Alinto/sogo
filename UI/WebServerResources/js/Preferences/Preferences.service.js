@@ -251,7 +251,7 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Preferences constructor
    */
-  Preferences.$factory = ['$window', '$document', '$rootScope', '$q', '$timeout', '$log', '$state', '$mdDateLocale', '$mdToast', 'sgSettings', 'Gravatar', 'Resource', 'User', function($window, $document, $rootScope, $q, $timeout, $log, $state, $mdDateLocaleProvider, $mdToast, Settings, Gravatar, Resource, User) {
+  Preferences.$factory = ['$window', '$document', '$rootScope', '$q', '$timeout', '$log', '$state', '$mdDateLocale', '$mdToast', 'sgConstant', 'sgSettings', 'Gravatar', 'Resource', 'User', function($window, $document, $rootScope, $q, $timeout, $log, $state, $mdDateLocaleProvider, $mdToast, sgConstant, Settings, Gravatar, Resource, User) {
     angular.extend(Preferences, {
       $window: $window,
       $document: $document,
@@ -265,7 +265,8 @@
       $gravatar: Gravatar,
       $$resource: new Resource(Settings.activeUser('folderURL'), Settings.activeUser()),
       $resourcesURL: Settings.resourcesURL(),
-      $User: User
+      $User: User,
+      $sgConstant: sgConstant
     });
 
     return new Preferences(); // return unique instance
@@ -511,7 +512,7 @@
                   '  </div>',
                   '</md-toast>'
                 ].join(''),
-                position: 'top right',
+                position: Preferences.$sgConstant.toastPosition,
                 hideDelay: 5000,
                 controller: toastController,
                 viewInboxMessage: _this.viewInboxMessage
@@ -612,7 +613,7 @@
       }
       _this.currentToast = _this.currentToast.then(function () {
         return Preferences.$toast.show({
-          position: 'top right',
+          position: Preferences.$sgConstant.toastPosition,
           hideDelay: 0,
           template: [
             '<md-toast>',

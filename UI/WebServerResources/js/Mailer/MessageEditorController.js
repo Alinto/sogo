@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MessageEditorController.$inject = ['$scope', '$window', '$stateParams', '$mdConstant', '$mdUtil', '$mdDialog', '$mdToast', 'FileUploader', 'stateParent', 'stateAccount', 'stateMessage', 'onCompletePromise', 'encodeUriFilter', '$timeout', 'sgFocus', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
-  function MessageEditorController($scope, $window, $stateParams, $mdConstant, $mdUtil, $mdDialog, $mdToast, FileUploader, stateParent, stateAccount, stateMessage, onCompletePromise, encodeUriFilter, $timeout, focus, Dialog, AddressBook, Card, Preferences) {
+  MessageEditorController.$inject = ['$scope', '$window', '$stateParams', '$mdConstant', '$mdUtil', '$mdDialog', '$mdToast', 'FileUploader', 'stateParent', 'stateAccount', 'stateMessage', 'onCompletePromise', 'encodeUriFilter', '$timeout', 'sgConstant', 'sgFocus', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
+  function MessageEditorController($scope, $window, $stateParams, $mdConstant, $mdUtil, $mdDialog, $mdToast, FileUploader, stateParent, stateAccount, stateMessage, onCompletePromise, encodeUriFilter, $timeout, sgConstant, focus, Dialog, AddressBook, Card, Preferences) {
     var vm = this;
 
     this.$onInit = function() {
@@ -150,7 +150,7 @@
             $mdToast.simple()
               .textContent(l('Error while uploading the file \"%{0}\":', item.file.name) +
                        ' ' + (response.message? l(response.message) : ''))
-              .position('top right')
+              .position(sgConstant.toastPosition)
               .action(l('OK'))
               .hideDelay(false));
           this.removeFromQueue(item);
@@ -227,7 +227,7 @@
           $mdToast.show(
             $mdToast.simple()
               .textContent(l('Your email has been saved'))
-              .position('top right')
+              .position(sgConstant.toastPosition)
               .hideDelay(3000));
         }
       });
@@ -259,7 +259,7 @@
         $mdToast.show(
           $mdToast.simple()
             .textContent(l('Your email has been sent'))
-            .position('top right')
+            .position(sgConstant.toastPosition)
             .hideDelay(3000));
 
         // Let the user see the succesfull message before closing the dialog

@@ -286,7 +286,7 @@
               $mdToast.show(
                 $mdToast.simple()
                   .textContent(l('Successfully created card'))
-                  .position('top right')
+                  .position(sgConstant.toastPosition)
                   .hideDelay(2000));
             });
           });

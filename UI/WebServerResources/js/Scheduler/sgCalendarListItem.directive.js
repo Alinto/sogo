@@ -340,7 +340,7 @@
                 $mdToast.show(
                   $mdToast.simple()
                     .textContent(msg)
-                    .position('top right')
+                    .position(sgConstant.toastPosition)
                     .hideDelay(3000));
               },
               onErrorItem: function(item, response, status, headers) {
@@ -353,7 +353,7 @@
                     '  </div>',
                     '</md-toast>'
                   ].join(''),
-                  position: 'top right',
+                  position: sgConstant.toastPosition,
                   hideDelay: 3000
                 });
               }
@@ -377,7 +377,7 @@
                     '  </div>',
                     '</md-toast>'
                   ].join(''),
-                  position: 'top right',
+                  position: sgConstant.toastPosition,
                   hideDelay: 3000
                 });
 

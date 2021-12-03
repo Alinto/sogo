@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MailboxController.$inject = ['$window', '$scope', '$timeout', '$q', '$state', '$mdDialog', '$mdToast', 'stateAccounts', 'stateAccount', 'stateMailbox', 'sgHotkeys', 'encodeUriFilter', 'sgSettings', 'sgFocus', 'Dialog', 'Preferences', 'Account', 'Mailbox'];
-  function MailboxController($window, $scope, $timeout, $q, $state, $mdDialog, $mdToast, stateAccounts, stateAccount, stateMailbox, sgHotkeys, encodeUriFilter, sgSettings, focus, Dialog, Preferences, Account, Mailbox) {
+  MailboxController.$inject = ['$window', '$scope', '$timeout', '$q', '$state', '$mdDialog', '$mdToast', 'stateAccounts', 'stateAccount', 'stateMailbox', 'sgHotkeys', 'encodeUriFilter', 'sgConstant', 'sgSettings', 'sgFocus', 'Dialog', 'Preferences', 'Account', 'Mailbox'];
+  function MailboxController($window, $scope, $timeout, $q, $state, $mdDialog, $mdToast, stateAccounts, stateAccount, stateMailbox, sgHotkeys, encodeUriFilter, sgConstant, sgSettings, focus, Dialog, Preferences, Account, Mailbox) {
     var vm = this,
         defaultWindowTitle = angular.element($window.document).find('title').attr('sg-default') || "SOGo",
         hotkeys = [],
@@ -490,7 +490,7 @@
           $mdToast.show(
             $mdToast.simple()
               .textContent(l('%{0} message(s) copied', vm.selectedFolder.selectedCount()))
-              .position('top right')
+              .position(sgConstant.toastPosition)
               .hideDelay(2000));
         });
     };
@@ -504,7 +504,7 @@
           $mdToast.show(
             $mdToast.simple()
               .textContent(l('%{0} message(s) moved', count))
-              .position('top right')
+              .position(sgConstant.toastPosition)
               .hideDelay(2000));
           if (Mailbox.$virtualMode) {
             // When performing an advanced search, we refresh the view if the selected message

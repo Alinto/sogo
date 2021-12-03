@@ -128,7 +128,8 @@
       'lg'    : '(min-width: 1024px) and (max-width: 1279px)',
       'gt-lg' : '(min-width: 1280px)'                        ,
       'xl'    : '(min-width: 1920px)'                        ,
-      'print' : 'print'
+      'print' : 'print',
+      toastPosition: 'bottom right'
     })
 
     .config(configure)

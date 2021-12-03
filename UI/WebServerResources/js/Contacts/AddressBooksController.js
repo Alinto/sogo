@@ -188,7 +188,7 @@
             $mdToast.show(
               $mdToast.simple()
                 .textContent(msg)
-                .position('top right')
+                .position(sgConstant.toastPosition)
                 .hideDelay(3000));
           },
           onErrorItem: function(item, response, status, headers) {
@@ -201,7 +201,7 @@
                 '  </div>',
                 '</md-toast>'
               ].join(''),
-              position: 'top right',
+              position: Settings.toastPosition,
               hideDelay: 3000
             });
           }
@@ -225,7 +225,7 @@
                 '  </div>',
                 '</md-toast>'
               ].join(''),
-              position: 'top right',
+              position: Settings.toastPosition,
               hideDelay: 3000
             });
 
@@ -336,7 +336,7 @@
          $mdToast.show(
            $mdToast.simple()
              .textContent(l('Successfully subscribed to address book'))
-             .position('top right')
+             .position(Settings.toastPosition)
              .hideDelay(3000));
       });
     };
@@ -364,7 +364,7 @@
         $mdToast.show(
           $mdToast.simple()
             .textContent(l("Lists can't be moved or copied."))
-            .position('top right')
+            .position(Settings.toastPosition)
             .hideDelay(2000));
 
       if (cards.length) {
@@ -387,7 +387,7 @@
           $mdToast.show(
             $mdToast.simple()
               .textContent(success)
-              .position('top right')
+              .position(Settings.toastPosition)
               .hideDelay(2000));
         });
       }

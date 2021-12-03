@@ -299,7 +299,7 @@
         $mdToast.show(
           $mdToast.simple()
             .textContent(success)
-            .position('top right')
+            .position(sgConstant.toastPosition)
             .hideDelay(2000));
       });
     };

@@ -255,7 +255,7 @@
             $mdToast.show(
               $mdToast.simple()
                 .textContent(l('Folder compacted'))
-                .position('top right')
+                .position(sgConstant.toastPosition)
                 .hideDelay(3000));
           });
         };
@@ -273,7 +273,7 @@
             $mdToast.show(
               $mdToast.simple()
                 .textContent(successMsg)
-                .position('top right')
+                .position(sgConstant.toastPosition)
                 .hideDelay(3000));
           });
         };
