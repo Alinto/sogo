@@ -27,6 +27,11 @@ ifeq ($(DIST_CODENAME), buster)
 MFA_CONFIG=--enable-mfa
 endif
 
+# Debian 11
+ifeq ($(DIST_CODENAME), bullseye)
+MFA_CONFIG=--enable-mfa
+endif
+
 # Ubuntu 12.04
 ifeq ($(DIST_CODENAME), precise)
 SODIUM_CONFIG=--disable-sodium
