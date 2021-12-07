@@ -9,8 +9,8 @@
   /**
    * @ngInject
    */
-  LoginController.$inject = ['$scope', '$window', '$timeout', 'Dialog', '$mdDialog', 'Authentication'];
-  function LoginController($scope, $window, $timeout, Dialog, $mdDialog, Authentication) {
+  LoginController.$inject = ['$scope', '$window', '$timeout', 'Dialog', '$mdDialog', 'Authentication', 'sgFocus'];
+  function LoginController($scope, $window, $timeout, Dialog, $mdDialog, Authentication, focus) {
     var vm = this;
 
     this.$onInit = function() {
@@ -43,6 +43,7 @@
 
           if (data.totpmissingkey) {
             vm.loginState = 'totpcode';
+            focus('totpcode');
           }
           else if (data.totpdisabled) {
             vm.loginState = 'totpdisabled';

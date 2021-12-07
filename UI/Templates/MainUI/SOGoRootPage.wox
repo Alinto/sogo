@@ -134,7 +134,11 @@
                 <md-input-container class="md-block">
                   <label><var:string label:value="Verification Code"/></label>
                   <md-icon>lock</md-icon>
-                  <input type="text" ng-pattern="app.verificationCodePattern" ng-model="app.creds.verificationCode" ng-required="app.loginState == 'totpcode'"/>
+                  <input type="text"
+                         ng-pattern="app.verificationCodePattern"
+                         ng-model="app.creds.verificationCode"
+                         ng-required="app.loginState == 'totpcode'"
+                         sg-focus-on="totpcode"/>
                   <div class="sg-hint"><var:string label:value="Enter the 6-digit verification code from your TOTP application."/></div>
                 </md-input-container>
                 <div layout="row" layout-align="space-between center">
