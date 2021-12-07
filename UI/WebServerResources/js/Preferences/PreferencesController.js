@@ -25,6 +25,7 @@
         $mdConstant.KEY_CODE.COMMA,
         $mdConstant.KEY_CODE.SEMICOLON
       ];
+      this.mailAutoMarkAsReadDelay = Preferences.defaults.SOGoMailAutoMarkAsReadEnabled ? Preferences.defaults.SOGoMailAutoMarkAsReadDelay : 5;
 
       // Set alternate avatar in User service
       if (Preferences.defaults.SOGoAlternateAvatar)
@@ -105,6 +106,10 @@
     this.removeContactCategory = function(index, form) {
       this.preferences.defaults.SOGoContactsCategories.splice(index, 1);
       form.$setDirty();
+    };
+
+    this.onMailAutoMarkAsReadDelay = function() {
+      this.preferences.defaults.SOGoMailAutoMarkAsReadDelay = this.mailAutoMarkAsReadDelay;
     };
 
     this.addMailAccount = function(ev, form) {

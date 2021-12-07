@@ -638,12 +638,28 @@
 
             <div>
               <md-checkbox
-                  ng-model="app.preferences.defaults.SOGoMailMarkAsReadDelay"
-                  ng-true-value="1"
-                  ng-false-value="0"
+                  ng-model="app.preferences.defaults.SOGoMailAutoMarkAsReadEnabled"
                   label:aria-label="Automatically mark messages as read">
                 <var:string label:value="Automatically mark messages as read"/>
               </md-checkbox>
+              <div flex-offset="5">
+                <md-radio-group
+                    layout="row" layout-align="start center"
+                    ng-model="app.preferences.defaults.SOGoMailAutoMarkAsReadMode"
+                    ng-disabled="!app.preferences.defaults.SOGoMailAutoMarkAsReadEnabled">
+                  <md-radio-button value="immediate"><var:string label:value="Immediately on display"/></md-radio-button>
+                  <md-radio-button value="delay" style="padding-right: 0">
+                    <var:string label:value="After displaying for"/>
+                  </md-radio-button>
+                  <md-input-container class="md-input-number" style="margin: 0" md-no-float="md-no-float">
+                    <input type="number" min="1" label:aria-label="seconds"
+                           ng-disabled="!app.preferences.defaults.SOGoMailAutoMarkAsReadEnabled"
+                           ng-change="app.onMailAutoMarkAsReadDelay()"
+                           ng-model="app.mailAutoMarkAsReadDelay"/>
+                  </md-input-container>
+                  <var:string label:value="seconds"/>
+                </md-radio-group>
+              </div>
             </div>
 
             <div class="hide-xs" layout="row" layout-align="start center" flex="50">

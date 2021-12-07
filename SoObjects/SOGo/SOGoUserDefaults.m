@@ -18,10 +18,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSValue.h>
 
+#import <NGExtensions/NGBase64Coding.h>
 #import <NGImap4/NSString+Imap4.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -616,6 +618,16 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 - (NSString *) mailDisplayRemoteInlineImages;
 {
   return [self stringForKey: @"SOGoMailDisplayRemoteInlineImages"];
+}
+
+- (void) setMailAutoMarkAsReadDelay: (int) newValue
+{
+  [self setInteger: newValue forKey: @"SOGoMailAutoMarkAsReadDelay"];
+}
+
+- (int) mailAutoMarkAsReadDelay
+{
+  return [self integerForKey: @"SOGoMailAutoMarkAsReadDelay"];
 }
 
 - (void) setMailAutoSave: (NSString *) newValue

@@ -132,6 +132,7 @@
         _this.flags.splice(i, 1,'_' + flag);
       }
     });
+    this.isread = !!this.isread;
   };
 
   /**
@@ -541,6 +542,31 @@
   };
 
   /**
+   * @function toggleRead
+   * @memberof Message.prototype
+   * @desc Toggle message unseen status
+   * @returns a promise of the HTTP operation
+   */
+  Message.prototype.toggleRead = function() {
+    var _this = this;
+
+    if (this.isread)
+      return Message.$$resource.fetch(this.$absolutePath(), 'markMessageUnread').then(function() {
+        Message.$timeout(function() {
+          _this.isread = false;
+          _this.$mailbox.unseenCount++;
+        });
+      });
+    else
+      return Message.$$resource.fetch(this.$absolutePath(), 'markMessageRead').then(function() {
+        Message.$timeout(function() {
+          _this.isread = true;
+          _this.$mailbox.unseenCount--;
+        });
+      });
+  };
+
+  /**
    * @function $imipAction
    * @memberof Message.prototype
    * @desc Perform IMIP actions on the current message.
@@ -664,13 +690,16 @@
     var _this = this, futureMessageData;
 
     if (options && options.useCache && this.$futureMessageData) {
+      // The message has already been fetched.
       if (!this.isread) {
-        Message.$$resource.fetch(this.$absolutePath(), 'markMessageRead').then(function() {
-          Message.$timeout(function() {
-            _this.isread = true;
-            _this.$mailbox.unseenCount--;
-          });
-        });
+        if (Message.$Preferences.defaults.SOGoMailAutoMarkAsReadDelay > -1)
+          // Automatically mark message as read
+          _this.$markAsReadPromise = Message.$timeout(function() {
+            Message.$$resource.fetch(_this.$absolutePath(), 'markMessageRead').then(function() {
+              _this.isread = true;
+              _this.$mailbox.unseenCount--;
+            });
+          }, Message.$Preferences.defaults.SOGoMailAutoMarkAsReadDelay * 1000);
       }
       return this;
     }
@@ -865,7 +894,18 @@
     // Resolve and expose the promise
     this.$futureMessageData = futureMessageData.then(function(data) {
       // Calling $timeout will force Angular to refresh the view
-      if (_this.isread === 0) {
+      if (!data.isRead) {
+        if (Message.$Preferences.defaults.SOGoMailAutoMarkAsReadDelay > -1)
+          // Automatically mark message as read
+          _this.$markAsReadPromise = Message.$timeout(function() {
+            Message.$$resource.fetch(_this.$absolutePath(), 'markMessageRead').then(function() {
+              _this.isread = true;
+              _this.$mailbox.unseenCount--;
+            });
+          }, Message.$Preferences.defaults.SOGoMailAutoMarkAsReadDelay * 1000);
+      }
+      else if (!_this.isread) {
+        // Message as already been marked read on the server
         _this.isread = true;
         _this.$mailbox.unseenCount--;
       }

@@ -53,6 +53,13 @@
       if (data.SOGoRememberLastModule)
         data.SOGoLoginModule = "Last";
 
+      data.SOGoMailAutoMarkAsReadDelay = parseInt(data.SOGoMailAutoMarkAsReadDelay) || 0;
+      data.SOGoMailAutoMarkAsReadEnabled = (data.SOGoMailAutoMarkAsReadDelay >= 0);
+      if (data.SOGoMailAutoMarkAsReadDelay > 0)
+        data.SOGoMailAutoMarkAsReadMode = 'delay';
+      else
+        data.SOGoMailAutoMarkAsReadMode = 'immediate';
+
       // Mail editor autosave is a number of minutes or 0 if disabled
       data.SOGoMailAutoSave = parseInt(data.SOGoMailAutoSave) || 0;
 
@@ -723,6 +730,15 @@
 
     // Don't push locale definition
     delete preferences.defaults.locale;
+
+    if (preferences.defaults.SOGoMailAutoMarkAsReadEnabled) {
+      if (preferences.defaults.SOGoMailAutoMarkAsReadMode == 'immediate')
+        preferences.defaults.SOGoMailAutoMarkAsReadDelay = 0;
+    } else {
+      preferences.defaults.SOGoMailAutoMarkAsReadDelay = -1;
+    }
+    delete preferences.defaults.SOGoMailAutoMarkAsReadEnabled;
+    delete preferences.defaults.SOGoMailAutoMarkAsReadMode;
 
     // Merge back mail labels keys and values
     preferences.defaults.SOGoMailLabelsColors = {};

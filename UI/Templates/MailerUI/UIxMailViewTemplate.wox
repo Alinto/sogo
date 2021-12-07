@@ -35,6 +35,12 @@
           <md-button class="sg-icon-button" label:aria-label="Flagged" ng-click="viewer.message.toggleFlag()">
             <md-icon ng-class="{ 'sg-icon-star': viewer.message.isflagged }">{{ viewer.message.isflagged ? 'star' : 'star_border' }}</md-icon>
           </md-button>
+          <md-button class="sg-icon-button" label:aria-label="Mark as read"
+                     ng-click="viewer.message.toggleRead()"
+                     ng-switch="viewer.message.isread">
+            <md-icon class="ng-animate-disabled" ng-switch-when="true" rsrc:md-svg-src="img/mark_email_unread.svg"><!-- mark as unread --></md-icon>
+            <md-icon class="ng-animate-disabled" ng-switch-default="true" rsrc:md-svg-src="img/mark_email_read.svg"><!-- mark as read --></md-icon>
+          </md-button>
           <md-button class="sg-icon-button"
                      ng-hide="::viewer.message.isDraft"
                      ng-click="viewer.reply($event)"

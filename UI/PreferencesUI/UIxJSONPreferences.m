@@ -342,6 +342,9 @@ static SoProduct *preferencesProduct = nil;
   if (![[defaults source] objectForKey: @"SOGoMailDisplayRemoteInlineImages"])
     [[defaults source] setObject: [defaults mailDisplayRemoteInlineImages] forKey: @"SOGoMailDisplayRemoteInlineImages"];
 
+  if ([[defaults source] objectForKey: @"SOGoMailAutoMarkAsReadDelay"] == nil)
+    [[defaults source] setObject: [NSNumber numberWithInt: [defaults mailAutoMarkAsReadDelay]] forKey: @"SOGoMailAutoMarkAsReadDelay"];
+
   if (![[defaults source] objectForKey: @"SOGoMailAutoSave"])
     [[defaults source] setObject: [defaults mailAutoSave] forKey: @"SOGoMailAutoSave"];
 

@@ -119,6 +119,7 @@
     SOGoMailDisplayRemoteInlineImages = "never";
     SOGoMailCertificateEnabled = YES;
 
+    SOGoMailAutoMarkAsReadDelay = "0";
     SOGoMailAutoSave = "5";
 
     SOGoCalendarShouldDisplayWeekend = YES;

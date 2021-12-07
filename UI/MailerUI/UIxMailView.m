@@ -272,11 +272,13 @@ static NSString *mailETag = nil;
   NSMutableDictionary *data;
   NSArray *addresses;
   SOGoMailObject *co;
+  SOGoUserDefaults *ud;
   UIxEnvelopeAddressFormatter *addressFormatter;
   UIxMailRenderingContext *mctx;
   id viewer, renderedPart;
 
   co = [self clientObject];
+  ud = [[context activeUser] userDefaults];
   addressFormatter = [context mailEnvelopeAddressFormatter];
 
   mctx = [[UIxMailRenderingContext alloc] initWithViewer: self context: context];
@@ -349,8 +351,11 @@ static NSString *mailETag = nil;
   if ((addresses = [addressFormatter dictionariesForArray: [co replyToEnvelopeAddresses]]))
     [data setObject: addresses forKey: @"reply-to"];
 
-  // Mark message as read
-  [co addFlags: @"seen"];
+  if ([ud mailAutoMarkAsReadDelay] == 0)
+    // Mark message as read
+    [co addFlags: @"seen"];
+
+  [data setObject: [NSNumber numberWithBool: [co read]] forKey: @"isRead"];
 
   response = [self responseWithStatus: 200
                 andJSONRepresentation: data];

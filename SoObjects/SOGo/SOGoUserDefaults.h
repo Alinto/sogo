@@ -148,6 +148,10 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (void) setMailDisplayRemoteInlineImages: (NSString *) newValue;
 - (NSString *) mailDisplayRemoteInlineImages;
 
+
+- (void) setMailAutoMarkAsReadDelay: (int) newValue;
+- (int) mailAutoMarkAsReadDelay;
+
 - (void) setMailAutoSave: (NSString *) newValue;
 - (NSString *) mailAutoSave;
 

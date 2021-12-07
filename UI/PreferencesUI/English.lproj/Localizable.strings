@@ -201,6 +201,10 @@
 "displayremoteinlineimages_always" = "Always";
 "Auto save every" = "Auto save every";
 "minutes" = "minutes";
+"Automatically mark messages as read" = "Automatically mark messages as read";
+"Immediately on display" = "Immediately on display";
+"After displaying for" = "After displaying for";
+"seconds" = "seconds";
 
 /* Contact */
 "Personal Address Book" = "Personal Address Book";

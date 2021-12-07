@@ -98,6 +98,9 @@
         _.forEach(hotkeys, function(key) {
           sgHotkeys.deregisterHotkey(key);
         });
+        // Cancel automatic mark as read
+        if (vm.message.$markAsReadPromise)
+          vm.service.$timeout.cancel(vm.message.$markAsReadPromise);
       });
 
     }; // $onInit
