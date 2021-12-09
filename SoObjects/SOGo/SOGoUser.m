@@ -284,7 +284,11 @@
 
 - (void) _fetchCN
 {
-  cn = [[self _fetchFieldForUser: @"cn"] stringByTrimmingSpaces];
+  cn = [self _fetchFieldForUser: @"cn"];
+  if ([cn isNotNull])
+    cn = [cn stringByTrimmingSpaces];
+  else
+    cn = [NSString stringWithString: login];
   [cn retain];
 }
 
