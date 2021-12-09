@@ -33,6 +33,7 @@
           <md-autocomplete
               class="md-margin md-default-theme md-bg md-hue-1" flex="flex"
               required="required"
+              ng-keydown="editor.ignoreReturn($event)"
               md-input-name="from"
               md-require-match="true"
               md-selected-item="editor.fromIdentity"
@@ -95,6 +96,7 @@
                         md-autofocus="editor.isNew()"
                         md-autocomplete-snap="width">
                 <md-autocomplete
+                    ng-keydown="editor.ignoreReturn($event)"
                     md-menu-class="md-2-line"
                     md-search-text="editor.autocomplete.to.searchText"
                     md-selected-item="editor.autocomplete.to.selected"
@@ -136,6 +138,7 @@
                         md-add-on-blur="true"
                         md-autocomplete-snap="width">
                 <md-autocomplete
+                    ng-keydown="editor.ignoreReturn($event)"
                     md-menu-class="md-2-line"
                     md-search-text="editor.autocomplete.cc.searchText"
                     md-selected-item="editor.autocomplete.cc.selected"
@@ -177,6 +180,7 @@
                         md-add-on-blur="true"
                         md-autocomplete-snap="width">
                 <md-autocomplete
+                    ng-keydown="editor.ignoreReturn($event)"
                     md-menu-class="md-2-line"
                     md-selected-item="editor.autocomplete.bcc.selected"
                     md-search-text="editor.autocomplete.bcc.searchText"
@@ -212,7 +216,10 @@
               <label>
                 <var:string label:value="Subject"/>
               </label>
-              <input type="text" name="subject" ng-model="editor.message.editable.subject" ng-required="true"/>
+              <input type="text" name="subject"
+                     ng-model="editor.message.editable.subject"
+                     ng-keydown="editor.ignoreReturn($event)"
+                     ng-required="true"/>
               <div ng-messages="messageForm.subject.$error">
                 <div ng-message="required"><var:string label:value="Please specify a subject."/></div>
               </div>

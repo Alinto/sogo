@@ -209,6 +209,15 @@
       $mdDialog.hide();
     }
 
+    // Fix for https://www.sogo.nu/bugs/view.php?id=4666
+    this.ignoreReturn = function ($event) {
+      if ($event.keyCode == 13) {
+        $event.stopPropagation();
+        $event.preventDefault();
+        return false;
+      }
+    };
+
     this.save = function (options) {
       var ctrls = $parentControllers();
       this.message.$save().then(function() {
