@@ -46,3 +46,4 @@ reply_info = "Dies ist eine Anwort auf eine Termineinladung von Ihnen.";
 "Cancel" = "Abbrechen";
 "OK" = "OK";
 "Comment" = "Kommentar:";
+"Description" = "Beschreibung";

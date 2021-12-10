@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "Erstellen";
 "Empty Trash" = "Papierkorb leeren";
+"Empty Junk Folder" = "Spam-Ordner leeren";
 "Delete"      = "Löschen";
 "Expunge"     = "Expunge";
 "Forward"     = "Weiterleiten";
@@ -73,8 +74,13 @@
 "An error occured while communicating with the mail server" = "Bei der Kommunikation mit dem E-Mail-Server ist ein Fehler aufgetreten";
 
 /* Mailbox actions */
+
 /* Compact Folder success message */
 "Folder compacted" = "Ordner komprimiert";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Spam-Ordner geleert";
+
 /* Empty Trash success message */
 "Trash emptied" = "Papierkorb geleert";
 
@@ -82,7 +88,7 @@
 "Access rights to" = "Zugriffsrechte für";
 "For user" = "Für Benutzer";
 "Any Authenticated User" = "Alle authentifizierten Benutzer ";
-"List and see this folder" = "Diesen Ordner sehen";
+"View this folder" = "Diesen Ordner anzeigen";
 "Read mails from this folder" = "E-Mails in diesem Ordner ansehen";
 "Mark mails read and unread" = "E-Mails in diesem Ordner als (un)gelesen markieren";
 "Modify the flags of the mails in this folder" = "Markierungen von E-Mails in diesem Ordner verändern";
@@ -165,6 +171,15 @@
 "Mark Unread" = "Als ungelesen markieren";
 "Mark Read"   = "Als gelesen markieren";
 "Untitled" = "ohne Titel";
+
+/* Filter option in messages list */
+"Show unread messages only" = "Nur ungelesene Nachrichten anzeigen";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Nur Markierte Nachrichten anzeigen";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Nach Schlagwort gefiltert";
 
 /* Tree */
 "SentFolderName"   = "Gesendet";
@@ -281,11 +296,14 @@
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Kein Zertifikat mit dem Benutzer verbunden.";
 
-/* Invalid message signature */
+/* Invalid S/MIME signature */
 "Digital signature is not valid" = "Die kryptographische Signatur ist ungültig";
 
-/* Valid message signature */
+/* Valid S/MIME signature */
 "Message is signed" = "Nachricht ist signiert";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Die Nachricht ist signiert, aber das Zertifikat passt nicht zur E-Mail-Adresse des Absenders";
 
 /* Unknown error while validating message signature */
 "Digital signature is not valid" = "Die kryptographische Signatur ist ungültig";
@@ -372,6 +390,12 @@
 "Send Anyway" = "Trotzdem versenden";
 "Error while saving the draft" = "Fehler beim Speichern des Entwurfes";
 
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Konnte den Papierkorb nicht leeren.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Kann den Spam Ordner nicht leeren";
+
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Fehler beim Hochladen der Datei \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Es wird gerade eine Datei hochgeladen. Das Schließen des Fensters wird dies abbrechen.";
@@ -386,6 +410,9 @@
 "cannot send message: (smtp) all recipients discarded" = "Kann Nachricht nicht versenden: Alle Empfänger sind ungültig.";
 "cannot send message (smtp) - recipients discarded" = "Kann Nachricht nicht versenden: Die folgenden Adressen sind ungültig";
 "cannot send message: (smtp) error when connecting" = "Kann Nachricht nicht versenden: Fehler beim Verbinden mit dem SMTP-Server.";
+"cannot sign email without certificate" = "Diese Nachricht kann nicht signiert werden, weil diesem E-Mail-Konto kein Zertifikat zugeordnet ist.";
+"cannot sign message because the certificate can't be read" = "Diese Nachricht kann nicht signiert werden, weil das Zertifikat, das diesem E-Mail-Konto zugeordnet ist, nicht gelesen werden kann.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "Diese Nachricht kann nicht signiert werden, weil die Absenderadresse nicht im Zertifikat enthalten ist, das diesem E-Mail-Konto zugeordnet ist.";
 
 /* Contacts list in mail editor */
 "Email" = "E-Mail";
