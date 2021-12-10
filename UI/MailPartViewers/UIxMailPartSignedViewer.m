@@ -159,7 +159,8 @@
 	      BIO_free(buf);
 
               [certificates addObject: [self certificateForSubject: subject
-                                                         andIssuer: issuer]];
+                                                         andIssuer: issuer
+                                                        withEmails: emails]];
 	    }
 	}
       
@@ -240,10 +241,12 @@
 
 - (NSDictionary *) certificateForSubject: (NSString *) subject
                                andIssuer: (NSString *) issuer
+                              withEmails: (NSArray *) emails
 {
   return [NSDictionary dictionaryWithObjectsAndKeys:
-                              [subject componentsFromMultilineDN], @"subject",
-                              [issuer componentsFromMultilineDN], @"issuer",
+                         [subject componentsFromMultilineDN], @"subject",
+                         [issuer componentsFromMultilineDN], @"issuer",
+                         emails, @"emails",
                        nil];
 }
 

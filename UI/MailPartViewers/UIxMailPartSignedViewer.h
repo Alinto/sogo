@@ -1,6 +1,6 @@
 /* UIxMailPartSignedViewer.h - this file is part of SOGo
  *
- * Copyright (C) 2009-2018 Inverse inc.
+ * Copyright (C) 2009-2021 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,8 @@
 - (NSString *) validationMessage;
 - (NSArray *) smimeCertificates;
 - (NSDictionary *) certificateForSubject: (NSString *) subject
-                               andIssuer: (NSString *) issuer;
+                               andIssuer: (NSString *) issuer
+                              withEmails: (NSArray *) emails;
 
 @end
 
