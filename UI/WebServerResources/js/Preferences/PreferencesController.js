@@ -25,7 +25,7 @@
         $mdConstant.KEY_CODE.COMMA,
         $mdConstant.KEY_CODE.SEMICOLON
       ];
-      this.mailAutoMarkAsReadDelay = Preferences.defaults.SOGoMailAutoMarkAsReadEnabled ? Preferences.defaults.SOGoMailAutoMarkAsReadDelay : 5;
+      this.mailAutoMarkAsReadDelay = Preferences.defaults.SOGoMailAutoMarkAsReadMode == 'delay' ? Math.max(1, Preferences.defaults.SOGoMailAutoMarkAsReadDelay) : 5;
 
       // Set alternate avatar in User service
       if (Preferences.defaults.SOGoAlternateAvatar)
