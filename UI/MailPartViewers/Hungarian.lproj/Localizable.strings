@@ -46,3 +46,4 @@ reply_info = "Ez egy válasz az ön által kiküldött meghívásra.";
 "Cancel" = "Mégsem";
 "OK" = "OK";
 "Comment" = "Megjegyzés:";
+"Description" = "Leírás";

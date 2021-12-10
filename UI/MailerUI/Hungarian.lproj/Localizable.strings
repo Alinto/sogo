@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "Új üzenet";
 "Empty Trash" = "Lomtár ürítése";
+"Empty Junk Folder" = "Levélszemét mappa ürítése";
 "Delete"      = "Törlés";
 "Expunge"     = "Megjelölés töröltként";
 "Forward"     = "Továbbítás";
@@ -73,8 +74,13 @@
 "An error occured while communicating with the mail server" = "Hiba történt a levelező kiszolgálóval történő kapcsolattartás során";
 
 /* Mailbox actions */
+
 /* Compact Folder success message */
 "Folder compacted" = "Mappa tömörítve";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Levélszemét mappa kiürítve";
+
 /* Empty Trash success message */
 "Trash emptied" = "Lomtár kiürítve";
 
@@ -82,7 +88,7 @@
 "Access rights to" = "Hozzáférés az alábbiaknak:";
 "For user" = "Felhasználónak";
 "Any Authenticated User" = "Bejelentkezett felhasználók";
-"List and see this folder" = "Mappa megtekintése és listázása";
+"View this folder" = "Mappa megtekintése";
 "Read mails from this folder" = "Üzenetek olvasása a mappában";
 "Mark mails read and unread" = "Üzenetek olvasottnak vagy olvasatlannak jelölése";
 "Modify the flags of the mails in this folder" = "Üzenetek megjelölésének megváltoztatása a mappában";
@@ -166,6 +172,15 @@
 "Mark Read"   = "Megjelölés olvasottként";
 "Untitled" = "Névtelen";
 
+/* Filter option in messages list */
+"Show unread messages only" = "Csak az olvasatlan üzenetek jelenjenek meg";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Csak a megjelölt üzenetek jelenjenek meg";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Szűrés címke alapján";
+
 /* Tree */
 "SentFolderName"   = "Elküldött üzenetek";
 "TrashFolderName"  = "Lomtár";
@@ -225,10 +240,16 @@
 "View Message Source" = "Üzenet forrása";
 
 /* Message view "more" menu: create an event from message */
-"Convert To Event" = "Eseménynek konvertál";
+"Convert To Event" = "Eseménnyé alakít";
 
 /* Message view "more" menu: create a task from message */
-"Convert To Task" = "Feladatnak konvertál";
+"Convert To Task" = "Feladattá alakít";
+
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Üzenet letöltése";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Üzenet letöltése (zip)";
 
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "Összes melléklet letöltése";
@@ -251,6 +272,12 @@
 /* Number of selected messages in list */
 "selected" = "kijelölt";
 
+/* Date formatting from one time to another time */
+"to_time" = "-";
+
+/* Date formatting from one day to another day */
+"to_date" = "-";
+
 /* Encrypted message notification */
 "This message is encrypted" = "Ez az üzenet titkosított";
 
@@ -269,11 +296,14 @@
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Nincs tanúsítvány hozzárendelve a fiókhoz.";
 
-/* Invalid message signature */
+/* Invalid S/MIME signature */
 "Digital signature is not valid" = "Az elektronikus aláírás nem érvényes";
 
-/* Valid message signature */
+/* Valid S/MIME signature */
 "Message is signed" = "Az üzenet alá van írva";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Az üzenet alá van írva, de a tanúsítvány nem egyezik meg a küldő email címével";
 
 /* Unknown error while validating message signature */
 "Digital signature is not valid" = "Az elektronikus aláírás nem érvényes";
@@ -313,6 +343,7 @@
 "Operation failed" = "A művelet megszakadt";
 "Quota" = "Tárhely:";
 "quotasFormat" = "Felhasznált: %{0}%,összes: %{1} MB";
+"messageQuotasFormat" = "%{0}% / %{1} üzenetből";
 "Unable to move/delete folder." = "Nem lehet mappát átmozgatni/törölni .";
 
 /* Alternative operation when folder cannot be deleted */
@@ -359,6 +390,12 @@
 "Send Anyway" = "Így küldöm el";
 "Error while saving the draft" = "Hiba történt a piszkozat mentésekor";
 
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Nem lehet kiüríteni a Lomtár mappát.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Nem lehet kiüríteni a Levélszemét mappát.";
+
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Hiba történt a \"%{0}\" állomány feltöltésekor:";
 "There is an active file upload. Closing the window will interrupt it." = "Állomány feltöltés folyamatban. Az ablak bezárása megszakítja ezt a folyamatot.";
@@ -373,6 +410,9 @@
 "cannot send message: (smtp) all recipients discarded" = "Az üzenetet nem lehetett elküldeni: az összes címzett érvénytelen.";
 "cannot send message (smtp) - recipients discarded" = "Az üzenetet nem lehetett elküldeni: az alábbi címzettek érvénytelenek";
 "cannot send message: (smtp) error when connecting" = "Az üzenetet nem lehetett elküldeni: hiba az SMTP kiszolgálóhoz történő csatlakozáskor.";
+"cannot sign email without certificate" = "Az üzenetet nem lehet aláírni, mivel nincs tanúsítvány hozzárendelve a postafiókhoz.";
+"cannot sign message because the certificate can't be read" = "Az üzenetet nem lehet aláírni, mivel a postafiókhoz hozzárendelt tanúsítvány nem olvasható.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "Az üzenetet nem lehet aláírni, mivel a feladó címe nem található meg postafiókhoz hozzárendelt tanúsítványban.";
 
 /* Contacts list in mail editor */
 "Email" = "Email";

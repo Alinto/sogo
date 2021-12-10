@@ -221,7 +221,7 @@
 "New Addressbook..." = "Új címjegyzék...";
 "Subscribe to an Addressbook..." = "Feliratkozás címjegyzékre...";
 "Remove the selected Addressbook" = "Kijelölt címjegyzék törlése";
-"Subscribe to a shared folder" = "Feliratkozás megosztott mappára";
+"Subscribe to a shared contact" = "Feliratkozás megosztott címjegyzékre";
 "Search User" = "Felhasználó keresése";
 "Name of the Address Book" = "A címjegyzék neve";
 "Are you sure you want to delete the selected address book?"
@@ -350,6 +350,7 @@
 "Synchronization" = "Szinkronizálás";
 "Synchronize" = "Szinkronizálás";
 "Sucessfully subscribed to address book" = "Sikeresen feliratkozott a címjegyzékre";
+"A similar card already exists. Would you like to save it anyway?" = "Már van hasonló névjegy. Mindenképp szeretné menteni?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Keresés hatóköre";
