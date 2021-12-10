@@ -46,3 +46,4 @@ reply_info = "Ceci est une réponse à un événement que vous avez organisé.";
 "Cancel" = "Annuler";
 "OK" = "Ok";
 "Comment" = "Description :";
+"Description" = "Description";
