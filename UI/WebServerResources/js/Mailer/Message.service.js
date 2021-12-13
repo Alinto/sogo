@@ -132,7 +132,8 @@
         _this.flags.splice(i, 1,'_' + flag);
       }
     });
-    this.isread = !!this.isread;
+    // isread will be undefined when composing a new message -- assume unseen flag is not set.
+    this.isread = angular.isDefined(this.isread) ? !!this.isread : true;
   };
 
   /**

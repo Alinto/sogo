@@ -175,7 +175,7 @@
           $window.opener.$mailboxController.selectedFolder.path == mailboxId) {
         // The message mailbox is opened in the parent window
         mailbox = new Mailbox(stateAccount,
-                              $window.opener.$mailboxController.selectedFolder.$omit());
+                              $window.opener.$mailboxController.selectedFolder.$omit(true));
       }
     }
 

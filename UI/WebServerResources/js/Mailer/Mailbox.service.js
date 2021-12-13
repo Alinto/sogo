@@ -991,8 +991,16 @@
    * @desc Return a sanitized object used to send to the server.
    * @return an object literal copy of the Mailbox instance
    */
-  Mailbox.prototype.$omit = function() {
-    var mailbox = {};
+  Mailbox.prototype.$omit = function(deep) {
+    var mailbox = {},
+        _visit = function(children) {
+          var childrenArray = [];
+          _.forEach(children, function(o) {
+            childrenArray.push(o.$omit(deep));
+          });
+          return childrenArray;
+        };
+
     angular.forEach(this, function(value, key) {
       if (key != 'constructor' &&
           key != 'children' &&
@@ -1003,6 +1011,9 @@
         mailbox[key] = value;
       }
     });
+    if (deep && this.children) {
+      mailbox.children = _visit(this.children);
+    }
     return mailbox;
   };
 
