@@ -1089,7 +1089,7 @@
             }
           }
         }
-        if (data.unseenCount) {
+        if (angular.isDefined(data.unseenCount)) {
           _this.unseenCount = data.unseenCount;
         }
 
