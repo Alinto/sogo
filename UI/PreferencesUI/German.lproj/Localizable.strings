@@ -44,11 +44,18 @@
 "Add default email addresses" = "Standardadresse hinzufügen";
 "Days between responses" = "Tage zwischen automatischen Antworten";
 "Do not send responses to mailing lists" = "Keine automatischen Abwesenheitsnachrichten an Mailinglisten senden";
+"Activation Constraints" = "Aktivierungsbedingungen";
 "Enable auto reply on" = "Automatische Abwesenheitsnachricht anschalten am";
 "First day of vacation" = "Erster Urlaubstag";
 "Disable auto reply on" = "Automatische Abwesenheitsnachricht abschalten am";
 "Last day of vacation" = "Letzter Urlaubstag";
 "Enter date" = "Datum eingeben";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Automatische Abwesenheitsnachricht anschalten um";
+"Enter time" = "Zeit eingeben";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Automatische Abwesenheitsnachricht abschalten um";
+"Enable auto reply on these days" = "Automatische Abwesenheitsnachricht an folgenden Tagen aktivieren";
 "Always send vacation message response" = "Immer Abwesenheitsmeldung senden";
 "The vacation message is sent prior to apply your filters." = "Die Abwesenheitsnachricht wird vor dem Anwenden von Filtern verschickt.";
 "Discard incoming mails during vacation" = "Ankommende E-Mails während der Abwesenheit verwerfen";
@@ -194,6 +201,10 @@
 "displayremoteinlineimages_always" = "Immer";
 "Auto save every" = "Automatisch speichern alle";
 "minutes" = "Minuten";
+"Automatically mark messages as read" = "Nachrichten automatisch als gelesen markieren";
+"Immediately on display" = "Sofort beim Anzeigen";
+"After displaying for" = "Nach Anzeigen für";
+"seconds" = "Sekunden";
 
 /* Contact */
 "Personal Address Book" = "Persönliches Adressbuch";
@@ -461,8 +472,8 @@
 "animation_NONE" = "Keine";
 
 /* 2FA */
-"Enable two-factor authentication using a TOTP application" = "Zwei-Faktor-Authentifizierung mit Google Authenticator aktivieren";
-"You must enter this key into your TOTP application." = "Sie müssen diesen Schlüssel in Ihrer Google Authenticator App eingeben.";
+"Enable two-factor authentication using a TOTP application" = "Zwei-Faktor-Authentifizierung mit einer TOTP Anwendung aktivieren.";
+"You must enter this key into your TOTP application." = "Sie müssen diesen Schlüssel in Ihre TOTP Anwendung eingeben.";
 "If you do not and you log out you will not be able to login again." = "Wenn Sie das nicht tun und sich abmelden, können Sie sich nicht mehr anmelden.";
 
 /* External Sieve scripts */

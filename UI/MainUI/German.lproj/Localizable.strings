@@ -24,8 +24,9 @@
 
 /* 2FA */
 "Verification Code" = "Sicherheitscode";
-"Enter the 6-digit verification code from your TOTP application." = "Geben Sie den 6-stelligen Sicherheitscode aus Ihrer Google Authenticator App ein.";
-"You provided an invalid TOTP key." = "Sie haben einen ungültigen Google Authenticator Schlüssel eingegeben.";
+"Enter the 6-digit verification code from your TOTP application." = "Geben Sie den 6-stelligen Sicherheitscode aus Ihrer TOTP Anwendung ein.";
+"You provided an invalid TOTP key." = "Sie haben einen ungültigen TOTP-Schlüssel eingegeben.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Zwei-Faktor-Authentifizierung wurde deaktiviert. Bitte gehen Sie zum Einstellungen Modul um die Zwei-Faktor-Authentifikation wieder einzuschalten, und Ihre TOTP-App zu rekonfigurieren.";
 
 "Download" = "Herunterladen";
 "Language" = "Sprache";
