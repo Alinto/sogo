@@ -84,40 +84,19 @@
       if (data.Vacation) {
         if (data.Vacation.startDate)
           data.Vacation.startDate = new Date(parseInt(data.Vacation.startDate) * 1000);
-        else {
-          data.Vacation.startDateEnabled = 0;
-          data.Vacation.startDate = new Date();
-          data.Vacation.startDate = data.Vacation.startDate.beginOfDay();
-          data.Vacation.startDate.addDays(1);
-        }
+
         if (data.Vacation.endDate)
           data.Vacation.endDate = new Date(parseInt(data.Vacation.endDate) * 1000);
-        else {
-          data.Vacation.endDateEnabled = 0;
-          data.Vacation.endDate = new Date(data.Vacation.startDate.getTime());
-          data.Vacation.endDate.addDays(1);
-        }
+
         if (data.Vacation.startTime) {
           time = data.Vacation.startTime.split(':');
           data.Vacation.startTime = new Date();
           data.Vacation.startTime.setHours(parseInt(time[0]), parseInt(time[1]));
         }
-        else {
-          data.Vacation.startTimeEnabled = 0;
-          data.Vacation.startTime = new Date();
-          data.Vacation.startTime.setHours(parseInt(data.SOGoDayEndTime));
-          data.Vacation.startTime.setMinutes(0);
-        }
         if (data.Vacation.endTime) {
           time = data.Vacation.endTime.split(':');
           data.Vacation.endTime = new Date();
           data.Vacation.endTime.setHours(parseInt(time[0]), parseInt(time[1]));
-        }
-        else {
-          data.Vacation.endTimeEnabled = 0;
-          data.Vacation.endTime = new Date();
-          data.Vacation.endTime.setHours(parseInt(data.SOGoDayStartTime));
-          data.Vacation.endTime.setMinutes(0);
         }
         if (data.Vacation.autoReplyEmailAddresses &&
             angular.isString(data.Vacation.autoReplyEmailAddresses) &&
@@ -137,14 +116,31 @@
       if (angular.isUndefined(data.Vacation.daysBetweenResponse))
         data.Vacation.daysBetweenResponse = 7;
 
-      if (angular.isUndefined(data.Vacation.startDate)) {
+      if (angular.isUndefined(data.Vacation.startDate) || !data.Vacation.startDate) {
         data.Vacation.startDateEnabled = 0;
         data.Vacation.startDate = new Date();
+        data.Vacation.startDate = data.Vacation.startDate.beginOfDay();
+        data.Vacation.startDate.addDays(1);
       }
 
-      if (angular.isUndefined(data.Vacation.endDate)) {
+      if (angular.isUndefined(data.Vacation.endDate) || !data.Vacation.endDate) {
         data.Vacation.endDateEnabled = 0;
-        data.Vacation.endDate = new Date();
+        data.Vacation.endDate = new Date(data.Vacation.startDate.getTime());
+        data.Vacation.endDate.addDays(1);
+      }
+
+      if (angular.isUndefined(data.Vacation.startTime) || !data.Vacation.startTime) {
+        data.Vacation.startTimeEnabled = 0;
+        data.Vacation.startTime = new Date();
+        data.Vacation.startTime.setHours(parseInt(data.SOGoDayEndTime));
+        data.Vacation.startTime.setMinutes(0);
+      }
+
+      if (angular.isUndefined(data.Vacation.endTime) || !data.Vacation.endTime) {
+        data.Vacation.endTimeEnabled = 0;
+        data.Vacation.endTime = new Date();
+        data.Vacation.endTime.setHours(parseInt(data.SOGoDayStartTime));
+        data.Vacation.endTime.setMinutes(0);
       }
 
       if (data.Forward) {
@@ -781,13 +777,13 @@
       }
       else {
         delete preferences.defaults.Vacation.startDateEnabled;
-        preferences.defaults.Vacation.startDate = 0;
+        delete preferences.defaults.Vacation.startDate;
       }
       if (preferences.defaults.Vacation.endDateEnabled)
         preferences.defaults.Vacation.endDate = preferences.defaults.Vacation.endDate.getTime()/1000;
       else {
         delete preferences.defaults.Vacation.endDateEnabled;
-        preferences.defaults.Vacation.endDate = 0;
+        delete preferences.defaults.Vacation.endDate;
       }
 
       if (preferences.defaults.Vacation.startTimeEnabled) {
@@ -797,14 +793,14 @@
           preferences.defaults.Vacation.endTime = preferences.defaults.Vacation.endTime.format(this.$mdDateLocaleProvider, '%H:%M');
         else {
           delete preferences.defaults.Vacation.endTimeEnabled;
-          preferences.defaults.Vacation.endTime = 0;
+          delete preferences.defaults.Vacation.endTime;
         }
       }
       else {
         delete preferences.defaults.Vacation.startTimeEnabled;
-        preferences.defaults.Vacation.startTime = 0;
+        delete preferences.defaults.Vacation.startTime;
         delete preferences.defaults.Vacation.endTimeEnabled;
-        preferences.defaults.Vacation.endTime = 0;
+        delete preferences.defaults.Vacation.endTime;
       }
 
       if (preferences.defaults.Vacation.autoReplyEmailAddresses)
