@@ -577,7 +577,7 @@
     }
 
     _.forEach(this.identities, function (identity) {
-      if (!identity.isReadOnly)
+      if (!identity.isReadOnly || deep)
         identities.push(_.pick(identity, ['email', 'fullName', 'replyTo', 'signature', 'isDefault']));
       if (identity.isDefault)
         defaultIdentity = identity;
