@@ -1,5 +1,53 @@
 # Changelog
 
+## [5.4.0](https://github.com/inverse-inc/sogo/compare/SOGo-5.3.0...SOGo-5.4.0) (2021-12-16)
+
+### Features
+
+* **mail:** delay or disable automatic mark message as read ([4eed98d](https://github.com/inverse-inc/sogo/commit/4eed98d58dbdf14a3366749cf1d8ff22887e32ef)), closes [#1585](https://sogo.nu/bugs/view.php?id=1585)
+* **mail:** enable autoreply on specific days or at a specific time ([2ecd441](https://github.com/inverse-inc/sogo/commit/2ecd441f3200862fee28a66aadf29c758f0ead24)), closes [#5328](https://sogo.nu/bugs/view.php?id=5328)
+
+### Bug Fixes
+
+* **addressbook(js):** custom field creation ([fc121ac](https://github.com/inverse-inc/sogo/commit/fc121acff3e0e64a11530c30dcc1e3bccb6cf40b))
+* **calendar(js):** improve bi-weekly event description ([c17165d](https://github.com/inverse-inc/sogo/commit/c17165d85dd4d17c540f3b52905db3086890cc18)), closes [#5261](https://sogo.nu/bugs/view.php?id=5261)
+* **calendar:** update email alarm of yearly events ([9c025f6](https://github.com/inverse-inc/sogo/commit/9c025f68713b6d07f8e6f6d4e00bf23466cc7249)), closes [#4991](https://sogo.nu/bugs/view.php?id=4991)
+* **core:** avoid exception when the user's cn is null ([153c1ee](https://github.com/inverse-inc/sogo/commit/153c1eeb80b7b52d65635346d54a79f13109f48c))
+* **login(js):** input focus on TOTP field ([56a6f24](https://github.com/inverse-inc/sogo/commit/56a6f246d6c3aa2f37e83d7cf5d35d470657f5e8))
+* **mail(html):** ban "javascript:" prefix in href, action and formaction ([8afc80d](https://github.com/inverse-inc/sogo/commit/8afc80d82ed6e803b1c213dbbdeac729eadc7f07))
+* **mail(js):** create new object instances in popup from parent's data ([a98b46a](https://github.com/inverse-inc/sogo/commit/a98b46a7a7ed47c4a6fd1f6434a7b4d3a7f8eef5))
+* **mail(js):** don't allow to rename special mailboxes ([c3c9432](https://github.com/inverse-inc/sogo/commit/c3c9432cc2fe296a210d09d7ee73fe0b2d1d2b5b))
+* **mail(js):** don't load mailboxes list from popup editor ([cb6b729](https://github.com/inverse-inc/sogo/commit/cb6b729c581d528413107159db624319fca69f85))
+* **mail(js):** don't poll server from popup windows ([8724f90](https://github.com/inverse-inc/sogo/commit/8724f90dd159f6a6efeb2a14327a2cc9b7af1bc0), [11eb6c2](https://github.com/inverse-inc/sogo/commit/11eb6c29d4bc92ed56628269ac03814bd68f8b02))
+* **mail(js):** expose all account identities in popup window ([78855be](https://github.com/inverse-inc/sogo/commit/78855be162f2f30f01bc15ed70085b890a6e35d9)), closes [#5442](https://sogo.nu/bugs/view.php?id=5442)
+* **mail(js):** ignore return key in input fields of editor ([1786ec4](https://github.com/inverse-inc/sogo/commit/1786ec4d590e6d36565c57bac4108e846fe73ab5)), closes [#4666](https://sogo.nu/bugs/view.php?id=4666)
+* **mail(js):** open one distinct popup for each action ([addf3c1](https://github.com/inverse-inc/sogo/commit/addf3c1c76960da191fa1e70b53611d0cc3caf93)), closes [#5431](https://sogo.nu/bugs/view.php?id=5431)
+* **mail(js):** resolve draft mailbox from popup window ([25c69aa](https://github.com/inverse-inc/sogo/commit/25c69aaef48916ed07874b19528a90e4fb1a8c4a)), closes [#5442](https://sogo.nu/bugs/view.php?id=5442)
+* **mail(js):** save draft after having removed an attachment ([6ef99a5](https://github.com/inverse-inc/sogo/commit/6ef99a5ec4a655323ddbc9da8955239a432e5180)), closes [#5432](https://sogo.nu/bugs/view.php?id=5432)
+* **mail(js):** update unseen count when it's zero ([635b8c6](https://github.com/inverse-inc/sogo/commit/635b8c68db21666f5c5abe3d30b7a757ca90d9d9))
+* **mail(web):** display emails extracted from smime certificate ([93dff69](https://github.com/inverse-inc/sogo/commit/93dff697e7aebe7ec95437b5f7b07a85f3a0bb06)), closes [#5440](https://sogo.nu/bugs/view.php?id=5440)
+* **mail:** allow to directly empty junk folder ([f9ed639](https://github.com/inverse-inc/sogo/commit/f9ed6391e68dd8d52642300b16578a7808c168db)), closes [#5224](https://sogo.nu/bugs/view.php?id=5224)
+* **mail:** check if smime certificate matches sender address ([e85576c](https://github.com/inverse-inc/sogo/commit/e85576cbb7514876ac72fb60fd9da2e1b7545331)), closes [#5407](https://sogo.nu/bugs/view.php?id=5407)
+* **mail:** delete msgs once moved to an external account ([e0df548](https://github.com/inverse-inc/sogo/commit/e0df54838e0f16a936df942357dfb471fc26bafb))
+* **mail:** don't lowercase href/action/formaction attribute value ([c4bb0de](https://github.com/inverse-inc/sogo/commit/c4bb0de11e5ea4432612c974cf238845600d3601)), closes [#5434](https://sogo.nu/bugs/view.php?id=5434)
+* **mail:** only apply IMAP host constraint when SSO is enabled ([8cb5ef3](https://github.com/inverse-inc/sogo/commit/8cb5ef363a7752ad4e1aa8e747c8c8235f8c0edc)), closes [#5433](https://sogo.nu/bugs/view.php?id=5433)
+* **mail:** show comment attribute of iTIP replies ([ff1eeca](https://github.com/inverse-inc/sogo/commit/ff1eecaf5a243757a70ffd190cdbddd5b8021f1b)), closes [#5410](https://sogo.nu/bugs/view.php?id=5410)
+* **mail:** sign and send only if smime certificate matches sender address ([4ad2105](https://github.com/inverse-inc/sogo/commit/4ad2105543e782134743fd1fc180c5f9c8a70652)), closes [#5407](https://sogo.nu/bugs/view.php?id=5407)
+* **preferences(css):** align timepicker inside input container ([2014589](https://github.com/inverse-inc/sogo/commit/201458954b9e950a721fa21e0078fb7256e4040f))
+* **preferences(js):** don't alter the list of default email addresses ([bdfe1be](https://github.com/inverse-inc/sogo/commit/bdfe1be7705252c8d732d55659d638654d74ff4c)), closes [#5443](https://sogo.nu/bugs/view.php?id=5443)
+* **preferences(js):** improve initialization of dates/times constraints ([46971d4](https://github.com/inverse-inc/sogo/commit/46971d47b922c1f464dc10db021653f721d00e24)), closes [#5443](https://sogo.nu/bugs/view.php?id=5443)
+* **preferences(js):** set default auto mark as read delay to 5 ([cb4d555](https://github.com/inverse-inc/sogo/commit/cb4d555e4a215d452222d98e5601b318d28460aa)), closes [#5443](https://sogo.nu/bugs/view.php?id=5443)
+* **preferences:** add plus sign to timezone in Sieve script ([f191231](https://github.com/inverse-inc/sogo/commit/f1912310db903455a0ab9422018278f3b36245e5), [2daeab3](https://github.com/inverse-inc/sogo/commit/2daeab3dd7391e8ca8c9b5b013ef14dba3ef10f1)), closes [#5448](https://sogo.nu/bugs/view.php?id=5448)
+* **web(js):** position notifications to the bottom right ([e064e9a](https://github.com/inverse-inc/sogo/commit/e064e9af442e44f6ff7baea68bf93e8d6c9b4bf6)), closes [#5127](https://sogo.nu/bugs/view.php?id=5127) [#5423](https://sogo.nu/bugs/view.php?id=5423)
+* **web:** add missing tooltips for expand/reduce buttons ([1febace](https://github.com/inverse-inc/sogo/commit/1febace83767f243ac5f3d2489ad080d1449a5e2))
+
+### Localization
+
+* **de:** update German translation ([b665f7e](https://github.com/inverse-inc/sogo/commit/b665f7e1c66bcff97058dfd8f0390262d24edde6), [6684784](https://github.com/inverse-inc/sogo/commit/668478476994de393eecf0fe0273598353fa255d))
+* **fr:** update French translation ([6084fcd](https://github.com/inverse-inc/sogo/commit/6084fcd435883b9de8c38a3baa6df9ed5a608180), [748fd8f](https://github.com/inverse-inc/sogo/commit/748fd8fa9a3f14a2311d98583e25e4efecaa1c75))
+* **hu:** update Hungarian translation ([07f2c26](https://github.com/inverse-inc/sogo/commit/07f2c2606ddfe250f6f2fbad35f291e179fa90a0))
+* **pl:** update Polish translation ([3e9b8db](https://github.com/inverse-inc/sogo/commit/3e9b8db78cd7a733f8cfabbda146390c034a048e), [070f1a6](https://github.com/inverse-inc/sogo/commit/070f1a6094beee30e0d87a20aa2e9c4c17ef33f7))
+
 ## [5.3.0](https://github.com/inverse-inc/sogo/compare/SOGo-5.2.0...SOGo-5.3.0) (2021-11-18)
 
 ### Features
