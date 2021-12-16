@@ -1035,7 +1035,7 @@ static NSString *sieveScriptName = @"sogo";
             }
 
           seconds = [[ud timeZone] secondsFromGMT];
-          timeZone = [NSString stringWithFormat: @"%.2i%02i", seconds/60/60, seconds/60%60];
+          timeZone = [NSString stringWithFormat: @"%@%.2i%02i", seconds > 0 ? @"+" : @"", seconds/60/60, seconds/60%60];
           timeConditions = [NSMutableArray array];
           startTime = endTime = nil;
 
