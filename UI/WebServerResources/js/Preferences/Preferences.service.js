@@ -111,7 +111,7 @@
       if ((angular.isUndefined(data.Vacation.autoReplyEmailAddresses) ||
           data.Vacation.autoReplyEmailAddresses.length == 0) &&
           angular.isDefined(window.defaultEmailAddresses))
-        data.Vacation.autoReplyEmailAddresses = window.defaultEmailAddresses;
+        data.Vacation.autoReplyEmailAddresses = window.defaultEmailAddresses.slice();
 
       if (angular.isUndefined(data.Vacation.daysBetweenResponse))
         data.Vacation.daysBetweenResponse = 7;
