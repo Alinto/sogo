@@ -13,7 +13,7 @@
   bottom: auto;
   background-color: white;
   border-radius: 50%;
-  padding: $baseline-grid/2;
+  padding: $baseline-grid*0.5;
   box-shadow: $whiteframe-shadow-3dp;
   z-index: $z-index-view;
   md-progress-circular {

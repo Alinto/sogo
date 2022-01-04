@@ -22,8 +22,8 @@ sg-draggable-helper {
     min-width: $icon-badge-size;
     position: absolute;
     text-align: center;
-    right: ($icon-size - $icon-badge-size) / 2;
-    top: ($icon-size - $icon-badge-size) / 2;
+    right: ($icon-size - $icon-badge-size) * 0.5;
+    top: ($icon-size - $icon-badge-size) * 0.5;
   }
 }
 

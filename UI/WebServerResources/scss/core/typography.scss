@@ -130,7 +130,7 @@ $md-prefix : 'sg-md';
 /// @alias $md-prefix
 $md: $md-prefix;
 $sg-rem-Base-value: 16;
-$sg-sp-value: (1 / $sg-rem-Base-value) !default; // sp value
+$sg-sp-value: math.div(1, $sg-rem-Base-value) !default; // sp value
 
 $sg-md-typo-baseline: 4px;
 $sg-base-line-height: 1.3;

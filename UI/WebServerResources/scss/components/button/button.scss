@@ -26,7 +26,7 @@ a.md-button-wrap-executor.md-no-style {
 .md-button.md-fab-overlap-bottom {
   &.md-fab-bottom-right,
   &.md-fab-bottom-left {
-    bottom: -(($button-fab-width + $button-fab-padding)/2);
+    bottom: -(($button-fab-width + $button-fab-padding)*0.5);
   }
 }
 
@@ -77,15 +77,15 @@ a.md-button-wrap-executor.md-no-style {
  */
 .sg-fab-bottom-center {
   position: absolute;
-  bottom: ($button-fab-height - $button-fab-padding)/2;
+  bottom: ($button-fab-height - $button-fab-padding)*0.5;
   left: auto;
-  right: ($button-fab-width - $button-fab-padding)/2;
+  right: ($button-fab-width - $button-fab-padding)*0.5;
   top: auto;
   transition: $swift-ease-out;
   @include at(sm) {
     right: col-width($breakpoint: sm, $nb: 10) + 2vw;
     &.sg-center-close {
-      left: ($button-fab-width - $button-fab-padding)/2;
+      left: ($button-fab-width - $button-fab-padding)*0.5;
       right: auto;
     }
   }
@@ -93,7 +93,7 @@ a.md-button-wrap-executor.md-no-style {
     // sidenav is hidden, center list can be closed
     right: col-width($breakpoint: md, $nb: 14) + 2vw;
     &.sg-center-close {
-      left: ($button-fab-width - $button-fab-padding)/2;
+      left: ($button-fab-width - $button-fab-padding)*0.5;
       right: auto;
     }
   }
@@ -104,7 +104,7 @@ a.md-button-wrap-executor.md-no-style {
       right: col-width($breakpoint: lg, $nb: 14) + 2vw;
     }
     &.sg-sidenav-close.sg-center-close {
-      left: ($button-fab-width - $button-fab-padding)/2;
+      left: ($button-fab-width - $button-fab-padding)*0.5;
       right: auto;
     }
   }
@@ -144,7 +144,7 @@ $iconButton-size-cursor-coarse: $iconButton-size;
 // Could be use to scale-down buttons if desktop layout suffers too much from touch-size
 $iconButton-size-cursor-fine: $iconButton-size;
 // convenient wrapper for padding calculation todo: write a mixin or a function for a more generic use
-$iconButton-padding: ($iconButton-size - ($iconButton-icon-size + ($iconButton-icon-padding * 2))) / 2;
+$iconButton-padding: ($iconButton-size - ($iconButton-icon-size + ($iconButton-icon-padding * 2))) * 0.5;
 $iconButton-hover-scale: 1.25;
 $iconButton-transition: all $swift-ease-in-duration $swift-ease-in-timing-function;
 
@@ -183,7 +183,7 @@ md-list md-list-item button.md-button.sg-icon-button {
 md-tab-content {
   .md-subheader-content {
     .md-icon-button:first-child {
-      margin-right: $icon-button-margin/2;
+      margin-right: $icon-button-margin*0.5;
     }
   }
 }

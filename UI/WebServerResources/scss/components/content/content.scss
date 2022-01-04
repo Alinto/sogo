@@ -18,7 +18,7 @@
 
 .sg-subcontent {
   border-left: $baseline-grid solid sg-color($sogoGreen, 100);
-  margin-left: ($baseline-grid / 2);
+  margin-left: ($baseline-grid * 0.5);
   padding-left: $baseline-grid;
 }
 

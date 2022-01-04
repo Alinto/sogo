@@ -70,11 +70,11 @@ md-icon {
     min-height: $icon-badge-size;
     min-width: $icon-badge-size;
     position: absolute;
-    right: ($icon-size - $icon-badge-size) / 2;
-    top: ($icon-size - $icon-badge-size) / 2;
+    right: ($icon-size - $icon-badge-size) * 0.5;
+    top: ($icon-size - $icon-badge-size) * 0.5;
   }
   &.sg-icon--badge-bottom {
-    bottom: ($icon-size - $icon-badge-size) / 2;
+    bottom: ($icon-size - $icon-badge-size) * 0.5;
     top: auto;
   }
   &.md-rotate-45 {

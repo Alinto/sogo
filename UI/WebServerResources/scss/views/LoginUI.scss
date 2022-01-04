@@ -64,7 +64,7 @@ $sg-login-width: grid-step(5);
       &.ng-hide {
         .sg-logo img {
           opacity: 0;
-          transform: translateX($sg-login-width/2 + $baseline-grid + $baseline-grid*2);
+          transform: translateX($sg-login-width*0.5 + $baseline-grid + $baseline-grid*2);
         }
         .sg-login {
           opacity: 0;

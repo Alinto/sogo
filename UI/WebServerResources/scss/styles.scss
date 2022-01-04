@@ -1,5 +1,7 @@
 /// styles.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 
+@use "sass:math";
+
 // Breakpoint (https://github.com/at-import/breakpoint)
 // ------------------------------------------------------------------------------
 @import 'breakpoint';

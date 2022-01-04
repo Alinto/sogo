@@ -34,7 +34,7 @@ $quarter_height: 10px;
     // The color chip is smaller; adjust the "selected" icon accordingly
     .sg-list-selectable .sg-avatar-selectable:before,
     .sg-avatar-selectable:hover:before {
-      margin: 0 (($sg-color-chip-width + 2*$bl) - $icon-size)/2;
+      margin: 0 (($sg-color-chip-width + 2*$bl) - $icon-size)*0.5;
     }
   }
 
@@ -54,7 +54,7 @@ $quarter_height: 10px;
       // sidenav is hidden, center list can be closed
       right: col-width($breakpoint: md, $nb: 15) + 2vw;
       &.sg-center-close {
-        left: ($button-fab-width - $button-fab-padding)/2;
+        left: ($button-fab-width - $button-fab-padding)*0.5;
         right: auto;
       }
     }
@@ -68,7 +68,7 @@ $quarter_height: 10px;
         right: col-width($breakpoint: lg, $nb: 14) + 2vw;
       }
       &.sg-sidenav-close.sg-center-close {
-        left: ($button-fab-width - $button-fab-padding)/2;
+        left: ($button-fab-width - $button-fab-padding)*0.5;
         right: auto;
       }
     }
@@ -745,8 +745,8 @@ $quarter_height: 10px;
     //      }
     > .md-avatar {
       // Overwrite default margin to gain some space and match 48px
-      margin-top: $baseline-grid/2;
-      margin-bottom: $baseline-grid/2;
+      margin-top: $baseline-grid*0.5;
+      margin-bottom: $baseline-grid*0.5;
     }
   }
   .md-tile-left {
@@ -802,9 +802,9 @@ $quarter_height: 10px;
  * Print page preview
  */
 $preview-size: 200px;
-$preview-letter-ratio: 8.5 / 11;
-$preview-legal-ratio: 8.5 / 14;
-$preview-a4-ratio: 210 / 297;
+$preview-letter-ratio: math.div(8.5, 11);
+$preview-legal-ratio: math.div(8.5, 14);
+$preview-a4-ratio: math.div(210, 297);
 
 .sg-print-preview {
   .letter.portrait & {

@@ -66,7 +66,7 @@ html * {
   @extend .md-whiteframe-2dp;
   @extend .md-padding;
   background-color: white;
-  margin-bottom: $mg/2;
+  margin-bottom: $mg*0.5;
 
   &:last-child {
     margin-bottom: 0;

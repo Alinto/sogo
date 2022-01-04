@@ -21,7 +21,7 @@ md-sidenav .md-dense :not(.md-dense-disabled) md-checkbox:not(.md-dense-disabled
 
 // Checkbox in an inline form beside a select element
 .md-inline-form md-checkbox.sg-checkbox--with-select {
-  margin: 2.5*$baseline-grid $baseline-grid/2 3*$baseline-grid + 2 0;
+  margin: 2.5*$baseline-grid $baseline-grid*0.5 3*$baseline-grid + 2 0;
 }
 
 // Checkbox for the sg-checkmark directive

@@ -371,8 +371,8 @@ md-dialog md-dialog-actions.sg-mail-editor-attachments {
   .msg-header-buttons .md-icon-button {
     // Attachment button (file upload label)
     // Lower margins to fit the md-actions max height (52px)
-    margin-bottom: $baseline-grid/2;
-    margin-top: $baseline-grid/2;
+    margin-bottom: $baseline-grid*0.5;
+    margin-top: $baseline-grid*0.5;
   }
 }
 

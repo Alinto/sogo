@@ -165,7 +165,7 @@
  */
 @function col-width($breakpoint, $nb) {
    $cols: map-get($base-grid-total-columns, $breakpoint);
-   @return ((100 / $cols) * $nb * 1vw);
+   @return (math.div(100, $cols) * $nb * 1vw);
 }
 
 /**
@@ -173,7 +173,7 @@
  */
 @mixin flex-col($breakpoint, $nb, $grow: 1, $shrink: 1) {
   $cols: map-get($base-grid-total-columns, $breakpoint);
-  $colWidth: ((100 / $cols) * 1vw);
+  $colWidth: (math.div(100, $cols) * 1vw);
   max-width: ($colWidth * $nb);
   flex: $grow $shrink ($colWidth * $nb);
 }

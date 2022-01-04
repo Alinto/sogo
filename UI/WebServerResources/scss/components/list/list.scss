@@ -134,7 +134,7 @@ md-list-item {
   border-radius: 50%;
   padding: $layout-gutter-width;
   padding: $baseline-grid * 1.5;
-  padding: ($sg-md-grid-pitch - $sg-avatar-width) / 2;
+  padding: ($sg-md-grid-pitch - $sg-avatar-width) * 0.5;
   width: $sg-md-grid-pitch;
   height: $sg-md-grid-pitch;
   //line-height: $sg-md-grid-pitch + $baseline-grid;
@@ -368,7 +368,7 @@ sg-avatar-image img {
     color: inherit;
     content: "\e835"; // check box outline
     font-size: $icon-size;
-    margin: 0 ($sg-avatar-width - $icon-size)/2;
+    margin: 0 ($sg-avatar-width - $icon-size)*0.5;
   }
   &.sg-avatar-selected::before {
     content: "\e834"; // check box
