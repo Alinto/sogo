@@ -645,6 +645,7 @@
               <div flex-offset="5">
                 <md-radio-group
                     layout="row" layout-align="start center"
+                    ng-change="app.onMailAutoMarkAsReadDelay()"
                     ng-model="app.preferences.defaults.SOGoMailAutoMarkAsReadMode"
                     ng-disabled="!app.preferences.defaults.SOGoMailAutoMarkAsReadEnabled">
                   <md-radio-button value="immediate"><var:string label:value="Immediately on display"/></md-radio-button>
