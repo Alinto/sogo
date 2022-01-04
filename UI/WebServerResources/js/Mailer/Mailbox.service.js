@@ -845,9 +845,6 @@
           data = { uids: currentUids };
       if (options) angular.extend(data, options);
       return Mailbox.$$resource.post(_this.id, 'batchDelete', data).then(function(data) {
-        if (data.unseenCount) {
-          _this.unseenCount = data.unseenCount;
-        }
         if (end < uids.length) {
           _this.$_deleteMessages(currentUids);
           return _deleteMessages(end, Math.min(end + batchSize, uids.length));
@@ -856,6 +853,9 @@
           // Last API call; update inbox quota
           if (data.quotas)
             _this.$account.updateQuota(data.quotas);
+          if (angular.isDefined(data.unseenCount))
+            _this.unseenCount = data.unseenCount;
+
           return _this.$_deleteMessages(currentUids);
         }
       });
@@ -911,7 +911,7 @@
     uids = _.map(messages, 'uid');
     return Mailbox.$$resource.post(this.id, 'moveMessages', {uids: uids, folder: folder})
       .then(function(data) {
-        if (data.unseenCount) {
+        if (angular.isDefined(data.unseenCount)) {
           _this.unseenCount = data.unseenCount;
         }
         _this.$selectedMessages = []; // reset selection
