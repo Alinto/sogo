@@ -291,6 +291,36 @@ struct GlobalObjectId {
 }
 
 
+//  Format replyTo
+//
+//  If there are multiple e-mail addresses, they are separated by a semi-colon.
+- (NSString *) _replyToAddressesFrom: (NSArray *) enveloppeAddresses
+{
+  NSMutableArray *addresses;
+  NSString *rc;
+  NGImap4EnvelopeAddress *address;
+  NSString *email;
+  int count, max;
+
+  rc = nil;
+  max = [enveloppeAddresses count];
+
+  if (max > 0)
+    {
+      addresses = [NSMutableArray array];
+      for (count = 0; count < max; count++)
+        {
+          address = [enveloppeAddresses objectAtIndex: count];
+          email = [NSString stringWithFormat: @"%@", [address email]];
+
+          [addresses addObject: email];
+        }
+      rc = [addresses componentsJoinedByString: @"; "];
+    }
+
+  return rc;
+}
+
 //
 //
 //
@@ -1099,10 +1129,11 @@ struct GlobalObjectId {
       [s appendFormat: @"<ContentClass xmlns=\"Email:\">%@</ContentClass>", @"urn:content-classes:message"];
     }
 
-  // Reply-To - FIXME
-  //NSArray *replyTo = [[message objectForKey: @"envelope"] replyTo];
-  //if ([replyTo count])
-  //  [s appendFormat: @"<Reply-To xmlns=\"Email:\">%@</Reply-To>", [addressFormatter stringForArray: replyTo]];
+  // ReplyTo
+  value = [self _replyToAddressesFrom: [self replyToEnvelopeAddresses]];
+  if (value)
+    [s appendFormat: @"<Reply-To xmlns=\"Email:\">%@</Reply-To>", [value activeSyncRepresentationInContext: context]];
+
   
   // InternetCPID - 65001 == UTF-8, we use this all the time for now.
   //              - 20127 == US-ASCII
