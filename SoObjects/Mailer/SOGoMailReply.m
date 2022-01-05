@@ -90,6 +90,9 @@
 @implementation SOGoMailArabicReply
 @end
 
+@implementation SOGoMailBosnianReply
+@end
+
 @implementation SOGoMailBrazilianPortugueseReply
 @end
 

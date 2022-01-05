@@ -228,7 +228,13 @@
 @implementation SOGoFolderArabicAdditionAdvisory
 @end
 
+@implementation SOGoFolderBosnianAdditionAdvisory
+@end
+
 @implementation SOGoFolderArabicRemovalAdvisory
+@end
+
+@implementation SOGoFolderBosnianRemovalAdvisory
 @end
 
 @implementation SOGoFolderBrazilianPortugueseAdditionAdvisory

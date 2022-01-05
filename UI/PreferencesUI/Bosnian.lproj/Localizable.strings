@@ -1,0 +1,482 @@
+/* toolbar */
+"Save and Close" = "Sačuvati i Zatvoriti";
+"Close" = "Zatvoriti";
+"Preferences saved" = "Postavke su sačuvane";
+
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Nesačuvane Izmjene";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Da li želite da sačuvate izmjene konfiguracije?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Sačuvati";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Nemoj Sačuvati";
+
+/* tabs */
+"General" = "Opšte";
+"Calendar Options" = "Kalendar Opcije";
+"Contacts Options" = "Kontakti Opcije";
+"Mail Options" = "E-mail Opcije";
+"IMAP Accounts" = "IMAP Računi";
+"Vacation" = "Odmor";
+"Forward" = "Proslijediti";
+"Password" = "Šifra";
+"Categories" = "Kategorije";
+"Appointments invitations" = "Termini";
+"Name" = "Ime";
+"Color" = "Boja";
+"Add" = "Dodati";
+"Delete" = "Izbrisati";
+
+/* contacts categories */
+"contacts_category_labels" = "Kolega, Konkurencija, Kupac, Prijatelj, Pordica, Poslovni Partner, Dobavljač, Štampa, VIP";
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Uključiti auto-odgovor za odmor";
+"Enable custom auto reply subject" = "Uključiti prilagođeni predmet za auto-odgovoru";
+"Auto reply subject" = "Auto-odgovor Predmet";
+"You can write ${subject} to insert the original subject" = "Možete napisati ${subject} da ubacite orginalni predmet";
+"Auto reply message" = "Auto-odgovor poruka";
+"Email addresses" = "E-mail adrese";
+"Add default email addresses" = "Dodati default adrese";
+"Days between responses" = "Dani između odogovora";
+"Do not send responses to mailing lists" = "Ne šalji odgovore na mailing liste";
+"Activation Constraints" = "Aktivacijska Ograničenja";
+"Enable auto reply on" = "Uključiti auto-odgovor";
+"First day of vacation" = "Prvi dan odmora";
+"Disable auto reply on" = "Isključiti auto-odgovor";
+"Last day of vacation" = "Zadnji dan odmora";
+"Enter date" = "Unesite datum";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Uključiti auto-odgovor u";
+"Enter time" = "Unesite vrijeme";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Isključiti auto-odgovor u";
+"Enable auto reply on these days" = "Uključiti auto-odgovor za ove dane";
+"Always send vacation message response" = "Uvijek poslati odgovor za vrijeme odmora";
+"The vacation message is sent prior to apply your filters." = "Poruka o odmoru se šalje prije E-mail pravila.";
+"Discard incoming mails during vacation" = "Odbaciti pristigle poruke tokom odmora";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Poruka o odmoru je poslata, ali dolazne poruke nisu dostavljene.";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Specificirajte vaše poruke i E-mail adrese za koje želite uključiti auto-odgovor.";
+"Your vacation message must not end with a single dot on a line." = "Vaša poruka o odmoru ne može završavati sa jednom tačkom u redu.";
+"End date of your auto reply must be in the future."
+= "Krajnji datum za vaše poruke o odmoru mora biti u budućnosti.";
+
+/* forward messages */
+"Forward incoming messages" = "Proslijediti dolazne poruke";
+"Keep a copy" = "Zadržati kopiju";
+"Enter an email" = "Unesite E-mail";
+"Add another email" = "Dodati E-mail";
+"Please specify an address to which you want to forward your messages."
+= "Specificirajte E-mail adresu na koju želite proslijediti vaše poruke.";
+"You are not allowed to forward your messages to an external email address." = "Nije vam omogućeno da prosljeđujete poruke na eksterne E-mail adrese. ";
+"You are not allowed to forward your messages to an internal email address." = "Nije vam omogućeno da prosljeđujete poruke na interne E-mail adrese.";
+"You are not allowed to forward your messages to this domain:" = "Nije vam omogućeno da prosljeđujete poruke na ovu domenu:";
+
+/* d & t */
+"Time Zone" = "Vremenska Zona";
+"Short Date Format" = "Kratak Format Datuma";
+"Long Date Format" = "Dug Format Datuma";
+"Time Format" = "Format Vremena";
+"default" = "Default";
+"Default Module" = "Defualtni Module";
+"Save" = "Sačuvati";
+"shortDateFmt_0" = "%d-%b-%y";
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
+
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
+
+/* Timezone autocompletion */
+"No matches found." = "Nema rezultata.";
+
+/* calendar */
+"Week begins on" = "Početak sedmice";
+"Day start time" = "Početak dana";
+"Day end time" = "Kraj dana";
+"Day start time must be prior to day end time." = "Početak dana mora biti prije kraja dana";
+"Week days to display" = "Prikazati dane u sedmici";
+"Show time as busy outside working hours" = "Prikaži vrijeme kao zauzeto izvan radnih sati";
+"First week of year" = "Prva sedmica u godini";
+"Enable reminders for Calendar items" = "Uključiti podsjednike za Kalendar";
+"Play a sound when a reminder comes due" = "Aktivirati zvuk za podsjetnik";
+"Default reminder" = "Default Podsjetnik";
+"firstWeekOfYear_January1" = "Počinje na 1. Januar";
+"firstWeekOfYear_First4DayWeek" = "Prva sedmica od 4 dana";
+"firstWeekOfYear_FirstFullWeek" = "Prva cijela sedmica";
+"Prevent from being invited to appointments" = "Zabrani pozivnice na termine";
+"White list for appointment invitations" = "Dozvoljena lista za pozivnice";
+"Contacts Names" = "Imena";
+"Duplicate name" = "Duplicirati ime";
+"Calendar categories must have unique names." = "Kategorija u kalendaru moraju imati unikatna imena.";
+
+/* Default Calendar */
+"Default calendar" = "Osnovni kalendar";
+"selectedCalendar" = "Izabrani kalendar";
+"personalCalendar" = "Lični kalendar";
+"firstCalendar" = "Prvi uključen kalendar";
+"reminder_NONE" = "Bez podsjetnika";
+"reminder_5_MINUTES_BEFORE" = "5 minuta prije";
+"reminder_10_MINUTES_BEFORE" = "10 minuta prije";
+"reminder_15_MINUTES_BEFORE" = "15 minuta prije";
+"reminder_30_MINUTES_BEFORE" = "30 minuta prije";
+"reminder_45_MINUTES_BEFORE" = "45 minuta prije";
+"reminder_1_HOUR_BEFORE" = "1 sat prije";
+"reminder_2_HOURS_BEFORE" = "2 sata prije";
+"reminder_5_HOURS_BEFORE" = "5 sati prije";
+"reminder_15_HOURS_BEFORE" = "15 sati prije";
+"reminder_1_DAY_BEFORE" = "1 dan prije";
+"reminder_2_DAYS_BEFORE" = "2 dana prije";
+"reminder_1_WEEK_BEFORE" = "1 sedmica prije";
+
+/* Mailer */
+"Labels" = "Oznake";
+"Label" = "Oznaka";
+"IMAP Label" = "IMAP Oznaka";
+"Invalid label" = "Ne koristiti razmak, niti ( ) { } % * \" \\";
+"Duplicate label" = "Duplicirati oznaku";
+"IMAP labels must have unique names." = "IMAP oznake moraju imati unikatna imena.";
+"New label" = "Nova oznaka";
+"Show subscribed mailboxes only" = "Prikazati samo pretplaćene E-mail račune";
+"Synchronize only default mail folders (EAS)" = "Sinhronizirati samo osnovne E-mail foldere (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Dohvatiti broj nepregledanih poruka iz svih računa";
+"Sort messages by threads" = "Sortirate poruke po razgovorima";
+"Always open mail composer" = "Uvijek otvoriti prozor za pisanje E-maila";
+"Inside current window" = "Unutar postojećeg prozora";
+"In a popup window" = "U novom prozoru";
+"When sending mail, add unknown recipients to my" = "Pri slanju E-maila, dodati nepoznate primaoce u moj";
+"Address Book" = "Imenik";
+"Forward messages" = "Proslijediti poruke";
+"messageforward_inline" = "U istoj liniji";
+"messageforward_attached" = "Kao prilog";
+"When replying to a message" = "Kada odgovaram na poruku";
+"replyplacement_above" = "Započni moj odgovor iznad citata";
+"replyplacement_below" = "Započni moj odgovor ispod citata";
+"And place my signature" = "I dodati moj potpis";
+"signatureplacement_above" = "Moj odgovor ispod";
+"signatureplacement_below" = "ispod citata";
+"Compose messages in" = "Sastaviti poruku u";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "Običan Tekst";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Standardna veličina fonta";
+
+"Display remote inline images" = "Prikazati slike s vanjskih izvora";
+"displayremoteinlineimages_never" = "Nikada";
+"displayremoteinlineimages_always" = "Uvijek";
+"Auto save every" = "Auto-sačuvati svakih";
+"minutes" = "minuta";
+"Automatically mark messages as read" = "Automatski markirati poruke kao pročitane";
+"Immediately on display" = "Odmah na displeju";
+"After displaying for" = "Nakon prikazivanja od";
+"seconds" = "sekundi";
+
+/* Contact */
+"Personal Address Book" = "Lični Imenik";
+"Collected Address Book" = "Prikupljeni Imenik";
+"Contact categories must have unique names." = "Kategorije u Kontaktima moraju imati unikatna imena.";
+
+/* IMAP Accounts */
+"Settings" = "Podešavanja";
+"Security" = "Sigurnost";
+"Mail Account" = "E-mail Račun";
+"New Mail Account" = "Novi E-mail Račun";
+"Server Name" = "Ime Servera";
+"Port" = "Port";
+"Encryption" = "Enkripcija";
+"None" = "Ništa";
+"User Name" = "Korisničko Ime";
+"Full Name" = "Ime i Prezime";
+"Email" = "E-mail";
+"Reply To Email" = "Odgovorit na E-mail";
+"Signature" = "Potpis";
+"Identities" = "Identiteti";
+"Always use the default identity when replying to messages" = "Uvijek koristiti osnovni identitet u odogovru na poruke";
+"Default Identity" = "Osnovni Identitet";
+"New Identity" = "Novi Identitet";
+"(Click to create)" = "(Kliknite da biste kreirali)";
+"Please enter your signature below" = "Molimo unesite vaš potpis ispod";
+"Please specify a valid sender address." = "Molimo navedite validnu adresu pošaljioca";
+"Please specify a valid reply-to address." = "Molimo navedite validnu adresu za odgovor";
+"Specify a hostname other than the local host" = "Navedite ime servera drugačije od lokalnog";
+
+"No certificate installed" = "Certifikat nije instaliran";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "SSL certifikat mora koristiti PKCS#12 (PFX) format.";
+"Uninstall" = "Izbrisati";
+"Choose PKCS12 Certificate .." = "Izabrati PKCS12 Certifikat...";
+"Certificate Import Password" = "Šifra za uvoz Certifikata";
+"Upload" = "Upload";
+"When composing a message" = "Kada sastavljate poruku";
+"Digitally sign the message by default" = "Uvijek digitalno potpisati poruke";
+"Always try to encrypt the message" = "Uvijek enkriptujte poruke";
+"An error occurred while importing the certificate. Verify your password." = "Dogodila se greška prilikom uvoza certifikata. Provjerite šifru.";
+
+/* Additional Parameters */
+"Additional Parameters" = "Dodatni Parametri";
+
+/* password */
+"Current password" = "Trenutna šifra";
+"New password" = "Nova šifra";
+"Confirmation" = "Potvrda";
+"Change" = "Promijeniti";
+"Passwords don't match" = "Šifre nisu iste";
+
+/* Event+task classifications */
+"Default events classification" = "Osnovna klasifikacija evenata";
+"Default tasks classification" = "Osnovna klasifikacija zadataka";
+"PUBLIC_item" = "Javni";
+"CONFIDENTIAL_item" = "Povjerljivo";
+"PRIVATE_item" = "Lično";
+
+/* Event+task categories */
+"Calendar Category" = "Kalendar Kategorije";
+"Add Calendar Category" = "Dodati Kalendar Kategoriju";
+"New category" = "Nova kategorija";
+"Reset to defaults" = "Reset";
+"Remove Calendar Category" = "Izbrisati Kalendar Kategoriju";
+"Contact Category" = "Kontakt Kategorija";
+"Add Contact Category" = "Dodati Kontakt Kategoriju";
+"Remove Contact Category" = "Izbrisati Kontakt Kategoriju";
+"category_none" = "Ništa";
+"calendar_category_labels" = "Godišnjica,Rođendan,Biznis,Pozivi,Klijenti,Konkurencija,Kupci,Omiljeno,Prati,Pokloni,Odmori,Ideje,Sastanci,Problemi,Ostalo,Lično,Projekti,Praznici,Status,Dobavljači,Putovanje,Odmor";
+
+/* Default module */
+"Calendar" = "Kalendar";
+"Contacts" = "Imenik";
+"Mail" = "E-Mail";
+"Last" = "Zadnji put korišteno";
+"Default Module " = "Osnovni Modul";
+"SOGo Version" = "SOGo Verzija";
+
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "Sačuvati postavke i ponovo učitati stranicu?";
+"Language" = "Jezik";
+"choose" = "Izaberite ...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Bulgarian" = "Български";
+"Catalan" = "Català";
+"ChineseChina" = "简体中文";
+"ChineseTaiwan" = "正體中文";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"German" = "Deutsch";
+"Hebrew" = "עברית";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
+"Italian" = "Italiano";
+"Japanese" = "日本語";
+"Latvian" = "Latviešu";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"Montenegrin" = "Crnogorski";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
+"Russian" = "Русский";
+"Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"Refresh View" = "Osvježiti Pogled";
+"refreshview_manually" = "Ručno";
+"refreshview_every_minute" = "Svaki minut";
+"refreshview_every_2_minutes" = "Svaka 2 minuta";
+"refreshview_every_5_minutes" = "Svakih 5 minuta";
+"refreshview_every_10_minutes" = "Svakih 10 minuta";
+"refreshview_every_20_minutes" = "Svakih 20 minuta";
+"refreshview_every_30_minutes" = "Svakih 30 minuta";
+"refreshview_once_per_hour" = "Jedanput za sat";
+"Enable Desktop Notifications" = "Uključiti Desktop notifikacije";
+
+/* Return receipts */
+"When I receive a request for a return receipt" = "Kada primim zahtjev o potvrdi prijema";
+"Never send a return receipt" = "Potvrdu o prijemu poruke ne slati nikada";
+"Allow return receipts for some messages" = "Dozvoliti potvrdu o prijemu za neke poruke";
+"If I'm not in the To or Cc of the message" = "Ukoliko se moj E-mail nalazi u polju Za ili Cc";
+"If the sender is outside my domain" = "Ukoliko je pošaljioc van moje domene";
+"In all other cases" = "U svim ostalim slučajevima";
+"Never send" = "Nikada ne šaljite";
+"Always send" = "Uvijek šaljite";
+"Ask me" = "Pitajte me";
+
+/* Filters - UIxPreferences */
+"Filters" = "Filteri";
+"Active" = "Aktivno";
+"Move Up" = "Pomjeriti Gore";
+"Move Down" = "Pomjeriti Dole";
+"Connection error" = "Greška u konekciji";
+"Service temporarily unavailable" = "Servis trenutno nedostupan";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Uključiti filter";
+
+/* Filters - UIxFilterEditor */
+"Filter name" = "Naziv Filtera";
+/* Button label */
+"Add a condition" = "Dodati uslov";
+/* Button label */
+"Add an action" = "Dodati akciju";
+"For incoming messages that" = "Za dolazeće poruke koje";
+"match all of the following rules" = "uporediti sa svim sljedećim pravilima";
+"match any of the following rules" = "uporediti s bilo kojim od privila";
+"match all messages" = "uporediti sve poruke";
+"Perform these actions" = "Uraditi ove akcije";
+"Untitled Filter" = "Filter bez Naziva";
+"Subject" = "Predmet";
+"From" = "Od";
+"To" = "Za";
+"Cc" = "Cc";
+"To or Cc" = "Za ili Cc";
+"Size (Kb)" = "Veličina (Kb)";
+"Header" = "Zaglavlje";
+"Body" = "Sadržaj";
+"Flag the message with" = "Označiti poruku sa";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Zastavica";
+
+"Discard the message" = "Odbaciti poruku";
+"File the message in" = "Spremiti poruku u";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Mailbox";
+
+"Keep the message" = "Zadržati poruku";
+"Forward the message to" = "Proslijediti Poruku";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "E-mail";
+
+"Send a reject message" = "Poslati odbijenicu";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Poruka";
+
+"Send a vacation message" = "Poslati poruku o odmoru";
+"Stop processing filter rules" = "Prekinuti procesiranje filter pravila";
+"is under" = "je ispod";
+"is over" = "je iznad";
+"is" = "je";
+"is not" = "nije";
+"contains" = "sadrži";
+"does not contain" = "ne sadrži";
+"matches" = "podudara se";
+"does not match" = "ne podudara se";
+"matches regex" = "matches regex";
+"does not match regex" = "does not match regex";
+/* Placeholder for the value field of a condition */
+"Value" = "Vrijednost";
+"Seen" = "Viđeno";
+"Deleted" = "Izbrisano";
+"Answered" = "Odgovoreno";
+"Flagged" = "Označeno";
+"Junk" = "Spam";
+"Not Junk" = "Nije Spam";
+
+/* Password policy */
+"The password was changed successfully." = "Šifra je uspješno promijnjena.";
+"Password must not be empty." = "Šifra ne smije biti prazna.";
+"The passwords do not match. Please try again." = "Šifre se ne podudaraju. Molimo pokušajte kasnije.";
+"Password change failed" = "Promjena šifra nije uspjela";
+"Password change failed - Permission denied" = "Promjena šifre nije uspjela - Nemate odobrenje";
+"Password change failed - Insufficient password quality" = "Promjena šifre nije uspjela - Nedovoljna kompleksnost šifre";
+"Password change failed - Password is too short" = "Promjena šifre nije uspjela - Šifra je prekratka";
+"Password change failed - Password is too young" = "Promjena šifre nije uspjela - Šifra je nedavno korištena";
+"Password change failed - Password is in history" = "Promjena šifre nije uspjela - Šifra je već bila korištena";
+"Unhandled policy error: %{0}" = "Neobrađena greška police: %{0}";
+"Unhandled error response" = "Neobrađen odgovor za grešku";
+"Password change is not supported." = "Promjena šifre nije podržana";
+"Unhandled HTTP error code: %{0}" = "Neobrađena greška HTTP code: %{0}";
+"Cancel" = "Otkazati";
+"Invitations" = "Pozivnice";
+"Edit Filter" = "Urediti Filter";
+"Delete Filter" = "Izbrisati Filter";
+"Create Filter" = "Kreirati Filter";
+"Delete Label" = "Izbrisati Oznaku";
+"Create Label" = "Kreirati Oznaku";
+"Accounts" = "Računi";
+"Edit Account" = "Upravljanje Računima";
+"Delete Account" = "Izbrisati Račun";
+"Create Account" = "Kreirati Račun";
+"Account Name" = "Ime Računa";
+"SSL" = "SSL";
+"TLS" = "TLS";
+
+/* Avatars */
+"Use Gravatar" = "Koristiti Gravatar";
+"Alternate Avatar" = "Alternativni Avatar";
+"none" =  "Nijedno";
+"identicon" = "Ident Ikona";
+"monsterid" = "Čudovište";
+"wavatar" = "Wavatar";
+"retro" = "Retro";
+
+/* Animation Level */
+"Animation Level" = "Nivo Animacija";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Običan";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Ograničen";
+"animation_NONE" = "Ništa";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "Uključiti 2-Faktor autentifikaciju koristeći TOTP aplikaciju";
+"You must enter this key into your TOTP application." = "Morate unijeti ovaj ključ u vašu TOTP aplikaciju.";
+"If you do not and you log out you will not be able to login again." = "Ukoliko ne unesete i odjavite se, nećete se moći ponovo prijaviti.";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "Eksterna Sieve skripta je aktivna";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve je programski jezik koji se koristi za filtriranje E-maila. Ukoliko dozvolite da SOGo upravlja s filterima, odmorima, vaša aktivna skripta biće isključena.";
+"Let SOGo handle everything" = "Pustite SOGo da upravlja sa svime";

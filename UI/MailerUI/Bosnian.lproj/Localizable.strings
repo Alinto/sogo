@@ -1,0 +1,491 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "Kreirati";
+"Empty Trash" = "Isprazniti Korpu";
+"Empty Junk Folder" = "Isprazniti Spam Folder";
+"Delete"      = "Izbrisati";
+"Expunge"     = "Obrisati";
+"Forward"     = "Proslijediti";
+"Get Mail"    = "Preuzeti E-mail";
+"Junk"        = "Spam";
+"Not junk"    = "Nije Spam";
+"Reply"       = "Odgovoriti";
+"Reply All"   = "Odgovoriti Svima";
+"Print"       = "Printati";
+"Stop"        = "Stop";
+"Write"       = "Pisati";
+"Search"      = "Tražiti";
+"Send" = "Poslati";
+"Contacts" = "Kontakti";
+"Attach" = "Zakačiti";
+"Save" = "Sačuvati";
+"Options" = "Opcije";
+"Close" = "Zatvoriti";
+"Size" = "Veličina";
+
+/* Tooltips */
+"Send this message now" = "Poslati ovu poruku";
+"Select a recipient from an Address Book" = "Izaberati primaoca iz Imenika";
+"Include an attachment" = "Uključiti prilog";
+"Save this message" = "Sačuvati ovaj E-mail";
+"Get new messages" = "Preuzeti nove poruke";
+"Create a new message" = "Kreirati novi E-mail";
+"Go to address book" = "Idite u imenik";
+"Reply to the message" = "Odgovoriti na E-mail";
+"Reply to sender and all recipients" = "Odgovoriti pošiljaocu i svim primaocima";
+"Forward selected message" = "Proslijediti izabrane poruke";
+"Delete selected message or folder" = "Izbrisati izabrane poruke ili foldere";
+"Print this message" = "Printati E-mail";
+"Stop the current transfer" = "Zaustaviti trenutno slanje";
+"Attachment" = "Prilog";
+"Unread" = "Nepročitano";
+"Flagged" = "Označeno";
+"Search multiple mailboxes" = "Pretražiti u više E-mail računa";
+
+/* Main Frame  */
+"Home"                 = "Početna";
+"Calendar"             = "Kalendar";
+"Addressbook"          = "Imenik";
+"Mail"                 = "E-mail";
+"Right Administration" = "Upravljanje Pravima";
+"Help" = "Pomoć";
+
+/* Mail account main windows */
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Dobrodošli u SOGo. Vaše E-mail račune možete pregledati u folderima na lijevoj strani!";
+"Read messages"       = "Pročitane poruke";
+
+/* Tooltip for fab button */
+"Write a new message" = "Napisati novi E-mail";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Napisati E-mail u novom prozoru";
+
+"Share" = "Podijeliti";
+"Account" = "Račun";
+"Shared Account" = "Dijeljeni Račun";
+
+/* A mailbox is selected, but no message (only shown on large screens) */
+"No message selected" = "Nema izabranih poruka";
+
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "Nema izabranih računa";
+
+"An error occured while communicating with the mail server" = "Dogodila se greška u komunikaciji sa serverom";
+
+/* Mailbox actions */
+
+/* Compact Folder success message */
+"Folder compacted" = "Folder kompresovan";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Spam folder je ispražnjen";
+
+/* Empty Trash success message */
+"Trash emptied" = "Smeće je ispražnjeno";
+
+/* acls */
+"Access rights to" = "Pristupna prava za";
+"For user" = "Za korisnika";
+"Any Authenticated User" = "Svaki Ovlašteni Korisnik";
+"View this folder" = "Pregleadti ovaj  folder";
+"Read mails from this folder" = "Čitati porkue u ovom folderu";
+"Mark mails read and unread" = "Označiti pročitano i nepročitano";
+"Modify the flags of the mails in this folder" = "Urediti oznake na porukama unutar ovog foldera";
+"Insert, copy and move mails into this folder" = "Ubaciti, kopirati i pomjeriti poruke u ovaj folder";
+"Post mails" = "Objaviti poruku";
+"Add subfolders to this folder" = "Dodati podfolder";
+"Remove this folder" = "Izbrisati ovaj folder";
+"Erase mails from this folder" = "Izbrisati poruke iz ovog foldera";
+"Expunge this folder" = "Obrisati folder";
+"Export This Folder" = "Izvesti Folder";
+"Modify the acl of this folder" = "Urediti prava i pristup na ovaj folder";
+"Saved Messages.zip" = "Sačuvane Poruke.zip";
+"Update" = "Aktualizirati";
+"Cancel" = "Otkazati";
+
+/* Mail edition */
+"From"          = "Od";
+"Subject"       = "Predmet";
+"To"            = "Za";
+"Cc"            = "Cc";
+"Bcc"           = "Bcc";
+"Reply-To"	= "Odgovoriti";
+"Add address"   = "Dodati E-mail adresu";
+"Body"          = "Sadržaj";
+"Open" = "Otvoriti";
+"Select All" = "Izabrati Sve";
+"Select Message" = "Izabrati Poruke";
+"Attach Web Page..." = "Prikačiti Web Stranu...";
+"file" = "fajl";
+"files" = "fajlovi";
+"Save all" = "Sačuvati sve";
+"to"            = "Za";
+"cc"            = "Cc";
+"bcc"           = "Bcc";
+"Add a recipient" = "Dodati primaoca";
+"Edit Draft..." = "Urediti Nacrt...";
+"Load Images" = "Učitati Slike";
+"Return Receipt" = "Potvrda o Prijemu";
+"Choose which identity to send this message from" = "Izabrati E-mail s kojeg želite poslati ovu poruku";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Pošiljaoc želi biti obaviješten kada pročitate ovu poruku. Želite li obavijestiti pošiljioca?";
+"Return Receipt (displayed) - %@"= "Obavijest o Prijemu (prikazano) - %@";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Ovo je Obavijest o Prijemu E-maila koji ste poslali %@.\n\nNapomena: Obavijest o Prijemu je potvrda da je poruka pregledana od strane primaoca. Nema garancije da je primaoc pročitao ili razumio sadržaj vaše poruke.";
+"Security" = "Sigurnost";
+"Sign" = "Potpis";
+"Encrypt" = "Enkriptovati";
+"Priority" = "Prioritet";
+"highest" = "Najviši";
+"high" = "Visoki";
+"normal" = "Običan";
+"low" = "Nizak";
+"lowest" = "Najniži";
+"This mail is being sent from an unsecure network!" = "E-mail je poslat sa nesigurne lokacije!";
+"Address Book" = "Imenik";
+"Search For" = "Pretražiti";
+
+/* Popup "show" */
+"all"     = "sve";
+"read"    = "pročitano";
+"unread"  = "nepročitano";
+"deleted" = "izbrisano";
+"flagged" = "označeno";
+
+/* MailListView */
+"Sender" = "Pošiljaoc";
+"Subject or Sender" = "Predmet ili Pošiljaoc";
+"To or Cc" = "Za ili Kopija";
+"Entire Message" = "Cijela Poruka";
+"Date"          = "Datum";
+"View"          = "Pogled";
+"All"           = "Sve";
+"No message"    = "Nema poruka";
+"messages"      = "poruke";
+"Yesterday"     = "Juče";
+"first"         = "Prvi";
+"previous"      = "Prethodni";
+"next"          = "Sljedeći";
+"last"          = "Zadnji";
+"msgnumber_to"  = "za";
+"msgnumber_of"  = "od";
+"Mark Unread" = "Obilježiti Nepročitane";
+"Mark Read"   = "Obilježiti Pročitane";
+"Untitled" = "Bez Naslova";
+
+/* Filter option in messages list */
+"Show unread messages only" = "Prikazati samo nepročitane poruke";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Prikazati samo obilježene poruke";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Filtrirati po oznaci";
+
+/* Tree */
+"SentFolderName"   = "Poslano";
+"TrashFolderName"  = "Smeće";
+"InboxFolderName"  = "Primljene Poruke";
+"DraftsFolderName" = "Nedovršeno";
+"JunkFolderName" = "Spam";
+"SieveFolderName"  = "Filteri";
+"Folders"          = "Folders"; /* title line */
+
+/* MailMoveToPopUp */
+"MoveTo"        = "Premjestiti";
+
+/* Address Popup menu */
+"Add to Address Book..." = "Dodati u Imenik...";
+"Successfully created card" = "Upješno kreiran kontakt";
+"Compose Mail To" = "Sastaviti E-mail za";
+"Create Filter From Message..." = "Napraviti Filter od Poruke...";
+
+/* Image Popup menu */
+"Save Image" = "Sačuvati Sliku";
+"Save Attachment" = "Sačuvati Prilog";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "Otvoriti u Novom Prozoru";
+"Copy Folder Location" = "Kopirati Lokaciju Foldera";
+"Subscribe..." = "Pretplatiti se...";
+"Mark Folder Read" = "Označi sve u Folderu kao Pročitano";
+"New Folder..." = "Novi Folder";
+"Compact This Folder" = "Kompresuj Folder";
+"Search Messages..." = "Tražiti u Porukama...";
+"Sharing..." = "Dijeljenje...";
+"New Subfolder..." = "Novi Podfolder...";
+"Rename Folder..." = "Preimenovati Folder...";
+"Delete Folder" = "Izbrisati Folder";
+"Use This Folder For" = "Koristiti Folder Za";
+"Get Messages for Account" = "Preuzeti Poruke za Račun";
+"Properties..." = "Svojstva...";
+"Delegation..." = "Delegacija...";
+
+/* Use This Folder menu */
+"Sent Messages" = "Poslane Poruke";
+"Drafts" = "Nedovršeno";
+"Deleted Messages" = "Izbrisane Poruke";
+"Junk Messages" = "Spam Poruke";
+
+/* Message list popup menu */
+"Open Message In New Window" = "Otvoriti Poruku u Novom Prozoru";
+"Reply to Sender Only" = "Odgovoriti Samo Pošiljaocu";
+"Reply to All" = "Odgovoriti Svima";
+"Edit As New..." = "Urediti kao Nov...";
+"Move To" = "Premjestiti U";
+"Copy To" = "Kopirati U";
+"Label" = "Oznaka";
+"Mark" = "Označiti";
+"Save As..." = "Sačuvati Kao...";
+"Print Preview" = "Pregledati prije Printanja";
+"View Message Source" = "Pregledatiti Izvor Poruke";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "Konvertovati u Event/Događaj";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "Konvertovati u Zadatak";
+
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Preuzeti poruku";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Preuzeti poruku (zip)";
+
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Preuzeti sve priloge";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "prilozi";
+
+"Print..." = "Printati...";
+"Delete Message" = "Izbrisati Poruku";
+"Delete Selected Messages" = "Izbrisati Izabrane Poruke";
+"Mark the selected messages as junk" = "Označiti izabrane porke kao spam";
+"Mark the selected messages as not junk" = "Označiti izabrane poruke da nisu spam";
+
+/* Text appended to the recipients list when there are too many recipients */
+"and %{0} more..." = "i %{0} više...";
+
+/* Button label to hide extended list of recipients */
+"Hide" = "Sakriti";
+
+/* Number of selected messages in list */
+"selected" = "izabrano";
+
+/* Date formatting from one time to another time */
+"to_time" = "za";
+
+/* Date formatting from one day to another day */
+"to_date" = "za";
+
+/* Encrypted message notification */
+"This message is encrypted" = "Ovaj E-mail je enkriptovan";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "E-mail nije moguću dekriptovati. Molimo provjerite da ste uplodovali S/MIME certifikat.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Nije moguće potvrditi digitalni potpis";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "Poruka je izmijenjena";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Greška pri učitavanju certifikata. Molimo da instalirate novi certifikat.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "E-mail račun nema asociran certifikat.";
+
+/* Invalid S/MIME signature */
+"Digital signature is not valid" = "Digitalni potpis nije validan";
+
+/* Valid S/MIME signature */
+"Message is signed" = "E-mail je potpisan";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Poruka je digitalno potpisana ali certifikat ne odgovara E-mail adresi pošiljaoca";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Digitalni potpis nije validan";
+
+"This Folder" = "Ovaj Folder";
+
+/* Label popup menu */
+"None" = "Nijedan";
+
+/* Mark popup menu */
+"As Read" = "Kao Pročitano";
+"Thread As Read" = "Razgovor kao Pročitano";
+"As Read By Date..." = "Kao Pročitano po Datumu...";
+"All Read" = "Sve Pročitano";
+"Flag" = "Zastavica";
+"As Junk" = "Kao Spam";
+"As Not Junk" = "Nije Spam";
+"Run Junk Mail Controls" = "Pokrenuti Provjeru Spam E-mail";
+"Search messages in" = "Tražiti poruke u";
+"Search" = "Tražiti";
+"Search subfolders" = "Tražiti u podfolderima";
+"Match any of the following" = "Sadrži bilo šta od navedenog";
+"Match all of the following" = "Sadrži sve od navedenog";
+"contains" = "sadrži";
+"does not contain" = "ne sadrži";
+"No matches found" = "Nema rezultata";
+"results found" = "Pronađeni rezultati";
+"result found" = "Pronađen rezultat";
+"Please specify at least one filter" = "Molimo izaberiti bar jedan filter";
+
+/* Folder operations */
+"Name" = "Naziv";
+"Enter the new name of your folder"
+ ="Upišite novo ime vašeg foldera";
+"Do you really want to move this folder into the trash ?"
+ = "Stvarno želite premjestiti folder u smeće?";
+"Operation failed" = "Operacija neuspješna";
+"Quota" = "Kvota:";
+"quotasFormat" = "iskorišteno %{0}% od %{1} MB";
+"messageQuotasFormat" = "%{0}% od %{1} poruka";
+"Unable to move/delete folder." = "Nije moguće premjestiti/izbrisati folder.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "Mailbox nije moguće premjestiti u smeće. Želite da ga izbrište?";
+
+/* Confirmation message when deleting multiple messages */
+"Are you sure you want to delete the selected messages?" = "Sigurno želite izbrisati izabrane poruke?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} poruka(e) prekopirano";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} poruka(e) premješteno";
+
+"Please select a message." = "Molimo izaberite poruku.";
+"Please select a message to print." = "Molimo izaberite poruku za printanje.";
+"Please select only one message to print." = "Molimo izaberite samo jednu poruku za printanje.";
+"The message you have selected doesn't exist anymore." = "Poruka koju ste izabrali više ne postoji.";
+"The folder with name \"%{0}\" could not be created."
+= "Folder s nazivom \"%{0}\" nije moguće kreirati.";
+"This folder could not be renamed to \"%{0}\"."
+= "Folder ne može biti preimenovan u \"%{0}\".";
+"The folder could not be deleted."
+= "Folder nije moguće izbrisati.";
+"The trash could not be emptied."
+= "Smeće nije moguće izprazniti.";
+"The folder functionality could not be changed."
+= "Funkcionalnost foldera ne može biti izmijenjena.";
+"You need to choose a non-virtual folder!" = "Potrebno je izabrati non-virtual folder!";
+"Moving a message into its own folder is impossible!"
+= "Premjestiti poruku u vlastiti folder nije moguće!";
+"Copying a message into its own folder is impossible!"
+= "Kopirati poruku u vlastiti folder nije moguće!";
+
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "Poruku nije moguće premjestiti u smeće. Želite je izbrisati?";
+
+/* Message editing */
+"Please specify a subject." = "Molimo navedite predmet";
+"error_missingsubject" = "E-mail je bez predmeta. Sigurno ga želite poslati?";
+"error_missingrecipients" = "Molimo navedite bar jednog primaoca.";
+"Send Anyway" = "Poslati Svejedno";
+"Error while saving the draft" = "Greška pri snimanju nedovršenog E-maila";
+
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Nije moguće isprazniti.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Nije moguće isprazniti spam folder.";
+
+/* Error when uploading a file attachment */
+"Error while uploading the file \"%{0}\":" = "Greška pri uploadu fajla \"%{0}\":";
+"There is an active file upload. Closing the window will interrupt it." = "U progresu je aktivan upload fajla. Zatvarnje prozora rezultiraće prekidom.";
+"Message is too big" = "E-mail je prevelik";
+
+/* Appears while sending the message */
+"Sending" = "Slanje u toku";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Poslano";
+
+"cannot send message: (smtp) all recipients discarded" = "Nije moguće poslati poruku: sve primaoci se neispravni.";
+"cannot send message (smtp) - recipients discarded" = "Nije moguće poslati poruku. Sljedeće E-mail adrese su neispravne.";
+"cannot send message: (smtp) error when connecting" = "Nije moguće poslati poruku: greška pri spajanju na SMTP server.";
+"cannot sign email without certificate" = "E-mail ne može biti potpisan jer ne postoji certifikat asociran s vašim računom.";
+"cannot sign message because the certificate can't be read" = "E-mail ne može bit potpisan jer certifikan asociran s računom nije moguće čitati.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "Poruku nije moguće digitalno potpisati jer certifikat ne sadrži E-mail adresu pošiljaoca";
+
+/* Contacts list in mail editor */
+"Email" = "E-mail";
+"More mail options" = "Više E-mail opcija";
+"Delegation" = "Delegiranje";
+"Add User" = "Dodati Korisnika";
+"Add a tag" = "Dodati tag";
+"reply" = "odgovoriti";
+"Edit" = "Urediti";
+"Yes" = "Da";
+"No" = "Ne";
+"Location" = "Lokacija";
+"Rename" = "Preimenovati";
+"Compact" = "Kompresuj";
+"Export" = "Izvesti";
+"Set as Drafts" = "Podesiti za Nedovršeno";
+"Set as Sent" = "Pedesiti za Poslano";
+"Set as Trash" = "Podesiti za Smeće";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "Podesiti za Spam";
+
+"Sort" = "Sortirati";
+"Order Received" = "Poredati Primljene";
+"Descending Order" = "Opadajući Redoslijed";
+"Back" = "Nazad";
+"Copy messages" = "Kopirati poruke";
+"More messages options" = "Više opcija za poruke";
+"Mark as Unread" = "Označiti kao Nepročitano";
+"Mark as Read" = "Označiti kao Pročitano";
+"Closing Window ..." = "Zatvaranje Prozora ...";
+"Tried to send too many mails. Please wait." = "Pokušali ste poslati previše E-mailova. Molimo sačekajte. ";
+"View Mail" = "Pregledati E-mail";
+"This message contains external images." = "Poruka sadrži slike s vanjskih lokacija.";
+"Expanded" = "Prošireno";
+"Add a Criteria" = "Dodati Kriterij";
+"More search options" = "Više opcija za traženje";
+"Your email has been saved" = "Vaš E-mail je sačuvan";
+"Your email has been sent" = "Vaš E-mail je poslan";
+"Folder compacted" = "Folder kompresovan";
+
+/* Advanced search */
+"Enter Subject" = "Unesite Predmet";
+"Enter From" = "Unesite Od";
+"Enter To" = "Unesite Za";
+"Enter Cc" = "Unesite Cc";
+"Enter Body" = "Unesite Sadržaj";
+"match" = "sadrži";
+"does not match" = "ne sadrži";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Opseg pretrage";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Upravljanje Pretplatama";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Filter";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

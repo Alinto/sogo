@@ -42,6 +42,9 @@
 @interface SOGoMailArabicReply : SOGoMailReply
 @end
 
+@interface SOGoMailBosnianReply : SOGoMailReply
+@end
+
 @interface SOGoMailBrazilianPortugueseReply : SOGoMailReply
 @end
 

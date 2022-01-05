@@ -1,0 +1,35 @@
+/* Bosnian */
+{
+  NSLanguageName = "Bosanski";
+  NSFormalName = "Bosnian";
+  NSLocaleCode = "bs"; /* ISO 639-1 */
+  NSLanguageCode = "bos"; /* ISO 639-2 */
+  NSParentContext = "";
+
+  NSAMPMDesignation = ("prije podne", "poslije podne");
+  NSCurrencySymbol = "KM";
+  NSDateFormatString = "%A, %B %e, %Y";
+  NSDateTimeOrdering = DMYH;
+  NSDecimalDigits = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+  NSDecimalSeparator = ".";
+  NSEarlierTimeDesignations = (prethodni, zadnji, "prošli", prije);
+  NSHourNameDesignations = ((0, "ponoć"), (10, jutro), (12, podne, "ručak"), (14, "poslije podne"), (19, "večera"));
+  NSInternationalCurrencyString = BAM; /* ISO 4217 */
+  NSLaterTimeDesignations = ("sljedeći");
+  NSMonthNameArray = (Januar, Februar, Mart, April, Maj, Jun, Jul, Avgust, Septembar, Oktobar, Novembar, Decembar);
+  NSNextDayDesignations = (sutra);
+  NSNextNextDayDesignations = ("sljedeći dan");
+  NSPriorDayDesignations = ("juče");
+  NSShortDateFormatString = "%m/%e/%y";
+  NSShortMonthNameArray = (Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Okt, Nov, Dec);
+  NSShortTimeDateFormatString = "%e.%m.%y. %H:%M";
+  NSShortWeekDayNameArray = (Ned, Pon, Uto, "Čet", Pet, Sub);
+  NSThisDayDesignations = (danas, sad);
+  NSThousandsSeparator = ",";
+  NSTimeDateFormatString = "%A, %B %e, %Y %H:%M:%S";
+  NSTimeFormatString = "%H:%M:%S";
+  NSWeekDayNameArray = (Nedjelja, Ponedjeljak, Utorak, Srijeda, "Četvrtak", Petak, Subota);
+  NSYearMonthWeekDesignations = (godina, mjesec, sedmica);
+  NSPositiveCurrencyFormatString = "9,999.00 KM";
+  NSNegativeCurrencyFormatString = "-9,999.00 KM";
+}

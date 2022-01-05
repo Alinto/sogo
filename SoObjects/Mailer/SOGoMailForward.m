@@ -291,6 +291,9 @@
 @implementation SOGoMailArabicForward
 @end
 
+@implementation SOGoMailBosnianForward
+@end
+
 @implementation SOGoMailBrazilianPortugueseForward
 @end
 

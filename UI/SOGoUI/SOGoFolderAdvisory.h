@@ -56,7 +56,13 @@
 @interface SOGoFolderArabicAdditionAdvisory : SOGoFolderAdditionAdvisory
 @end
 
+@interface SOGoFolderBosnianAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
 @interface SOGoFolderArabicRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
+@interface SOGoFolderBosnianRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
 @interface SOGoFolderBrazilianPortugueseAdditionAdvisory : SOGoFolderAdditionAdvisory

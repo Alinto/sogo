@@ -259,7 +259,7 @@ genConfigMake() {
   cfgwrite "SOPE_MINOR_VERSION=9"
 
   # Languages
-  cfgwrite "SOGO_LANGUAGES=Arabic Basque BrazilianPortuguese Bulgarian Catalan ChineseChina ChineseTaiwan Croatian Czech Danish Dutch English Finnish French German Hebrew Hungarian Icelandic Indonesian Italian Japanese Latvian Lithuanian Macedonian Montenegrin NorwegianBokmal NorwegianNynorsk Polish Portuguese Romanian Russian Serbian SerbianLatin Slovak Slovenian SpanishArgentina SpanishSpain Swedish TurkishTurkey Ukrainian Welsh"
+  cfgwrite "SOGO_LANGUAGES=Arabic Basque Bosnian BrazilianPortuguese Bulgarian Catalan ChineseChina ChineseTaiwan Croatian Czech Danish Dutch English Finnish French German Hebrew Hungarian Icelandic Indonesian Italian Japanese Latvian Lithuanian Macedonian Montenegrin NorwegianBokmal NorwegianNynorsk Polish Portuguese Romanian Russian Serbian SerbianLatin Slovak Slovenian SpanishArgentina SpanishSpain Swedish TurkishTurkey Ukrainian Welsh"
   
   #cfgwrite "# print on the cmdline that this file is being used"
   #cfgwrite "all :: "
