@@ -35,6 +35,7 @@
 #import <NGExtensions/NGBase64Coding.h>
 #import <NGHttp/NGHttpRequest.h>
 #import <NGMime/NGMimeMultipartBody.h>
+#import <NGMime/NGMimeHeaderFields.h>
 
 #import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLAccess/EOAdaptorContext.h>
@@ -115,7 +116,7 @@ static NSArray *photoTags = nil;
   WOResponse *response;
   id data;
   NSMutableDictionary *rc;
-  NSString *fileContent;
+  NSString *filename, *fileContent;
   int imported = 0;
 
 
@@ -131,7 +132,9 @@ static NSArray *photoTags = nil;
       return response;
     }
 
-  data = [[[data parts] lastObject] body];
+  data = [[data parts] lastObject];
+  filename = [(NGMimeContentDispositionHeaderField *)[data headerForKey: @"content-disposition"] filename];
+  data = [data body];
 
   fileContent = [[NSString alloc] initWithData: (NSData *) data
                                       encoding: NSUTF8StringEncoding];
@@ -139,7 +142,7 @@ static NSArray *photoTags = nil;
 
   if (fileContent && [fileContent length])
     {
-      if ([fileContent hasPrefix: @"dn:"])
+      if ([fileContent hasPrefix: @"dn:"] || [filename hasSuffix: @".ldif"])
         imported = [self importLdifData: fileContent];
       else if ([fileContent hasPrefix: @"BEGIN:"])
         imported = [self importVcardData: fileContent];
@@ -203,6 +206,9 @@ static NSArray *photoTags = nil;
               continue;
             }
 
+          if (j == 0)
+            line = [NSString stringWithFormat: @"dn%@", line];
+
           /* handle continuation lines */
           if ([line hasPrefix: @" "])
             {
@@ -260,9 +266,9 @@ static NSArray *photoTags = nil;
           if ([key hasSuffix: @":"])
             {
               key = [key substringToIndex: [key length] - 1];
-	      if ([photoTags containsObject: key])
-	values = [values dataByDecodingBase64];
-	      else if ([values isKindOfClass: [NSArray class]])
+              if ([photoTags containsObject: key])
+                values = [values dataByDecodingBase64];
+              else if ([values isKindOfClass: [NSArray class]])
                 {
                   for (j = 0; j < [values count]; j++)
                     {
@@ -276,33 +282,35 @@ static NSArray *photoTags = nil;
                 values = [values stringByDecodingBase64];
             }
 
-	  // Standard key recognized in NGCards
-	  if ([photoTags containsObject: key])
-	    key = @"photo";
+          // Standard key recognized in NGCards
+          if ([photoTags containsObject: key])
+            key = @"photo";
 
           [entry setValue: values forKey: key];
         }
 
-      uid = [folder globallyUniqueObjectId];
-      ldifEntry = [SOGoContactLDIFEntry contactEntryWithName: uid
-                                               withLDIFEntry: entry
-                                                 inContainer: folder];
-      if (ldifEntry)
+      if ([entry objectForKey: @"dn"])
         {
-          if ([ldifEntry isList])
+          uid = [folder globallyUniqueObjectId];
+          ldifEntry = [SOGoContactLDIFEntry contactEntryWithName: uid
+                                                   withLDIFEntry: entry
+                                                     inContainer: folder];
+          if (ldifEntry)
             {
-              // Postpone importation of lists
-              [ldifListEntries addObject: ldifEntry];
-            }
-          else
-            {
-              vCard = [ldifEntry vCard];
-              if ([self importVcard: vCard])
+              if ([ldifEntry isList])
                 {
-                  rc++;
+                  // Postpone importation of lists
+                  [ldifListEntries addObject: ldifEntry];
+                }
+              else
+                {
+                  vCard = [ldifEntry vCard];
+                  if ([self importVcard: vCard])
+                    {
+                      rc++;
+                    }
                 }
             }
-
         }
     }
 
