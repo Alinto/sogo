@@ -836,6 +836,7 @@
   NSArray *changedMessages, *headers;
   NSDictionary *requestContent, *data, *changedMessage;
   NSMutableArray *changedUids, *deletedUids;
+  NSRange r;
   NSString *syncToken, *newSyncToken, *uid;
   SOGoMailFolder *folder;
   WORequest *request;
@@ -874,7 +875,11 @@
             }
 
           // Fetch headers for new or modified messages
-          headers = [self getHeadersForUIDs: changedUids
+          max = [changedUids count];
+          if (max > headersPrefetchMaxSize)
+            max = headersPrefetchMaxSize;
+          r = NSMakeRange(0, max);
+          headers = [self getHeadersForUIDs: [changedUids subarrayWithRange: r]
                                    inFolder: folder];
 
           data = [NSDictionary dictionaryWithObjectsAndKeys:
