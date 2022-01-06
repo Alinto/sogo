@@ -1,6 +1,6 @@
 /* iCalAlarm+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2015-2017 Inverse inc.
+ * Copyright (C) 2015-2022 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -89,6 +89,13 @@
   if ([reminderAction length] > 0 && [reminderUnit length] > 0)
     {
       [anAlarm setAction: [reminderAction uppercaseString]];
+      [anAlarm setSummary: [theEntity summary]];
+      if ([[theEntity comment] length])
+        [anAlarm setComment: [theEntity comment]];
+      else
+        // RFC 5545 requires the DESCRIPTION (comment) field to be defined for a VALARM
+        [anAlarm setComment: [theEntity summary]];
+
       if ([reminderAction isEqualToString: @"email"])
         {
           [anAlarm removeAllAttendees];
@@ -97,8 +104,6 @@
                          toEmailAlarm: anAlarm];
           if (reminderEmailOrganizer)
             [anAlarm _appendOrganizerToEmailAlarm: anAlarm  owner: theOwner];
-          [anAlarm setSummary: [theEntity summary]];
-          [anAlarm setComment: [theEntity comment]];
         }
       
       if ([reminderReference caseInsensitiveCompare: @"BEFORE"] == NSOrderedSame)
