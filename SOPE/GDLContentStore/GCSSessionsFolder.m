@@ -1,8 +1,6 @@
 /* GCSSessionsFolder.m - this file is part of SOGo
  *
- * Copyright (C) 2010-2011 Inverse inc.
- *
- * Author: Ludovic Marcotte  <lmarcotte@inverse.ca>
+ * Copyright (C) 2010-2022 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -181,7 +179,7 @@ static NSString *sessionsFolderURLString = nil;
 
   queries = [tc specialQueries];
 
-  sql = [NSString stringWithFormat: @"SELECT count(*) FROM %@", tableName];
+  sql = [NSString stringWithFormat: @"SELECT 1 FROM %@ WHERE 1 = 2", tableName];
   if ([tc evaluateExpressionX: sql])
     {
       sql = [queries createSessionsFolderWithName: tableName];

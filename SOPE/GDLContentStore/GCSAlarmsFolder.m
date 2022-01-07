@@ -1,6 +1,6 @@
 /* GCSAlarmsFolder.m - this file is part of SOGo
  *
- * Copyright (C) 2010-2016 Inverse inc.
+ * Copyright (C) 2010-2022 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -182,7 +182,7 @@ static NSString *alarmsFolderURLString = nil;
 
   queries = [tc specialQueries];
 
-  sql = [NSString stringWithFormat: @"SELECT count(*) FROM %@",
+  sql = [NSString stringWithFormat: @"SELECT 1 FROM %@ WHERE 1 = 2",
                   [self _storeTableName]];
   if ([tc evaluateExpressionX: sql])
     {

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2005-2016 Inverse inc.
+  Copyright (C) 2005-2022 Inverse inc.
 
   This file is part of SOGo
 
@@ -199,7 +199,7 @@ static BOOL debugLeaks;
   /* FIXME: make use of [EOChannelAdaptor describeTableNames] instead */
   tableName = [url lastPathComponent];
   if ([tc evaluateExpressionX:
-	    [NSString stringWithFormat: @"SELECT count(*) FROM %@",
+	    [NSString stringWithFormat: @"SELECT 1 FROM %@ WHERE 1 = 2",
 		      tableName]])
     {
       // We re-acquire the channel in case it was abruptly closed between statements
@@ -232,7 +232,7 @@ static BOOL debugLeaks;
 
   tableName = [NSString stringWithFormat: @"sogo_quick_%@", typeName];
   driver = [url substringToIndex: [url rangeOfString: @":"].location];
-  sql = [NSString stringWithFormat: @"SELECT count(*) FROM %@",
+  sql = [NSString stringWithFormat: @"SELECT 1 FROM %@ WHERE 1 = 2",
                   tableName];
   if ([channel evaluateExpressionX: sql])
     {

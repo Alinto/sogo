@@ -39,7 +39,7 @@
     didOpen = YES;
   }
 
-  sql = [NSString stringWithFormat: @"SELECT COUNT(*) FROM %@ WHERE 1 = 2",
+  sql = [NSString stringWithFormat: @"SELECT 1 FROM %@ WHERE 1 = 2",
                   tableName];
   ex = [self evaluateExpressionX: sql];
   [self cancelFetch];
