@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2017 Inverse inc.
+  Copyright (C) 2007-2022 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -21,6 +21,7 @@
 */
 
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSException.h>
 
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -168,11 +169,20 @@
   NSEnumerator *parts;
 
   currentObject = [self clientObject];
-  parts = [partPath objectEnumerator];
-  while ((currentPart = [parts nextObject]))
-    currentObject = [currentObject lookupName: currentPart
-				   inContext: context
-				   acquire: NO];
+  if (partPath)
+    {
+      parts = [partPath objectEnumerator];
+      while ((currentPart = [parts nextObject]))
+        currentObject = [currentObject lookupName: currentPart
+                                        inContext: context
+                                          acquire: NO];
+    }
+  else
+    {
+      [self warnWithFormat: @"No path specified, returning first part"];
+      currentObject = [[self clientObject] lookupImap4BodyPartKey: @"0"
+                                                        inContext: context];
+    }
 
   return currentObject;
 }
