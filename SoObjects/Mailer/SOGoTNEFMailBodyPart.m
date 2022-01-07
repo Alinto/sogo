@@ -309,6 +309,7 @@ unsigned char GetRruleMonthNum(unsigned char a, unsigned char b) {
             {
               if (tnef.subject.size > 0)
                 {
+                  data = nil;
                   filedata = MAPIFindProperty(&(tnef.MapiProperties), PROP_TAG(PT_BINARY, PR_BODY_HTML));
                   if (filedata != MAPI_UNDEFINED)
                     {
