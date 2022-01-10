@@ -281,7 +281,8 @@
     if ([_st isEqualToString:@"x-vcard"])  return @"vcf";
   }
   else if ([_mt isEqualToString:@"message"]) {
-    if ([_st isEqualToString:@"rfc822"])   return @"eml";
+    if ([_st isEqualToString:@"rfc822"] || [_st isEqualToString:@"global"])
+                                           return @"eml";
   }
   else if ([_mt isEqualToString:@"application"]) {
     if ([_st isEqualToString:@"pdf"])      return @"pdf";
