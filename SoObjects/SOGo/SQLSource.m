@@ -1,6 +1,6 @@
 /* SQLSource.h - this file is part of SOGo
  *
- * Copyright (C) 2009-2021 Inverse inc.
+ * Copyright (C) 2009-2022 Inverse inc.
  *
  * This file is part of SOGo.
  *
@@ -487,13 +487,8 @@
         }
 
       domainQualifier = nil;
-      if (_domainField && domain)
-        {
-          domainQualifier = [[EOKeyValueQualifier alloc] initWithKey: _domainField
-                                                    operatorSelector: EOQualifierOperatorEqual
-                                                               value: domain];
-          [domainQualifier autorelease];
-        }
+      if (_domainField && [domain length])
+        domainQualifier = [self visibleDomainsQualifierFromDomain: domain];
 
       if (b)
         {
@@ -727,7 +722,7 @@
  * (_domainField = domain OR _domainField = visibleDomain1 [...])
  * Should only be called on SQL sources using _domainField name.
  */
-- (EOQualifier *) _visibleDomainsQualifierFromDomain: (NSString *) domain
+- (EOQualifier *) visibleDomainsQualifierFromDomain: (NSString *) domain
 {
   int i;
   EOQualifier *qualifier, *domainQualifier;
@@ -745,10 +740,9 @@
   visibleDomains = [sd visibleDomainsForDomain: domain];
   qualifier = nil;
 
-  domainQualifier =
-    [[EOKeyValueQualifier alloc] initWithKey: _domainField
-                            operatorSelector: EOQualifierOperatorEqual
-                                       value: domain];
+  domainQualifier = [[EOKeyValueQualifier alloc] initWithKey: _domainField
+                                            operatorSelector: EOQualifierOperatorEqual
+                                                       value: domain];
   [domainQualifier autorelease];
 
   if ([visibleDomains count])
@@ -795,8 +789,7 @@
         {
           if ([domain length])
             {
-              domainQualifier =
-                [self _visibleDomainsQualifierFromDomain: domain];
+              domainQualifier = [self visibleDomainsQualifierFromDomain: domain];
               if (domainQualifier)
                 {
                   [sql appendString: @" WHERE "];
@@ -905,7 +898,7 @@
               if ([domain length])
                 {
                   EOQualifier *domainQualifier;
-                  domainQualifier = [self _visibleDomainsQualifierFromDomain: domain];
+                  domainQualifier = [self visibleDomainsQualifierFromDomain: domain];
                   if (domainQualifier)
                     {
                       [sql appendFormat: @" AND ("];
