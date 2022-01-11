@@ -676,6 +676,12 @@ void handle_eas_terminate(int signum)
         SOGoMailFolder *folderToUpdate;
 
         accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
+        if ([accountsFolder isKindOfClass: [NSException class]])
+          {
+            [theResponse setStatus: 403];
+            [self logWithFormat: @"Mail - Forbidden access for user %@", [[context activeUser] loginInDomain]];
+            return;
+          }
         currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
   
         folderToUpdate = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", serverId]
@@ -721,6 +727,12 @@ void handle_eas_terminate(int signum)
 	NSString *nameInCache;
 
         appointmentFolders = [userFolder privateCalendars: @"Calendar" inContext: context];
+        if ([appointmentFolders isKindOfClass: [NSException class]])
+          {
+            [theResponse setStatus: 403];
+            [self logWithFormat: @"Calendar - Forbidden access for user %@", [[context activeUser] loginInDomain]];
+            return;
+          }
 
         folderToUpdate = [appointmentFolders lookupName: [NSString stringWithFormat: @"%@", serverId]
                                               inContext: context
