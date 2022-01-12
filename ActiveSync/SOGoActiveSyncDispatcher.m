@@ -859,17 +859,18 @@ void handle_eas_terminate(int signum)
   int status, command_count, i, type, fi, count;
   BOOL first_sync;
 
-  metadata = [self globalMetadataForDevice];
-  syncKey = [[(id)[theDocumentElement getElementsByTagName: @"SyncKey"] lastObject] textValue];
-  s = [NSMutableString string];
-  personalFolderName = [[[context activeUser] personalCalendarFolderInContext: context] nameInContainer];
-
   first_sync = NO;
   status = 1;
   command_count = 0;
+  personalFolderName = nil;
   commands = [NSMutableString string];
-
   processedFolders = [NSMutableArray array];
+  s = [NSMutableString string];
+
+  metadata = [self globalMetadataForDevice];
+  syncKey = [[(id)[theDocumentElement getElementsByTagName: @"SyncKey"] lastObject] textValue];
+  if ([[context activeUser] canAccessModule: @"Calendar"])
+    personalFolderName = [[[context activeUser] personalCalendarFolderInContext: context] nameInContainer];
 
   [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
