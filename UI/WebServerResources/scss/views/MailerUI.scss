@@ -1,4 +1,5 @@
 /// MailerUI.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
+@use "sass:color";
 
 .sg-mailbox-list-item:not(.sg-selected) .md-menu {
   display: none;
@@ -36,6 +37,10 @@
 
 .sg-icon-star {
   color: $colorYellow700;
+}
+
+.sg-star-bg {
+  background-color: color.scale($colorYellow700, $lightness: 60%);
 }
 
 // Message view header
