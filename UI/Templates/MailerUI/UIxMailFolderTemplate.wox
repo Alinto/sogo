@@ -333,7 +333,7 @@
           <md-list-item
               aria-label="{{currentMessage.subject}}"
               class="sg-message-list-item"
-              ng-class="{'md-default-theme md-accent md-bg md-hue-2': mailbox.selectedFolder.isSelectedMessage(currentMessage.uid, currentMessage.$mailbox.path), 'sg-message-thread-first': currentMessage.first, 'sg-message-thread': currentMessage.threadMember}"
+              ng-class="{'md-default-theme md-accent md-bg md-hue-2': mailbox.selectedFolder.isSelectedMessage(currentMessage.uid, currentMessage.$mailbox.path), 'sg-star-bg': currentMessage.isflagged, 'sg-message-thread-first': currentMessage.first, 'sg-message-thread': currentMessage.threadMember}"
               md-virtual-repeat="currentMessage in mailbox.service.selectedFolder"
               md-on-demand="md-on-demand" md-item-size="56"
               ng-click="mailbox.selectMessage(currentMessage)"
