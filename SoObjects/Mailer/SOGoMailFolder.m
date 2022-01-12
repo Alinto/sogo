@@ -2320,7 +2320,8 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
   NSDictionary *d;
   id fetchResults, sortedResults;
 
-  int highestmodseq = 0, i;
+  int i;
+  uint64_t highestmodseq = 0;
 
   allTokens = [NSMutableArray array];
   pool = [[NSAutoreleasePool alloc] init];
@@ -2328,7 +2329,7 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
   if (![theSyncToken isEqualToString: @"-1"])
     {
       a = [theSyncToken componentsSeparatedByString: @"-"];
-      highestmodseq = [[a objectAtIndex: 1] intValue];
+      highestmodseq = [[a objectAtIndex: 1] longLongValue];
     }
   
   // We first make sure QRESYNC is enabled
