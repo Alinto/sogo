@@ -519,7 +519,8 @@ _xmlCharsetForCharset (NSString *charset)
                        || [name isEqualToString: @"formaction"])
                 {
                   value = [_attributes valueAtIndex: count];
-                  lowerValue = [value lowercaseString];
+                  lowerValue = [[value lowercaseString] stringByReplacingString: @"\""
+                                                                     withString: @""];
                   skipAttribute =
                     ([lowerValue rangeOfString: @"://"].location == NSNotFound
                      && ![lowerValue hasPrefix: @"mailto:"]
@@ -532,7 +533,9 @@ _xmlCharsetForCharset (NSString *charset)
               else if ([name isEqualToString: @"style"])
                 {
                   value = [_attributes valueAtIndex: count];
-                  if ([value rangeOfString: @"url" options: NSCaseInsensitiveSearch].location != NSNotFound)
+                  lowerValue = [[value lowercaseString] stringByReplacingString: @"\""
+                                                                     withString: @""];
+                  if ([lowerValue rangeOfString: @"url"].location != NSNotFound)
                     name = [NSString stringWithFormat: @"unsafe-%@", name];
                 }
 	      else if ([name hasPrefix: @"on"])
