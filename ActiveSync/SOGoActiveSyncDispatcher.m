@@ -346,7 +346,9 @@ void handle_eas_terminate(int signum)
     case ActiveSyncEventFolder:
     case ActiveSyncTaskFolder:
       {
-        collection = [[[[context activeUser] homeFolderInContext: context] lookupName: @"Calendar" inContext: context acquire: NO] lookupName: theCollectionId inContext: context acquire: NO];
+        collection = [[[context activeUser] homeFolderInContext: context] lookupName: @"Calendar" inContext: context acquire: NO];
+        if (![collection isKindOfClass: [NSException class]])
+          collection = [collection lookupName: theCollectionId inContext: context acquire: NO];
         if (!collection || ([collection isKindOfClass: [NSException class]]))
            collection = nil;
       }
@@ -1145,14 +1147,16 @@ void handle_eas_terminate(int signum)
          [[o properties] removeObjectForKey: @"CleanoutDate"];
 
          [o save];
-              
+
          command_count++;
        }
    }
 
+  folders = [NSMutableArray array];
+
   // We get the list of subscribed calendars
-  folders = [[[[[context activeUser] homeFolderInContext: context] lookupName: @"Calendar" inContext: context acquire: NO] subFolders] mutableCopy];
-  [folders autorelease];
+  if ([personalFolderName length])
+    [folders addObjectsFromArray: [[[[context activeUser] homeFolderInContext: context] lookupName: @"Calendar" inContext: context acquire: NO] subFolders]];
 
   // We get the list of subscribed address books
   [folders addObjectsFromArray: [[[[context activeUser] homeFolderInContext: context] lookupName: @"Contacts" inContext: context acquire: NO] subFolders]];
