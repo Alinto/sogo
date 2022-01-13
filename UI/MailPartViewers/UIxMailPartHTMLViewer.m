@@ -538,6 +538,10 @@ _xmlCharsetForCharset (NSString *charset)
                   if ([lowerValue rangeOfString: @"url"].location != NSNotFound)
                     name = [NSString stringWithFormat: @"unsafe-%@", name];
                 }
+	      else if ([name isEqualToString: @"rel"])
+		{
+		  skipAttribute = YES;
+		}
 	      else if ([name hasPrefix: @"on"])
 		{
                   // on Events
