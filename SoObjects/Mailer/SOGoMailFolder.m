@@ -2180,11 +2180,12 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
   if ([self imap4Connection])
     {
       NSDictionary *result;
-      unsigned int modseq, uid;
+      unsigned int uid;
+      uint64_t modseq;
 
       uid = [theId intValue];
       result = [[imap4 client] fetchModseqForUid: uid];
-      modseq = [[[[result objectForKey: @"RawResponse"]  objectForKey: @"fetch"] objectForKey: @"modseq"] intValue];
+      modseq = [[[[result objectForKey: @"RawResponse"]  objectForKey: @"fetch"] objectForKey: @"modseq"] longLongValue];
       
       if (modseq < 1)
         modseq = 1;
@@ -2205,14 +2206,16 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
     {
       NSString *folderName;
       NSDictionary *result;
+      NSArray *keys;
 
       folderName = [imap4 imap4FolderNameForURL: [self imap4URL]];
 
       [[imap4 client] unselect];
       
       result = [[imap4 client] select: folderName];
-
-      tag = [NSString stringWithFormat: @"%@-%@", [result objectForKey: @"uidnext"], [result objectForKey: @"highestmodseq"]];
+      keys = [result allKeys];
+      if ([keys containsObject: @"uidnext"] && [keys containsObject: @"highestmodseq"])
+        tag = [NSString stringWithFormat: @"%@-%@", [result objectForKey: @"uidnext"], [result objectForKey: @"highestmodseq"]];
     }
 
   return tag;
