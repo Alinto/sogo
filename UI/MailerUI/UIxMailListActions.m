@@ -848,6 +848,9 @@
   response = nil;
   folder = [self clientObject];
   syncToken = [requestContent objectForKey: @"syncToken"];
+
+  // We first make sure QRESYNC is enabled
+  [[folder imap4Connection] enableExtensions: [NSArray arrayWithObject: @"QRESYNC"]];
   newSyncToken = [folder davCollectionTag];
 
   if ([syncToken length] && ![syncToken isEqual: newSyncToken])
