@@ -117,6 +117,8 @@
 
 .msg-body {
   padding-top: $mg;
+  position: relative;
+  transform: translateX(0);
 }
 
 .msg-date {
