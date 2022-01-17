@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "Kreiraj";
 "Empty Trash" = "Isprazni kantu";
+"Empty Junk Folder" = "Isprazni folder Neželjeno";
 "Delete"      = "Obriši";
 "Expunge"     = "Izbriši";
 "Forward"     = "Proslijedi";
@@ -73,8 +74,13 @@
 "An error occured while communicating with the mail server" = "Desila se greška prilikom kontaktiranja poštanskog servera";
 
 /* Mailbox actions */
+
 /* Compact Folder success message */
 "Folder compacted" = "Direktorijum je komprimovan";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Direktorijum Neželjeno je ispražnjen";
+
 /* Empty Trash success message */
 "Trash emptied" = "Kanta za otpatke je ispražnjena";
 
@@ -82,7 +88,7 @@
 "Access rights to" = "Prava pristupa u";
 "For user" = "Za korisnika";
 "Any Authenticated User" = "Bilo koji autentifikovani korisnik";
-"List and see this folder" = "Prikaži i pogledaj ovaj direktorijum";
+"View this folder" = "Pregledaj ovaj direktorijum";
 "Read mails from this folder" = "Pročitaj poštu iz ovog direktorijuma";
 "Mark mails read and unread" = "Označi poštu pročitanom ili nepročitanom";
 "Modify the flags of the mails in this folder" = "Izmijeni zastavice pošte u ovom direktorijumu";
@@ -166,6 +172,15 @@
 "Mark Read"   = "Obilježi pročitano";
 "Untitled" = "Bez naslova";
 
+/* Filter option in messages list */
+"Show unread messages only" = "Prikaži samo nepročitane poruke";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Prikaži samo poruke označene zastavicom";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Filtrirano po oznaci";
+
 /* Tree */
 "SentFolderName"   = "Poslato";
 "TrashFolderName"  = "Kanta";
@@ -189,7 +204,7 @@
 "Save Attachment" = "Sačuvaj prilog";
 
 /* Mailbox popup menus */
-"Open in New Mail Window" = "Otovori u novom prozoru pošte";
+"Open in New Mail Window" = "Otvori u novom prozoru pošte";
 "Copy Folder Location" = "Umnoži lokaciju direktorijuma";
 "Subscribe..." = "Pretplati se";
 "Mark Folder Read" = "Označi direktorijum kao pročitan";
@@ -230,6 +245,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Pretvori u zadatak";
 
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Preuzmi poruku";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Preuzmi poruku (zip)";
+
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "Preuzmi sve priloge";
 
@@ -251,6 +272,12 @@
 /* Number of selected messages in list */
 "selected" = "izabrano";
 
+/* Date formatting from one time to another time */
+"to_time" = "za";
+
+/* Date formatting from one day to another day */
+"to_date" = "za";
+
 /* Encrypted message notification */
 "This message is encrypted" = "Poruka je enkriptovana";
 
@@ -269,11 +296,14 @@
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Nema sertifikata povezanog sa nalogom.";
 
-/* Invalid message signature */
+/* Invalid S/MIME signature */
 "Digital signature is not valid" = "Digitalni potpis nije važeći";
 
-/* Valid message signature */
+/* Valid S/MIME signature */
 "Message is signed" = "Poruka je potpisana";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Poruka je potpisana ali sertifikat se ne poklapa sa email adresom pošiljaoca";
 
 /* Unknown error while validating message signature */
 "Digital signature is not valid" = "Digitalni potpis nije važeći";
@@ -313,6 +343,7 @@
 "Operation failed" = "Operacija nije uspela";
 "Quota" = "Kvota:";
 "quotasFormat" = "%{0}% iskorišćeno od %{1} MB";
+"messageQuotasFormat" = "%{0}% od %{1} poruka";
 "Unable to move/delete folder." = "Ne mogu da premjestim/obrišem direktorijum.";
 
 /* Alternative operation when folder cannot be deleted */
@@ -359,6 +390,12 @@
 "Send Anyway" = "Svejedno pošalji";
 "Error while saving the draft" = "Greška pri čuvanju nedovršene poruke";
 
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Nemoguće je isprazniti direktorijum Kanta";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Nemoguće je isprazniti direktorijum Neželjeno";
+
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Greška pri otpremanju dokumenta \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "U toku je otpremanje dokumenta. Ako zatvorite prozor prekinućete otpremanje.";
@@ -373,6 +410,9 @@
 "cannot send message: (smtp) all recipients discarded" = "Ne mogu poslati poruku: ni jedan primalac nije validan.";
 "cannot send message (smtp) - recipients discarded" = "Ne mogu poslati poruku. Sljedeće adrese nisu validne";
 "cannot send message: (smtp) error when connecting" = "Ne mogu poslati poruku: greška pri povezivanju na SMTP server.";
+"cannot sign email without certificate" = "Ova poruka ne može biti potpisana  jer ne postoji sertifikar associran sa ovim mejl nalogom.";
+"cannot sign message because the certificate can't be read" = "Ova poruka ne može biti potpisana jer sertifikat asociran sa ovim mejl nalogom ne može biti pročitan.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "Ova poruka ne može biti potpisana jer adresa pošiljaoca nije uključena u sertifikat asociran sa mejl nalogom.";
 
 /* Contacts list in mail editor */
 "Email" = "E-pošta";

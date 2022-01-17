@@ -46,3 +46,4 @@ reply_info = "Ovaj odgovor na pozivnicu za događaj je vaš.";
 "Cancel" = "Otkaži";
 "OK" = "U redu";
 "Comment" = "Komentar";
+"Description" = "Opis";

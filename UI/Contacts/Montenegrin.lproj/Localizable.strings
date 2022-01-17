@@ -45,8 +45,8 @@
 "Copy To" = "Kopiraj u";
 "Add to" = "Dodaj u";
 "To" = "Za";
-"Carbon Copy (Cc)" = "Karbon kopija";
-"Blind Carbon Copy (Bcc)" = "Skrivena karbon kopija";
+"Carbon Copy (Cc)" = "Karbon kopija (Cc)";
+"Blind Carbon Copy (Bcc)" = "Skrivena karbon kopija (Bcc)";
 
 /* Search scope: name fields */
 "name" = "Ime";
@@ -221,7 +221,7 @@
 "New Addressbook..." = "Novi adresar...";
 "Subscribe to an Addressbook..." = "Pretplati se na Adresar...";
 "Remove the selected Addressbook" = "Ukloni odabrani adresar";
-"Subscribe to a shared folder" = "Pretplati se na dijeljeni direktorijum";
+"Subscribe to a shared contact" = "Pretplati se na dijeljeni adresar";
 "Search User" = "Potraži korisnika";
 "Name of the Address Book" = "Ime adresara";
 "Are you sure you want to delete the selected address book?"
@@ -350,6 +350,7 @@
 "Synchronization" = "Sinhronizacija";
 "Synchronize" = "Sinhronizuj";
 "Sucessfully subscribed to address book" = "Uspješno pretplaćen na adresar";
+"A similar card already exists. Would you like to save it anyway?" = "Slična kartica već postoji. Da li svakako želiš da sačuvaš i ovu karticu?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Pretraži opseg";
