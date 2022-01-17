@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "Създаване";
 "Empty Trash" = "Изпразване на кошчето";
+"Empty Junk Folder" = "Изчистване на Спам";
 "Delete"      = "Изтриване";
 "Expunge"     = "Задраскване";
 "Forward"     = "Препращане";
@@ -73,8 +74,13 @@
 "An error occured while communicating with the mail server" = "Възникна грешка в комуникацията с пощенският сървър";
 
 /* Mailbox actions */
+
 /* Compact Folder success message */
 "Folder compacted" = "Папката компресирана";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Папката Spam изчистена";
+
 /* Empty Trash success message */
 "Trash emptied" = "Кошчето изпразнено";
 
@@ -82,7 +88,7 @@
 "Access rights to" = "Право на достъп за";
 "For user" = "За потребител";
 "Any Authenticated User" = "Всеки оторизиран потребител";
-"List and see this folder" = "Прегледай папката";
+"View this folder" = "Виж папката";
 "Read mails from this folder" = "Четене на писмата в тази папка";
 "Mark mails read and unread" = "Маркирай писмата като прочетени и непрочетени";
 "Modify the flags of the mails in this folder" = "Промяна на флаговете на писмата в папката";
@@ -165,6 +171,15 @@
 "Mark Unread" = "Маркирай като непрочетени";
 "Mark Read"   = "Маркира прочетени";
 "Untitled" = "Без заглавие";
+
+/* Filter option in messages list */
+"Show unread messages only" = "Само непрочетени";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Само отбелязани";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Филтриране по етикет";
 
 /* Tree */
 "SentFolderName"   = "Изпратени";
@@ -281,11 +296,14 @@
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Няма сертификат, свързан с профил.";
 
-/* Invalid message signature */
+/* Invalid S/MIME signature */
 "Digital signature is not valid" = "Невалиден цифров подпис";
 
-/* Valid message signature */
+/* Valid S/MIME signature */
 "Message is signed" = "Съобщението е подписано";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Съобщението е подписано, но сертификата не съответства на email адреса на изпращача";
 
 /* Unknown error while validating message signature */
 "Digital signature is not valid" = "Невалиден цифров подпис";
@@ -372,6 +390,12 @@
 "Send Anyway" = "Изпрати въпреки това";
 "Error while saving the draft" = "Грешка при запазване на черновата";
 
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Не може да се изчисти кошчето.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Не може да се изчисти Спам.";
+
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Грешка при качването на файла \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Активно е качване на файл. Затварянето на прозореца ще го прекъсне.";
@@ -386,6 +410,9 @@
 "cannot send message: (smtp) all recipients discarded" = "Не може да се изпрати съобщение: всички получатели са невалидни.";
 "cannot send message (smtp) - recipients discarded" = "Не може да се изпрати съобщение. Следните получатели са невалидни";
 "cannot send message: (smtp) error when connecting" = "Не може да се изпрати съобщение: грешка при свързване със SMTP сървър.";
+"cannot sign email without certificate" = "Съобщението не може да бъде подписано, защото няма сертификат, асоцииран с този акаунт.";
+"cannot sign message because the certificate can't be read" = "Съобщението не може да бъде подписано, защото сертификата, асоцииран с този акаунт не може да бъде прочетен.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "Съобщението не може да бъде подписано, защото изпращащия адрес не е включен в сертификата, асоцииран с този акаунт.";
 
 /* Contacts list in mail editor */
 "Email" = "Имейл";
