@@ -26,6 +26,7 @@
 "Verification Code" = "Код верификации";
 "Enter the 6-digit verification code from your TOTP application." = "Введите 6-значный код подтверждения из приложения двухфакторной аутентификации.";
 "You provided an invalid TOTP key." = "Введённый TOTP-код неверен.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Двухфакторная аутентификация отключена. Включите двухфакторную аутентификацию в параметрах и перенастройте программу TOTP.";
 
 "Download" = "Скачать";
 "Language" = "Язык";

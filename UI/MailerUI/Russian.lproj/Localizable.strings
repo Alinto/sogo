@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "Создать";
 "Empty Trash" = "Очистить корзину";
+"Empty Junk Folder" = "Очистить папку нежелательной почты";
 "Delete"      = "Удалить";
 "Expunge"     = "Очистить";
 "Forward"     = "Переслать";
@@ -73,8 +74,13 @@
 "An error occured while communicating with the mail server" = "Произошла ошибка при обращении к почтовому серверу.";
 
 /* Mailbox actions */
+
 /* Compact Folder success message */
 "Folder compacted" = "Папка сжата";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Папка нежелательной почты очищена";
+
 /* Empty Trash success message */
 "Trash emptied" = "Корзина очищена";
 
@@ -82,7 +88,7 @@
 "Access rights to" = "Права доступа к";
 "For user" = "Для пользователя";
 "Any Authenticated User" = "Любой аутентифицированный пользователь";
-"List and see this folder" = "Видеть папку и названия писем в ней";
+"View this folder" = "Просмотреть эту папку";
 "Read mails from this folder" = "Читать письма в папке";
 "Mark mails read and unread" = "Помечать письма как прочитанные/непрочитанные";
 "Modify the flags of the mails in this folder" = "Помечать флагами сообщения в папке";
@@ -165,6 +171,15 @@
 "Mark Unread" = "Пометить как непрочитанное";
 "Mark Read"   = "Пометить как прочитанное";
 "Untitled" = "Без темы";
+
+/* Filter option in messages list */
+"Show unread messages only" = "Показывать только непрочитанные сообщения";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Показывать только отмеченные сообщения";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Отфильтровано по метке";
 
 /* Tree */
 "SentFolderName"   = "Отправленные";
@@ -281,11 +296,14 @@
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Нет сертификата, связанного с учетной записью.";
 
-/* Invalid message signature */
+/* Invalid S/MIME signature */
 "Digital signature is not valid" = "Цифровая подпись недействительна";
 
-/* Valid message signature */
+/* Valid S/MIME signature */
 "Message is signed" = "Сообщение подписано";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Сообщение подписано, но сертификат не соответствует адресу электронной почты отправителя";
 
 /* Unknown error while validating message signature */
 "Digital signature is not valid" = "Цифровая подпись недействительна";
@@ -372,6 +390,12 @@
 "Send Anyway" = "Всё равно послать";
 "Error while saving the draft" = "Ошибка при сохранении черновика";
 
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Не удалось очистить корзину.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Не удалось очистить папку нежелательной почты.";
+
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Ошибка при загрузке файла \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Сейчас выполняется загрузка файла. Закрытие окна прервет её.";
@@ -386,6 +410,9 @@
 "cannot send message: (smtp) all recipients discarded" = "Не удается отправить сообщение: всем получателям, все получатели являются недействительными.";
 "cannot send message (smtp) - recipients discarded" = "Не удается отправить сообщение. Следующие адреса неверны";
 "cannot send message: (smtp) error when connecting" = "Не удается отправить сообщение: ошибка при соединении с сервером SMTP.";
+"cannot sign email without certificate" = "Сообщение не может быть подписано, потому что с учетной записью электронной почты не связан сертификат.";
+"cannot sign message because the certificate can't be read" = "Сообщение не может быть подписано, потому что сертификат, связанный с учетной записью электронной почты, не может быть прочитан.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "Сообщение не может быть подписано, потому что адрес отправителя не включен в сертификат, связанный с учетной записью электронной почты.";
 
 /* Contacts list in mail editor */
 "Email" = "E-mail";

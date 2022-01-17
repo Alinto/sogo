@@ -44,11 +44,18 @@
 "Add default email addresses" = "Добавить e-mail адреса по умолчанию";
 "Days between responses" = "Дней между ответами";
 "Do not send responses to mailing lists" = "Не отправлять ответы на почтовые списки рассылки";
+"Activation Constraints" = "Ограничения активации";
 "Enable auto reply on" = "Включить автоответ на";
 "First day of vacation" = "Первый день отпуска";
 "Disable auto reply on" = "Отключить автоответ";
 "Last day of vacation" = "Последний день отпуска";
 "Enter date" = "Введите дату";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Включить автоматический ответ в";
+"Enter time" = "Введите время";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Отключить автоматический ответ в";
+"Enable auto reply on these days" = "Включить автоответчик в эти дни";
 "Always send vacation message response" = "Всегда отправлять ответное сообщение об отпуске";
 "The vacation message is sent prior to apply your filters." = "Сообщение об отпуске отправляется до применения фильтров.";
 "Discard incoming mails during vacation" = "Не получать входящие письма во время отпуска";
@@ -194,6 +201,10 @@
 "displayremoteinlineimages_always" = "Всегда";
 "Auto save every" = "Автосохранение каждые";
 "minutes" = "минут";
+"Automatically mark messages as read" = "Автоматически отмечать сообщения как прочитанные";
+"Immediately on display" = "Показывать сразу";
+"After displaying for" = "После отображения для";
+"seconds" = "секунд";
 
 /* Contact */
 "Personal Address Book" = "Личная адресная книга";
