@@ -22,6 +22,7 @@
 #import <GDLAccess/EOAdaptorContext.h>
 #import <GDLAccess/EOAttribute.h>
 #import <GDLContentStore/GCSChannelManager.h>
+#import <GDLContentStore/GCSFolderManager.h>
 #import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
