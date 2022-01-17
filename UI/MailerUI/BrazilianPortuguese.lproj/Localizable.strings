@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "Criar";
 "Empty Trash" = "Esvaziar Lixeira";
+"Empty Junk Folder" = "Limpar lixo eletrônico";
 "Delete"      = "Apagar";
 "Expunge"     = "Expurgar";
 "Forward"     = "Encaminhar";
@@ -73,8 +74,13 @@
 "An error occured while communicating with the mail server" = "Ocorreu um erro durante a comunicação com o servidor de e-mail";
 
 /* Mailbox actions */
+
 /* Compact Folder success message */
 "Folder compacted" = "Pasta compactada";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Pasta lixo eletrônico esvaziada";
+
 /* Empty Trash success message */
 "Trash emptied" = "Lixeira esvaziada";
 
@@ -82,7 +88,7 @@
 "Access rights to" = "Direitos de acesso para";
 "For user" = "Para usuário";
 "Any Authenticated User" = "Qualquer Usuário Autenticado";
-"List and see this folder" = "Listar e ver esta pasta";
+"View this folder" = "Veja esta pasta";
 "Read mails from this folder" = "Ler emails desta pasta";
 "Mark mails read and unread" = "Marcar emails como lido e não lido";
 "Modify the flags of the mails in this folder" = "Modificar a sinalização dos emails nesta pasta";
@@ -166,6 +172,15 @@
 "Mark Read"   = "Marcar como Lido";
 "Untitled" = "Sem título";
 
+/* Filter option in messages list */
+"Show unread messages only" = "Mostrar apenas mensagens não lidas";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Mostrar apenas mensagens sinalizadas";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Filtrado por etiquetas";
+
 /* Tree */
 "SentFolderName"   = "Enviados";
 "TrashFolderName"  = "Lixeira";
@@ -230,6 +245,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Converter para Tarefa";
 
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Baixar mensagem";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Baixar mensagem (zip)";
+
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "Baixar todos os anexos";
 
@@ -251,6 +272,12 @@
 /* Number of selected messages in list */
 "selected" = "selecionado";
 
+/* Date formatting from one time to another time */
+"to_time" = "até";
+
+/* Date formatting from one day to another day */
+"to_date" = "até";
+
 /* Encrypted message notification */
 "This message is encrypted" = "Esta mensagem está encriptada";
 
@@ -269,11 +296,14 @@
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Nenhum certificado associado à conta.";
 
-/* Invalid message signature */
+/* Invalid S/MIME signature */
 "Digital signature is not valid" = "A assinatura digital não é válida";
 
-/* Valid message signature */
+/* Valid S/MIME signature */
 "Message is signed" = "A mensagem está assinada";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "A mensagem está assinada, mas o certificado não corresponde ao endereço de e-mail do remetente";
 
 /* Unknown error while validating message signature */
 "Digital signature is not valid" = "A assinatura digital não é válida";
@@ -309,10 +339,11 @@
 "Enter the new name of your folder"
  ="Informe o novo nome de sua pasta";
 "Do you really want to move this folder into the trash ?"
- = "Você realmente quer mover esta pasta para a Lixeira ?";
+ = "Você realmente quer mover esta pasta para a Lixeira?";
 "Operation failed" = "Falha na Operação";
 "Quota" = "Quota:";
 "quotasFormat" = "%{0}% usado em %{1} MB";
+"messageQuotasFormat" = "%{0}% de %{1} mensagens";
 "Unable to move/delete folder." = "Não foi possível mover/deletar esta pasta";
 
 /* Alternative operation when folder cannot be deleted */
@@ -359,6 +390,12 @@
 "Send Anyway" = "Enviar assim mesmo";
 "Error while saving the draft" = "Erro ao salvar o rascunho";
 
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Não foi possível esvaziar a pasta lixo.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Não foi possível esvaziar a pasta de lixo eletrônico.";
+
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Erro ao carregar o arquivo \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Este arquivo está sendo carregado. Fechando a janela irá interromper o processo.";
@@ -373,6 +410,9 @@
 "cannot send message: (smtp) all recipients discarded" = "Não é possível enviar a mensagem: todos os destinatários são inválidos.";
 "cannot send message (smtp) - recipients discarded" = "Não é possível enviar a mensagem. Os seguintes endereços estão inválidos";
 "cannot send message: (smtp) error when connecting" = "Não é possível enviar a mensagem: erro ao conectar ao servidor SMTP.";
+"cannot sign email without certificate" = "A mensagem não pode ser assinada porque não há nenhum certificado associado à conta de e-mail.";
+"cannot sign message because the certificate can't be read" = "A mensagem não pode ser assinada porque o certificado associado à conta de e-mail não pode ser lido.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "A mensagem não pode ser assinada porque o endereço do remetente não está incluído no certificado associado à conta de e-mail.";
 
 /* Contacts list in mail editor */
 "Email" = "Email";
@@ -383,7 +423,7 @@
 "reply" = "responder";
 "Edit" = "Editar";
 "Yes" = "Sim";
-"No" = "No";
+"No" = "Não";
 "Location" = "Localização";
 "Rename" = "Renomear";
 "Compact" = "Compactar";
