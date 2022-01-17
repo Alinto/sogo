@@ -44,11 +44,18 @@
 "Add default email addresses" = "Додати адреси за замовчанням";
 "Days between responses" = "Днів між відповідями";
 "Do not send responses to mailing lists" = "Не надсилати автоматичні відповіді на адреси розсилок";
+"Activation Constraints" = "Обмеження активації";
 "Enable auto reply on" = "Включити автовідповідь на";
 "First day of vacation" = "Перший день відпустки";
 "Disable auto reply on" = "Вимкнути автоматичну відповідь";
 "Last day of vacation" = "Останній день відпустки";
 "Enter date" = "Введіть дату";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Увімкнути автоматичну відповідь у";
+"Enter time" = "Введіть час";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Вимкнути автоматичну відповідь у";
+"Enable auto reply on these days" = "Увімкнути автовідповідь у ці дні";
 "Always send vacation message response" = "Завжди відправляти повідомлення у відповідь про відпустку";
 "The vacation message is sent prior to apply your filters." = "Повідомлення про відпустку надсилається до застосування фільтрів.";
 "Discard incoming mails during vacation" = "Не отримувати вхідні листи під час відпустки";
@@ -194,6 +201,10 @@
 "displayremoteinlineimages_always" = "Завжди";
 "Auto save every" = "Автозбереження кожні";
 "minutes" = "хвилин";
+"Automatically mark messages as read" = "Автоматично позначати повідомлення як прочитані";
+"Immediately on display" = "Одразу на показ";
+"After displaying for" = "Після відображення для";
+"seconds" = "секунд";
 
 /* Contact */
 "Personal Address Book" = "Особиста адресна книга";
@@ -279,6 +290,7 @@
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Bosnian" = "Bosanski";
+"Bulgarian" = "Български";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
 "ChineseTaiwan" = "正體中文";
@@ -299,6 +311,7 @@
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
+"Montenegrin" = "Crnogorski";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "Polish" = "Polski";

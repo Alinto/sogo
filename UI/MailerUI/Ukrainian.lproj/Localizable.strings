@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "Створити";
 "Empty Trash" = "Очистити корзину";
+"Empty Junk Folder" = "Очистити папку небажаної пошти";
 "Delete"      = "Вилучити";
 "Expunge"     = "Очистити";
 "Forward"     = "Переслати";
@@ -73,8 +74,13 @@
 "An error occured while communicating with the mail server" = "Сталася помилка при підключенні до поштового сервера.";
 
 /* Mailbox actions */
+
 /* Compact Folder success message */
 "Folder compacted" = "Папка стиснута";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Папка небажаної пошти очищена";
+
 /* Empty Trash success message */
 "Trash emptied" = "Кошик очищен";
 
@@ -82,7 +88,7 @@
 "Access rights to" = "Права доступу до";
 "For user" = "Для користувача";
 "Any Authenticated User" = "Для будь-якого авторизованого користувача";
-"List and see this folder" = "Бачити папку і назви листів в ній";
+"View this folder" = "Переглянути цю папку";
 "Read mails from this folder" = "Читати листи в теці";
 "Mark mails read and unread" = "Ставити в листах позначку про прочитання";
 "Modify the flags of the mails in this folder" = "Ставити позначки повідомленням в теці";
@@ -165,6 +171,15 @@
 "Mark Unread" = "Позначити непрочитаним";
 "Mark Read"   = "Позначити прочитаним";
 "Untitled" = "Без теми";
+
+/* Filter option in messages list */
+"Show unread messages only" = "Показувати лише непрочитані повідомлення";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Показувати лише позначені повідомлення";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Відфільтровано за міткою";
 
 /* Tree */
 "SentFolderName"   = "Надіслані";
@@ -281,11 +296,14 @@
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Немає сертифікату, пов'язаного з обліковим записом.";
 
-/* Invalid message signature */
+/* Invalid S/MIME signature */
 "Digital signature is not valid" = "Цифровий підпис недійсний";
 
-/* Valid message signature */
+/* Valid S/MIME signature */
 "Message is signed" = "Повідомлення підписано";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Повідомлення підписано, але сертифікат не відповідає електронній адресі відправника";
 
 /* Unknown error while validating message signature */
 "Digital signature is not valid" = "Цифровий підпис недійсний";
@@ -372,6 +390,12 @@
 "Send Anyway" = "Все одно надіслати";
 "Error while saving the draft" = "Помилка при збереженні чернетки";
 
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Не вдається очистити корзину.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Не вдається очистити папку небажаної пошти.";
+
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Помилка при завантаженні файлу \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Зараз виконується завантаження файлу. Закриття вікна перерве його.";
@@ -386,6 +410,9 @@
 "cannot send message: (smtp) all recipients discarded" = "Помилка під час відправлення повідомлення: некоректні адреси всіх отримувачів.";
 "cannot send message (smtp) - recipients discarded" = "Помила під час відправлення повідомлення: такі адреси некоректні";
 "cannot send message: (smtp) error when connecting" = "Неможливо відправити повідомлення: помилка при з'єднанні з сервером SMTP.";
+"cannot sign email without certificate" = "Повідомлення не можна підписати, оскільки з обліковим записом електронної пошти не пов’язано сертифікат.";
+"cannot sign message because the certificate can't be read" = "Повідомлення неможливо підписати, оскільки сертифікат, пов’язаний з обліковим записом електронної пошти, неможливо прочитати.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "Повідомлення неможливо підписати, оскільки адреса відправника не включена в сертифікат, пов’язаний з обліковим записом електронної пошти.";
 
 /* Contacts list in mail editor */
 "Email" = "Електронна пошта";
