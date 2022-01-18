@@ -2117,7 +2117,7 @@ Defaults to `NO` when unset.
 |When enabling this parameter, one may have to also enable the associated
 cronjob in `/etc/cron.d/sogo` in order to activate automatic vacation
 message activation and expiration if your Sieve server does not support
-the date extension.
+the _date_ extension.
 
 See the _Cronjob — Vacation messages activation and expiration_ section
 below for details.
@@ -2702,7 +2702,7 @@ _Cronjob_ — Vacation messages activation and expiration
 When vacation messages are enabled (see the parameter
 _SOGoVacationEnabled_), users can set an activation or expiration date
 to messages auto-reply. For this feature to work, your Sieve server must
-implement the date extension. Otherwise, you must run a _cronjob_ under
+implement the _date_ extension. Otherwise, you must run a _cronjob_ under
 the "sogo" user.
 
 A commented out example should have been installed in
@@ -2938,30 +2938,30 @@ The above line sets a timeout for up to 360 seconds, or 6 minutes. If
 you want to let EAS clients keep their HTTP connections open for up
 to an hour, you must change the timeout parameter and set it to 3600.
 
-If you change this value, the WOWatchDogRequestTimeout parameter must be changed
-accordingly in SOGo's configuration file (/etc/sogo/sogo.conf). By default,
+If you change this value, the _WOWatchDogRequestTimeout_ parameter must be changed
+accordingly in SOGo's configuration file (`/etc/sogo/sogo.conf`). By default,
 a SOGo child process is allowed to handle a request that can take up
 to 10 minutes before it gets killed by its parent process. When using
 EAS "push", the client expects to keep its connection open for up to one
-hour - so the WOWatchDogRequestTimeout, which is set in minutes,
+hour - so the _WOWatchDogRequestTimeout_, which is set in minutes,
 must be adjusted accordingly.
 
 EAS clients will keep HTTP connections open for a long time
-during these two EAS commands: Ping and Sync. By default, SOGo will prevent
+during these two EAS commands: *Ping* and *Sync*. By default, SOGo will prevent
 EAS clients from keeping connections for a long time. This is to avoid the
 situation where all SOGo child processes would be monopolized by EAS clients -
 rendering the SOGo web interface or DAV interface unavailable. The
 default SOGo behavior is thus similar to disable EAS push entirely.
 
 Two SOGo configuration parameters are available to modify this behavior:
-SOGoMaximumPingInterval (set by default to 10 seconds) and
-SOGoMaximumSyncInterval (set by default to 30 seconds). If you want
+_SOGoMaximumPingInterval_ (set by default to 10 seconds) and
+_SOGoMaximumSyncInterval_ (set by default to 30 seconds). If you want
 connection to stay open for up to one hour, you should set these
 slightly under 3600 seconds (say 3540 - or 59 minutes). During a
 long-lived HTTP connection, the SOGo child process will perform
 internal polling to detect changes and return them to the EAS client
 if any changes are found. The parameter used to control this
-is SOGoInternalSyncInterval. By default, polling is done every 10
+is _SOGoInternalSyncInterval_. By default, polling is done every 10
 seconds. This might generate too much load on large-scale system.
 
 The last configuration parameter to adjust is WOWorkersCount - which sets the
@@ -2973,7 +2973,7 @@ its Web or DAV interfaces.
 
 Here are some usage examples for EAS devices using "push". In all
 cases, the Apache timeout is set to 3600 and the
-WOWatchDogRequestTimeout parameter is set to 60.
+_WOWatchDogRequestTimeout_ parameter is set to 60.
 
 Example 1 - 100 users, 10 EAS devices:
 

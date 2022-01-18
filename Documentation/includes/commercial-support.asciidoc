@@ -6,7 +6,7 @@
     Authors:
       - Inverse inc. <info@inverse.ca>
 
-    Copyright (C) 2008-2021 Inverse inc.
+    Copyright (C) 2008-2022 Inverse inc.
     License: GFDL 1.2 or later. http://www.gnu.org/licenses/fdl.html
 
 ////
