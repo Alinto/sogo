@@ -1,5 +1,45 @@
 # Changelog
 
+## [5.5.0](https://github.com/inverse-inc/sogo/compare/SOGo-5.4.0...SOGo-5.5.0) (2022-01-18)
+
+### Features
+
+* **eas:** implement replyTo element ([f8b4187](https://github.com/inverse-inc/sogo/commit/f8b4187d1dfc780cc7dd93df925364bf22b0c607))
+
+### Bug Fixes
+
+* **addressbook:** handle LDIF file with headers when importing contacts ([fad52dd](https://github.com/inverse-inc/sogo/commit/fad52dd1b8f99c4fda01de02457de7a851769164))
+* **addressbook:** remove debugging output ([06bf914](https://github.com/inverse-inc/sogo/commit/06bf9149d6042a2658620e656141013b52a247c1))
+* **addressbook:** respect visible domains when fetching contact ([368360b](https://github.com/inverse-inc/sogo/commit/368360bb95dd66123851cb3d585d8548486d84af)), closes [#4896](https://sogo.nu/bugs/view.php?id=4896)
+* **calendar:** ensure alarms have a DESCRIPTION property ([b817048](https://github.com/inverse-inc/sogo/commit/b81704860ae530acd8da4a208c0d614d9870f490))
+* **core:** avoid SQL aggregate function when testing table existence ([66bac18](https://github.com/inverse-inc/sogo/commit/66bac18558c8765d30ccf6caaca3738130ed410d))
+* **core:** fix compilation warning in SOGoCacheGCSObject ([c75ac6c](https://github.com/inverse-inc/sogo/commit/c75ac6c3213e0e948244406a65b795e42bf1e830))
+* **core:** remove trailing closing angle bracket from detected URLs ([b967eac](https://github.com/inverse-inc/sogo/commit/b967eac1f327b47122f7b82734544928ff54aded)), closes [#5465](https://sogo.nu/bugs/view.php?id=5465)
+* **eas:** handle module constraints ([39e1ef5](https://github.com/inverse-inc/sogo/commit/39e1ef53194f73d4ec875f5d4f640c037e563382), [73edd45](https://github.com/inverse-inc/sogo/commit/73edd45a967ddb867fcf37d7c17de115ba9bff7e), [cf34182](https://github.com/inverse-inc/sogo/commit/cf341822eea5f463da6962f3f0a235de275647b8)), closes [#5456](https://sogo.nu/bugs/view.php?id=5456)
+* **mail(css):** highligh flagged/starred messages ([7a776cd](https://github.com/inverse-inc/sogo/commit/7a776cd0b84fec65fe287c893952a65ec98e751d), [10c69ae](https://github.com/inverse-inc/sogo/commit/10c69ae16522e93f438624f3a4dde6ee2c9e0c59))
+* **mail(css):** restrict the viewport of the message body viewer ([9d7c6a2](https://github.com/inverse-inc/sogo/commit/9d7c6a2ca8d11056a9b98ae17a917a6da07fb934))
+* **mail(html):** remove "rel" attribute from sanitized HTML mails ([3c26e04](https://github.com/inverse-inc/sogo/commit/3c26e04c52b125561766a7e5216871f273889683))
+* **mail(js):** remove double quotes prior checking attributes values ([68608c4](https://github.com/inverse-inc/sogo/commit/68608c4e7ffe5756e7b25bd0e98f8cfd95dbb678))
+* **mail(js):** save "mark as read" delay when changing mode ([edcf03e](https://github.com/inverse-inc/sogo/commit/edcf03e179b0698c2072ec4d6175e7880c358450))
+* **mail(js):** update unseen count when it's zero ([9eba2f1](https://github.com/inverse-inc/sogo/commit/9eba2f125e60a129d2208594d7ecc8d8fa261c15))
+* **mail:** handle case where the msg is of content type application ([81c1997](https://github.com/inverse-inc/sogo/commit/81c19976e3fc83c0195d49f2946025b2bf8ac997))
+* **mail:** handle empty "Mail.Note" in ms-tnef body part ([b0c5adf](https://github.com/inverse-inc/sogo/commit/b0c5adf525f92a93aee6ed8715385409d046a988)), closes [#5388](https://sogo.nu/bugs/view.php?id=5388)
+* **mail:** improve handling of QRESYNC responses ([2c6cd53](https://github.com/inverse-inc/sogo/commit/2c6cd53ea76965464eb810bc13dada3d51b1406d))
+* **mail:** limit number of headers in getChangesAction response ([cabba35](https://github.com/inverse-inc/sogo/commit/cabba35ac377911871852676f1c70158318c0a27))
+* **mail:** make sure QRESYNC is enabled in getChangesAction ([1ab21b0](https://github.com/inverse-inc/sogo/commit/1ab21b041ebd78889a1c210598cba88d33614455))
+* **mail:** support very large HIGHESTMODSEQ values ([ecc1dee](https://github.com/inverse-inc/sogo/commit/ecc1dee87aa9f2adc1473306f0fe28f7a59ebb45))
+* **mail:** use .eml extension for message/global body parts ([179992c](https://github.com/inverse-inc/sogo/commit/179992c092c025a8662248f829ac7582fe5b32fd))
+
+### Localization
+
+* **bg:** update Bulgarian translation ([7c01633](https://github.com/inverse-inc/sogo/commit/7c016332f0c72044435fb2ba6a5fe6943685ba3a))
+* **bs_BA:** add Bosnian translation ([07b4ad6](https://github.com/inverse-inc/sogo/commit/07b4ad6c72d5723c5656932af43d55a18ad779c5))
+* **bs_BA:** update Bosnian translation ([91e1aec](https://github.com/inverse-inc/sogo/commit/91e1aec6eb8b6d9f9825a249a012b371d3f613d4))
+* **pt_BR:** update Brazilian Portuguese translation ([2a25cfb](https://github.com/inverse-inc/sogo/commit/2a25cfbffbb2274bb9002bb0bfbccd10d4efd681))
+* **ru:** update Russian translation ([a7c9916](https://github.com/inverse-inc/sogo/commit/a7c991683a58dd394babde8ae07a8e4b247f0b1a))
+* **sr_SR:** update Montenegrin translation ([29d7fe4](https://github.com/inverse-inc/sogo/commit/29d7fe468fca6abb7cead7d54c791a66ca92d888))
+* **uk:** update Ukrainian translation ([9eb38a1](https://github.com/inverse-inc/sogo/commit/9eb38a1f6cf3566615e264831ecb97db77a7dbaf))
+
 ## [5.4.0](https://github.com/inverse-inc/sogo/compare/SOGo-5.3.0...SOGo-5.4.0) (2021-12-16)
 
 ### Features
