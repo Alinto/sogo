@@ -2,7 +2,7 @@
 
 # Vacation messages expiration
 # The credentials file should contain the sieve admin credentials (username:passwd)
-#0 0 * * *      sogo	/usr/sbin/sogo-tool update-autoreply -p /etc/sogo/sieve.creds
+#*/5 * * * *    sogo	/usr/sbin/sogo-tool update-autoreply -p /etc/sogo/sieve.creds
 
 # Session cleanup - runs every minute
 #   - Ajust the nbMinutes parameter to suit your needs
