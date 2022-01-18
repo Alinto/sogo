@@ -31,9 +31,10 @@ Please refer to the [FAQ](https://sogo.nu/support.html#/faq) for [compilation in
 
 SOGo and its associated components are available in various languages. The following list describes the official translations alongside their maintainers:
 
-* [en] English - [Inverse inc.](https://inverse.ca/)
+* [en] English - [Inverse inc.](https://www.inverse.ca/)
 * [ar] Arabic - Anass Ahmed
 * [eu] Basque - Gorka Gonzalez
+* [bs_BA] Bosnian - Refik Bećirović
 * [pr_BR] Brazilian Portuguese - Alexandre Marcilio
 * [bg] Bulgarian - Todor Todorov
 * [ca] Catalan - Hector M. Rulot Segovia
@@ -44,7 +45,7 @@ SOGo and its associated components are available in various languages. The follo
 * [da_DK] Danish (Denmark) - Altibox
 * [nl] Dutch - Roel van Os
 * [fi] Finnish - Kari Salmu
-* [fr] French - [Inverse](https://inverse.ca/)
+* [fr] French - [Inverse](https://www.inverse.ca/)
 * [de] German - Alexander Greiner-Baer
 * [he] Hebrew - Raz Aidlitz
 * [hu] Hungarian - Sándor Kuti
