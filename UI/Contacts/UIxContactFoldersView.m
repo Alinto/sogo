@@ -190,7 +190,6 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
           else
             [sortedFolders addObject: folder];
         }
-      NSLog(@"sortedFolders = %@", sortedFolders);
       for (i = 0; i < max; i++)
         {
           folder = [sortedFolders objectAtIndex: i];
@@ -242,7 +241,7 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
         {
           // Optionally return contacts from GCS address books first
           containerTypeDescriptor = [[NSSortDescriptor alloc] initWithKey: @"containerType"
-                                                                ascending: priorityGcs?YES:NO];
+                                                                ascending: priorityGcs];
           // Sort the contacts by display name
           commonNameDescriptor = [[NSSortDescriptor alloc] initWithKey: @"c_cn"
                                                              ascending: YES];
