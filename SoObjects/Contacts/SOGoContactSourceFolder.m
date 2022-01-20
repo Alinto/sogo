@@ -528,7 +528,7 @@
   currentValue = values;
   while (*currentProperty)
     {
-      *values = nil;
+      *currentValue = nil;
       methodSel = SOGoSelectorForPropertyGetter (*currentProperty);
       if (methodSel && [ldifEntry respondsToSelector: methodSel])
         {
