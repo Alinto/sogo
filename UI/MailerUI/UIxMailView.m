@@ -221,12 +221,18 @@ static NSString *mailETag = nil;
       for (count = 0; count < max; count++)
         {
           attributes = [[self attachmentAttrs] objectAtIndex: count];
-          filename = [NSString stringWithFormat: @"<%@>", [attributes objectForKey: @"filename"]];
-          [attachmentIds setObject: [attributes objectForKey: @"url"]
-                            forKey: filename];
-          if ([[attributes objectForKey: @"bodyId"] length])
-            [attachmentIds setObject: [attributes objectForKey: @"url"]
-                              forKey: [attributes objectForKey: @"bodyId"]];
+
+          // Don't allow XML inline attachments
+          if (![[attributes objectForKey: @"mimetype"] hasSuffix: @"xml"] &&
+              ![[[attributes objectForKey: @"filename"] lowercaseString] hasSuffix: @"svg"])
+            {
+              filename = [NSString stringWithFormat: @"<%@>", [attributes objectForKey: @"filename"]];
+              [attachmentIds setObject: [attributes objectForKey: @"url"]
+                                forKey: filename];
+              if ([[attributes objectForKey: @"bodyId"] length])
+                [attachmentIds setObject: [attributes objectForKey: @"url"]
+                                  forKey: [attributes objectForKey: @"bodyId"]];
+            }
         }
       // Attachment IDs will be decoded in UIxMailPartEncryptedViewer for
       // S/MIME encrypted emails with file attachments.
