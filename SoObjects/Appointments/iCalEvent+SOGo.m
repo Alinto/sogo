@@ -451,9 +451,9 @@
 - (iCalTimeZone *) adjustInContext: (WOContext *) context
                      withTimezones: (NSDictionary *) timezones
 {
-  iCalDateTime *startDate, *endDate;
+  iCalDateTime *dtstart, *dtend;
   iCalTimeZone *timezone;
-  NSCalendarDate *date;
+  NSCalendarDate *date, *startDate, *endDate;
   NSString *startDateAsString, *timezoneId;
   SOGoUserDefaults *ud;
   int delta;
@@ -461,12 +461,15 @@
   delta = 0;
   timezone = nil;
 
-  startDate = (iCalDateTime *) [self uniqueChildWithTag: @"dtstart"];
-  endDate = (iCalDateTime *) [self uniqueChildWithTag: @"dtend"];
+  dtstart = (iCalDateTime *) [self uniqueChildWithTag: @"dtstart"];
+  dtend = (iCalDateTime *) [self uniqueChildWithTag: @"dtend"];
 
-  if (![startDate dateTime])
+  startDate = [dtstart dateTime];
+  endDate = [dtend dateTime];
+
+  if (!startDate)
     {
-      if ([endDate dateTime])
+      if (endDate)
         {
           // End date but no start date
           delta = 60*60; // 1 hour
@@ -478,13 +481,14 @@
           date = [[NSCalendarDate calendarDate] beginOfDayForUser: [context activeUser]];
           [self setStartDate: date];
         }
-      startDate = (iCalDateTime *) [self uniqueChildWithTag: @"dtstart"];
-      [self errorWithFormat: @"Event with no start date; setting start date to %@ for UID %@", [startDate dateTime], [self uid]];
+      dtstart = (iCalDateTime *) [self uniqueChildWithTag: @"dtstart"];
+      startDate = [dtstart dateTime];
+      [self errorWithFormat: @"Event with no start date; setting start date to %@ for UID %@", startDate, [self uid]];
     }
 
-  if ([startDate dateTime])
+  if (startDate)
     {
-      timezoneId = [startDate value: 0 ofAttribute: @"tzid"];
+      timezoneId = [dtstart value: 0 ofAttribute: @"tzid"];
       if ([timezoneId length])
         {
           timezone = [iCalTimeZone timeZoneForName: timezoneId];
@@ -494,7 +498,7 @@
         }
       else
         {
-          startDateAsString = [[startDate valuesAtIndex: 0 forKey: @""] objectAtIndex: 0];
+          startDateAsString = [[dtstart valuesAtIndex: 0 forKey: @""] objectAtIndex: 0];
           if (!([self isAllDay] ||
                 [startDateAsString hasSuffix: @"Z"] ||
                 [startDateAsString hasSuffix: @"z"]))
@@ -503,23 +507,31 @@
               // for both the start and end dates.
               ud = [[context activeUser] userDefaults];
               timezone = [iCalTimeZone timeZoneForName: [ud timeZoneName]];
-              delta = [[timezone periodForDate: [startDate dateTime]] secondsOffsetFromGMT];
+              delta = [[timezone periodForDate: startDate] secondsOffsetFromGMT];
 
               [self setStartDate: [[self startDate] dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: -delta]];
-              [startDate setTimeZone: timezone];
+              [dtstart setTimeZone: timezone];
+              startDate = [dtstart dateTime];
               [self errorWithFormat: @"Event with no timezone; setting timezone %@ to start date for UID %@", [timezone tzId], [self uid]];
 
-              if ([endDate dateTime])
+              if (endDate)
                 {
                   [self setEndDate: [[self endDate] dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: -delta]];
-                  [endDate setTimeZone: timezone];
+                  [dtend setTimeZone: timezone];
+                  endDate = [dtend dateTime];
                   [self errorWithFormat: @"Event with no timezone; setting timezone %@ to end date for UID %@", [timezone tzId], [self uid]];
                 }
             }
         }
+      if (endDate && [startDate compare: endDate] == NSOrderedDescending)
+        {
+          [self errorWithFormat: @"Event with start date after end date; swapping dates for UID %@", [self uid]];
+          [self setStartDate: endDate];
+          [self setEndDate: startDate];
+        }
     }
 
-  if (![endDate dateTime] && ![self hasDuration])
+  if (!endDate && ![self hasDuration])
     {
       // No end date, no duration
       if ([self isAllDay])
