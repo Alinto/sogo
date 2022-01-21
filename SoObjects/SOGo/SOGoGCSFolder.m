@@ -1369,42 +1369,19 @@ static NSArray *childRecordFields = nil;
                                      withToken: (int) syncToken
                                     andBaseURL: (NSString *) baseURL
 {
-  static NSString *status[] = { @"HTTP/1.1 404 Not Found",
-                                @"HTTP/1.1 201 Created",
-                                @"HTTP/1.1 200 OK" };
   NSMutableArray *children;
   NSString *href;
-  unsigned int statusIndex;
 
   children = [NSMutableArray arrayWithCapacity: 3];
-  href = [NSString stringWithFormat: @"%@%@",
-                   baseURL, [record objectForKey: @"c_name"]];
-  [children addObject: davElementWithContent (@"href", XMLNS_WEBDAV,
-                                              href)];
-  if (syncToken)
-    {
-      if ([[record objectForKey: @"c_deleted"] intValue] > 0)
-        statusIndex = 0;
-      else
-        {
-          if ([[record objectForKey: @"c_creationdate"] intValue]
-              >= syncToken)
-            statusIndex = 1;
-          else
-            statusIndex = 2;
-        }
-    }
-  else
-    statusIndex = 1;
+  href = [NSString stringWithFormat: @"%@%@", baseURL, [record objectForKey: @"c_name"]];
+  [children addObject: davElementWithContent (@"href", XMLNS_WEBDAV, href)];
 
-  //   NSLog (@"webdav sync: %@ (%@)", href, status[statusIndex]);
-  [children addObject: davElementWithContent (@"status", XMLNS_WEBDAV,
-                                              status[statusIndex])];
-  if (statusIndex)
-    [children
-      addObjectsFromArray: [self _davPropstatsWithProperties: properties
-                                          andMethodSelectors: selectors
-                                                  fromRecord: record]];
+  if ([[record objectForKey: @"c_deleted"] intValue] > 0)
+    [children addObject: davElementWithContent (@"status", XMLNS_WEBDAV, @"HTTP/1.1 404 Not Found")];
+  else
+    [children addObjectsFromArray: [self _davPropstatsWithProperties: properties
+                                                  andMethodSelectors: selectors
+                                                          fromRecord: record]];
 
   return davElementWithContent (@"response", XMLNS_WEBDAV, children);
 }
@@ -1513,6 +1490,10 @@ static NSArray *childRecordFields = nil;
   return valid;
 }
 
+/**
+   DAV:sync-collection Report
+   https://datatracker.ietf.org/doc/html/rfc6578#section-3.2
+*/
 - (WOResponse *) davSyncCollection: (WOContext *) localContext
 {
   WOResponse *r;
@@ -2307,6 +2288,10 @@ static NSArray *childRecordFields = nil;
   NSZoneFree (NULL, propertiesArray);
 }
 
+/**
+   CALDAV:calendar-multiget REPORT
+   https://datatracker.ietf.org/doc/html/rfc4791#section-7.9
+ */
 - (WOResponse *) performMultigetInContext: (WOContext *) queryContext
                               inNamespace: (NSString *) namespace
 {
