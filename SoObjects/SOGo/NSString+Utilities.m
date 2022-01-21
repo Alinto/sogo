@@ -208,12 +208,12 @@ static int cssEscapingCount;
   if (!urlNonEndingChars)
     {
       urlNonEndingChars = [NSMutableCharacterSet new];
-      [urlNonEndingChars addCharactersInString: @"=,.:;&()\t \r\n"];
+      [urlNonEndingChars addCharactersInString: @"=,.:;&()>\t \r\n"];
     }
   if (!urlAfterEndingChars)
     {
       urlAfterEndingChars = [NSMutableCharacterSet new];
-      [urlAfterEndingChars addCharactersInString: @"()>[]\t \r\n"];
+      [urlAfterEndingChars addCharactersInString: @"()[]\t \r\n"];
     }
   if (!schemaStartChars)
     {
