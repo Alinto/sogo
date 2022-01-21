@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSValue.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
@@ -27,12 +28,13 @@
 #import <NGExtensions/NSString+Encoding.h>
 #import <NGExtensions/NSObject+Logs.h>
 
+#import <NGMime/NGMimeType.h>
 #import <NGMail/NGMimeMessageParser.h>
 
 #if defined(HAVE_OPENSSL) || defined(HAVE_GNUTLS)
 #include <openssl/bio.h>
 #include <openssl/err.h>
-#include <openssl/pkcs7.h>
+#include <openssl/cms.h>
 #include <openssl/pkcs12.h>
 #include <openssl/pem.h>
 #endif
@@ -54,18 +56,18 @@
   X509 *link = NULL;
   STACK_OF(X509) *chain = NULL;
   EVP_PKEY *skey = NULL;
-  PKCS7 *p7 = NULL;
+  CMS_ContentInfo *cms = NULL;
   BUF_MEM *bptr;
-  
+
   unsigned int len, slen;
   const char* bytes;
   const char* sbytes;
 
-  int flags = PKCS7_STREAM | PKCS7_DETACHED | PKCS7_CRLFEOL;
-  
+  int flags = CMS_STREAM | CMS_DETACHED | CMS_CRLFEOL;
+
   OpenSSL_add_all_algorithms();
   ERR_load_crypto_strings();
-  
+
   bytes = [theData bytes];
   len = [theData length];
   tbio = BIO_new_mem_buf((void *)bytes, len);
@@ -77,13 +79,13 @@
       NSLog(@"FATAL: failed to read certificate for signing.");
       goto cleanup;
     }
-  
+
   chain = sk_X509_new_null();
   while (link = PEM_read_bio_X509_AUX(tbio, NULL, 0, NULL))
     sk_X509_unshift(chain, link);
 
   BIO_reset(tbio);
-  
+
   skey = PEM_read_bio_PrivateKey(tbio, NULL, 0, NULL);
 
   if (!skey)
@@ -91,34 +93,34 @@
       NSLog(@"FATAL: failed to read private key for signing.");
       goto cleanup;
     }
-  
+
   // We sign
   sbytes = [self bytes];
   slen = [self length];
   sbio = BIO_new_mem_buf((void *)sbytes, slen);
-  p7 = PKCS7_sign(scert, skey, (sk_X509_num(chain) > 0) ? chain : NULL, sbio, flags);
+  cms = CMS_sign(scert, skey, (sk_X509_num(chain) > 0) ? chain : NULL, sbio, flags);
 
-  if (!p7)
+  if (!cms)
     {
       NSLog(@"FATAL: failed to sign message.");
       goto cleanup;
     }
-  
+
   // We output
   obio = BIO_new(BIO_s_mem());
-  SMIME_write_PKCS7(obio, p7, sbio, flags);
+  SMIME_write_CMS(obio, cms, sbio, flags);
   BIO_get_mem_ptr(obio, &bptr);
 
   output = [NSData dataWithBytes: bptr->data  length: bptr->length];
 
  cleanup:
-  PKCS7_free(p7);
+  CMS_ContentInfo_free(cms);
   sk_X509_pop_free(chain, X509_free);
-  X509_free(scert);     
+  X509_free(scert);
   BIO_free(tbio);
   BIO_free(sbio);
   BIO_free(obio);
-  
+
   return output;
 }
 
@@ -126,21 +128,25 @@
 //
 //
 - (NSData *) encryptUsingCertificate: (NSData *) theData
+                            andAlgos: (NSArray *) theAlgos
 {
   NSData *output = NULL;
 
   BUF_MEM *bptr = NULL;
   BIO *tbio = NULL, *sbio = NULL, *obio = NULL;
   X509 *rcert = NULL;
-  PKCS7 *p7 = NULL;
+  CMS_ContentInfo *cms = NULL;
   STACK_OF(X509) *recips = NULL;
-  
+
+  int i;
+  const EVP_CIPHER *cipher = NULL;
+
   unsigned int len, slen;
   const char* bytes;
   const char* sbytes;
 
-  int flags = PKCS7_STREAM;
-  
+  int flags = CMS_STREAM;
+
   OpenSSL_add_all_algorithms();
   ERR_load_crypto_strings();
 
@@ -162,9 +168,9 @@
       NSLog(@"FATAL: unable to read certificate for encryption");
       goto cleanup;
     }
-  
+
   recips = sk_X509_new_null();
-  
+
   if (!recips || !sk_X509_push(recips, rcert))
     {
       NSLog(@"FATAL: unable to push certificate into stack");
@@ -173,15 +179,70 @@
 
   rcert = NULL;
 
+  if (theAlgos)
+    {
+      // pick first supported cipher suggested by peer
+      for (i = 0; cipher == NULL && i < [theAlgos count]; i++)
+        {
+          int nid = [[theAlgos objectAtIndex: i] intValue];
+          switch (nid)
+            {
+              // ciphers from RFC8551
+              //No support for AuthEnvelopedData in OpenSSL yet
+              //case NID_chacha20_poly1305:
+              //case NID_aes_256_gcm:
+              //case NID_aes_128_gcm:
+#ifdef NID_aes_128_cbc
+              case NID_aes_128_cbc:
+#endif
+              // plus ciphers from RFC5751
+#ifdef NID_aes_192_cbc
+              case NID_aes_192_cbc:
+#endif
+#ifdef NID_aes_256_cbc
+              case NID_aes_256_cbc:
+#endif
+#ifdef NID_des_ede3_cbc
+              case NID_des_ede3_cbc:
+#endif
+                  cipher = EVP_get_cipherbynid(nid);
+                  break;
+              default:
+                  break;
+            }
+        }
+
+      // no matching cipher - use default cipher
+      if (cipher == NULL)
+#ifndef OPENSSL_NO_AES
+          cipher = EVP_aes_128_cbc();
+#elif !defined(OPENSSL_NO_DES)
+          cipher = EVP_des_ede3_cbc();
+#else
+#error "Neither AES nor 3DES available"
+#endif
+    }
+  else
+    {
+      // ATM theAlgos == NULL means we're storing a draft with the writer's own key
+#ifndef OPENSSL_NO_AES
+      cipher = EVP_aes_128_cbc();
+#elif !defined(OPENSSL_NO_DES)
+      cipher = EVP_des_ede3_cbc();
+#else
+#error "Neither AES nor 3DES available"
+#endif
+    }
+
   // Get the bytes to encrypt
   sbytes = [self bytes];
   slen = [self length];
   sbio = BIO_new_mem_buf((void *)sbytes, slen);
 
   // Encrypt
-  p7 = PKCS7_encrypt(recips, sbio, EVP_des_ede3_cbc(), flags);
+  cms = CMS_encrypt(recips, sbio, cipher, flags);
 
-  if (!p7)
+  if (!cms)
     {
       NSLog(@"FATAL: unable to encrypt message");
       goto cleanup;
@@ -189,19 +250,19 @@
 
   // We output the S/MIME encrypted message
   obio = BIO_new(BIO_s_mem());
-  if (!SMIME_write_PKCS7(obio, p7, sbio, flags))
+  if (!SMIME_write_CMS(obio, cms, sbio, flags))
     {
-      NSLog(@"FATAL: unable to write PKCS7 output");
+      NSLog(@"FATAL: unable to write CMS output");
       goto cleanup;
     }
 
   BIO_get_mem_ptr(obio, &bptr);
-  
+
   output = [NSData dataWithBytes: bptr->data  length: bptr->length];
 
  cleanup:
-  PKCS7_free(p7);
-  X509_free(rcert);        
+  CMS_ContentInfo_free(cms);
+  X509_free(rcert);
   BIO_free(tbio);
   BIO_free(sbio);
   BIO_free(obio);
@@ -216,16 +277,16 @@
 {
   NSData *output = NULL;
 
-  BIO *tbio, *sbio, *obio;
+  BIO *tbio, *sbio = NULL, *obio = NULL;
   BUF_MEM *bptr;
   X509 *scert = NULL;
   EVP_PKEY *skey = NULL;
-  PKCS7 *p7 = NULL;
-  
+  CMS_ContentInfo *cms = NULL;
+
   unsigned int len, slen;
   const char* bytes;
   const char* sbytes;
-  
+
   OpenSSL_add_all_algorithms();
   ERR_load_crypto_strings();
 
@@ -241,8 +302,8 @@
     {
       NSLog(@"FATAL: could not read certificate for decryption");
       goto cleanup;
-    } 
-  
+    }
+
   BIO_reset(tbio);
 
   skey = PEM_read_bio_PrivateKey(tbio, NULL, 0, NULL);
@@ -251,15 +312,15 @@
     {
       NSLog(@"FATAL: could not read private key for decryption");
       goto cleanup;
-    } 
-  
+    }
+
   sbytes = [self bytes];
   slen = [self length];
   sbio = BIO_new_mem_buf((void *)sbytes, slen);
 
-  p7 = SMIME_read_PKCS7(sbio, NULL);
+  cms = SMIME_read_CMS(sbio, NULL);
 
-  if (!p7)
+  if (!cms)
     {
       NSLog(@"FATAL: could not read the content to be decrypted");
       goto cleanup;
@@ -267,24 +328,24 @@
 
   // We output the S/MIME encrypted message
   obio = BIO_new(BIO_s_mem());
-  
-  if (!PKCS7_decrypt(p7, skey, scert, obio, 0))
+
+  if (!CMS_decrypt(cms, skey, scert, NULL, obio, 0))
     {
       NSLog(@"FATAL: could not decrypt content");
       goto cleanup;
     }
-  
+
   BIO_get_mem_ptr(obio, &bptr);
-  
+
   output = [NSData dataWithBytes: bptr->data  length: bptr->length];
 
  cleanup:
-  PKCS7_free(p7);
-  X509_free(scert); 
+  CMS_ContentInfo_free(cms);
+  X509_free(scert);
   BIO_free(sbio);
   BIO_free(tbio);
   BIO_free(obio);
-  
+
   return output;
 }
 
@@ -295,10 +356,10 @@
 {
   NGMimeMessageParser *parser;
   NGMimeMessage *message;
-  NSData *decryptedData; 
+  NSData *decryptedData;
   NGMimeType *contentType;
   NSString *type, *subtype, *smimetype;
- 
+
   decryptedData = [self decryptUsingCertificate: theCertificate];
   parser = [[NGMimeMessageParser alloc] init];
   message = [parser parsePartFromData: decryptedData];
@@ -329,15 +390,15 @@
 {
   NSData *output = NULL;
 
-  BIO *sbio, *obio;
+  BIO *sbio, *obio = NULL;
   BUF_MEM *bptr;
-  PKCS7 *p7 = NULL;
+  CMS_ContentInfo *cms = NULL;
 
   sbio = BIO_new_mem_buf((void *)[self bytes], [self length]);
 
-  p7 = SMIME_read_PKCS7(sbio, NULL);
+  cms = SMIME_read_CMS(sbio, NULL);
 
-  if (!p7)
+  if (!cms)
     {
       NSLog(@"FATAL: could not read the signature");
       goto cleanup;
@@ -346,7 +407,7 @@
   // We output the S/MIME encrypted message
   obio = BIO_new(BIO_s_mem());
 
-  if (!PKCS7_verify(p7, NULL, NULL, NULL, obio, PKCS7_NOVERIFY|PKCS7_NOSIGS))
+  if (!CMS_verify(cms, NULL, NULL, NULL, obio, CMS_NOVERIFY|CMS_NOSIGS))
     {
       NSLog(@"FATAL: could not extract content");
       goto cleanup;
@@ -357,7 +418,7 @@
   output = [NSData dataWithBytes: bptr->data  length: bptr->length];
 
  cleanup:
-  PKCS7_free(p7);
+  CMS_ContentInfo_free(cms);
   BIO_free(sbio);
   BIO_free(obio);
 
@@ -388,7 +449,7 @@
 {
   NSData *output = NULL;
 
-  BIO *ibio, *obio;
+  BIO *ibio, *obio = NULL;
   EVP_PKEY *pkey;
   BUF_MEM *bptr;
   PKCS12 *p12;
@@ -396,7 +457,7 @@
 
   const char* bytes;
   int i, len;
-  
+
   STACK_OF(X509) *ca = NULL;
 
   OpenSSL_add_all_algorithms();
@@ -405,7 +466,7 @@
   bytes = [self bytes];
   len = [self length];
   ibio = BIO_new_mem_buf((void *)bytes, len);
-  
+
   p12 = d2i_PKCS12_bio(ibio, NULL);
 
   if (!p12)
@@ -419,7 +480,7 @@
       NSLog(@"FATAL: could not parse PKCS12 certificate with provided password");
       return nil;
     }
-  
+
   // We output everything in PEM
   obio = BIO_new(BIO_s_mem());
 
@@ -433,7 +494,7 @@
     {
       PEM_write_bio_X509(obio, cert);
     }
-  
+
   if (ca && sk_X509_num(ca))
     {
       for (i = 0; i < sk_X509_num(ca); i++)
@@ -446,46 +507,50 @@
 
  cleanup:
   PKCS12_free(p12);
-  BIO_free(ibio);  
-  BIO_free(obio);  
-  
+  BIO_free(ibio);
+  BIO_free(obio);
+
   return output;
 }
 
 //
 //
 //
-- (NSData *) signersFromPKCS7
+- (NSData *) signersFromCMS
 {
   NSData *output = NULL;
 
   STACK_OF(X509) *certs = NULL;
-  BIO *ibio, *obio;
+  BIO *ibio, *obio = NULL, *dummybio = NULL;
   BUF_MEM *bptr;
-  PKCS7 *p7;
+  CMS_ContentInfo *cms;
 
   const char* bytes;
   int i, len;
-  
+
   OpenSSL_add_all_algorithms();
   ERR_load_crypto_strings();
 
   bytes = [self bytes];
   len = [self length];
   ibio = BIO_new_mem_buf((void *)bytes, len);
-  
-  p7 = d2i_PKCS7_bio(ibio, NULL);
 
-  if (!p7)
+  cms = d2i_CMS_bio(ibio, NULL);
+
+  if (!cms)
     {
-      NSLog(@"FATAL: could not read PKCS7 content");
+      NSLog(@"FATAL: could not read CMS content");
       goto cleanup;
     }
-  
+
+  // before calling CMS_get0_signers(), CMS_verify() must be called
+  dummybio = BIO_new(BIO_s_mem());
+  CMS_verify(cms, NULL, NULL, dummybio, NULL, CMS_NO_SIGNER_CERT_VERIFY | CMS_NO_ATTR_VERIFY | CMS_NO_CONTENT_VERIFY);
+  ERR_clear_error();
+
   // We output everything in PEM
   obio = BIO_new(BIO_s_mem());
-
-  certs = PKCS7_get0_signers(p7, NULL, 0);
+  certs = CMS_get0_signers(cms);
   if (certs != NULL)
     {
       X509 *x;
@@ -503,11 +568,91 @@
   output = [NSData dataWithBytes: bptr->data  length: bptr->length];
 
  cleanup:
-  PKCS7_free(p7);
-  BIO_free(ibio);  
-  BIO_free(obio);  
-  
+  CMS_ContentInfo_free(cms);
+  BIO_free(dummybio);
+  BIO_free(ibio);
+  BIO_free(obio);
+
   return output;
+}
+
+// Implementation based on "STACK_OF(X509_ALGOR) *PKCS7_get_smimecap(PKCS7_SIGNER_INFO *si)"
+STACK_OF(X509_ALGOR) *CMS_get_smimecap(CMS_SignerInfo *si)
+{
+    X509_ATTRIBUTE *attr;
+    ASN1_TYPE *cap;
+    const unsigned char *p;
+
+    attr = CMS_signed_get_attr(si, CMS_signed_get_attr_by_NID(si, NID_SMIMECapabilities, -1));
+    if (!attr)
+        return NULL;
+    cap = X509_ATTRIBUTE_get0_type(attr, 0);
+    if (!cap || (cap->type != V_ASN1_SEQUENCE))
+       return NULL;
+    p = cap->value.sequence->data;
+    return (STACK_OF(X509_ALGOR) *)
+        ASN1_item_d2i(NULL, &p, cap->value.sequence->length,
+                      ASN1_ITEM_rptr(X509_ALGORS));
+}
+
+- (NSArray *) algosFromCMS
+{
+  NSMutableArray *algos = [[NSMutableArray alloc] initWithCapacity: 10];
+
+  STACK_OF(CMS_SignerInfo) *signerinfos;
+  BIO *ibio;
+  CMS_ContentInfo *cms;
+
+  const ASN1_OBJECT *paobj;
+  int pptype;
+  int nid;
+
+  const char* bytes;
+  int i, j, len;
+
+  OpenSSL_add_all_algorithms();
+  ERR_load_crypto_strings();
+
+  bytes = [self bytes];
+  len = [self length];
+  ibio = BIO_new_mem_buf((void *)bytes, len);
+
+  cms = d2i_CMS_bio(ibio, NULL);
+
+  if (!cms)
+    {
+      NSLog(@"FATAL: could not read CMS content");
+      goto cleanup;
+    }
+
+  signerinfos = CMS_get0_SignerInfos(cms);
+  if (signerinfos != NULL)
+    {
+      for (i = 0; i < sk_CMS_SignerInfo_num(signerinfos); i++)
+        {
+          CMS_SignerInfo *si = sk_CMS_SignerInfo_value(signerinfos, i);
+          STACK_OF(X509_ALGOR) *smimecap = CMS_get_smimecap(si);
+
+          if (smimecap != NULL)
+            {
+              for (j = 0; j < sk_X509_ALGOR_num(smimecap); j++)
+                {
+                  X509_ALGOR_get0(&paobj, &pptype, NULL, sk_X509_ALGOR_value(smimecap, j));
+                  nid = OBJ_obj2nid(paobj);
+                  // Of all ciphers commonly used for S/MIME only RC2 has a keylength parameter
+                  // As RC2 is outdated it's ok to ignore all ciphers with parameter
+                  if (nid != NID_undef && pptype == V_ASN1_UNDEF)
+                      [algos addObject: [NSNumber numberWithInt: nid]];
+                }
+            }
+        }
+    }
+
+ cleanup:
+  CMS_ContentInfo_free(cms);
+  BIO_free(ibio);
+
+  return algos;
 }
 
 /**

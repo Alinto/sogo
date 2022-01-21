@@ -1866,7 +1866,8 @@ static NSString    *userAgent      = nil;
 {
   NGMimeMessageGenerator *generator, *partGenerator;
   NGMimeMessage *mimeMessage;
-  NSData *certificate, *content;
+  NSData *certificate, *content, *p7s;
+  NSArray *algos;
   NGMutableHashMap *hashMap;
   NGMimeMessage *message;
   NSMutableData *d;
@@ -1910,17 +1911,22 @@ static NSString    *userAgent      = nil;
                                   lookupName: @"Contacts"
                                    inContext: context
                                      acquire: NO];
-          certificate = [[contactFolders certificateForEmail: theRecipient] signersFromPKCS7];
+          p7s = [contactFolders certificateForEmail: theRecipient];
+          certificate = [p7s signersFromCMS];
+          algos = [p7s algosFromCMS];
         }
       else
-        certificate =  [[self mailAccountFolder] certificate];
+        {
+          certificate =  [[self mailAccountFolder] certificate];
+          algos = nil;
+        }
 
       // We check if we have a valid certificate. We can have nil here coming from [[self mailAccountFolder] certificate].
       // This can happen if one sends an encrypted mail, but actually never uploaded
       // a PKCS#12 file to SOGo for his/her own usage and we're trying to save an encrypted
       // version of the message in the current user's Sent folder
       if (certificate)
-        content = [content encryptUsingCertificate: certificate];
+        content = [content encryptUsingCertificate: certificate andAlgos: algos];
     }
 
  finish_smime:

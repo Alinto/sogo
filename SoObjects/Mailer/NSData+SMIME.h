@@ -28,13 +28,15 @@
 @interface NSData (SOGoMailSMIME)
 
 - (NSData *) signUsingCertificateAndKey: (NSData *) theData;
-- (NSData *) encryptUsingCertificate: (NSData *) theData;
+- (NSData *) encryptUsingCertificate: (NSData *) theData
+                            andAlgos: (NSArray *) theAlgos;
 - (NSData *) decryptUsingCertificate: (NSData *) theData;
 - (NGMimeMessage *) messageFromEncryptedDataAndCertificate: (NSData *) theCertificate;
 - (NSData *) embeddedContent;
 - (NGMimeMessage *) messageFromOpaqueSignedData;
 - (NSData *) convertPKCS12ToPEMUsingPassword: (NSString *) thePassword;
-- (NSData *) signersFromPKCS7;
+- (NSData *) signersFromCMS;
+- (NSArray *) algosFromCMS;
 - (NSDictionary *) certificateDescription;
 
 @end

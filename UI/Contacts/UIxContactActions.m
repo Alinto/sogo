@@ -160,7 +160,7 @@
 
   if (pkcs7)
     {
-      data = [[pkcs7 signersFromPKCS7] certificateDescription];
+      data = [[pkcs7 signersFromCMS] certificateDescription];
       if (data)
         {
           response = [self responseWithStatus: 200  andJSONRepresentation: data];

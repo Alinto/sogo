@@ -21,7 +21,7 @@
 #if defined(HAVE_OPENSSL) || defined(HAVE_GNUTLS)
 #include <openssl/bio.h>
 #include <openssl/err.h>
-#include <openssl/pkcs7.h>
+#include <openssl/cms.h>
 #include <openssl/x509.h>
 #include <openssl/x509v3.h>
 #endif
@@ -99,7 +99,7 @@
   STACK_OF(X509) *certs;
   X509_STORE *x509Store;
   BIO *msgBio, *inData;
-  PKCS7 *p7;
+  CMS_ContentInfo *cms;
   int err, i;
  
   ERR_clear_error();
@@ -112,21 +112,25 @@
   msgBio = BIO_new_mem_buf ((void *) [signedData bytes], [signedData length]);
 
   inData = NULL;
-  p7 = SMIME_read_PKCS7(msgBio, &inData);
+  cms = SMIME_read_CMS(msgBio, &inData);
 
   certs = NULL;
   certificates = [NSMutableArray array];
   emails = [NSMutableArray array];
   validationMessage = nil;
 
-  if (p7)
+  if (cms)
     {
-      if (OBJ_obj2nid(p7->type) == NID_pkcs7_signed)
+      if (OBJ_obj2nid(CMS_get0_type(cms)) == NID_pkcs7_signed)
 	{
           NSString *subject, *issuer;
 	  X509 *x;
 	  
-	  certs = PKCS7_get0_signers(p7, NULL, 0);
+	  BIO *dummybio = BIO_new(BIO_s_mem());
+	  CMS_verify(cms, NULL, NULL, dummybio, NULL, CMS_NO_SIGNER_CERT_VERIFY | CMS_NO_ATTR_VERIFY | CMS_NO_CONTENT_VERIFY);
+	  ERR_clear_error();
+	  BIO_free(dummybio);
+	  certs = CMS_get0_signers(cms);
 
           for (i = 0; i < sk_X509_num(certs); i++)
             {
@@ -172,7 +176,7 @@
       else
 	{
 	  x509Store = [self _setupVerify];
-	  validSignature = (PKCS7_verify(p7, NULL, x509Store, inData,
+	  validSignature = (CMS_verify(cms, NULL, x509Store, inData,
 					 NULL, PKCS7_DETACHED) == 1);
 	  
 	  err = ERR_get_error();
@@ -205,6 +209,7 @@
     }
 
   
+  CMS_ContentInfo_free(cms);
   BIO_free (msgBio);
   if (inData)
     BIO_free (inData);
