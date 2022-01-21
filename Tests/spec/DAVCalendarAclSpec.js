@@ -159,7 +159,7 @@ END:VCALENDAR`
     const iscClass = classToICSClass[eventClass].toLowerCase()
     const filename = `${iscClass}-event.ics`
     let event = undefined
-    const results = await webdav_subscriber.syncColletion(resource)
+    const results = await webdav_subscriber.syncCollection(resource)
     if (results.status !== 404) {
       results.find(o => {
         if (o.href == resource + filename) {

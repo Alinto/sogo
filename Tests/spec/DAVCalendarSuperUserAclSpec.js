@@ -85,7 +85,7 @@ END:VCALENDAR`
 
     // 2. Read - webdav-sync
 
-    results = await webdav_su.syncColletion(resource)
+    results = await webdav_su.syncCollection(resource)
     expect(results.length).toBe(1)
     expect(results.find(o => {
       expect(o.status).toBe(201)

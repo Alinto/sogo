@@ -35,7 +35,7 @@ describe('webdav sync', function() {
     //     without a token (query3)
     //     with a token (query4))
 
-    response = await webdav.syncQuery(resource, null, [ 'getetag' ])
+    response = await webdav.syncCollectionRaw(resource, null, [ 'getetag' ])
     xml = await response.text();
     ({ [`${nsShort}:multistatus`]: { [`${nsShort}:sync-token`]: { _text: token } } } = convert.xml2js(xml, {compact: true, nativeType: true}))
     expect(response.status)
@@ -47,7 +47,7 @@ describe('webdav sync', function() {
 
     // we make sure that any token is accepted when the collection is
     // empty, but that the returned token differs
-    response = await webdav.syncQuery(resource, '1234', [ 'getetag' ])
+    response = await webdav.syncCollectionRaw(resource, '1234', [ 'getetag' ])
     xml = await response.text();
     ({ [`${nsShort}:multistatus`]: { [`${nsShort}:sync-token`]: { _text: token } } } = convert.xml2js(xml, {compact: true, nativeType: true}))
     expect(response.status)

@@ -329,7 +329,7 @@ class WebDAV {
   }
 
   // https://datatracker.ietf.org/doc/html/rfc6578#section-3.2
-  syncQuery(resource, token = '', properties) {
+  syncCollectionRaw(resource, token = '', properties) {
     const formattedProperties = properties.map((p) => {
       return { [`${DAVNamespaceShorthandMap[DAVNamespace.DAV]}:${p}`]: '' }
     });
@@ -445,7 +445,7 @@ class WebDAV {
     })
   }
 
-  syncColletion(resource) {
+  syncCollection(resource) {
     return davRequest({
       url: this.serverUrl + resource,
       init: {
