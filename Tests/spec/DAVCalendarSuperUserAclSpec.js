@@ -88,7 +88,7 @@ END:VCALENDAR`
     results = await webdav_su.syncCollection(resource)
     expect(results.length).toBe(1)
     expect(results.find(o => {
-      expect(o.status).toBe(201)
+      expect(o.status).toBe(207)
       if (o.href == resource + filename) {
         expect(o.props.calendarData.replace(/\r\n/g,'\n')).toBe(event)
         return true
