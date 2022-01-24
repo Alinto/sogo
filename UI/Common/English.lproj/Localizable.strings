@@ -124,11 +124,17 @@
 "S/MIME Certificate" = "S/MIME Certificate";
 "Subject Name" = "Subject Name";
 "Issuer" = "Issuer";
+"streetAddress" = "Street";
+"stateOrProvinceName" = "State or Province";
+"localityName" = "Locality";
 "countryName" = "Country";
 "organizationName" = "Organization";
 "organizationalUnitName" = "Organizational Unit";
 "commonName" = "Common Name";
+"surname" = "Surname";
+"givenName" = "Given Name";
 "emailAddress" = "Email Address";
+
 
 /* Authentication username */
 "Username" = "Username";
