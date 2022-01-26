@@ -75,7 +75,7 @@
 
 - (NSString *) newLine
 {
-  NSString *rc = @" ";
+  NSString *rc = @"\n";
   
   if (htmlComposition)
     rc = @"<br/>";
@@ -279,7 +279,7 @@
         {
           nl = (htmlComposition ? @"<br />" : @"\n");
           space = (htmlComposition ? @"&nbsp;" : @" ");
-          mailSignature = [NSString stringWithFormat: @"%@--%@%@%@", nl, space, nl, signature];
+          mailSignature = [NSString stringWithFormat: @"--%@%@%@", space, nl, signature];
         }
     }
 

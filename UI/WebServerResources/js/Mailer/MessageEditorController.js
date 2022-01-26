@@ -382,7 +382,7 @@
 
       if (this.composeType == "html") {
         nl = '<br />';
-        reNl = '<br ?/>[ \n]?';
+        reNl = '<br ?/>(&nbsp;)?[ \n]?';
         space = '&nbsp;';
       } else {
         nl = '\n';
@@ -409,8 +409,8 @@
 
       if (!previousIdentity && signature.length > 0) {
         // Must place signature at proper place
-        if (!this.isNew() && this.signaturePlacement == 'above') {
-          var quotedMessageIndex = this.message.editable.text.search(new RegExp(reNl + '.+?:( ?' + reNl + '){2}(> |<blockquote type="cite")'));
+        if (!this.isNew() && this.replyPlacement == 'above' && this.signaturePlacement == 'above') {
+          var quotedMessageIndex = this.message.editable.text.search(new RegExp(reNl + '.+?:( ?' + reNl + '){1,2}(> |<blockquote type="cite")'));
           if (quotedMessageIndex >= 0) {
             this.message.editable.text =
               this.message.editable.text.slice(0, quotedMessageIndex) +
