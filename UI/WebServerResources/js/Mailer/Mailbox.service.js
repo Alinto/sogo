@@ -1097,6 +1097,7 @@
           // Initialization phase, we received complete list of UIDs
           Mailbox.$log.debug('unwrapping ' + data.uids.length + ' messages');
 
+          hasNewMessages = true;
           _this.init(data);
 
           // First entry of 'uids' are keys when threaded view is enabled
