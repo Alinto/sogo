@@ -27,6 +27,7 @@
       var CLASS_ACTIVE = 'md-default-theme md-accent md-bg md-bdr';
       return function postLink(scope, element, attr, controllers) {
         var tiles = tElement.find('md-grid-tile'),
+            label = tElement.parent().children()[0],
             tile,
             ngModelCtrl,
             i,
@@ -39,6 +40,15 @@
         ngModelCtrl.$isEmpty = function(value) {
           return !value || value.length === 0;
         };
+
+        scope.$watch(function() {
+          return ngModelCtrl.$invalid;
+        }, setInvalid);
+
+        tAttrs.$observe('required', function(value) {
+          angular.element(label).toggleClass('md-required', !!value);
+          ngModelCtrl.$validate();
+        });
 
         toggleClass = function() {
           // Toggle class on click event and call toggle function
@@ -69,11 +79,10 @@
             }
           });
           ngModelCtrl.$validate();
-          setInvalid(ngModelCtrl.$invalid);
         }
 
-        function setInvalid(invalid) {
-          var label = element.parent().children()[0];
+        function setInvalid() {
+          var invalid = ngModelCtrl.$invalid;
           if (invalid) {
             element.addClass('sg-toggle-grid-invalid');
             if (label.tagName == 'LABEL') {
@@ -111,7 +120,6 @@
             ngModelCtrl.$setViewValue(modelDays);
             ngModelCtrl.$setDirty();
             ngModelCtrl.$validate();
-            setInvalid(ngModelCtrl.$invalid);
           });
         }
       };

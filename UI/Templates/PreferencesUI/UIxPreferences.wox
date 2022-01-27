@@ -1196,7 +1196,7 @@
                     <label class="pseudo-input-label"><var:string label:value="Enable auto reply on these days"/></label>
                     <md-grid-list md-cols="7" md-row-height="2em" md-gutter="0.5em"
                                   ng-model="app.preferences.defaults.Vacation.days"
-                                  ng-disabled="app.preferences.defaults.Vacation.weekdaysEnabled"
+                                  ng-required="app.preferences.defaults.Vacation.weekdaysEnabled"
                                   sg-toggle-grid="sg-toggle-grid">
                       <var:foreach list="shortWeekDaysList" item="item">
                         <md-grid-tile var:value="numberForWeekDay"><var:string value="item"/></md-grid-tile>
