@@ -682,8 +682,8 @@
 	    value = [self _webDAVResponse: localContext];
 	}
       else
-	value = [NSException exceptionWithHTTPStatus: 501 /* not implemented */
-			     reason: @"no WebDAV GET support?!"];
+	value = [NSException exceptionWithDAVStatus: 501 /* not implemented */
+                                             reason: @"no WebDAV GET support?!"];
     }
   else
     {
@@ -741,8 +741,8 @@
   // TODO: we might want to return the davEntityTag in the response
   [self debugWithFormat:@"etag '%@' does not match: %@", etag, 
 	[etags componentsJoinedByString:@","]];
-  return [NSException exceptionWithHTTPStatus:412 /* Precondition Failed */
-		      reason:@"Precondition Failed"];
+  return [NSException exceptionWithDAVStatus: 412 /* Precondition Failed */
+                                      reason:@"Precondition Failed"];
 }
 
 - (NSException *)checkIfNoneMatchCondition:(NSString *)_c inContext:(id)_ctx {
@@ -771,8 +771,8 @@
       [self debugWithFormat:@"etag '%@' matches: %@", etag, 
 	      [etags componentsJoinedByString:@","]];
       /* one etag matches, so stop the request */
-      return [NSException exceptionWithHTTPStatus:304 /* Not Modified */
-			  reason:@"object was not modified"];
+      return [NSException exceptionWithDAVStatus: 304 /* Not Modified */
+                                           reason: @"object was not modified"];
     }
     
     return nil;
@@ -1553,11 +1553,8 @@
                                  withObject: currentValue];
 	}
       else
-	exception
-	  = [NSException exceptionWithHTTPStatus: 403
-			 reason: [NSString stringWithFormat:
-					     @"Property '%@' cannot be set.",
-					   currentProp]];
+	exception = [NSException exceptionWithDAVStatus: 403
+                                                 reason: [NSString stringWithFormat: @"Property '%@' cannot be set.", currentProp]];
     }
 
   return exception;
