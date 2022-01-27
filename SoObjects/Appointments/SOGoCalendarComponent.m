@@ -1269,9 +1269,9 @@
   return uids;
 }
 
-- (NSException *) _copyComponent: (iCalCalendar *) calendar
-                        toFolder: (SOGoGCSFolder *) newFolder
-                       updateUID: (BOOL) updateUID
+- (SOGoCalendarComponent *) _copyComponent: (iCalCalendar *) calendar
+                                  toFolder: (SOGoGCSFolder *) newFolder
+                                 updateUID: (BOOL) updateUID
 {
   NSString *newUID;
   SOGoCalendarComponent *newComponent;
@@ -1296,7 +1296,7 @@
 				 [NSString stringWithFormat: @"%@.ics", newUID]
 			       inContainer: newFolder];
 
-  return [newComponent saveCalendar: calendar];
+  return newComponent;
 }
 
 - (NSException *) copyToFolder: (SOGoGCSFolder *) newFolder
@@ -1308,21 +1308,62 @@
 - (NSException *) copyComponent: (iCalCalendar *) calendar
 		       toFolder: (SOGoGCSFolder *) newFolder
 {
-  return [self _copyComponent: calendar
-                     toFolder: newFolder
-                    updateUID: YES];
+  iCalEvent *event;
+  SOGoCalendarComponent *newComponent;
+  NSException *ex;
+
+  newComponent = [self _copyComponent: calendar
+                             toFolder: newFolder
+                            updateUID: YES];
+  ex = [newComponent saveCalendar: calendar];
+
+  if (!ex)
+    {
+      // Trigger notification in destination folder
+      event = [[calendar events] objectAtIndex: 0];
+      [newComponent sendReceiptEmailForObject: event
+                               addedAttendees: nil
+                             deletedAttendees: nil
+                             updatedAttendees: nil
+                                    operation: EventCreated];
+    }
+
+  return ex;
 }
 
 - (NSException *) moveToFolder: (SOGoGCSFolder *) newFolder
 {
+  iCalCalendar *calendar;
+  iCalEvent *event;
+  SOGoCalendarComponent *newComponent;
   NSException *ex;
 
-  ex = [self _copyComponent: [self calendar: NO secure: NO]
-                   toFolder: newFolder
-                  updateUID: NO];
+  calendar = [self calendar: NO secure: NO];
+  newComponent = [self _copyComponent: calendar
+                             toFolder: newFolder
+                            updateUID: NO];
+  ex = [newComponent saveCalendar: calendar];
 
   if (!ex)
-    ex = [self delete];
+    {
+      // Trigger notification in destination folder
+      event = [[calendar events] objectAtIndex: 0];
+      [newComponent sendReceiptEmailForObject: event
+                               addedAttendees: nil
+                             deletedAttendees: nil
+                             updatedAttendees: nil
+                                    operation: EventCreated];
+      ex = [self delete];
+      if (!ex)
+        {
+          // Trigger notification in source folder
+          [self sendReceiptEmailForObject: event
+                           addedAttendees: nil
+                         deletedAttendees: nil
+                         updatedAttendees: nil
+                                operation: EventDeleted];
+        }
+    }
 
   return ex;
 }
