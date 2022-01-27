@@ -28,12 +28,12 @@ th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; fon
         <th align="right" style="font-weight: bold;"><var:string label:value="location_label"/></th>
         <td><var:string value="apt.location"/></td>
       </tr></var:if>
-      <var:if condition="aptStartDate"
+      <var:if condition="aptStartDate.length"
       ><tr>
         <th align="right" style="font-weight: bold;"><var:string label:value="startDate_label"/></th>
         <td><var:string value="aptStartDate"/></td>
       </tr></var:if>
-      <var:if condition="aptEndDate"
+      <var:if condition="aptEndDate.length"
       ><tr>
         <th align="right" style="font-weight: bold;"><var:string label:value="endDate_label"/></th>
         <td><var:string value="aptEndDate"/></td>
