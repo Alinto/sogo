@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2013 Inverse inc.
+  Copyright (C) 2006-2022 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -178,7 +178,7 @@ static NSArray *folderListingFields = nil;
 
   if ([filter length] > 0)
     {
-      filter = [filter asSafeSQLString];
+      filter = [filter asSafeSQLLikeString];
       if ([criteria isEqualToString: @"name_or_address"])
         qs = [NSString stringWithFormat:
                          @"(c_sn isCaseInsensitiveLike: '%%%@%%') OR "
@@ -281,7 +281,7 @@ static NSArray *folderListingFields = nil;
   if (aName && [aName length] > 0)
     {
       aName = [aName asSafeSQLString];
-      qs = [NSString stringWithFormat: @"(c_name='%@')", aName];
+      qs = [NSString stringWithFormat: @"(c_name = '%@')", aName];
       qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
       dbRecords = [[self ocsFolder] fetchFields: folderListingFields
 			      matchingQualifier: qualifier];

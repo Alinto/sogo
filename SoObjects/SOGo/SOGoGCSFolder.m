@@ -1,7 +1,7 @@
 /* SOGoGCSFolder.m - this file is part of SOGo
  *
  * Copyright (C) 2004-2005 SKYRIX Software AG
- * Copyright (C) 2006-2014 Inverse inc.
+ * Copyright (C) 2006-2022 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1929,8 +1929,8 @@ static NSArray *childRecordFields = nil;
   if (sqlFilter)
     {
       filterString = [NSMutableString stringWithCapacity: 8192];
-      [filterString appendFormat: @"(c_name='%@')",
-                    [cNames componentsJoinedByString: @"' OR c_name='"]];
+      [filterString appendFormat: @"(c_name = '%@')",
+                    [cNames componentsJoinedByString: @"' OR c_name = '"]];
       if ([sqlFilter length] > 0)
         [filterString appendFormat: @" AND (%@)", sqlFilter];
       qualifier = [EOQualifier qualifierWithQualifierFormat: filterString];
@@ -1972,8 +1972,7 @@ static NSArray *childRecordFields = nil;
     {
       currentName = [[cNames objectAtIndex: count] asSafeSQLString];
       queryNameLength = idQueryOverhead + [currentName length];
-      if ((currentSize + queryNameLength)
-	  > maxQuerySize)
+      if ((currentSize + queryNameLength) > maxQuerySize)
 	{
 	  records = [self _fetchComponentsWithNames: currentNames fields: fields];
 	  [components addObjectsFromArray: records];
