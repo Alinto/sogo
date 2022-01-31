@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2019 Inverse inc.
+  Copyright (C) 2007-2022 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -794,7 +794,7 @@ static Class iCalEventK = nil;
   if ([title length])
     [baseWhere
       addObject: [NSString stringWithFormat: @"c_title isCaseInsensitiveLike: '%%%@%%'",
-                           [title asSafeSQLString]]];
+                           [title asSafeSQLLikeString]]];
 
   if (component)
     {
@@ -1577,14 +1577,14 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
               if ([filters isEqualToString:@"title_Category_Location"] || [filters isEqualToString:@"entireContent"])
                 {
                   [baseWhere addObject: [NSString stringWithFormat: @"(c_title isCaseInsensitiveLike: '%%%@%%' OR c_category isCaseInsensitiveLike: '%%%@%%' OR c_location isCaseInsensitiveLike: '%%%@%%')",
-                                                  [title asSafeSQLString],
-                                                  [title asSafeSQLString],
-                                                  [title asSafeSQLString]]];
+                                                  [title asSafeSQLLikeString],
+                                                  [title asSafeSQLLikeString],
+                                                  [title asSafeSQLLikeString]]];
                 }
             }
           else
             [baseWhere addObject: [NSString stringWithFormat: @"c_title isCaseInsensitiveLike: '%%%@%%'",
-                                            [title asSafeSQLString]]];
+                                            [title asSafeSQLLikeString]]];
         }
       
       /* prepare mandatory fields */

@@ -861,7 +861,7 @@
           if ([filter length])
             {
               lowerFilter = [filter lowercaseString];
-              lowerFilter = [lowerFilter asSafeSQLString];
+              lowerFilter = [lowerFilter asSafeSQLLikeString];
               filterFormat = [NSString stringWithFormat: @"LOWER(%%@) LIKE '%%%%%@%%%%'", lowerFilter];
               if (criteria)
                 criteriaList = [criteria objectEnumerator];

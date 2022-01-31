@@ -1,6 +1,6 @@
 /* NSString+Utilities.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2019 Inverse inc.
+ * Copyright (C) 2006-2022 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -725,9 +725,13 @@ static int cssEscapingCount;
 
 - (NSString *) asSafeSQLString
 {
-  return [[[self stringByReplacingString: @"\\" withString: @"\\\\"]
-           stringByReplacingString: @"'" withString: @"\\'"]
-	   stringByReplacingString: @"\%" withString: @"\\%"];
+  return [[self stringByReplacingString: @"\\" withString: @"\\\\"]
+           stringByReplacingString: @"'" withString: @"\\'"];
+}
+
+- (NSString *) asSafeSQLLikeString
+{
+  return [[self asSafeSQLString] stringByReplacingString: @"\%" withString: @"\\%"];
 }
 
 - (NSUInteger) countOccurrencesOfString: (NSString *) substring
