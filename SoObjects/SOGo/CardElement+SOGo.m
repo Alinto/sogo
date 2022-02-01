@@ -60,7 +60,7 @@
   userTZOffset = [userTZ secondsFromGMTForDate: date];
   if (dateTZOffset != userTZOffset)
     date = [date dateByAddingYears: 0 months: 0 days: 0
-                             hours: 0 minutes: 0
+                             hours: 1 minutes: 0
                            seconds: (dateTZOffset - userTZOffset)];
   [date setTimeZone: userTZ];
 
