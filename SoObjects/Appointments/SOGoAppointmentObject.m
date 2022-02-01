@@ -595,7 +595,7 @@
       
       [unavailableAttendees release];
       
-      return [NSException exceptionWithHTTPStatus:409 reason: reason];
+      return [self exceptionWithHTTPStatus:409 reason: reason];
     }
 
   [unavailableAttendees release];
@@ -681,7 +681,7 @@
                                    [user cn], @"Cn",
                                  [user systemEmail], @"SystemEmail", nil];
           reason = [values keysWithFormat: [self labelForKey: @"Cannot access resource: \"%{Cn} %{SystemEmail}\""]];
-          return [NSException exceptionWithHTTPStatus:409 reason: reason];
+          return [self exceptionWithHTTPStatus:409 reason: reason];
         }
 
       fb = [SOGoFreeBusyObject objectWithName: @"freebusy.ifb" inContainer: [user homeFolderInContext: context]];
@@ -806,8 +806,8 @@
 
                   info = [NSDictionary dictionaryWithObject: reason forKey: @"reject"];
 
-                  return [NSException exceptionWithHTTPStatus: 409
-                                                       reason: [info jsonRepresentation]];
+                  return [self exceptionWithHTTPStatus: 409
+                                                reason: [info jsonRepresentation]];
                 }
             }
           //
@@ -857,8 +857,8 @@
               [info setObject: conflicts  forKey: @"conflicts"];
 
               // We immediately raise an exception, without processing the possible other attendees.
-              return [NSException exceptionWithHTTPStatus: 409
-                                                   reason: [info jsonRepresentation]];
+              return [self exceptionWithHTTPStatus: 409
+                                            reason: [info jsonRepresentation]];
             }
         } // if ([fbInfo count]) ...
       else if (currentAttendee && [user isResource])
@@ -1668,19 +1668,19 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
               if (delegatedUid)
                 delegatedUser = [SOGoUser userWithLogin: delegatedUid];
               if (delegatedUser != nil && [event userIsOrganizer: delegatedUser])
-                ex = [NSException exceptionWithHTTPStatus: 409
-                                                   reason: @"delegate is organizer"];
+                ex = [self exceptionWithHTTPStatus: 409
+                                            reason: @"delegate is organizer"];
               if ([event isAttendee: [[delegate email] rfc822Email]])
-                ex = [NSException exceptionWithHTTPStatus: 409
-                                                   reason: @"delegate is a participant"];
+                ex = [self exceptionWithHTTPStatus: 409
+                                            reason: @"delegate is a participant"];
               else {
                 NSDictionary *dict;
                 domain = [[context activeUser] domain];
                 dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: [[delegate email] rfc822Email]
                                                                                      inDomain: domain];
                 if (dict && [[dict objectForKey: @"isGroup"] boolValue])
-                  ex = [NSException exceptionWithHTTPStatus: 409
-                                                     reason: @"delegate is a group"];
+                  ex = [self exceptionWithHTTPStatus: 409
+                                              reason: @"delegate is a group"];
               }
             }
           if (ex == nil)
@@ -1719,12 +1719,12 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
             }
         }
       else
-        ex = [NSException exceptionWithHTTPStatus: 404 // Not Found
-                                           reason: @"user does not participate in this calendar event"];
+        ex = [self exceptionWithHTTPStatus: 404 // Not Found
+                                    reason: @"user does not participate in this calendar event"];
     }
       else
-        ex = [NSException exceptionWithHTTPStatus: 500 // Server Error
-                                           reason: @"unable to parse event record"];
+        ex = [self exceptionWithHTTPStatus: 500 // Server Error
+                                    reason: @"unable to parse event record"];
   
   return ex;
 }
@@ -2138,8 +2138,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       // TODO: send out a no-uid-conflict (DAV:href) xml element (rfc4791 section 5.3.2.1)
       if ([container resourceNameForEventUID: eventUID])
         {
-          return [NSException exceptionWithHTTPStatus: 409
-                                               reason: [NSString stringWithFormat: @"Event UID already in use. (%@)", eventUID]];
+          return [self exceptionWithHTTPStatus: 409
+                                        reason: [NSString stringWithFormat: @"Event UID already in use. (%@)", eventUID]];
         }
      
       //
@@ -2355,8 +2355,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 
 		  if (![roles containsObject: @"ComponentModifier"] && ![[context activeUser] isSuperUser])
 		    {
-		      return [NSException exceptionWithHTTPStatus: 409
-							   reason: @"Not allowed to perform this action. Wrong SENT-BY being used regarding access rights on organizer's calendar."];
+		      return [self exceptionWithHTTPStatus: 409
+                                                    reason: @"Not allowed to perform this action. Wrong SENT-BY being used regarding access rights on organizer's calendar."];
 		    }
 		}
 
@@ -2410,8 +2410,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
               // We first check of the sequences are alright. We don't accept attendees
               // accepting "old" invitations. If that's the case, we return a 409
               if ([[newEvent sequence] intValue] < [[oldEvent sequence] intValue])
-                return [NSException exceptionWithHTTPStatus: 409
-                                                     reason: @"sequences don't match"];
+                return [self exceptionWithHTTPStatus: 409
+                                              reason: @"sequences don't match"];
               
               // Remove the RSVP attribute, as an action from the attendee
               // was actually performed, and this confuses iCal (bug #1850)
@@ -2503,8 +2503,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   // with a 400 error code.
   if (!rqCalendar)
     {
-      return [NSException exceptionWithHTTPStatus: 400
-                                           reason: @"Unable to parse event."];
+      return [NSException exceptionWithDAVStatus: 400
+                                          reason: @"Unable to parse event."];
     }
   
   if (![self isNew])

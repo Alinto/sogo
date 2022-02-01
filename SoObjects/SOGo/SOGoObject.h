@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2006-2015 Inverse inc.
+  Copyright (C) 2006-2022 Inverse inc.
 
   This file is part of SOGo.
 
@@ -173,6 +173,10 @@
 - (BOOL) resultForDAVBoolean: (NSString *) davBoolean;
 
 - (NSString *) labelForKey: (NSString *) key;
+
+- (id) exceptionWithHTTPStatus: (unsigned short) theStatus;
+- (id) exceptionWithHTTPStatus: (unsigned short) theStatus
+                        reason: (NSString *) theReason;
 
 /* description */
 

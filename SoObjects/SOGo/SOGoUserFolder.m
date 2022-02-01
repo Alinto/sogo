@@ -589,7 +589,7 @@
       //   	inContainer: self];
 
       if (!obj)
-        obj = [NSException exceptionWithHTTPStatus: 404 /* Not Found */];
+        obj = [self exceptionWithHTTPStatus: 404 /* Not Found */];
     }
 
   return obj;

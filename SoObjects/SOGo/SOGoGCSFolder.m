@@ -483,13 +483,13 @@ static NSArray *childRecordFields = nil;
           error = nil;
         }
       NS_HANDLER
-        error = [NSException exceptionWithHTTPStatus: 409
-                                              reason: @"Existing name"];
+        error = [NSException exceptionWithDAVStatus: 409
+                                             reason: @"Existing name"];
       NS_ENDHANDLER;
     }
   else
-    error = [NSException exceptionWithHTTPStatus: 403
-                                          reason: @"Empty string"];
+    error = [NSException exceptionWithDAVStatus: 403
+                                         reason: @"Empty string"];
 
   return error;
 }
@@ -593,8 +593,8 @@ static NSArray *childRecordFields = nil;
   [self displayName];
   
   if ([nameInContainer isEqualToString: @"personal"])
-    error = [NSException exceptionWithHTTPStatus: 403
-			 reason: @"folder 'personal' cannot be deleted"];
+    error = [self exceptionWithHTTPStatus: 403
+                                   reason: @"folder 'personal' cannot be deleted"];
   else
     error = [[self folderManager] deleteFolderAtPath: ocsPath];
 

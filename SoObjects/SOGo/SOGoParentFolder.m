@@ -392,8 +392,8 @@ static SoSecurityManager *sm = nil;
 	  error = nil;
 	}
       else
-        error = [NSException exceptionWithHTTPStatus: 400
-			     reason: @"The new folder could not be created"];
+        error = [self exceptionWithHTTPStatus: 400
+                                       reason: @"The new folder could not be created"];
     }
 
   return error;
@@ -491,7 +491,7 @@ static SoSecurityManager *sm = nil;
 	  if (error)
 	    {
 	      [self errorWithFormat: @"a database error occured: %@", [error reason]];
-	      obj = [NSException exceptionWithHTTPStatus: 503];
+	      obj = [self exceptionWithHTTPStatus: 503];
 	    }
 	  else
 	    obj = [subscribedSubFolders objectForKey: name];
@@ -511,7 +511,7 @@ static SoSecurityManager *sm = nil;
   if (error)
     {
       [self errorWithFormat: @"a database error occured: %@", [error reason]];
-      obj = [NSException exceptionWithHTTPStatus: 503];
+      obj = [self exceptionWithHTTPStatus: 503];
     }
   else
     {
@@ -638,7 +638,7 @@ static SoSecurityManager *sm = nil;
       if (error)
 	{
 	  [self errorWithFormat: @"a database error occured: %@", [error reason]];
-	  return [NSException exceptionWithHTTPStatus: 503];
+	  return [NSException exceptionWithDAVStatus: 503];
 	}
       
       // We assume "personal" exists. In fact, if it doesn't, something
@@ -671,7 +671,7 @@ static SoSecurityManager *sm = nil;
       
       if (!supported)
 	{
-	  return [NSException exceptionWithHTTPStatus: 403];
+	  return [NSException exceptionWithDAVStatus: 403];
 	}
     }
 

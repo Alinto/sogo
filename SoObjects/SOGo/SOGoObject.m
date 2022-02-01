@@ -1,7 +1,7 @@
 /* SOGoObject.m - this file is part of SOGo
  *
  *  Copyright (C) 2004-2005 SKYRIX Software AG
- *  Copyright (C) 2006-2015 Inverse inc.
+ *  Copyright (C) 2006-2022 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1592,6 +1592,25 @@
 - (NSString *) labelForKey: (NSString *) key
 {
   return [self labelForKey: key inContext: context];
+}
+
+- (id) exceptionWithHTTPStatus: (unsigned short) theStatus
+{
+  if ([[context request] handledByDefaultHandler])
+    return [NSException exceptionWithHTTPStatus: theStatus];
+  else
+    return [NSException exceptionWithDAVStatus: theStatus];
+}
+
+- (id) exceptionWithHTTPStatus: (unsigned short) theStatus
+                        reason: (NSString *) theReason
+{
+  if ([[context request] handledByDefaultHandler])
+    return [NSException exceptionWithHTTPStatus: theStatus
+                                         reason: theReason];
+  else
+    return [NSException exceptionWithDAVStatus: theStatus
+                                        reason: theReason];
 }
 
 @end /* SOGoObject */

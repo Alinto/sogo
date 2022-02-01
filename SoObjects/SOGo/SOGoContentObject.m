@@ -445,8 +445,8 @@
   [self logWithFormat:
 	  @"TODO: copy not implemented:\n  target:  %@\n  new name: %@",
 	  _target, _name];
-  return [NSException exceptionWithHTTPStatus:405 /* not allowed */
-                      reason:@"this object cannot be copied via WebDAV"];
+  return [NSException exceptionWithDAVStatus: 405 /* not allowed */
+                                      reason: @"this object cannot be copied via WebDAV"];
 }
 
 /* acls */

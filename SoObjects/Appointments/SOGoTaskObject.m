@@ -145,8 +145,8 @@
   // with a 400 error code.
   if (!rqCalendar)
     {
-      return [NSException exceptionWithHTTPStatus: 400
-                                           reason: @"Unable to parse task."];
+      return [NSException exceptionWithDAVStatus: 400
+                                          reason: @"Unable to parse task."];
     }
 
   [self adjustClassificationInRequestCalendar: rqCalendar];

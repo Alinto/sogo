@@ -397,11 +397,9 @@ static SoSecurityManager *sm = nil;
   subfolderNames = [self toManyRelationshipKeys];
   if ([subfolderNames containsObject: newName])
     {
-      content = [NSString stringWithFormat:
-			    @"A collection named '%@' already exists.",
-			  newName];
-      error = [NSException exceptionWithHTTPStatus: 403
-			   reason: content];
+      content = [NSString stringWithFormat: @"A collection named '%@' already exists.", newName];
+      error = [NSException exceptionWithDAVStatus: 403
+                                           reason: content];
     }
   else
     {
@@ -409,7 +407,7 @@ static SoSecurityManager *sm = nil;
 		     davPatchedPropertiesWithTopTag: @"mkcalendar"];
       setProperties = [properties objectForKey: @"set"];
       newDisplayName = [self _fetchPropertyWithName: @"{DAV:}displayname"
-			     inArray: setProperties];
+                                            inArray: setProperties];
       if (![newDisplayName length])
 	newDisplayName = newName;
       error
@@ -417,10 +415,10 @@ static SoSecurityManager *sm = nil;
       if (!error)
 	{
 	  newFolder = [self lookupName: newName
-			    inContext: createContext
-			    acquire: NO];
+                             inContext: createContext
+                               acquire: NO];
 	  error = [self _applyMkCalendarProperties: setProperties
-			toObject: newFolder];
+                                          toObject: newFolder];
 	}
     }
 
@@ -488,9 +486,8 @@ static SoSecurityManager *sm = nil;
       [defaults synchronize];
     }
   else
-    error = [NSException exceptionWithHTTPStatus: 403
-                                          reason: @"invalid"
-                         @" classification value"];
+    error = [NSException exceptionWithDAVStatus: 403
+                                         reason: @"invalid classification value"];
 
   return error;
 }
