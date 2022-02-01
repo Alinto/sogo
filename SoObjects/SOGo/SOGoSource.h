@@ -1,6 +1,6 @@
 /* SOGoSource.h - this file is part of SOGo
  *
- * Copyright (C) 2009-2021 Inverse inc.
+ * Copyright (C) 2009-2022 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,6 +40,7 @@
 - (NSArray *) searchFields;
 
 - (id) connection;
+- (void) releaseConnection: (id) connection;
 
 /* requires a "." to obtain the full list of contacts */
 - (void) setListRequiresDot: (BOOL) aBool;

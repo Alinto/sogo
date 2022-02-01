@@ -1,6 +1,6 @@
 /* SOGoContactSourceFolder.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2021 Inverse inc.
+ * Copyright (C) 2006-2022 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -700,6 +700,7 @@
   RELEASE(pool);
   [response appendContentString: buffer];
   RELEASE(buffer);
+  [source releaseConnection: connection];
 //   NSLog (@"/adding properties with url");
 
   NSZoneFree (NULL, propertiesArray);
