@@ -29,14 +29,8 @@
 @interface UIxContactView : UIxComponent
 {
   NGVCard *card;
-  NSArray *phones;
-  CardElement *homeAdr;
-  CardElement *workAdr;
-  NSMutableArray *photosURL;
 }
 
-//- (NSString *) fullName;
-//- (NSArray *) orgUnits;
 - (NSString *) photoURL;
 
 @end

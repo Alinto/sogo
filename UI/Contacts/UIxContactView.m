@@ -47,11 +47,7 @@
 {
   if ((self = [super init]))
     {
-      photosURL = nil;
       card = nil;
-      phones = nil;
-      homeAdr = nil;
-      workAdr = nil;
     }
 
   return self;
@@ -60,7 +56,6 @@
 - (void) dealloc
 {
   [card release];
-  [photosURL release];
   [super dealloc];
 }
 
@@ -217,12 +212,7 @@
 {
   card = [[self clientObject] vCard];
   if (card)
-    {
-      [card retain];
-      phones = nil;
-      homeAdr = nil;
-      workAdr = nil;
-    }
+    [card retain];
   else
     return [NSException exceptionWithHTTPStatus: 404 /* Not Found */
                         reason: @"could not locate contact"];
@@ -287,12 +277,7 @@
   contact = [self clientObject];
   card = [contact vCard];
   if (card)
-    {
-      [card retain];
-      phones = nil;
-      homeAdr = nil;
-      workAdr = nil;
-    }
+    [card retain];
   else
     return [NSException exceptionWithHTTPStatus: 404 /* Not Found */
                                          reason: @"could not locate contact"];

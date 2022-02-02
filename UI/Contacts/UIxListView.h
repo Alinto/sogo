@@ -30,7 +30,6 @@
 {
   NGVList *list;
   SOGoContactGCSList *co;
-  id item;
 }
 
 @end

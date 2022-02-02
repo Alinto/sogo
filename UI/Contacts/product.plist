@@ -138,7 +138,7 @@
       methods = {
         view = {
           protectedBy = "Access Contents Information";
-          pageName    = "UIxContactView";
+          actionClass = "UIxContactView";
           actionName  = "data";
         };
         save = {
@@ -183,12 +183,12 @@
       methods = {
         view = {
           protectedBy = "Access Contents Information";
-          pageName    = "UIxListView";
+          actionClass = "UIxListView";
           actionName  = "data";
         };
         properties = {
           protectedBy = "Access Contents Information";
-          pageName    = "UIxListView";
+          actionClass = "UIxListView";
           actionName  = "properties";
         };
         save = {
@@ -213,12 +213,12 @@
       methods = {
         view = {
           protectedBy = "Access Contents Information";
-          pageName    = "UIxContactView";
+          actionClass = "UIxContactView";
           actionName  = "data";
         };
         members = {
           protectedBy = "Access Contents Information";
-          pageName    = "UIxContactView";
+          actionClass = "UIxContactView";
           actionName  = "members";
         };
         save = {
