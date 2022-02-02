@@ -81,7 +81,7 @@
     }
 
   chain = sk_X509_new_null();
-  while (link = PEM_read_bio_X509_AUX(tbio, NULL, 0, NULL))
+  while ((link = PEM_read_bio_X509_AUX(tbio, NULL, 0, NULL)))
     sk_X509_unshift(chain, link);
 
   BIO_reset(tbio);
