@@ -1204,7 +1204,7 @@ static BOOL debugSoParts       = NO;
 
   /* We don't have parts here but we're trying to download the message's
      content that could be an image/jpeg, as an example */
-  if ([parts count] == 0 && ![_key intValue])
+  if ([parts count] == 0 && (![_key intValue] || [_key isEqualToString: @"1"]))
     {
       partDesc = [self bodyStructure];
       _key = @"1";
