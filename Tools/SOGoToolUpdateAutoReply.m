@@ -1,6 +1,6 @@
 /* SOGoToolUpdateAutoReply.m - this file is part of SOGo
  *
- * Copyright (C) 2011-2019 Inverse inc.
+ * Copyright (C) 2011-2022 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,9 +45,12 @@
 
 #import "SOGoTool.h"
 
-#define statusquoAutoReply 0
-#define enableAutoReply    1
-#define disableAutoReply   2
+#define statusquoAutoReply          0x00
+#define enableAutoReply             0x01
+#define disableAutoReply            0x02
+#define temporarilyAutoReply        0x10
+#define temporarilyEnableAutoReply  0x11
+#define temporarilyDisableAutoReply 0x12
 
 @interface SOGoToolUpdateAutoReply : SOGoTool
 @end
@@ -85,11 +88,13 @@
   NSDictionary *defaults, *vacationOptions;
   NSString *c_defaults;
   NSTimeZone *timeZone;
+  BOOL hasConstraints;
   unsigned int beginOfDaysSecs, endDateTime, startDateTime, result;
 
   result = statusquoAutoReply;
   c_defaults = [infos objectForKey: @"c_defaults"];
   startDate = endDate = nil;
+  hasConstraints = NO;
 
   if ([c_defaults isNotNull])
     {
@@ -106,11 +111,12 @@
           // We handle the start date
           if ([[vacationOptions objectForKey: @"startDateEnabled"] boolValue])
             {
+              hasConstraints = YES;
               startDateTime = [[vacationOptions objectForKey: @"startDate"] intValue];
               if (beginOfDaysSecs >= startDateTime)
                 result = enableAutoReply;
               else
-                result = disableAutoReply;
+                result = temporarilyDisableAutoReply;
             }
           // We handle the end date
           if ([[vacationOptions objectForKey: @"endDateEnabled"] boolValue])
@@ -119,11 +125,12 @@
               if (endDateTime < beginOfDaysSecs)
                 result = disableAutoReply;
             }
-          if (result != disableAutoReply)
+          if (!(result & disableAutoReply))
             {
               // We handle the start time
               if ([[vacationOptions objectForKey: @"startTimeEnabled"] boolValue])
                 {
+                  hasConstraints = YES;
                   startTime = [[vacationOptions objectForKey: @"startTime"] componentsSeparatedByString: @":"];
                   startDate = [NSCalendarDate dateWithYear: [now yearOfCommonEra]
                                                      month: [now monthOfYear]
@@ -134,7 +141,9 @@
                                                   timeZone: [now timeZone]];
                   if ([startDate compare: now] == NSOrderedSame ||
                       [startDate compare: now] == NSOrderedAscending)
-                    result = enableAutoReply;
+                    result = temporarilyEnableAutoReply;
+                  else if (![[vacationOptions objectForKey: @"endTimeEnabled"] boolValue])
+                    result = temporarilyDisableAutoReply;
                 }
               // We handle the end time
               // NOTE: if end time is enabled, start time must be defined
@@ -152,8 +161,8 @@
                       [endDate compare: now] == NSOrderedAscending)
                     {
                       if ([startDate compare: endDate] == NSOrderedAscending ||
-                          result != enableAutoReply)
-                        result = disableAutoReply;
+                          !(result & enableAutoReply))
+                        result = temporarilyDisableAutoReply;
                     }
                 }
             }
@@ -162,13 +171,17 @@
               // We handle the weekdays
               if ([[vacationOptions objectForKey: @"weekdaysEnabled"] boolValue])
                 {
+                  hasConstraints = YES;
                   weekdays = [vacationOptions objectForKey: @"days"];
                   if ([weekdays containsObject: [NSString stringWithFormat: @"%i", [now dayOfWeek]]])
-                    result = enableAutoReply;
+                    result = temporarilyEnableAutoReply;
                   else
-                    result = disableAutoReply;
+                    result = temporarilyDisableAutoReply;
                 }
             }
+          if (result == statusquoAutoReply && !hasConstraints)
+            // No action and no constraint on start date; enable the auto-reply
+            result = enableAutoReply;
         }
     }
 
@@ -179,6 +192,7 @@
                withSieveUsername: (NSString *) theUsername
                      andPassword: (NSString *) thePassword
 		       disabling: (BOOL) disabling
+                     temporarily: (BOOL) temporarily
 {
   NSMutableDictionary *vacationOptions;
   SOGoUserDefaults *userDefaults;
@@ -186,31 +200,34 @@
   BOOL result;
   NSException *error;
 
+  result = YES;
   user = [SOGoUser userWithLogin: theLogin];
-
   userDefaults = [user userDefaults];
   vacationOptions = [[userDefaults vacationOptions] mutableCopy];
   [vacationOptions autorelease];
 
-  if (disabling)
+  if (!temporarily)
     {
-      [vacationOptions setObject: [NSNumber numberWithBool: NO] forKey: @"enabled"];
-    }
-  else
-    {
-      // We do NOT enable the vacation message automatically if the domain
-      // preference is disabled by default.
-      if (![[user domainDefaults] vacationPeriodEnabled])
+      if (disabling)
         {
-          NSLog(@"SOGoVacationPeriodEnabled set to NO for the domain - ignoring.");
-          return NO;
+          [vacationOptions setObject: [NSNumber numberWithBool: NO] forKey: @"enabled"];
         }
+      else
+        {
+          // We do NOT enable the vacation message automatically if the domain
+          // preference is disabled.
+          if (![[user domainDefaults] vacationPeriodEnabled])
+            {
+              NSLog(@"SOGoVacationPeriodEnabled set to NO for the domain - ignoring.");
+              return NO;
+            }
 
-      [vacationOptions setObject: [NSNumber numberWithBool: NO] forKey: @"startDateEnabled"];
+          [vacationOptions setObject: [NSNumber numberWithBool: NO] forKey: @"startDateEnabled"];
+        }
+      [userDefaults setVacationOptions: vacationOptions];
+      result = [userDefaults synchronize];
     }
 
-  [userDefaults setVacationOptions: vacationOptions];
-  result = [userDefaults synchronize];
 
   if (result)
     {
@@ -234,7 +251,7 @@
       error = [account updateFiltersWithUsername: theUsername
                                       andPassword: thePassword
                                   forceActivation: NO];
-      if (error)
+      if (error && !temporarily)
         {
           // Can't update Sieve script -- Reactivate auto-reply
 	  if (disabling)
@@ -289,22 +306,24 @@
               if (verbose)
                 NSLog(@"Checking user %@\n", user);
               result = [self checkConstraintsForRow: infos];
-              if (result == enableAutoReply)
+              if (result & enableAutoReply)
                 {
                   if ([self updateAutoReplyForLogin: user
                                   withSieveUsername: theUsername
                                         andPassword: thePassword
-                                          disabling: NO])
+                                          disabling: NO
+                                        temporarily: !!(result & temporarilyAutoReply)])
                     NSLog(@"Enabled auto-reply of user %@", user);
                   else
                     NSLog(@"An error occured while enabling auto-reply of user %@", user);
                 }
-              else if (result == disableAutoReply)
+              else if (result & disableAutoReply)
                 {
                   if ([self updateAutoReplyForLogin: user
                                   withSieveUsername: theUsername
                                         andPassword: thePassword
-                                          disabling: YES])
+                                          disabling: YES
+                                        temporarily: !!(result & temporarilyAutoReply)])
                     NSLog(@"Removed auto-reply of user %@", user);
                   else
                     NSLog(@"An error occured while removing auto-reply of user %@", user);
