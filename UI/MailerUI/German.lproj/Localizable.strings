@@ -394,7 +394,7 @@
 "Unable to empty the trash folder." = "Konnte den Papierkorb nicht leeren.";
 
 /* Error when emptying junk folder */
-"Unable to empty the junk folder." = "Kann den Spam Ordner nicht leeren";
+"Unable to empty the junk folder." = "Kann den Spam-Ordner nicht leeren";
 
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Fehler beim Hochladen der Datei \"%{0}\":";
