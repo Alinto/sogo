@@ -41,6 +41,8 @@
      = "N'importe quel internaute aura potentiellement accès à votre carnet d'adresses «%{0}», même s'il n'a pas de compte sur ce système. Est-ce que le contenu de votre calendrier est adapté à une telle visibilité?";
 "Give Access" = "Appliquer les droits";
 "Keep Private" = "Garder privé";
+"Expand" = "Agrandir";
+"Reduce" = "Réduire";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -122,11 +124,17 @@
 "S/MIME Certificate" = "Certificat S/MIME";
 "Subject Name" = "Sujet";
 "Issuer" = "Émetteur";
+"streetAddress" = "Adresse";
+"stateOrProvinceName" = "État ou province";
+"localityName" = "Localité";
 "countryName" = "Pays";
 "organizationName" = "Société";
 "organizationalUnitName" = "Unité organisationnelle";
 "commonName" = "Identité";
+"surname" = "Nom de famille";
+"givenName" = "Prénom";
 "emailAddress" = "Adresse courriel";
+
 
 /* Authentication username */
 "Username" = "Nom d'utilisateur";
