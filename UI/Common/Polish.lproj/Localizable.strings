@@ -41,6 +41,8 @@
      = "Twoja książka adresowa \"%{0}\" będzie dostępna dla każdego w Internecie. Na pewno chcesz ją tak upublicznić?";
 "Give Access" = "Udostępnij";
 "Keep Private" = "Nie udostępniaj";
+"Expand" = "Rozszerz";
+"Reduce" = "Zmniejsz";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -122,11 +124,17 @@
 "S/MIME Certificate" = "Certyfikat S/MIME";
 "Subject Name" = "Nazwa podmiotu";
 "Issuer" = "Wystawca";
+"streetAddress" = "Ulica";
+"stateOrProvinceName" = "Stan lub Prowincja";
+"localityName" = "Miejscowość";
 "countryName" = "Kraj";
 "organizationName" = "Organizacja";
 "organizationalUnitName" = "Jednostka";
 "commonName" = "Nazwa pospolita";
+"surname" = "Nazwisko";
+"givenName" = "Imię";
 "emailAddress" = "Adres e-mail";
+
 
 /* Authentication username */
 "Username" = "Nazwa użytkownika";
