@@ -250,7 +250,7 @@
   const char *bytes;
   char *buf;
   int i, j, len;
-  BOOL found_delimiter, in_meta;
+  BOOL found_delimiter, in_meta, delete_html_end_tag;
 
   d = [NSMutableData dataWithData: self];
   bytes = [d bytes];
@@ -258,6 +258,7 @@
   i = 0;
 
   in_meta = NO;
+  delete_html_end_tag = NO;
 
   while (i < len)
     {
@@ -388,6 +389,20 @@
                         }
                       tag = [tags nextObject];
                     }
+
+                  if ([@"html" caseInsensitiveCompare: found_tag] == NSOrderedSame)
+                    {
+                      // Remove </html>
+                      delete_html_end_tag = YES;
+                      i -= 2;
+                      [d replaceBytesInRange: NSMakeRange(i, 7)
+                                   withBytes: NULL
+                                      length: 0];
+                      bytes = [d bytes];
+                      bytes += i;
+                      len = [d length];
+                    }
+
                   free(buf);
 
                   // Continue the parsing after end tag
@@ -400,6 +415,9 @@
       bytes++;
       i++;
     }
+
+  if (delete_html_end_tag)
+    [d appendBytes: "</html>" length: 7];
 
   return d;
 }
