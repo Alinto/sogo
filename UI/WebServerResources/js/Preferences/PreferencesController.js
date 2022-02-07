@@ -34,7 +34,8 @@
       if (Preferences.defaults.SOGoAlternateAvatar)
         User.$alternateAvatar = Preferences.defaults.SOGoAlternateAvatar;
 
-      this.preferences.hasActiveExternalSieveScripts();
+      if (sgSettings.activeUser('path').mail)
+        this.preferences.hasActiveExternalSieveScripts();
       this.updateVacationDates();
     };
 
