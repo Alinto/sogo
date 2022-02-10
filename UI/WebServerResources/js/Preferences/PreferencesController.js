@@ -16,7 +16,6 @@
       this.passwords = { newPassword: null, newPasswordConfirmation: null, oldPassword: null };
       this.timeZonesList = $window.timeZonesList;
       this.timeZonesSearchText = '';
-      this.sieveVariablesCapability = ($window.sieveCapabilities.indexOf('variables') >= 0);
       this.addressesSearchText = '';
       this.mailLabelKeyRE = new RegExp(/^(?!^_\$)[^(){} %*\"\\\\]*?$/);
       this.emailSeparatorKeys = [
@@ -34,8 +33,10 @@
       if (Preferences.defaults.SOGoAlternateAvatar)
         User.$alternateAvatar = Preferences.defaults.SOGoAlternateAvatar;
 
-      if (sgSettings.activeUser('path').mail)
+      if (sgSettings.activeUser('path').mail) {
+        this.sieveVariablesCapability = ($window.sieveCapabilities.indexOf('variables') >= 0);
         this.preferences.hasActiveExternalSieveScripts();
+      }
       this.updateVacationDates();
     };
 
