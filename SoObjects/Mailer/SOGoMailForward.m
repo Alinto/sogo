@@ -265,12 +265,12 @@
               identity = [[sourceMail mailAccountFolder] identityForEmail: email];
             }
         }
-    }
 
-  if (!identity)
-    {
-      identity = [[context activeUser] defaultIdentity];
+      if (!identity)
+        identity = [[sourceMail mailAccountFolder] defaultIdentity];
     }
+  else
+    identity = [[context activeUser] defaultIdentity];
 
   if (identity)
     {
