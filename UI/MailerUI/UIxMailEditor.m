@@ -600,11 +600,12 @@ static NSArray *infoKeys = nil;
 {
   NSDictionary *info;
   NSException *error;
-  NSString *fontSize, *content;
+  NSString *content;
   NGMimeType *mimeType;
   WORequest *request;
   SOGoDraftObject *co;
   SOGoUserDefaults *ud;
+  int fontSize;
 
   error = nil;
   request = [context request];
@@ -629,8 +630,8 @@ static NSArray *infoKeys = nil;
           // Set a base font size if mail is HTML and user has set a default font-size
           ud = [[context activeUser] userDefaults];
           fontSize = [ud mailComposeFontSize];
-          if ([fontSize intValue] > 0)
-            content = [NSString stringWithFormat: @"<html><span style=\"font-size: %@px;\">%@</span></html>",
+          if (fontSize > 0)
+            content = [NSString stringWithFormat: @"<html><span style=\"font-size: %ipx;\">%@</span></html>",
                                 fontSize, text];
           else
             content = [NSString stringWithFormat: @"<html>%@</html>", text];

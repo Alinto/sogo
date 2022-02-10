@@ -1,6 +1,6 @@
 /* SOGoUserDefaults.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2021 Inverse inc.
+ * Copyright (C) 2009-2022 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -600,14 +600,14 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self stringForKey: @"SOGoMailComposeMessageType"];
 }
 
-- (void) setMailComposeFontSize: (NSString *) newValue
+- (void) setMailComposeFontSize: (int) newValue
 {
-  [self setObject: newValue forKey: @"SOGoMailComposeFontSize"];
+  [self setInteger: newValue forKey: @"SOGoMailComposeFontSize"];
 }
 
-- (NSString *) mailComposeFontSize
+- (int) mailComposeFontSize
 {
-  return [self stringForKey: @"SOGoMailComposeFontSize"];
+  return [self integerForKey: @"SOGoMailComposeFontSize"];
 }
 
 - (void) setMailDisplayRemoteInlineImages: (NSString *) newValue

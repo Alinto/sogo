@@ -1,6 +1,6 @@
 /* SOGoUserDefaults.h - this file is part of SOGo
  *
- * Copyright (C) 2011-2021 Inverse inc.
+ * Copyright (C) 2011-2022 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -142,8 +142,8 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (void) setMailComposeMessageType: (NSString *) newValue;
 - (NSString *) mailComposeMessageType;
 
-- (void) setMailComposeFontSize: (NSString *) newValue;
-- (NSString *) mailComposeFontSize;
+- (void) setMailComposeFontSize: (int) newValue;
+- (int) mailComposeFontSize;
 
 - (void) setMailDisplayRemoteInlineImages: (NSString *) newValue;
 - (NSString *) mailDisplayRemoteInlineImages;
