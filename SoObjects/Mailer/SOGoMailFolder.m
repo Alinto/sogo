@@ -72,6 +72,7 @@
 #import "SOGoMailAccount.h"
 #import "SOGoMailAccounts.h"
 #import "SOGoTrashFolder.h"
+#import "SOGoJunkFolder.h"
 #import "SOGoMailObject+Draft.h"
 
 
@@ -1139,6 +1140,10 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
                      isEqualToString:
                        [mailAccount trashFolderNameInContext: _ctx]])
             className = @"SOGoTrashFolder";
+          else if ([fullFolderName
+                     isEqualToString:
+                       [mailAccount junkFolderNameInContext: _ctx]])
+            className = @"SOGoJunkFolder";
           /*       else if ([folderName isEqualToString:
                    [mailAccount sieveFolderNameInContext: _ctx]])
                    obj = [self lookupFiltersFolder: _key inContext: _ctx]; */
