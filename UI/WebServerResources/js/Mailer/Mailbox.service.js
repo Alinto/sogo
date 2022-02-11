@@ -105,11 +105,12 @@
         // Local recursive function
         createMailboxes = function(level, mailbox) {
           mailbox.isSentFolder = mailbox.isSentFolder || mailbox.type == 'sent';
+          mailbox.isDraftsFolder = mailbox.isDraftsFolder || mailbox.type == 'draft';
           for (var i = 0; i < mailbox.children.length; i++) {
             mailbox.children[i].level = level;
             mailbox.children[i] = new Mailbox(account, mailbox.children[i]);
-            if (mailbox.isSentFolder)
-              mailbox.children[i].isSentFolder = true;
+            mailbox.children[i].isSentFolder = mailbox.isSentFolder;
+            mailbox.children[i].isDraftsFolder = mailbox.isDraftsFolder;
             createMailboxes(level+1, mailbox.children[i]);
           }
         };
