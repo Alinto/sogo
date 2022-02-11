@@ -1144,6 +1144,10 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
                      isEqualToString:
                        [mailAccount junkFolderNameInContext: _ctx]])
             className = @"SOGoJunkFolder";
+          else if ([fullFolderName
+                     isEqualToString:
+                       [mailAccount templatesFolderNameInContext: _ctx]])
+            className = @"SOGoTemplatesFolder";
           /*       else if ([folderName isEqualToString:
                    [mailAccount sieveFolderNameInContext: _ctx]])
                    obj = [self lookupFiltersFolder: _key inContext: _ctx]; */

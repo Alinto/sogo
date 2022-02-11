@@ -119,6 +119,11 @@
           actionClass = "UIxMailFolderActions";
           actionName = "setAsJunkFolder";
         };
+        setAsTemplatesFolder = {
+          protectedBy = "View";
+          actionClass = "UIxMailFolderActions";
+          actionName = "setAsTemplatesFolder";
+        };
         markMessagesAsJunk = {
           protectedBy = "View";
           actionClass = "UIxMailFolderActions";
@@ -236,6 +241,11 @@
           protectedBy = "View";
           actionClass = "UIxMailActions";
           actionName = "edit";
+        };
+        compose = {
+          protectedBy = "View";
+          actionClass = "UIxMailActions";
+          actionName = "compose";
         };
         reply = {
           protectedBy = "View";

@@ -923,6 +923,8 @@
                 forKey: @"Trash"];
   [mailboxes setObject: [_defaults junkFolderName]
                 forKey: @"Junk"];
+  [mailboxes setObject: [_defaults templatesFolderName]
+                forKey: @"Templates"];
   [mailAccount setObject: mailboxes forKey: @"specialMailboxes"];
   [mailboxes release];
 

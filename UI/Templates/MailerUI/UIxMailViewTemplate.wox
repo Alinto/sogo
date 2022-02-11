@@ -155,7 +155,7 @@
             </div>
             <div class="msg-recipients" layout="column" flex="50" flex-xs="100">
               <!-- to -->
-              <div class="pseudo-input-container--compact" ng-show="::viewer.message.to.length > 0">
+              <div class="pseudo-input-container--compact" ng-show="viewer.message.to.length > 0">
                 <label class="pseudo-input-label">
                   <var:string label:value="To"/>
                 </label>
@@ -255,9 +255,20 @@
             </md-chips>
           </div>
 
+          <!-- New draft from template -->
+          <div class="hide-print" ng-show="viewer.message.isTemplate">
+            <md-divider><!-- divider --></md-divider>
+            <md-list-item class="md-clickable" layout="row" layout-align="space-between center"
+                          label:aria-label="New draft"
+                          ng-click="viewer.compose($event)">
+              <md-icon>drafts</md-icon>
+              <p><var:string label:value="Create new draft with this template"/></p>
+            </md-list-item>
+          </div>
+
           <!-- S/MIME Signature -->
           <sg-block-toggle class="hide-print" layout="column"
-                           ng-show="::viewer.message.signed">
+                           ng-show="viewer.message.signed">
             <md-divider><!-- divider --></md-divider>
             <md-list-item class="sg-button-toggle">
               <div>

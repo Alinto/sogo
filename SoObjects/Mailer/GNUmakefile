@@ -24,6 +24,7 @@ Mailer_OBJC_FILES += \
 	SOGoDraftsFolder.m		\
 	SOGoTrashFolder.m		\
 	SOGoJunkFolder.m		\
+	SOGoTemplatesFolder.m		\
 	\
 	SOGoMailBodyPart.m		\
 	SOGoHTMLMailBodyPart.m		\

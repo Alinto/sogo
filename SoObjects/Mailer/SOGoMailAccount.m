@@ -48,6 +48,7 @@
 #import "SOGoSentFolder.h"
 #import "SOGoTrashFolder.h"
 #import "SOGoJunkFolder.h"
+#import "SOGoTemplatesFolder.h"
 #import "SOGoUser+Mailer.h"
 
 #import "SOGoMailAccount.h"
@@ -70,6 +71,7 @@ static NSString *inboxFolderName = @"INBOX";
       sentFolder = nil;
       trashFolder = nil;
       junkFolder = nil;
+      templatesFolder = nil;
       imapAclStyle = undefined;
       identities = nil;
       otherUsersFolderName = nil;
@@ -88,6 +90,7 @@ static NSString *inboxFolderName = @"INBOX";
   [sentFolder release];
   [trashFolder release];
   [junkFolder release];
+  [templatesFolder release];
   [identities release];
   [otherUsersFolderName release];
   [sharedFoldersName release];
@@ -96,6 +99,11 @@ static NSString *inboxFolderName = @"INBOX";
 }
 
 - (BOOL) isInDraftsFolder
+{
+  return NO;
+}
+
+- (BOOL) isInTemplatesFolder
 {
   return NO;
 }
@@ -406,6 +414,7 @@ static NSString *inboxFolderName = @"INBOX";
 			  [self sentFolderNameInContext: context],
 			  [self trashFolderNameInContext: context],
 			  [self junkFolderNameInContext: context],
+			  [self templatesFolderNameInContext: context],
 		    nil] stringsWithFormat: @"/%@"];
   folders = [[self imap4Connection] allFoldersForURL: [self imap4URL]
 			       onlySubscribedFolders: subscribedOnly];
@@ -479,6 +488,9 @@ static NSString *inboxFolderName = @"INBOX";
   else if ([flags containsObject: [self junkFolderNameInContext: context]] ||
            [folderName isEqualToString: [self junkFolderNameInContext: context]])
     folderType = @"junk";
+  else if ([flags containsObject: [self templatesFolderNameInContext: context]] ||
+           [folderName isEqualToString: [self templatesFolderNameInContext: context]])
+    folderType = @"templates";
   else if ([folderName isEqualToString: otherUsersFolderName])
     folderType = @"otherUsers";
   else if ([folderName isEqualToString: sharedFoldersName])
@@ -1012,6 +1024,9 @@ static NSString *inboxFolderName = @"INBOX";
       else if ([folderName
 		 isEqualToString: [self junkFolderNameInContext: _ctx]])
 	klazz = [SOGoJunkFolder class];
+      else if ([folderName
+		 isEqualToString: [self templatesFolderNameInContext: _ctx]])
+	klazz = [SOGoTemplatesFolder class];
       else
 	klazz = [SOGoMailFolder class];
 
@@ -1079,6 +1094,11 @@ static NSString *inboxFolderName = @"INBOX";
 - (NSString *) junkFolderNameInContext: (id)_ctx
 {
   return [self _userFolderNameWithPurpose: @"Junk"];
+}
+
+- (NSString *) templatesFolderNameInContext: (id)_ctx
+{
+  return [self _userFolderNameWithPurpose: @"Templates"];
 }
 
 - (NSString *) otherUsersFolderNameInContext: (id)_ctx
@@ -1190,6 +1210,19 @@ static NSString *inboxFolderName = @"INBOX";
     }
 
   return junkFolder;
+}
+
+- (SOGoTemplatesFolder *) templatesFolderInContext: (id) _ctx
+{
+  if (!templatesFolder)
+    {
+      templatesFolder
+	= [self folderWithTraversal: [self templatesFolderNameInContext: _ctx]
+                       andClassName: @"SOGoTemplatesFolder"];
+      [templatesFolder retain];
+    }
+
+  return templatesFolder;
 }
 
 /* account delegation */

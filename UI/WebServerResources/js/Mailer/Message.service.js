@@ -777,9 +777,19 @@
   };
 
   /**
+   * @function $compose
+   * @memberof Message.prototype
+   * @desc Prepare a new Message object as a new draft from a copy of this message.
+   * @returns a promise of the HTTP operations
+   */
+  Message.prototype.$compose = function() {
+    return this.$newDraft('compose');
+  };
+
+  /**
    * @function $newDraft
    * @memberof Message.prototype
-   * @desc Prepare a new Message object as a reply or a forward of the current message and associated
+   * @desc Prepare a new Message object as a reply, a forward or a copy of the current message and associated
    * to the draft mailbox.
    * @see {@link Account.$newMessage}
    * @see {@link Message.$editableContent}

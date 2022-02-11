@@ -62,6 +62,7 @@
 - (SOGoMailAccount *) mailAccountFolder;
 - (SOGoMailAccounts *) mailAccountsFolder;
 - (BOOL) isInDraftsFolder;
+- (BOOL) isInTemplatesFolder;
 
 /* IMAP4 */
 

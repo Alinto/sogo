@@ -203,6 +203,10 @@
         this.$displayName = l('JunkFolderName');
         this.$icon = 'thumb_down';
       }
+      else if (this.type == 'templates') {
+        this.$displayName = l('TemplatesFolderName');
+        this.$icon = 'mail_outline';
+      }
       else if (this.type == 'additional') {
         this.$icon = 'folder';
       }

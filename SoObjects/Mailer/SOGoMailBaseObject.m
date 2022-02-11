@@ -121,6 +121,11 @@
   return [container isInDraftsFolder];
 }
 
+- (BOOL) isInTemplatesFolder
+{
+  return [container isInTemplatesFolder];
+}
+
 /* IMAP4 */
 
 - (NGImap4ConnectionManager *) mailManager

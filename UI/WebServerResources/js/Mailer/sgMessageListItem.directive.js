@@ -33,7 +33,7 @@
       // this.service = Message;
       this.MailboxService = Mailbox;
 
-      if (Mailbox.selectedFolder.type == 'draft')
+      if (Mailbox.selectedFolder.type == 'draft' || Mailbox.selectedFolder.type == 'templates')
         watchedAttrs.push('subject');
 
       $scope.$watch(

@@ -68,6 +68,7 @@
 }
 
 - (BOOL) mailIsDraft;
+- (BOOL) mailIsTemplate;
 - (NSNumber *) shouldAskReceipt;
 - (NSString *) formattedDate;
 - (NSString *) _matchingIdentityEMailOrDefault: (BOOL) useDefault;
@@ -340,6 +341,7 @@ static NSString *mailETag = nil;
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                        [self shouldAskReceipt], @"shouldAskReceipt",
                        [NSNumber numberWithBool: [self mailIsDraft]], @"isDraft",
+                       [NSNumber numberWithBool: [self mailIsTemplate]], @"isTemplate",
                        renderedPart, @"parts",
                        nil];
   if ([self formattedDate])
@@ -801,6 +803,11 @@ static NSString *mailETag = nil;
 - (BOOL) mailIsDraft
 {
   return [[self clientObject] isInDraftsFolder];
+}
+
+- (BOOL) mailIsTemplate
+{
+  return [[self clientObject] isInTemplatesFolder];
 }
 
 - (id) redirectToParentFolder

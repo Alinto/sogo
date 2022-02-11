@@ -187,6 +187,7 @@
 "InboxFolderName"  = "Inbox";
 "DraftsFolderName" = "Drafts";
 "JunkFolderName" = "Junk";
+"TemplatesFolderName" = "Templates";
 "SieveFolderName"  = "Filters";
 "Folders"          = "Folders"; /* title line */
 
@@ -432,6 +433,9 @@
 "Set as Sent" = "Set as Sent";
 "Set as Trash" = "Set as Trash";
 
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Set as Templates";
+
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Set as Junk";
 
@@ -453,6 +457,9 @@
 "Your email has been saved" = "Your email has been saved";
 "Your email has been sent" = "Your email has been sent";
 "Folder compacted" = "Folder compacted";
+
+"New draft" = "New draft";
+"Create new draft with this template" = "Create new draft with this template";
 
 /* Advanced search */
 "Enter Subject" = "Enter Subject";

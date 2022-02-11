@@ -115,6 +115,7 @@
     SOGoDraftsFolderName = "Drafts";
     SOGoTrashFolderName = "Trash";
     SOGoJunkFolderName = "Junk";
+    SOGoTemplatesFolderName = "Templates";
     SOGoMailComposeMessageType = "html";
     SOGoMailComposeFontSize = "0";
     SOGoMailDisplayRemoteInlineImages = "never";

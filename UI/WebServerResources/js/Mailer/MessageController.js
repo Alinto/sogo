@@ -479,6 +479,12 @@
       }
     };
 
+    this.compose = function($event) {
+      if (!this._showMailEditorInPopup('compose')) {
+        _showMailEditor($event, this.message.$compose());
+      }
+    };
+
     this.openInPopup = function(action) {
       var url = [sgSettings.baseURL(),
                  'UIxMailPopupView#!/Mail',

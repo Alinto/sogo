@@ -274,6 +274,11 @@
             <var:string label:value="Set as Junk"/>
           </md-button>
         </md-menu-item>
+        <md-menu-item ng-show="::$menuCtrl.folder.$canFolderAs()">
+          <md-button type="button" ng-click="$menuCtrl.setFolderAs('Templates')">
+            <var:string label:value="Set as Templates"/>
+          </md-button>
+        </md-menu-item>
         <md-divider ng-show="::($menuCtrl.folder.type != 'additional')"><!-- divider --></md-divider>
         <md-menu-item ng-show="::($menuCtrl.folder.type != 'additional')">
           <md-button type="button" ng-click="$menuCtrl.share()">

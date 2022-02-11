@@ -118,6 +118,36 @@
                         andString: [data jsonRepresentation]];
 }
 
+- (WOResponse *) composeAction
+{
+  SOGoMailAccount *account;
+  SOGoMailObject *co;
+  SOGoDraftsFolder *drafts;
+  SOGoDraftObject *newMail;
+  NSString *accountName, *mailboxName, *messageName;
+  NSDictionary *data;
+
+  co = [self clientObject];
+  account = [co mailAccountFolder];
+  drafts = [account draftsFolderInContext: context];
+  newMail = [drafts newDraft];
+  [newMail fetchMailForEditing: co];
+  [newMail storeInfo];
+
+  accountName = [account nameInContainer];
+  mailboxName = [drafts absoluteImap4Name];
+  mailboxName = [mailboxName substringWithRange: NSMakeRange(1, [mailboxName length] -2)];
+  messageName = [newMail nameInContainer];
+
+  data = [NSDictionary dictionaryWithObjectsAndKeys:
+                         accountName, @"accountId",
+                       mailboxName, @"mailboxPath",
+                       messageName, @"draftId", nil];
+
+  return [self responseWithStatus: 201
+                        andString: [data jsonRepresentation]];
+}
+
 - (WOResponse *) viewPlainAction
 {
   BOOL htmlContent;

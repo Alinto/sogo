@@ -304,7 +304,6 @@
 
     this.addRecipient = function (contact, field) {
       var recipients, recipient, list, i, address;
-      var emailRE = /([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)/i;
 
       recipients = this.message.editable[field];
 
@@ -319,7 +318,7 @@
                contact.charCodeAt(i) == 32 ||   // space
                contact.charCodeAt(i) == 44 ||   // ,
                contact.charCodeAt(i) == 59) &&  // ;
-              emailRE.test(address) &&
+              address.isValidEmail() &&
               recipients.indexOf(address) < 0) {
             recipients.push(address);
             address = '';
