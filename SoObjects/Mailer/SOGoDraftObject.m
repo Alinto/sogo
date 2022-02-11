@@ -795,7 +795,7 @@ static NSString    *userAgent      = nil;
   else
     [addrs setArray: [_envelope from]];
 
-  [self _purgeRecipients: allRecipients  fromAddresses: addrs]; // addrs contain the recipient addresses without the any of the sender's addresses
+  [self _purgeRecipients: allRecipients  fromAddresses: addrs]; // addrs contain the recipient addresses without any of the sender's addresses
   [self _addEMailsOfAddresses: addrs  toArray: to];
   [self _addRecipients: addrs  toArray: allRecipients];
   [_info setObject: to  forKey: @"to"];
@@ -1510,6 +1510,7 @@ static NSString    *userAgent      = nil;
   NGMimeBodyPart *bodyPart;
   NSMutableArray *bodyParts;
   NSArray  *attrs;
+  NSString *contentType;
   unsigned i, count, size, limit;
 
   attrs = [self fetchAttachmentAttrs];
@@ -1528,6 +1529,10 @@ static NSString    *userAgent      = nil;
 
   for (i = 0; i < count; i++)
     {
+      contentType = [[[attrs objectAtIndex: i] objectForKey: @"part"] headerForKey: @"content-type"];
+      if ([contentType isEqualToString: @"application/pkcs7-signature"])
+        // Skip SMIME signature as it will be resigned later
+        continue;
       bodyPart = [self bodyPartForAttachmentWithName: [[attrs objectAtIndex: i] objectForKey: @"filename"]];
       [bodyParts addObject: bodyPart];
     }
@@ -1887,7 +1892,10 @@ static NSString    *userAgent      = nil;
 
   // We'll sign and/or encrypt our message. Let's generate the actual body of the message to work with
   partGenerator = [[[NGMimePartGenerator alloc] init] autorelease];
-  content = [partGenerator generateMimeFromPart: [self mimeMessageWithHeaders: nil  excluding: nil  extractingImages: YES  bodyOnly: YES]];
+  content = [partGenerator generateMimeFromPart: [self mimeMessageWithHeaders: nil
+                                                                    excluding: nil
+                                                             extractingImages: YES
+                                                                     bodyOnly: YES]];
 
   if ([self sign])
     {
@@ -1896,9 +1904,6 @@ static NSString    *userAgent      = nil;
 
       if (!content)
         return nil;
-
-      if (![self encrypt])
-        goto finish_smime;
     }
 
   if ([self encrypt])
@@ -1929,7 +1934,6 @@ static NSString    *userAgent      = nil;
         content = [content encryptUsingCertificate: certificate andAlgos: algos];
     }
 
- finish_smime:
   // We got our mime part, let's add our mail headers
   hashMap = [self mimeHeaderMapWithHeaders: nil
                                  excluding: [NSArray arrayWithObjects: @"MIME-Version", @"Content-Type", @"Content-Transfer-Encoding", nil]];
