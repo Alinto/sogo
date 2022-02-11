@@ -275,8 +275,22 @@
    */
   Message.prototype.$shortAddress = function(type) {
     var address = '';
-    if (this[type] && this[type].length > 0) {
-      address = this[type][0].name || this[type][0].email || '';
+    if (this[type]) {
+      if (angular.isString(this[type])) {
+        // The recipient is a string; try to extract the name
+        var emailRE = /<?(([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?))/i;
+        var match = this[type].match(emailRE);
+        if (match) {
+          address = this[type].substring(0, match.index);
+          address = address.replace(/^\"? *(.+?)\"? *$/, "$1");
+        }
+        if (!address.length)
+          address = this[type];
+      }
+      else if (this[type].length > 0) {
+        // We have an array of objects; pick the first one
+        address = this[type][0].name || this[type][0].email || '';
+      }
     }
 
     return address;
