@@ -1484,67 +1484,70 @@ static NSArray *reminderValues = nil;
           [[[user userDefaults] source] removeObjectForKey: @"SOGoAlternateAvatar"];
         }
 
-      //
-      // We sanitize mail labels
-      //
-      newLabels = [v objectForKey: @"SOGoMailLabelsColors"];
-      if (newLabels && [newLabels isKindOfClass: [NSDictionary class]])
+      if ([self userHasMailAccess])
         {
-          // We encode correctly our keys
-          sanitizedLabels = [NSMutableDictionary dictionary];
-          allKeys = [newLabels allKeys];
-
-          for (i = 0; i < [allKeys count]; i++)
+          //
+          // We sanitize mail labels
+          //
+          newLabels = [v objectForKey: @"SOGoMailLabelsColors"];
+          if (newLabels && [newLabels isKindOfClass: [NSDictionary class]])
             {
-              name = [allKeys objectAtIndex: i];
+              // We encode correctly our keys
+              sanitizedLabels = [NSMutableDictionary dictionary];
+              allKeys = [newLabels allKeys];
 
-              if (![name is7bitSafe])
-                name = [name stringByEncodingImap4FolderName];
+              for (i = 0; i < [allKeys count]; i++)
+                {
+                  name = [allKeys objectAtIndex: i];
 
-              name = [name lowercaseString];
+                  if (![name is7bitSafe])
+                    name = [name stringByEncodingImap4FolderName];
 
-              [sanitizedLabels setObject: [newLabels objectForKey: [allKeys objectAtIndex: i]]
-                                  forKey: name];
+                  name = [name lowercaseString];
+
+                  [sanitizedLabels setObject: [newLabels objectForKey: [allKeys objectAtIndex: i]]
+                                      forKey: name];
+                }
+
+              [v setObject: sanitizedLabels  forKey: @"SOGoMailLabelsColors"];
             }
 
-          [v setObject: sanitizedLabels  forKey: @"SOGoMailLabelsColors"];
-        }
+          //
+          // Keep the primary mail certificate
+          //
+          if ([[[user userDefaults] mailCertificate] length])
+            [v setObject: [[user userDefaults] mailCertificate]  forKey: @"SOGoMailCertificate"];
 
-      //
-      // Keep the primary mail certificate
-      //
-      if ([[[user userDefaults] mailCertificate] length])
-        [v setObject: [[user userDefaults] mailCertificate]  forKey: @"SOGoMailCertificate"];
-
-      //
-      // We sanitize our auxiliary mail accounts
-      //
-      accounts = [v objectForKey: @"AuxiliaryMailAccounts"];
-      if (accounts && [accounts isKindOfClass: [NSArray class]])
-        {
-          if ([accounts count] > 0)
+          //
+          // We sanitize our auxiliary mail accounts
+          //
+          accounts = [v objectForKey: @"AuxiliaryMailAccounts"];
+          if (accounts && [accounts isKindOfClass: [NSArray class]])
             {
-              // The first account is the main system account. The following mapping is required:
-              // - forceDefaultIdentity                => SOGoMailForceDefaultIdentity
-              // - receipts.receiptAction              => SOGoMailReceiptAllow
-              // - receipts.receiptNonRecipientAction  => SOGoMailReceiptNonRecipientAction
-              // - receipts.receiptOutsideDomainAction => SOGoMailReceiptOutsideDomainAction
-              // - receipts.receiptAnyAction           => SOGoMailReceiptAnyAction
-              // - security.alwaysSign                 => SOGoMailCertificateAlwaysSign
-              // - security.alwaysEncrypt              => SOGoMailCertificateAlwaysEncrypt
-              [self _extractMainAccountSettings: [accounts objectAtIndex: 0]  inDictionary: v];
-              if ([self mailAuxiliaryUserAccountsEnabled])
-                accounts = [self _extractAuxiliaryAccounts: accounts];
-              else
-                accounts = [NSArray array];
+              if ([accounts count] > 0)
+                {
+                  // The first account is the main system account. The following mapping is required:
+                  // - forceDefaultIdentity                => SOGoMailForceDefaultIdentity
+                  // - receipts.receiptAction              => SOGoMailReceiptAllow
+                  // - receipts.receiptNonRecipientAction  => SOGoMailReceiptNonRecipientAction
+                  // - receipts.receiptOutsideDomainAction => SOGoMailReceiptOutsideDomainAction
+                  // - receipts.receiptAnyAction           => SOGoMailReceiptAnyAction
+                  // - security.alwaysSign                 => SOGoMailCertificateAlwaysSign
+                  // - security.alwaysEncrypt              => SOGoMailCertificateAlwaysEncrypt
+                  [self _extractMainAccountSettings: [accounts objectAtIndex: 0]  inDictionary: v];
+                  if ([self mailAuxiliaryUserAccountsEnabled])
+                    accounts = [self _extractAuxiliaryAccounts: accounts];
+                  else
+                    accounts = [NSArray array];
 
-              [v setObject: accounts  forKey: @"AuxiliaryMailAccounts"];
+                  [v setObject: accounts  forKey: @"AuxiliaryMailAccounts"];
+                }
             }
+
+          [[[user userDefaults] source] setValues: v];
         }
 
-      [[[user userDefaults] source] setValues: v];
-
-      if ([[user userDefaults] synchronize])
+      if ([[user userDefaults] synchronize] && [self userHasMailAccess])
         {
           NSException *error;
           SOGoMailAccount *account;
