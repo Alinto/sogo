@@ -131,10 +131,6 @@ extern NSArray *SOGoMailCoreInfoKeys;
 /* deletion */
 
 - (BOOL) isDeletionAllowed;
-- (NSException *) copyToFolderNamed: (NSString *) folderName
-                          inContext: (id)_ctx;
-- (NSException *) moveToFolderNamed: (NSString *) folderName
-                          inContext: (id)_ctx;
 
 - (void) addRequiredKeysOfStructure: (NSDictionary *) info
                                path: (NSString *) p

@@ -46,8 +46,6 @@
 
 - (NSString *) formattedMailtoString: (NGVCard *) card;
 
-- (NSArray *) columnsDisplayOrder;
-
 @end
 
 #endif /* UIXMAILMAINFRAME_H */
