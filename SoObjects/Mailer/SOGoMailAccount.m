@@ -1206,7 +1206,7 @@ static NSString *inboxFolderName = @"INBOX";
       junkFolder
 	= [self folderWithTraversal: [self junkFolderNameInContext: _ctx]
                        andClassName: @"SOGoJunkFolder"];
-      [trashFolder retain];
+      [junkFolder retain];
     }
 
   return junkFolder;
