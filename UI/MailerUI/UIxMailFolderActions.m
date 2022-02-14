@@ -832,6 +832,11 @@
   return [self _setFolderPurpose: @"Junk"];
 }
 
+- (WOResponse *) setAsTemplatesFolderAction
+{
+  return [self _setFolderPurpose: @"Templates"];
+}
+
 - (WOResponse *) expungeAction 
 {
   SOGoMailAccount *account;
