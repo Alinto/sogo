@@ -81,7 +81,7 @@
         }
       })
       .state('mail.account.mailbox.message.action', {
-        url: '/{actionName:(?:reply|replyall|forward)}',
+        url: '/{actionName:(?:compose|reply|replyall|forward)}',
         views: {
           'message@': {
             template: '<ui-view/>',

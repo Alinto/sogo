@@ -83,6 +83,14 @@
           _addAttachments();
         });
       }
+      else if ($stateParams.actionName == 'compose') {
+        stateMessage.$compose().then(function(msgObject) {
+          vm.message = msgObject;
+          vm.fromIdentity = msgObject.editable.from;
+          _updateFileUploader();
+          _addAttachments();
+        });
+      }
       else if (angular.isDefined(stateMessage)) {
         this.message = stateMessage;
         _updateFileUploader();
