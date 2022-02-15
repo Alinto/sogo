@@ -187,6 +187,7 @@
 "InboxFolderName"  = "Réception";
 "DraftsFolderName" = "Brouillons";
 "JunkFolderName" = "Pourriel";
+"TemplatesFolderName" = "Modèles";
 "SieveFolderName"  = "Filtres";
 "Folders"          = "Dossiers"; /* title line */
 
@@ -430,7 +431,10 @@
 "Export" = "Exporter";
 "Set as Drafts" = "Utiliser pour les brouillons";
 "Set as Sent" = "Utiliser pour les messages envoyés";
-"Set as Trash" = "Utiliser pour les messages effacés";
+"Set as Trash" = "Utiliser comme corbeille";
+
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Utiliser pour les modèles";
 
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Utiliser pour les messages indésirables";
@@ -453,6 +457,9 @@
 "Your email has been saved" = "Votre courriel a été sauvegardé";
 "Your email has been sent" = "Votre courriel a été envoyé";
 "Folder compacted" = "Dossier compressé";
+
+"New draft" = "Nouveau message";
+"Create new draft with this template" = "Créer un nouveau message à partir de ce modèle";
 
 /* Advanced search */
 "Enter Subject" = "Sujet";
