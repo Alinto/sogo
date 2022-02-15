@@ -187,6 +187,7 @@
 "InboxFolderName"  = "Odebrane";
 "DraftsFolderName" = "Szkice";
 "JunkFolderName" = "Spam";
+"TemplatesFolderName" = "Wzorce";
 "SieveFolderName"  = "Filtry";
 "Folders"          = "Foldery"; /* title line */
 
@@ -432,6 +433,9 @@
 "Set as Sent" = "Oznacz jako wysłany";
 "Set as Trash" = "Oznacz jako śmieć";
 
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Ustaw jako Wzorce";
+
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Oznacz jako spam";
 
@@ -453,6 +457,9 @@
 "Your email has been saved" = "E-mail został zapisany";
 "Your email has been sent" = "E-mail został wysłany";
 "Folder compacted" = "Folder zkompaktowany";
+
+"New draft" = "Nowy szkic";
+"Create new draft with this template" = "Utwórz nowy szkic z tego wzorca";
 
 /* Advanced search */
 "Enter Subject" = "Tytuł";
