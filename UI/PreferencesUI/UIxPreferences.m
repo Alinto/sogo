@@ -1543,9 +1543,9 @@ static NSArray *reminderValues = nil;
                   [v setObject: accounts  forKey: @"AuxiliaryMailAccounts"];
                 }
             }
-
-          [[[user userDefaults] source] setValues: v];
         }
+
+      [[[user userDefaults] source] setValues: v];
 
       if ([[user userDefaults] synchronize] && [self userHasMailAccess])
         {
