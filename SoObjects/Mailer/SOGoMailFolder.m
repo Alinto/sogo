@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2009-2021 Inverse inc.
+  Copyright (C) 2009-2022 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -946,26 +946,12 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
 - (unsigned int) unseenCount
 {
   NSDictionary *imapResult;
-  NGImap4Connection *connection;
-  NGImap4Client *client;
-  EOQualifier *searchQualifier;
-  NSArray *searchResult;
   unsigned int unseen;
 
-  connection = [self imap4Connection];
-  client = [connection client];
-
-  if ([connection selectFolder: [self imap4URL]])
-    {
-      searchQualifier
-        = [EOQualifier qualifierWithQualifierFormat: @"flags = %@ AND not flags = %@",
-                       @"unseen", @"deleted"];
-      imapResult = [client searchWithQualifier: searchQualifier];
-      searchResult = [[imapResult objectForKey: @"RawResponse"] objectForKey: @"search"];
-      unseen = [searchResult count];
-    }
-  else
-    unseen = 0;
+  unseen = 0;
+  imapResult = [self statusForFlags: [NSArray arrayWithObject: @"unseen"]];
+  if (imapResult)
+    unseen = [[imapResult valueForKey: @"unseen"] intValue];
 
   return unseen;
 }
