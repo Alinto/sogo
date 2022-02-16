@@ -44,6 +44,9 @@
     SOGoTrashFolder = {
       superclass    = "SOGoMailFolder";
     };
+    SOGoJunkFolder = {
+      superclass    = "SOGoMailFolder";
+    };
     SOGoMailObject = {
       superclass    = "SOGoMailBaseObject";
     };
