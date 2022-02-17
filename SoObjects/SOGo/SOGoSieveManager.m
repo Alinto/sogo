@@ -897,17 +897,18 @@ static NSString *sieveScriptName = @"sogo";
   if (thePassword)
     {
       imapClient = [NGImap4Client clientWithURL: [theAccount imap4URL]];
-      [imapClient login: theUsername  password: thePassword];
+      [imapClient authenticate: [user login] authname: theUsername password: thePassword];
     }
   else
     imapClient = [[theAccount imap4Connection] client];
 
   delimiter = [imapClient delimiter];
 
-  if (!delimiter)
-    [imapClient list: @"INBOX"  pattern: @""];
-
-  delimiter = [imapClient delimiter];
+  if (!delimiter && [imapClient isConnected])
+    {
+      [imapClient list: @"INBOX"  pattern: @""];
+      delimiter = [imapClient delimiter];
+    }
 
   if (!delimiter)
     delimiter = [dd stringForKey: @"NGImap4ConnectionStringSeparator"];
