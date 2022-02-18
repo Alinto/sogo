@@ -747,6 +747,23 @@
   };
 
   /**
+   * @function forwardMessages
+   * @memberof Mailbox.prototype
+   * @desc Attach multiple messages to a new draft
+   * @returns a promise of the HTTP operation with the draft coordinates
+   */
+  Mailbox.prototype.forwardMessages = function(messages) {
+    var _this = this,
+        uids = _.map(messages, 'uid');
+
+    return Mailbox.$$resource.post(this.id, 'forwardMessages', { uids: uids }).then(function(data) {
+      Mailbox.$log.debug('Forward selected messages: ' + JSON.stringify(data, undefined, 2));
+      var message = new Mailbox.$Message(data.accountId, _this.$account.$getMailboxByPath(data.mailboxPath), data);
+      return message;
+    });
+  };
+
+  /**
    * @function saveSelectedMessages
    * @memberof Mailbox.prototype
    * @desc Download the selected messages

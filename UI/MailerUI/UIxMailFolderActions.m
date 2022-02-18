@@ -1,6 +1,6 @@
 /* UIxMailFolderActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2021 Inverse inc.
+ * Copyright (C) 2007-2022 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,11 +30,15 @@
 #import <NGImap4/NSString+Imap4.h>
 
 
+#import <Mailer/SOGoDraftObject.h>
+#import <Mailer/SOGoDraftsFolder.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailFolder.h>
+#import <Mailer/SOGoMailObject+Draft.h>
 #import <Mailer/SOGoTrashFolder.h>
 
 #import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
@@ -697,6 +701,99 @@
   else
     {
       data = [NSDictionary dictionaryWithObject: @"Error 'uids' and/or 'folder' parameters."
+                                         forKey: @"message"];
+      response = [self responseWithStatus: 500 andJSONRepresentation: data];
+    }
+
+  return response;
+}
+
+- (WOResponse *) forwardMessagesAction
+{
+  BOOL htmlComposition;
+  NSArray *uids;
+  NSDictionary *data, *identity, *headers;
+  NSMutableDictionary *attachment;
+  NSString *accountName, *mailboxName, *messageName, *fullName, *format, *signature, *nl, *space;
+  SOGoDraftObject *newMail;
+  SOGoDraftsFolder *drafts;
+  SOGoMailAccount *account;
+  SOGoMailFolder *co;
+  SOGoMailObject *currentMail;
+  SOGoUserDefaults *ud;
+  WOResponse *response;
+  unsigned int i;
+
+  co = [self clientObject];
+  data = [[[context request] contentAsString] objectFromJSONString];
+  uids = [data objectForKey: @"uids"];
+  response = nil;
+
+  if ([uids count] > 0)
+    {
+      account = [co mailAccountFolder];
+      identity = [account defaultIdentity];
+      drafts = [account draftsFolderInContext: context];
+      newMail = [drafts newDraft];
+      ud = [[context activeUser] userDefaults];
+      htmlComposition = [[ud mailComposeMessageType] isEqualToString: @"html"];
+
+      [newMail setIsHTML: htmlComposition];
+      if (identity)
+        {
+          // Set From header
+          fullName = [identity objectForKey: @"fullName"];
+          if ([fullName length])
+            format = @"%{fullName} <%{email}>";
+          else
+            format = @"%{email}";
+          headers = [NSDictionary dictionaryWithObject: [identity keysWithFormat: format]
+                                                forKey: @"from"];
+          [newMail setHeaders: headers];
+
+          // Add signature
+          signature = [identity objectForKey: @"signature"];
+          if ([signature length])
+            {
+              nl = (htmlComposition? @"<br />" : @"\n");
+              space = (htmlComposition ? @"&nbsp;" : @" ");
+              [newMail setText: [NSString stringWithFormat: @"%@%@--%@%@%@", nl, nl, space, nl, signature]];
+            }
+        }
+
+      for (i = 0; i < [uids count]; i++)
+        {
+          currentMail = [co lookupName: [NSString stringWithFormat: @"%@", [uids objectAtIndex: i]]
+                             inContext: context
+                               acquire: NO];
+          attachment = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                              [currentMail filenameForForward], @"filename",
+                                        @"message/rfc822", @"mimetype",
+                                        nil];
+          [newMail saveAttachment: [currentMail content]
+                     withMetadata: attachment];
+        }
+
+      [newMail save]; // store on IMAP server
+      [newMail storeInfo];
+
+      accountName = [account nameInContainer];
+      mailboxName = [drafts absoluteImap4Name];
+      mailboxName = [mailboxName substringWithRange: NSMakeRange(1, [mailboxName length] - 2)];
+      messageName = [newMail nameInContainer];
+
+      data = [NSDictionary dictionaryWithObjectsAndKeys:
+                             accountName, @"accountId",
+                           mailboxName, @"mailboxPath",
+                           messageName, @"draftId",
+                                [NSNumber numberWithInt: [newMail IMAP4ID]], @"uid", nil];
+
+      return [self responseWithStatus: 201
+                            andString: [data jsonRepresentation]];
+    }
+  else
+    {
+      data = [NSDictionary dictionaryWithObject: [self labelForKey: @"Error forwarding messages." inContext: context]
                                          forKey: @"message"];
       response = [self responseWithStatus: 500 andJSONRepresentation: data];
     }

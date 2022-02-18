@@ -99,6 +99,11 @@
           actionClass = "UIxMailFolderActions";
           actionName = "moveMessages";
         };
+        forwardMessages = {
+          protectedBy = "View";
+          actionClass = "UIxMailFolderActions";
+          actionName = "forwardMessages";
+        };
         setAsDraftsFolder = {
           protectedBy = "View";
           actionClass = "UIxMailFolderActions";

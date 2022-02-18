@@ -43,7 +43,7 @@
           stateMailbox: stateMailbox
         }
       })
-      .state('mail.account.mailbox.newMessage', {
+      .state('mail.account.newMessage', {
         url: '/new',
         views: {
           'message@': {
@@ -91,7 +91,7 @@
       });
 
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/Mail/0/folderINBOX/new');
+    $urlRouterProvider.otherwise('/Mail/0/new');
   }
 
   /**
@@ -199,7 +199,9 @@
     }
     else {
       futureMailbox = stateAccount.$getMailboxes().then(function(mailboxes) {
-        return _find(mailboxes);
+        var data = _find(mailboxes),
+            mailbox = new Mailbox(stateAccount, data);
+        return mailbox;
       });
     }
 

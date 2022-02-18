@@ -228,6 +228,11 @@
               </md-button>
             </md-menu-item>
             <md-menu-item>
+              <md-button ng-click="mailbox.forwardSelectedMessages($event)">
+                <var:string label:value="Forward"/>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
               <md-button ng-click="mailbox.selectedFolder.saveSelectedMessages()">
                 <var:string label:value="Save As..."/>
               </md-button>
