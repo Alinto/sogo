@@ -1,6 +1,6 @@
 /* SOGoCalendarComponent.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2021 Inverse inc.
+ * Copyright (C) 2006-2022 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1308,10 +1308,13 @@
 - (NSException *) copyComponent: (iCalCalendar *) calendar
 		       toFolder: (SOGoGCSFolder *) newFolder
 {
-  iCalEvent *event;
+  iCalEntityObject *component;
   SOGoCalendarComponent *newComponent;
+  SOGoComponentOperation operation;
+  NSArray *components;
   NSException *ex;
 
+  operation = EventCreated;
   newComponent = [self _copyComponent: calendar
                              toFolder: newFolder
                             updateUID: YES];
@@ -1320,12 +1323,21 @@
   if (!ex)
     {
       // Trigger notification in destination folder
-      event = [[calendar events] objectAtIndex: 0];
-      [newComponent sendReceiptEmailForObject: event
-                               addedAttendees: nil
-                             deletedAttendees: nil
-                             updatedAttendees: nil
-                                    operation: EventCreated];
+      components = [calendar events];
+      if ([components count] == 0)
+        {
+          components = [calendar todos];
+          operation = TaskCreated;
+        }
+      if ([components count] > 0)
+        {
+          component = [components objectAtIndex: 0];
+          [newComponent sendReceiptEmailForObject: component
+                                   addedAttendees: nil
+                                 deletedAttendees: nil
+                                 updatedAttendees: nil
+                                        operation: operation];
+        }
     }
 
   return ex;
@@ -1334,11 +1346,14 @@
 - (NSException *) moveToFolder: (SOGoGCSFolder *) newFolder
 {
   iCalCalendar *calendar;
-  iCalEvent *event;
+  iCalEntityObject *component;
   SOGoCalendarComponent *newComponent;
+  SOGoComponentOperation operation;
+  NSArray *components;
   NSException *ex;
 
   calendar = [self calendar: NO secure: NO];
+  operation = EventCreated;
   newComponent = [self _copyComponent: calendar
                              toFolder: newFolder
                             updateUID: NO];
@@ -1347,21 +1362,30 @@
   if (!ex)
     {
       // Trigger notification in destination folder
-      event = [[calendar events] objectAtIndex: 0];
-      [newComponent sendReceiptEmailForObject: event
+      components = [calendar events];
+      if ([components count] == 0)
+        {
+          components = [calendar todos];
+          operation = TaskCreated;
+        }
+      if ([components count] > 0)
+        {
+          component = [components objectAtIndex: 0];
+          [newComponent sendReceiptEmailForObject: component
+                                   addedAttendees: nil
+                                 deletedAttendees: nil
+                                 updatedAttendees: nil
+                                        operation: operation];
+          ex = [self delete];
+          if (!ex)
+            {
+              // Trigger notification in source folder
+              [self sendReceiptEmailForObject: component
                                addedAttendees: nil
                              deletedAttendees: nil
                              updatedAttendees: nil
-                                    operation: EventCreated];
-      ex = [self delete];
-      if (!ex)
-        {
-          // Trigger notification in source folder
-          [self sendReceiptEmailForObject: event
-                           addedAttendees: nil
-                         deletedAttendees: nil
-                         updatedAttendees: nil
-                                operation: EventDeleted];
+                                    operation: operation == EventCreated ? EventDeleted : TaskDeleted];
+            }
         }
     }
 

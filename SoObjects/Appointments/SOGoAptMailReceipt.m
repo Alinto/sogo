@@ -1,10 +1,6 @@
 /* SOGoAptMailReceipt.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Ludovic Marcotte <lmarcotte@inverse.ca>
- *         Francis Lachapelle <flachapelle@inverse.ca>
+ * Copyright (C) 2009-2022 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -206,20 +202,25 @@ static NSCharacterSet *wsSet = nil;
   NSCalendarDate *tzDate;
   SOGoUser *currentUser;
 
-  currentUser = [context activeUser];
+  if (date)
+    {
+      currentUser = [context activeUser];
 
-  tzDate = [date copy];
-  [tzDate setTimeZone: viewTZ];
-  [tzDate autorelease];
+      tzDate = [date copy];
+      [tzDate setTimeZone: viewTZ];
+      [tzDate autorelease];
 
-  formatter = [currentUser dateFormatterInContext: context];
+      formatter = [currentUser dateFormatterInContext: context];
 
-  if ([apt isKindOfClass: [iCalEvent class]] && [(iCalEvent *)apt isAllDay])
-    return [formatter formattedDate: tzDate];
-  else
-    return [NSString stringWithFormat: @"%@ - %@",
-             [formatter formattedDate: tzDate],
-             [formatter formattedTime: tzDate]];
+      if ([apt isKindOfClass: [iCalEvent class]] && [(iCalEvent *)apt isAllDay])
+        return [formatter formattedDate: tzDate];
+      else
+        return [NSString stringWithFormat: @"%@ - %@",
+                 [formatter formattedDate: tzDate],
+                 [formatter formattedTime: tzDate]];
+    }
+
+  return nil;
 }
 
 - (NSString *) aptStartDate
