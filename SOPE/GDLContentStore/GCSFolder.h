@@ -159,10 +159,6 @@
 /* helpers */
 
 - (EOAttribute *) _attributeForColumn: (NSString *) _field;
-- (void) _findQualifiers: (id) qualifier
-             withAdaptor: (EOAdaptor *) adaptor;
-- (void) _formatQualifierValue: (EOKeyValueQualifier *) qualifier
-                   withAdaptor: (EOAdaptor *) adaptor;
 @end
 
 #endif /* __GDLContentStore_GCSFolder_H__ */

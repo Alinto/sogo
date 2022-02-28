@@ -27,8 +27,8 @@ TEL;TYPE=cell:portable
 TEL;TYPE=fax:fax
 TEL;TYPE=pager:pager
 X-MOZILLA-HTML:FALSE
-EMAIL;TYPE=work:address.email@domaine.ca
-EMAIL;TYPE=home:address.email@domaine2.com
+EMAIL;TYPE=work:address.email1@domaine.ca
+EMAIL;TYPE=home:address.email1@domaine2.com
 URL;TYPE=home:web perso
 TITLE:fonction
 URL;TYPE=work:page soc
@@ -49,14 +49,14 @@ ORG:societe;service
 NICKNAME:surnom
 ADR;TYPE=work:adr2 societe;;adr societe;ville societe;etat soc;code soc;pays soc
 ADR;TYPE=home:rue perso 2;;rue perso;ville perso;etat perso;code post perso;pays perso
-TEL;TYPE=work:+1 514 123-3372
+TEL;TYPE=work:+1 555 222-2222
 TEL;TYPE=home:tel dom
 TEL;TYPE=cell:portable
 TEL;TYPE=fax:fax
 TEL;TYPE=pager:pager
 X-MOZILLA-HTML:FALSE
-EMAIL;TYPE=work:address.email@domaine.ca
-EMAIL;TYPE=home:address.email@domaine2.com
+EMAIL;TYPE=work:address.email2@domaine.ca
+EMAIL;TYPE=home:address.email2@domaine2.com
 URL;TYPE=home:web perso
 TITLE:fonction
 URL;TYPE=work:page soc
@@ -96,6 +96,137 @@ describe('CardDAV extensions', function() {
     await webdav_su.deleteObject(resource)
   })
 
+  // CARDDAV:addressbook-query Report
+  // https://datatracker.ietf.org/doc/html/rfc6352#section-8.6
+  it("supports for addressbook-query on GCS folder", async function() {
+    const name = Object.keys(cards)[1]
+    const ns = DAVNamespaceShorthandMap[DAVNamespace.CARDDAV]
+    const response = await davRequest({
+      url: webdav.serverUrl + resource,
+      init: {
+        method: 'REPORT',
+        namespace: ns,
+        headers: { ...webdav.headers, depth: '1' },
+        body: {
+          'addressbook-query': {
+            _attributes: getDAVAttribute([
+              DAVNamespace.CARDDAV,
+              DAVNamespace.DAV
+            ]),
+            [`${DAVNamespaceShorthandMap[DAVNamespace.DAV]}:prop`]: formatProps([{ name: 'address-data', namespace: DAVNamespace.CARDDAV }]),
+            filter: {
+              _attributes: { test: 'anyof' },
+              'prop-filter': [
+                {
+                  _attributes: { name: 'FN', test: 'anyof' },
+                  'text-match': [
+                    {
+                      _attributes: { collation: 'i;unicasemap', 'match-type': 'starts-with' },
+                      _text: 'Carte modifiee' // should match the second card
+                    },
+                    {
+                      _attributes: { collation: 'i;unicasemap', 'match-type': 'contains' },
+                      _text: 'No match' // should not match any card
+                    }
+                  ]
+                },
+                {
+                  _attributes: { name: 'EMAIL', test: 'allof' },
+                  'text-match': {
+                    _attributes: { collation: 'i;unicasemap', 'match-type': 'starts-with' },
+                    _text: 'email2' // should match the second card
+                  }
+                }
+                ]
+            }
+          }
+        },
+        elementNameFn: (name) => {
+          if (!/^.+:.+/.test(name)) {
+            return `${ns}:${name}`
+          }
+          return name
+        }
+      }
+    })
+    expect(response.length)
+      .withContext(`Number of results from addressbook-query`)
+      .toBe(1)
+    expect(response[0].status)
+      .withContext(`HTTP status code of addressbook-query`)
+      .toEqual(207)
+    expect(utility.componentsAreEqual(response[0].props.addressData, cards[name]))
+      .withContext(`Returned vCard matches ${name}`)
+      .toBe(true)
+  })
+
+  // CARDDAV:addressbook-query Report
+  // https://datatracker.ietf.org/doc/html/rfc6352#section-8.6
+  it("supports for addressbook-query on source folder", async function() {
+    let vcard, emails
+    const ns = DAVNamespaceShorthandMap[DAVNamespace.CARDDAV]
+    const response = await davRequest({
+      url: webdav.serverUrl + `/SOGo/dav/${config.username}/Contacts/public/`,
+      init: {
+        method: 'REPORT',
+        namespace: ns,
+        headers: { ...webdav.headers, depth: '1' },
+        body: {
+          'addressbook-query': {
+            _attributes: getDAVAttribute([
+              DAVNamespace.CARDDAV,
+              DAVNamespace.DAV
+            ]),
+            [`${DAVNamespaceShorthandMap[DAVNamespace.DAV]}:prop`]: formatProps([{ name: 'address-data', namespace: DAVNamespace.CARDDAV }]),
+            filter: {
+              _attributes: { test: 'anyof' },
+              'prop-filter': [
+                {
+                  _attributes: { name: 'FN', test: 'allof' },
+                  'text-match': [
+                    {
+                      _attributes: { collation: 'i;unicasemap', 'match-type': 'contains' },
+                      _text: 'No match' // should not match any card
+                    }
+                  ]
+                },
+                {
+                  _attributes: { name: 'EMAIL', test: 'allof' },
+                  'text-match': {
+                    _attributes: { collation: 'i;unicasemap', 'match-type': 'starts-with' },
+                    _text: `${config.attendee1}`
+                  }
+                }
+                ]
+            }
+          }
+        },
+        elementNameFn: (name) => {
+          if (!/^.+:.+/.test(name)) {
+            return `${ns}:${name}`
+          }
+          return name
+        }
+      }
+    })
+    expect(response.length)
+      .withContext(`Number of results from addressbook-query`)
+      .toBe(1)
+    expect(response[0].status)
+      .withContext(`HTTP status code of addressbook-query`)
+      .toEqual(207)
+
+    vcard = ICAL.Component.fromString(response[0].props.addressData.toString())
+    emails = []
+    for (const prop of vcard.getAllProperties('email')) {
+      emails.push(prop.getFirstValue())
+    }
+    expect(emails)
+      .withContext(`Returned vCard has email of ${config.attendee1_username} (${config.attendee1})`)
+      .toContain(config.attendee1)
+  })
+
+  // CARDDAV:addressbook-multiget Report
   // https://datatracker.ietf.org/doc/html/rfc6352#section-8.7
   it("supports for addressbook-multiget", async function() {
     const hrefs = Object.keys(cards).map(c => `${resource}${c}`)

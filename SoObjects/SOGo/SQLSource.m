@@ -30,7 +30,12 @@
 #import <GDLContentStore/GCSChannelManager.h>
 #import <GDLContentStore/NSURL+GCS.h>
 #import <GDLContentStore/EOQualifier+GCS.h>
+#import <GDLAccess/EOAdaptor.h>
 #import <GDLAccess/EOAdaptorChannel.h>
+#import <GDLAccess/EOAdaptorContext.h>
+#import <GDLAccess/EOAttribute.h>
+#import <GDLAccess/EOEntity.h>
+#import <GDLAccess/EOSQLQualifier.h>
 
 #import <SOGo/SOGoSystemDefaults.h>
 
@@ -290,7 +295,7 @@
                                               nil];
           [qualifier autorelease];
         }
-      [qualifier _gcsAppendToString: sql];
+      [qualifier appendSQLToString: sql];
 
       ex = [channel evaluateExpressionX: sql];
       if (!ex)
@@ -535,7 +540,7 @@
       qualifier = [[EOOrQualifier alloc] initWithQualifierArray: qualifiers];
       if (domainQualifier)
         qualifier = [[EOAndQualifier alloc] initWithQualifiers: domainQualifier, qualifier, nil];
-      [qualifier _gcsAppendToString: sql];
+      [qualifier appendSQLToString: sql];
 
       ex = [channel evaluateExpressionX: sql];
       if (!ex)
@@ -623,7 +628,7 @@
 
               qualifier = [[EOAndQualifier alloc] initWithQualifiers: q_uid, q_auth, nil];
               [qualifier autorelease];
-              [qualifier _gcsAppendToString: sql];
+              [qualifier appendSQLToString: sql];
 
               ex = [channel evaluateExpressionX: sql];
               if (!ex)
@@ -727,6 +732,29 @@
   return [self _lookupContactEntry: entryID  considerEmail: YES inDomain: domain];
 }
 
+- (void) addVCardProperty: (NSString *) property
+               toCriteria: (NSMutableArray *) criteria
+{
+  static NSDictionary *vCardSQLFieldsTable = nil;
+  NSString *field;
+
+  if (!vCardSQLFieldsTable)
+    vCardSQLFieldsTable = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                                  @"c_cn",            @"fn",
+                                                @"c_cn",              @"n",
+                                                @"mail",              @"email",
+                                                @"c_telephonenumber", @"tel",
+                                                @"c_o",               @"org",
+                                                @"c_l",               @"adr",
+                                                  nil];
+
+  field = [vCardSQLFieldsTable objectForKey: property];
+  if (field)
+    {
+      [criteria addObjectUniquely: field];
+    }
+}
+
 /* Returns an EOQualifier of the following form:
  * (_domainField = domain OR _domainField = visibleDomain1 [...])
  * Should only be called on SQL sources using _domainField name.
@@ -802,7 +830,7 @@
               if (domainQualifier)
                 {
                   [sql appendString: @" WHERE "];
-                  [domainQualifier _gcsAppendToString: sql];
+                  [domainQualifier appendSQLToString: sql];
                 }
             }
           else
@@ -911,7 +939,7 @@
                   if (domainQualifier)
                     {
                       [sql appendFormat: @" AND ("];
-                      [domainQualifier _gcsAppendToString: sql];
+                      [domainQualifier appendSQLToString: sql];
                       [sql appendFormat: @")"];
                     }
                 }
@@ -943,6 +971,85 @@
       else
         [self errorWithFormat:@"failed to acquire channel for URL: %@",
               [_viewURL absoluteString]];
+    }
+
+  return results;
+}
+
+- (NSArray *) lookupContactsWithQualifier: (EOQualifier *) qualifier
+                          andSortOrdering: (EOSortOrdering *) ordering
+                                 inDomain: (NSString *) domain
+{
+  static EOAdaptor *adaptor = nil;
+  NSException *ex;
+  NSMutableArray *results;
+  NSMutableString *sql;
+  EOAdaptorChannel *channel;
+  GCSChannelManager *cm;
+
+  results = [NSMutableArray array];
+
+  if (qualifier || !_listRequiresDot)
+    {
+      cm = [GCSChannelManager defaultChannelManager];
+      channel = [cm acquireOpenChannelForURL: _viewURL];
+      if (channel)
+        {
+          if (!adaptor)
+            {
+              EOAdaptorContext *adaptorCtx;
+              adaptorCtx = [channel adaptorContext];
+              adaptor = [adaptorCtx adaptor];
+            }
+          sql = [NSMutableString stringWithFormat: @"SELECT c_uid FROM %@ WHERE (", [_viewURL gcsTableName]];
+
+          if (qualifier)
+            [qualifier appendSQLToString: sql
+                             withAdaptor: adaptor];
+          else
+            [sql appendString: @"1 = 1"];
+          [sql appendString: @")"];
+
+          if (_domainField)
+            {
+              if ([domain length])
+                {
+                  EOQualifier *domainQualifier;
+                  domainQualifier = [self visibleDomainsQualifierFromDomain: domain];
+                  if (domainQualifier)
+                    {
+                      [sql appendFormat: @" AND ("];
+                      [domainQualifier appendSQLToString: sql];
+                      [sql appendFormat: @")"];
+                    }
+                }
+              else
+                [sql appendFormat: @" AND %@ IS NULL", _domainField];
+            }
+
+          ex = [channel evaluateExpressionX: sql];
+          if (!ex)
+            {
+              NSDictionary *row;
+              NSMutableDictionary *mutableRow;
+              NSArray *attrs;
+
+              attrs = [channel describeResults: NO];
+
+              while ((row = [channel fetchAttributes: attrs withZone: NULL]))
+                {
+                  mutableRow = [row mutableCopy];
+                  // [mutableRow setObject: self forKey: @"source"];
+                  [results addObject: mutableRow];
+                  [mutableRow release];
+                }
+            }
+          else
+            [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
+          [cm releaseChannel: channel];
+        }
+      [self errorWithFormat:@"failed to acquire channel for URL: %@",
+            [_viewURL absoluteString]];
     }
 
   return results;

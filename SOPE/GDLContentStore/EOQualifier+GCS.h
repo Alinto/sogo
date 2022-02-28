@@ -25,10 +25,13 @@
 #include <EOControl/EOQualifier.h>
 
 @class NSMutableString;
+@class EOAdaptor;
 
 @interface EOQualifier(GCS)
 
-- (void) _gcsAppendToString: (NSMutableString *) _ms;
+- (void) appendSQLToString: (NSMutableString *) _ms;
+- (void) appendSQLToString: (NSMutableString *) _ms
+               withAdaptor: (EOAdaptor *) _adaptor;
 
 @end
 

@@ -80,6 +80,19 @@ static NSArray *folderListingFields = nil;
   [super dealloc];
 }
 
+- (NSArray *) nameFields
+{
+  static NSArray *nameFields = nil;
+
+  if (!nameFields)
+    {
+      nameFields = [NSArray arrayWithObjects: @"c_sn", @"c_givenname", @"c_cn", nil];
+      [nameFields retain];
+    }
+
+  return nameFields;
+}
+
 - (NSArray *) searchFields
 {
   static NSArray *searchFields = nil;
@@ -438,6 +451,61 @@ static NSArray *folderListingFields = nil;
   return records;
 }
 
+- (NSArray *) lookupContactsWithQualifier: (EOQualifier *) qualifier
+                          andSortOrdering: (EOSortOrdering *) ordering
+                                 inDomain: (NSString *) domain
+{
+  NSArray *dbRecords, *records;
+  EOFetchSpecification *spec;
+
+  spec = [EOFetchSpecification fetchSpecificationWithEntityName: [[self ocsFolder] folderName]
+                                                      qualifier: qualifier
+                                                  sortOrderings: [NSArray arrayWithObject: ordering]];
+
+  dbRecords = [[self ocsFolder] fetchFields: folderListingFields
+                         fetchSpecification: spec
+                              ignoreDeleted: YES];
+
+  if ([dbRecords count] > 0)
+    records = [self _flattenedRecords: dbRecords];
+  else
+    records = dbRecords;
+
+  [self debugWithFormat:@"fetched %i records.", [records count]];
+  return records;
+}
+
+- (void) addVCardProperty: (NSString *) property
+               toCriteria: (NSMutableArray *) criteria
+{
+  static NSDictionary *vCardSQLFieldsTable = nil;
+  NSEnumerator *fields;
+  id field;
+
+  if (!vCardSQLFieldsTable)
+    vCardSQLFieldsTable = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                                  [self nameFields],  @"fn",
+                                                [self nameFields],    @"n",
+                                                @"c_mail",            @"email",
+                                                @"c_telephonenumber", @"tel",
+                                                @"c_o",               @"org",
+                                                @"c_l",               @"adr",
+                                                nil];
+
+  field = [vCardSQLFieldsTable objectForKey: property];
+  if (field)
+    {
+      if ([field isKindOfClass: [NSArray class]])
+        {
+          fields = [(NSArray *)field objectEnumerator];
+          while ((field = [fields nextObject]))
+            [criteria addObjectUniquely: field];
+        }
+      else
+        [criteria addObjectUniquely: field];
+    }
+}
+
 - (NSDictionary *) davSQLFieldsTable
 {
   static NSMutableDictionary *davSQLFieldsTable = nil;
@@ -470,6 +538,10 @@ static NSArray *folderListingFields = nil;
   return resourceType;
 }
 
+/**
+   CARDDAV:addressbook-multiget Report
+   https://datatracker.ietf.org/doc/html/rfc6352#section-8.6
+ */
 - (id) davAddressbookMultiget: (id) queryContext
 {
   return [self performMultigetInContext: queryContext

@@ -919,6 +919,29 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   return [EOQualifier qualifierWithQualifierFormat: qs];
 }
 
+- (void) addVCardProperty: (NSString *) property
+               toCriteria: (NSMutableArray *) criteria
+{
+  static NSDictionary *vCardLDAPFieldsTable = nil;
+  NSString *field;
+
+  if (!vCardLDAPFieldsTable)
+    vCardLDAPFieldsTable = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                                   @"cn",            @"fn",
+                                                 @"cn",              @"n",
+                                                 @"mail",            @"email",
+                                                 @"telephonenumber", @"tel",
+                                                 @"o",               @"org",
+                                                 @"l",               @"adr",
+                                                  nil];
+
+  field = [vCardLDAPFieldsTable objectForKey: property];
+  if (field)
+    {
+      [criteria addObjectUniquely: field];
+    }
+}
+
 /*
 - (NSArray *) _constraintsFields
 {
@@ -1326,8 +1349,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
       pool = [NSAutoreleasePool new];
       while ((currentEntry = [entries nextObject]))
         {
-          [contacts addObject:
-                      [self _convertLDAPEntryToContact: currentEntry]];
+          [contacts addObject: [self _convertLDAPEntryToContact: currentEntry]];
           i++;
           if (i % 10 == 0)
             {
@@ -1522,6 +1544,55 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 {
   return [self _lookupGroupEntryByAttributes: _mailFields
 				    andValue: theEmail];
+}
+
+- (NSArray *) lookupContactsWithQualifier: (EOQualifier *) qualifier
+                          andSortOrdering: (EOSortOrdering *) ordering
+                                 inDomain: (NSString *) domain
+{
+  NSAutoreleasePool *pool;
+  NGLdapConnection *ldapConnection;
+  NGLdapEntry *currentEntry;
+  NSEnumerator *entries;
+  NSMutableArray *contacts;
+  unsigned int i;
+
+  contacts = [NSMutableArray array];
+
+  if ([qualifier count] > 0 || !_listRequiresDot)
+    {
+      ldapConnection = [self _ldapConnection];
+
+      // Perform the query if the qualifier is defined or if no critera was defined
+      if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
+        entries = [ldapConnection baseSearchAtBaseDN: _baseDN
+                                           qualifier: qualifier
+                                          attributes: _lookupFields];
+      else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame)
+        entries = [ldapConnection flatSearchAtBaseDN: _baseDN
+                                           qualifier: qualifier
+                                          attributes: _lookupFields];
+      else /* we do it like before */
+        entries = [ldapConnection deepSearchAtBaseDN: _baseDN
+                                           qualifier: qualifier
+                                          attributes: _lookupFields];
+
+      i = 0;
+      pool = [NSAutoreleasePool new];
+      while ((currentEntry = [entries nextObject]))
+        {
+          [contacts addObject: [self _convertLDAPEntryToContact: currentEntry]];
+          i++;
+          if (i % 10 == 0)
+            {
+              [pool release];
+              pool = [NSAutoreleasePool new];
+            }
+        }
+      [pool release];
+    }
+
+  return contacts;
 }
 
 - (void) setSourceID: (NSString *) newSourceID

@@ -24,6 +24,8 @@
 
 #import "SOGoConstants.h"
 
+@class EOQualifier;
+@class EOSortOrdering;
 @class NSDictionary;
 @class NSException;
 @class NSString;
@@ -70,6 +72,9 @@
 - (NSArray *) fetchContactsMatching: (NSString *) filter
                        withCriteria: (NSArray *) criteria
                            inDomain: (NSString *) domain;
+- (NSArray *) lookupContactsWithQualifier: (EOQualifier *) qualifier
+                          andSortOrdering: (EOSortOrdering *) ordering
+                                 inDomain: (NSString *) domain;
 
 - (void) setSourceID: (NSString *) newSourceID;
 - (NSString *) sourceID;
@@ -87,6 +92,9 @@
                            withID: (NSString *) aId;
 - (NSException *) updateContactEntry: (NSDictionary *) ldifRecord;
 - (NSException *) removeContactEntryWithID: (NSString *) aId;
+
+- (void) addVCardProperty: (NSString *) property
+               toCriteria: (NSMutableArray *) criteria;
 
 /* user address books */
 - (NSArray *) addressBookSourcesForUser: (NSString *) user;

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2017 Inverse inc.
+  Copyright (C) 2006-2022 Inverse inc.
 
   This file is part of SOGo.
 
@@ -34,6 +34,8 @@
 
 #import <SOGo/SOGoFolder.h>
 
+@class EOQualifier;
+@class EOSortOrdering;
 @class NSArray;
 @class NSDictionary;
 @class NSString;
@@ -46,7 +48,25 @@
                                 sortBy: (NSString *) sortKey
                               ordering: (NSComparisonResult) sortOrdering
                               inDomain: (NSString *) domain;
+- (NSArray *) lookupContactsWithQualifier: (EOQualifier *) qualifier
+                          andSortOrdering: (EOSortOrdering *) ordering
+                                 inDomain: (NSString *) domain;
 - (NSDictionary *) lookupContactWithName: (NSString *) aName;
+
+/**
+   Map a vCard property to a source field name.
+
+   Possible vCard properties are:
+
+   - EMAIL
+   - FN
+   - N
+   - ORG
+   - ADR
+   - TEL
+ */
+- (void) addVCardProperty: (NSString *) property
+               toCriteria: (NSMutableArray *) criteria;
 
 @end
 

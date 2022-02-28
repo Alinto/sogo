@@ -24,6 +24,10 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
+#import <GDLAccess/EOAdaptor.h>
+#import <GDLAccess/EOAttribute.h>
+#import <GDLAccess/EOSQLExpression.h>
+
 #import "EOQualifier+GCS.h"
 
 #if (defined(__GNU_LIBOBJC__) && (__GNU_LIBOBJC__ >= 20100911)) || defined(APPLE_RUNTIME) || defined(__GNUSTEP_RUNTIME__)
@@ -33,9 +37,9 @@
 @implementation EOQualifier(GCS)
 
 - (void) _appendAndQualifier: (EOAndQualifier *) _q
+                 withAdaptor: (EOAdaptor *) _adaptor
                     toString: (NSMutableString *) _ms
 {
-  // TODO: move to EOQualifier category
   NSArray *qs;
   unsigned i, count;
   
@@ -46,14 +50,15 @@
   for (i = 0; i < count; i++) {
     if (i != 0) [_ms appendString:@" AND "];
     if (count > 1) [_ms appendString:@"("];
-    [[qs objectAtIndex:i] _gcsAppendToString: _ms];
+    [[qs objectAtIndex:i] appendSQLToString: _ms
+                                withAdaptor: _adaptor];
     if (count > 1) [_ms appendString:@")"];
   }
 }
-- (void)_appendOrQualifier: (EOAndQualifier *) _q
-                  toString: (NSMutableString *) _ms
+- (void) _appendOrQualifier: (EOAndQualifier *) _q
+                withAdaptor: (EOAdaptor *) _adaptor
+                   toString: (NSMutableString *) _ms
 {
-  // TODO: move to EOQualifier category
   NSArray *qs;
   unsigned i, count;
   
@@ -64,23 +69,28 @@
   for (i = 0; i < count; i++) {
     if (i != 0) [_ms appendString:@" OR "];
     if (count > 1) [_ms appendString:@"("];
-    [[qs objectAtIndex:i] _gcsAppendToString: _ms];
+    [[qs objectAtIndex:i] appendSQLToString: _ms
+                                withAdaptor: _adaptor];
     if (count > 1) [_ms appendString:@")"];
   }
 }
 
-- (void)_appendNotQualifier: (EONotQualifier *)_q
-                   toString:(NSMutableString *) _ms
+- (void) _appendNotQualifier: (EONotQualifier *) _q
+                 withAdaptor: (EOAdaptor *) _adaptor
+                    toString:(NSMutableString *) _ms
 {
   [_ms appendString:@" NOT ("];
-  [[_q qualifier] _gcsAppendToString: _ms];
+  [[_q qualifier] appendSQLToString: _ms
+                        withAdaptor: _adaptor];
   [_ms appendString:@")"];
 }
 
 - (void) _appendKeyValueQualifier: (EOKeyValueQualifier *) _q
+                      withAdaptor: (EOAdaptor *) _adaptor
                          toString: (NSMutableString *) _ms
 {
   id val;
+  EOAttribute *attribute;
   NSString *qKey, *qOperator, *qValue, *qFormat;
   BOOL isCI;
 
@@ -119,9 +129,33 @@
       qValue = [val stringValue];
     else if ([val isKindOfClass: [NSString class]]) {
       if ([(EOKeyValueQualifier *)self formatted])
-        qValue = val;
+        {
+          qValue = val;
+        }
       else
-        qValue = [NSString stringWithFormat: @"'%@'", val];
+        {
+          if (_adaptor)
+            {
+              // Assume qualifier applies to a varchar column type
+              attribute = [EOAttribute new];
+              [attribute setExternalType: @"varchar"];
+              [attribute autorelease];
+
+              if (sel_isEqual([_q selector], EOQualifierOperatorLike) ||
+                  sel_isEqual([_q selector], EOQualifierOperatorCaseInsensitiveLike))
+                {
+                  qValue = [[_adaptor expressionClass] sqlPatternFromShellPattern: val];
+                  qValue = [_adaptor formatValue: qValue
+                                    forAttribute: attribute];
+                }
+              else
+                qValue = [_adaptor formatValue: val
+                                  forAttribute: attribute];
+            }
+          else
+            // No adaptor provided, don't parse value
+            qValue = [NSString stringWithFormat: @"'%@'", val];
+        }
     }
     else {
       qValue = @"NULL";
@@ -155,29 +189,43 @@
 }
 
 - (void) _appendQualifier: (EOQualifier *) _q
+              withAdaptor: (EOAdaptor *) _adaptor
                  toString: (NSMutableString *) _ms
 {
   if (_q == nil) return;
   
   if ([_q isKindOfClass: [EOAndQualifier class]])
     [self _appendAndQualifier: (id)_q
+                  withAdaptor: _adaptor
                      toString: _ms];
   else if ([_q isKindOfClass: [EOOrQualifier class]])
     [self _appendOrQualifier: (id)_q
-                    toString:_ms];
+                 withAdaptor: _adaptor
+                    toString: _ms];
   else if ([_q isKindOfClass: [EOKeyValueQualifier class]])
     [self _appendKeyValueQualifier: (id)_q
-                          toString:_ms];
+                       withAdaptor: _adaptor
+                          toString: _ms];
   else if ([_q isKindOfClass: [EONotQualifier class]])
     [self _appendNotQualifier: (id)_q
-                     toString:_ms];
+                  withAdaptor: (EOAdaptor *) _adaptor
+                     toString: _ms];
   else
     [self errorWithFormat:@"unknown qualifier: %@", _q];
 }
 
-- (void) _gcsAppendToString: (NSMutableString *) _ms
+- (void) appendSQLToString: (NSMutableString *) _ms
 {
   [self _appendQualifier: self
+             withAdaptor: nil
+                toString: _ms];
+}
+
+- (void) appendSQLToString: (NSMutableString *) _ms
+               withAdaptor: (EOAdaptor *) _adaptor
+{
+  [self _appendQualifier: self
+             withAdaptor: _adaptor
                 toString: _ms];
 }
 

@@ -25,6 +25,7 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
+#import <EOControl/EOQualifier.h>
 #import <EOControl/EOSortOrdering.h>
 #import <SaxObjC/XMLNamespaces.h>
 
@@ -450,6 +451,33 @@
 
   return result;
 }
+
+- (NSArray *) lookupContactsWithQualifier: (EOQualifier *) qualifier
+                          andSortOrdering: (EOSortOrdering *) ordering
+                                 inDomain: (NSString *) domain
+{
+  NSArray *records;
+
+  records = nil;
+
+  if ([qualifier count] > 0 || ![source listRequiresDot])
+    {
+      records = [source lookupContactsWithQualifier: qualifier
+                                    andSortOrdering: ordering
+                                           inDomain: domain];
+      records = [self _flattenedRecords: records];
+    }
+
+  return records;
+}
+
+- (void) addVCardProperty: (NSString *) property
+               toCriteria: (NSMutableArray *) criteria
+{
+  [source addVCardProperty: property
+                toCriteria: criteria];
+}
+
 
 - (NSString *) _deduceObjectNameFromURL: (NSString *) url
                             fromBaseURL: (NSString *) baseURL
