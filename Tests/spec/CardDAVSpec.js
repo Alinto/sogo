@@ -163,7 +163,7 @@ describe('CardDAV extensions', function() {
 
   // CARDDAV:addressbook-query Report
   // https://datatracker.ietf.org/doc/html/rfc6352#section-8.6
-  it("supports for addressbook-query on source folder", async function() {
+  xit("supports for addressbook-query on source folder", async function() {
     let vcard, emails
     const ns = DAVNamespaceShorthandMap[DAVNamespace.CARDDAV]
     const response = await davRequest({
