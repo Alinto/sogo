@@ -216,7 +216,6 @@ describe('CardDAV extensions', function() {
       .withContext(`HTTP status code of addressbook-query`)
       .toEqual(207)
 
-    vcard = ICAL.Component.fromString(response[0].props.addressData.toString())
     emails = []
     for (const prop of vcard.getAllProperties('email')) {
       emails.push(prop.getFirstValue())
