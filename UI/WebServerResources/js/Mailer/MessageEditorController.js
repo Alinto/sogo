@@ -380,7 +380,7 @@
     };
 
     this.setFromIdentity = function (identity) {
-      var node, children, nl, reNl, space, signature, previousIdentity;
+      var node, children, nl, reNl, nlNb, space, signature, previousIdentity;
 
       if (identity && identity.full)
         this.message.editable.from = identity.full;
@@ -397,14 +397,20 @@
         space = ' ';
       }
 
+      // One newline above signature when placed at the bottom, two newlines when placed at the top (see HTML templates)
+      if (this.signaturePlacement == 'above')
+        nlNb = 2;
+      else
+        nlNb = 1;
+
       if (identity && identity.signature)
-        signature = nl + nl + '--' + space + nl + identity.signature;
+        signature = nl.repeat(nlNb) + '--' + space + nl + identity.signature;
       else
         signature = '';
 
       previousIdentity = _.find(this.identities, function (currentIdentity, index) {
         if (currentIdentity.signature) {
-          var currentSignature = new RegExp(reNl + reNl + '--' + space + reNl +
+          var currentSignature = new RegExp('(' + reNl + '){' + nlNb + '}--' + space + reNl +
                                             currentIdentity.signature.replace(/[-\[\]{}()*+?.,\\^$|#\s]/g, '\\$&'));
           if (vm.message.editable.text.search(currentSignature) >= 0) {
             vm.message.editable.text = vm.message.editable.text.replace(currentSignature, signature);
@@ -417,7 +423,7 @@
       if (!previousIdentity && signature.length > 0) {
         // Must place signature at proper place
         if (!this.isNew() && this.replyPlacement == 'above' && this.signaturePlacement == 'above') {
-          var quotedMessageIndex = this.message.editable.text.search(new RegExp(reNl + '.+?:( ?' + reNl + '){1,2}(> |<blockquote type="cite")'));
+          var quotedMessageIndex = this.message.editable.text.search(new RegExp(reNl + '.+?:( ?' + reNl + '){' + nlNb + '}(> |<blockquote type="cite")'));
           if (quotedMessageIndex >= 0) {
             this.message.editable.text =
               this.message.editable.text.slice(0, quotedMessageIndex) +
