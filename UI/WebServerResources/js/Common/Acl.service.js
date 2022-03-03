@@ -65,6 +65,9 @@
         });
         deferred.resolve(_this.users);
         return _this.users;
+      }, function(response) {
+        deferred.reject(l(response.statusText));
+        throw Error('No access to object');
       });
     }
     return deferred.promise;
