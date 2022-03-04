@@ -2495,9 +2495,12 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   WORequest *rq;
   WOResponse *response;
   iCalCalendar *rqCalendar;
+  BOOL mustUpdate;
   
   rq = [_ctx request];
   rqCalendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
+  mustUpdate = YES;
+  ex = nil;
 
   // We are unable to parse the received calendar, we return right away
   // with a 400 error code.
@@ -2507,7 +2510,54 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
                                           reason: @"Unable to parse event."];
     }
   
-  if (![self isNew])
+  if ([self isNew])
+    {
+      iCalEvent *masterEvent;
+      SOGoUser *ownerUser;
+
+      ownerUser = [SOGoUser userWithLogin: owner];
+      masterEvent = [[rqCalendar events] objectAtIndex: 0];
+
+      if ([masterEvent userIsAttendee: ownerUser])
+        {
+          ///
+          // This is a new event, but the user is an attendee; check if the event has
+          // already been saved to another calendar.
+          //
+          iCalCalendar *currentCalendar;
+          iCalEvent *currentMasterEvent;
+          NSArray *folders;
+          NSEnumerator *e;
+          SOGoAppointmentFolder *folder;
+          SOGoAppointmentObject *object;
+
+          object = nil;
+          folders = [container lookupCalendarFoldersForUID: owner];
+          e = [folders objectEnumerator];
+          while ( object == nil && (folder = [e nextObject]) )
+            {
+              if (folder != [self container])
+                {
+                  object = [folder lookupName: nameInContainer
+                                    inContext: context
+                                      acquire: NO];
+                  if (![object isKindOfClass: [NSException class]] && ![object isNew])
+                    {
+                      currentCalendar = [object calendar: NO secure: NO];
+                      currentMasterEvent = [[currentCalendar events] objectAtIndex: 0];
+                      if ([[masterEvent sequence] compare: [currentMasterEvent sequence]] == NSOrderedAscending ||
+                          [[masterEvent sequence] isEqualToNumber: [currentMasterEvent sequence]])
+                        // Found older copy in another calendar, delete it
+                        [object delete];
+                      else
+                        // Found a higher sequence, ignore PUT
+                        mustUpdate = NO;
+                    }
+                }
+            }
+        }
+    }
+  else
     {
       //
       // We must check for etag changes prior doing anything since an attendee could
@@ -2518,14 +2568,16 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       if (ex)
         return ex;
     }
-  
-  ex = [self updateContentWithCalendar: rqCalendar fromRequest: rq];
+
+  if (mustUpdate)
+    ex = [self updateContentWithCalendar: rqCalendar fromRequest: rq];
+
   if (ex)
     response = (WOResponse *) ex;
   else
     {
       response = [_ctx response];
-      if (isNew)
+      if (isNew && mustUpdate)
         [response setStatus: 201 /* Created */];
       else
         [response setStatus: 204 /* No Content */];
