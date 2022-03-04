@@ -59,6 +59,7 @@
    Possible vCard properties are:
 
    - EMAIL
+   - MAIL
    - FN
    - N
    - ORG

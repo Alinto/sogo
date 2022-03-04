@@ -341,7 +341,7 @@ Class SOGoContactSourceFolderK;
                              folderWithName: name
                              andDisplayName: srcDisplayName
                                 inContainer: self];
-                  [folder setSource: [um sourceWithID: name]];
+                  [(SOGoContactSourceFolder *)folder setSource: [um sourceWithID: name]];
                 }
               domain = [domains nextObject];
             }

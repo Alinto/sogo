@@ -487,6 +487,7 @@ static NSArray *folderListingFields = nil;
                                                   [self nameFields],  @"fn",
                                                 [self nameFields],    @"n",
                                                 @"c_mail",            @"email",
+                                                @"c_mail",            @"mail",
                                                 @"c_telephonenumber", @"tel",
                                                 @"c_o",               @"org",
                                                 @"c_l",               @"adr",

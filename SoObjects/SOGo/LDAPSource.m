@@ -930,6 +930,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
                                                    @"cn",            @"fn",
                                                  @"cn",              @"n",
                                                  @"mail",            @"email",
+                                                 @"mail",            @"mail",
                                                  @"telephonenumber", @"tel",
                                                  @"o",               @"org",
                                                  @"l",               @"adr",

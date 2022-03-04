@@ -166,6 +166,7 @@
   isValid = ([newString isEqualToString: @"fn"]
              || [newString isEqualToString: @"n"]
              || [newString isEqualToString: @"email"]
+             || [newString isEqualToString: @"mail"]
              || [newString isEqualToString: @"tel"]
              || [newString isEqualToString: @"org"]
              || [newString isEqualToString: @"adr"]);

@@ -743,6 +743,7 @@
                                                   @"c_cn",            @"fn",
                                                 @"c_cn",              @"n",
                                                 @"mail",              @"email",
+                                                @"mail",              @"mail",
                                                 @"c_telephonenumber", @"tel",
                                                 @"c_o",               @"org",
                                                 @"c_l",               @"adr",
