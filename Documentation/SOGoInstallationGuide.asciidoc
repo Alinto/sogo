@@ -236,12 +236,12 @@ For RHEL/CentOS 8
 yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 ----
 
-SOGo relies on the GNUstep packages provided by Inverse and must not use the
+SOGo relies on the GNUstep and ytnef packages provided by Inverse and must not use the
 packages from EPEL. Adjust the repository definition to exclude those packages:
 
 ----
 sed -i '/enabled=1/a \
-  exclude=gnustep*' /etc/yum.repos.d/epel.repo
+  exclude=gnustep* ytnef*' /etc/yum.repos.d/epel.repo
 ----
 
 For more information on EPEL, visit http://fedoraproject.org/wiki/EPEL/.
