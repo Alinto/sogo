@@ -2043,7 +2043,7 @@ static NSString    *userAgent      = nil;
 
       parser = [NGMailAddressParser mailAddressParserWithString: [self sender]];
       parsedSender = [parser parse];
-      emailAddress = [parsedSender address];
+      emailAddress = [[parsedSender address] lowercaseString];
 
       if (![emails containsObject: emailAddress])
         {
