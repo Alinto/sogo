@@ -241,7 +241,7 @@ packages from EPEL. Adjust the repository definition to exclude those packages:
 
 ----
 sed -i '/enabled=1/a \
-  exclude=gnustep*' /etc/yum.repos.d/epel.repo
+  exclude=gnustep* ytnef*' /etc/yum.repos.d/epel.repo
 ----
 
 For more information on EPEL, visit http://fedoraproject.org/wiki/EPEL/.
