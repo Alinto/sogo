@@ -260,6 +260,13 @@
                   <div class="md-margin" md-whiteframe="3">
                     <div class="md-padding" layout="row" layout-wrap="layout-wrap">
                       <div flex="50" flex-xs="100">
+                        <div class="sg-padded--bottom" ng-if="$AccountDialogController.certificate.emails.length">
+                          <div class="md-subhead md-default-theme md-fg md-primary"
+                               ng-bind="::'Email Addresses' | loc"><!-- Email Addresses --></div>
+                          <div class="pseudo-input-field md-body-1"
+                               ng-repeat="email in $AccountDialogController.certificate.emails"
+                               ng-bind="email"><!-- email address --></div>
+                        </div>
                         <div class="md-subhead md-default-theme md-fg md-primary"
                              ng-bind="::'Subject Name' | loc"><!-- Subject Name --></div>
                         <div ng-repeat="field in $AccountDialogController.certificate.subject">

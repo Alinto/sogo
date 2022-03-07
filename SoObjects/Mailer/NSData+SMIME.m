@@ -35,6 +35,8 @@
 #include <openssl/bio.h>
 #include <openssl/err.h>
 #include <openssl/cms.h>
+#include <openssl/x509.h>
+#include <openssl/x509v3.h>
 #include <openssl/pkcs12.h>
 #include <openssl/pem.h>
 #endif
@@ -675,8 +677,17 @@ STACK_OF(X509_ALGOR) *CMS_get_smimecap(CMS_SignerInfo *si)
   if (x)
     {
       NSString *subject, *issuer;
+      NSMutableArray *emails;
+      int j;
+      STACK_OF(OPENSSL_STRING) *emlst;
       char p[1024];
       BIO *buf;
+
+      emails = [NSMutableArray array];
+      emlst = X509_get1_email(x);
+      for (j = 0; j < sk_OPENSSL_STRING_num(emlst); j++)
+          [emails addObject: [[NSString stringWithUTF8String: sk_OPENSSL_STRING_value(emlst, j)] lowercaseString]];
+      X509_email_free(emlst);
 
       memset(p, 0, 1024);
       buf = BIO_new(BIO_s_mem());
@@ -697,6 +708,7 @@ STACK_OF(X509_ALGOR) *CMS_get_smimecap(CMS_SignerInfo *si)
       data = [NSDictionary dictionaryWithObjectsAndKeys:
                              [subject componentsFromMultilineDN], @"subject",
                            [issuer componentsFromMultilineDN], @"issuer",
+                           emails, @"emails",
                            nil];
     }
   else
