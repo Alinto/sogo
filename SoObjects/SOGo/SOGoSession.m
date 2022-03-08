@@ -28,6 +28,7 @@
 #import <GDLContentStore/GCSFolderManager.h>
 
 #import <NGExtensions/NGBase64Coding.h>
+#import <NGExtensions/NSObject+Logs.h>
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -120,7 +121,7 @@
 + (NSString *) generateKeyForLength: (unsigned int) theLength
 {
   char *buf;
-  int fd;
+  int fd, len;
   
   fd = open("/dev/urandom", O_RDONLY);
 
@@ -129,13 +130,14 @@
       NSData *data;
       NSString *s;
 
-      buf = (char *)malloc(theLength);
-      read(fd, buf, theLength);
+      len = (int)theLength/1.33; // base64 encoding will increase length by about 33%
+      buf = (char *)malloc(len);
+      read(fd, buf, len);
       close(fd);
 
       // We encode the bytes in base64 with a line lenght fixed to 1024 since
       // we want to avoid folding the values
-      data = [NSData dataWithBytesNoCopy: buf  length: theLength  freeWhenDone: YES];
+      data = [NSData dataWithBytesNoCopy: buf  length: len  freeWhenDone: YES];
     
       s = [[NSString alloc] initWithData: [data dataByEncodingBase64WithLineLength: 1024]
 			    encoding: NSASCIIStringEncoding];
@@ -162,6 +164,9 @@
   data = [theKey dataByDecodingBase64];
   key = (char *)[data bytes];
   klen = [data length];
+
+  if (klen < [theValue length])
+    [self errorWithFormat: @"Value to be secured is too big (%i > %i) -- secured value will be corrupted", [theValue length], klen, [theKey length]];
 
   // Get the key - padding it with 0 with key length
   pass = (char *) calloc(klen, sizeof(char));

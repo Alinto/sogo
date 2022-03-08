@@ -46,10 +46,13 @@
 #import "SOGoWebAuthenticator.h"
 
 #define COOKIE_SESSIONKEY_LEN 16
-/* the key b64 encoded key XORed with the cookie value
- * must fit in the database field which is 255 char long at the moment
+/**
+   The base64 encoded key XORed with the cookie value. It must fit in the
+   database field which is 4096 char long. The browser cookie limit is
+   about the same. The length is prior to bas64 encoding, so we must calculate
+   a 33-36% increase.
  */
-#define COOKIE_USERKEY_LEN    160
+#define COOKIE_USERKEY_LEN    3000
 
 @implementation SOGoWebAuthenticator
 

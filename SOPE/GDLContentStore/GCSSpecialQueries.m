@@ -189,7 +189,7 @@
   static NSString *sqlFolderFormat
     = (@"CREATE TABLE %@ ("
        @" c_id VARCHAR(255) PRIMARY KEY,"
-       @" c_value VARCHAR(255) NOT NULL,"
+       @" c_value VARCHAR(4096) NOT NULL,"
        @" c_creationdate INT4 NOT NULL,"
        @" c_lastseen INT4 NOT NULL)");
 
@@ -294,7 +294,7 @@
   static NSString *sqlFolderFormat
     = (@"CREATE TABLE %@ (" 
        @" c_id VARCHAR(255) PRIMARY KEY,"
-       @" c_value VARCHAR(255) NOT NULL,"
+       @" c_value VARCHAR(4096) NOT NULL,"
        @" c_creationdate INT NOT NULL,"
        @" c_lastseen INT NOT NULL)");
 
@@ -398,7 +398,7 @@
   static NSString *sqlFolderFormat
     = (@"CREATE TABLE %@ (" 
        @" c_id VARCHAR2(255) PRIMARY KEY,"
-       @" c_value VARCHAR2(255) NOT NULL,"
+       @" c_value VARCHAR2(4096) NOT NULL,"
        @" c_creationdate INTEGER NOT NULL,"
        @" c_lastseen INTEGER NOT NULL)");
 
