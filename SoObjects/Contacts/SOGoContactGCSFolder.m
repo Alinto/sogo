@@ -221,9 +221,9 @@ static NSArray *folderListingFields = nil;
   qualifier = nil;
   if ([filter length] > 0)
     {
-      filter = [filter asSafeSQLLikeString];
+      filter = [[filter asSafeSQLString] stringByReplacingString: @"\%" withString: @"%%"];
       filters = [NSMutableArray array];
-      filterFormat = [NSString stringWithFormat: @"(%%@ isCaseInsensitiveLike: '%%%%%@%%%%')", filter];
+      filterFormat = [NSString stringWithFormat: @"(%%@ isCaseInsensitiveLike: '*%@*')", filter];
       if (criteria)
         criteriaList = [criteria objectEnumerator];
       else

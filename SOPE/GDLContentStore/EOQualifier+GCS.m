@@ -136,7 +136,7 @@
         {
           if (_adaptor)
             {
-              // Assume qualifier applies to a varchar column type
+              // The value is a string, assume qualifier applies to a varchar column type
               attribute = [EOAttribute new];
               [attribute setExternalType: @"varchar"];
               [attribute autorelease];
