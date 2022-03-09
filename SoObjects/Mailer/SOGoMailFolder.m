@@ -1647,13 +1647,24 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
 	  forUser: (NSString *) uid
 {
   NSString *acls, *folderName;
+  NSDictionary *result;
 
   acls = [self _sogoACLsToIMAPACLs: roles];
   folderName = [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]];
-  [[imap4 client] setACL: folderName rights: acls uid: [self _sogoACLUIDToIMAPUID: uid]];
+  result = [[imap4 client] setACL: folderName rights: acls uid: [self _sogoACLUIDToIMAPUID: uid]];
 
   [mailboxACL release];
   mailboxACL = nil;
+
+  if (![[result valueForKey: @"result"] boolValue])
+    {
+      NSException *error;
+
+      error = [NSException exceptionWithName: @"SOGoMailException"
+                                      reason: @"Error while setting roles"
+                                    userInfo: (id)result];
+      [error raise];
+    }
 }
 
 - (NSString *) defaultUserID
