@@ -192,7 +192,27 @@ class TestUtility {
     const vevent = new ICAL.Component('vevent')
     const now = new Date()
     const later = new Date(now.getTime() + 1000*60*60) // event lasts one hour
+    const vtimezone = ICAL.Component.fromString(`BEGIN:VTIMEZONE
+TZID:America/Toronto
+LAST-MODIFIED:20210303T135712Z
+X-LIC-LOCATION:America/Toronto
+BEGIN:DAYLIGHT
+TZNAME:EDT
+TZOFFSETFROM:-0500
+TZOFFSETTO:-0400
+DTSTART:19700308T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZNAME:EST
+TZOFFSETFROM:-0400
+TZOFFSETTO:-0500
+DTSTART:19701101T020000
+RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
+END:STANDARD
+END:VTIMEZONE`)
 
+    vcalendar.addSubcomponent(vtimezone)
     vcalendar.addSubcomponent(vevent)
     vevent.addPropertyWithValue('uid', uid)
     vevent.addPropertyWithValue('summary', summary)

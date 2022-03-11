@@ -463,8 +463,8 @@ describe('CalDAV Scheduling', function() {
     veventException.addPropertyWithValue('transp', 'OPAQUE')
     veventException.addPropertyWithValue('description', 'Exception')
     veventException.addPropertyWithValue('sequence', '1')
-    veventException.addProperty(vevent.getFirstProperty('dtstart'))
-    veventException.addProperty(vevent.getFirstProperty('dtend'))
+    veventException.addProperty(ICAL.Property.fromString(vevent.getFirstProperty('dtstart').toICALString()))
+    veventException.addProperty(ICAL.Property.fromString(vevent.getFirstProperty('dtend').toICALString()))
     // out of laziness, add the exception for the first occurence of the event
     recurrenceId = new ICAL.Property('recurrence-id')
     recurrenceId.setParameter('tzid', originalStartDate.timezone)
@@ -530,14 +530,14 @@ describe('CalDAV Scheduling', function() {
     expect(veventException.getAllProperties('attendee').length).toBe(1)
 
     // 5. Make sure organizer got the accept for the exception and
-	  // that the attendee is still declined in the master
+    // that the attendee is still declined in the master
     attendee = veventException.getAllProperties('attendee')[0]
     expect(attendee.getParameter('partstat'))
       .withContext('Partstat of attendee in the calendar of the organizer')
       .toBe('ACCEPTED')
 
     // 6. delete the attendee from the organizer event (uninvite)
-	  //    The event should be deleted from the attendee's calendar
+    //    The event should be deleted from the attendee's calendar
     vcalendarOrganizer.removeSubcomponent(veventException)
     await _putEvent(webdav, userCalendar, icsName, vcalendarOrganizer, 204)
     await _getEvent(webdavAttendee1, attendee1Calendar, icsName, 404)
@@ -554,7 +554,7 @@ describe('CalDAV Scheduling', function() {
     const icsName = 'test-rrule-invitation-deleted-exdate-dance.ics'
     icsList.push(icsName)
 
-    let summary, uid, rrule, recur, organizer, attendees, attendee, nstartdate, exdate, tzid, timezone, offset
+    let summary, uid, rrule, recur, organizer, attendees, attendee, nstartdate, exdate, tzid, timezone, offset, offsetException
     let vcalendar, vtimezone, vcalendarOrganizer, vcalendarAttendee, vevent, vevents, veventMaster, veventException
 
     await _deleteEvent(webdav, userCalendar + icsName)
@@ -616,6 +616,10 @@ describe('CalDAV Scheduling', function() {
     // 5. Create an exdate in the attendee's calendar
     exdate = nstartdate.convertToZone(ICAL.Timezone.utcTimezone)
     exdate.addDuration(new ICAL.Duration({ days: 2, seconds: -offset }))
+    offsetException = timezone.utcOffset(exdate)
+    if (offset != offsetException)
+      // Adjust for Daylight Saving Time
+      exdate.addDuration(new ICAL.Duration({ seconds: (offset-offsetException) }))
     vevent.addPropertyWithValue('exdate', exdate)
     vevent.removeProperty('last-modified')
     vevent.addProperty(utility.createDateTimeProperty('last-modified'))
