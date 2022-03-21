@@ -186,7 +186,11 @@
 
 - (WOResponse *) removeCertificateAction
 {
-  [[[self clientObject] vCard] setCertificate: nil];
+  SOGoContactGCSEntry *contact;
+
+  contact = [self clientObject];
+  [[contact vCard] setCertificate: nil];
+  [contact save];
 
   return [self responseWith204];
 }

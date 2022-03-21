@@ -575,12 +575,17 @@
    * @desc Remove any S/MIME certificate associated with the account.
    * @returns a promise of the HTTP operation
    */
-  Card.prototype.$removeCertificate = function() {
+  Card.prototype.$removeCertificate = function(immediate) {
     var _this = this;
 
-    return Card.$$resource.fetch(this.$path(), 'removeCertificate').then(function() {
-      _this.hasCertificate = false;
-    });
+    if (immediate) {
+      return Card.$$resource.fetch(this.$path(), 'removeCertificate').then(function() {
+        _this.hasCertificate = false;
+      });
+    }
+    else {
+      this.hasCertificate = false;
+    }
   };
 
   /**

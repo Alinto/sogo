@@ -79,6 +79,11 @@
       focus('org_' + i);
     };
 
+    this.removeCertificate = function (form) {
+      this.card.$removeCertificate();
+      form.$setDirty();
+    };
+
     this.addBirthday = function () {
       this.card.birthday = new Date();
     };

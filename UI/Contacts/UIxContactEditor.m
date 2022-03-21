@@ -240,6 +240,7 @@ static Class SOGoContactGCSEntryK = Nil;
   NSCalendarDate *date;
   CardElement *element;
   id o;
+  BOOL hasCertificate;
 
   unsigned int i, year, month, day;
 
@@ -417,6 +418,10 @@ static Class SOGoContactGCSEntryK = Nil;
           [card addElementWithTag: @"custom4"  ofType: nil  withValue: o];
         }
     }
+
+  hasCertificate = [[attributes objectForKey: @"hasCertificate"] boolValue];
+  if (!hasCertificate)
+    [card setCertificate: nil];
 
   [card cleanupEmptyChildren];
 }
