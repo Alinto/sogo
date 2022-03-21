@@ -43,7 +43,7 @@
 
       // Set the locale of CKEditor
       this.localeCode = Preferences.defaults.LocaleCode;
-      this.ckConfig = { language: Preferences.defaults.LocaleCode };
+      this.ckConfig = { language: Preferences.defaults.ckLocaleCode };
 
       this.composeType = Preferences.defaults.SOGoMailComposeMessageType;
 

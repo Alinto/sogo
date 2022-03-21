@@ -163,6 +163,17 @@
       else
         data.SOGoContactsCategories = _.compact(data.SOGoContactsCategories);
 
+      if (data.LocaleCode) {
+        switch (data.LocaleCode) {
+        case 'sr_ME':
+        case 'sr_RS':
+          data.ckLocaleCode = 'sr-latn';
+          break;
+        default:
+          data.ckLocaleCode = data.LocaleCode.replace('_', '-').toLowerCase();
+        }
+      }
+
       angular.extend(_this.defaults, data);
 
       // Configure date locale

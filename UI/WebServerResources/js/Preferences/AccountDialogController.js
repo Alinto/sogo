@@ -28,7 +28,7 @@
       'toolbar': [['Bold', 'Italic', '-', 'Link',
                    'Font','FontSize','-','TextColor',
                    'BGColor', 'Source']],
-      language: defaults.LocaleCode
+      language: defaults.ckLocaleCode
     };
 
     if (!this.account.encryption)
