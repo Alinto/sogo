@@ -601,7 +601,7 @@
   id etag;
 
   response = [localContext response];
-  contentType = [NSString stringWithFormat: @"%@; charset=utf8",
+  contentType = [NSString stringWithFormat: @"%@; charset=utf-8",
 			  [self davContentType]];
   [response setHeader: contentType forKey: @"content-type"];
   [response appendContentString: [self contentAsString]];
