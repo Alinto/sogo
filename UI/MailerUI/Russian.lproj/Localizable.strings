@@ -187,6 +187,7 @@
 "InboxFolderName"  = "Входящие";
 "DraftsFolderName" = "Черновики";
 "JunkFolderName" = "Спам";
+"TemplatesFolderName" = "Шаблоны";
 "SieveFolderName"  = "Папки";
 "Folders"          = "Папки"; /* title line */
 
@@ -432,6 +433,9 @@
 "Set as Sent" = "Установить как Отправленные";
 "Set as Trash" = "Установить как Корзина";
 
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Установить как Шаблоны";												 
+
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Установить как Спам";
 
@@ -453,6 +457,9 @@
 "Your email has been saved" = "Письмо сохранено";
 "Your email has been sent" = "Письмо отправлено";
 "Folder compacted" = "Папка сжата";
+
+"New draft" = "Новый черновик";
+"Create new draft with this template" = "Создать новый черновик по этому шаблону";						  																		  
 
 /* Advanced search */
 "Enter Subject" = "Введите Тему";
