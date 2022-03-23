@@ -1,6 +1,6 @@
 /* SOGoContactFolders.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2017 Inverse inc.
+ * Copyright (C) 2006-2022 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -423,7 +423,7 @@ Class SOGoContactSourceFolderK;
 {
   NSArray *folders, *contacts, *descriptors, *sortedContacts;
   NSMutableDictionary *contact, *uniqueContacts;
-  NSMutableArray *sortedFolders;
+  NSMutableArray *sortedFolders, *allContacts;
   SOGoFolder <SOGoContactFolder> *folder;
   NSString *mail, *domain;
 
@@ -432,6 +432,10 @@ Class SOGoContactSourceFolderK;
 
   domain = [[context activeUser] domain];
   folders = nil;
+  commonNameDescriptor = [[NSSortDescriptor alloc] initWithKey: @"c_cn"
+                                                     ascending: YES];
+  descriptors = [NSArray arrayWithObjects: commonNameDescriptor, nil];
+  [commonNameDescriptor release];
 
   NS_DURING
     {
@@ -451,7 +455,7 @@ Class SOGoContactSourceFolderK;
 
   max = [folders count];
   sortedFolders = [NSMutableArray arrayWithCapacity: max];
-  uniqueContacts = [NSMutableDictionary dictionary];
+  allContacts = [NSMutableArray array];
 
   for (i = 0; i < max; i++)
     {
@@ -471,6 +475,7 @@ Class SOGoContactSourceFolderK;
                                            sortBy: @"c_cn"
                                          ordering: NSOrderedAscending
                                          inDomain: domain];
+      uniqueContacts = [NSMutableDictionary dictionary];
       for (j = 0; j < [contacts count]; j++)
         {
           contact = [contacts objectAtIndex: j];
@@ -487,20 +492,15 @@ Class SOGoContactSourceFolderK;
                    && !(excludeGroups && [contact objectForKey: @"isGroup"]))
             [uniqueContacts setObject: contact forKey: mail];
         }
+      if ([uniqueContacts count] > 0)
+        {
+          // Sort the matching contacts by display name for the current folder
+          sortedContacts = [[uniqueContacts allValues] sortedArrayUsingDescriptors: descriptors];
+          [allContacts addObjectsFromArray: sortedContacts];
+        }
     }
-  if ([uniqueContacts count] > 0)
-    {
-      // Sort the contacts by display name
-      commonNameDescriptor = [[NSSortDescriptor alloc] initWithKey: @"c_cn"
-                                                         ascending: YES];
-      descriptors = [NSArray arrayWithObjects: commonNameDescriptor, nil];
-      [commonNameDescriptor release];
-      sortedContacts = [[uniqueContacts allValues] sortedArrayUsingDescriptors: descriptors];
-    }
-  else
-    sortedContacts = [NSArray array];
 
-  return sortedContacts;
+  return allContacts;
 }
 
 - (id<SOGoContactObject>) contactForEmail: (NSString *) theEmail
