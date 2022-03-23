@@ -187,6 +187,7 @@
 "InboxFolderName"  = "Входящие";
 "DraftsFolderName" = "Черновики";
 "JunkFolderName" = "Спам";
+"TemplatesFolderName" = "Шаблоны";
 "SieveFolderName"  = "Папки";
 "Folders"          = "Папки"; /* title line */
 
