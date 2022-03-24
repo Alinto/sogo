@@ -177,7 +177,7 @@ static SoSecurityManager *sm = nil;
       [folder setOCSPath: [NSString stringWithFormat: @"%@/%@", OCSPath, folderName]];
       
       if ([folder create])
-      [subFolders setObject: folder forKey: folderName];
+        [subFolders setObject: folder forKey: folderName];
     }
     else if (folderType == SOGoCollectedFolder)
     {

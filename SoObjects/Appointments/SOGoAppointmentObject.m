@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2020 Inverse inc.
+  Copyright (C) 2007-2022 Inverse inc.
 
   This file is part of SOGo
 
@@ -151,7 +151,8 @@
           if (possibleName)
             {
               object = [folder lookupName: possibleName
-                                inContext: context acquire: NO];
+                                inContext: context
+                                  acquire: NO];
               if ([object isKindOfClass: [NSException class]] || [object isNew])
                 object = nil;
             }
@@ -163,10 +164,9 @@
   if (!object)
     {
       // Create the event in the user's personal calendar.
-      folder = [[SOGoUser userWithLogin: uid]
-                 personalCalendarFolderInContext: context];
+      folder = [[SOGoUser userWithLogin: uid] personalCalendarFolderInContext: context];
       object = [SOGoAppointmentObject objectWithName: nameInContainer
-				                                 inContainer: folder];
+                                         inContainer: folder];
       [object setIsNew: YES];
     }
 
@@ -2528,6 +2528,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
           iCalEvent *currentMasterEvent;
           NSArray *folders;
           NSEnumerator *e;
+          NSString *organizerUID;
           SOGoAppointmentFolder *folder;
           SOGoAppointmentObject *object;
 
@@ -2553,6 +2554,20 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
                         // Found a higher sequence, ignore PUT
                         mustUpdate = NO;
                     }
+                }
+            }
+
+          // Verify if the event is still present in the organizer calendar
+          organizerUID = [[masterEvent organizer] uidInContext: context];
+          if (organizerUID)
+            {
+              object = [self _lookupEvent: [masterEvent uid]
+                                   forUID: organizerUID];
+              if ([object isNew])
+                {
+                  // The event has vanished
+                  return [NSException exceptionWithDAVStatus: 412
+                                                      reason: @"Precondition Failed"];
                 }
             }
         }
