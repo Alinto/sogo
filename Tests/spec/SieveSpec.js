@@ -119,7 +119,7 @@ describe('Sieve', function() {
       '0' + tomorrow.getDate()
     ].map(component => component.slice(-2)).join('-')
     const startTime = '17:00'
-    const timezone = (user.timezone < 0 ? '-':'') + ('000' + Math.abs(user.timezone)).slice(-4)
+    const timezone = (user.timezone < 0 ? '-':'+') + ('000' + Math.abs(user.timezone)).slice(-4)
     const sieveVacationConstraints = `require ["vacation","date","relational"];\r\nif allof ( currentdate :value "ge" "date" "${startDate}", date :value "ge" :zone "${timezone}" "date" "time" "${startTime}:00" ) { vacation :days ${daysInterval} :addresses ["${mailaddr}"] text:\r\n${vacationMsg}\r\n.\r\n;\r\n}\r\n`
     let vacation
 
