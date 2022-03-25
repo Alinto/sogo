@@ -2518,7 +2518,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       ownerUser = [SOGoUser userWithLogin: owner];
       masterEvent = [[rqCalendar events] objectAtIndex: 0];
 
-      if ([masterEvent userIsAttendee: ownerUser])
+      if (![masterEvent userIsOrganizer: ownerUser] && [masterEvent userIsAttendee: ownerUser])
         {
           ///
           // This is a new event, but the user is an attendee; check if the event has
