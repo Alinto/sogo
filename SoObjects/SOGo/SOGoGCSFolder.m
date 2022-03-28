@@ -1659,8 +1659,9 @@ static NSArray *childRecordFields = nil;
   NSArray *records, *acls;
   NSString *qs;
 
-  // We look for the exact uid or any uid that begins with "@" (corresponding to groups)
-  qs = [NSString stringWithFormat: @"(c_object = '/%@') AND (c_uid = '%@' OR c_uid LIKE '@%%')",
+  // We look for the exact uid or any uid that begins with "@" (corresponding to groups).
+  // Notice that we use a wildcard operator that will be converted to SQL in [EOQualifier+GCS _appendKeyValueQualifier:withAdaptor:toString:]
+  qs = [NSString stringWithFormat: @"(c_object = '/%@') AND (c_uid = '%@' OR c_uid LIKE '@*')",
                  objectPath, uid];
   qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
   records = [[self ocsFolder] fetchAclMatchingQualifier: qualifier];
