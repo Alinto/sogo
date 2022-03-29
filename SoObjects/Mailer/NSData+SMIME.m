@@ -1,6 +1,6 @@
 /* NSData+SMIME.m - this file is part of SOGo
  *
- * Copyright (C) 2017-2019 Inverse inc.
+ * Copyright (C) 2017-2022 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -104,7 +104,14 @@
 
   if (!cms)
     {
-      NSLog(@"FATAL: failed to sign message.");
+      NSString *error;
+      const char* sslError;
+      int err;
+
+      err = ERR_get_error();
+      sslError = ERR_reason_error_string(err);
+      error = [NSString stringWithUTF8String: sslError];
+      NSLog(@"FATAL: failed to sign message: %@", error);
       goto cleanup;
     }
 
