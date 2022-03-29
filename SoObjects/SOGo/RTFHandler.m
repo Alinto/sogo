@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2005-2013 Inverse inc.
+  Copyright (C) 2005-2022 Inverse inc.
 
   This file is part of SOGo.
 
@@ -22,6 +22,8 @@
 #include "RTFHandler.h"
 #include <Foundation/NSValue.h>
 #include <Foundation/NSException.h>
+
+#import <NGExtensions/NSString+misc.h>
 
 //
 // Useful macros
@@ -1456,7 +1458,7 @@ inline static void parseUl(RTFHandler *self, BOOL hasArg, int arg, RTFFormatting
               else
                 active_charset = defaultCharset;
 
-              s = [NSString stringWithCharacters: &(active_charset[c])  length: 1];
+              s = [[NSString stringWithCharacters: &(active_charset[c])  length: 1] stringByEscapingHTMLString];
               d = [s dataUsingEncoding: NSUTF8StringEncoding];
               [_html appendData: d];
             }
