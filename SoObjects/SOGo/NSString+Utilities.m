@@ -38,6 +38,7 @@ static NSMutableCharacterSet *urlAfterEndingChars = nil;
 static NSMutableCharacterSet *schemaStartChars = nil;
 static NSMutableCharacterSet *emailStartChars = nil;
 
+static NSMutableCharacterSet *jsonEscapingChars = NULL;
 static NSString **cssEscapingStrings = NULL;
 static unichar *cssEscapingCharacters = NULL;
 static int cssEscapingCount;
@@ -45,8 +46,8 @@ static int cssEscapingCount;
 @implementation NSString (SOGoURLExtension)
 
 - (NSString *) composeURLWithAction: (NSString *) action
-			 parameters: (NSDictionary *) urlParameters
-			    andHash: (BOOL) useHash
+                         parameters: (NSDictionary *) urlParameters
+                            andHash: (BOOL) useHash
 {
   NSMutableString *completeURL;
 
@@ -78,10 +79,8 @@ static int cssEscapingCount;
   else
     {
       hostR = [self rangeOfString: @"://"];
-      locationR = [[self substringFromIndex: (hostR.location + hostR.length)]
-                    rangeOfString: @"/"];
-      newURL = [self substringFromIndex: (hostR.location + hostR.length
-					  + locationR.location)];
+      locationR = [[self substringFromIndex: (hostR.location + hostR.length)] rangeOfString: @"/"];
+      newURL = [self substringFromIndex: (hostR.location + hostR.length + locationR.location)];
     }
 
   return newURL;
@@ -107,13 +106,11 @@ static int cssEscapingCount;
   int start, length;
   NSRange workRange;
 
-//       [urlNonEndingChars addCharactersInString: @">&=,.:;\t \r\n"];
-//       [urlAfterEndingChars addCharactersInString: @"()[]{}&;<\t \r\n"];
   start = refRange.location;
   if (start > 0)
     start--; // Start with the character before the refRange
   while (start > -1
-	 && [startChars characterIsMember:
+         && [startChars characterIsMember:
                    [self characterAtIndex: start]])
     start--;
   start++;
@@ -127,13 +124,13 @@ static int cssEscapingCount;
 
   length -= start;
   workRange = [self rangeOfCharacterFromSet: urlAfterEndingChars
-		    options: NSLiteralSearch range: NSMakeRange (start, length)];
+                                    options: NSLiteralSearch range: NSMakeRange (start, length)];
   if (workRange.location != NSNotFound)
     length = workRange.location - start;
   while
     (length > 0
      && [urlNonEndingChars characterIsMember:
-			     [self characterAtIndex: (start + length - 1)]])
+                      [self characterAtIndex: (start + length - 1)]])
     length--;
 
   // Remove trailing ">"
@@ -145,10 +142,10 @@ static int cssEscapingCount;
 }
 
 - (void) _handleURLs: (NSMutableString *) selfCopy
-	 textToMatch: (NSString *) match
+         textToMatch: (NSString *) match
       urlPrefixChars: (NSCharacterSet *) startChars
-	      prefix: (NSString *) prefix
-	    inRanges: (NSMutableArray *) ranges
+              prefix: (NSString *) prefix
+            inRanges: (NSMutableArray *) ranges
 {
   NSEnumerator *enumRanges;
   NSMutableArray *newRanges;
@@ -219,7 +216,7 @@ static int cssEscapingCount;
     {
       schemaStartChars = [NSMutableCharacterSet new];
       [schemaStartChars addCharactersInString: @"abcdefghijklmnopqrstuvwxyz"
-		     @"ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+                        @"ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
     }
   if (!emailStartChars)
     {
@@ -233,12 +230,12 @@ static int cssEscapingCount;
   ranges = [NSMutableArray array];
   selfCopy = [NSMutableString stringWithString: self];
   [self _handleURLs: selfCopy
-	textToMatch: @"://"
+        textToMatch: @"://"
      urlPrefixChars: schemaStartChars
              prefix: @""
            inRanges: ranges];
   [self _handleURLs: selfCopy
-	textToMatch: @"@"
+        textToMatch: @"@"
      urlPrefixChars: emailStartChars
              prefix: @"mailto:"
            inRanges: ranges];
@@ -249,19 +246,51 @@ static int cssEscapingCount;
 
 - (NSString *) asSafeJSString
 {
-  NSMutableString *representation;
+  NSRange esc;
 
-  representation = [NSMutableString stringWithString: self];
-  [representation replaceString: @"\\" withString: @"\\\\"];
-  [representation replaceString: @"\"" withString: @"\\\""];
-  [representation replaceString: @"/" withString: @"\\/"];
-  [representation replaceString: @"\f" withString: @"\\f"];
-  [representation replaceString: @"\n" withString: @"\\n"];
-  [representation replaceString: @"\r" withString: @"\\r"];
-  [representation replaceString: @"\t" withString: @"\\t"];
-  [representation replaceString: @"\0" withString: @""];
+  if (!jsonEscapingChars)
+    {
+      jsonEscapingChars = [[NSMutableCharacterSet characterSetWithRange: NSMakeRange(0,32)] retain];
+      [jsonEscapingChars addCharactersInString: @"\"\\"];
+    }
 
-  return representation;
+  esc = [self rangeOfCharacterFromSet: jsonEscapingChars];
+  if (!esc.length)
+    {
+      // No special chars
+      return self;
+    }
+  else
+    {
+      NSMutableString *representation;
+      NSUInteger length, i;
+      unichar uc;
+
+      representation = [NSMutableString string];
+
+      length = [self length];
+      for (i = 0; i < length; i++)
+        {
+          uc = [self characterAtIndex:i];
+          switch (uc)
+            {
+            case '"':   [representation appendString:@"\\\""];  break;
+            case '\\':  [representation appendString:@"\\\\"];  break;
+            case '\t':  [representation appendString:@"\\t"];   break;
+            case '\n':  [representation appendString:@"\\n"];   break;
+            case '\r':  [representation appendString:@"\\r"];   break;
+            case '\b':  [representation appendString:@"\\b"];   break;
+            case '\f':  [representation appendString:@"\\f"];   break;
+            default:
+              if (uc < 0x20)
+                [representation appendFormat:@"\\u%04x", uc];
+              else
+                [representation appendFormat: @"%C", uc];
+              break;
+            }
+        }
+      return representation;
+    }
 }
 
 - (NSString *) doubleQuotedString
@@ -307,7 +336,7 @@ static int cssEscapingCount;
       c = buf[i];
 
       if (c == 0x0 ||
-	  c == 0x9 ||
+          c == 0x9 ||
           c == 0xA ||
           (c >= 0x20 && c < 0x300) || // Skip combining diacritical marks
           (c > 0x36F && c < 0xD7FF) ||
@@ -403,25 +432,25 @@ static int cssEscapingCount;
             }
         default:
           /* escape big chars */
-        if (chars[i] > 127)
-          {
-            unsigned char nbuf[32];
-            unsigned int k;
+          if (chars[i] > 127)
+            {
+              unsigned char nbuf[32];
+              unsigned int k;
 
-            sprintf((char *)nbuf, "&#%i;", (int)chars[i]);
-            for (k = 0; nbuf[k] != '\0'; k++)
-              {
-                buf[j] = nbuf[k];
-                j++;
-              }
-          }
-        else if (chars[i] == 0x9 || chars[i] == 0xA || chars[i] == 0xD || chars[i] >= 0x20)
-          { // ignore any unsupported control character
-            /* nothing to escape */
-            buf[j] = chars[i];
-            j++;
-          }
-        break;
+              sprintf((char *)nbuf, "&#%i;", (int)chars[i]);
+              for (k = 0; nbuf[k] != '\0'; k++)
+                {
+                  buf[j] = nbuf[k];
+                  j++;
+                }
+            }
+          else if (chars[i] == 0x9 || chars[i] == 0xA || chars[i] == 0xD || chars[i] >= 0x20)
+            { // ignore any unsupported control character
+              /* nothing to escape */
+              buf[j] = chars[i];
+              j++;
+            }
+          break;
         }
     }
 
@@ -601,7 +630,7 @@ static int cssEscapingCount;
 
 - (NSString *) asQPSubjectString: (NSString *) encoding
 {
-   return [NGMimeHeaderFieldGenerator encodeQuotedPrintableText: self];
+  return [NGMimeHeaderFieldGenerator encodeQuotedPrintableText: self];
 }
 
 - (BOOL) caseInsensitiveMatches: (NSString *) match
@@ -771,12 +800,12 @@ static int cssEscapingCount;
 
   if (![self hasPrefix: oldPrefix])
     [NSException raise: NSInvalidArgumentException
-                 format: @"string does not have the specified prefix"];
+                format: @"string does not have the specified prefix"];
 
   oldPrefixLength = [oldPrefix length];
   newString = [NSString stringWithFormat: @"%@%@",
                         newPrefix,
-                        [self substringFromIndex: oldPrefixLength]];
+                [self substringFromIndex: oldPrefixLength]];
   
   return newString;
 }
