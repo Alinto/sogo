@@ -44,11 +44,18 @@
 "Add default email addresses" = "Dodaj privzete e-poštne naslove";
 "Days between responses" = "Dnevi med odzivi";
 "Do not send responses to mailing lists" = "Ne pošlji odzivov na poštne sezname";
+"Activation Constraints" = "Omejitve aktivacije";
 "Enable auto reply on" = "Omogoči samodejni odgovor na";
 "First day of vacation" = "Prvi dan odsotnosti";
 "Disable auto reply on" = "Onemogoči samodejni odgovor na";
 "Last day of vacation" = "Zadnji dan odsotnosti";
 "Enter date" = "Vnesi datum";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Omogoči samodejni odgovor ob";
+"Enter time" = "Čas";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Onemogoči samodejni odgovor ob";
+"Enable auto reply on these days" = "Omogoči samodejni odgovor ob dnevih";
 "Always send vacation message response" = "Vedno pošlji sporočilo o odsotnosti";
 "The vacation message is sent prior to apply your filters." = "Sporočilo o odsotnosti ima prednost pred ostalimi filtri.";
 "Discard incoming mails during vacation" = "Prezri prejeta sporočila v času odsotnosti";
@@ -194,6 +201,10 @@
 "displayremoteinlineimages_always" = "Vedno";
 "Auto save every" = "Samodejno shrani vsake";
 "minutes" = "minute";
+"Automatically mark messages as read" = "Samodejno označi sporočila kot prebrana";
+"Immediately on display" = "Takoj na ogled";
+"After displaying for" = "Po prikazu za";
+"seconds" = "sekunde";
 
 /* Contact */
 "Personal Address Book" = "Osebni imenik";
@@ -462,8 +473,8 @@
 "animation_NONE" = "Nobena";
 
 /* 2FA */
-"Enable two-factor authentication using a TOTP application" = "Omogoči dvojno stopnjo prijave z uporabo Google Authenticator aplikacije";
-"You must enter this key into your TOTP application." = "Prosimo, da prikazan ključ vnesete v vašo Google Authenticator aplikacijo.";
+"Enable two-factor authentication using a TOTP application" = "Omogoči two-factor authentication z uporabo TOTP aplikacije";
+"You must enter this key into your TOTP application." = "Ta ključ je potrebno vnesti v TOTP aplikacijo.";
 "If you do not and you log out you will not be able to login again." = "Če ne, se ob naslednji prijavi ne boste uspeli vpisati.";
 
 /* External Sieve scripts */

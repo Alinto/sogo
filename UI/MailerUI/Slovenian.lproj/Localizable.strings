@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "Ustvari";
 "Empty Trash" = "Izprazni koš";
+"Empty Junk Folder" = "Izprazni mapo Nezaželena pošta";
 "Delete"      = "Briši";
 "Expunge"     = "Izbriši";
 "Forward"     = "Posreduj";
@@ -73,8 +74,13 @@
 "An error occured while communicating with the mail server" = "Prišlo je do napake pri komunikaciji s poštnim strežnikom";
 
 /* Mailbox actions */
+
 /* Compact Folder success message */
 "Folder compacted" = "Mapa je stisnjena";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Mapa Nezaželena pošta izpraznjena";
+
 /* Empty Trash success message */
 "Trash emptied" = "Smeti so izpraznjene";
 
@@ -82,7 +88,7 @@
 "Access rights to" = "Pravice za dostop";
 "For user" = "Za uporabnika";
 "Any Authenticated User" = "Katerikoli preverjeni uporabnik";
-"List and see this folder" = "Izlistaj in preglej to mapo";
+"View this folder" = "Ogled mape";
 "Read mails from this folder" = "Preberi pošto iz te mape";
 "Mark mails read and unread" = "Označi pošto za prebrano in neprebrano";
 "Modify the flags of the mails in this folder" = "Spremeni zastavico za pošto v tej mapi";
@@ -166,12 +172,22 @@
 "Mark Read"   = "Označi prebrano";
 "Untitled" = "Brez naslova";
 
+/* Filter option in messages list */
+"Show unread messages only" = "Prikaži neprebrana sporočila";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Pikaži označena sporočila";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Filtriraj po oznaki";
+
 /* Tree */
 "SentFolderName"   = "Poslano";
 "TrashFolderName"  = "Koš";
 "InboxFolderName"  = "Prejeto";
 "DraftsFolderName" = "Osnutki";
 "JunkFolderName" = "Nezaželeno";
+"TemplatesFolderName" = "Predloga";
 "SieveFolderName"  = "Filtri";
 "Folders"          = "Mape"; /* title line */
 
@@ -230,6 +246,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Spremeni v opravilo";
 
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Prenesi sporočilo";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Prenesi sporočilo (zip)";
+
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "Prenesi vse priloge";
 
@@ -251,6 +273,12 @@
 /* Number of selected messages in list */
 "selected" = "označeni";
 
+/* Date formatting from one time to another time */
+"to_time" = "za";
+
+/* Date formatting from one day to another day */
+"to_date" = "za";
+
 /* Encrypted message notification */
 "This message is encrypted" = "To sporočilo je šifrirano";
 
@@ -269,11 +297,14 @@
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Noben certifikat ni povezan z računom.";
 
-/* Invalid message signature */
+/* Invalid S/MIME signature */
 "Digital signature is not valid" = "Digitalni podpis ni veljaven";
 
-/* Valid message signature */
+/* Valid S/MIME signature */
 "Message is signed" = "Sporočilo je podpisano";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Sporočilo je podpisano, vendar se potrdilo ne ujema z e-poštnim naslovom pošiljatelja";
 
 /* Unknown error while validating message signature */
 "Digital signature is not valid" = "Digitalni podpis ni veljaven";
@@ -313,6 +344,7 @@
 "Operation failed" = "Dejanje ni uspelo";
 "Quota" = "Kvota:";
 "quotasFormat" = "%{0}% zasedeno od %{1} MB";
+"messageQuotasFormat" = "%{0}% od %{1} sporočil";
 "Unable to move/delete folder." = "Nemogoče je premakniti/zbrisati mapo.";
 
 /* Alternative operation when folder cannot be deleted */
@@ -359,6 +391,12 @@
 "Send Anyway" = "Pošlji vseeno";
 "Error while saving the draft" = "Napaka pri shranjevanju osnutka";
 
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Smetnjaka ni mogoče izprazniti.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Neželene mape ni mogoče izprazniti.";
+
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Napaka pri nalaganju datoteke \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Nalaganje datoteke je aktivno. Zapiranje okna ga bo prekinilo.";
@@ -373,6 +411,9 @@
 "cannot send message: (smtp) all recipients discarded" = "Ne morem poslati sporočila: vsi prejemniki so napačni.";
 "cannot send message (smtp) - recipients discarded" = "Ne morem poslati sporočila. Naslednji naslovi so napačni";
 "cannot send message: (smtp) error when connecting" = "Ne morem poslati sporočila: napaka pri povezavi s SMTP strežnikom.";
+"cannot sign email without certificate" = "Sporočila ni mogoče podpisati, ker poštni račun nima potrdila.";
+"cannot sign message because the certificate can't be read" = "Sporočila ni mogoče podpisati, ker potrdila, povezanega z e-poštnim računom, ni mogoče prebrati.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "Sporočila ni mogoče podpisati, ker naslov pošiljatelja ni vključen v potrdilo, povezano z poštnim računom.";
 
 /* Contacts list in mail editor */
 "Email" = "E-pošta";
@@ -391,6 +432,9 @@
 "Set as Drafts" = "Označi kot osnutek";
 "Set as Sent" = "Označi kot poslano";
 "Set as Trash" = "Označi kot smeti";
+
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Shrani kot predloge";
 
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Označi kot nezaželeno";
@@ -413,6 +457,9 @@
 "Your email has been saved" = "Vaša pošta je bila shranjena";
 "Your email has been sent" = "Vaša pošta je bila poslana";
 "Folder compacted" = "Mapa je stisnjena";
+
+"New draft" = "Nov osnutek";
+"Create new draft with this template" = "Ustvarite nov osnutek s to predlogo";
 
 /* Advanced search */
 "Enter Subject" = "Vnesi zadevo";

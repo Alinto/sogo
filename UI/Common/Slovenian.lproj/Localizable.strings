@@ -41,6 +41,8 @@
      = "Kdorkoli na internetu bo imel možnost dostopa do vašega imenika \"%{0}\" tudi, če nima računa na tem sistemu. Je ta informacija primerna za javni internet?";
 "Give Access" = "Daj dostop";
 "Keep Private" = "Obdrži osebno";
+"Expand" = "Razširi";
+"Reduce" = "Skrči";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -122,11 +124,17 @@
 "S/MIME Certificate" = "S/MIME Certifikat";
 "Subject Name" = "Zadeva";
 "Issuer" = "Izdajatelj";
+"streetAddress" = "Ulica";
+"stateOrProvinceName" = "Regija";
+"localityName" = "Kraj";
 "countryName" = "Država";
 "organizationName" = "Organizacija";
 "organizationalUnitName" = "Organizacijska enota";
 "commonName" = "Skupno ime";
+"surname" = "Priimek";
+"givenName" = "Ime";
 "emailAddress" = "Poštni naslov";
+
 
 /* Authentication username */
 "Username" = "Uporabniško ime";

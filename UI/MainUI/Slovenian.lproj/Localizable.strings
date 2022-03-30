@@ -24,8 +24,9 @@
 
 /* 2FA */
 "Verification Code" = "Potrditvena koda";
-"Enter the 6-digit verification code from your TOTP application." = "Vnesite 6 mestno potrditveno številko iz Google Authenticator aplikacije.";
-"You provided an invalid TOTP key." = "Vnesena številka je napačna.";
+"Enter the 6-digit verification code from your TOTP application." = "Vnesite 6 mestno kodo iz TOTP aplikacije. ";
+"You provided an invalid TOTP key." = "Vnesli ste napačen TOTP ključ.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Two-factor authentication je bil onemogočen. Pojdite pod nastavitve kjer lahko omogočite two-factor authentication in nastavite vašo TOTP aplikacijo.";
 
 "Download" = "Prenos";
 "Language" = "Jezik";
