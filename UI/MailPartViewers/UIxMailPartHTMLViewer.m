@@ -299,7 +299,7 @@ _xmlCharsetForCharset (NSString *charset)
            attributes: (id <SaxAttributes>) _attributes
 {
   unsigned int count, max;
-  NSString *name, *value, *cid, *lowerName;
+  NSString *name, *value, *cid, *lowerName, *lowerValue;
   NSMutableString *resultPart;
   BOOL skipAttribute;
 
@@ -371,13 +371,19 @@ _xmlCharsetForCharset (NSString *charset)
                   name = [NSString stringWithFormat: @"unsafe-%@", name];
                 }
               else if ([name isEqualToString: @"href"]
-                       || [name isEqualToString: @"action"])
+                       || [name isEqualToString: @"action"]
+                       || [name isEqualToString: @"formaction"])
                 {
                   value = [_attributes valueAtIndex: count];
-                  skipAttribute = ([value rangeOfString: @"://"].location
-                                   == NSNotFound
-                                   && ![value hasPrefix: @"mailto:"]
-                                   && ![value hasPrefix: @"#"]);
+                  lowerValue = [[value lowercaseString] stringByReplacingString: @"\""
+                                                                     withString: @""];
+                  skipAttribute =
+                    ([lowerValue rangeOfString: @"://"].location == NSNotFound
+                     && ![lowerValue hasPrefix: @"mailto:"]
+                     && ![lowerValue hasPrefix: @"#"])
+                    || [lowerValue rangeOfString: @"javascript:"].location != NSNotFound;
+                  if (!skipAttribute)
+                    [resultPart appendString: @" rel=\"noopener\""];
                 }
               // Avoid: <div style="background:url('http://www.sogo.nu/fileadmin/sogo/logos/sogo.bts.png' ); width: 200px; height: 200px;" title="ssss">
               else if ([name isEqualToString: @"style"])
