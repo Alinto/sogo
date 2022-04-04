@@ -776,7 +776,7 @@
   if (channel)
     {
       lowerFilter = [filter lowercaseString];
-      lowerFilter = [lowerFilter stringByReplacingString: @"'"  withString: @"''"];
+      lowerFilter = [lowerFilter asSafeSQLLikeString];
 
       sql = [NSMutableString stringWithFormat: (@"SELECT *"
                                          @" FROM %@"

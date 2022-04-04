@@ -1,7 +1,7 @@
 /* SOGoGCSFolder.m - this file is part of SOGo
  *
  * Copyright (C) 2004-2005 SKYRIX Software AG
- * Copyright (C) 2006-2014 Inverse inc.
+ * Copyright (C) 2006-2022 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1369,42 +1369,19 @@ static NSArray *childRecordFields = nil;
                                      withToken: (int) syncToken
                                     andBaseURL: (NSString *) baseURL
 {
-  static NSString *status[] = { @"HTTP/1.1 404 Not Found",
-                                @"HTTP/1.1 201 Created",
-                                @"HTTP/1.1 200 OK" };
   NSMutableArray *children;
   NSString *href;
-  unsigned int statusIndex;
 
   children = [NSMutableArray arrayWithCapacity: 3];
-  href = [NSString stringWithFormat: @"%@%@",
-                   baseURL, [record objectForKey: @"c_name"]];
-  [children addObject: davElementWithContent (@"href", XMLNS_WEBDAV,
-                                              href)];
-  if (syncToken)
-    {
-      if ([[record objectForKey: @"c_deleted"] intValue] > 0)
-        statusIndex = 0;
-      else
-        {
-          if ([[record objectForKey: @"c_creationdate"] intValue]
-              >= syncToken)
-            statusIndex = 1;
-          else
-            statusIndex = 2;
-        }
-    }
-  else
-    statusIndex = 1;
+  href = [NSString stringWithFormat: @"%@%@", baseURL, [record objectForKey: @"c_name"]];
+  [children addObject: davElementWithContent (@"href", XMLNS_WEBDAV, href)];
 
-  //   NSLog (@"webdav sync: %@ (%@)", href, status[statusIndex]);
-  [children addObject: davElementWithContent (@"status", XMLNS_WEBDAV,
-                                              status[statusIndex])];
-  if (statusIndex)
-    [children
-      addObjectsFromArray: [self _davPropstatsWithProperties: properties
-                                          andMethodSelectors: selectors
-                                                  fromRecord: record]];
+  if ([[record objectForKey: @"c_deleted"] intValue] > 0)
+    [children addObject: davElementWithContent (@"status", XMLNS_WEBDAV, @"HTTP/1.1 404 Not Found")];
+  else
+    [children addObjectsFromArray: [self _davPropstatsWithProperties: properties
+                                                  andMethodSelectors: selectors
+                                                          fromRecord: record]];
 
   return davElementWithContent (@"response", XMLNS_WEBDAV, children);
 }
@@ -1513,6 +1490,10 @@ static NSArray *childRecordFields = nil;
   return valid;
 }
 
+/**
+   DAV:sync-collection Report
+   https://datatracker.ietf.org/doc/html/rfc6578#section-3.2
+*/
 - (WOResponse *) davSyncCollection: (WOContext *) localContext
 {
   WOResponse *r;
@@ -1948,8 +1929,8 @@ static NSArray *childRecordFields = nil;
   if (sqlFilter)
     {
       filterString = [NSMutableString stringWithCapacity: 8192];
-      [filterString appendFormat: @"(c_name='%@')",
-                    [cNames componentsJoinedByString: @"' OR c_name='"]];
+      [filterString appendFormat: @"(c_name = '%@')",
+                    [cNames componentsJoinedByString: @"' OR c_name = '"]];
       if ([sqlFilter length] > 0)
         [filterString appendFormat: @" AND (%@)", sqlFilter];
       qualifier = [EOQualifier qualifierWithQualifierFormat: filterString];
@@ -1989,10 +1970,9 @@ static NSArray *childRecordFields = nil;
   components = [NSMutableArray arrayWithCapacity: max];
   for (count = 0; count < max; count++)
     {
-      currentName = [cNames objectAtIndex: count];
+      currentName = [[cNames objectAtIndex: count] asSafeSQLString];
       queryNameLength = idQueryOverhead + [currentName length];
-      if ((currentSize + queryNameLength)
-	  > maxQuerySize)
+      if ((currentSize + queryNameLength) > maxQuerySize)
 	{
 	  records = [self _fetchComponentsWithNames: currentNames fields: fields];
 	  [components addObjectsFromArray: records];
@@ -2003,8 +1983,11 @@ static NSArray *childRecordFields = nil;
       currentSize += queryNameLength;
     }
 
-  records = [self _fetchComponentsWithNames: currentNames fields: fields];
-  [components addObjectsFromArray: records];
+  if ([currentNames count])
+    {
+      records = [self _fetchComponentsWithNames: currentNames fields: fields];
+      [components addObjectsFromArray: records];
+    }
 
 //   NSLog (@"/fetching components matching names");
 
@@ -2304,6 +2287,10 @@ static NSArray *childRecordFields = nil;
   NSZoneFree (NULL, propertiesArray);
 }
 
+/**
+   CALDAV:calendar-multiget REPORT
+   https://datatracker.ietf.org/doc/html/rfc4791#section-7.9
+ */
 - (WOResponse *) performMultigetInContext: (WOContext *) queryContext
                               inNamespace: (NSString *) namespace
 {

@@ -65,43 +65,43 @@
 /* accessors */
 
 - (void)setTooltip {
-  self->formatAction = @selector(tooltipForApt::);
+  self->formatAction = @selector(tooltipForApt:_refDate:);
 }
 
 - (void)setSingleLineFullDetails {
-  self->formatAction = @selector(singleLineFullDetailsForApt::);
+  self->formatAction = @selector(singleLineFullDetailsForApt:_refDate:);
 }
 
 - (void)setFullDetails {
-  self->formatAction = @selector(fullDetailsForApt::);
+  self->formatAction = @selector(fullDetailsForApt:_refDate:);
 }
 
 - (void)setPrivateTooltip {
-  self->formatAction = @selector(tooltipForPrivateApt::);
+  self->formatAction = @selector(tooltipForPrivateApt:_refDate:);
 }
 
 - (void)setPrivateDetails {
-  self->formatAction = @selector(detailsForPrivateApt::);
+  self->formatAction = @selector(detailsForPrivateApt:_refDate:);
 }
 
 - (void)setTitleOnly {
-  self->formatAction = @selector(titleForApt::);
+  self->formatAction = @selector(titleForApt:_refDate:);
 }
 
 - (void)setShortTitleOnly {
-  self->formatAction = @selector(shortTitleForApt::);
+  self->formatAction = @selector(shortTitleForApt:_refDate:);
 }
 
 - (void)setShortMonthTitleOnly {
-  self->formatAction = @selector(shortMonthTitleForApt::);
+  self->formatAction = @selector(shortMonthTitleForApt:_refDate:);
 }
 
 - (void)setPrivateSuppressAll {
-  self->formatAction = @selector(suppressApt::);
+  self->formatAction = @selector(suppressApt:_refDate:);
 }
 
 - (void)setPrivateTitleOnly {
-  self->formatAction = @selector(titleOnlyForPrivateApt::);
+  self->formatAction = @selector(titleOnlyForPrivateApt:_refDate:);
 }
 
 - (void)setPrivateTitle:(NSString *)_privateTitle {
@@ -218,7 +218,7 @@
 
 - (NSString *)titleForApt:(id)_apt :(NSCalendarDate *)_refDate {
   NSString *title;
-  
+
   title = [_apt valueForKey:@"title"];
   if (![title isNotEmpty])
     title = [self titlePlaceholder];
@@ -227,11 +227,11 @@
 
 - (NSString *)shortTitleForApt:(id)_apt :(NSCalendarDate *)_refDate {
   NSString *title;
-  
+
   title = [self titleForApt:_apt :_refDate];
   if ([title length] > 50)
     title = [[title substringToIndex: 49] stringByAppendingString:@"..."];
-  
+
   return title;
 }
 
@@ -248,14 +248,14 @@
   [self appendTimeInfoForDate: startDate usingReferenceDate: nil
         toBuffer: title];
   [title appendFormat: @" %@", [self titleForApt:_apt :_refDate]];
-  
+
   return title;
 }
 
 - (NSString *)singleLineFullDetailsForApt:(id)_apt :(NSCalendarDate *)_refDate {
   NSMutableString *aptDescr;
   NSString        *s;
-  
+
   aptDescr = [NSMutableString stringWithCapacity:60];
   [self appendTimeInfoFromApt:_apt
         usingReferenceDate:_refDate
@@ -288,7 +288,7 @@
   s = [self shortTitleForApt: _apt : _refDate];
   if ([s length] > 0)
     [aptDescr appendFormat:@"<br />%@", s];
-  
+
   return aptDescr;
 }
 
@@ -311,7 +311,7 @@
                                      : (NSCalendarDate *) _refDate
 {
   NSString *s;
-  
+
   s = [self privateTitle];
   if (!s)
     s = @"";
@@ -348,11 +348,11 @@
 {
   NSMutableString *aptDescr;
   NSString *s;
-  
+
   aptDescr = [NSMutableString stringWithCapacity: 25];
   [self appendTimeInfoFromApt: _apt
         usingReferenceDate: _refDate
-        toBuffer: aptDescr];  
+        toBuffer: aptDescr];
   if ((s = [self privateTitle]) != nil)
     [aptDescr appendFormat:@"\n%@", s];
 

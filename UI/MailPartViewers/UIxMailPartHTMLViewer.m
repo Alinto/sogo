@@ -299,7 +299,7 @@ _xmlCharsetForCharset (NSString *charset)
            attributes: (id <SaxAttributes>) _attributes
 {
   unsigned int count, max;
-  NSString *name, *value, *cid, *lowerName;
+  NSString *name, *value, *cid, *lowerName, *lowerValue;
   NSMutableString *resultPart;
   BOOL skipAttribute;
 
@@ -340,7 +340,8 @@ _xmlCharsetForCharset (NSString *charset)
             {
               skipAttribute = NO;
               name = [[_attributes nameAtIndex: count] lowercaseString];
-              if ([name hasPrefix: @"ON"])
+              if ([name hasPrefix: @"on"])
+                // on Events
                 skipAttribute = YES;
               else if ([name isEqualToString: @"src"])
                 {
@@ -370,13 +371,19 @@ _xmlCharsetForCharset (NSString *charset)
                   name = [NSString stringWithFormat: @"unsafe-%@", name];
                 }
               else if ([name isEqualToString: @"href"]
-                       || [name isEqualToString: @"action"])
+                       || [name isEqualToString: @"action"]
+                       || [name isEqualToString: @"formaction"])
                 {
                   value = [_attributes valueAtIndex: count];
-                  skipAttribute = ([value rangeOfString: @"://"].location
-                                   == NSNotFound
-                                   && ![value hasPrefix: @"mailto:"]
-                                   && ![value hasPrefix: @"#"]);
+                  lowerValue = [[value lowercaseString] stringByReplacingString: @"\""
+                                                                     withString: @""];
+                  skipAttribute =
+                    ([lowerValue rangeOfString: @"://"].location == NSNotFound
+                     && ![lowerValue hasPrefix: @"mailto:"]
+                     && ![lowerValue hasPrefix: @"#"])
+                    || [lowerValue rangeOfString: @"javascript:"].location != NSNotFound;
+                  if (!skipAttribute)
+                    [resultPart appendString: @" rel=\"noopener\""];
                 }
               // Avoid: <div style="background:url('http://www.sogo.nu/fileadmin/sogo/logos/sogo.bts.png' ); width: 200px; height: 200px;" title="ssss">
               else if ([name isEqualToString: @"style"])
@@ -385,39 +392,6 @@ _xmlCharsetForCharset (NSString *charset)
                   if ([value rangeOfString: @"url" options: NSCaseInsensitiveSearch].location != NSNotFound)
                     name = [NSString stringWithFormat: @"unsafe-%@", name];
                 }
-	      else if (
-		       // Mouse Events
-		       [name isEqualToString: @"onclick"] ||
-		       [name isEqualToString: @"ondblclick"] ||
-		       [name isEqualToString: @"onmousedown"] ||
-		       [name isEqualToString: @"onmousemove"] ||
-		       [name isEqualToString: @"onmouseout"] ||
-		       [name isEqualToString: @"onmouseup"] ||
-		       [name isEqualToString: @"onmouseover"] ||
-
-		       // Keyboard Events
-		       [name isEqualToString: @"onkeydown"] ||
-		       [name isEqualToString: @"onkeypress"] ||
-		       [name isEqualToString: @"onkeyup"] ||
-
-		       // Frame/Object Events
-		       [name isEqualToString: @"onabort"] ||
-		       [name isEqualToString: @"onerror"] ||
-		       [name isEqualToString: @"onload"] ||
-		       [name isEqualToString: @"onresize"] ||
-		       [name isEqualToString: @"onscroll"]  ||
-		       [name isEqualToString: @"onunload"] ||
-
-		       // Form Events
-		       [name isEqualToString: @"onblur"] ||
-		       [name isEqualToString: @"onchange"] ||
-		       [name isEqualToString: @"onfocus"] ||
-		       [name isEqualToString: @"onreset"] ||
-		       [name isEqualToString: @"onselect"] ||
-		       [name isEqualToString: @"onsubmit"]) 
-		{
-		  skipAttribute = YES;
-		}
               else
                 value = [_attributes valueAtIndex: count];
               

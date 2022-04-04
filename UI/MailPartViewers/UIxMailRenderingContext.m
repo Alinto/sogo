@@ -47,8 +47,7 @@
 
   s = [[info objectForKey:@"disposition"] objectForKey: @"type"];
 
-  shouldDisplay = (s && ([s caseInsensitiveCompare: @"ATTACHMENT"]
-			 == NSOrderedSame));
+  shouldDisplay = (s && ([s caseInsensitiveCompare: @"ATTACHMENT"] == NSOrderedSame));
   
   if (!shouldDisplay && !textPart)
     shouldDisplay = ([[info objectForKey: @"bodyId"] length] ? YES : NO);
@@ -216,7 +215,7 @@ static BOOL showNamedTextAttachmentsInline = NO;
   // TIFF files aren't well-supported and Thunderbird sometimes send PDF
   // files over as image/pdf !
   if ([mt isEqualToString:@"image"] &&
-      !([st isEqualToString: @"tiff"] || [st isEqualToString: @"pdf"]))
+      !([st isEqualToString: @"tiff"] || [st isEqualToString: @"pdf"] || [st hasSuffix: @"xml"]))
     {
       if ([self _shouldDisplayAsAttachment: _info textPart: NO])
 	return [self linkViewer];

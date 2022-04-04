@@ -2329,17 +2329,6 @@ function readCookie(name) {
     return foundCookie;
 }
 
-function readLoginCookie() {
-    var loginValues = null;
-    var cookie = readCookie("0xHIGHFLYxSOGo");
-    if (cookie && cookie.length > 8) {
-        var value = decodeURIComponent(cookie.substr(8));
-        loginValues = value.base64decode().split(":");
-    }
-
-    return loginValues;
-}
-
 /* logging widgets */
 function SetLogMessage(containerId, message, msgType) {
     var container = $(containerId);

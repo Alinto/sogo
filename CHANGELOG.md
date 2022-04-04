@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.4.2](https://github.com/inverse-inc/sogo/compare/SOGo-2.4.1...SOGo-2.4.2) (2022-04-04)
+
+### Bug Fixes
+
+* **calendar(dav):** add DAV:status to DAV:response only when deleted ([9bffee2](https://github.com/inverse-inc/sogo/commit/9bffee269d0479927d32bb8371c732509f062d88)), closes [#5163](https://www.sogo.nu/bugs/view.php?id=5163)
+* **calendar(dav):** add method attribute to content-type of iTIP reply ([3e96d68](https://github.com/inverse-inc/sogo/commit/3e96d68f308d59a5497807e29dfc8d7df8f2393b)), closes [#5320](https://www.sogo.nu/bugs/view.php?id=5320)
+* **core:** add security flags to cookies (HttpOnly, secure) ([0f3d7dc](https://github.com/inverse-inc/sogo/commit/0f3d7dc6bcb9457e91c93e89def0310e63e81f3d)), closes [#4525](https://www.sogo.nu/bugs/view.php?id=4525)
+* **core:** fix GCC 10 compatibility ([dc4fdb2](https://github.com/inverse-inc/sogo/commit/dc4fdb2d5a7c354f72b21ecfbfde306dd2c9c532)), closes [#5029](https://www.sogo.nu/bugs/view.php?id=5029)
+* **core:** only escape "%" with the SQL LIKE operator ([2389e44](https://github.com/inverse-inc/sogo/commit/2389e4451376862db3b54e2319716615177ea063))
+* **eas:** gcc v10 compat fixes (fixes [#5029](https://www.sogo.nu/bugs/view.php?id=5029)) ([3d2e5ad](https://github.com/inverse-inc/sogo/commit/3d2e5adee83a87ba5141cc329d8a0ad25a9c2b73))
+* **mail(css):** restrict the viewport of the message body viewer ([e528096](https://github.com/inverse-inc/sogo/commit/e528096b10f2702e5c948a8d1e53169ce65a1466))
+* **mail(html):** ban "javascript:" prefix in href, action and formaction ([dd7dd49](https://github.com/inverse-inc/sogo/commit/dd7dd49641fcf24f58c2edd7ca84f7e061cb32d9))
+* **mail(js):** ban all "on*" events attributes from HTML tags ([f38eded](https://github.com/inverse-inc/sogo/commit/f38eded701fff37f570c91a2c5c62075a0ebe439))
+* **mail:** don't allow XML inline attachments ([3c85dbd](https://github.com/inverse-inc/sogo/commit/3c85dbd74dc845dae8d5e992fb673575e171074b))
+
 ## [2.4.1](https://github.com/inverse-inc/sogo/compare/SOGo-2.4.0...SOGo-2.4.1) (2021-06-01)
 
 ### Bug Fixes
