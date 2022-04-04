@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2005-2013 Inverse inc.
+  Copyright (C) 2005-2022 Inverse inc.
   Copyright (C) 2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -425,7 +425,8 @@ DIV.mailer_mailcontent
   left: 0px;
   right: 0px;
   bottom: 0px;
-  overflow: auto; }
+  overflow: auto;
+  transform: translateX(0); }
 
 DIV.mailer_mailcontent TABLE
 {
