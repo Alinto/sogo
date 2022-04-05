@@ -46,6 +46,18 @@
 
 @implementation NSData (SOGoMailSMIME)
 
+- (void) logSSLError: (NSString *) message
+{
+  NSString *error;
+  const char* sslError;
+  int err;
+
+  err = ERR_get_error();
+  sslError = ERR_reason_error_string(err);
+  error = [NSString stringWithUTF8String: sslError];
+  NSLog(@"%@: %@", message, error);
+}
+
 //
 //
 //
@@ -78,7 +90,7 @@
 
   if (!scert)
     {
-      NSLog(@"FATAL: failed to read certificate for signing.");
+      [self logSSLError: @"FATAL: failed to read certificate for signing"];
       goto cleanup;
     }
 
@@ -92,7 +104,7 @@
 
   if (!skey)
     {
-      NSLog(@"FATAL: failed to read private key for signing.");
+      [self logSSLError: @"FATAL: failed to read private key for signing"];
       goto cleanup;
     }
 
@@ -104,14 +116,7 @@
 
   if (!cms)
     {
-      NSString *error;
-      const char* sslError;
-      int err;
-
-      err = ERR_get_error();
-      sslError = ERR_reason_error_string(err);
-      error = [NSString stringWithUTF8String: sslError];
-      NSLog(@"FATAL: failed to sign message: %@", error);
+      [self logSSLError: @"FATAL: failed to sign message"];
       goto cleanup;
     }
 
@@ -164,7 +169,7 @@
   tbio = BIO_new_mem_buf((void *)bytes, len);
   if (!tbio)
     {
-      NSLog(@"FATAL: unable to allocate BIO memory");
+      [self logSSLError: @"FATAL: unable to allocate BIO memory"];
       goto cleanup;
     }
 
@@ -174,7 +179,7 @@
 
   if (!rcert)
     {
-      NSLog(@"FATAL: unable to read certificate for encryption");
+      [self logSSLError: @"FATAL: unable to read certificate for encryption"];
       goto cleanup;
     }
 
@@ -182,7 +187,7 @@
 
   if (!recips || !sk_X509_push(recips, rcert))
     {
-      NSLog(@"FATAL: unable to push certificate into stack");
+      [self logSSLError: @"FATAL: unable to push certificate into stack"];
       goto cleanup;
     }
 
@@ -253,7 +258,7 @@
 
   if (!cms)
     {
-      NSLog(@"FATAL: unable to encrypt message");
+      [self logSSLError: @"FATAL: unable to encrypt message"];
       goto cleanup;
     }
 
@@ -261,7 +266,7 @@
   obio = BIO_new(BIO_s_mem());
   if (!SMIME_write_CMS(obio, cms, sbio, flags))
     {
-      NSLog(@"FATAL: unable to write CMS output");
+      [self logSSLError: @"FATAL: unable to write CMS output"];
       goto cleanup;
     }
 
@@ -309,7 +314,7 @@
 
   if (!scert)
     {
-      NSLog(@"FATAL: could not read certificate for decryption");
+      [self logSSLError: @"FATAL: could not read certificate for decryption"];
       goto cleanup;
     }
 
@@ -319,7 +324,7 @@
 
   if (!skey)
     {
-      NSLog(@"FATAL: could not read private key for decryption");
+      [self logSSLError: @"FATAL: could not read private key for decryption"];
       goto cleanup;
     }
 
@@ -331,7 +336,7 @@
 
   if (!cms)
     {
-      NSLog(@"FATAL: could not read the content to be decrypted");
+      [self logSSLError: @"FATAL: could not read the content to be decrypted"];
       goto cleanup;
     }
 
@@ -340,7 +345,7 @@
 
   if (!CMS_decrypt(cms, skey, scert, NULL, obio, 0))
     {
-      NSLog(@"FATAL: could not decrypt content");
+      [self logSSLError: @"FATAL: could not decrypt content"];
       goto cleanup;
     }
 
@@ -409,7 +414,7 @@
 
   if (!cms)
     {
-      NSLog(@"FATAL: could not read the signature");
+      [self logSSLError: @"FATAL: could not read the signature"];
       goto cleanup;
     }
 
@@ -418,7 +423,7 @@
 
   if (!CMS_verify(cms, NULL, NULL, NULL, obio, CMS_NOVERIFY|CMS_NOSIGS))
     {
-      NSLog(@"FATAL: could not extract content");
+      [self logSSLError: @"FATAL: could not extract content"];
       goto cleanup;
     }
 
@@ -480,13 +485,13 @@
 
   if (!p12)
     {
-      NSLog(@"FATAL: could not read PKCS12 content");
+      [self logSSLError: @"FATAL: could not read PKCS12 content"];
       goto cleanup;
     }
 
   if (!PKCS12_parse(p12, [thePassword UTF8String], &pkey, &cert, &ca))
     {
-      NSLog(@"FATAL: could not parse PKCS12 certificate with provided password");
+      [self logSSLError: @"FATAL: could not parse PKCS12 certificate with provided password"];
       return nil;
     }
 
@@ -548,7 +553,7 @@
 
   if (!cms)
     {
-      NSLog(@"FATAL: could not read CMS content");
+      [self logSSLError: @"FATAL: could not read CMS content"];
       goto cleanup;
     }
 
@@ -630,7 +635,7 @@ STACK_OF(X509_ALGOR) *CMS_get_smimecap(CMS_SignerInfo *si)
 
   if (!cms)
     {
-      NSLog(@"FATAL: could not read CMS content");
+      [self logSSLError: @"FATAL: could not read CMS content"];
       goto cleanup;
     }
 
@@ -720,15 +725,7 @@ STACK_OF(X509_ALGOR) *CMS_get_smimecap(CMS_SignerInfo *si)
     }
   else
     {
-      NSString *error;
-      const char* sslError;
-      int err;
-
-      err = ERR_get_error();
-      ERR_load_crypto_strings();
-      sslError = ERR_reason_error_string(err);
-      error = [NSString stringWithUTF8String: sslError];
-      NSLog(@"FATAL: failed to read certificate: %@", error);
+      [self logSSLError: @"FATAL: failed to read certificate"];
     }
 
   return data;
