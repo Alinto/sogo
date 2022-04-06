@@ -68,6 +68,8 @@
 
 /* forward messages */
 "Forward incoming messages" = "Forward incoming messages";
+"Always forward" = "Always forward";
+"Incoming messages are forwarded prior to apply your filters." = "Incoming messages are forwarded prior to apply your filters.";
 "Keep a copy" = "Keep a copy";
 "Enter an email" = "Enter an email";
 "Add another email" = "Add another email";

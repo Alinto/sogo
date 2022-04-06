@@ -1250,6 +1250,16 @@
 
                 <div>
                   <md-checkbox
+                      ng-model="app.preferences.defaults.Forward.alwaysSend"
+                      ng-true-value="1"
+                      ng-false-value="0">
+                    <var:string label:value="Always forward"/>
+                    <div class="sg-hint"><var:string label:value="Incoming messages are forwarded prior to apply your filters."/></div>
+                  </md-checkbox>
+                </div>
+
+                <div>
+                  <md-checkbox
                       ng-model="app.preferences.defaults.Forward.keepCopy"
                       ng-true-value="1"
                       ng-false-value="0">
