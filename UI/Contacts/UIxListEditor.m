@@ -1,6 +1,6 @@
 /* UIxListEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2008-2020 Inverse inc.
+ * Copyright (C) 2008-2022 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,10 @@
  */
 
 
+#import <Foundation/NSAutoreleasePool.h>
+
+#import <NGExtensions/NSNull+misc.h>
+
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
@@ -27,6 +31,7 @@
 #import <NGCards/NGVCardReference.h>
 #import <NGCards/NGVList.h>
 
+#import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 
@@ -166,8 +171,9 @@
 
 - (void) setReferences: (NSArray *) references
 {
+  NSAutoreleasePool *pool;
   NSDictionary *values;
-  NSArray *initialReferences, *emails;
+  NSArray *initialReferences, *refs, *emails;
   NSDictionary *currentReference;
   NSString *uid, *workMail, *fn, *newUID;
   int i, count;
@@ -179,10 +185,12 @@
   // Remove from the list the cards that were deleted
   initialReferences = [list cardReferences];
   count = [initialReferences count];
+  refs = [references objectsForKey: @"id"
+                    notFoundMarker: [NSNull null]];
   for (i = 0; i < count; i++)
     {
       cardReference = [initialReferences objectAtIndex: i];
-      if (![references containsObject: [cardReference reference]])
+      if (![refs containsObject: [cardReference reference]])
         [list deleteCardReference: cardReference];
     }
 
@@ -190,6 +198,7 @@
 
   // Add new cards
   count = [references count];
+  pool = [[NSAutoreleasePool alloc] init];
 
   for (i = 0; i < count; i++)
     {
@@ -249,6 +258,11 @@
                 }
 	    }
 	}
+      if (i > 0 && i % 10 == 0)
+        {
+          [pool release];
+          pool = [[NSAutoreleasePool alloc] init];
+        }
     }
 }
 

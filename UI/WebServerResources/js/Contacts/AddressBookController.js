@@ -427,8 +427,9 @@
     };
 
     this.newListWithSelectedCards = function() {
+      var _this = this;
       var selectedCards = _.filter(this.selectedFolder.$cards, function(card) { return card.selected; });
-      var promises = [], refs = [];
+      var promises = [], ids = [], refs = [];
 
       _.forEach(selectedCards, function(card) {
         if (card.$isList({expandable: true})) {
@@ -451,7 +452,16 @@
         else if (card.$$email && card.$$email.length) {
           refs.push(card);
         }
+        else if (!card.$loaded) {
+          refs.push(card);
+          ids.push(card.id);
+        }
       });
+
+      if (ids.length) {
+        var futureHeadersData = AddressBook.$$resource.post(this.selectedFolder.id, 'headers', {ids: ids});
+        promises.push(_this.selectedFolder.$unwrapHeaders(futureHeadersData));
+      }
 
       $q.all(promises).then(function() {
         refs = _.uniqBy(_.map(refs, function(o) {
