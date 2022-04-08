@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2017 Inverse inc.
+  Copyright (C) 2007-2022 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -1162,7 +1162,7 @@ static BOOL debugSoParts       = NO;
   NSArray *parts;
   Class clazz;
 
-  int part;
+  int partIndex;
 
   if ([self isEncrypted])
     {
@@ -1178,11 +1178,24 @@ static BOOL debugSoParts       = NO;
           id part;
 
           m = [[self content] messageFromEncryptedDataAndCertificate: certificate];
+          part = nil;
 
-          part = [[[m body] parts] objectAtIndex: ([_key intValue]-1)];
-          mimeType = [[part contentType] stringValue];
-          clazz = [SOGoMailBodyPart bodyPartClassForMimeType: mimeType
-                                                   inContext: _ctx];
+          partIndex = [_key intValue] - 1;
+          parts = [[m body] parts];
+          if (partIndex > -1 && partIndex < [parts count])
+            part = [parts objectAtIndex: partIndex];
+          if (part)
+            {
+              mimeType = [[part contentType] stringValue];
+              clazz = [SOGoMailBodyPart bodyPartClassForMimeType: mimeType
+                                                       inContext: _ctx];
+            }
+          else
+            {
+              [self logWithFormat: @"Lookup of body part %@ failed for encrypted message (%i parts found)", _key, [parts count]];
+              clazz = Nil;
+            }
+
           return [clazz objectWithName:_key inContainer: self];
         }
     }
@@ -1192,11 +1205,25 @@ static BOOL debugSoParts       = NO;
       id part;
 
       m = [[self content] messageFromOpaqueSignedData];
+      part = nil;
 
-      part = [[[m body] parts] objectAtIndex: ([_key intValue]-1)];
-      mimeType = [[part contentType] stringValue];
-      clazz = [SOGoMailBodyPart bodyPartClassForMimeType: mimeType
-                                               inContext: _ctx];
+      partIndex = [_key intValue] - 1;
+      parts = [[m body] parts];
+
+      if (partIndex > -1 && partIndex < [parts count])
+        part = [parts objectAtIndex: partIndex];
+      if (part)
+        {
+          mimeType = [[part contentType] stringValue];
+          clazz = [SOGoMailBodyPart bodyPartClassForMimeType: mimeType
+                                                   inContext: _ctx];
+        }
+      else
+        {
+          [self logWithFormat: @"Lookup of body part %@ failed for signed message (%i parts found)", _key, [parts count]];
+          clazz = Nil;
+        }
+
       return [clazz objectWithName:_key inContainer: self];
     }
 
@@ -1211,9 +1238,9 @@ static BOOL debugSoParts       = NO;
     }
   else
     {
-      part = [_key intValue] - 1;
-      if (part > -1 && part < [parts count])
-	partDesc = [parts objectAtIndex: part];
+      partIndex = [_key intValue] - 1;
+      if (partIndex > -1 && partIndex < [parts count])
+	partDesc = [parts objectAtIndex: partIndex];
       else
 	partDesc = nil;
     }
