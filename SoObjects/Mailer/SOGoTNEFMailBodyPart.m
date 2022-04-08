@@ -825,8 +825,14 @@ unsigned char GetRruleMonthNum(unsigned char a, unsigned char b) {
   ASSIGN (part, newPart);
   if (newPart)
     {
+      NSMutableDictionary *info;
+
+      info = [NSMutableDictionary dictionaryWithDictionary: [newPart bodyInfo]];
+      if ([newPart encoding])
+        [info setObject: [newPart encoding]
+                 forKey: @"encoding"];
       [self setFilename: [[newPart bodyInfo] filename]];
-      [self setPartInfo: [newPart bodyInfo]];
+      [self setPartInfo: info];
     }
   else
     {
@@ -883,6 +889,10 @@ unsigned char GetRruleMonthNum(unsigned char a, unsigned char b) {
   // Content-Type
   [map setObject: [NSString stringWithFormat: @"%@/%@", _type, _subtype]
           forKey: @"content-type"];
+
+  // Encoding
+  [map setObject: @"utf-8"
+          forKey: @"content-transfer-encoding"];
 
   /* prepare body content */
 
