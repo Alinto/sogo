@@ -68,6 +68,8 @@
 
 /* forward messages */
 "Forward incoming messages" = "Transférer les messages entrant";
+"Always forward" = "Toujours transférer";
+"Incoming messages are forwarded prior to apply your filters." = "Le courrier entrant est transféré d'appliquer vos filtres.";
 "Keep a copy" = "Garder une copie";
 "Enter an email" = "Adresse de courriel";
 "Add another email" = "Ajouter un courriel";
