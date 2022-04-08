@@ -37,6 +37,7 @@
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
+#import <NGCards/iCalToDo.h>
 #import <NGCards/iCalRepeatableEntityObject.h>
 #import <NGMime/NGMimeBodyPart.h>
 #import <NGMime/NGMimeMultipartBody.h>
@@ -140,6 +141,16 @@
     }
 
   return aclManager;
+}
+
+- (void) setIsNew: (BOOL) newIsNew
+{
+  [super setIsNew: newIsNew];
+}
+
+- (BOOL) isNew
+{
+  return [super isNew];
 }
 
 - (NSException *) changeParticipationStatus: (NSString *) newPartStat
@@ -755,7 +766,7 @@
   [headerMap setObject: @"quoted-printable"
                 forKey: @"content-transfer-encoding"];
   bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
-  [bodyPart setBody: [objectData dataByEncodingQuotedPrintable]];
+  [bodyPart setBody: objectData];
 
   return bodyPart;
 }
