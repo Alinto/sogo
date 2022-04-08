@@ -1,5 +1,11 @@
 # Changelog
 
+### [2.4.3](https://github.com/inverse-inc/sogo/compare/SOGo-2.4.2...SOGo-2.4.3) (2022-04-08)
+
+### Bug Fixes
+
+* **mail:** don't encode calendar mime part twice ([0757429](https://github.com/inverse-inc/sogo/commit/07574297cd4961223afe0c60e7a639166d907e75)), closes [#5391](https://www.sogo.nu/bugs/view.php?id=5391) [#5393](https://www.sogo.nu/bugs/view.php?id=5393)
+
 ## [2.4.2](https://github.com/inverse-inc/sogo/compare/SOGo-2.4.1...SOGo-2.4.2) (2022-04-04)
 
 ### Bug Fixes
