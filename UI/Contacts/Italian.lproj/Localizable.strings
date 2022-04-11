@@ -13,7 +13,7 @@
 "Contact editor" = "Editor dei contatti";
 "Contact viewer" = "Visulizzatore dei contatti";
 "Email" = "Email";
-"Screen Name" = "Nome Instant Messeger";
+"Screen Name" = "Nome visualizzato";
 "Extended" = "Nome completo";
 "Fax" = "Fax";
 "Firstname" = "Nome";
@@ -27,6 +27,9 @@
 "OfficePhone" = "Telefono ufficio";
 "Organization" = "Società";
 "Work Phone" = "Telefono di lavoro";
+"Cell" = "Cell";
+"Pager" = "Cerca Persone";
+"Pref" = "Pref";
 "Phone" = "Telefono";
 "Phones" = "Telefoni";
 "Postal" = "CAP";
@@ -160,7 +163,7 @@
 "htmlMailFormat_UNKNOWN" = "Sconosciuto";
 "htmlMailFormat_FALSE" = "Testo normale";
 "htmlMailFormat_TRUE" = "HTML";
-"Name or Email" = "Nome o Indirizzo Email";
+"Name or Email" = "Nome o Email";
 "Category" = "Categoria";
 "Personal Addressbook" = "Rubrica personale";
 "Search in Addressbook" = "Cerca nella Rubrica";
@@ -177,7 +180,7 @@
 "Please wait..." = "Attendere prego...";
 "No possible subscription" = "Nessuna sottoscrizione possibile";
 "Preferred" = "Preferito";
-"Display" = "Nome visualizzato";
+"Display" = "Visualizza";
 "Display Name" = "Nome Visualizzato";
 "Additional Email" = "Email aggiuntiva";
 "Phone Number" = "Numero di Telefono";
@@ -218,7 +221,7 @@
 "New Addressbook..." = "Nuova rubrica...";
 "Subscribe to an Addressbook..." = "Sottoscrivi una Rubrica...";
 "Remove the selected Addressbook" = "Rimuovi la Rubrica selezionata";
-"Subscribe to a shared folder" = "Sottoscrivi una cartella condivisa";
+"Subscribe to a shared contact" = "Sottoscrivi una rubrica condivisa";
 "Search User" = "Cerca utente";
 "Name of the Address Book" = "Nome della rubrica";
 "Are you sure you want to delete the selected address book?"
@@ -226,9 +229,9 @@
 "Are you sure you want to delete the addressbook \"%{0}\"?"
 = "Sei sicuro di voler cancellare la rubrica \"%{0}\"?";
 "You cannot remove nor unsubscribe from a public addressbook."
-= "Non puoi rimuovere una rubrica pubblica.";
+= "Non è possibile rimuovere o annullare l'iscrizione da una rubrica pubblica.";
 "You cannot remove nor unsubscribe from your personal addressbook."
-= "Non puoi rimuovere la tua rubrica personale.";
+= "Non è possibile rimuovere o annullare l'iscrizione dalla propria rubrica personale.";
 "Are you sure you want to delete the selected contacts?"
 = "Sei sicuro di voler eliminare i contatti selezionati?";
 "Are you sure you want to delete the card of %{0}?" = "Sei sicuro di voler cancellare il contatto di %{0}?";
@@ -238,6 +241,12 @@
 = "Non puoi sottoscrivere una cartella di cui sei proprietario.";
 "Unable to subscribe to that folder!"
 = "Non puoi sottoscrivere questa cartella.";
+
+/* security */
+"Security" = "Sicurezza";
+"Uninstall" = "Disinstalla";
+"Error reading the card certificate." = "Errore durante la lettura del certificato del contatto.";
+"No certificate associated to card." = "Nessun certificato associato al contatto.";
 
 /* acls */
 "Access rights to" = "Permessi di accesso a";
@@ -282,8 +291,8 @@
 /* Import */
 "Import Cards" = "Importa Contatti";
 "Select a vCard or LDIF file." = "Seleziona una vCard o LDIF file.";
-"Upload" = "Upload";
-"Uploading" = "Uploading";
+"Upload" = "Caricare";
+"Uploading" = "Caricamento";
 "Done" = "Fatto";
 "An error occured while importing contacts." = "Si è verificato un errore durante l'importazione dei contatti.";
 "No card was imported." = "Nessun contatto importato.";
@@ -297,7 +306,7 @@
 "CardDAV URL" = "CardDAV URL";
 "Options" = "Opzioni";
 "Rename" = "Rinomina";
-"Subscriptions" = "Sottosrizioni";
+"Subscriptions" = "Sottoscrizioni";
 "Global Addressbooks" = "Rubrica Globale";
 "Search" = "Cerca";
 "Sort" = "Ordinare";
@@ -309,7 +318,7 @@
 "New Contact" = "Nuovo Contatto";
 "Close" = "Chiudi";
 "More contact options" = "Altre opzioni contatto";
-"Organization Unit" = "Unità societarie";
+"Organization Unit" = "Unità organizzativa";
 "Add Organizational Unit" = "Aggiungi unità societaria";
 "Type" = "Tipo";
 "Email Address" = "Indirizzo Email";
@@ -317,13 +326,13 @@
 "New Phone Number" = "Nuovo Numero di Telefono";
 "URL" = "URL";
 "New URL" = "Nuovo URL";
-"street" = "via";
+"street" = "indirizzo";
 "street (continued)" = "indirizzo (continua)";
 "Postoffice" = "Casella Postale";
 "Region" = "Regione";
 "Postal Code" = "Codice Postale";
 "New Address" = "Nuovo Indirizzo";
-"Reset" = "Azzerare";
+"Reset" = "Resettare";
 "Description" = "Descrizione";
 "Add Member" = "Aggiungi Membro";
 "Subscribe" = "Sottoscrivi";
@@ -331,7 +340,7 @@
 "Import" = "Importa";
 "More options" = "Altre opzioni";
 "Role" = "Ruolo";
-"Add Screen Name" = "Aggiungi Instant Messanger";
+"Add Screen Name" = "Aggiungi Nome Visualizzato";
 "Custom 1" = "Personalizzato 1";
 "Custom 2" = "Personalizzato 2";
 "Custom 3" = "Personalizzato 3";
@@ -340,13 +349,14 @@
 "New Custom Value" = "Nuovo Valore Personalizzato";
 "Synchronization" = "Sincronizzazione";
 "Synchronize" = "Sincronizza";
-"Sucessfully subscribed to address book" = "Sottoscrizione ad una rubrica effettuata correttamente";
+"Sucessfully subscribed to address book" = "Iscrizione alla rubrica effettuata con successo";
+"A similar card already exists. Would you like to save it anyway?" = "Una scheda simile esiste già. Vuoi salvarla comunque?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Ambito di ricerca";
 
 /* Aria label for avatar button to select and unselect a card */
-"Toggle item" = "Azioni elemento";
+"Toggle item" = "Alternare elemento";
 
 /* Hotkey to create a new card */
 "key_create_card" = "c";

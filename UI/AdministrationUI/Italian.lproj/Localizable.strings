@@ -4,12 +4,13 @@
 "Close" = "Chiudi";
 "Modules" = "Moduli";
 /* Modules short names */
-"ACLs" = "ACLs";
+"ACLs" = "ACL";
 /* Modules titles */
-"ACLs_title" = "Amministrazione ACL risorse utenti";
+"ACLs_title" = "Gestione ACL cartelle utenti";
 /* Modules descriptions */
-"ACLs_description" = "<p>Il modulo di amministrazione delle ACL permette di cambiare le ACL di tutti i Calendari e le Rubriche degli utenti.</p><p>Per modificare le ACL relative ad una risorsa di un utente, scrivere il nome del utente nel campo di ricerca e fare doppio click sulla risorsa desiderata.</p>";
-"Name or Email" = "Nome o indirizzo Email";
+"ACLs_description" = "<p>Il modulo di amministrazione delle ACL permette di cambiare le ACL di tutti i Calendari e le Rubriche degli utenti.</p><p>Per modificare gli ACL della cartella di un utente, digitare il nome dell'utente nel campo di ricerca nella parte superiore della finestra e fare doppio clic sulla cartella desiderata.</p>";
+"Name or Email" = "Nome o Email";
+"ACLs saved" = "ACL salvate";
 /* Rights module: initial search message */
 "Start a search to edit the rights" = "Inizia una ricerca per modificare i permessi";
 /* Rights module: Empty search result */
@@ -22,5 +23,5 @@
 "Search Users" = "Cerca utenti";
 "users found" = "utenti trovati";
 "No resource" = "Nessuna risorsa";
-"Any Authenticated User" = "Utenti autenticati";
+"Any Authenticated User" = "Qualsiasi Utente Autenticato";
 "Public Access" = "Accesso pubblico";

@@ -40,14 +40,26 @@
 "Auto reply subject" = "Oggetto della risposta automatica";
 "You can write ${subject} to insert the original subject" = "Puoi scrivere ${subject} per inserire l'oggetto originale";
 "Auto reply message" = "Messaggio della risposta automatica";
-"Email addresses (separated by commas)" = "Indirizzi email (separati da virgole)";
+"Email addresses" = "Indirizzo email";
 "Add default email addresses" = "Aggiungi gli indirizzi email";
 "Days between responses" = "Giorni tra le risposte";
 "Do not send responses to mailing lists" = "Non mandare risposte alle mailing list";
+"Activation Constraints" = "Vincoli di attivazione";
 "Enable auto reply on" = "Abilita il risponditore automatico il";
+"First day of vacation" = "Primo giorno di vacanza";
 "Disable auto reply on" = "Disabilita il risponditore automatico il";
+"Last day of vacation" = "Ultimo giorno di vacanza";
+"Enter date" = "Inserire data";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Abilita risposta automatica a";
+"Enter time" = "Inserire ora";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Disabilita la risposta automatica a";
+"Enable auto reply on these days" = "Abilita la risposta automatica in questi giorni";
 "Always send vacation message response" = "Manda sempre una risposta automatica";
+"The vacation message is sent prior to apply your filters." = "Il messaggio automatico è inviato prima dell'applicazione dei tuoi filtri.";
 "Discard incoming mails during vacation" = "Scarta le email in arrivo durante le vacanze";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Il messaggio automatico è stato inviato ma il messaggio in arrivo non è stato consegnato nella tua casella di posta.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Prego specificare il tuo messaggio e l'indirizzo email per il quale vuoi abilitare il risponditore automatico.";
 "Your vacation message must not end with a single dot on a line." = "Il messaggio dell'auto-risponditore non deve finire con un singolo punto in una linea.";
@@ -56,14 +68,19 @@
 
 /* forward messages */
 "Forward incoming messages" = "Inoltra i messaggi in arrivo";
+"Always forward" = "Sempre avanti";
+"Incoming messages are forwarded prior to apply your filters." = "I messaggi in arrivo vengono inoltrati prima di applicare i filtri.";
 "Keep a copy" = "Lascia una copia";
+"Enter an email" = "Inserire una email";
+"Add another email" = "Aggiungere un'altra email";
 "Please specify an address to which you want to forward your messages."
 = "Prego specificare l'indirizzo verso quale inoltrare i messaggi.";
 "You are not allowed to forward your messages to an external email address." = "Non sei autorizzato ad inoltrare i tuoi messaggi ad un indirizzo email esterno.";
 "You are not allowed to forward your messages to an internal email address." = "Non sei autorizzato ad inoltrare i tuoi messaggi ad un indirizzo email interno.";
+"You are not allowed to forward your messages to this domain:" = "Non è consentito inoltrare i messaggi a questo dominio:";
 
 /* d & t */
-"Current Time Zone" = "Fuso Orario Corrente";
+"Time Zone" = "Fuso Orario";
 "Short Date Format" = "Formato Data Breve";
 "Long Date Format" = "Formato Data Estesa";
 "Time Format" = "Formato Ora";
@@ -85,7 +102,9 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
 
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
@@ -108,7 +127,7 @@
 "No matches found." = "Nessuna corrispondenza trovata.";
 
 /* calendar */
-"Week begins on" = "La settimana inizia il";
+"Week begins on" = "La settimana inizia";
 "Day start time" = "La giornata lavorativa inizia alle ore";
 "Day end time" = "La giornata lavorativa termina alle ore";
 "Day start time must be prior to day end time." = "Il giorno di inizio deve essere precedente alla giorno di fine.";
@@ -156,6 +175,7 @@
 "New label" = "Nuova etichetta";
 "Show subscribed mailboxes only" = "Mostra solo le cartelle sottoscritte";
 "Synchronize only default mail folders (EAS)" = "Sincronizza solo le cartelle mail predefinite (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Recupera il numero di messaggi non visualizzati per tutte le caselle di posta";
 "Sort messages by threads" = "Ordina i messaggi per conversazione";
 "Always open mail composer" = "Apri sempre il compositore mail";
 "Inside current window" = "Nella finestra corrente";
@@ -183,10 +203,15 @@
 "displayremoteinlineimages_always" = "Sempre";
 "Auto save every" = "Salva automaticamente tutto ogni";
 "minutes" = "minuti";
+"Automatically mark messages as read" = "Contrassegna automaticamente i messaggi come letti";
+"Immediately on display" = "Immediatamente in visualizzazione";
+"After displaying for" = "Dopo la visualizzazione per";
+"seconds" = "secondi";
 
 /* Contact */
 "Personal Address Book" = "Rubrica personale";
 "Collected Address Book" = "Raccolta rubrica";
+"Contact categories must have unique names." = "Le categorie di contatti devono avere nomi univoci.";
 
 /* IMAP Accounts */
 "Settings" = "Impostazioni";
@@ -202,6 +227,10 @@
 "Email" = "Email";
 "Reply To Email" = "Rispondi all'Email";
 "Signature" = "Firma";
+"Identities" = "Identità";
+"Always use the default identity when replying to messages" = "Usa sempre l'identità di default quando rispondi ai messaggi";
+"Default Identity" = "Identità di default";
+"New Identity" = "Nuova Identità";
 "(Click to create)" = "(Clicca per creare)";
 "Please enter your signature below" = "Prego inserire la firma qui sotto";
 "Please specify a valid sender address." = "L'indirizzo specificato come mittente non è valido.";
@@ -213,18 +242,21 @@
 "Uninstall" = "Disinstalla";
 "Choose PKCS12 Certificate .." = "Scegli il certificato PKCS12 ..";
 "Certificate Import Password" = "Password Importazione Certificato";
-"Upload" = "Upload";
+"Upload" = "Carica";
 "When composing a message" = "Quando componi un messaggio";
 "Digitally sign the message by default" = "Firma digitalmente il messaggio di default";
 "Always try to encrypt the message" = "Cerca sempre di criptare il messaggio";
+"An error occurred while importing the certificate. Verify your password." = "Si è verificato un errore durante l'importazione del certificato. Controlla la tua password.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Parametri Addizionali";
 
 /* password */
+"Current password" = "Password attuale";
 "New password" = "Nuova password";
 "Confirmation" = "Conferma";
 "Change" = "Cambia";
+"Passwords don't match" = "Le password non corrispondono";
 
 /* Event+task classifications */
 "Default events classification" = "Classificazione degli eventi di default";
@@ -237,6 +269,7 @@
 "Calendar Category" = "Categorie Calendari";
 "Add Calendar Category" = "Aggiungi Categoria Calendari";
 "New category" = "Nuova categoria";
+"Reset to defaults" = "Ripristina i valori predefiniti";
 "Remove Calendar Category" = "Rimuovi Categoria Calendari";
 "Contact Category" = "Categorie Contatti";
 "Add Contact Category" = "Aggiungi Categoria Contatti";
@@ -308,10 +341,11 @@
 "refreshview_every_20_minutes" = "Ogni 20 minuti";
 "refreshview_every_30_minutes" = "Ogni 30 minuti";
 "refreshview_once_per_hour" = "Ogni ora";
+"Enable Desktop Notifications" = "Abilita le Notifiche Desktop";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Quando ricevo una richiesta di notifica di lettura";
-"Never send a return receipt" = "Non inviare mail una notifica di lettura";
+"Never send a return receipt" = "Non inviare mai una notifica di lettura";
 "Allow return receipts for some messages" = "Permetti la notifica di lettura per alcuni messaggi";
 "If I'm not in the To or Cc of the message" = "Se io non sono presente nel campo A o Cc del messaggio";
 "If the sender is outside my domain" = "Se il mittente ha un dominio diverso dal mio";
@@ -408,7 +442,7 @@
 "Unhandled error response" = "Errore di risposta non gestito";
 "Password change is not supported." = "Il cambio password non è supportato.";
 "Unhandled HTTP error code: %{0}" = "Codice di errore HTTP non gestito: %{0}";
-"Cancel" = "Cancella";
+"Cancel" = "Annulla";
 "Invitations" = "Inviti";
 "Edit Filter" = "Modifica filtro";
 "Delete Filter" = "Cancella filtro";
@@ -439,3 +473,13 @@
 /* Limited Animation Mode */
 "animation_LIMITED" = "Limitate";
 "animation_NONE" = "Nessuna";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "Abilita l'autenticazione a due fattori utilizzando un'applicazione TOTP";
+"You must enter this key into your TOTP application." = "Devi inserire questa chiave nella tua applicazione TOTP.";
+"If you do not and you log out you will not be able to login again." = "Se non lo fai e ti disconnetti non sarai in grado di accedere di nuovo.";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "E' in esecuzione uno script Sieve esterno";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve è un linguaggio di programmazione che può essere utilizzato per il filtraggio delle email. Se lasci che SOGo gestisca i tuoi filtri, le tue vacanze e le impostazioni di inoltro, lo script attivo verrà disabilitato.";
+"Let SOGo handle everything" = "Lascia che SOGo si occupi di tutto";

@@ -3,7 +3,7 @@
 /* toolbars */
 "Save" = "Salva";
 "Close" = "Chiudi";
-"Edit User Rights" = "Modifica permessi";
+"Edit User Rights" = "Modificare i diritti utente";
 "Home" = "Home";
 "Calendar" = "Calendario";
 "Address Book"  = "Rubrica";
@@ -11,16 +11,16 @@
 "Preferences" = "Preferenze";
 "Administration" = "Amministrazione";
 "Disconnect" = "Disconnetti";
-"Toggle Menu" = "Menu azioni";
+"Toggle Menu" = "Alterna menu";
 "Right Administration" = "Amministrazione permessi";
 "Log Console (dev.)" = "Log Console (dev.)";
 "User" = "Utente";
-"Vacation message is enabled" = "Messaggio risposta automatica attivo";
+"Vacation message is enabled" = "Messaggio di risposta automatica abilitato";
 "Help" = "Aiuto";
 "noJavascriptError" = "SOGo ha bisogno di Javascript per essere eseguito. Verifica che questo elemento sia presente ed attivato nelle preferenze del browser";
 "noJavascriptRetry" = "Riprova";
 "Owner" = "Proprietario";
-"Publish the Free/Busy information" = "Pubblica le informazioni sullo stato (libero/impegnato)";
+"Publish the Free/Busy information" = "Pubblica le informazioni sullo stato (Libero/Impegnato)";
 "Add..." = "Aggiungi...";
 "Remove" = "Rimuovi";
 "Subscribe User" = "Sottoscrivi utente";
@@ -28,45 +28,47 @@
 "Public Access" = "Accesso pubblico";
 "Any user not listed above" = "Ogni utente non indicato sopra";
 "Anybody accessing this resource from the public area" = "Chiunque acceda a questa risorsa da un area pubblica";
-"Sorry, the user rights can not be configured for that object." = "Non è possibile configurare i  permessi per questo oggetto.";
+"Sorry, the user rights can not be configured for that object." = "Non è possibile configurare i permessi per questo oggetto.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
-     = "Ogni utente con un account di sistema potrà accedere alla tua mailbox \"%{0}\". Sei sicuro di fidarti?";
+     = "Qualsiasi utente con un account su questo sistema sarà in grado di accedere alla tua casella di posta \"%{0}\". Sei sicuro di fidarti di loro?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
-     = "Ogni utente con un account di sistema potrà accedere al tuo calendario \"%{0}\". Sei sicuro di fidarti di tutti?";
+     = "Qualsiasi utente con un account su questo sistema sarà in grado di accedere al tuo calendario \"%{0}\". Sei sicuro di fidarti di loro?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Potenzialmente chiunque in Internert sarà in grado di accedere al tuo calendario \"%{0}\", anche se non ha un account di sistema. Questa risorsa può essere pubblicata su Internet?";
+     = "Potenzialmente chiunque su Internet sarà in grado di accedere al tuo calendario \"%{0}\", anche se non hanno un account su questo sistema. Queste informazioni sono adatte per il pubblico di Internet?";
 "Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
-     = "Ogni utente con un account di sistema potrà accedere alla tua rubrica \"%{0}\". Sei sicuro di fidarti?";
+     = "Qualsiasi utente con un account su questo sistema sarà in grado di accedere alla tua rubrica\"%{0}\". Sei sicuro di fidarti di loro?";
 "Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Potenzialmente chiunque su internet può accedere alla tua rubrica \"%{0}\", anche se non ha alcun account di sistema. Questa informazione può essere resa pubblica su internet?";
+     = "Potenzialmente chiunque su Internet sarà in grado di accedere alla tua rubrica \"%{0}\", anche se non hanno un account su questo sistema. Queste informazioni sono adatte per il pubblico di Internet?";
 "Give Access" = "Dai Accesso";
 "Keep Private" = "Mantieni Privato";
+"Expand" = "Espandi";
+"Reduce" = "Riduci";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
-        = "Impossibile sottoscrivere la cartella!";
+        = "Impossibile iscriversi a quella cartella!";
 "You cannot subscribe to a folder that you own!"
-        = "Non puoi sottoscrivere una cartella di cui sei proprietario!";
+        = "Non puoi iscriverti a una cartella di cui sei proprietario!";
 "Unable to unsubscribe from that folder!"
-        = "Impossibile annullare la sottoscrizione alla cartella!";
+        = "Impossibile annullare l'iscrizione da quella cartella!";
 "You cannot unsubscribe from a folder that you own!"
-        = "Non puoi annullare la sottoscrizione ad una cartella di cui sei proprietario!";
-"Unable to rename that folder!" = "Impossibile rinominare la cartella!";
+        = "Non puoi cancellarti da una cartella di cui sei proprietario!";
+"Unable to rename that folder!" = "Impossibile rinominare quella cartella!";
 "You have already subscribed to that folder!"
-        = "Hai già sottoscritto la cartella!";
+        = "Ti sei già iscritto a quella cartella!";
 "The user rights cannot be edited for this object!"
         = "I permessi utente non possono essere modificati per questo oggetto!";
 "A folder by that name already exists." = "Esiste già una cartella con questo nome.";
 "You cannot create a list in a shared address book."
         = "Non puoi creare una lista in una rubrica condivisa.";
 "Warning" = "Attenzione";
-"Can't contact server" = "Si è verificato un errore contattando il server. Prego riprovare.";
+"Can't contact server" = "Si è verificato un errore contattando il server. Riprovare più tardi.";
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Non sei abilitato ad accedere a questo modulo o sistema. Contatta il tuo amministratore di sistema.";
 "You don't have the required privileges to perform the operation."
 = "Non disponi dei privilegi richiesti per eseguire questa operazione.";
-"noEmailForDelegation" = "E' necessario specificare l'indirizzo a cui vuoi delegare i tuoi inviti.";
-"delegate is organizer" = "Il delato è l'organizzatore. Prego specificare un altro delegato.";
+"noEmailForDelegation" = "È necessario specificare l'indirizzo a cui si desidera delegare l'invito.";
+"delegate is organizer" = "Il delegato è l'organizzatore. Specificare un altro delegato.";
 "delegate is a participant" = "Il delegato è già un partecipante.";
 "delegate is a group" = "L'indirizzo specificato corrisponde ad un gruppo. Puoi delegare solo una persona.";
 
@@ -111,7 +113,7 @@
 "a2_Wednesday" = "Me";
 "a2_Thursday" = "Gi";
 "a2_Friday" = "Ve";
-"a2_Saturday" = "Sab";
+"a2_Saturday" = "Sa";
 "Access Rights" = "Permessi di accesso";
 "Add User" = "Aggiungi utente";
 "Loading" = "Caricamento";
@@ -122,11 +124,17 @@
 "S/MIME Certificate" = "Certificato S/MIME";
 "Subject Name" = "Nome Soggetto";
 "Issuer" = "Emittente";
+"streetAddress" = "Via";
+"stateOrProvinceName" = "Provincia";
+"localityName" = "Località";
 "countryName" = "Nazione";
 "organizationName" = "Società";
-"organizationalUnitName" = "Unità societarie";
+"organizationalUnitName" = "Unità organizzativa";
 "commonName" = "Nome Comune";
+"surname" = "Cognome";
+"givenName" = "Nome";
 "emailAddress" = "Indirizzo Email";
+
 
 /* Authentication username */
 "Username" = "Nome utente";
@@ -141,15 +149,24 @@
 "Enter at least %{minimumSearchLength} characters" = "Inserisci almeno %{minimumSearchLength} caratteri";
 
 /* Error message displayed when a file upload exceeds WOMaxUploadSize */
-"File size upload limit reached" = "Limite dimensione upload raggiunto";
+"File size upload limit reached" = "Limite di caricamento dimensione file raggiunto";
+
+/* Generic server error */
+"An error occured, please try again." = "Si è verificato un errore, si prega di riprovare";
+
+/* Open datepicker */
+"Open Calendar" = "Apri Calendario";
 
 /* Toggle visibility (ex: mail account in left navigation menu) */
-"Toggle visibility" = "Nascondi";
+"Toggle visibility" = "Alternare la visibilità";
 
 "Keyboard Shortcuts" = "Scorciatoie Tastiera";
 
+/* Aria label for avatar button to select and unselect an item */
+"Toggle item" = "Alternare elemento";
+
 /* Toggle multiple items at the same time (hotkeys cheatsheet) */
-"Toggle range of items" = "Aziona il range di elementi";
+"Toggle range of items" = "Alterna gamma di elementi";
 
 /* Question mark shows list of hotkeys */
 "Show or hide this help" = "Mostra o nascondi questo aiuto";

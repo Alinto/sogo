@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "Crea";
 "Empty Trash" = "Svuota cestino";
+"Empty Junk Folder" = "Svuota Cartella Spam";
 "Delete"      = "Cancella";
 "Expunge"     = "Pulisci";
 "Forward"     = "Inoltra";
@@ -24,7 +25,7 @@
 "Size" = "Dimensione";
 
 /* Tooltips */
-"Send this message now" = "Invia ora il messaggio";
+"Send this message now" = "Invia il messaggio ora";
 "Select a recipient from an Address Book" = "Seleziona almeno un destinatario dalla rubrica";
 "Include an attachment" = "Includi un allegato";
 "Save this message" = "Salva questo messaggio";
@@ -73,8 +74,13 @@
 "An error occured while communicating with the mail server" = "Si è verificato un errore comunicando col server mail";
 
 /* Mailbox actions */
+
 /* Compact Folder success message */
 "Folder compacted" = "Cartella ridotta";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Cartella Spam svuotata";
+
 /* Empty Trash success message */
 "Trash emptied" = "Cestino svuotato";
 
@@ -82,7 +88,7 @@
 "Access rights to" = "Permessi di accesso a";
 "For user" = "Per utente";
 "Any Authenticated User" = "Qualsiasi Utente Autenticato";
-"List and see this folder" = "Elenca e guarda questa cartella";
+"View this folder" = "Visualizza cartella";
 "Read mails from this folder" = "Leggi email da questa cartella";
 "Mark mails read and unread" = "Contrassegna email lette/non lette";
 "Modify the flags of the mails in this folder" = "Modifica i contrassegni delle email in questa cartella";
@@ -104,7 +110,7 @@
 "To"            = "A";
 "Cc"            = "Cc";
 "Bcc"           = "Bcc";
-"Reply-To"	    = "Rispondi a";
+"Reply-To"	= "Rispondi a";
 "Add address"   = "Aggiungi indirizzi";
 "Body"          = "Corpo";
 "Open" = "Apri";
@@ -121,6 +127,7 @@
 "Edit Draft..." = "Modifica Bozza...";
 "Load Images" = "Carica Immagini";
 "Return Receipt" = "Ricevuta di Ritorno";
+"Choose which identity to send this message from" = "Scegli l'identità con cui inviare questo messaggio";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Il mittente del messaggio ha chiesto di essere avvisato della lettura di questo messaggio. Vuoi avvisare il mittente?";
 "Return Receipt (displayed) - %@"= "Ricevuta di Ritorno (visualizzata) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Questa è la Ricevuta di ritorno per la mail che hai inviato a %@.\n\nNota: Questa Ricevuta di ritorno ti assicura che il messaggio sta stato visualizzato sul computer del destinatario. Non c'è alcun conferma sul fatto che il destinatario abbia letto o capito il contenuto del messaggio.";
@@ -165,12 +172,22 @@
 "Mark Read"   = "Contrassegna Come Letto";
 "Untitled" = "Senza nome";
 
+/* Filter option in messages list */
+"Show unread messages only" = "Mostra solo i messaggi non letti";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Mostra solo i messaggi contrassegnati";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Filtrati per etichetta";
+
 /* Tree */
 "SentFolderName"   = "Posta inviata";
 "TrashFolderName"  = "Cestino";
 "InboxFolderName"  = "Posta in arrivo";
 "DraftsFolderName" = "Bozze";
 "JunkFolderName" = "Spam";
+"TemplatesFolderName" = "Template";
 "SieveFolderName"  = "Filtri";
 "Folders"          = "Cartelle"; /* title line */
 
@@ -179,6 +196,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Aggiungi alla Rubrica...";
+"Successfully created card" = "Contatto creato con successo";
 "Compose Mail To" = "Invia Email a ";
 "Create Filter From Message..." = "Crea Filtro dal Messaggio...";
 
@@ -228,6 +246,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Converti In Attività";
 
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Scarica messaggio";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Scarica messaggio (zip)";
+
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "Scarica tutti gli allegati";
 
@@ -249,6 +273,12 @@
 /* Number of selected messages in list */
 "selected" = "selezionato";
 
+/* Date formatting from one time to another time */
+"to_time" = "a";
+
+/* Date formatting from one day to another day */
+"to_date" = "a";
+
 /* Encrypted message notification */
 "This message is encrypted" = "Il messaggio è criptato";
 
@@ -266,6 +296,18 @@
 
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Nessun certificato associato all'account.";
+
+/* Invalid S/MIME signature */
+"Digital signature is not valid" = "Firma digitale non valida";
+
+/* Valid S/MIME signature */
+"Message is signed" = "Messaggio firmato";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Messaggio firmato ma il certificato non corrisponde all'indirizzo mittente";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Firma digitale non valida";
 
 "This Folder" = "Questa Cartella";
 
@@ -302,6 +344,7 @@
 "Operation failed" = "Operazione non riuscita";
 "Quota" = "Spazio usato:";
 "quotasFormat" = "%{0}% usato su %{1} MB";
+"messageQuotasFormat" = "%{0}% di %{1} mail";
 "Unable to move/delete folder." = "Impossibile spostare/cancellare la cartella.";
 
 /* Alternative operation when folder cannot be deleted */
@@ -348,6 +391,12 @@
 "Send Anyway" = "Invia comunque";
 "Error while saving the draft" = "Errore salvando la bozza";
 
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Impossibile svuotare il cestino";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Impossibile svuotare la cartella Spam";
+
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Errore durante l'upload del file \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Caricamento in corso. Chiudendo la finestra verrà interrotto.";
@@ -362,6 +411,9 @@
 "cannot send message: (smtp) all recipients discarded" = "Impossibile inviare il messaggio: tutti i destinatari non sono validi.";
 "cannot send message (smtp) - recipients discarded" = "Impossibile inviare il messaggio. Il seguente indirizzo non è valido";
 "cannot send message: (smtp) error when connecting" = "Impossibile inviare il messaggio: si è verificato un errore durante la connessione al server SMTP.";
+"cannot sign email without certificate" = "Il messaggio non può essere firmato perché non c'è alcun certificato associato all'account";
+"cannot sign message because the certificate can't be read" = "Il messaggio non può essere firmato perché il certificato associato all'account non può essere letto";
+"cannot sign message because the certificate doesn't include the specified sender address" = "Il messaggio non può essere firmato perché l'indirizzo mittente non è incluso nel certificato";
 
 /* Contacts list in mail editor */
 "Email" = "Email";
@@ -380,6 +432,9 @@
 "Set as Drafts" = "Imposta come bozze";
 "Set as Sent" = "Imposta come inviato";
 "Set as Trash" = "Imposta come eliminata";
+
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Imposta come Template";
 
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Imposta come spam";
@@ -402,6 +457,18 @@
 "Your email has been saved" = "La tua email è stata salvata";
 "Your email has been sent" = "La tua email è stata inviata";
 "Folder compacted" = "Cartella ridotta";
+
+"New draft" = "Nuova bozza";
+"Create new draft with this template" = "Crea una nuova bozza da questo template";
+
+/* Advanced search */
+"Enter Subject" = "Inserire Oggetto";
+"Enter From" = "Inserire Mittente";
+"Enter To" = "Inserire Destinatario";
+"Enter Cc" = "Inserire Cc";
+"Enter Body" = "Inserire Messaggio";
+"match" = "corrisponde";
+"does not match" = "non corrisponde";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Ambito di ricerca";

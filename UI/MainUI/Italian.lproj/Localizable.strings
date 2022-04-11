@@ -16,10 +16,18 @@
 "Authentication Failed" = "Autenticazione fallita";
 "Wrong username or password." = "Nome utente o password non corretti.";
 "Retry" = "Riprova";
-"cookiesNotEnabled" = "Non è possibile eseguire il login perchè il browser non ha i cookies abilitati. Prego abilitare i cookies nel preferenze del proprio bowser e riprovare.";
-"browserNotCompatible" = "La versione del browser utilizzato non è supportata. Raccomandiamo l'utilizzo di Firefox. Clicca sul link per scaricarne l'ultima versione disponibile.";
+"Login failed due to unhandled error case:" = "Login fallito a causa di un errore non gestito: ";
+"cookiesNotEnabled" = "Non è possibile eseguire il login perchè il browser ha i cookies disabilitati. Abilitare i cookies nelle preferenze del proprio browser e riprovare.";
+"browserNotCompatible" = "La versione del browser utilizzato non è supportata. Raccomandiamo l'utilizzo di Firefox. Cliccare sul link per scaricare l'ultima versione disponibile.";
 "alternativeBrowsers" = "Alternativamente, puoi utilizzare questi browser compatibili";
 "alternativeBrowserSafari" = "Alternativamente, puoi utilizzare Safari.";
+
+/* 2FA */
+"Verification Code" = "Codice di verifica";
+"Enter the 6-digit verification code from your TOTP application." = "Inserisci il codice di verifica a 6 cifre dall'applicazione TOTP.";
+"You provided an invalid TOTP key." = "Hai fornito una chiave TOTP non valida.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "L'autenticazione a due fattori è stata disabilitata. Visita il modulo Preferenze per ripristinare l'autenticazione a due fattori e riconfigurare la tua applicazione TOTP.";
+
 "Download" = "Scarica";
 "Language" = "Lingua";
 "choose" = "Scegli...";
@@ -67,7 +75,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "Informazioni";
-"AboutBox" = "Developed by Inverse, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>⏎\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>⏎\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>⏎\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
+"AboutBox" = "Sviluppato da Inverse, SOGo è un server groupware completo con particolare attenzione alla scalabilità e alla semplicità.<br/><br/>\nSOGo fornisce una ricca interfaccia Web basata su AJAX e supporta più client nativi attraverso l'uso di protocolli standard come CalDAV e CardDAV.<br/><br/>\nSOGo è distribuito sotto <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> vversione 2 o successiva e parti sono distribuiti sotto GNU LGPL versione 2. Questo è un software libero: sei libero di cambiarlo e ridistribuirlo. NON c'è ALCUNA GARANZIA, nella misura consentita dalla legge.<br/><br/>\nVedi <a href=\"http://www.sogo.nu/en/support/community.html\">questa pagina</a> per varie opzioni di supporto.";
 "Your account was locked due to too many failed attempts." = "Account bloccato a causa di troppi tentativi falliti.";
 "Your account was locked due to an expired password." = "Account bloccato per password scaduta.";
 "Login failed due to unhandled error case" = "Login fallito a causa di un errore non gestito";
@@ -77,7 +85,7 @@
 "Password must not be empty." = "La password non può essere vuota.";
 "The passwords do not match. Please try again." = "Le password non coincidono. Prego riprovare.";
 "Password Grace Period" = "Periodo di tolleranza password";
-"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Hai %{0} login rimamenti prima che il tuo account sia bloccato. Prego cambiare la tua password nel pannello delle preferenze.";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Hai %{0} login rimamenti prima che il tuo account sia bloccato. Prego cambiare la password nel pannello delle preferenze.";
 "Password about to expire" = "Password in scadenza";
 "Your password is going to expire in %{0} %{1}." = "La tua password scadrà in %{0} %{1}.";
 "days" = "giorni";
