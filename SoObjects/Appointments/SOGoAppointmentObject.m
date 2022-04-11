@@ -898,10 +898,10 @@
     {
       currentUID = [currentAttendee uidInContext: context];
       if (currentUID)
-      [self _addOrUpdateEvent: newEvent
-                     oldEvent: nil
-                       forUID: currentUID
-                        owner: owner];
+        [self _addOrUpdateEvent: newEvent
+                       oldEvent: nil
+                         forUID: currentUID
+                          owner: owner];
     }
   
   return nil;
@@ -1766,11 +1766,16 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
     }
   else
     {
-      // The organizer deletes an occurence.
+      // The organizer (or a user with sufficient rights) deletes an occurence
       currentUser = [context activeUser];
 
       if (recurrenceId)
-        attendees = [occurence attendeesWithoutUser: currentUser];
+        {
+          if (activeUserIsOwner)
+            attendees = [occurence attendeesWithoutUser: currentUser];
+          else
+            attendees = [occurence attendeesWithoutUser: ownerUser];
+        }
       else
         attendees = [[event parent] attendeesWithoutUser: currentUser];
       
