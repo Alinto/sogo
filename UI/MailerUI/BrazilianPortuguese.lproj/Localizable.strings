@@ -187,6 +187,7 @@
 "InboxFolderName"  = "Caixa de Entrada";
 "DraftsFolderName" = "Rascunhos";
 "JunkFolderName" = "Lixo Eletrônico";
+"TemplatesFolderName" = "Modelos";
 "SieveFolderName"  = "Filtros";
 "Folders"          = "Pastas"; /* title line */
 
@@ -432,6 +433,9 @@
 "Set as Sent" = "Definir como Enviado";
 "Set as Trash" = "Definir como Lixo";
 
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Definir como modelos";
+
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Definir como Spam";
 
@@ -453,6 +457,9 @@
 "Your email has been saved" = "Seu e-mail foi salvo";
 "Your email has been sent" = "Seu e-mail foi enviado";
 "Folder compacted" = "Pasta compactada";
+
+"New draft" = "Novo rascunho";
+"Create new draft with this template" = "Criar novo rascunho com esse modelo";
 
 /* Advanced search */
 "Enter Subject" = "Insira Assunto";

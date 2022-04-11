@@ -41,6 +41,8 @@
      = "Qualquer pessoa na Internet será capaz de acessar seu catálogo de endereços \"% {0}\", mesmo se não tiver uma conta no sistema. Esta informação pode ser tornar pública na Internet?";
 "Give Access" = "Conceder Acesso";
 "Keep Private" = "Manter Privado";
+"Expand" = "Expandir";
+"Reduce" = "Reduzir";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -122,11 +124,17 @@
 "S/MIME Certificate" = "Certificado S/MIME ";
 "Subject Name" = "Nome do Assunto";
 "Issuer" = "Emissor";
+"streetAddress" = "Logradouro";
+"stateOrProvinceName" = "Estado";
+"localityName" = "Localidade";
 "countryName" = "País";
 "organizationName" = "Organização";
 "organizationalUnitName" = "Unidade Organizacional";
 "commonName" = "Nome Principal";
+"surname" = "Sobrenome";
+"givenName" = "Nome";
 "emailAddress" = "Endereço de E-mail";
+
 
 /* Authentication username */
 "Username" = "Usuário";

@@ -44,11 +44,18 @@
 "Add default email addresses" = "Adicionar endereço de e-mail padrão";
 "Days between responses" = "Dias entre respostas";
 "Do not send responses to mailing lists" = "Não envie respostas para listas de e-mails";
+"Activation Constraints" = "Restrições de ativação";
 "Enable auto reply on" = "Habilitar resposta automática em";
 "First day of vacation" = "Primeiro dia de férias";
 "Disable auto reply on" = "Desativar resposta automática em";
 "Last day of vacation" = "Último dia de férias";
 "Enter date" = "Digite a data";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Ativar resposta automática em";
+"Enter time" = "Insira o horário";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Desativar resposta automática em";
+"Enable auto reply on these days" = "Habilitar resposta automática nesses dias";
 "Always send vacation message response" = "Sempre enviar resposta de mensagem de férias";
 "The vacation message is sent prior to apply your filters." = "A mensagem de férias é enviada antes de aplicar seus filtros";
 "Discard incoming mails during vacation" = "Descarte emails recebidos durante as férias";
@@ -61,6 +68,8 @@
 
 /* forward messages */
 "Forward incoming messages" = "Encaminhar mensagens recebidas";
+"Always forward" = "Sempre encaminhar";
+"Incoming messages are forwarded prior to apply your filters." = "Mensagens recebidas são encaminhadas antes de aplicar seus filtros.";
 "Keep a copy" = "Manter uma cópia";
 "Enter an email" = "Digite um e-mail";
 "Add another email" = "Adicionar outro e-mail";
@@ -194,6 +203,10 @@
 "displayremoteinlineimages_always" = "Sempre";
 "Auto save every" = "Auto salvar cada";
 "minutes" = "minutos";
+"Automatically mark messages as read" = "Marcar automaticamente as mensagens como lidas";
+"Immediately on display" = "Imediatamente ao exibir";
+"After displaying for" = "Depois de exibir por";
+"seconds" = "segundos";
 
 /* Contact */
 "Personal Address Book" = "Catálogo Pessoal";
@@ -462,8 +475,8 @@
 "animation_NONE" = "Nenhum";
 
 /* 2FA */
-"Enable two-factor authentication using a TOTP application" = "Ative a autenticação de dois fatores usando o Google Authenticator";
-"You must enter this key into your TOTP application." = "Ative a autenticação de dois fatores usando o Google Authenticator";
+"Enable two-factor authentication using a TOTP application" = "Habilite a autenticação de dois fatores usando um aplicativo TOTP";
+"You must enter this key into your TOTP application." = "Você deve inserir essa chave em seu aplicativo TOTP.";
 "If you do not and you log out you will not be able to login again." = "Se você não fizer isso e fizer logout, não será possível fazer o login novamente.";
 
 /* External Sieve scripts */
