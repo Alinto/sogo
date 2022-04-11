@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2021 Inverse inc.
+  Copyright (C) 2006-2022 Inverse inc.
 
   This file is part of SOGo
 
@@ -206,7 +206,9 @@ static NSArray *photoTags = nil;
               continue;
             }
 
-          if (j == 0)
+          if (j == 0 && ![line hasPrefix: @"dn:"])
+            // Because we splitted contacts on "<LF> + dn", we need to restore the dn prefix,
+            // unless it's the first contact of the file, in which case it still has the dn prefix.
             line = [NSString stringWithFormat: @"dn%@", line];
 
           /* handle continuation lines */
