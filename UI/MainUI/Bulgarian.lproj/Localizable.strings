@@ -26,6 +26,7 @@
 "Verification Code" = "Код за потвърждение";
 "Enter the 6-digit verification code from your TOTP application." = "Въведете 6-цифреният код за потвърждение от TOTP приложението ви.";
 "You provided an invalid TOTP key." = "Предоставихте невалиден TOTP код.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Двуфакторната идентификация е спряна. Отидете в Настройки, за да я активирате и да преконфигурирате вашето TOTP приложение";
 
 "Download" = "Сваляне";
 "Language" = "Език";
@@ -48,21 +49,22 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
-"Indonesian" = "Индонезийски - официален";
+"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
 "Japanese" = "日本語";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
+"Montenegrin" = "Crnogorski";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "Polish" = "Polski";
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
-"Romanian" = "Румънски";
+"Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
-"SerbianLatin" = "Сръбски";
+"SerbianLatin" = "Srpski";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";

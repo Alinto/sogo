@@ -5,7 +5,7 @@
 "Empty Trash" = "Изпразване на кошчето";
 "Empty Junk Folder" = "Изчистване на Спам";
 "Delete"      = "Изтриване";
-"Expunge"     = "Задраскване";
+"Expunge"     = "Заличаване";
 "Forward"     = "Препращане";
 "Get Mail"    = "Проверка на пощата";
 "Junk"        = "Спам";
@@ -187,6 +187,7 @@
 "InboxFolderName"  = "Входящи";
 "DraftsFolderName" = "Чернови";
 "JunkFolderName" = "Спам";
+"TemplatesFolderName" = "Шаблони";
 "SieveFolderName"  = "Филтри";
 "Folders"          = "Папки"; /* title line */
 
@@ -432,6 +433,9 @@
 "Set as Sent" = "Задаване като изпратено";
 "Set as Trash" = "Задаване като кош";
 
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Запази като шаблон";
+
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Отбелязано като Спам";
 
@@ -453,6 +457,9 @@
 "Your email has been saved" = "Вашият Имейл е запаметен";
 "Your email has been sent" = "Вашият Имейл е изпратен";
 "Folder compacted" = "Папката компресирана";
+
+"New draft" = "Нова чернова";
+"Create new draft with this template" = "Създай нова чернова с този шаблон";
 
 /* Advanced search */
 "Enter Subject" = "Въведете тема";

@@ -44,11 +44,18 @@
 "Add default email addresses" = "Добави имейл адрес по подразбиране";
 "Days between responses" = "Дни между отговори";
 "Do not send responses to mailing lists" = "Не изпращай отговори на пощенски списъци";
+"Activation Constraints" = "Активационни ограничения";
 "Enable auto reply on" = "Включи автоматичен отговор";
 "First day of vacation" = "Първи ден от отпуска";
 "Disable auto reply on" = "Изключи автоматичен отговор на";
 "Last day of vacation" = "Последен ден от отпуска";
 "Enter date" = "Въведете дата";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Включи автоматичен отговор от";
+"Enter time" = "Въведете време";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Изключи автоматичния отговор в";
+"Enable auto reply on these days" = "Включи автоматичния отговор на тези дни";
 "Always send vacation message response" = "Винаги изпращай в отговор, съобщение почивка";
 "The vacation message is sent prior to apply your filters." = "Съобщението за почивни дни е изпратено според вашите филтри.";
 "Discard incoming mails during vacation" = "Изхвърляй входящите имейли по време на ваканция";
@@ -61,6 +68,8 @@
 
 /* forward messages */
 "Forward incoming messages" = "Препращай входящи съобщения";
+"Always forward" = "Винаги препращай";
+"Incoming messages are forwarded prior to apply your filters." = "Входящите съобщения се препращат преди да се приложат филтри.";
 "Keep a copy" = "Запази копие";
 "Enter an email" = "Въведете email";
 "Add another email" = "Добавете друг email";
@@ -194,6 +203,10 @@
 "displayremoteinlineimages_always" = "Винаги";
 "Auto save every" = "Автоматичен запис, всеки";
 "minutes" = "минути";
+"Automatically mark messages as read" = "Автоматично маркирай съобщенията като прочетени";
+"Immediately on display" = "Веднага при показване";
+"After displaying for" = "След като е показано за";
+"seconds" = "секунди";
 
 /* Contact */
 "Personal Address Book" = "Списък с контакти";
@@ -281,8 +294,8 @@
 "Bosnian" = "Bosanski";
 "Bulgarian" = "Български";
 "Catalan" = "Català";
-"ChineseChina" = "Китайски - Китай";
-"ChineseTaiwan" = "Китайски - Тайван";
+"ChineseChina" = "简体中文";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -291,15 +304,16 @@
 "Finnish" = "Suomi";
 "French" = "Français";
 "German" = "Deutsch";
-"Hebrew" = "Иврит";
+"Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
-"Indonesian" = "Индонезийски език";
+"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
 "Japanese" = "日本語";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
+"Montenegrin" = "Crnogorski";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "Polish" = "Polski";
@@ -308,7 +322,7 @@
 "Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
-"SerbianLatin" = "Сръбски";
+"SerbianLatin" = "Srpski";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
