@@ -263,6 +263,24 @@
   return ex;
 }
 
+- (void) _removeAttendees: (NSArray *) emails
+{
+  NSString *email;
+  iCalEvent *event;
+  iCalPerson *attendee;
+  unsigned int i;
+
+  event = [self event];
+  attendee = [[[iCalPerson alloc] init] autorelease];
+
+  for (i = 0; i < [emails count]; i++)
+    {
+      email = [emails objectAtIndex: i];
+      [attendee setEmail: email];
+      [event removeFromAttendees: attendee];
+    }
+}
+
 /**
  * @api {post} /so/:username/Calendar/:calendarId/:appointmentId/rsvpAppointment Set participation state
  * @apiVersion 1.0.0
@@ -512,6 +530,7 @@
  */
 - (id <WOActionResults>) saveAction
 {
+  NSArray *removeAttendees;
   NSDictionary *params;
   NSString *jsonResponse;
   NSException *ex;
@@ -545,12 +564,19 @@
     {
       [self setAttributes: params];
       forceSave = [[params objectForKey: @"ignoreConflicts"] boolValue];
+      removeAttendees = [params objectForKey: @"removeAttendees"];
 
       if ([event hasRecurrenceRules])
         ex = [self _adjustRecurrentRules];
 
       if (!ex)
         {
+          if (removeAttendees)
+            {
+              [co expandGroupsInEvent: event];
+              [self _removeAttendees: removeAttendees];
+            }
+
           if ([co isNew])
             {
               if (componentCalendar

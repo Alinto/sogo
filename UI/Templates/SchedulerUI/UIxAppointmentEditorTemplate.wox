@@ -366,12 +366,15 @@
       </md-dialog-actions>
 
       <!-- rejected attendee invitation -->
-      <md-dialog-content class="md-default-theme md-bg md-warn md-padding sg-dialog-message ng-hide" layout="row"
+      <md-dialog-content class="md-default-theme md-bg md-warn md-padding sg-dialog-message ng-hide" layout="column"
                          ng-show="editor.attendeeConflictError.reject">
-        <div class="md-flex">{{editor.attendeeConflictError.reject}}</div>
-        <md-button class="md-icon-button" ng-click="editor.edit(eventForm)">
-          <md-icon label:aria-label="Close">close</md-icon>
-        </md-button>
+        <div layout="row" layout-align="space-between start" layout-fill="layout-fill">
+          <div ng-bind-html="editor.attendeeConflictError.reject | txt2html"><!-- error --></div>
+          <md-button class="md-icon-button" ng-click="editor.edit(eventForm)">
+            <md-icon label:aria-label="Close">close</md-icon>
+          </md-button>
+        </div>
+        <div class="sg-padded--top"><var:string label:value="Would you like to remove them and send the invitation to the remaining attendees?"/></div>
       </md-dialog-content>
       <md-dialog-actions ng-show="editor.attendeeConflictError.reject">
         <md-button type="button" ng-click="editor.cancel(eventForm)">
@@ -380,6 +383,11 @@
         <md-button type="button"
                    ng-click="editor.edit(eventForm)">
           <var:string label:value="Edit"/>
+        </md-button>
+        <md-button class="md-warn" type="button"
+                   ng-click="editor.save(eventForm, { removeAttendees: editor.attendeeConflictError.unavailableAttendees })"
+                   ng-disabled="editor.eventForm.$invalid">
+          <var:string label:value="Save"/>
         </md-button>
       </md-dialog-actions>
     </form>

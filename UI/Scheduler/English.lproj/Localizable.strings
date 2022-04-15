@@ -499,6 +499,8 @@ validate_untilbeforeend    = "The recurrence must end after the first occurrence
 "and" = "and";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Would you like to remove them and send the invitation to the remaining attendees?";
 
 /* events list */
 "Due" = "Due";

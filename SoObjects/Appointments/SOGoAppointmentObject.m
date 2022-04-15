@@ -531,11 +531,11 @@
   iCalPerson *currentAttendee;
   SOGoUser *user;
   SOGoUserSettings *us;
-  NSMutableArray *unavailableAttendees;
+  NSMutableArray *unavailableAttendees, *unavailableEmails;
   NSEnumerator *enumerator;
   NSString *currentUID, *ownerUID;
   NSMutableString *reason;
-  NSDictionary *values;
+  NSDictionary *values, *info;
   NSMutableDictionary *value, *moduleSettings;
   id whiteList;
   
@@ -545,6 +545,7 @@
 
   // Build list of the attendees uids
   unavailableAttendees = [[NSMutableArray alloc] init];
+  unavailableEmails = [NSMutableArray array];
   enumerator = [theAttendees objectEnumerator];
   ownerUID = [[[self context] activeUser] login];
 
@@ -573,6 +574,7 @@
                 {
                   values = [NSDictionary dictionaryWithObject:[user cn] forKey:@"Cn"];
                   [unavailableAttendees addObject:values];
+                  [unavailableEmails addObject: [currentAttendee rfc822Email]];
                 }
             }
         }
@@ -592,7 +594,14 @@
           if (i < count-2)
             [reason appendString:@", "];
         }
-      
+
+      if (count < [theAttendees count])
+        {
+          info = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 reason, @"reject",
+                               unavailableEmails, @"unavailableAttendees", nil];
+          reason = [NSMutableString stringWithString: [info jsonRepresentation]];
+        }
       [unavailableAttendees release];
       
       return [self exceptionWithHTTPStatus:409 reason: reason];
