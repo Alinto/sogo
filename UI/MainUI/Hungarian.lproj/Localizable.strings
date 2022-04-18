@@ -24,8 +24,9 @@
 
 /* 2FA */
 "Verification Code" = "Megerősítő kód";
-"Enter the 6-digit verification code from your TOTP application." = "Adja meg a Google Authenticator alkalmazás által megadott 6 jegyű megerősítő kódot.";
-"You provided an invalid TOTP key." = "Érvénytelen Google Authenticator kódot adott meg.";
+"Enter the 6-digit verification code from your TOTP application." = "Adja meg TOTP alkalmazásában megjelenő 6 jegyű ellenőrző kódot.";
+"You provided an invalid TOTP key." = "Érvénytelen TOTP kulcsot adott meg.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "A kétfaktoros hitelesítés le lett tiltva. A Beállítások menüben tudja elvégezni kétfaktoros hitelesítés helyreállítását valamint a TOTP alkalmazás konfigurálását.";
 
 "Download" = "Letöltés";
 "Language" = "Nyelv";

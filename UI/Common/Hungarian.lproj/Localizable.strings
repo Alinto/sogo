@@ -41,6 +41,8 @@
      = "Lényegében bárki az interneten el tudja érni a(z) \"%{0}\" címjegyzékét, még akkor is, ha nem rendelkezik fiókkal a rendszerben. Biztos, hogy a címjegyzék publikus adatokat tartalmaz?";
 "Give Access" = "Hozzáférés biztosítása";
 "Keep Private" = "Magán célúnak megtart";
+"Expand" = "Kiterjesztés";
+"Reduce" = "Csökkentés";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -122,11 +124,17 @@
 "S/MIME Certificate" = "S/MIME tanúsítvány";
 "Subject Name" = "Tulajdonos";
 "Issuer" = "Kibocsátó";
+"streetAddress" = "Utca";
+"stateOrProvinceName" = "Állam vagy tartomány";
+"localityName" = "Település";
 "countryName" = "Ország";
 "organizationName" = "Szervezet";
 "organizationalUnitName" = "Szervezeti egység";
 "commonName" = "Általános név";
+"surname" = "Vezetéknév";
+"givenName" = "Utónév";
 "emailAddress" = "Email cím";
+
 
 /* Authentication username */
 "Username" = "Felhasználónév";

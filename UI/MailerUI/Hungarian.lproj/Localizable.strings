@@ -187,6 +187,7 @@
 "InboxFolderName"  = "Beérkezett üzenetek";
 "DraftsFolderName" = "Piszkozatok";
 "JunkFolderName" = "Levélszemét";
+"TemplatesFolderName" = "Sablonok";
 "SieveFolderName"  = "Szűrők";
 "Folders"          = "Mappák"; /* title line */
 
@@ -432,6 +433,9 @@
 "Set as Sent" = "Beállítás elküldöttként";
 "Set as Trash" = "Beállítás töröltként";
 
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Beállítás sablonként";
+
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Levélszemétnek jelöl";
 
@@ -453,6 +457,9 @@
 "Your email has been saved" = "Üzenete mentésre került";
 "Your email has been sent" = "Üzenete elküldve";
 "Folder compacted" = "Mappa tömörítve";
+
+"New draft" = "Új piszkozat";
+"Create new draft with this template" = "Új piszkozat létrehozása ezzel a sablonnal";
 
 /* Advanced search */
 "Enter Subject" = "Adja meg a tárgyat";
