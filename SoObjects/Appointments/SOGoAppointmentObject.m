@@ -1900,8 +1900,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 }
 
 //
-// iOS devices (and potentially others) send event invitations with no PARTSTAT defined.
-// This confuses DAV clients like Thunderbird, or event SOGo web. The RFC says:
+// [1] iOS devices (and potentially others) send event invitations with no PARTSTAT defined.
+// This confuses DAV clients like Thunderbird, or even SOGo web. RFC 5545 says:
 //
 //    Description: This parameter can be specified on properties with a
 //    CAL-ADDRESS value type. The parameter identifies the participation
@@ -1911,6 +1911,11 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 //    match one of the values allowed for the given calendar component. If
 //    not specified on a property that allows this parameter, the default
 //    value is NEEDS-ACTION.
+//
+// [2] Thunderbird (and potentially others) send event invitations with no RSVP defined.
+// Without any RSVP, the Web interface won't allow the user to respond to the invitation.
+// For this reason, we set it to TRUE when missing, even though RFC 5545 says the default
+// value is FALSE.
 //
 - (void) _adjustPartStatInRequestCalendar: (iCalCalendar *) rqCalendar
 {
@@ -1936,6 +1941,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 
               if (![[attendee partStat] length])
                 [attendee setPartStat: @"NEEDS-ACTION"];
+              if (![[attendee rsvp] length])
+                [attendee setRsvp: @"TRUE"];
             }
         }
     }
