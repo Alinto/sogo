@@ -114,7 +114,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  
   if (ret != WBXML_OK)
     {
-      [self errorWithFormat: @"wbxml2xmlFromContent: failed: %s\n", wbxml_errors_string(ret)];
+      [self errorWithFormat: @"wbxml2xml failed: %s\n", wbxml_errors_string(ret)];
       [self _dumpToFile];
       return nil;
     }
@@ -147,7 +147,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   if (ret != WBXML_OK)
     {
-      [self logWithFormat: @"xml2wbxmlFromContent: failed: %s\n", wbxml_errors_string(ret)];
+      [self logWithFormat: @"xml2wbxml failed: %s\n", wbxml_errors_string(ret)];
       [self _dumpToFile];
       return nil;
     }
@@ -162,7 +162,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   if (ret != WBXML_OK)
     {
-      [self errorWithFormat: @"xml2wbxmlFromContent: failed: %s\n", wbxml_errors_string(ret)];
+      [self errorWithFormat: @"xml2wbxml failed: %s\n", wbxml_errors_string(ret)];
       [self _dumpToFile];
       free(wbxml);
       wbxml_conv_xml2wbxml_destroy(conv);
