@@ -46,6 +46,8 @@
 
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
+#import <NGImap4/NGImap4Envelope.h>
+#import <NGImap4/NGImap4EnvelopeAddress.h>
 #import <NGImap4/NSString+Imap4.h>
 
 #import <SOGo/DOMNode+SOGo.h>
@@ -69,6 +71,7 @@
 #import <SOGo/SOGoZipArchiver.h>
 
 #import "EOQualifier+MailDAV.h"
+#import "NSString+Mail.h"
 #import "SOGoMailAccount.h"
 #import "SOGoMailAccounts.h"
 #import "SOGoTrashFolder.h"
@@ -534,10 +537,13 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
   NSDictionary *msgs;
   NSArray *messages;
   NSData *content, *zipContent;
-  WOResponse *response;
-  SOGoZipArchiver *archiver;
   NSFileHandle *zipFileHandle;
+  SOGoZipArchiver *archiver;
+  SOGoUserDefaults *ud;
+  WOResponse *response;
   int i;
+
+  ud = [[context activeUser] userDefaults];
 
   if (!archiveName)
     archiveName = @"SavedMessages.zip";
@@ -561,15 +567,29 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
       return (WOResponse *)error;
   }
 
-  msgs = (NSDictionary *)[self fetchUIDs: uids  
-                                   parts: [NSArray arrayWithObject: @"BODY.PEEK[]"]];
+  msgs = (NSDictionary *)[self fetchUIDs: uids
+                                   parts: [NSArray arrayWithObjects: @"BODY.PEEK[]", @"ENVELOPE", nil]];
   messages = [msgs objectForKey: @"fetch"];
 
   for (i = 0; i < [messages count]; i++)
     {
+      NGImap4Envelope *envelope;
+      NSString *subject;
+      NSCalendarDate *date;
+      NSArray *froms;
+      NSString *from;
+
+      envelope = [[messages objectAtIndex: i] valueForKey: @"envelope"];
+      subject = [[envelope subject] decodedHeader];
+      date = [envelope date];
+      froms = [envelope from];
+      from = @"";
+      if ([froms count])
+        from = [[froms objectAtIndex: 0] email];
+      [date setTimeZone: [ud timeZone]];
       content = [[[messages objectAtIndex: i] objectForKey: @"body[]"] objectForKey: @"data"];
-      fileName = [NSString stringWithFormat:@"%@.eml", [uids objectAtIndex: i]];
-      [archiver putFileWithName: fileName andData: content];
+      fileName = [NSString stringWithFormat:@"%@ - %@ - %@.eml", [uids objectAtIndex: i], subject, date];
+      [archiver putFileWithName: [fileName asSafeFilename] andData: content];
     }
 
   [archiver close];
@@ -1540,7 +1560,7 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
   if ([mailboxACL isKindOfClass: [NSException class]])
     {
       [[self imap4Connection] createMailbox: [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]]
-				      atURL: [[self mailAccountFolder] imap4URL]];
+                                      atURL: [[self mailAccountFolder] imap4URL]];
       mailboxACL = [[self imap4Connection] aclForMailboxAtURL: [self imap4URL]];
     }
 
@@ -2346,7 +2366,7 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
 
   // We fetch new messages and modified messages
   if (highestmodseq)
-    {    
+    {
       EOKeyValueQualifier *kvQualifier;
       NSNumber *nextModseq;
 
