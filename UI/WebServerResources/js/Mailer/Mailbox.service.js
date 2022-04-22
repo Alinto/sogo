@@ -403,7 +403,9 @@
         }
       });
     }
-    else if (!sortingAttributes && this.$syncToken) {
+    else if (!sortingAttributes && !this.$flaggedOnly && !this.$unseenOnly && this.$syncToken) {
+      // Fetch changes only if sorting attributes haven't changed, and view is not limited to
+      // unseen messages or flagged messages.
       action = 'changes';
       options.syncToken = this.$syncToken;
     }
