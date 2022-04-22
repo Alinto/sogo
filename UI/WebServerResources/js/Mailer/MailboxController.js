@@ -12,7 +12,8 @@
         defaultWindowTitle = angular.element($window.document).find('title').attr('sg-default') || "SOGo",
         hotkeys = [],
         sortLabels,
-        popupWindow = null;
+        popupWindow = null,
+        msgHeight = 56; // must match md-item-size of md-list-item in UIxMailFolderTemplate
 
     sortLabels = {
       subject: 'Subject',
@@ -292,7 +293,7 @@
       if (angular.isDefined(index)) {
         index--;
         if (vm.selectedFolder.$topIndex > 0)
-          vm.selectedFolder.$topIndex--;
+          _scrollToIndex(index);
       }
       else {
         // No message is selected, show oldest message
@@ -317,7 +318,7 @@
       if (angular.isDefined(index)) {
         index++;
         if (vm.selectedFolder.$topIndex < vm.selectedFolder.getLength())
-          vm.selectedFolder.$topIndex++;
+          _scrollToIndex(index);
       }
       else
         // No message is selected, show newest
@@ -331,6 +332,20 @@
       $event.preventDefault();
 
       return index;
+    }
+
+    /**
+     * Perform a smoother scrolling than modifying vm.selectedFolder.$topIndex directly
+     */
+    function _scrollToIndex(index) {
+      var scroller = document.querySelector('[ui-view=mailbox] .md-virtual-repeat-scroller'),
+          scrollTop = index * msgHeight;
+
+      if (scrollTop < scroller.scrollTop || (scrollTop + msgHeight) > scroller.scrollTop + scroller.clientHeight)
+        document.querySelectorAll('.md-virtual-repeat-scroller')[1].scrollTo({
+          top: msgHeight * index - (scroller.clientHeight - msgHeight)/2,
+          behavior: 'smooth'
+        });
     }
 
     function _addNextMessageToSelection($event) {
