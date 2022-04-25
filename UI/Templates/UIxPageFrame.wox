@@ -17,7 +17,7 @@
         <meta name="hideFrame" var:content="hideFrame" />
         <meta name="description" content="SOGo Web Interface" />
         <meta name="author" content="Inverse inc." />
-        <meta name="robots" content="stop" />
+        <meta name="robots" content="noindex, nofollow" />
         <meta name="build" var:content="buildDate" />
         <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1" />
         <link href="mailto:support@inverse.ca" rev="made" />
