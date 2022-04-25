@@ -496,7 +496,7 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
 	  client = [[self imap4Connection] client];
 	  [imap4 selectFolder: [self imap4URL]];
 	}
-      result = [[client storeFlags: [NSArray arrayWithObject: @"Deleted"]
+      result = [[client storeFlags: [NSArray arrayWithObjects: @"Deleted", @"seen", nil]
 			   forUIDs: uids addOrRemove: YES]
                           objectForKey: @"result"];
       if ([result boolValue])
