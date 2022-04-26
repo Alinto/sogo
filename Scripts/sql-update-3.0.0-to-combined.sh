@@ -137,12 +137,13 @@ CREATE TABLE sogo_quick_contact
   c_sn character varying(255),
   c_screenname character varying(255),
   c_l character varying(255),
-  c_mail character varying(255),
+  c_mail text,
   c_o character varying(255),
   c_ou character varying(255),
   c_telephonenumber character varying(255),
   c_categories character varying(255),
   c_component character varying(10) NOT NULL,
+  c_hascertificate int4 DEFAULT 0,
   CONSTRAINT sogo_quick_contact_pkey PRIMARY KEY (c_folder_id, c_name)
 );
 
