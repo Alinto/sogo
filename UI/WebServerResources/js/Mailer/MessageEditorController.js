@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MessageEditorController.$inject = ['$scope', '$window', '$stateParams', '$mdConstant', '$mdUtil', '$mdDialog', '$mdToast', 'FileUploader', 'stateParent', 'stateAccount', 'stateMessage', 'onCompletePromise', 'encodeUriFilter', '$timeout', 'sgConstant', 'sgFocus', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
-  function MessageEditorController($scope, $window, $stateParams, $mdConstant, $mdUtil, $mdDialog, $mdToast, FileUploader, stateParent, stateAccount, stateMessage, onCompletePromise, encodeUriFilter, $timeout, sgConstant, focus, Dialog, AddressBook, Card, Preferences) {
+  MessageEditorController.$inject = ['$scope', '$window', '$stateParams', '$mdUtil', '$mdDialog', '$mdToast', 'FileUploader', 'stateParent', 'stateAccount', 'stateMessage', 'onCompletePromise', 'encodeUriFilter', '$timeout', 'sgConstant', 'sgFocus', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
+  function MessageEditorController($scope, $window, $stateParams, $mdUtil, $mdDialog, $mdToast, FileUploader, stateParent, stateAccount, stateMessage, onCompletePromise, encodeUriFilter, $timeout, sgConstant, focus, Dialog, AddressBook, Card, Preferences) {
     var vm = this;
 
     this.$onInit = function() {
@@ -24,12 +24,7 @@
       this.fromIdentity = stateMessage.editable.from;
       this.identitySearchText = '';
       this.message = stateMessage;
-      this.recipientSeparatorKeys = [
-        $mdConstant.KEY_CODE.ENTER,
-        $mdConstant.KEY_CODE.TAB,
-        $mdConstant.KEY_CODE.COMMA,
-        $mdConstant.KEY_CODE.SEMICOLON
-      ];
+      this.recipientSeparatorKeys = Preferences.defaults.emailSeparatorKeys;
       this.sendState = false;
       this.toggleFullscreen = toggleFullscreen;
       this.firstFocus = true;

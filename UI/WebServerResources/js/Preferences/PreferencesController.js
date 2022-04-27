@@ -7,8 +7,8 @@
   /**
    * @ngInject
    */
-  PreferencesController.$inject = ['$q', '$window', '$state', '$mdConstant', '$mdMedia', '$mdSidenav', '$mdDialog', '$mdToast', 'sgSettings', 'sgFocus', 'Dialog', 'User', 'Account', 'Preferences', 'Authentication'];
-  function PreferencesController($q, $window, $state, $mdConstant, $mdMedia, $mdSidenav, $mdDialog, $mdToast, sgSettings, focus, Dialog, User, Account, Preferences, Authentication) {
+  PreferencesController.$inject = ['$q', '$window', '$state', '$mdMedia', '$mdSidenav', '$mdDialog', '$mdToast', 'sgSettings', 'sgFocus', 'Dialog', 'User', 'Account', 'Preferences', 'Authentication'];
+  function PreferencesController($q, $window, $state, $mdMedia, $mdSidenav, $mdDialog, $mdToast, sgSettings, focus, Dialog, User, Account, Preferences, Authentication) {
     var vm = this, mailboxes = [], today = new Date().beginOfDay();
 
     this.$onInit = function() {
@@ -18,12 +18,7 @@
       this.timeZonesSearchText = '';
       this.addressesSearchText = '';
       this.mailLabelKeyRE = new RegExp(/^(?!^_\$)[^(){} %*\"\\\\]*?$/);
-      this.emailSeparatorKeys = [
-        $mdConstant.KEY_CODE.ENTER,
-        $mdConstant.KEY_CODE.TAB,
-        $mdConstant.KEY_CODE.COMMA,
-        $mdConstant.KEY_CODE.SEMICOLON
-      ];
+      this.emailSeparatorKeys = Preferences.defaults.emailSeparatorKeys;
       if (Preferences.defaults.SOGoMailAutoMarkAsReadMode == 'delay')
         this.mailAutoMarkAsReadDelay = Math.max(1, this.preferences.defaults.SOGoMailAutoMarkAsReadDelay);
       else

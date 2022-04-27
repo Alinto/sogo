@@ -163,14 +163,36 @@
       else
         data.SOGoContactsCategories = _.compact(data.SOGoContactsCategories);
 
+      data.emailSeparatorKeys = [
+        9,   // $mdConstant.KEY_CODE.TAB,
+        13,  // $mdConstant.KEY_CODE.ENTER,
+        186, // $mdConstant.KEY_CODE.SEMICOLON
+        188  // $mdConstant.KEY_CODE.COMMA,
+      ];
       if (data.LocaleCode) {
+        data.ckLocaleCode = data.LocaleCode.replace('_', '-').toLowerCase();
+        // Exceptions
         switch (data.LocaleCode) {
+        case 'it':
+          // The Italian keyboard layout has the same keycode (186) for '@' and ';'; we remove the semicolon.
+          data.emailSeparatorKeys = [
+            9,   // $mdConstant.KEY_CODE.TAB,
+            13,  // $mdConstant.KEY_CODE.ENTER,
+            188  // $mdConstant.KEY_CODE.COMMA,
+          ];
+          break;
+        case 'ru':
+          // The Russian keyboard layout has the same keycode (186) for 'Ж' and ';'; we remove the semicolon.
+          // It also has the same keycode (188) for 'Б' and ','; we remove the comma.
+          data.emailSeparatorKeys = [
+            9,  // $mdConstant.KEY_CODE.TAB,
+            13  // $mdConstant.KEY_CODE.ENTER,
+          ];
+          break;
         case 'sr_ME':
         case 'sr_RS':
           data.ckLocaleCode = 'sr-latn';
           break;
-        default:
-          data.ckLocaleCode = data.LocaleCode.replace('_', '-').toLowerCase();
         }
       }
 

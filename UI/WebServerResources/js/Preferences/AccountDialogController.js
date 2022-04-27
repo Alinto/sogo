@@ -7,8 +7,8 @@
   /**
    * @ngInject
    */
-  AccountDialogController.$inject = ['$timeout', '$window', '$mdConstant', '$mdDialog', 'FileUploader', 'Dialog', 'sgSettings', 'defaults', 'account', 'accountId', 'mailCustomFromEnabled'];
-  function AccountDialogController($timeout, $window, $mdConstant, $mdDialog, FileUploader, Dialog, Settings, defaults, account, accountId, mailCustomFromEnabled) {
+  AccountDialogController.$inject = ['$timeout', '$window', '$mdDialog', 'FileUploader', 'Dialog', 'sgSettings', 'defaults', 'account', 'accountId', 'mailCustomFromEnabled'];
+  function AccountDialogController($timeout, $window, $mdDialog, FileUploader, Dialog, Settings, defaults, account, accountId, mailCustomFromEnabled) {
     var vm = this, usesSSO = $window.usesCASAuthentication || $window.usesSAML2Authentication;
 
     this.defaultPort = 143;
@@ -17,12 +17,6 @@
     this.accountId = accountId;
     this.hostnameRE = usesSSO && accountId > 0 ? /^(?!(127\.0\.0\.1|localhost(?:\.localdomain)?)$)/ : /./;
     this.addressesSearchText = '';
-    this.emailSeparatorKeys = [
-      $mdConstant.KEY_CODE.ENTER,
-      $mdConstant.KEY_CODE.TAB,
-      $mdConstant.KEY_CODE.COMMA,
-      $mdConstant.KEY_CODE.SEMICOLON
-    ];
     this.ckConfig = {
       'autoGrow_minHeight': 70,
       'toolbar': [['Bold', 'Italic', '-', 'Link',
