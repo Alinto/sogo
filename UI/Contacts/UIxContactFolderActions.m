@@ -165,6 +165,8 @@ static NSArray *photoTags = nil;
   NSMutableDictionary *entry, *encodedEntry;
   SOGoContactLDIFEntry *ldifEntry;
   NSArray *ldifContacts, *lines;
+  EOAdaptorChannel *channel;
+  GCSFolder *gcsFolder;
   SOGoContactGCSFolder *folder;
   NSEnumerator *keyEnumerator;
   NSString *key, *uid, *line;
@@ -317,7 +319,10 @@ static NSArray *photoTags = nil;
     }
 
   // Force update of quick table
-  [[[[[self clientObject] ocsFolder] acquireQuickChannel] adaptorContext] commitTransaction];
+  gcsFolder = [folder ocsFolder];
+  channel = [gcsFolder acquireQuickChannel];
+  [[channel adaptorContext] commitTransaction];
+  [gcsFolder releaseChannel: channel];
 
   // Convert groups to vLists
   count = [ldifListEntries count];
