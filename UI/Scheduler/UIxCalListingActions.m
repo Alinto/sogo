@@ -214,6 +214,48 @@ static NSArray *tasksFields = nil;
     }
     endDate = [startDate endOfDay];
   }
+  else if ([popupValue isEqualToString: @"view_last7"])
+  {
+    endDate = [NSCalendarDate calendarDate];
+    [endDate setTimeZone: userTZ];
+    startDate = [[endDate dateByAddingYears: 0 months: 0 days: -6] beginOfDay];
+  }
+  else if ([popupValue isEqualToString: @"view_last14"])
+  {
+    endDate = [NSCalendarDate calendarDate];
+    [endDate setTimeZone: userTZ];
+    startDate = [[endDate dateByAddingYears: 0 months: 0 days: -13] beginOfDay];
+  }
+  else if ([popupValue isEqualToString: @"view_last31"])
+  {
+    endDate = [NSCalendarDate calendarDate];
+    [endDate setTimeZone: userTZ];
+    startDate = [[endDate dateByAddingYears: 0 months: 0 days: -30] beginOfDay];
+  }
+  else if ([popupValue isEqualToString: @"view_lastmonth"])
+    {
+      newDate = [NSCalendarDate calendarDate];
+      [newDate setTimeZone: userTZ];
+      endDate = [[[newDate firstDayOfMonth] dateByAddingYears:0 months:0 days:-1 hours:0 minutes:0 seconds:0] endOfDay];
+      startDate = [[endDate firstDayOfMonth] beginOfDay];
+    }
+  else if ([popupValue isEqualToString: @"view_lastyear"])
+  {
+    newDate = [NSCalendarDate dateWithYear: [[NSCalendarDate calendarDate] yearOfCommonEra] - 1
+                                     month: 1
+                                       day: 1
+                                      hour: 0 minute: 0 second: 0
+                                  timeZone: userTZ];
+    startDate = [[newDate firstDayOfMonth] beginOfDay];
+
+    newDate = [NSCalendarDate dateWithYear: [[NSCalendarDate calendarDate] yearOfCommonEra] - 1
+                                     month: 12
+                                       day: 31
+                                      hour: 0 minute: 0 second: 0
+                                  timeZone: userTZ];
+    endDate = [[newDate lastDayOfMonth] endOfDay];
+  }
+  NSLog(@"***[UIxCalListingActions _setupDatesWithPopup:%@ andUserTZ:%@] %@ => %@", popupValue, userTZ, startDate, endDate);
 }
 
 - (void) _setupContext
@@ -1672,7 +1714,12 @@ _computeBlocksPosition (NSArray *blocks)
            [tasksView isEqualToString:@"view_next14"]    ||
            [tasksView isEqualToString:@"view_next31"]    ||
            [tasksView isEqualToString:@"view_thismonth"] ||
-           [tasksView isEqualToString:@"view_thisyear"]) &&
+           [tasksView isEqualToString:@"view_thisyear"]  ||
+           [tasksView isEqualToString:@"view_last7"]     ||
+           [tasksView isEqualToString:@"view_last14"]    ||
+           [tasksView isEqualToString:@"view_last31"]    ||
+           [tasksView isEqualToString:@"view_lastmonth"] ||
+           [tasksView isEqualToString:@"view_lastyear"]) &&
           (endDateStamp == 0 || endDateStamp >= startSecs))
         [filteredTasks addObject: filteredTask];
       else if ([tasksView isEqualToString:@"view_all"])

@@ -221,6 +221,11 @@
 "view_next31" = "Next 31 days";
 "view_thismonth" = "This Month";
 "view_thisyear" = "This Year";
+"view_last7" = "Last 7 days";
+"view_last14" = "Last 14 days";
+"view_last31" = "Last 31 days";
+"view_lastmonth" = "Last Month";
+"view_lastyear" = "Last Year";
 "view_future" = "All Future Events";
 "view_selectedday" = "Selected Day";
 "view_not_started" = "Not started tasks";

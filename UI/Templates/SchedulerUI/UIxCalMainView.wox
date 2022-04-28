@@ -202,6 +202,31 @@
                       <md-icon>{{ list.filteredBy('view_thisyear') ? 'check' : null }}</md-icon><var:string label:value="view_thisyear"/>
                     </md-button>
                   </md-menu-item>
+                  <md-menu-item>
+                    <md-button ng-click="list.filter('view_last7')">
+                      <md-icon>{{ list.filteredBy('view_last7') ? 'check' : null }}</md-icon> <var:string label:value="view_last7"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
+                    <md-button ng-click="list.filter('view_last14')">
+                      <md-icon>{{ list.filteredBy('view_last14') ? 'check' : null }}</md-icon> <var:string label:value="view_last14"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
+                    <md-button ng-click="list.filter('view_last31')">
+                      <md-icon>{{ list.filteredBy('view_last31') ? 'check' : null }}</md-icon><var:string label:value="view_last31"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
+                    <md-button ng-click="list.filter('view_lastmonth')">
+                      <md-icon>{{ list.filteredBy('view_lastmonth') ? 'check' : null }}</md-icon><var:string label:value="view_lastmonth"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
+                    <md-button ng-click="list.filter('view_lastyear')">
+                      <md-icon>{{ list.filteredBy('view_lastyear') ? 'check' : null }}</md-icon><var:string label:value="view_lastyear"/>
+                    </md-button>
+                  </md-menu-item>
                   <md-menu-item ng-if="list.componentType == 'events'">
                     <md-button ng-click="list.filter('view_future')">
                       <md-icon>{{ list.filteredBy('view_future') ? 'check' : null }}</md-icon> <var:string label:value="view_future"/>
