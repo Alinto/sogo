@@ -237,7 +237,8 @@ static NSArray *folderListingFields = nil;
               [filters addObject: @"c_givenname"];
               [filters addObject: @"c_cn"];
             }
-          else if ([[self searchFields] containsObject: currentCriteria])
+          else if ([[self nameFields] containsObject: currentCriteria] ||
+                   [[self searchFields] containsObject: currentCriteria])
             [filters addObject: currentCriteria];
         }
 
