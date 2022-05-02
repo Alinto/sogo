@@ -221,6 +221,11 @@
 "view_next31" = "Les 31 prochains jours";
 "view_thismonth" = "Mois en cours";
 "view_thisyear" = "Année en cours";
+"view_last7" = "Les 7 derniers jours";
+"view_last14" = "Les 14 derniers jours";
+"view_last31" = "Les 31 derniers jours";
+"view_lastmonth" = "Mois précédent";
+"view_lastyear" = "Année précédente";
 "view_future" = "Futurement";
 "view_selectedday" = "Jour sélectionné";
 "view_not_started" = "Tâches non-commencées";
@@ -498,7 +503,9 @@ validate_untilbeforeend    = "La répétition doit se terminer après la premiè
 "Between" = "Entre";
 "and" = "et";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
-= "Il y a un conflit avec l'horaire d'un ou plusieurs participants.\nVoulez-vous conserver les paramètres actuel malgré tout?";
+= "Il y a un conflit avec l'horaire d'un ou plusieurs participants.\nVoulez-vous conserver les paramètres actuels malgré tout?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Voulez-vous retirer ces adresses et envoyer l'invitation aux autres participants?";
 
 /* events list */
 "Due" = "Échéance";
@@ -579,7 +586,7 @@ vtodo_class2 = "(Tâche confidentielle)";
 "Move To" = "Déplacer vers";
 "Copy To" = "Copier vers";
 "Subscriptions" = "Abonnements";
-"Subscribe to a shared folder" = "S'abonner à un dossier partagé";
+"Subscribe to a shared calendar" = "S'abonner à un agenda partagé";
 "Subscribe to a web calendar..." = "S'inscrire à un agenda en ligne...";
 "URL of the Calendar" = "URL de l'agenda";
 "Web Calendar" = "Calendrier web";
