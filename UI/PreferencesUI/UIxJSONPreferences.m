@@ -1,6 +1,6 @@
 /* UIxJSONPreferences.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2021 Inverse inc.
+ * Copyright (C) 2007-2022 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
  */
 
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSTimeZone.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/SoObjects.h>
@@ -401,6 +402,9 @@ static SoProduct *preferencesProduct = nil;
                                            [locale objectForKey: @"NSWeekDayNameArray"], @"days",
                                            [locale objectForKey: @"NSShortWeekDayNameArray"], @"shortDays",
                                                     nil] forKey: @"locale"];
+
+  // Add timezone offset
+  [values setObject: [NSNumber numberWithInt: [[defaults timeZone] secondsFromGMT]] forKey: @"UserTimeZoneSecondsFromGMT"];
 
   accounts = [NSMutableArray arrayWithArray: [values objectForKey: @"AuxiliaryMailAccounts"]];
   if ([accounts count])

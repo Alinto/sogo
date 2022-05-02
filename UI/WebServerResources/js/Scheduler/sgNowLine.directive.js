@@ -46,8 +46,8 @@
   /**
    * @ngInject
    */
-  sgNowLineController.$inject = ['$scope', '$element', '$timeout'];
-  function sgNowLineController($scope, $element, $timeout) {
+  sgNowLineController.$inject = ['$scope', '$element', '$timeout', 'Preferences'];
+  function sgNowLineController($scope, $element, $timeout, Preferences) {
     var _this = this, updater,
         scrollViewCtrl = $element.controller('sgCalendarScrollView');
 
@@ -62,15 +62,20 @@
 
 
     function _updateLine(force) {
-      var now = new Date(), // TODO: adjust to user's timezone
-          nowDay = now.getDayString(),
-          hours = now.getHours(),
-          hourHeight = $scope.quarterHeight * 4,
-          minutes = now.getMinutes(),
-          minuteHeight = $scope.quarterHeight/15,
-          position = parseInt(hours   * hourHeight   +
-                              minutes * minuteHeight -
-                              1);
+      var now = new Date(), nowDay, hours, hourHeight, minutes, minuteHeight, position;
+
+      // Adjust to user's timezone
+      now.setTime(now.getTime() +
+                  now.getTimezoneOffset() * 60 * 1000 +
+                  Preferences.defaults.UserTimeZoneSecondsFromGMT * 1000);
+      nowDay = now.getDayString();
+      hours = now.getHours();
+      hourHeight = $scope.quarterHeight * 4;
+      minutes = now.getMinutes();
+      minuteHeight = $scope.quarterHeight/15;
+      position = parseInt(hours   * hourHeight   +
+                          minutes * minuteHeight -
+                          1);
 
       if (force || nowDay != $scope.nowDay) {
         if ($scope.lineElement)
