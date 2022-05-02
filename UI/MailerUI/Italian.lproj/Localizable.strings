@@ -37,7 +37,7 @@
 "Forward selected message" = "Inoltra il messaggio selezionato";
 "Delete selected message or folder" = "Cancella il messaggio o la cartella selezionata";
 "Print this message" = "Stampa questo messaggio";
-"Stop the current transfer" = "Ferma il trasferimento in corso";
+"Stop the current transfer" = "Interrompi il trasferimento in corso";
 "Attachment" = "Allegato";
 "Unread" = "Non letti";
 "Flagged" = "Contrassegnato";
@@ -52,7 +52,7 @@
 "Help" = "Aiuto";
 
 /* Mail account main windows */
-"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Benvenuto in SOGo Mailer. Usa l'albero di sinistra per navigare tra i tuoi account di posta!";
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Benvenuto in SOGo Mailer. Usa l'albero delle cartelle sulla sinistra per spostarti tra gli account di posta !";
 "Read messages"       = "Leggi messaggi";
 
 /* Tooltip for fab button */
@@ -71,7 +71,7 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Nessuna casella mail selezionata";
 
-"An error occured while communicating with the mail server" = "Si è verificato un errore comunicando col server mail";
+"An error occured while communicating with the mail server" = "Si è verificato un errore di comunicazione con il server di posta";
 
 /* Mailbox actions */
 
@@ -96,10 +96,10 @@
 "Post mails" = "Recapita email";
 "Add subfolders to this folder" = "Aggiungi sottocartelle a questa cartella";
 "Remove this folder" = "Rimuovi questa cartella";
-"Erase mails from this folder" = "Elimina email da questa cartella";
+"Erase mails from this folder" = "Elimina le email da questa cartella";
 "Expunge this folder" = "Pulisci questa cartella";
 "Export This Folder" = "Esporta Questa Cartella";
-"Modify the acl of this folder" = "Modifica i permessi per questa cartella";
+"Modify the acl of this folder" = "Modifica i permessi (ACL) per questa cartella";
 "Saved Messages.zip" = "Messaggi Salvati.zip";
 "Update" = "Aggiorna";
 "Cancel" = "Annulla";
@@ -110,8 +110,8 @@
 "To"            = "A";
 "Cc"            = "Cc";
 "Bcc"           = "Bcc";
-"Reply-To"	= "Rispondi a";
-"Add address"   = "Aggiungi indirizzi";
+"Reply-To"	= "Rispondi-A";
+"Add address"   = "Aggiungi indirizzo";
 "Body"          = "Corpo";
 "Open" = "Apri";
 "Select All" = "Seleziona Tutti";
@@ -130,7 +130,7 @@
 "Choose which identity to send this message from" = "Scegli l'identità con cui inviare questo messaggio";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Il mittente del messaggio ha chiesto di essere avvisato della lettura di questo messaggio. Vuoi avvisare il mittente?";
 "Return Receipt (displayed) - %@"= "Ricevuta di Ritorno (visualizzata) - %@";
-"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Questa è la Ricevuta di ritorno per la mail che hai inviato a %@.\n\nNota: Questa Ricevuta di ritorno ti assicura che il messaggio sta stato visualizzato sul computer del destinatario. Non c'è alcun conferma sul fatto che il destinatario abbia letto o capito il contenuto del messaggio.";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Questa è la ricevuta di ritorno per la mail che hai inviato a %@.\n\nNOTA: la ricevuta di ritorno indica che il messaggio è stato visualizzato sul computer del destinatario. Non c'è alcuna garanzia del fatto che il destinatario abbia effettivamente letto il contenuto del messaggio.";
 "Security" = "Sicurezza";
 "Sign" = "Firma";
 "Encrypt" = "Cripta";
@@ -140,7 +140,7 @@
 "normal" = "Normale";
 "low" = "Bassa";
 "lowest" = "Molto bassa";
-"This mail is being sent from an unsecure network!" = "Questa email è stata spedita da una rete non sicura!";
+"This mail is being sent from an unsecure network!" = "Questa email è stata inviata da una rete non sicura !";
 "Address Book" = "Rubrica";
 "Search For" = "Cerca Per";
 
@@ -164,7 +164,7 @@
 "Yesterday"     = "Ieri";
 "first"         = "Primo";
 "previous"      = "Precedente";
-"next"          = "Prossimo";
+"next"          = "Successivo";
 "last"          = "Ultimo";
 "msgnumber_to"  = "a";
 "msgnumber_of"  = "di";
@@ -197,7 +197,7 @@
 /* Address Popup menu */
 "Add to Address Book..." = "Aggiungi alla Rubrica...";
 "Successfully created card" = "Contatto creato con successo";
-"Compose Mail To" = "Invia Email a ";
+"Compose Mail To" = "Scrivi email a ";
 "Create Filter From Message..." = "Crea Filtro dal Messaggio...";
 
 /* Image Popup menu */
@@ -238,7 +238,7 @@
 "Mark" = "Contrassegna";
 "Save As..." = "Salva Come...";
 "Print Preview" = "Anteprima di stampa";
-"View Message Source" = "Visualizza Sorgente";
+"View Message Source" = "Visualizza Sorgente Messaggio";
 
 /* Message view "more" menu: create an event from message */
 "Convert To Event" = "Converti In Evento";
@@ -261,11 +261,11 @@
 "Print..." = "Stampa...";
 "Delete Message" = "Cancella Messaggio";
 "Delete Selected Messages" = "Cancella Messaggi Selezionati";
-"Mark the selected messages as junk" = "Contrassegna il messaggio selezionato come indesiderato";
+"Mark the selected messages as junk" = "Contrassegna il messaggio selezionato come spam";
 "Mark the selected messages as not junk" = "Contrassegna il messaggio selezionato come non spam";
 
 /* Text appended to the recipients list when there are too many recipients */
-"and %{0} more..." = "e %{0} altri...";
+"and %{0} more..." = "ed altri %{0}...";
 
 /* Button label to hide extended list of recipients */
 "Hide" = "Nascondi";
@@ -283,7 +283,7 @@
 "This message is encrypted" = "Il messaggio è criptato";
 
 /* Encrypted message but no certificate */
-"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Questo messaggio non può essere decriptato. Per favore assicurati di aver caricato il tuo certificato S/MIME dalle preferenze del modulo mail.";
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Questo messaggio non può essere decriptato. Per favore assicurati di aver caricato il tuo certificato S/MIME nella sezione Preferenze Email.";
 
 /* OpenSSL certificate error - unknown issuer */
 "certificate verify error" = "Impossibile verificare la firma del messaggio";
@@ -292,7 +292,7 @@
 "digest failure" = "Il messaggio è stato modificato";
 
 /* OpenSSL reading error */
-"Error reading the certificate. Please install a new certificate." = "Errore leggendo il certificato. Per favore installa un nuovo certificato.";
+"Error reading the certificate. Please install a new certificate." = "Errore di lettura del certificato. Per favore installa un nuovo certificato.";
 
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Nessun certificato associato all'account.";
@@ -301,10 +301,10 @@
 "Digital signature is not valid" = "Firma digitale non valida";
 
 /* Valid S/MIME signature */
-"Message is signed" = "Messaggio firmato";
+"Message is signed" = "Il messaggio è firmato digitalmente";
 
 /* Valid S/MIME signature but common name not found */
-"Message is signed but the certificate doesn't match the sender email address" = "Messaggio firmato ma il certificato non corrisponde all'indirizzo mittente";
+"Message is signed but the certificate doesn't match the sender email address" = "Il messaggio è firmato digitalmente ma il certificato non corrisponde all'indirizzo mittente";
 
 /* Unknown error while validating message signature */
 "Digital signature is not valid" = "Firma digitale non valida";
@@ -340,11 +340,11 @@
 "Enter the new name of your folder"
  ="Inserisci il nuovo nome della cartella ";
 "Do you really want to move this folder into the trash ?"
- = "Sei sicuro di voler spostare la cartella nel cestino ?";
+ = "Sei sicuro di voler spostare questa cartella nel cestino ?";
 "Operation failed" = "Operazione non riuscita";
 "Quota" = "Spazio usato:";
-"quotasFormat" = "%{0}% usato su %{1} MB";
-"messageQuotasFormat" = "%{0}% di %{1} mail";
+"quotasFormat" = "%{0}% usati su %{1} MB totali";
+"messageQuotasFormat" = "Email %{0}% di %{1}";
 "Unable to move/delete folder." = "Impossibile spostare/cancellare la cartella.";
 
 /* Alternative operation when folder cannot be deleted */
@@ -352,7 +352,7 @@
 = "La casella mail non può essere spostata nel cestino. Vuoi cancellarla immediatamente?";
 
 /* Confirmation message when deleting multiple messages */
-"Are you sure you want to delete the selected messages?" = "Sei sicuro di voler cancellare il messaggio selezionato?";
+"Are you sure you want to delete the selected messages?" = "Sei sicuro di voler cancellare il messaggio selezionato ?";
 
 /* Notification on the number of messages successfuly copied */
 "%{0} message(s) copied" = "%{0} messaggi copiati";
@@ -365,7 +365,7 @@
 "Please select only one message to print." = "Per favore seleziona un solo messaggio da stampare.";
 "The message you have selected doesn't exist anymore." = "Il messaggio selezionato non esiste più.";
 "The folder with name \"%{0}\" could not be created."
-= "La cartella con nome \"%{0}\" non può essere creata.";
+= "La cartella \"%{0}\" non può essere creata.";
 "This folder could not be renamed to \"%{0}\"."
 = "Questa cartella non puo essere rinominata in \"%{0}\".";
 "The folder could not be deleted."
@@ -373,23 +373,23 @@
 "The trash could not be emptied."
 = "Il cestino non può essere svuotato.";
 "The folder functionality could not be changed."
-= "La funzionalita della cartella non può essere cambiata.";
-"You need to choose a non-virtual folder!" = "Devi selezionare una cartella non virtuale!";
+= "La funzionalità della cartella non può essere modificata.";
+"You need to choose a non-virtual folder!" = "Devi selezionare una cartella non virtuale !";
 "Moving a message into its own folder is impossible!"
-= "La cartella di destinazione coincide con la cartella di origine!";
+= "La cartella di destinazione coincide con la cartella di origine !";
 "Copying a message into its own folder is impossible!"
-= "La cartella di destinazione coincide con la cartella di origine!";
+= "La cartella di destinazione coincide con la cartella di origine !";
 
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
-= "I messaggi non possono essere spostati nel cestino. Vuoi cancellarli immediatamente?";
+= "I messaggi non possono essere spostati nel Cestino. Vuoi cancellarli definitivamente ?";
 
 /* Message editing */
 "Please specify a subject." = "Per favore specifica un oggetto.";
-"error_missingsubject" = "Nessun oggetto specificato";
-"error_missingrecipients" = "Nessun destinatario specificato";
+"error_missingsubject" = "L'email non ha alcun oggetto. Vuoi inviarla comunque ?";
+"error_missingrecipients" = "Per favore, specifica almeno un destinatario";
 "Send Anyway" = "Invia comunque";
-"Error while saving the draft" = "Errore salvando la bozza";
+"Error while saving the draft" = "Errore durante il salvataggio della bozza";
 
 /* Error when emptying trash */
 "Unable to empty the trash folder." = "Impossibile svuotare il cestino";
@@ -399,8 +399,8 @@
 
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Errore durante l'upload del file \"%{0}\":";
-"There is an active file upload. Closing the window will interrupt it." = "Caricamento in corso. Chiudendo la finestra verrà interrotto.";
-"Message is too big" = "Messaggio troppo grande";
+"There is an active file upload. Closing the window will interrupt it." = "C'è un caricamento in corso. Chiudendo la finestra il caricamento verrà annullato.";
+"Message is too big" = "Il messaggio è troppo grande";
 
 /* Appears while sending the message */
 "Sending" = "Invio";
@@ -408,12 +408,12 @@
 /* Appears when the message is successfuly sent */
 "Sent" = "Inviato";
 
-"cannot send message: (smtp) all recipients discarded" = "Impossibile inviare il messaggio: tutti i destinatari non sono validi.";
-"cannot send message (smtp) - recipients discarded" = "Impossibile inviare il messaggio. Il seguente indirizzo non è valido";
+"cannot send message: (smtp) all recipients discarded" = "Impossibile inviare il messaggio: nessun destinatario valido.";
+"cannot send message (smtp) - recipients discarded" = "Impossibile inviare il messaggio. I seguenti indirizzi non sono validi";
 "cannot send message: (smtp) error when connecting" = "Impossibile inviare il messaggio: si è verificato un errore durante la connessione al server SMTP.";
 "cannot sign email without certificate" = "Il messaggio non può essere firmato perché non c'è alcun certificato associato all'account";
-"cannot sign message because the certificate can't be read" = "Il messaggio non può essere firmato perché il certificato associato all'account non può essere letto";
-"cannot sign message because the certificate doesn't include the specified sender address" = "Il messaggio non può essere firmato perché l'indirizzo mittente non è incluso nel certificato";
+"cannot sign message because the certificate can't be read" = "Il messaggio non può essere firmato digitalmente perché il certificato associato all'account non è leggibile.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "Il messaggio non può essere firmato digitalmente perché l'indirizzo mittente non è incluso nel certificato di questo account di posta.";
 
 /* Contacts list in mail editor */
 "Email" = "Email";
@@ -423,21 +423,21 @@
 "Add a tag" = "Aggiungi un tag";
 "reply" = "rispondi";
 "Edit" = "Modifica";
-"Yes" = "Si";
+"Yes" = "Sì";
 "No" = "No";
 "Location" = "Luogo";
 "Rename" = "Rinomina";
 "Compact" = "Riduci";
 "Export" = "Esporta";
-"Set as Drafts" = "Imposta come bozze";
-"Set as Sent" = "Imposta come inviato";
-"Set as Trash" = "Imposta come eliminata";
+"Set as Drafts" = "Imposta come Bozze";
+"Set as Sent" = "Imposta come Posta Inviata";
+"Set as Trash" = "Imposta come Cestino";
 
 /* Set the folder as the one holding the Templates */
 "Set as Templates" = "Imposta come Template";
 
 /* Set the folder as the one holding Junk mails */
-"Set as Junk" = "Imposta come spam";
+"Set as Junk" = "Imposta come Spam";
 
 "Sort" = "Ordinare";
 "Order Received" = "Ordine Ricevuto";
@@ -448,9 +448,9 @@
 "Mark as Unread" = "Contrassegna come da leggere";
 "Mark as Read" = "Contrassegna come letto";
 "Closing Window ..." = "Chiusura finestra...";
-"Tried to send too many mails. Please wait." = "Hai provato ad inviare troppe email. Per favore attendi.";
+"Tried to send too many mails. Please wait." = "Hai inviato troppe email contemporaneamente. Attendi e riprova in seguito.";
 "View Mail" = "Visualizza email";
-"This message contains external images." = "Questo messaggio contiene immagini esterne.";
+"This message contains external images." = "Questo messaggio contiene immagini da link esterni.";
 "Expanded" = "Espandi";
 "Add a Criteria" = "Aggiungi un criterio";
 "More search options" = "Altre opzioni di ricerca";
