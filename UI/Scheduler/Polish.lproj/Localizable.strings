@@ -221,6 +221,11 @@
 "view_next31" = "Następne 31 dni";
 "view_thismonth" = "Ten miesiąc";
 "view_thisyear" = "Ten rok";
+"view_last7" = "Ostatnie 7 dni";
+"view_last14" = "Ostatnie 14 dni";
+"view_last31" = "Ostatnie 31 dni";
+"view_lastmonth" = "Ostatni miesiąc";
+"view_lastyear" = "Ostatni rok";
 "view_future" = "wszystkie przyszłe wydarzenia";
 "view_selectedday" = "Zaznaczony dzień";
 "view_not_started" = "Zadania nie rozpoczęte";
@@ -499,6 +504,8 @@ validate_untilbeforeend    = "Zapętlenie musi zakończyć się po pierwszym wys
 "and" = "i";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Istnieje konflikt czasowy z jednym lub większą liczbą uczestników.\nCzy chcesz zachować obecne ustawienia mimo wszystko?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Czy chcesz usunąć ich i wysłać zaproszenie do pozostałych uczestników?";
 
 /* events list */
 "Due" = "Termin";

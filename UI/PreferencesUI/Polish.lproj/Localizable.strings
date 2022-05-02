@@ -68,6 +68,8 @@
 
 /* forward messages */
 "Forward incoming messages" = "Przekaż przychodzące wiadomości";
+"Always forward" = "Zawsze przekazuj";
+"Incoming messages are forwarded prior to apply your filters." = "Wiadomości przychodzące są przekazywane przed zastosowaniem filtrów.";
 "Keep a copy" = "Zatrzymaj kopię";
 "Enter an email" = "Wprowadź e-mail";
 "Add another email" = "Dodaj inny e-mail";
