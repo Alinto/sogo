@@ -47,7 +47,7 @@
 "New Calendar..." = "Neuer Kalender...";
 "Delete Calendar" = "Kalender löschen";
 "Unsubscribe Calendar" = "Kalender abbestellen";
-"Sharing..." = "Benutzerrechte...";
+"Sharing..." = "Freigaben...";
 "Export Calendar..." = "Kalender exportieren...";
 "Import Events..." = "Termine importieren...";
 "Import Events" = "Termine importieren";
@@ -499,6 +499,8 @@ validate_untilbeforeend    = "Die Wiederholung muss nach dem ersten Auftreten en
 "and" = "und";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Dieser Termin überschneidet sich mit dem Termin mindestens eines Teilnehmers.\nWollen sie die Einstellungen trotzdem so belassen?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Möchten Sie diese entfernen, und die Einladung an die verbleibenden Teilnehmer schicken?";
 
 /* events list */
 "Due" = "Fällig";
