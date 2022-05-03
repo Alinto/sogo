@@ -365,7 +365,14 @@
         </md-button>
       </md-dialog-actions>
 
-      <!-- rejected attendee invitation -->
+      <!-- rejected attendee invitation
+
+           possible causes:
+
+           * maximum number of simultaneous bookings is reached for a resource (fatal error, can't save)
+           * invitation is prohibited for all attendes (fatal error, can't save)
+           * invitation is prohibited for a fraction of the attendees (warning, can force saving)
+      -->
       <md-dialog-content class="md-default-theme md-bg md-warn md-padding sg-dialog-message ng-hide" layout="column"
                          ng-show="editor.attendeeConflictError.reject">
         <div layout="row" layout-align="space-between start" layout-fill="layout-fill">
@@ -374,7 +381,9 @@
             <md-icon label:aria-label="Close">close</md-icon>
           </md-button>
         </div>
-        <div class="sg-padded--top"><var:string label:value="Would you like to remove them and send the invitation to the remaining attendees?"/></div>
+        <div class="sg-padded--top" ng-show="editor.attendeeConflictError.unavailableAttendees">
+          <var:string label:value="Would you like to remove them and send the invitation to the remaining attendees?"/>
+        </div>
       </md-dialog-content>
       <md-dialog-actions ng-show="editor.attendeeConflictError.reject">
         <md-button type="button" ng-click="editor.cancel(eventForm)">
@@ -385,6 +394,7 @@
           <var:string label:value="Edit"/>
         </md-button>
         <md-button class="md-warn" type="button"
+                   ng-show="editor.attendeeConflictError.unavailableAttendees"
                    ng-click="editor.save(eventForm, { removeAttendees: editor.attendeeConflictError.unavailableAttendees })"
                    ng-disabled="editor.eventForm.$invalid">
           <var:string label:value="Save"/>
