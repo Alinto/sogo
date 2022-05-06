@@ -144,7 +144,7 @@
 
     // Try to register SOGo has an handler for mailto: links
     if (navigator && navigator.registerProtocolHandler) {
-      var mailtoURL = window.location.origin + window.ApplicationBaseURL + 'UIxMailPopupView#!/Mail/0/INBOX/new?%s';
+      var mailtoURL = window.location.origin + window.ApplicationBaseURL + 'UIxMailPopupView#!/Mail/0/new?%s';
       try {
         navigator.registerProtocolHandler('mailto', mailtoURL, 'SOGo');
       }
