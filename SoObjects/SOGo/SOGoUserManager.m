@@ -1,6 +1,6 @@
 /* SOGoUserManager.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2015 Inverse inc.
+ * Copyright (C) 2007-2021 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -210,6 +210,28 @@ static Class NSNullK;
 - (NSString *) registryClass
 {
   return @"SOGoUserManagerRegistry";
+}
+
+- (NSArray *) sourcesInDomain: (NSString *) domain
+{
+  NSMutableArray *sources;
+  NSArray *allSources;
+  int count, max;
+  NSString *sourceDomain;
+  NSObject <SOGoSource> *currentSource;
+
+  allSources = [_sources allValues];
+  max = [allSources count];
+  sources = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      currentSource = [allSources objectAtIndex: count];
+      sourceDomain = [currentSource domain];
+      if (![sourceDomain length] || [sourceDomain isEqualToString: domain])
+        [sources addObject: currentSource];
+    }
+
+  return sources;
 }
 
 - (NSArray *) sourceIDsInDomain: (NSString *) domain

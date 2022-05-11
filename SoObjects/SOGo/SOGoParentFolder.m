@@ -1,6 +1,6 @@
 /* SOGoParentFolder.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2017 Inverse inc.
+ * Copyright (C) 2006-2022 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,9 @@
 #import "NSObject+DAV.h"
 #import "SOGoGCSFolder.h"
 #import "SOGoPermissions.h"
+#import "SOGoSource.h"
 #import "SOGoUser.h"
+#import "SOGoUserManager.h"
 #import "SOGoWebDAVAclManager.h"
 
 #import "SOGoParentFolder.h"
@@ -307,15 +309,17 @@ static SoSecurityManager *sm = nil;
 
 - (NSException *) appendSubscribedSources
 {
-  NSMutableDictionary *folderDisplayNames;
-  NSMutableArray *subscribedReferences;
-  SOGoUserSettings *settings;
-  NSString *activeUser, *currentKey;
-  SOGoUser *ownerUser;
+  BOOL dirty, safeCheck, isConnected;
+  NSEnumerator *sources;
   NSException *error;
+  NSMutableArray *subscribedReferences;
+  NSMutableDictionary *folderDisplayNames;
+  NSObject <SOGoSource> *currentSource;
+  NSString *activeUser, *domain, *currentKey;
+  SOGoUser *ownerUser;
+  SOGoUserSettings *settings;
   id o;
   int i;
-  BOOL dirty;
 
   if (!subscribedSubFolders)
     subscribedSubFolders = [NSMutableDictionary new];
@@ -325,8 +329,11 @@ static SoSecurityManager *sm = nil;
 
   error = nil; /* we ignore non-DB errors at this time... */
   dirty = NO;
+  safeCheck = NO;
+  isConnected = YES;
 
   activeUser = [[context activeUser] login];
+  domain = [[context activeUser] domain];
   ownerUser = [SOGoUser userWithLogin: owner];
   settings = [ownerUser userSettings];
 
@@ -348,8 +355,21 @@ static SoSecurityManager *sm = nil;
 	  [subscribedReferences removeObject: currentKey];
 	  [folderDisplayNames removeObjectForKey: currentKey];
           if ([owner isEqualToString: activeUser])
-            // Synchronize settings only if the subscription is owned by the active user
-            dirty = YES;
+            {
+              // Safe check -- don't remove the subscription if any of the users sources has a connection failure.
+              if (!safeCheck)
+                {
+                  safeCheck = YES;
+                  sources = [[[SOGoUserManager sharedUserManager] sourcesInDomain: domain] objectEnumerator];
+                  while (isConnected && (currentSource = [sources nextObject]))
+                    {
+                      isConnected = isConnected && [currentSource isConnected];
+                    }
+                }
+              if (isConnected)
+                // Synchronize settings only if the subscription is owned by the active user
+                dirty = YES;
+            }
 	}
     }
   

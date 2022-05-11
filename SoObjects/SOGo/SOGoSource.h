@@ -43,6 +43,7 @@
 
 - (id) connection;
 - (void) releaseConnection: (id) connection;
+- (BOOL) isConnected;
 
 /* requires a "." to obtain the full list of contacts */
 - (void) setListRequiresDot: (BOOL) aBool;

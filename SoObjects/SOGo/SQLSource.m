@@ -445,6 +445,11 @@
   return channel;
 }
 
+- (BOOL) isConnected
+{
+  return [self connection];
+}
+
 - (void) releaseConnection: (id) connection
 {
   GCSChannelManager *cm;

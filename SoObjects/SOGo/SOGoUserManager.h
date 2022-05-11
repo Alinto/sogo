@@ -1,6 +1,6 @@
 /* SOGoUserManager.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2015 Inverse inc.
+ * Copyright (C) 2007-2022 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,6 +54,7 @@
 
 - (NSString *) registryClass;
 
+- (NSArray *) sourcesInDomain: (NSString *) domain;
 - (NSArray *) sourceIDsInDomain: (NSString *) domain;
 - (NSArray *) authenticationSourceIDsInDomain: (NSString *) domain;
 - (NSArray *) addressBookSourceIDsInDomain: (NSString *) domain;

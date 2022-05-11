@@ -497,6 +497,11 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   return (NGLdapConnection *)[self connection];
 }
 
+- (BOOL) isConnected
+{
+  return [[self _ldapConnection] isBound];
+}
+
 - (void) releaseConnection: (id) connection
 {
   if ([(NGLdapConnection *)connection isBound])
