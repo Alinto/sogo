@@ -53,7 +53,7 @@
       <md-tooltip><var:string label:value="Mail"/></md-tooltip>
     </md-button>
     <md-button class="md-icon-button"
-               ng-disabled="::baseURL.endsWith('/Administration/')"
+               ng-disabled="::baseURL.endsWith('/Administration')"
                ng-show="::activeUser.isSuperUser"
                var:ng-click="navButtonClick"
                ng-href="{{::activeUser.path.administration}}">

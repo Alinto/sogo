@@ -7,8 +7,8 @@
   /**
    * @ngInject
    */
-  AdministrationAclController.$inject = ['$timeout', '$state', '$mdMedia', '$mdToast', 'stateUser', 'stateFolder', 'User'];
-  function AdministrationAclController($timeout, $state, $mdMedia, $mdToast, stateUser, stateFolder, User) {
+  AdministrationAclController.$inject = ['$timeout', '$state', '$mdMedia', '$mdToast', 'stateUser', 'stateFolder', 'sgConstant', 'User'];
+  function AdministrationAclController($timeout, $state, $mdMedia, $mdToast, stateUser, stateFolder, sgConstant, User) {
     var vm = this;
 
     vm.user = stateUser;
@@ -94,9 +94,9 @@
       stateFolder.$acl.$saveUsersRights(stateFolder.owner).then(function() {
         $mdToast.show(
           $mdToast.simple()
-            .content(l('ACLs saved'))
-            .position('bottom right')
-            .hideDelay(3000)
+            .textContent(l('ACLs saved'))
+            .position(sgConstant.toastPosition)
+            .hideDelay(2000)
         );
         // Close acls on small devices
         if ($mdMedia('xs'))
