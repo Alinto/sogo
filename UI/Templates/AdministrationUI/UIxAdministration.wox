@@ -32,6 +32,12 @@
             <md-icon>security</md-icon>
             <p class="sg-item-name"><var:string label:value="Rights"/></p>
           </md-list-item>
+          <md-list-item ng-click="app.go('theme')"
+                        ui-sref="administration.theme"
+                        ui-sref-active="md-default-theme md-background md-bg md-hue-1">
+            <md-icon>palette</md-icon>
+            <p class="sg-item-name"><var:string label:value="Theme Preview"/></p>
+          </md-list-item>
         </md-list>
       </md-content>
     </md-sidenav>

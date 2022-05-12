@@ -45,6 +45,16 @@
           stateUser: stateUser,
           stateFolder: stateFolder
         }
+      })
+      .state('administration.theme', {
+        url: '/theme',
+        views: {
+          module: {
+            templateUrl: 'UIxThemePreview', // UI/Templates/Administration/UIxThemePreview.wox
+            controller: 'ThemePreviewController',
+            controllerAs: 'ctrl'
+          }
+        }
       });
 
     // if none of the above states are matched, use this as the fallback

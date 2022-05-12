@@ -259,7 +259,7 @@
       [users removeObjectForKey: currentUID];
   [clientObject removeAclsForUsers: [users allKeys]];
 
-  return [self jsCloseWithRefreshMethod: nil];
+  return [self responseWithStatus: 200];
 }
 
 - (BOOL) isPublicAccessEnabled

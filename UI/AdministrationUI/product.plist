@@ -18,6 +18,10 @@
           protectedBy = "View";
           pageName = "UIxAdministrationAclEditor";
         };
+        UIxThemePreview = {
+          protectedBy = "View";
+          pageName    = "UIxThemePreview";
+        };
       };
     };
   };
