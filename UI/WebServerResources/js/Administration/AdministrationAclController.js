@@ -7,12 +7,13 @@
   /**
    * @ngInject
    */
-  AdministrationAclController.$inject = ['$timeout', '$state', '$mdMedia', '$mdToast', 'stateUser', 'stateFolder', 'sgConstant', 'User'];
-  function AdministrationAclController($timeout, $state, $mdMedia, $mdToast, stateUser, stateFolder, sgConstant, User) {
+  AdministrationAclController.$inject = ['$timeout', '$state', '$mdMedia', '$mdToast', 'stateUser', 'stateFolder', 'stateAcls', 'sgConstant', 'User'];
+  function AdministrationAclController($timeout, $state, $mdMedia, $mdToast, stateUser, stateFolder, stateAcls, sgConstant, User) {
     var vm = this;
 
     vm.user = stateUser;
     vm.folder = stateFolder;
+    vm.users = stateAcls;
     vm.folderType = angular.isDefined(stateFolder.$cards)? 'AddressBook' : 'Calendar';
     vm.selectedUser = null;
     vm.selectedUid = null;
@@ -29,9 +30,6 @@
     vm.userFilter = userFilter;
     vm.addUser = addUser;
 
-    stateFolder.$acl.$users(stateFolder.owner).then(function(data) {
-      vm.users = data;
-    });
 
     function getTemplate() {
       if (angular.isDefined(stateFolder.$cards))

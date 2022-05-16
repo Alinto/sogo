@@ -43,7 +43,8 @@
         },
         resolve: {
           stateUser: stateUser,
-          stateFolder: stateFolder
+          stateFolder: stateFolder,
+          stateAcls: stateAcls
         }
       })
       .state('administration.theme', {
@@ -118,6 +119,11 @@
     stateUser.selectedFolder = o.id;
 
     return o;
+  }
+
+  stateAcls.$inject = ['stateFolder'];
+  function stateAcls(stateFolder) {
+    return stateFolder.$acl.$users(stateFolder.owner);
   }
 
   /**
