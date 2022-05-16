@@ -7,7 +7,7 @@
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label"
     className="UIxPageFrame"
-    title="title"
+    title="moduleName"
     const:jsFiles="vendor/ckeditor/ckeditor.js, Common/sgCkeditor.component.js, vendor/angular-file-upload.min.js, vendor/ng-sortable.min.js, vendor/qrcode.min.js, Common.js, Preferences.js, Preferences.services.js, Mailer.services.js, Contacts.services.js">
 
   <main layout-fill="layout-fill" ui-view="preferences"

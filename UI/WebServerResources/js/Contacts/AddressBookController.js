@@ -8,7 +8,8 @@
    */
   AddressBookController.$inject = ['$scope', '$q', '$window', '$state', '$timeout', '$mdDialog', '$mdToast', 'Account', 'Card', 'AddressBook', 'sgFocus', 'Dialog', 'sgConstant', 'sgHotkeys', 'stateAddressbooks', 'stateAddressbook'];
   function AddressBookController($scope, $q, $window, $state, $timeout, $mdDialog, $mdToast, Account, Card, AddressBook, focus, Dialog, sgConstant, sgHotkeys, stateAddressbooks, stateAddressbook) {
-    var vm = this, hotkeys = [], sortLabels;
+    var vm = this, hotkeys = [], sortLabels,
+        defaultWindowTitle = angular.element($window.document).find('title').attr('sg-default') || "SOGo";
 
     sortLabels = {
       c_cn: 'Name',
@@ -36,8 +37,14 @@
           sgHotkeys.deregisterHotkey(key);
         });
       });
-    };
 
+      // Update window's title with name of selected addressbook
+      $scope.$watch(function() { return vm.selectedFolder.name; }, function(selectedAddressbookName) {
+        var title = selectedAddressbookName;
+        title += ' | ' + defaultWindowTitle;
+        $window.document.title = title;
+      });
+    };
 
     function _registerHotkeys(keys) {
       keys.push(sgHotkeys.createHotkey({

@@ -6,7 +6,7 @@
                xmlns:rsrc="OGo:url"
                xmlns:label="OGo:label"
                className="UIxPageFrame"
-               title="title"
+               title="moduleName"
                const:jsFiles="Common.js, Administration.js,
                               Administration.services.js, Preferences.services.js,
                               Contacts.services.js, Scheduler.services.js">

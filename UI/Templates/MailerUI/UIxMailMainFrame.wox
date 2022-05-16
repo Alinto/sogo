@@ -7,7 +7,7 @@
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label"
     className="UIxPageFrame"
-    title="title"
+    title="moduleName"
     const:jsFiles="vendor/ckeditor/ckeditor.js, Common/sgCkeditor.component.js, Common.js, Preferences.services.js, Contacts.services.js, Scheduler.services.js, Mailer.js, Mailer.services.js, vendor/angular-file-upload.min.js, vendor/FileSaver.min.js">
   <script type="text/javascript">
     var mailAccounts = <var:string value="mailAccounts" const:escapeHTML="NO" />;

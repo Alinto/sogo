@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2014 Inverse inc.
+  Copyright (C) 2007-2022 Inverse inc.
 
   This file is part of SOGo.
 
@@ -72,6 +72,11 @@
 {
   RELEASE(_currentLabel);
   [super dealloc];
+}
+
+- (NSString *) moduleName
+{
+  return [self commonLabelForKey: @"Mail"];
 }
 
 - (NSString *) modulePath

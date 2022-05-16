@@ -43,6 +43,11 @@
   [super dealloc];
 }
 
+- (NSString *) moduleName
+{
+  return [self commonLabelForKey: @"Administration"];
+}
+
 - (NSString *) modulePath
 {
   return @"Administration";

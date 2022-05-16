@@ -1,7 +1,7 @@
 
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2005-2015 Inverse inc.
+  Copyright (C) 2005-2022 Inverse inc.
 
   This file is part of SOGo.
 
@@ -91,15 +91,13 @@
   NSString *pageTitle;
   SOGoSystemDefaults *sd;
 
-  if ([self isUIxDebugEnabled])
-    pageTitle = title;
-  else
-    {
-      sd = [SOGoSystemDefaults sharedSystemDefaults];
-      pageTitle = [sd pageTitle];
-      if (pageTitle == nil || ![pageTitle length])
-	pageTitle = (@"SOGo");
-    }
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  pageTitle = [sd pageTitle];
+  if (pageTitle == nil || ![pageTitle length])
+    pageTitle = (@"SOGo");
+
+  if ([title length])
+    pageTitle = [NSString stringWithFormat: @"%@ | %@", title, pageTitle];
 
   return pageTitle;
 }
