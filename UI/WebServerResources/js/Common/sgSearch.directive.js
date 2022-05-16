@@ -135,18 +135,18 @@
     }
 
     // Method to call on data changes
-    vm.onChange = function() {
-      var form = $scope[vm.formName],
-          input = form[vm.inputName],
+    this.onChange = function() {
+      var form = $scope[this.formName],
+          input = form[this.inputName],
           rawSearchText = input.$viewValue;
 
-      if (vm.allowDot && rawSearchText == '.' || form.$valid && rawSearchText) {
+      if (this.allowDot && rawSearchText == '.' || form.$valid && rawSearchText) {
         if (rawSearchText == '.')
           // Ignore the minlength constraint when using the dot operator
           input.$setValidity('minlength', true);
 
         // doSearch is the compiled expression of the sg-search attribute
-        vm.doSearch($scope, { searchText: rawSearchText, searchField: vm.searchField });
+        this.doSearch($scope, { searchText: rawSearchText, searchField: this.searchField });
       }
     };
 

@@ -7,46 +7,44 @@
   /**
    * @ngInject
    */
-  AdministrationController.$inject = ['$state', '$mdToast', '$mdMedia', '$mdSidenav', 'sgConstant', 'Dialog', 'encodeUriFilter', 'User'];
-  function AdministrationController($state, $mdToast, $mdMedia, $mdSidenav, sgConstant, Dialog, encodeUriFilter, User) {
-    var vm = this;
+  AdministrationController.$inject = ['$state', '$window', '$mdToast', '$mdMedia', '$mdSidenav', 'sgConstant', 'Dialog', 'encodeUriFilter', 'User'];
+  function AdministrationController($state, $window, $mdToast, $mdMedia, $mdSidenav, sgConstant, Dialog, encodeUriFilter, User) {
+    var vm = this,
+        defaultWindowTitle = angular.element($window.document).find('title').attr('sg-default') || "SOGo";
 
-    vm.service = User;
+    this.$onInit = function() {
+      this.service = User;
 
-    vm.selectedUser = null;
-    vm.users = User.$users;
+      this.selectedUser = null;
+      this.users = User.$users;
+    };
 
-    vm.go = go;
-    vm.filter = filter;
-    vm.selectUser = selectUser;
-    vm.selectFolder = selectFolder;
-
-    function go(module) {
+    this.go = function (module) {
       $state.go('administration.' + module);
       // Close sidenav on small devices
       if (!$mdMedia(sgConstant['gt-md']))
         $mdSidenav('left').close();
-    }
+    };
 
-    function filter(searchText) {
+    this.filter = function (searchText) {
       User.$filter(searchText);
-    }
+    };
 
-    function selectUser(i) {
-      if (vm.selectedUser == vm.users[i]) {
-        vm.selectedUser = null;
+    this.selectUser = function (i) {
+      if (this.selectedUser == this.users[i]) {
+        this.selectedUser = null;
       }
       else {
         // Fetch folders of specific type for selected user
-        vm.users[i].$folders().then(function() {
+        this.users[i].$folders().then(function() {
           vm.selectedUser = vm.users[i];
         });
       }
-    }
+    };
 
-    function selectFolder(folder) {
-      $state.go('administration.rights.edit', {userId: vm.selectedUser.uid, folderId: encodeUriFilter(folder.name)});
-    }
+    this.selectFolder = function (folder) {
+      $state.go('administration.rights.edit', {userId: this.selectedUser.uid, folderId: encodeUriFilter(folder.name)});
+    };
 
   }
 
