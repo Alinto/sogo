@@ -22,7 +22,6 @@ libSOGoUI_HEADER_FILES +=	\
 libSOGoUI_OBJC_FILES +=		\
 	\
 	UIxComponent.m		\
-	UIxModuleAccessDenied.m	\
 	SOGoAptFormatter.m	\
 	SOGoACLAdvisory.m	\
 	SOGoFolderAdvisory.m	\
