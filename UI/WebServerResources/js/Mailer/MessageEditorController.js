@@ -15,8 +15,7 @@
       this.account = stateAccount;
       this.autocomplete = {to: {}, cc: {}, bcc: {}};
       this.autosave = null;
-      this.autosaveDrafts = autosaveDrafts;
-      this.cancel = cancel;
+
       this.isFullscreen = false;
       this.hideBcc = (stateMessage.editable.bcc.length === 0);
       this.hideCc = (stateMessage.editable.cc.length === 0);
@@ -202,15 +201,15 @@
         angular.element(element).prop('value', null);
     };
 
-    function cancel() {
-      if (vm.autosave)
-        $timeout.cancel(vm.autosave);
+    this.cancel = function () {
+      if (this.autosave)
+        $timeout.cancel(this.autosave);
 
-      if (vm.message.isNew && vm.message.attachmentAttrs)
-        vm.message.$mailbox.$deleteMessages([vm.message]);
+      if (this.message.isNew && this.message.attachmentAttrs)
+        this.message.$mailbox.$deleteMessages([this.message]);
 
       $mdDialog.hide();
-    }
+    };
 
     // Fix for https://www.sogo.nu/bugs/view.php?id=4666
     this.ignoreReturn = function ($event) {
@@ -453,11 +452,11 @@
     };
 
     // Drafts autosaving
-    function autosaveDrafts() {
+    this.autosaveDrafts = function () {
       vm.message.$save();
       if (Preferences.defaults.SOGoMailAutoSave)
         vm.autosave = $timeout(vm.autosaveDrafts, Preferences.defaults.SOGoMailAutoSave*1000*60);
-    }
+    };
 
     this.isNew = function () {
       return typeof this.message.origin == 'undefined';
