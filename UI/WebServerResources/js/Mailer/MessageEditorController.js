@@ -102,7 +102,7 @@
         if ($window.opener) {
           if ('$mailboxController' in $window.opener &&
               'selectedFolder' in $window.opener.$mailboxController) {
-            if ($window.opener.$mailboxController.selectedFolder.type == 'draft') {
+            if ($window.opener.$mailboxController.selectedFolder.id == stateMessage.$mailbox.id) {
               ctrls.draftMailboxCtrl = $window.opener.$mailboxController;
               if ('$messageController' in $window.opener &&
                   $window.opener.$messageController.message.uid == stateMessage.uid) {
@@ -230,7 +230,7 @@
           ctrls.draftMailboxCtrl.selectedFolder.$filter().then(function() {
             if (ctrls.draftMessageCtrl) {
               // Reload selected message
-              ctrls.draftMessageCtrl.$state.go('mail.account.mailbox.message', { messageId: vm.message.uid });
+              ctrls.draftMessageCtrl.$state.go('mail.account.mailbox.message', { messageId: vm.message.uid, reload: true });
             }
           });
         }

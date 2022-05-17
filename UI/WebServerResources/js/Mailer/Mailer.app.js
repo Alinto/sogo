@@ -109,6 +109,11 @@
             controllerAs: 'viewer'
           }
         },
+        params: {
+          reload: {
+            value: false
+          }
+        },
         onEnter: onEnterMessage,
         onExit: onExitMessage,
         resolve: {
@@ -318,7 +323,7 @@
     });
 
     if (message && message.$reload) {
-      return message.$reload({useCache: true});
+      return message.$reload({useCache: !$stateParams.reload, nocache: $stateParams.reload});
     }
     else {
       // Message not found

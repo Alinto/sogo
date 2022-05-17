@@ -101,6 +101,8 @@
         // Cancel automatic mark as read
         if (vm.message.$markAsReadPromise)
           vm.service.$timeout.cancel(vm.message.$markAsReadPromise);
+        // Remove controller from window
+        delete $window.$messageController;
       });
 
     }; // $onInit
