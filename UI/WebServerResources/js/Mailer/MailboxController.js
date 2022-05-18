@@ -370,9 +370,9 @@
 
     this.selectMessage = function(message) {
       if (Mailbox.$virtualMode)
-        $state.go('mail.account.virtualMailbox.message', {mailboxId: encodeUriFilter(message.$mailbox.path), messageId: message.uid});
+        $state.go('mail.account.virtualMailbox.message', {mailboxId: encodeUriFilter(encodeUriFilter(message.$mailbox.path)), messageId: message.uid});
       else
-        $state.go('mail.account.mailbox.message', {messageId: message.uid});
+        $state.go('mail.account.mailbox.message', {mailboxId: encodeUriFilter(encodeUriFilter(message.$mailbox.path)), messageId: message.uid});
     };
 
     this.toggleMessageSelection = function($event, message) {
