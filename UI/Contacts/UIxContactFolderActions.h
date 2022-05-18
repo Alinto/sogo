@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2006-2021 Inverse inc.
+ Copyright (C) 2006-2022 Inverse inc.
 
  This file is part of SOGo
  
@@ -25,6 +25,7 @@
 #import <SOGoUI/UIxComponent.h>
 
 @class NSDictionary;
+@class NSMutableArray;
 @class NSString;
 
 @protocol SOGoContactObject;
@@ -35,7 +36,8 @@
 - (int) importVcardData: (NSString *) vcardData;
 - (BOOL) importVcard: (NGVCard *) card;
 - (BOOL) importVlist: (NGVList *) list;
-
+- (BOOL) importVcard: (NGVCard *) card
+            andLists: (NSMutableArray *) lists;
 @end
 
 #endif /* __UIxContactFolderActions_H__ */
