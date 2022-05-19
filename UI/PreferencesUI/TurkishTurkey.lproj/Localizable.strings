@@ -35,11 +35,20 @@
 "contacts_category_labels" = "Meslektaş, Rakip, Müşteri, Arkadaş, Aile, İş Ortağı, Tedarikçi, Basın, VIP";
 
 /* vacation (auto-reply) */
+"Activation Constraints" = "Aktivasyon Kısıtlamaları";
+"First day of vacation" = "Tatilin ilk günü";
+"Last day of vacation" = "Tatilin son günü";
+"Enable auto reply at" = "Otomatik yanıtı etkinleştir:";
+"Enable auto reply on these days" = "Bu günlerde otomatik yanıtı etkinleştir";
+"The vacation message is sent prior to apply your filters." = "Tatil mesajı filtrelerinizi uygulamadan önce gönderilir.";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Tatil mesajı gönderilir ancak gelen mesajlar gelen kutunuza teslim edilmez.";
+"Disable auto reply at" = "Otomatik yanıtı şuradan devre dışı bırak:";
 "Enable vacation auto reply" = "Otomatik tatil yanıtını etkinleştir";
 "Enable custom auto reply subject" = "Özelleştirilmiş otomatik yanıt konusunu etkinleştir";
 "Auto reply subject" = "Otomatik yanıtın konusu";
 "You can write ${subject} to insert the original subject" = "Asıl konuyu eklemek için ${subject} yazabilirsiniz";
 "Auto reply message" = "Otomatik yanıt iletisi";
+"Email addresses" = "E-posta adresleri";
 "Email addresses (separated by commas)" = "E-posta adresleri (virgülle ayrılmış)";
 "Add default email addresses" = "Varsayılan e-posta adresi ekle";
 "Days between responses" = "Yanıt gün sayısı";
@@ -56,6 +65,9 @@
 
 /* forward messages */
 "Forward incoming messages" = "Gelen e-postaları iletirken";
+"Always forward" = "Her zaman ilet";
+"Enter an email" = "Bir e-posta girin";
+"Incoming messages are forwarded prior to apply your filters." = "Gelen mesajlar, filtrelerinizi uygulamadan önce iletilir.";
 "Keep a copy" = "Bir kopyasını sakla";
 "Please specify an address to which you want to forward your messages."
 = "Lütfen e-postaların iletileceği adresi beilrtin.";
@@ -153,6 +165,7 @@
 "IMAP labels must have unique names." = "IMAP etiketleri farklı isimlerden oluşmalı.";
 "New label" = "Yeni etiket";
 "Show subscribed mailboxes only" = "Sadece üye olunan e-posta klasörlerini göster";
+"Fetch count of unseen messages for all mailboxes" = "Tüm posta kutuları için görünmeyen mesajların sayısını getir";
 "Synchronize only default mail folders (EAS)" = "Sadece varsayılan e-posta klasörlerini eşitle (EAS)";
 "Sort messages by threads" = "İletileri diziler halinde sırala";
 "Always open mail composer" = "E-posta düzenleyicisini her zaman aç";
@@ -181,6 +194,10 @@
 "displayremoteinlineimages_always" = "Göster";
 "Auto save every" = "Yazılan iletinin otomatik kaydedilme aralığı";
 "minutes" = "dakika";
+"Automatically mark messages as read" = "Mesajları otomatik olarak okundu olarak işaretle";
+"Immediately on display" = "Görüldüğü anda";
+"After displaying for" = "Görüldükten sonra";
+"seconds" = "saniye";
 
 /* Contact */
 "Personal Address Book" = "Kişisel Adres Defteri";
@@ -306,6 +323,7 @@
 "refreshview_every_20_minutes" = "Her 20 dakikada bir";
 "refreshview_every_30_minutes" = "Her 30 dakikada bir";
 "refreshview_once_per_hour" = "Saatte bir";
+"Enable Desktop Notifications" = "Masaüstü Bildirimlerini Etkinleştir";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Alındı bildirim isteği aldığımda";
@@ -437,3 +455,8 @@
 /* Limited Animation Mode */
 "animation_LIMITED" = "Sınırlı";
 "animation_NONE" = "Yok";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "Bir TOTP uygulaması kullanarak iki faktörlü kimlik doğrulamayı etkinleştirin";
+"You must enter this key into your TOTP application." = "Bu anahtarı TOTP uygulamanıza girmelisiniz.";
+"If you do not and you log out you will not be able to login again." = "Bunu yapmazsanız ve çıkış yaparsanız tekrar giriş yapamazsınız.";
