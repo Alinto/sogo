@@ -171,6 +171,7 @@
 "InboxFolderName"  = "Gelen";
 "DraftsFolderName" = "Taslak";
 "JunkFolderName" = "İstenmeyen";
+"TemplatesFolderName" = "Şablonlar";
 "SieveFolderName"  = "Süzgeçler";
 "Folders"          = "Klasörler"; /* title line */
 
