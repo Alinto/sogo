@@ -4,22 +4,30 @@
 "Username" = "Kullanıcı Adı";
 "Password" = "Şifre";
 "Domain" = "Alan adı";
-"Remember username" = "Kullanıcı Adımı hatırla";
+"Remember username" = "Kullanıcı adını hatırla";
 "Connect" = "Bağlan";
 
 /* Appears while authentication is in progress */
-"Authenticating" = "Kimlik Doğrulanıyor";
+"Authenticating" = "Kullanıcı doğrulanıyor";
 
 /* Appears when authentication succeeds */
-"Welcome" = "Hoş Geldiniz";
+"Welcome" = "Hoş geldiniz";
 
-"Authentication Failed" = "Kullanıcı Kimliği Doğrulanamadı";
+"Authentication Failed" = "Kullanıcı Doğrulanamadı";
 "Wrong username or password." = "Kullanıcı adı veya şifre yanlış.";
-"Retry" = "Yeniden deneyin";
+"Retry" = "Tekrar deneyin";
+"Login failed due to unhandled error case:" = "İşlenmeyen hata nedeniyle oturum açma başarısız oldu:";
 "cookiesNotEnabled" = "Giriş yapamıyorsunuz, çünkü tarayıcınızdaki çerezler engellenmiş. Lütfen tarayıcınızın ayarlarında çerezleri etkinleştirip, tekrar deneyin.";
 "browserNotCompatible" = "Tarayıcı sürümünüzün bu sitede henüz desteklenmediğini tespit ettik.  Tavsiyemiz Firefox kullanmanız. Bu tarayıcının son sürümünü indirmek için aşağıdaki bağlantıya tıklayın.";
 "alternativeBrowsers" = "Diğer bir seçenek olarak, aşağıdaki uyumlu tarayıcıları da kullanabilirsiniz";
 "alternativeBrowserSafari" = "Diğer bir seçenek olarak, Safari de kullanabilirsiniz.";
+
+/* 2FA */
+"Verification Code" = "Doğrulama Kodu";
+"Enter the 6-digit verification code from your TOTP application." = "TOTP uygulamanızdan 6 haneli doğrulama kodunu girin.";
+"You provided an invalid TOTP key." = "Geçersiz bir TOTP anahtarı sağladınız.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "İki faktörlü kimlik doğrulama devre dışı bırakıldı. İki faktörlü kimlik doğrulamayı geri yüklemek ve TOTP uygulamanızı yeniden yapılandırmak için Tercihler modülünü ziyaret edin.";
+
 "Download" = "İndir";
 "Language" = "Dil";
 "choose" = "Seçin ...";
@@ -94,7 +102,7 @@
 "Unhandled error response" = "Telafi edilemeyen hata yanıtı";
 "Password change is not supported." = "Şifre değiştirme desteklenmiyor.";
 "Unhandled HTTP error code: %{0}" = "Telafi edilemeyen HTTP hata kodu: %{0}";
-"New password" = "Yeni Şifre";
+"New password" = "Yeni şifre";
 "Confirmation" = "Onay";
 "Cancel" = "İptal";
 "Please wait..." = "Lütfen bekleyin...";

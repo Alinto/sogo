@@ -9,18 +9,19 @@
 "ACLs_title" = "Kullanıcı klasörleri Erişim Denetim Listeleri yönetimi";
 /* Modules descriptions */
 "ACLs_description" = "<p> Erişim Denetim Listesi yönetim modülü, her kullanıcı için Takvim ve Adres defterlerinin EDL'lerin değiştirilmesini sağlar. </p><p>Bir kullanıcı klasörünün EDL'sini değiştirmek için, pencerenin üst kısmındaki arama alanına kullanıcının adını yazın ve ilgili klasöre çift tıklayın.</p>";
-"Name or Email" = "İsim veya E-posta";
+"Name or Email" = "İsim ya da E-posta";
+"ACLs saved" = "ACL kayıt edildi";
 /* Rights module: initial search message */
-"Start a search to edit the rights" = "yetkileri düzenlemek için bir arama başlatın";
+"Start a search to edit the rights" = "Yetkileri düzenlemek için bir arama başlatın";
 /* Rights module: Empty search result */
 "No matching user" = "Eşleşen kullanıcı bulunamadı";
 /* Rights module: no selection */
 "No resource selected" = "Kaynak seçilmedi";
 "Add User" = "Kullanıcı Ekleyin";
-"Subscribe User" = "Kullanıcıyı Üye Yap";
+"Subscribe User" = "Kullanıcıya Abone Ol";
 "Rights" = "Yetkiler";
 "Search Users" = "Kullanıcıları Ara";
-"users found" = "bulunan kullanıcılar";
+"users found" = "kullanıcılar bulundu";
 "No resource" = "Kaynak yok";
 "Any Authenticated User" = "Kimliği doğrulanmış her kullanıcı";
 "Public Access" = "Herkese Açık Erişim";

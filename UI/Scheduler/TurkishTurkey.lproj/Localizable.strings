@@ -107,6 +107,7 @@
 "Name of the Calendar" = "Takvimin Adı";
 "new" = "Yeni";
 "Print view" = "Yazdırma Ön-izleme";
+"Print" = "Yazdır";
 "edit" = "Düzenle";
 "delete" = "SİL";
 "proposal" = "Teklif";
@@ -147,6 +148,7 @@
 "Display events and tasks colors" = "Etkinlik ve görev renklerini göster";
 "Borders" = "Kenarlar";
 "Backgrounds" = "Arka alan";
+"Page Format" = "Sayfa Formatı";
 
 /* Appointments */
 "Appointment viewer" = "Çalışma Görüntüleyici";
@@ -219,6 +221,11 @@
 "view_next31" = "Gelecek 31 gün";
 "view_thismonth" = "Bu Ay";
 "view_thisyear" = "Bu Yıl";
+"view_last7" = "Son 7 gün";
+"view_last14" = "Son 14 gün";
+"view_last31" = "Son 31 gün";
+"view_lastmonth" = "Geçen Ay";
+"view_lastyear" = "Geçen Yıl";
 "view_future" = "İleri Tarihteki Her Etkinlik";
 "view_selectedday" = "Seçili Gün";
 "view_not_started" = "Başlamamış görevler";
@@ -437,16 +444,48 @@ validate_untilbeforeend    = "Tekrar bitiş tarihi ilk tekrar tarihinden sonra o
 = "Kişisel takviminizden çıkamaz ve üyeliğinizi kaldıramazsınız.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "\"%{0}\" takvimini silmek istediğinizden emin misiniz?";
+"Are you sure you want to delete the selected components?"
+= "Seçili bileşenleri silmek istediğinizden emin misiniz?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Rol";
+
+/* Participant role: participation is required */
 "Participant" = "Katılan";
+
+/* Participant role: participation is required */
+"req-participant" = "Katılımcı";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Tercihli Katılımcı";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Opsiyonel Katılımcı";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Katılmayan";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Katılımcı olmayan";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "Başkan";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Oturum";
+
+/* Participant status: needs action */
 "Needs action" = "Eyleme gerekli";
+
+/* Participant status: event accepted */
 "Accepted" = "Kabul edilmiş";
+
+/* Participant status: event declined */
 "Declined" = "Reddedilmiş";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Geçici";
+
 "Free" = "Serbest";
 "Busy" = "Meşgul";
 "Maybe busy" = "Meşgul olabilir";
@@ -465,6 +504,8 @@ validate_untilbeforeend    = "Tekrar bitiş tarihi ilk tekrar tarihinden sonra o
 "and" = "ve";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Bir ya da daha fazla katılımcı ile saat çakışması var.\nYine de mevcut düzenlemeye devam etmek ister misiniz?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Bunları kaldırmak ve davetiyeyi kalan katılımcılara göndermek ister misiniz?";
 
 /* events list */
 "Due" = "Kapanış Tarihi";
@@ -545,7 +586,7 @@ vtodo_class2 = "(Gizli görev)";
 "Move To" = "Taşı";
 "Copy To" = "Kopyala";
 "Subscriptions" = "Üyelikler";
-"Subscribe to a shared folder" = "Paylaşılan bir klasöre üye ol";
+"Subscribe to a shared calendar" = "Paylaşılan bir takvime abone olun";
 "Subscribe to a web calendar..." = "Bir web takvimine üye ol...";
 "URL of the Calendar" = "Takvimin URL adresi";
 "Web Calendar" = "Web Takvimi";
