@@ -11,6 +11,7 @@ import {
   propfind,
 
   calendarMultiGet,
+  calendarQuery,
   createCalendarObject,
   makeCalendar,
 
@@ -405,6 +406,19 @@ class WebDAV {
       props: [
         { name: 'calendar-data', namespace: DAVNamespace.CALDAV }
       ]
+    })
+  }
+
+  calendarQuery(resource, filters) {
+    return calendarQuery({
+      url: this.serverUrl + resource,
+      headers: this.headers,
+      depth: '1',
+      props: [
+        { name: 'getetag', namespace: DAVNamespace.DAV },
+        { name: 'calendar-data', namespace: DAVNamespace.CALDAV },
+      ],
+      filters,
     })
   }
 

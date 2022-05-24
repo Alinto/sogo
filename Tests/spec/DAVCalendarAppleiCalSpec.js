@@ -88,6 +88,15 @@ describe('Apple iCal', function() {
       .toContain(`/SOGo/dav/${config.username}/`)
   }
 
+  beforeEach(async function() {
+    await _setMemberSet(config.username, [], 'read')
+    await _setMemberSet(config.username, [], 'write')
+    await _setMemberSet(config.subscriber_username, [], 'read')
+    await _setMemberSet(config.subscriber_username, [], 'write')
+    await _setMemberSet(config.superuser, [], 'read')
+    await _setMemberSet(config.superuser, [], 'write')
+  })
+
   // iCalTest
 
   it(`principal-collection-set: 'DAV' header must be returned with iCal 4`, async function() {
@@ -126,11 +135,6 @@ describe('Apple iCal', function() {
 
   it(`calendar-proxy as used from iCal`, async function() {
     let membership, perm, users, proxyFor
-
-    await _setMemberSet(config.username, [], 'read')
-    await _setMemberSet(config.username, [], 'write')
-    await _setMemberSet(config.subscriber_username, [], 'read')
-    await _setMemberSet(config.subscriber_username, [], 'write')
 
     membership = await _getMembership(config.username)
     expect(membership.length)

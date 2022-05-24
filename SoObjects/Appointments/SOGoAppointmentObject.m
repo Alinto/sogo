@@ -1731,10 +1731,10 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
         ex = [self exceptionWithHTTPStatus: 404 // Not Found
                                     reason: @"user does not participate in this calendar event"];
     }
-      else
-        ex = [self exceptionWithHTTPStatus: 500 // Server Error
-                                    reason: @"unable to parse event record"];
-  
+  else
+    ex = [self exceptionWithHTTPStatus: 500 // Server Error
+                                reason: @"unable to parse event record"];
+
   return ex;
 }
 

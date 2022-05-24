@@ -793,7 +793,7 @@ static Class iCalEventK = nil;
 
   if ([title length])
     [baseWhere
-      addObject: [NSString stringWithFormat: @"c_title isCaseInsensitiveLike: '%%%@%%'",
+      addObject: [NSString stringWithFormat: @"c_title isCaseInsensitiveLike: '*%@*'",
                            [title asSafeSQLLikeString]]];
 
   if (component)
@@ -1576,14 +1576,14 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
             {
               if ([filters isEqualToString:@"title_Category_Location"] || [filters isEqualToString:@"entireContent"])
                 {
-                  [baseWhere addObject: [NSString stringWithFormat: @"(c_title isCaseInsensitiveLike: '%%%@%%' OR c_category isCaseInsensitiveLike: '%%%@%%' OR c_location isCaseInsensitiveLike: '%%%@%%')",
+                  [baseWhere addObject: [NSString stringWithFormat: @"(c_title isCaseInsensitiveLike: '*%@*' OR c_category isCaseInsensitiveLike: '*%@*' OR c_location isCaseInsensitiveLike: '*%@*')",
                                                   [title asSafeSQLLikeString],
                                                   [title asSafeSQLLikeString],
                                                   [title asSafeSQLLikeString]]];
                 }
             }
           else
-            [baseWhere addObject: [NSString stringWithFormat: @"c_title isCaseInsensitiveLike: '%%%@%%'",
+            [baseWhere addObject: [NSString stringWithFormat: @"c_title isCaseInsensitiveLike: '*%@*'",
                                             [title asSafeSQLLikeString]]];
         }
       
@@ -1954,7 +1954,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
         filterString = [NSString stringWithFormat: @"(%@ = '')", key];
       else
         filterString
-          = [NSString stringWithFormat: @"(%@ like '%%%@%%')", key, value];
+          = [NSString stringWithFormat: @"(%@ like '*%@*')", key, value];
     }
   else
     filterString = [NSString stringWithFormat: @"(%@ != '')", key];
@@ -2169,6 +2169,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return davSQLFieldsTable;
 }
 
+// CALDAV:calendar-query REPORT
+// https://datatracker.ietf.org/doc/html/rfc4791#section-7.8
 - (id) davCalendarQuery: (id) queryContext
 {
   WOResponse *r;

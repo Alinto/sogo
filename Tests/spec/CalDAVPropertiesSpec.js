@@ -1,8 +1,10 @@
 import config from '../lib/config'
 import WebDAV from '../lib/WebDAV'
+import TestUtility from '../lib/utilities'
 
 describe('read and set calendar properties', function() {
   const webdav = new WebDAV(config.username, config.password)
+  const utility = new TestUtility(webdav)
   const resource = `/SOGo/dav/${config.username}/Calendar/test-dav-properties/`
 
   beforeEach(async function() {
@@ -56,6 +58,65 @@ describe('read and set calendar properties', function() {
     expect(results[0].status)
     .withContext(`Setting transparency to ${newValueNode} is successful`)
     .toBe(207)
+  })
 
+  it("calendar-query", async function() {
+    const filename = `new.ics`
+    const event = `BEGIN:VCALENDAR
+PRODID:-//Inverse//Event Generator//EN
+VERSION:2.0
+BEGIN:VEVENT
+SEQUENCE:0
+TRANSP:OPAQUE
+UID:1234567890
+SUMMARY:Visit to the museum of fine arts
+DTSTART:20090805T100000Z
+DTEND:20090805T140000Z
+CLASS:PUBLIC
+DESCRIPTION:description
+LOCATION:location
+DTSTAMP:20090805T100000Z
+END:VEVENT
+END:VCALENDAR`
+
+    let response = await webdav.createCalendarObject(resource, filename, event)
+    expect(response.status).toBe(201)
+
+    response = await webdav.calendarQuery(
+      resource,
+      [
+        {
+          type: 'comp-filter',
+          attributes: { name: 'VCALENDAR' },
+          children: [
+            {
+              type: 'comp-filter',
+              attributes: { name: 'VEVENT' },
+              children: [
+                {
+                  type: 'prop-filter',
+                  attributes: { name: 'TITLE' },
+                  children: [
+                    {
+                      type: 'text-match',
+                      value: 'museum'
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    )
+    expect(response.length)
+      .withContext(`Number of results from calendar-query`)
+      .toBe(1)
+    expect(response[0].status)
+      .withContext(`HTTP status code of calendar-query`)
+      .toEqual(207)
+    expect(utility.componentsAreEqual(response[0].props.calendarData, event))
+      .withContext(`Returned vCalendar matches ${filename}`)
+      .toBe(true)
   })
 })
