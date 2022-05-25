@@ -53,7 +53,7 @@
     });
 
     this.hasIdentities = function () {
-      return _.filter(this.account.identities, vm.isEditableIdentity).length > 0;
+      return _.filter(this.account.identities, this.isEditableIdentity).length > 0;
     };
 
     this.isEditableIdentity = function (identity) {
@@ -84,7 +84,7 @@
     };
 
     this.canRemoveIdentity = function (index) {
-      return (index == this.selectedIdentity) && (this.account.identities.length > 1);
+      return (index == this.selectedIdentity) && this.hasIdentities();
     };
 
     this.removeIdentity = function (index) {
