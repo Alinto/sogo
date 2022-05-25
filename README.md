@@ -70,7 +70,7 @@ SOGo and its associated components are available in various languages. The follo
 * [es_AR] Spanish (Argentina) - Federico Alberto Sayd
 * [es_ES] Spanish (Spain) - Dominique Couot
 * [sv] Swedish - Peter Johansson
-* [tr_TR] Turkish (Turkey) - Sinan Kurşunoğlu
+* [tr_TR] Turkish (Turkey) - Muhammed Yalçınkaya, Sinan Kurşunoğlu
 * [uk] Ukrainian - Oleksa Stasevych
 * [cy] Welsh - Iona Bailey
  
