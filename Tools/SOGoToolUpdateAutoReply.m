@@ -161,7 +161,7 @@
                       [endDate compare: now] == NSOrderedAscending)
                     {
                       if ([startDate compare: endDate] == NSOrderedAscending ||
-                          !(result & enableAutoReply))
+                          (result != temporarilyEnableAutoReply))
                         result = temporarilyDisableAutoReply;
                     }
                 }
