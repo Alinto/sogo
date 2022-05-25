@@ -25,10 +25,11 @@
   /**
    * @ngInject
    */
-  ThemePreviewController.$inject = ['$mdTheming'];
-  function ThemePreviewController($mdTheming) {
+  ThemePreviewController.$inject = ['$mdTheming', '$mdColors'];
+  function ThemePreviewController($mdTheming, $mdColors) {
     this.defaultTheme = $mdTheming.THEMES[$mdTheming.defaultTheme()];
     this.jsonDefaultTheme = JSON.stringify(this.defaultTheme, undefined, 2);
+    this.getColor = $mdColors.getThemeColor;
   }
 
   angular

@@ -16,9 +16,18 @@
         <h3 class="md-title">Palettes</h3>
         <md-subheader>Accessible from <a href="https://material.angularjs.org/latest/api/directive/mdColors">md-colors</a> and <a href="https://material.angularjs.org/latest/api/service/$mdThemingProvider">$mdThemingProvider</a></md-subheader>
         <md-list ng-repeat="palette in ['primary', 'accent', 'warn', 'background']">
+          <md-subheader>
+            <div layout="row">
+              <strong flex="">{{ palette }}</strong>
+              <strong>{{ ctrl.defaultTheme.colors[palette].name }}</strong>
+            </div>
+          </md-subheader>
+          <md-divider><!-- divider --></md-divider>
           <md-list-item
             ng-repeat="hex in ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700']"
-            md-colors="{backgroundColor: '{{ palette }}-{{ hex }}'}">{{ palette }}-{{ hex }}</md-list-item>
+            md-colors="{backgroundColor: '{{ palette }}-{{ hex }}'}">
+            <div flex=" ">{{ palette }}-{{ hex }}</div>
+            <div class="md-caption">{{ ctrl.getColor(palette + '-' + hex) }}</div></md-list-item>
         </md-list>
       </div>
       <div flex="50">
