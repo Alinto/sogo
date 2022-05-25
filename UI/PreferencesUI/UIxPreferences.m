@@ -1449,7 +1449,7 @@ static NSArray *reminderValues = nil;
   if ((v = [o objectForKey: @"defaults"]))
     {
       NSMutableDictionary *sanitizedLabels;
-      NSArray *allKeys, *accounts;
+      NSArray *allKeys, *accounts, *identities;
       NSDictionary *newLabels;
       NSString *name;
       id loginModule;
@@ -1522,6 +1522,17 @@ static NSArray *reminderValues = nil;
           //
           if ([[[user userDefaults] mailCertificate] length])
             [v setObject: [[user userDefaults] mailCertificate]  forKey: @"SOGoMailCertificate"];
+
+          //
+          // Keep the original mail identities if none is provided
+          //
+          identities = [v objectForKey: @"SOGoMailIdentities"];
+          if (!identities || ![identities isKindOfClass: [NSArray class]])
+            {
+              identities = [[user userDefaults] mailIdentities];
+              if ([identities count])
+                [v setObject: identities  forKey: @"SOGoMailIdentities"];
+            }
 
           //
           // We sanitize our auxiliary mail accounts
