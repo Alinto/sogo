@@ -52,6 +52,7 @@ typedef enum {
 static NSArray *sieveOperators = nil;
 static NSArray *sieveSizeOperators = nil;
 static NSMutableDictionary *fieldTypes = nil;
+static NSMutableDictionary *imapDelimiters = nil;
 static NSDictionary *sieveFields = nil;
 static NSDictionary *sieveFlags = nil;
 static NSDictionary *typeRequirements = nil;
@@ -150,6 +151,10 @@ static NSString *sieveScriptName = @"sogo";
                      forKey: @"body"];
       [fieldTypes setObject: [NSNumber numberWithInt: UIxFilterFieldTypeSize]
                      forKey: @"size"];
+    }
+  if (!imapDelimiters)
+    {
+      imapDelimiters = [NSMutableDictionary new];
     }
   if (!sieveFields)
     {
@@ -842,7 +847,7 @@ static NSString *sieveScriptName = @"sogo";
                      andPassword: (NSString *) thePassword
                  forceActivation: (BOOL) forceActivation
 {
-  NSString *filterScript, *v, *delimiter, *content, *message;
+  NSString *filterScript, *v, *delimiter, *imapHost, *content, *message;
   NSMutableArray *req;
   NSMutableString *script, *header;
   NSDictionary *result, *values;
@@ -884,32 +889,41 @@ static NSString *sieveScriptName = @"sogo";
       [methodRequirements setObject: @"imap4flags"  forKey: @"flag"];
     }
 
-  dateCapability = [client hasCapability: @"date"] && [client hasCapability: @"relational"];
+  dateCapability = NO; // [client hasCapability: @"date"] && [client hasCapability: @"relational"];
 
   //
   // Now let's generate the script
   //
   script = [NSMutableString string];
 
-  // We grab the IMAP4 delimiter using the supplied username/password
-  if (thePassword)
-    {
-      imapClient = [NGImap4Client clientWithURL: [theAccount imap4URL]];
-      [imapClient authenticate: [user login] authname: theUsername password: thePassword];
-    }
-  else
-    imapClient = [[theAccount imap4Connection] client];
 
-  delimiter = [imapClient delimiter];
-
-  if (!delimiter && [imapClient isConnected])
-    {
-      [imapClient list: @"INBOX"  pattern: @""];
-      delimiter = [imapClient delimiter];
-    }
-
+  imapHost = [NSString stringWithFormat: @"%@:%i", [[theAccount imap4URL] host], [[[theAccount imap4URL] port] intValue]];
+  delimiter = [imapDelimiters objectForKey: imapHost];
   if (!delimiter)
-    delimiter = [dd stringForKey: @"NGImap4ConnectionStringSeparator"];
+    {
+      // We grab the IMAP4 delimiter using the supplied username/password
+      if (thePassword)
+        {
+          imapClient = [NGImap4Client clientWithURL: [theAccount imap4URL]];
+          [imapClient authenticate: [user login] authname: theUsername password: thePassword];
+        }
+      else
+        imapClient = [[theAccount imap4Connection] client];
+
+      delimiter = [imapClient delimiter];
+
+      if (!delimiter && [imapClient isConnected])
+        {
+          [imapClient list: @"INBOX"  pattern: @""];
+          delimiter = [imapClient delimiter];
+        }
+
+      if (!delimiter)
+        delimiter = [dd stringForKey: @"NGImap4ConnectionStringSeparator"];
+
+      // Cache result -- will benefit "sogo-tool update-autoreply"
+      [imapDelimiters setObject: delimiter forKey: imapHost];
+    }
 
   // We first handle filters
   filterScript = [self sieveScriptWithRequirements: req
