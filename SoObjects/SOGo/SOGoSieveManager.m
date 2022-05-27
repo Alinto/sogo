@@ -889,7 +889,7 @@ static NSString *sieveScriptName = @"sogo";
       [methodRequirements setObject: @"imap4flags"  forKey: @"flag"];
     }
 
-  dateCapability = NO; // [client hasCapability: @"date"] && [client hasCapability: @"relational"];
+  dateCapability = [client hasCapability: @"date"] && [client hasCapability: @"relational"];
 
   //
   // Now let's generate the script
