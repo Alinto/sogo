@@ -16,6 +16,32 @@ Please make sure to respect the following guidelines when reporting a bug:
 
 Begin by reading [SOGo Developer's Guide](../Documentation/SOGoDevelopersGuide.asciidoc).
 
+### Translations
+
+Three type of files must be translated. The first type are **Localizable.strings**; they can be
+translated online using **[Transifex](https://www.transifex.com/inverse/sogo/)**. To use Transifex,
+you must first sign up for a [free account](https://www.transifex.com/signup/). Once registered,
+[request a new team](https://www.transifex.com/inverse/teams/) for your language. Once authorized,
+you'll be able to start/continue translating SOGo in your language.
+
+The second type are **wox and html templates**. Only words outside the tags (<>) must be
+translated. Start by duplicating the English templates:
+
+* [UI/Templates/SOGoACLEnglishAdditionAdvisory.wox](https://raw.githubusercontent.com/inverse-inc/sogo/master/UI/Templates/SOGoACLEnglishAdditionAdvisory.wox)
+* [UI/Templates/SOGoACLEnglishRemovalAdvisory.wox](https://raw.githubusercontent.com/inverse-inc/sogo/master/UI/Templates/SOGoACLEnglishRemovalAdvisory.wox)
+* [UI/Templates/SOGoACLEnglishModificationAdvisory.wox](https://raw.githubusercontent.com/inverse-inc/sogo/master/UI/Templates/SOGoACLEnglishModificationAdvisory.wox)
+* [UI/Templates/SOGoFolderEnglishAdditionAdvisory.wox](https://raw.githubusercontent.com/inverse-inc/sogo/master/UI/Templates/SOGoFolderEnglishAdditionAdvisory.wox)
+* [UI/Templates/SOGoFolderEnglishRemovalAdvisory.wox](https://raw.githubusercontent.com/inverse-inc/sogo/master/UI/Templates/SOGoFolderEnglishRemovalAdvisory.wox)
+* [SoObjects/Mailer/SOGoMailEnglishForward.wo/SOGoMailEnglishForward.html](https://raw.githubusercontent.com/inverse-inc/sogo/master/SoObjects/Mailer/SOGoMailEnglishForward.wo/SOGoMailEnglishForward.html)
+* [SoObjects/Mailer/SOGoMailEnglishReply.wo/SOGoMailEnglishReply.html](https://raw.githubusercontent.com/inverse-inc/sogo/master/SoObjects/Mailer/SOGoMailEnglishReply.wo/SOGoMailEnglishReply.html)
+
+The third type is the locale file formatted as a **plist**. Duplicate the English locale:
+
+* [UI/MainUI/English.lproj/Locale](https://raw.githubusercontent.com/inverse-inc/sogo/master/UI/MainUI/English.lproj/Locale)
+
+Once translated, create an archive with all the files and [contact
+us](https://sogo.nu/support.html#/commercial). We'll integrate it in the next version of SOGo.
+
 ### Git Commit Guidelines
 
 We have very precise rules over how our git commit messages can be formatted. This leads to **more
@@ -81,7 +107,7 @@ The body should include the motivation for the change and contrast this with pre
 
 #### Footer
 The footer should contain any information about **Breaking Changes** and is also the
-place to reference [Mantis](https://sogo.nu/bus/) issues that this commit **Fixes** or **Resolves**.
+place to reference [Mantis](https://sogo.nu/bugs/) issues that this commit **Fixes** or **Resolves**.
 
 > Breaking Changes are intended to be highlighted in the CHANGELOG as changes that will require
 > community users to modify their code after updating to a version that contains this commit.
