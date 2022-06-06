@@ -282,6 +282,13 @@
                 <label><var:string label:value="New password"/>
                 </label>
                 <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.newPassword"/>
+                <div class="sg-hint">
+                  <ul class="sg-padded">
+                    <var:foreach list="passwordPolicy" item="item">
+                      <li><var:string value="item.label"/></li>
+                    </var:foreach>
+                  </ul>
+                </div>
               </md-input-container>
               <md-input-container class="md-block" flex="flex">
                 <label><var:string label:value="Confirmation"/>

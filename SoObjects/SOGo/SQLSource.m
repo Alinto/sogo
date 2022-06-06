@@ -98,6 +98,7 @@
       // "mail" expands to all entries of MailFieldNames
       _searchFields = [NSArray arrayWithObjects: @"c_cn", @"mail", nil];
       [_searchFields retain];
+      _userPasswordPolicy = nil;
       _userPasswordAlgorithm = nil;
       _keyPath = nil;
       _viewURL = nil;
@@ -119,6 +120,7 @@
   [_loginFields release];
   [_mailFields release];
   [_searchFields release];
+  [_userPasswordPolicy release];
   [_userPasswordAlgorithm release];
   [_keyPath release];
   [_viewURL release];
@@ -143,6 +145,7 @@
   ASSIGN(_authenticationFilter, [udSource objectForKey: @"authenticationFilter"]);
   ASSIGN(_loginFields, [udSource objectForKey: @"LoginFieldNames"]);
   ASSIGN(_mailFields, [udSource objectForKey: @"MailFieldNames"]);
+  ASSIGN(_userPasswordPolicy, [udSource objectForKey: @"userPasswordPolicy"]);
   ASSIGN(_userPasswordAlgorithm, [udSource objectForKey: @"userPasswordAlgorithm"]);
   ASSIGN(_keyPath, [udSource objectForKey: @"keyPath"]);
   ASSIGN(_imapLoginField, [udSource objectForKey: @"IMAPLoginFieldName"]);
@@ -190,6 +193,11 @@
 - (NSArray *) searchFields
 {
   return _searchFields;
+}
+
+- (NSArray *) userPasswordPolicy
+{
+  return _userPasswordPolicy;
 }
 
 - (BOOL) _isPassword: (NSString *) plainPassword
@@ -328,7 +336,7 @@
  * @param login the user's login name.
  * @param oldPassword the previous password.
  * @param newPassword the new password.
- * @param perr is not used.
+ * @param perr will be set if the new password is not conform to the policy.
  * @return YES if the password was successfully changed.
  */
 - (BOOL) changePasswordForLogin: (NSString *) login
@@ -336,20 +344,48 @@
                     newPassword: (NSString *) newPassword
                            perr: (SOGoPasswordPolicyError *) perr
 {
+  BOOL didChange, isOldPwdOk, isPolicyOk;
   EOAdaptorChannel *channel;
   GCSChannelManager *cm;
+  NSDictionary *policy;
+  NSEnumerator *policies;
   NSException *ex;
-  NSString *sqlstr;
-  BOOL didChange;
-  BOOL isOldPwdOk;
+  NSRange match;
+  NSString *sqlstr, *regex;
 
+  *perr = -1;
   isOldPwdOk = NO;
+  isPolicyOk = YES;
   didChange = NO;
 
   // Verify current password
   isOldPwdOk = [self checkLogin:login password:oldPassword perr:perr expire:0 grace:0];
 
   if (isOldPwdOk)
+    {
+      if ([_userPasswordPolicy count])
+        {
+          policies = [_userPasswordPolicy objectEnumerator];
+          while (isPolicyOk && (policy = [policies nextObject]))
+            {
+              regex = [policy objectForKey: @"regex"];
+              if (regex)
+                {
+                  match = [newPassword rangeOfString: regex options: NSRegularExpressionSearch];
+                  isPolicyOk = isPolicyOk && match.length > 0;
+                  if (match.length == 0)
+                    {
+                      // [self errorWithFormat: @"Password not conform to policy %@ (%@)", regex, [policy objectForKey: @"label"]];
+                      *perr = PolicyInsufficientPasswordQuality;
+                    }
+                }
+              else
+                [self errorWithFormat: @"Invalid password policy (missing regex): %@", policy];
+            }
+        }
+    }
+
+  if (isOldPwdOk && isPolicyOk)
     {
       // Encrypt new password
       NSString *encryptedPassword = [self _encryptPassword: newPassword];

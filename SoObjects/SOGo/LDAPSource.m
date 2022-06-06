@@ -405,6 +405,11 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   return _searchFields;
 }
 
+- (NSArray *) userPasswordPolicy
+{
+  return nil;
+}
+
 - (void) setContactMapping: (NSDictionary *) theMapping
           andObjectClasses: (NSArray *) theObjectClasses
 {

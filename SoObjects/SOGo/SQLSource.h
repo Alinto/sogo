@@ -41,6 +41,7 @@
   NSString *_imapLoginField;
   NSString *_imapHostField;
   NSString *_sieveHostField;
+  NSArray *_userPasswordPolicy;
   NSString *_userPasswordAlgorithm;
   NSString *_keyPath;
   NSURL *_viewURL;

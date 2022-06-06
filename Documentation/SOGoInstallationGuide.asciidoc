@@ -1660,6 +1660,39 @@ Other columns can exist and will actually be mapped automatically if
 they have the same name as popular LDAP attributes (such as `givenName`,
 `sn`, `department`, `title`, `telephoneNumber`, etc.).
 
+|userPasswordPolicy
+
+|An array of dictionaries that define regular expressions used to determine whether a new password
+ is valid.
+
+Each dictionary must contain the key "regex" associated to a string representing a regular
+expression. It can also contain the key "label" to briefly describe the constraint to the user. Example:
+
+----
+userPasswordPolicy = (
+  {
+    label = "Minimum of 1 lowercase letter";
+    regex = "[a-z]";
+  },
+	{
+    label = "Minimum of 1 uppercase letter";
+    regex = "[A-Z]";
+  },
+  {
+    label = "Minimum of 1 digit";
+    regex = "[0-9]";
+  },
+  {
+    label = "Minimum of 2 special symbols";
+    regex = "([%$&*(){}!?\@#].*){2,}";
+  },
+  {
+    label = "Minimum length of 8 characters";
+    regex = ".{8,}";
+  }
+);
+----
+
 |userPasswordAlgorithm
 |The default algorithm used for password encryption when changing
 passwords. Possible values are: `none`, `plain`, `crypt`, `md5`,

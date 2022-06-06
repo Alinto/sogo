@@ -40,6 +40,7 @@
 
 - (NSString *) domain;
 - (NSArray *) searchFields;
+- (NSArray *) userPasswordPolicy;
 
 - (id) connection;
 - (void) releaseConnection: (id) connection;

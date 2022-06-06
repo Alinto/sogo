@@ -38,6 +38,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoSieveManager.h>
+#import <SOGo/SOGoSource.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoParentFolder.h>
@@ -248,6 +249,17 @@ static NSArray *reminderValues = nil;
                                                         locale: locale];
 
   return shortDateFormatText;
+}
+
+//
+// Used by wox template
+//
+- (NSArray *) passwordPolicy
+{
+  NSObject <SOGoSource> *userSource;
+
+  userSource = [user authenticationSource];
+  return [userSource userPasswordPolicy];
 }
 
 //
