@@ -1674,7 +1674,7 @@ userPasswordPolicy = (
     label = "Minimum of 1 lowercase letter";
     regex = "[a-z]";
   },
-	{
+  {
     label = "Minimum of 1 uppercase letter";
     regex = "[A-Z]";
   },
@@ -2502,10 +2502,16 @@ for now), `junkEmailAddress` which sets the email address to whom SOGo will
 send junk mails to, `notJunkEmailAddress` which sets the email address to
 whom SOGo will send non-junk mails to and `limit`, which is an integer value
 and sets the maximum number of mails that will be attached to a
-junk/not junk report sent by SOGo. Example: `SOGoMailJunkSettings = {
-vendor = "generic"; junkEmailAddress = "spam@foo.com";
-notJunkEmailAddress = "ham@foo.com"; limit = 10;
-};`
+junk/not junk report sent by SOGo. Example:
+
+----
+SOGoMailJunkSettings = {
+	vendor = "generic";
+	junkEmailAddress = "spam@foo.com";
+	notJunkEmailAddress = "ham@foo.com";
+	limit = 10;
+};
+----
 
 |D |SOGoMailKeepDraftsAfterSend
 |Parameter used to keep mails in the drafts folder once they have been
