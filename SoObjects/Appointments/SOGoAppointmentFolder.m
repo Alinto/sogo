@@ -77,10 +77,10 @@
 @interface SOGoGCSFolder (SOGoPrivate)
 
 - (void) appendObject: (NSDictionary *) object
-	   properties: (NSString **) properties
+           properties: (NSString **) properties
                 count: (unsigned int) propertiesCount
           withBaseURL: (NSString *) baseURL
-	     toBuffer: (NSMutableString *) r;
+             toBuffer: (NSMutableString *) r;
 
 @end
 
@@ -117,11 +117,10 @@ static Class iCalEventK = nil;
                                abstract: YES
                          withEquivalent: SoPerm_WebDAVAccess
                               asChildOf: davElement (@"all", XMLNS_WEBDAV)];
-      [aclManager
-        registerDAVPermission: davElement (@"read-current-user-privilege-set", XMLNS_WEBDAV)
-                     abstract: YES
-               withEquivalent: SoPerm_WebDAVAccess
-                    asChildOf: davElement (@"read", XMLNS_WEBDAV)];
+      [aclManager registerDAVPermission: davElement (@"read-current-user-privilege-set", XMLNS_WEBDAV)
+                               abstract: YES
+                         withEquivalent: SoPerm_WebDAVAccess
+                              asChildOf: davElement (@"read", XMLNS_WEBDAV)];
       [aclManager registerDAVPermission: davElement (@"read-free-busy", XMLNS_CALDAV)
                                abstract: NO
                          withEquivalent: SOGoCalendarPerm_ReadFreeBusy
@@ -135,72 +134,72 @@ static Class iCalEventK = nil;
                          withEquivalent: SoPerm_AddDocumentsImagesAndFiles
                               asChildOf: davElement (@"write", XMLNS_WEBDAV)];
       [aclManager registerDAVPermission: davElement (@"schedule",
-						     XMLNS_CALDAV)
+                                                     XMLNS_CALDAV)
                                abstract: NO
                          withEquivalent: nil
                               asChildOf: davElement (@"bind", XMLNS_WEBDAV)];
       [aclManager registerDAVPermission: davElement (@"schedule-post",
-						     XMLNS_CALDAV)
+                                                     XMLNS_CALDAV)
                                abstract: NO
                          withEquivalent: nil
                               asChildOf: davElement (@"schedule", XMLNS_CALDAV)];
       [aclManager registerDAVPermission:
-		    davElement (@"schedule-post-vevent", XMLNS_CALDAV)
+                    davElement (@"schedule-post-vevent", XMLNS_CALDAV)
                                abstract: NO
                          withEquivalent: nil
                               asChildOf: davElement (@"schedule-post", XMLNS_CALDAV)];
       [aclManager registerDAVPermission:
-		    davElement (@"schedule-post-vtodo", XMLNS_CALDAV)
+                    davElement (@"schedule-post-vtodo", XMLNS_CALDAV)
                                abstract: NO
                          withEquivalent: nil
                               asChildOf: davElement (@"schedule-post", XMLNS_CALDAV)];
       [aclManager registerDAVPermission:
-		    davElement (@"schedule-post-vjournal", XMLNS_CALDAV)
+                    davElement (@"schedule-post-vjournal", XMLNS_CALDAV)
                                abstract: NO
                          withEquivalent: nil
                               asChildOf: davElement (@"schedule-post", XMLNS_CALDAV)];
       [aclManager registerDAVPermission:
-		    davElement (@"schedule-post-vfreebusy", XMLNS_CALDAV)
+                    davElement (@"schedule-post-vfreebusy", XMLNS_CALDAV)
                                abstract: NO
                          withEquivalent: nil
                               asChildOf: davElement (@"schedule-post", XMLNS_CALDAV)];
       [aclManager registerDAVPermission: davElement (@"schedule-deliver",
-						     XMLNS_CALDAV)
+                                                     XMLNS_CALDAV)
                                abstract: NO
                          withEquivalent: nil
                               asChildOf: davElement (@"schedule", XMLNS_CALDAV)];
       [aclManager registerDAVPermission:
-		    davElement (@"schedule-deliver-vevent", XMLNS_CALDAV)
+                    davElement (@"schedule-deliver-vevent", XMLNS_CALDAV)
                                abstract: NO
                          withEquivalent: nil
                               asChildOf: davElement (@"schedule-deliver", XMLNS_CALDAV)];
       [aclManager registerDAVPermission:
-		    davElement (@"schedule-deliver-vtodo", XMLNS_CALDAV)
+                    davElement (@"schedule-deliver-vtodo", XMLNS_CALDAV)
                                abstract: NO
                          withEquivalent: nil
                               asChildOf: davElement (@"schedule-deliver", XMLNS_CALDAV)];
       [aclManager registerDAVPermission:
-		    davElement (@"schedule-deliver-vjournal", XMLNS_CALDAV)
+                    davElement (@"schedule-deliver-vjournal", XMLNS_CALDAV)
                                abstract: NO
                          withEquivalent: nil
                               asChildOf: davElement (@"schedule-deliver", XMLNS_CALDAV)];
       [aclManager registerDAVPermission:
-		    davElement (@"schedule-deliver-vfreebusy", XMLNS_CALDAV)
+                    davElement (@"schedule-deliver-vfreebusy", XMLNS_CALDAV)
                                abstract: NO
                          withEquivalent: nil
                               asChildOf: davElement (@"schedule-deliver", XMLNS_CALDAV)];
       [aclManager registerDAVPermission: davElement (@"schedule-respond",
-						     XMLNS_CALDAV)
+                                                     XMLNS_CALDAV)
                                abstract: NO
                          withEquivalent: nil
                               asChildOf: davElement (@"schedule", XMLNS_CALDAV)];
       [aclManager registerDAVPermission:
-		    davElement (@"schedule-respond-vevent", XMLNS_CALDAV)
+                    davElement (@"schedule-respond-vevent", XMLNS_CALDAV)
                                abstract: NO
                          withEquivalent: nil
                               asChildOf: davElement (@"schedule-respond", XMLNS_CALDAV)];
       [aclManager registerDAVPermission:
-		    davElement (@"schedule-respond-vtodo", XMLNS_CALDAV)
+                    davElement (@"schedule-respond-vtodo", XMLNS_CALDAV)
                                abstract: NO
                          withEquivalent: nil
                               asChildOf: davElement (@"schedule-respond", XMLNS_CALDAV)];
@@ -208,16 +207,14 @@ static Class iCalEventK = nil;
                                abstract: NO
                          withEquivalent: SoPerm_DeleteObjects
                               asChildOf: davElement (@"write", XMLNS_WEBDAV)];
-      [aclManager
-	registerDAVPermission: davElement (@"write-properties", XMLNS_WEBDAV)
-                     abstract: NO
-               withEquivalent: SoPerm_ChangePermissions /* hackish */
-                    asChildOf: davElement (@"write", XMLNS_WEBDAV)];
-      [aclManager
-	registerDAVPermission: davElement (@"write-content", XMLNS_WEBDAV)
-                     abstract: NO
-               withEquivalent: SoPerm_AddDocumentsImagesAndFiles
-                    asChildOf: davElement (@"write", XMLNS_WEBDAV)];
+      [aclManager registerDAVPermission: davElement (@"write-properties", XMLNS_WEBDAV)
+                               abstract: NO
+                         withEquivalent: SoPerm_ChangePermissions /* hackish */
+                              asChildOf: davElement (@"write", XMLNS_WEBDAV)];
+      [aclManager registerDAVPermission: davElement (@"write-content", XMLNS_WEBDAV)
+                               abstract: NO
+                         withEquivalent: SoPerm_AddDocumentsImagesAndFiles
+                              asChildOf: davElement (@"write", XMLNS_WEBDAV)];
 
       /* read-acl and write-acl are defined in RFC3744 */
       [aclManager registerDAVPermission: davElement (@"admin", nsI)
@@ -304,7 +301,7 @@ static Class iCalEventK = nil;
 }
 
 - (id) initWithName: (NSString *) name
-	inContainer: (id) newContainer
+        inContainer: (id) newContainer
 {
   SOGoUser *user;
   if ((self = [super initWithName: name inContainer: newContainer]))
@@ -422,7 +419,7 @@ static Class iCalEventK = nil;
 }
 
 - (BOOL) subscribeUserOrGroup: (NSString *) theIdentifier
-		     reallyDo: (BOOL) reallyDo
+                     reallyDo: (BOOL) reallyDo
                      response: (WOResponse *) theResponse
 {
   NSMutableDictionary *moduleSettings, *folderShowAlarms, *freeBusyExclusions;
@@ -439,40 +436,40 @@ static Class iCalEventK = nil;
   if (rc)
     {
 #warning Duplicated code from SOGoGCSFolder subscribeUserOrGroup
-     domain = [[context activeUser] domain];
-     dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: theIdentifier
-                                                                          inDomain: domain];
+      domain = [[context activeUser] domain];
+      dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: theIdentifier
+                                                                           inDomain: domain];
 
-     if (dict && [[dict objectForKey: @"isGroup"] boolValue])
-       {
-         id <SOGoSource> source;
+      if (dict && [[dict objectForKey: @"isGroup"] boolValue])
+        {
+          id <SOGoSource> source;
 
-         source = [[SOGoUserManager sharedUserManager] sourceWithID: [dict objectForKey: @"SOGoSource"]];
-         if ([source conformsToProtocol:@protocol(SOGoMembershipSource)])
-           {
-             NSArray *members;
+          source = [[SOGoUserManager sharedUserManager] sourceWithID: [dict objectForKey: @"SOGoSource"]];
+          if ([source conformsToProtocol:@protocol(SOGoMembershipSource)])
+            {
+              NSArray *members;
 
-             members = [(id<SOGoMembershipSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]];
-             allUsers = [NSMutableArray arrayWithArray: members];
+              members = [(id<SOGoMembershipSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]];
+              allUsers = [NSMutableArray arrayWithArray: members];
 
-             // We remove the active user from the group (if present) in order to
-             // not subscribe him to their own resource!
-             [allUsers removeObject: [context activeUser]];
-           }
-         else
-           {
-             [self errorWithFormat: @"Inconsistency error - got group identifier (%@) from a source (%@) that does not support groups (%@).", theIdentifier, [dict objectForKey: @"SOGoSource"], NSStringFromClass([source class])];
-             return NO;
-           }
-       }
-     else
-       {
-         sogoUser = [SOGoUser userWithLogin: theIdentifier roles: nil];
-         if (sogoUser)
-           allUsers = [NSArray arrayWithObject: sogoUser];
-         else
-           allUsers = [NSArray array];
-       }
+              // We remove the active user from the group (if present) in order to
+              // not subscribe him to their own resource!
+              [allUsers removeObject: [context activeUser]];
+            }
+          else
+            {
+              [self errorWithFormat: @"Inconsistency error - got group identifier (%@) from a source (%@) that does not support groups (%@).", theIdentifier, [dict objectForKey: @"SOGoSource"], NSStringFromClass([source class])];
+              return NO;
+            }
+        }
+      else
+        {
+          sogoUser = [SOGoUser userWithLogin: theIdentifier roles: nil];
+          if (sogoUser)
+            allUsers = [NSArray arrayWithObject: sogoUser];
+          else
+            allUsers = [NSArray array];
+        }
 
       for (i = 0; i < [allUsers count]; i++)
         {
@@ -541,11 +538,11 @@ static Class iCalEventK = nil;
   if (is_owner)
     excludeFromFreeBusy
       = [self folderPropertyValueInCategory: @"FreeBusyExclusions"
-				    forUser: [context activeUser]];
+                                    forUser: [context activeUser]];
   else
     excludeFromFreeBusy
       = [self folderPropertyValueInCategory: @"FreeBusyExclusions"
-				    forUser: [SOGoUser userWithLogin: ownerInContext]];
+                                    forUser: [SOGoUser userWithLogin: ownerInContext]];
 
   // User has no setting for freebusy inclusion/exclusion,
   //   * include it if it's a personal folder;
@@ -579,11 +576,11 @@ static Class iCalEventK = nil;
   
   ownerUser = [SOGoUser userWithLogin: self->owner];
   notify = [self folderPropertyValueInCategory: theKey
-				       forUser: ownerUser];
+                                       forUser: ownerUser];
 
   if (!notify && theDomainKey)
     notify = [NSNumber numberWithBool: [[[context activeUser] domainDefaults]
-					 boolForKey: theDomainKey]];
+                                         boolForKey: theDomainKey]];
 
   return [notify boolValue];
 }
@@ -596,13 +593,13 @@ static Class iCalEventK = nil;
                         forKey: (NSString *) theKey
 {
   [self setFolderPropertyValue: [NSNumber numberWithBool: b]
-		    inCategory: theKey];
+                    inCategory: theKey];
 }
 
 - (BOOL) notifyOnPersonalModifications
 {
   return [self _notificationValueForKey: @"NotifyOnPersonalModifications"
-		       defaultDomainKey: @"SOGoNotifyOnPersonalModifications"];
+                       defaultDomainKey: @"SOGoNotifyOnPersonalModifications"];
 }
 
 - (void) setNotifyOnPersonalModifications: (BOOL) b
@@ -613,7 +610,7 @@ static Class iCalEventK = nil;
 - (BOOL) notifyOnExternalModifications
 {
   return [self _notificationValueForKey: @"NotifyOnExternalModifications"
-		       defaultDomainKey: @"SOGoNotifyOnExternalModifications"];
+                       defaultDomainKey: @"SOGoNotifyOnExternalModifications"];
 }
 
 - (void) setNotifyOnExternalModifications: (BOOL) b
@@ -624,7 +621,7 @@ static Class iCalEventK = nil;
 - (BOOL) notifyUserOnPersonalModifications
 {
   return [self _notificationValueForKey: @"NotifyUserOnPersonalModifications"
-		       defaultDomainKey: nil];
+                       defaultDomainKey: nil];
 }
 
 - (void) setNotifyUserOnPersonalModifications: (BOOL) b
@@ -640,7 +637,7 @@ static Class iCalEventK = nil;
   ownerUser = [SOGoUser userWithLogin: self->owner];
 
   return [self folderPropertyValueInCategory: @"NotifiedUserOnPersonalModifications"
-				     forUser: ownerUser];
+                                     forUser: ownerUser];
 }
 
 - (void) setNotifiedUserOnPersonalModifications: (NSString *) theUser
@@ -656,7 +653,7 @@ static Class iCalEventK = nil;
   /* this is used for group calendars (this folder just returns itself) */
   NSString *s;
   s = [[self container] nameInContainer];
-//   [self logWithFormat:@"CAL UID: %@", s];
+  //   [self logWithFormat:@"CAL UID: %@", s];
   return [s isNotNull] ? [NSArray arrayWithObjects:&s count:1] : nil;
 }
 
@@ -753,10 +750,10 @@ static Class iCalEventK = nil;
 - (BOOL) _checkIfWeCanRememberRecords: (NSArray *) fields
 {
   return ([fields containsObject: @"c_name"]
-	  && [fields containsObject: @"c_version"]
-	  && [fields containsObject: @"c_lastmodified"]
-	  && [fields containsObject: @"c_creationdate"]
-	  && [fields containsObject: @"c_component"]);
+          && [fields containsObject: @"c_version"]
+          && [fields containsObject: @"c_lastmodified"]
+          && [fields containsObject: @"c_creationdate"]
+          && [fields containsObject: @"c_component"]);
 }
 
 - (void) _rememberRecords: (NSArray *) records
@@ -767,7 +764,7 @@ static Class iCalEventK = nil;
   recordsEnum = [records objectEnumerator];
   while ((currentRecord = [recordsEnum nextObject]))
     [childRecords setObject: currentRecord
-		  forKey: [currentRecord objectForKey: @"c_name"]];
+                     forKey: [currentRecord objectForKey: @"c_name"]];
 }
 
 #warning filters should make use of EOQualifier
@@ -805,7 +802,7 @@ static Class iCalEventK = nil;
                                         component]];
     }
   else if (![self showCalendarTasks])
-      [baseWhere addObject: @"c_component != 'vtodo'"];
+    [baseWhere addObject: @"c_component != 'vtodo'"];
 
   if ([filters length])
     [baseWhere addObject: filters];
@@ -846,7 +843,7 @@ static Class iCalEventK = nil;
 {
   NSMutableDictionary *record;
   static NSString *fields[] = { @"c_startdate", @"startDate",
-				@"c_enddate", @"endDate" };
+                                @"c_enddate", @"endDate" };
   unsigned int count;
   NSCalendarDate *date;
   NSNumber *dateValue;
@@ -859,25 +856,25 @@ static Class iCalEventK = nil;
     {
       dateValue = [theRecord objectForKey: fields[count * 2]];
       if (dateValue)
-	{
-	  date = [NSCalendarDate dateWithTimeIntervalSince1970: [dateValue unsignedIntValue]];
-	  if (date)
-	    {
-	      [date setTimeZone: timeZone];
+        {
+          date = [NSCalendarDate dateWithTimeIntervalSince1970: [dateValue unsignedIntValue]];
+          if (date)
+            {
+              [date setTimeZone: timeZone];
               if (isAllDay)
-		{
-		  // Since there's no timezone associated to all-day events,
-		  // their time must be adjusted for the user's timezone.
-		  offset = [timeZone secondsFromGMTForDate: date];
-		  date = (NSCalendarDate*)[date dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
-							  seconds:-offset];
-		  [record setObject: [NSNumber numberWithInt: [dateValue intValue] - offset] forKey: fields[count * 2]];
-		}
-	      [record setObject: date forKey: fields[count * 2 + 1]];
-	    }
-	}
+                {
+                  // Since there's no timezone associated to all-day events,
+                  // their time must be adjusted for the user's timezone.
+                  offset = [timeZone secondsFromGMTForDate: date];
+                  date = (NSCalendarDate*)[date dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+                                                          seconds:-offset];
+                  [record setObject: [NSNumber numberWithInt: [dateValue intValue] - offset] forKey: fields[count * 2]];
+                }
+              [record setObject: date forKey: fields[count * 2 + 1]];
+            }
+        }
       else
-	[self logWithFormat: @"missing '%@' in record?", fields[count * 2]];
+        [self logWithFormat: @"missing '%@' in record?", fields[count * 2]];
     }
 
   return record;
@@ -898,11 +895,11 @@ static Class iCalEventK = nil;
       max = [theRecords count];
       ma = [NSMutableArray arrayWithCapacity: max];
       for (count = 0; count < max; count++)
-	{
-	  row = [self _fixupRecord: [theRecords objectAtIndex: count]];
-	  if (row)
-	    [ma addObject: row];
-	}
+        {
+          row = [self _fixupRecord: [theRecords objectAtIndex: count]];
+          if (row)
+            [ma addObject: row];
+        }
     }
   else
     ma = nil;
@@ -923,8 +920,8 @@ static Class iCalEventK = nil;
  */
 - (NSMutableDictionary *) fixupCycleRecord: (NSDictionary *) theRecord
                                 cycleRange: (NGCalendarDateRange *) theCycle
-	    firstInstanceCalendarDateRange: (NGCalendarDateRange *) theFirstCycle
-			 withEventTimeZone: (iCalTimeZone *) theEventTimeZone
+            firstInstanceCalendarDateRange: (NGCalendarDateRange *) theFirstCycle
+                         withEventTimeZone: (iCalTimeZone *) theEventTimeZone
 {
   NSMutableDictionary *record;
   NSNumber *dateSecs;
@@ -978,7 +975,7 @@ static Class iCalEventK = nil;
 //
 //
 - (int) _indexOfRecordMatchingDate: (NSCalendarDate *) matchDate
-			   inArray: (NSArray *) recordArray
+                           inArray: (NSArray *) recordArray
 {
   int count, max, recordIndex;
   NSDictionary *currentRecord;
@@ -990,10 +987,10 @@ static Class iCalEventK = nil;
     {
       currentRecord = [recordArray objectAtIndex: count];
       if ([[currentRecord objectForKey: @"startDate"]
-	    compare: matchDate] == NSOrderedSame)
-	recordIndex = count;
+            compare: matchDate] == NSOrderedSame)
+        recordIndex = count;
       else
-	count++;
+        count++;
     }
 
   return recordIndex;
@@ -1003,7 +1000,7 @@ static Class iCalEventK = nil;
 //
 //
 - (void) _fixExceptionRecord: (NSMutableDictionary *) recRecord
-		     fromRow: (NSDictionary *) row
+                     fromRow: (NSDictionary *) row
 {
   NSArray *objects;
   static NSArray *fields = nil;
@@ -1065,8 +1062,8 @@ static Class iCalEventK = nil;
 //
 - (void) _appendCycleException: (iCalRepeatableEntityObject *) component
 firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
-		       fromRow: (NSDictionary *) row
-		      forRange: (NGCalendarDateRange *) dateRange
+                       fromRow: (NSDictionary *) row
+                      forRange: (NGCalendarDateRange *) dateRange
                   withTimeZone: (NSTimeZone *) tz
                        toArray: (NSMutableArray *) ma
 {
@@ -1121,17 +1118,17 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   delta = [masterEndDate timeIntervalSinceDate: [master startDate]];
   recurrenceIdRange = [NGCalendarDateRange calendarDateRangeWithStartDate: recurrenceId
-								  endDate: [recurrenceId dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds: delta]];
+                                                                  endDate: [recurrenceId dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds: delta]];
   if ([dateRange doesIntersectWithDateRange: recurrenceIdRange])
     {
       // The recurrence exception intersects with the date range;
       // find the occurence and replace it with the new record
       recordIndex = [self _indexOfRecordMatchingDate: recurrenceId inArray: ma];
       if (recordIndex > -1)
-	{
+        {
           if ([dateRange containsDate: [component startDate]] ||
-	      (endDate && [dateRange containsDate: endDate]))
-	    {
+              (endDate && [dateRange containsDate: endDate]))
+            {
               // We must pass nil to :container here in order to avoid re-entrancy issues.
               newRecord = [self _fixupRecord: [component quickRecordFromContent: nil  container: nil  nameInContainer: nil]];
               [ma replaceObjectAtIndex: recordIndex withObject: newRecord];
@@ -1141,9 +1138,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
             [ma removeObjectAtIndex: recordIndex];
         }
       else
-	[self errorWithFormat:
-		@"missing exception record for recurrence-id %@ (uid %@)",
-	      recurrenceId, [component uid]];
+        [self errorWithFormat:
+                @"missing exception record for recurrence-id %@ (uid %@)",
+              recurrenceId, [component uid]];
     }
   else
     {
@@ -1189,10 +1186,10 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 //
 - (void) _appendCycleExceptionsFromRow: (NSDictionary *) row
         firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
-			      forRange: (NGCalendarDateRange *) dateRange
+                              forRange: (NGCalendarDateRange *) dateRange
                           withTimeZone: (NSTimeZone *) tz
                           withCalendar: (iCalCalendar *) calendar
-			       toArray: (NSMutableArray *) ma
+                               toArray: (NSMutableArray *) ma
 {
   NSArray *components;
   NSString *content;
@@ -1282,7 +1279,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   if (!cycleinfo)
     {
       [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@",
-	    theRecord];
+            theRecord];
       return;
     }
   rules = [cycleinfo objectForKey: @"rules"];
@@ -1389,7 +1386,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
               oneRange = [ranges objectAtIndex: count];
               fixedRow = [self fixupCycleRecord: row
                                      cycleRange: oneRange
-                 firstInstanceCalendarDateRange: firstRange
+                               firstInstanceCalendarDateRange: firstRange
                               withEventTimeZone: eventTimeZone];
               
               // We now adjust the c_nextalarm based on each occurences. For each of them, we use the master event
@@ -1432,7 +1429,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   ma = [NSMutableArray arrayWithCapacity: max];
 
   _r = [NGCalendarDateRange calendarDateRangeWithStartDate: [_r startDate]
-						   endDate: [_r endDate]];
+                                                   endDate: [_r endDate]];
 
   for (count = 0; count < max; count++)
     {
@@ -1453,21 +1450,21 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   // What we keep....
   [stripFields removeObjectsInArray: [NSArray arrayWithObjects: @"c_name",
-					      @"c_uid", @"c_startdate",
-					      @"c_enddate", @"c_isallday",
-					      @"c_iscycle", @"c_isopaque",
-					      @"c_cycleinfo",
-					      @"c_cycleenddate",
-					      @"c_classification",
-					      @"c_component", nil]];
+                                              @"c_uid", @"c_startdate",
+                                              @"c_enddate", @"c_isallday",
+                                              @"c_iscycle", @"c_isopaque",
+                                              @"c_cycleinfo",
+                                              @"c_cycleenddate",
+                                              @"c_classification",
+                                              @"c_component", nil]];
 }
 
 //
 //
 //
 - (void) _fixupProtectedInformation: (NSEnumerator *) ma
-			   inFields: (NSArray *) fields
-			    forUser: (NSString *) uid
+                           inFields: (NSArray *) fields
+                            forUser: (NSString *) uid
 {
   NSMutableDictionary *currentRecord;
   NSString *roles[] = {nil, nil, nil};
@@ -1522,8 +1519,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   ownerUser = [SOGoUser userWithLogin: self->owner roles: nil];
   rememberRecords = [self _checkIfWeCanRememberRecords: _fields];
   canCycle = [_component isEqualToString: @"vevent"] || [_component isEqualToString: @"vtodo"];
-//   if (rememberRecords)
-//     NSLog (@"we will remember those records!");
+  //   if (rememberRecords)
+  //     NSLog (@"we will remember those records!");
 
   folder = [self ocsFolder];
   if (!folder)
@@ -1540,7 +1537,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
         return [NSArray array];
       else
         [baseWhere addObject: [NSString stringWithFormat: @"c_component = '%@'",
-                                               _component]];
+                                        _component]];
     }
   else if (![self showCalendarTasks])
     [baseWhere addObject: @"c_component != 'vtodo'"];
@@ -1663,7 +1660,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
             {
               if (r)
                 records = [self _flattenCycleRecords: records fetchRange: r];
-	      if (ma)
+              if (ma)
                 [ma addObjectsFromArray: records];
               else
                 ma = [NSMutableArray arrayWithArray: records];
@@ -1813,7 +1810,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
 #warning This method lacks support for timeranges
 - (void) _appendPropertyFilter: (id <DOMElement>) propFilter
-		      toFilter: (NSMutableDictionary *) filter
+                      toFilter: (NSMutableDictionary *) filter
 {
   NSString *propName, *textMatch;
   id <DOMNodeList> matches;
@@ -1826,9 +1823,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       matches = [propFilter getElementsByTagName: @"is-not-defined"];
       if ([matches length])
-	textMatch = @"NULL";
+        textMatch = @"NULL";
       else
-	textMatch = @"";
+        textMatch = @"";
     }
 
   [filter setObject: textMatch forKey: propName];
@@ -1878,7 +1875,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       elements = [filterElement getElementsByTagName: @"time-range"];
       if ([elements length])
         [self _appendTimeRange: [elements objectAtIndex: 0]
-		      toFilter: filterData];
+                      toFilter: filterData];
 
       elements = [filterElement getElementsByTagName: @"prop-filter"];
       if ([elements length])
@@ -1923,7 +1920,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSDictionary *filter;
   unsigned int count, max;
 
-//   NSLog (@"parseCalendarFilter: %@", [NSDate date]);
+  //   NSLog (@"parseCalendarFilter: %@", [NSDate date]);
 
   filters = [NSMutableArray array];
   children = [parentNode getElementsByTagName: @"comp-filter"];
@@ -1938,7 +1935,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
           [filters addObject: [self _makeCyclicFilterFrom: filter]];
         }
     }
-//   NSLog (@"/parseCalendarFilter: %@", [NSDate date]);
+  //   NSLog (@"/parseCalendarFilter: %@", [NSDate date]);
 
   return filters;
 }
@@ -2001,7 +1998,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   if (cycle)
     {
       filterString = [NSString stringWithFormat: @"(c_iscycle = '%d')", 
-			       [cycle intValue]];
+                               [cycle intValue]];
       [filters addObject: filterString];
 
       if ([cycle intValue])
@@ -2031,7 +2028,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   color = [[self calendarColor] uppercaseString];
 
-//   return color;
+  //   return color;
   return [NSString stringWithFormat: @"%@FF", color];
 }
 
@@ -2049,7 +2046,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     }
   else
     error = [NSException exceptionWithDAVStatus: 400
-			 reason: @"Bad color format (should be '#XXXXXXXX')."];
+                                         reason: @"Bad color format (should be '#XXXXXXXX')."];
 
   return error;
 }
@@ -2121,7 +2118,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   propertiesArray = [[properties allKeys] asPointersOfObjects];
   propertiesCount = [properties count];
 
-//   NSLog (@"start");
+  //   NSLog (@"start");
   filterList = [filters objectEnumerator];
   while ((currentFilter = [filterList nextObject]))
     {
@@ -2134,7 +2131,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                              title: [currentFilter objectForKey: @"title"]
                          component: [currentFilter objectForKey: @"name"]
                  additionalFilters: additionalFilters];
-//       NSLog(@"adding properties");
+      //       NSLog(@"adding properties");
       max = [apts count];
       buffer = [NSMutableString stringWithCapacity: max * 512];
       for (count = 0; count < max; count++)
@@ -2143,11 +2140,11 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                      count: propertiesCount
                withBaseURL: baseURL
                   toBuffer: buffer];
-//       NSLog(@"done 1");
+      //       NSLog(@"done 1");
       [response appendContentString: buffer];
-//       NSLog(@"done 2");
+      //       NSLog(@"done 2");
     }
-//   NSLog (@"stop");
+  //   NSLog (@"stop");
 
   NSZoneFree (NULL, propertiesArray);
 }
@@ -2185,7 +2182,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   document = [[context request] contentAsDOMDocument];
   documentElement = (id <DOMElement>) [document documentElement];
   propElement = [(NGDOMNodeWithChildren *) documentElement
-                    firstElementWithTag: @"prop" inNamespace: XMLNS_WEBDAV];
+                  firstElementWithTag: @"prop" inNamespace: XMLNS_WEBDAV];
 
   [self _appendComponentProperties: [self parseDAVRequestedProperties: propElement]
                    matchingFilters: [self _parseCalendarFilters: documentElement]
@@ -2276,17 +2273,17 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       if (!obj)
         {
           rq = [_ctx request];
-	  if ([self isValidContentName:_key]
+          if ([self isValidContentName:_key]
               && [rq handledByDefaultHandler])
             {
-	      url = [[rq uri] urlWithoutParameters];
-	      if ([url hasSuffix: @"AsTask"])
-		obj = [SOGoTaskObject objectWithName: _key
-				      inContainer: self];
-	      else if ([url hasSuffix: @"AsAppointment"])
-		obj = [SOGoAppointmentObject objectWithName: _key
-					     inContainer: self];
-	      [obj setIsNew: YES];
+              url = [[rq uri] urlWithoutParameters];
+              if ([url hasSuffix: @"AsTask"])
+                obj = [SOGoTaskObject objectWithName: _key
+                                         inContainer: self];
+              else if ([url hasSuffix: @"AsAppointment"])
+                obj = [SOGoAppointmentObject objectWithName: _key
+                                                inContainer: self];
+              [obj setIsNew: YES];
             }
         }
       if (!obj)
@@ -2295,15 +2292,15 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   if (obj)
     [[SOGoCache sharedCache] registerObject: obj
-			     withName: _key
-			     inContainer: container];
+                                   withName: _key
+                                inContainer: container];
 
   return obj;
 }
 
 - (NSDictionary *) freebusyResponseForRecipient: (iCalPerson *) recipient
-				       withUser: (SOGoUser *) user
-				andCalendarData: (NSString *) calendarData
+                                       withUser: (SOGoUser *) user
+                                andCalendarData: (NSString *) calendarData
 {
   NSDictionary *response;
   NSMutableArray *content;
@@ -2315,14 +2312,14 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   if (user)
     {
       [content addObject: davElementWithContent (@"request-status", XMLNS_CALDAV,
-						 @"2.0;Success")];
+                                                 @"2.0;Success")];
       [content addObject: davElementWithContent (@"calendar-data", XMLNS_CALDAV,
                                                  [calendarData safeStringByEscapingXMLString])];
     }
   else
-      [content addObject:
-		 davElementWithContent (@"request-status", XMLNS_CALDAV,
-					@"3.7;Invalid Calendar User")];
+    [content addObject:
+               davElementWithContent (@"request-status", XMLNS_CALDAV,
+                                      @"3.7;Invalid Calendar User")];
   response = davElementWithContent (@"response", XMLNS_CALDAV, content);
 
   return response;
@@ -2331,8 +2328,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 - (NSDictionary *) caldavFreeBusyRequestOnRecipient: (iCalPerson *) recipient
                                             withUID: (NSString *) uid
                                        andOrganizer: (iCalPerson *) organizer
-					       from: (NSCalendarDate *) start
-						 to: (NSCalendarDate *) to
+                                               from: (NSCalendarDate *) start
+                                                 to: (NSCalendarDate *) to
 {
   SOGoUser *user;
   NSString *login, *contactId, *calendarData;
@@ -2343,7 +2340,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       user = [SOGoUser userWithLogin: login];
       freebusy = [[user homeFolderInContext: context]
-		       freeBusyObject: @"freebusy.ifb"
+                       freeBusyObject: @"freebusy.ifb"
                             inContext: context];
       calendarData = [freebusy contentAsStringWithMethod: @"REPLY"
                                                   andUID: uid
@@ -2355,7 +2352,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       user = [context activeUser];
       freebusy = [[user homeFolderInContext: context]
-		       freeBusyObject: @"freebusy.ifb"
+                       freeBusyObject: @"freebusy.ifb"
                             inContext: context];
       calendarData = [freebusy contentAsStringWithMethod: @"REPLY"
                                                   andUID: uid
@@ -2395,16 +2392,16 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                                                            from: startDate
                                                              to: endDate]];
   responseElement = davElementWithContent (@"schedule-response",
-					   XMLNS_CALDAV, elements);
+                                           XMLNS_CALDAV, elements);
 
   return responseElement;
 }
 
 #warning we should merge this code with the code from the iTIP interpreter in MailPartViewer
 - (NSDictionary *) caldavEventRequest: (iCalEvent *) event
-			  withContent: (NSString *) iCalString
-				 from: (NSString *) originator
-				   to: (NSArray *) recipients
+                          withContent: (NSString *) iCalString
+                                 from: (NSString *) originator
+                                   to: (NSArray *) recipients
 {
   NSDictionary *responseElement;
   NSArray *elements;
@@ -2413,8 +2410,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   
   filename = [NSString stringWithFormat: @"%@.ics", [event uid]];
   apt = [SOGoAppointmentObject objectWithName: filename
-			       andContent: iCalString
-			       inContainer: self];
+                                   andContent: iCalString
+                                  inContainer: self];
   method = [[event parent] method];
   if ([method isEqualToString: @"REQUEST"])
     elements = [apt postCalDAVEventRequestTo: recipients  from: originator];
@@ -2427,7 +2424,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   if (elements)
     responseElement = davElementWithContent (@"schedule-response",
-					     XMLNS_CALDAV, elements);
+                                             XMLNS_CALDAV, elements);
   else
     responseElement = nil;
 
@@ -2450,7 +2447,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       [response setHeader: @"application/xml; charset=utf-8"
                    forKey: @"Content-Type"];
       [response appendContentString:
-		  [tags asWebDavStringWithNamespaces: nil]];
+                  [tags asWebDavStringWithNamespaces: nil]];
     }
   else
     [response setStatus: 415];
@@ -2459,8 +2456,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 }
 
 - (WOResponse *) caldavScheduleRequest: (NSString *) iCalString
-				  from: (NSString *) originator
-				    to: (NSArray *) recipients
+                                  from: (NSString *) originator
+                                    to: (NSArray *) recipients
 {
   NSString *tag;
   iCalCalendar *calendar;
@@ -2485,7 +2482,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
 - (id) davPOSTRequest: (WORequest *) request
       withContentType: (NSString *) cType
-	    inContext: (WOContext *) localContext
+            inContext: (WOContext *) localContext
 {
   id obj;
   NSString *originator;
@@ -2496,16 +2493,16 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       originator = [request headerForKey: @"originator"];
 
       if ([[originator lowercaseString] hasPrefix: @"mailto:"])
-	originator = [originator substringFromIndex: 7];  
+        originator = [originator substringFromIndex: 7];
 
       recipients = [[request headerForKey: @"recipient"]
-		     componentsSeparatedByString: @","];
+                     componentsSeparatedByString: @","];
       obj = [self caldavScheduleRequest: [request contentAsString]
-		  from: originator to: [recipients trimmedComponents]];
+                                   from: originator to: [recipients trimmedComponents]];
     }
   else
     obj = [super davPOSTRequest: request withContentType: cType
-		 inContext: localContext];
+                      inContext: localContext];
 
   return obj;
 }
@@ -2513,7 +2510,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 - (NSArray *) groupDavResourceType
 {
   return [NSArray arrayWithObjects: @"vevent-collection",
-		  @"vtodo-collection", nil];
+                  @"vtodo-collection", nil];
 }
 
 - (NSArray *) davResourceType
@@ -2534,7 +2531,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       gdRT = (NSArray *) [self groupDavResourceType];
       gdVEventCol = [NSArray arrayWithObjects: [gdRT objectAtIndex: 0],
-                  XMLNS_GROUPDAV, nil];
+                             XMLNS_GROUPDAV, nil];
       [colType addObject: gdVEventCol];
       if ([self showCalendarTasks])
         {
@@ -2595,18 +2592,18 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   3.1.  DAV:resource-id Property
 
-   The DAV:resource-id property is a REQUIRED property that enables
-   clients to determine whether two bindings are to the same resource.
-   The value of DAV:resource-id is a URI, and may use any registered URI
-   scheme that guarantees the uniqueness of the value across all
-   resources for all time (e.g., the urn:uuid: URN namespace defined in
-   [RFC4122] or the opaquelocktoken: URI scheme defined in [RFC4918]).
+  The DAV:resource-id property is a REQUIRED property that enables
+  clients to determine whether two bindings are to the same resource.
+  The value of DAV:resource-id is a URI, and may use any registered URI
+  scheme that guarantees the uniqueness of the value across all
+  resources for all time (e.g., the urn:uuid: URN namespace defined in
+  [RFC4122] or the opaquelocktoken: URI scheme defined in [RFC4918]).
 
-   <!ELEMENT resource-id (href)>
+  <!ELEMENT resource-id (href)>
 
-   ...
+  ...
 
-   so we must STRIP any username prefix, to make the ID global.
+  so we must STRIP any username prefix, to make the ID global.
    
 */
 - (NSString *) davResourceId
@@ -2622,7 +2619,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     }
   
   return [NSString stringWithFormat: @"urn:uuid:%@:calendars:%@",
-                   [self ownerInContext: context], name];
+               [self ownerInContext: context], name];
 }
 
 - (NSArray *) davScheduleCalendarTransparency
@@ -2686,7 +2683,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   if ([self isValidDAVBoolean: newBoolean])
     {
       [self setNotifyOnPersonalModifications:
-              [self resultForDAVBoolean: newBoolean]];
+                   [self resultForDAVBoolean: newBoolean]];
       error = nil;
     }
   else
@@ -2708,7 +2705,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   if ([self isValidDAVBoolean: newBoolean])
     {
       [self setNotifyOnExternalModifications:
-              [self resultForDAVBoolean: newBoolean]];
+                   [self resultForDAVBoolean: newBoolean]];
       error = nil;
     }
   else
@@ -2730,7 +2727,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   if ([self isValidDAVBoolean: newBoolean])
     {
       [self setNotifyUserOnPersonalModifications:
-              [self resultForDAVBoolean: newBoolean]];
+                       [self resultForDAVBoolean: newBoolean]];
       error = nil;
     }
   else
@@ -2771,17 +2768,17 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   if (uid && folder)
     {
       qualifier = [EOQualifier qualifierWithQualifierFormat: @"c_uid = %@",
-			       [uid asSafeSQLString]];
+                               [uid asSafeSQLString]];
       records = [folder fetchFields: nameFields matchingQualifier: qualifier];
       count = [records count];
       if (count)
-	{
-	  filename = [[records objectAtIndex:0] valueForKey: @"c_name"];
-	  if (count > 1)
-	    [self errorWithFormat:
-		    @"The storage contains more than file with UID '%@'",
-		  uid];
-	}
+        {
+          filename = [[records objectAtIndex:0] valueForKey: @"c_name"];
+          if (count > 1)
+            [self errorWithFormat:
+                    @"The storage contains more than file with UID '%@'",
+                  uid];
+        }
     }
 
   return filename;
@@ -2797,15 +2794,15 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   if (uid)
     {
       if (!uidToFilename)
-	uidToFilename = [NSMutableDictionary new];
+        uidToFilename = [NSMutableDictionary new];
       rname = [uidToFilename objectForKey: uid];
       if (!rname)
-	{
-	  folder = [self ocsFolder];
-	  rname = [self resourceNameForEventUID: uid inFolder: folder];
-	  if (rname)
-	    [uidToFilename setObject: rname forKey: uid];
-	}
+        {
+          folder = [self ocsFolder];
+          rname = [self resourceNameForEventUID: uid inFolder: folder];
+          if (rname)
+            [uidToFilename setObject: rname forKey: uid];
+        }
     }
 
   return rname;
@@ -2814,24 +2811,24 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 - (NSArray *) subscriptionRoles
 {
   return [NSArray arrayWithObjects:
-		  SOGoRole_ObjectCreator,
-		  SOGoRole_ObjectEraser,
-		  SOGoCalendarRole_PublicResponder,
-		  SOGoCalendarRole_PublicModifier,
-		  SOGoCalendarRole_PublicViewer,
-		  SOGoCalendarRole_PublicDAndTViewer,
-		  SOGoCalendarRole_PrivateResponder,
-		  SOGoCalendarRole_PrivateModifier,
-		  SOGoCalendarRole_PrivateViewer,
-		  SOGoCalendarRole_PrivateDAndTViewer,
-		  SOGoCalendarRole_ConfidentialResponder,
-		  SOGoCalendarRole_ConfidentialModifier,
-		  SOGoCalendarRole_ConfidentialViewer,
-		  SOGoCalendarRole_ConfidentialDAndTViewer, nil];
+                    SOGoRole_ObjectCreator,
+                  SOGoRole_ObjectEraser,
+                  SOGoCalendarRole_PublicResponder,
+                  SOGoCalendarRole_PublicModifier,
+                  SOGoCalendarRole_PublicViewer,
+                  SOGoCalendarRole_PublicDAndTViewer,
+                  SOGoCalendarRole_PrivateResponder,
+                  SOGoCalendarRole_PrivateModifier,
+                  SOGoCalendarRole_PrivateViewer,
+                  SOGoCalendarRole_PrivateDAndTViewer,
+                  SOGoCalendarRole_ConfidentialResponder,
+                  SOGoCalendarRole_ConfidentialModifier,
+                  SOGoCalendarRole_ConfidentialViewer,
+                  SOGoCalendarRole_ConfidentialDAndTViewer, nil];
 }
 
 - (NSString *) roleForComponentsWithAccessClass: (iCalAccessClass) accessClass
-					forUser: (NSString *) uid
+                                        forUser: (NSString *) uid
 {
   NSString *accessRole, *ownerLogin, *prefix, *currentRole, *suffix;
   NSEnumerator *acls;
@@ -2858,22 +2855,22 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       ownerLogin = [self ownerInContext: context];
       if ([ownerLogin isEqualToString: uid])
-	accessRole = @"";
+        accessRole = @"";
       else
-	{
-	  acls = [[self aclsForUser: uid] objectEnumerator];
-	  currentRole = [acls nextObject];
-	  while (currentRole && !accessRole)
-	    if ([currentRole hasPrefix: prefix])
-	      {
-		suffix = [currentRole substringFromIndex: [prefix length]];
-		accessRole = [NSString stringWithFormat: @"Component%@", suffix];
-	      }
-	    else
-	      currentRole = [acls nextObject];
-	  if (!accessRole)
-	    accessRole = @"";
-	}
+        {
+          acls = [[self aclsForUser: uid] objectEnumerator];
+          currentRole = [acls nextObject];
+          while (currentRole && !accessRole)
+            if ([currentRole hasPrefix: prefix])
+              {
+                suffix = [currentRole substringFromIndex: [prefix length]];
+                accessRole = [NSString stringWithFormat: @"Component%@", suffix];
+              }
+            else
+              currentRole = [acls nextObject];
+          if (!accessRole)
+            accessRole = @"";
+        }
       [userRoles setObject: accessRole forKey: prefix];
     }
 
@@ -2927,48 +2924,48 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   // We MUST include the protected information when checking for freebusy info as
   // we rely on the c_partmails/c_partstates fields for many operations.
   return [self fetchFields: infos
-	       from: _startDate to: _endDate
-	       title: nil
-               component: @"vevent"
-	       additionalFilters: nil
-	       includeProtectedInformation: YES];
+                      from: _startDate to: _endDate
+                     title: nil
+                 component: @"vevent"
+               additionalFilters: nil
+               includeProtectedInformation: YES];
 }
 
 - (NSArray *) fetchCoreInfosFrom: (NSCalendarDate *) _startDate
                               to: (NSCalendarDate *) _endDate
-			   title: (NSString *) title
+                           title: (NSString *) title
                        component: (id) _component
 {
   return [self fetchCoreInfosFrom: _startDate to: _endDate title: title
-	       component: _component additionalFilters: nil];
+                        component: _component additionalFilters: nil];
 }
 
 - (NSArray *) fetchCoreInfosFrom: (NSCalendarDate *) _startDate
                               to: (NSCalendarDate *) _endDate
-			   title: (NSString *) title
+                           title: (NSString *) title
                        component: (id) _component
-	       additionalFilters: (NSString *) filters
+               additionalFilters: (NSString *) filters
 {
   static NSArray *infos = nil; // TODO: move to a plist file
 
   if (!infos)
     infos = [[NSArray alloc] initWithObjects: @"c_name", @"c_content",
-			     @"c_creationdate", @"c_lastmodified",
-			     @"c_version", @"c_component", @"c_title",
-			     @"c_location", @"c_orgmail", @"c_status",
-			     @"c_category", @"c_classification", @"c_isallday",
-			     @"c_isopaque", @"c_participants", @"c_partmails",
-			     @"c_partstates", @"c_sequence", @"c_priority",
-			     @"c_cycleinfo", @"c_iscycle",  @"c_nextalarm", @"c_description", nil];
+                             @"c_creationdate", @"c_lastmodified",
+                             @"c_version", @"c_component", @"c_title",
+                             @"c_location", @"c_orgmail", @"c_status",
+                             @"c_category", @"c_classification", @"c_isallday",
+                             @"c_isopaque", @"c_participants", @"c_partmails",
+                             @"c_partstates", @"c_sequence", @"c_priority",
+                             @"c_cycleinfo", @"c_iscycle",  @"c_nextalarm", @"c_description", nil];
 
   return [self fetchFields: infos from: _startDate to: _endDate title: title
-               component: _component
-	       additionalFilters: filters
-	       includeProtectedInformation: NO];
+                 component: _component
+               additionalFilters: filters
+               includeProtectedInformation: NO];
 }
 
 - (NSArray *) fetchAlarmInfosFrom: (NSNumber *) _startUTCDate
-			       to: (NSNumber *) _endUTCDate
+                               to: (NSNumber *) _endUTCDate
 {
   static NSArray *nameFields = nil;
   EOQualifier *qualifier;
@@ -3039,7 +3036,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       davURL = [[self publicDavURL] absoluteString];
       if ([davURL hasSuffix: @"/"])
-	basePublicCalDAVURL = [davURL substringToIndex: [davURL length] - 1];
+        basePublicCalDAVURL = [davURL substringToIndex: [davURL length] - 1];
       else
         basePublicCalDAVURL = davURL;
       [basePublicCalDAVURL retain];
@@ -3093,10 +3090,10 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       userSettings = [ownerUser userSettings];
       calendarSettings = [userSettings objectForKey: @"Calendar"];
       if (!calendarSettings)
-	{
-	  calendarSettings = [NSMutableDictionary dictionary];
-	  [userSettings setObject: calendarSettings forKey: @"Calendar"];
-	}
+        {
+          calendarSettings = [NSMutableDictionary dictionary];
+          [userSettings setObject: calendarSettings forKey: @"Calendar"];
+        }
       [userSettings synchronize];
     }
 
@@ -3168,15 +3165,15 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   /* traverse path */
   
   result = [[ctx application] traversePathArray:path inContext:ctx
-			      error:&error acquire:NO];
+                                          error:&error acquire:NO];
   if (error != nil) {
     [self errorWithFormat: @"folder lookup failed (c_uid=%@): %@",
-            _uid, error];
+          _uid, error];
     return nil;
   }
   
   [self debugWithFormat:@"Note: got folder for uid %@ path %@: %@",
-	  _uid, [path componentsJoinedByString:@"=>"], result];
+        _uid, [path componentsJoinedByString:@"=>"], result];
 
   return result;
 }
@@ -3207,7 +3204,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   while ((aFolder = [e nextObject]))
     {
       if (![aFolder isSubscription])
-	[aUserFolders addObject: aFolder];
+        [aUserFolders addObject: aFolder];
     }
 
   return aUserFolders;
@@ -3231,17 +3228,17 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   while ((uid = [e nextObject]))
     {
       if ([uid isEqualToString: ownerLogin])
-	folder = self;
+        folder = self;
       else
-	{
+        {
           user = [SOGoUser userWithLogin: uid];
-	  folder = [user personalCalendarFolderInContext: context];
-	  if (![folder isNotNull])
-	    [self logWithFormat:@"Note: did not find folder for uid: '%@'", uid];
-	}
+          folder = [user personalCalendarFolderInContext: context];
+          if (![folder isNotNull])
+            [self logWithFormat:@"Note: did not find folder for uid: '%@'", uid];
+        }
 
       if (folder)
-	[folders addObject: folder];
+        [folders addObject: folder];
     }
 
   return folders;
@@ -3264,18 +3261,18 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     
       obj = [self lookupHomeFolderForUID:uid inContext:nil];
       if ([obj isNotNull])
-	{
-	  obj = [obj lookupName: @"freebusy.ifb" inContext: nil acquire: NO];
-	  if ([obj isKindOfClass: [NSException class]])
-	    obj = nil;
-	}
+        {
+          obj = [obj lookupName: @"freebusy.ifb" inContext: nil acquire: NO];
+          if ([obj isKindOfClass: [NSException class]])
+            obj = nil;
+        }
       if (![obj isNotNull])
-	[self logWithFormat: @"Note: did not find freebusy.ifb for uid: '%@'",
-	      uid];
+        [self logWithFormat: @"Note: did not find freebusy.ifb for uid: '%@'",
+              uid];
     
       /* Note: intentionally add 'null' folders to allow a mapping */
       if (!obj)
-	obj = [NSNull null];
+        obj = [NSNull null];
       [objs addObject: obj];
     }
 
@@ -3299,18 +3296,18 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       um    = [SOGoUserManager sharedUserManager];
   
       for (i = 0; i < count; i++)
-	{
-	  person = [_persons objectAtIndex:i];
-	  email  = [person rfc822Email];
-	  if ([email isNotNull])
-	    uid = [um getUIDForEmail:email];
-	  else
-	    uid = nil;
-	  
-	  if (!uid)
-	    uid = (NSString *) [NSNull null];
-	  [uids addObject: uid];
-	}
+        {
+          person = [_persons objectAtIndex:i];
+          email  = [person rfc822Email];
+          if ([email isNotNull])
+            uid = [um getUIDForEmail:email];
+          else
+            uid = nil;
+
+          if (!uid)
+            uid = (NSString *) [NSNull null];
+          [uids addObject: uid];
+        }
     }
   else
     uids = nil;
@@ -3319,7 +3316,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 }
 
 - (NSArray *) lookupCalendarFoldersForICalPerson: (NSArray *) _persons
-				       inContext: (id) _ctx
+                                       inContext: (id) _ctx
 {
   /* Note: can return NSNull objects in the array! */
   NSArray *uids, *folders;
@@ -3327,7 +3324,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   uids = [self uidsFromICalPersons: _persons];
   if (uids)
     folders = [self lookupCalendarFoldersForUIDs: uids
-		    inContext: _ctx];
+                                       inContext: _ctx];
   else
     folders = nil;
   
@@ -3397,7 +3394,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     uid = [NSString stringWithFormat: @"%@.ics", uid];
 
   object = [SOGoAppointmentObject objectWithName: uid
-                                    inContainer: self];
+                                     inContainer: self];
   [object setIsNew: YES];
   content = [NSMutableString stringWithString: @"BEGIN:VCALENDAR\n"];
   [content appendFormat: @"PRODID:-//Inverse inc./SOGo %@//EN\n", SOGoVersion];
@@ -3528,21 +3525,21 @@ static NSComparisonResult _comparePermissions (id perm1, id perm2, void *context
       permMap = [[NSDictionary alloc] initWithObjects: numberObjs
                                               forKeys: [NSArray arrayWithObjects:
                                                                   SOGoRole_ObjectEraser,
-                                                                  SOGoRole_ObjectCreator,
-                                                                  SOGoRole_ObjectEditor,
-                                                                  SOGoCalendarRole_ConfidentialModifier,
-                                                                  SOGoCalendarRole_ConfidentialResponder,
-                                                                  SOGoCalendarRole_ConfidentialViewer,
-                                                                  SOGoCalendarRole_ConfidentialDAndTViewer,
-                                                                  SOGoCalendarRole_PrivateModifier,
-                                                                  SOGoCalendarRole_PrivateResponder,
-                                                                  SOGoCalendarRole_PrivateViewer,
-                                                                  SOGoCalendarRole_PrivateDAndTViewer,
-                                                                  SOGoCalendarRole_PublicModifier,
-                                                                  SOGoCalendarRole_PublicResponder,
-                                                                  SOGoCalendarRole_PublicViewer,
-                                                                  SOGoCalendarRole_PublicDAndTViewer,
-                                                                  SOGoCalendarRole_FreeBusyReader, nil]];
+                                                                SOGoRole_ObjectCreator,
+                                                                SOGoRole_ObjectEditor,
+                                                                SOGoCalendarRole_ConfidentialModifier,
+                                                                SOGoCalendarRole_ConfidentialResponder,
+                                                                SOGoCalendarRole_ConfidentialViewer,
+                                                                SOGoCalendarRole_ConfidentialDAndTViewer,
+                                                                SOGoCalendarRole_PrivateModifier,
+                                                                SOGoCalendarRole_PrivateResponder,
+                                                                SOGoCalendarRole_PrivateViewer,
+                                                                SOGoCalendarRole_PrivateDAndTViewer,
+                                                                SOGoCalendarRole_PublicModifier,
+                                                                SOGoCalendarRole_PublicResponder,
+                                                                SOGoCalendarRole_PublicViewer,
+                                                                SOGoCalendarRole_PublicDAndTViewer,
+                                                                SOGoCalendarRole_FreeBusyReader, nil]];
       [permMap retain];
     }
 
@@ -3723,8 +3720,8 @@ static NSComparisonResult _comparePermissions (id perm1, id perm2, void *context
                 startDate = [tz computedDateForDate: startDate];
             }
           [quickRecord setObject: [*theEntity quickRecordDateAsNumber: startDate
-                                                             withOffset: 0
-                                                              forAllDay: b]
+                                                           withOffset: 0
+                                                            forAllDay: b]
                           forKey: @"c_startdate"];
         }
       
@@ -3740,8 +3737,8 @@ static NSComparisonResult _comparePermissions (id perm1, id perm2, void *context
                 endDate = [tz computedDateForDate: endDate];
             }
           [quickRecord setObject: [*theEntity quickRecordDateAsNumber: endDate
-                                                             withOffset: ((b) ? -1 : 0)
-                                                              forAllDay: b]
+                                                           withOffset: ((b) ? -1 : 0)
+                                                            forAllDay: b]
                           forKey: @"c_enddate"];
         }
       
@@ -3758,7 +3755,7 @@ static NSComparisonResult _comparePermissions (id perm1, id perm2, void *context
               date = iCalDistantFuture;
             }
           [quickRecord setObject: [*theEntity quickRecordDateAsNumber: date
-                                                             withOffset: 0 forAllDay: NO]
+                                                           withOffset: 0 forAllDay: NO]
                           forKey: @"c_cycleenddate"];
           [quickRecord setObject: [*theEntity cycleInfo] forKey: @"c_cycleinfo"];
         }
