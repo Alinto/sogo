@@ -272,7 +272,8 @@ static const char salt_chars[] =
       return [self asPBKDF2SHA1UsingSalt: theSalt];
     }
 #ifdef HAVE_SODIUM
-  else if ([passwordScheme caseInsensitiveCompare: @"argon2i"] == NSOrderedSame)
+  else if ([passwordScheme caseInsensitiveCompare: @"argon2i"] == NSOrderedSame ||
+           [passwordScheme caseInsensitiveCompare: @"argon2"] == NSOrderedSame)
     {
       return [self asArgon2iUsingSalt: theSalt];
     }

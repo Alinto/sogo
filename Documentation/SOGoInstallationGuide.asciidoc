@@ -1668,7 +1668,7 @@ passwords. Possible values are: `none`, `plain`, `crypt`, `md5`,
 `sha256-crypt`, `sha512`, `sha512-crypt`, its ssha (e.g. `ssha` or
 `ssha256`) variants, `blf-crypt`, `PBKDF2`, and `sym-aes-128-cbc`.
 The `argon2i` and `argon2id` password hashing algorithms are supported
-if SOGo is compiled with `libsodium`.
+if SOGo is compiled with `libsodium`. `argon2` is a synonym for `argon2i`.
 Passwords can have the scheme prepended in the form
 `{scheme}encryptedPass`.
 
