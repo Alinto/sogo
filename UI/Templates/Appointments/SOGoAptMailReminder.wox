@@ -10,6 +10,7 @@
   <head>
     <style type="text/css">
 th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; font-size: 12px; line-height: 18px; }
+th { font-weight: bold; white-space: nowrap; vertical-align: top; }
     </style>
   </head>
   <body>
@@ -21,34 +22,34 @@ th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; fon
       </tr>
       <var:if condition="calendarName.length"
       ><tr>
-        <th align="right" style="font-weight: bold;"><var:string label:value="calendar_label" const:escapeHTML="NO"/></th>
+        <th align="right"><var:string label:value="calendar_label" const:escapeHTML="NO"/></th>
         <td><var:string value="calendarName" const:escapeHTML="NO"/></td>
       </tr></var:if>
       <var:if condition="apt.location.length"
       ><tr>
-        <th align="right" style="font-weight: bold;"><var:string label:value="location_label" const:escapeHTML="NO"/></th>
+        <th align="right"><var:string label:value="location_label" const:escapeHTML="NO"/></th>
         <td><var:string value="apt.location" const:escapeHTML="NO"/></td>
       </tr></var:if>
       <var:if condition="aptStartDate.length"
       ><tr>
-        <th align="right" style="font-weight: bold;"><var:string label:value="startDate_label" const:escapeHTML="NO"/></th>
+        <th align="right"><var:string label:value="startDate_label" const:escapeHTML="NO"/></th>
         <td><var:string value="aptStartDate" const:escapeHTML="NO"/></td>
       </tr></var:if>
       <var:if condition="aptEndDate"
       ><tr>
-        <th align="right" style="font-weight: bold;"><var:string label:value="endDate_label" const:escapeHTML="NO"/></th>
+        <th align="right"><var:string label:value="endDate_label" const:escapeHTML="NO"/></th>
         <td><var:string value="aptEndDate" const:escapeHTML="NO"/></td>
       </tr></var:if>
       <var:if condition="apt.comment.length"
       ><tr>
-        <th align="right" style="font-weight: bold;"><var:string label:value="comment_label" const:escapeHTML="NO"/></th>
+        <th align="right"><var:string label:value="comment_label" const:escapeHTML="NO"/></th>
         <td><var:string value="apt.comment" const:escapeHTML="NO"/></td>
       </tr>
       </var:if>
 
       <var:if condition="attendees.count"
       ><tr></tr><tr>
-        <th align="right" style="font-weight: bold;"><var:string label:value="organizer_label" const:escapeHTML="NO"/></th>
+        <th align="right"><var:string label:value="organizer_label" const:escapeHTML="NO"/></th>
         <var:if condition="organizer.cn">
         <td><a var:href="organizer.email"><var:string value="organizer.cn" const:escapeHTML="NO"/></a></td>
         </var:if>
@@ -58,7 +59,7 @@ th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; fon
       </tr>
 
       <tr>
-      <th align="right" style="font-weight: bold;"><var:string label:value="attendee_label" const:escapeHTML="NO"/></th>
+      <th align="right"><var:string label:value="attendee_label" const:escapeHTML="NO"/></th>
       <var:foreach list="attendees" item="currentRecipient">
         <var:if condition="currentRecipient.cn">
         <td><a var:href="currentRecipient.email"><var:string value="currentRecipient.cn" const:escapeHTML="NO"/></a></td>

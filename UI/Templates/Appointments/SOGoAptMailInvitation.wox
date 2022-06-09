@@ -9,6 +9,7 @@
   <head>
     <style type="text/css">
 th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; font-size: 12px; line-height: 18px; }
+th { font-weight: bold; white-space: nowrap; vertical-align: top; }
     </style>
   </head>
   <body>
@@ -27,13 +28,13 @@ th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; fon
           value="getParticipationRole" const:escapeHTML="NO"/></h1></td>
       </tr>  <var:if condition="location.length"
       ><tr>
-        <th align="right" style="font-weight: bold;"><var:string label:value="location_label" const:escapeHTML="NO"/></th>
+        <th align="right"><var:string label:value="location_label" const:escapeHTML="NO"/></th>
         <td><var:string value="location" const:escapeHTML="NO"/></td>
       </tr></var:if>
 
       <var:if condition="apt.isAllDay">
       <tr>
-	<th align="right" style="font-weight: bold;"><var:string label:value="time_label" const:escapeHTML="NO"/></th>
+	<th align="right"><var:string label:value="time_label" const:escapeHTML="NO"/></th>
         <td><var:string value="formattedAptStartDate"
       const:escapeHTML="NO"/><var:if condition="isEndDateOnSameDay" const:negate="YES"> <var:string label:value="to_label" const:escapeHTML="NO"/> <var:string value="formattedAptEndDate" const:escapeHTML="NO"/>
            </var:if></td>
@@ -41,13 +42,13 @@ th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; fon
       </var:if>
       <var:if condition="apt.isAllDay" const:negate="YES">
       <tr>
-	<th align="right" style="font-weight: bold;"><var:string label:value="startDate_label" const:escapeHTML="NO"/></th>
+	<th align="right"><var:string label:value="startDate_label" const:escapeHTML="NO"/></th>
         <td><var:string value="formattedAptStartDate" const:escapeHTML="NO"
            /><var:if condition="formattedAptStartTime.length"> - <var:string value="formattedAptStartTime" const:escapeHTML="NO"/> <var:string value="viewTZ" const:escapeHTML="NO"/>
            </var:if></td>
       </tr>
       <tr>
-        <th align="right" style="font-weight: bold;"><var:string label:value="endDate_label" const:escapeHTML="NO"/></th>
+        <th align="right"><var:string label:value="endDate_label" const:escapeHTML="NO"/></th>
         <td><var:string value="formattedAptEndDate" const:escapeHTML="NO"
            /><var:if condition="formattedAptEndTime.length"> - <var:string value="formattedAptEndTime" const:escapeHTML="NO"/> <var:string value="viewTZ" const:escapeHTML="NO"/>
            </var:if></td>
@@ -55,7 +56,7 @@ th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; fon
       </var:if>
       <var:if condition="apt.comment.length"
       ><tr>
-        <th align="right" style="font-weight: bold;"><var:string label:value="comment_label" const:escapeHTML="NO"/></th>
+        <th align="right"><var:string label:value="comment_label" const:escapeHTML="NO"/></th>
         <td><var:string value="apt.comment" const:escapeHTML="NO"/></td>
       </tr>
       </var:if>

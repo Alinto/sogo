@@ -9,6 +9,7 @@
   <head>
     <style type="text/css">
 th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; font-size: 12px; line-height: 18px; }
+th { font-weight: bold; white-space: nowrap; vertical-align: top; }
     </style>
   </head>
   <body>
@@ -32,7 +33,7 @@ th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; fon
       </tr>
       <var:foreach list="allChangesList" item="currentItem"
       ><tr>
-        <th align="right" style="font-weight: bold;"><var:string value="currentItem"/></th>
+        <th align="right"><var:string value="currentItem"/></th>
         <td><var:string value="valueForCurrentItem"/></td>
       </tr>
       </var:foreach>

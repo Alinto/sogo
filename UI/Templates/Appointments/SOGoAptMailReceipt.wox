@@ -10,6 +10,7 @@
   <head>
     <style type="text/css">
 th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; font-size: 12px; line-height: 18px; }
+th { font-weight: bold; white-space: nowrap; vertical-align: top; }
     </style>
   </head>
   <body>
@@ -20,22 +21,22 @@ th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; fon
           value="aptSummary"/></h1></td>
       </tr>
       <tr>
-        <th align="right" style="font-weight: bold;"><var:string label:value="calendar_label"/></th>
+        <th align="right"><var:string label:value="calendar_label"/></th>
         <td><var:string value="calendarName"/></td>
       </tr>
       <var:if condition="apt.location.length"
       ><tr>
-        <th align="right" style="font-weight: bold;"><var:string label:value="location_label"/></th>
+        <th align="right"><var:string label:value="location_label"/></th>
         <td><var:string value="apt.location"/></td>
       </tr></var:if>
       <var:if condition="aptStartDate.length"
       ><tr>
-        <th align="right" style="font-weight: bold;"><var:string label:value="startDate_label"/></th>
+        <th align="right"><var:string label:value="startDate_label"/></th>
         <td><var:string value="aptStartDate"/></td>
       </tr></var:if>
       <var:if condition="aptEndDate.length"
       ><tr>
-        <th align="right" style="font-weight: bold;"><var:string label:value="endDate_label"/></th>
+        <th align="right"><var:string label:value="endDate_label"/></th>
         <td><var:string value="aptEndDate"/></td>
       </tr></var:if>
 
@@ -79,7 +80,7 @@ th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; fon
       </var:if>
       <var:if condition="apt.comment.length"
       ><tr>
-        <th align="right" style="font-weight: bold;"><var:string label:value="comment_label"/></th>
+        <th align="right"><var:string label:value="comment_label"/></th>
         <td><var:string value="apt.comment" const:escapeHTML="NO"/></td>
       </tr></var:if>
     </table>

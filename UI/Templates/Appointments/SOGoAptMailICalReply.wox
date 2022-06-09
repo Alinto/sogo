@@ -9,6 +9,7 @@
   <head>
     <style type="text/css">
 th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; font-size: 12px; line-height: 18px; }
+th { font-weight: bold; white-space: nowrap; vertical-align: top; }
     </style>
   </head>
   <body>
