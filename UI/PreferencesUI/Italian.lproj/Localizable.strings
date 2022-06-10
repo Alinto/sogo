@@ -396,7 +396,7 @@
 /* Select field label of "file message" mail filter action */
 "Mailbox" = "Casella di posta";
 
-"Keep the message" = "Salva il messaggio";
+"Keep the message" = "Mantieni copia del messaggio";
 "Forward the message to" = "Inoltra il messaggio a";
 
 /* Input field label of "forward" mail filter action */
