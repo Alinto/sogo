@@ -274,7 +274,7 @@
 "selected" = "ausgewählt";
 
 /* Date formatting from one time to another time */
-"to_time" = "an";
+"to_time" = "bis";
 
 /* Date formatting from one day to another day */
 "to_date" = "an";
