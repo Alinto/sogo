@@ -221,6 +221,11 @@
 "view_next31" = "Következő 31 nap";
 "view_thismonth" = "Aktuális hónap";
 "view_thisyear" = "Aktuális év";
+"view_last7" = "Elmúlt 7 nap";
+"view_last14" = "Előző 14 nap";
+"view_last31" = "Előző 31 nap";
+"view_lastmonth" = "Előző hónap";
+"view_lastyear" = "Előző év";
 "view_future" = "Összes jövőbeni esemény";
 "view_selectedday" = "Kijelölt nap";
 "view_not_started" = "Nem megkezdett feladatok";
@@ -499,6 +504,8 @@ validate_untilbeforeend    = "Az ismétlődésnek az első előfordulás után k
 "and" = "and";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Egy vagy több résztvevő között időütközés van.\nMegtartja ennek ellenére a beállításokat?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "El kívánja távolítani ezeket a résztvevőket valamint meghívót küldeni a megmaradt résztvevőknek?";
 
 /* events list */
 "Due" = "Lejárat";
