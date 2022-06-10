@@ -68,6 +68,8 @@
 
 /* forward messages */
 "Forward incoming messages" = "Пересылать входящие сообщения";
+"Always forward" = "Всегда пересылать";
+"Incoming messages are forwarded prior to apply your filters." = "Входящие сообщения пересылаются до применения ваших фильтров.";
 "Keep a copy" = "Оставлять копию";
 "Enter an email" = "Введите адрес электронной почты";
 "Add another email" = "Добавить еще один адрес электронной почты";

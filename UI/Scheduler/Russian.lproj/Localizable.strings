@@ -221,6 +221,11 @@
 "view_next31" = "Следующий 31 день";
 "view_thismonth" = "Этот месяц";
 "view_thisyear" = "Этот год";
+"view_last7" = "Последние 7 дней";
+"view_last14" = "Последние 14 дней";
+"view_last31" = "Последний 31 день";
+"view_lastmonth" = "Последний месяц";
+"view_lastyear" = "Прошлый год";
 "view_future" = "Все будущие мероприятия";
 "view_selectedday" = "Выбранный день";
 "view_not_started" = "Неначатые задачи";
@@ -499,6 +504,8 @@ validate_untilbeforeend    = "Повторение должно заканчив
 "and" = "и";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "У одного или нескольких приглашенных есть конфликт по времени.\nВы хотите сохранить текущие настройки несмотря на конфликт?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Вы хотите удалить их и отправить приглашение оставшимся участникам?";
 
 /* events list */
 "Due" = "Срок";
