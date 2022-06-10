@@ -40,15 +40,22 @@
 "Auto reply subject" = "Automatisch antwoorden op onderwerp";
 "You can write ${subject} to insert the original subject" = "Schrijf ${subject} om het oorspronkelijke onderwerp in te voegen";
 "Auto reply message" = "Automatisch eenmalig met het volgende bericht beantwoorden";
-"Email addresses (separated by commas)" = "E-mailaddressen (gescheiden door komma's)";
+"Email addresses" = "E-mailadressen";
 "Add default email addresses" = "Standaard e-mailadres toevoegen";
 "Days between responses" = "Dagen tussen reacties";
 "Do not send responses to mailing lists" = "Geen reacties naar maillinglijsten sturen";
+"Activation Constraints" = "Activatiebeperkingen";
 "Enable auto reply on" = "Automatisch beantwoorden inschakelen";
 "First day of vacation" = "Eerste vakantiedag";
 "Disable auto reply on" = "Automatisch bericht bij afwezigheid uitschakelen op";
 "Last day of vacation" = "Laatste vakantiedag";
 "Enter date" = "Voer datum in";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Automatisch beantwoorden inschakelen om ";
+"Enter time" = "Voer de tijd in";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Automatisch beantwoorden uitschakelen op";
+"Enable auto reply on these days" = "Automatisch beantwoorden inschakelen op deze dagen";
 "Always send vacation message response" = "Afwezigheidsbericht altijd versturen";
 "The vacation message is sent prior to apply your filters." = "Automatisch bericht bij afwezigheid wordt verstuurd voordat jouw filters toegepast worden.";
 "Discard incoming mails during vacation" = "Gooi binnenkomende berichten weg tijdens afwezigheid";
@@ -61,7 +68,11 @@
 
 /* forward messages */
 "Forward incoming messages" = "Inkomende berichten doorsturen";
+"Always forward" = "Altijd doorsturen";
+"Incoming messages are forwarded prior to apply your filters." = "Inkomende berichten worden doorgestuurd voordat jouw filters toegepast worden.";
 "Keep a copy" = "Kopie bewaren";
+"Enter an email" = "Voer een e-mail in";
+"Add another email" = "Voeg nog een e-mail toe";
 "Please specify an address to which you want to forward your messages."
 = "Alstublieft het e-mailadres waarnaar u de berichten wilt laten doorsturen aangeven.";
 "You are not allowed to forward your messages to an external email address." = "Email naar een extern emailadres doorsturen is niet toegestaan";
@@ -69,7 +80,7 @@
 "You are not allowed to forward your messages to this domain:" = "U mag uw berichten niet doorsturen naar dit domein:";
 
 /* d & t */
-"Current Time Zone" = "Huidige tijdzone";
+"Time Zone" = "Tijd Zone";
 "Short Date Format" = "Kort datumformaat";
 "Long Date Format" = "Lang datumformaat";
 "Time Format" = "Tijdformaat";
@@ -192,6 +203,10 @@
 "displayremoteinlineimages_always" = "Altijd";
 "Auto save every" = "Automatisch opslaan elke";
 "minutes" = "minuten";
+"Automatically mark messages as read" = "Automatisch berichten als gelezen markeren";
+"Immediately on display" = "Direct weergeven";
+"After displaying for" = "Na het weergeven van";
+"seconds" = "seconden";
 
 /* Contact */
 "Personal Address Book" = "Persoonlijk adresboek";
@@ -212,6 +227,10 @@
 "Email" = "E-mail";
 "Reply To Email" = "Antwoord op e-mail";
 "Signature" = "Ondertekening";
+"Identities" = "Identiteiten";
+"Always use the default identity when replying to messages" = "Altijd de standaard identiteit gebruiken bij berichten beantwoorden";
+"Default Identity" = "Standaard Identiteit";
+"New Identity" = "Nieuwe Identiteit";
 "(Click to create)" = "(Klik om op te stellen)";
 "Please enter your signature below" = "Stel de ondertekening hieronder op";
 "Please specify a valid sender address." = "Geef alstublieft een geldig afzendadres aan.";
@@ -233,9 +252,11 @@
 "Additional Parameters" = "Extra Parameters";
 
 /* password */
+"Current password" = "Huidig wachtwoord";
 "New password" = "Nieuw wachtwoord";
 "Confirmation" = "Bevestig wachtwoord";
 "Change" = "Veranderen";
+"Passwords don't match" = "Wachtwoorden komen niet overeen";
 
 /* Event+task classifications */
 "Default events classification" = "Standaardclassificatie afspraken";
@@ -320,6 +341,7 @@
 "refreshview_every_20_minutes" = "Iedere 20 minuten";
 "refreshview_every_30_minutes" = "Iedere 30 minuten";
 "refreshview_once_per_hour" = "Ieder uur";
+"Enable Desktop Notifications" = "Bureaubladmeldingen Inschakelen";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Bij aanvraag van een ontvangstbevestiging";
@@ -451,3 +473,13 @@
 /* Limited Animation Mode */
 "animation_LIMITED" = "Minimaal";
 "animation_NONE" = "Geen";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "Twee-factor authenticatie met TOTP programma inschakelen";
+"You must enter this key into your TOTP application." = "U moet deze sleutel in uw TOTP programma invoeren.";
+"If you do not and you log out you will not be able to login again." = "Als u dit niet doet en uitlogt, zal u niet meer terug kunnen inloggen.";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "Een extern Sieve script is actief";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve is een programmeertaal  die voor e-mail filteren kan gebruikt worden. Als u SOGo uw filters, vakantie en doorstuurinstellingen laat beheren, zal uw actieve script uitgeschakeld worden.";
+"Let SOGo handle everything" = "Laat SOGo alles beheren";

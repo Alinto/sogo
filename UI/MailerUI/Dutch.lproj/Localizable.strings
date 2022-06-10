@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "Aanmaken";
 "Empty Trash" = "Prullenbak legen";
+"Empty Junk Folder" = "Spamfolder legen";
 "Delete"      = "Verwijderen";
 "Expunge"     = "Leegmaken";
 "Forward"     = "Doorsturen";
@@ -73,8 +74,13 @@
 "An error occured while communicating with the mail server" = "Er is een fout opgetreden tijdens de communicatie met de mailserver";
 
 /* Mailbox actions */
+
 /* Compact Folder success message */
 "Folder compacted" = "Map gecomprimeerd";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Spamfolder geleegd";
+
 /* Empty Trash success message */
 "Trash emptied" = "Prullenbak geleegd";
 
@@ -82,7 +88,7 @@
 "Access rights to" = "Toegangsrechten voor";
 "For user" = "Voor gebruiker";
 "Any Authenticated User" = "Elke geauthenticeerde gebruiker";
-"List and see this folder" = "De inhoud van deze map bekijken";
+"View this folder" = "Bekijk deze map";
 "Read mails from this folder" = "E-mails in deze map lezen";
 "Mark mails read and unread" = "E-mails in deze map als (on)gelezen markeren";
 "Modify the flags of the mails in this folder" = "De markeringen van e-mails in deze map aanpassen";
@@ -104,7 +110,7 @@
 "To"            = "Aan";
 "Cc"            = "Cc";
 "Bcc"           = "Bcc";
-"Reply-To"	    = "Reply-To";
+"Reply-To"	= "Reply-To";
 "Add address"   = "Adres toevoegen";
 "Body"          = "Inhoud";
 "Open" = "Openen";
@@ -121,6 +127,7 @@
 "Edit Draft..." = "Concept aanpassen...";
 "Load Images" = "Afbeeldingen laden";
 "Return Receipt" = "Ontvangstbevestiging";
+"Choose which identity to send this message from" = "Kies identiteit om dit bericht van te versturen";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "De afzender van dit bericht heeft gevraagd om een leesbevestiging. Wilt u een leesbevestiging sturen?";
 "Return Receipt (displayed) - %@"= "Ontvangstbevestigig (vertoond) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Dit is een Ontvangstbevestiging voor de e-mail die u hebt verzonden naar %@.\n\nOpmerking: Deze ontvangstbevestiging bevestigt alleen dat het bericht is weergegeven op de computer van de ontvanger. Er is geen garantie dat de ontvanger het gelezen of begrepen heeft.";
@@ -165,12 +172,22 @@
 "Mark Read"   = "Als gelezen markeren";
 "Untitled" = "(geen onderwerp)";
 
+/* Filter option in messages list */
+"Show unread messages only" = "Alleen ongelezen mails laten zien";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Alleen gemarkeerde berichten laten zien";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Gefilterd op label";
+
 /* Tree */
 "SentFolderName"   = "Verzonden";
 "TrashFolderName"  = "Prullenbak";
 "InboxFolderName"  = "Postvak IN";
 "DraftsFolderName" = "Concepten";
 "JunkFolderName" = "Ongewenst";
+"TemplatesFolderName" = "Sjablonen";
 "SieveFolderName"  = "Filters";
 "Folders"          = "Mappen"; /* title line */
 
@@ -229,6 +246,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Omzetten naar taak";
 
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Bericht downloaden";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Bericht downloaden (zip)";
+
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "Download alle bijlagen";
 
@@ -250,6 +273,12 @@
 /* Number of selected messages in list */
 "selected" = "geselecteerd";
 
+/* Date formatting from one time to another time */
+"to_time" = "naar";
+
+/* Date formatting from one day to another day */
+"to_date" = "naar";
+
 /* Encrypted message notification */
 "This message is encrypted" = "Dit bericht is versleuteld";
 
@@ -267,6 +296,18 @@
 
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Geen certificaat gekoppeld aan account.";
+
+/* Invalid S/MIME signature */
+"Digital signature is not valid" = "Digitale handtekening is niet geldig";
+
+/* Valid S/MIME signature */
+"Message is signed" = "Bericht is ondertekend";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Dit bericht is ondertekend maar het certificaat hoort niet bij het e-mailadres van de verzender";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Digitale handtekening is niet geldig";
 
 "This Folder" = "Deze map";
 
@@ -303,6 +344,7 @@
 "Operation failed" = "Bewerking mislukt.";
 "Quota" = "Quotum:";
 "quotasFormat" = "%{0}% van %{1} MB gebruikt";
+"messageQuotasFormat" = "%{0}% van %{1} msgs";
 "Unable to move/delete folder." = "Het is niet mogelijk deze map te verplaatsen/verwijderen.";
 
 /* Alternative operation when folder cannot be deleted */
@@ -349,6 +391,12 @@
 "Send Anyway" = "Toch verzenden";
 "Error while saving the draft" = "Fout bij opslaan van concept";
 
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Het is niet mogelijk om de prullenbak te legen";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Het is niet mogelijk om de spamfolder te legen";
+
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Fout bij uploaden van bestand \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Een bestandsupload is actief. Sluiten van het venster zal hem onderbreken.";
@@ -363,6 +411,9 @@
 "cannot send message: (smtp) all recipients discarded" = "Kan bericht niet versturen: alle ontvangers zijn ongeldig.";
 "cannot send message (smtp) - recipients discarded" = "Kan bericht niet versturen: de volgende adressen zijn ongeldig";
 "cannot send message: (smtp) error when connecting" = "Kan bericht niet versturen: fout bij verbinden met de SMTP server.";
+"cannot sign email without certificate" = "Het bericht kan niet worden ondertekend omdat er geen certificaat aan het e-mailaccount gekoppeld is.";
+"cannot sign message because the certificate can't be read" = "Het bericht kan niet worden ondertekend omdat het certificaat wat aan dit e-mailaccount gekoppeld is, niet gelezen kan worden";
+"cannot sign message because the certificate doesn't include the specified sender address" = "Het bericht kan niet worden ondertekend omdat het e-mailadres van de verzender niet gekoppeld is aan het certificaat wat aan dit e-mailadres gekoppeld is.";
 
 /* Contacts list in mail editor */
 "Email" = "E-mail";
@@ -381,6 +432,9 @@
 "Set as Drafts" = "Als Concepten instellen";
 "Set as Sent" = "Als Verzonden instellen";
 "Set as Trash" = "Als Prullenbak instellen";
+
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Toevoegen als template";
 
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Als Ongewenst instellen";
@@ -403,6 +457,9 @@
 "Your email has been saved" = "Uw email is opgeslagen";
 "Your email has been sent" = "Uw email is verzonden";
 "Folder compacted" = "Map gecomprimeerd";
+
+"New draft" = "Nieuw concept";
+"Create new draft with this template" = "Maak een nieuw concept met dit sjabloon";
 
 /* Advanced search */
 "Enter Subject" = "Voer in Onderwerp";

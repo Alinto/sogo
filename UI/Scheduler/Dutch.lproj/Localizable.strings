@@ -221,6 +221,11 @@
 "view_next31" = "Afspraken in de volgende 31 dagen";
 "view_thismonth" = "Afspraken in deze kalendermaand";
 "view_thisyear" = "Dit jaar";
+"view_last7" = "Laatste 7 dagen";
+"view_last14" = "Laatste 14 dagen";
+"view_last31" = "Laatste 31 dagen";
+"view_lastmonth" = "Laatste maand";
+"view_lastyear" = "Laatste jaar";
 "view_future" = "Alle toekomstige afspraken";
 "view_selectedday" = "Afspraken op de geselecteerde dag";
 "view_not_started" = "Niet begonnen taken";
@@ -499,6 +504,8 @@ validate_untilbeforeend    = "De herhaling moet eindigen nadat deze eenmaal is v
 "and" = "en";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Een tijdsconflict bestaat met een of meer deelnemers.\nWilt u toch de huidige instellingen houden?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Wil je ze verwijderen en de uitnodiging naar de overige genodigden sturen?";
 
 /* events list */
 "Due" = "Tot";
@@ -579,7 +586,7 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "Move To" = "Verplaatsen naar";
 "Copy To" = "Kopieren naar";
 "Subscriptions" = "Abonnementen";
-"Subscribe to a shared folder" = "Abonneren op een gedeelde map";
+"Subscribe to a shared calendar" = "Abonneer op een gedeelde agenda";
 "Subscribe to a web calendar..." = "Abonneren op een web-agenda...";
 "URL of the Calendar" = "URL van de agenda";
 "Web Calendar" = "Web-agenda";

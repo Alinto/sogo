@@ -221,7 +221,7 @@
 "New Addressbook..." = "Nieuw adresboek...";
 "Subscribe to an Addressbook..." = "Abonneren...";
 "Remove the selected Addressbook" = "Verwijderen";
-"Subscribe to a shared folder" = "Abonneren op een gedeelde map";
+"Subscribe to a shared contact" = "Abonneer op een gedeeld adresboek ";
 "Search User" = "Zoek gebruiker";
 "Name of the Address Book" = "Naam van het adresboek";
 "Are you sure you want to delete the selected address book?"
@@ -350,6 +350,7 @@
 "Synchronization" = "Synchronisatie";
 "Synchronize" = "Synchroniseren";
 "Sucessfully subscribed to address book" = "Met succes geabonneerd op dit adresboek";
+"A similar card already exists. Would you like to save it anyway?" = "Er bestaat al een vergelijkbare kaart. Wil je deze kaart alsnog opslaan?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Zoekbereik";

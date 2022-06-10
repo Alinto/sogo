@@ -41,6 +41,8 @@
      = "Iedereen op het internet zal toegang kunnen krijgen tot uw adresboek \"%{0}\", zelfs als diegenen geen gebruikersaccount hebben voor dit systeem. Is de informatie geschikt voor het openbare Internet?";
 "Give Access" = "Toegang geven";
 "Keep Private" = "Privé houden";
+"Expand" = "Uitklappen";
+"Reduce" = "Verminderen";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -122,11 +124,17 @@
 "S/MIME Certificate" = "S/MIME Certificaat";
 "Subject Name" = "Onderwerp";
 "Issuer" = "Uitgever";
+"streetAddress" = "Straat";
+"stateOrProvinceName" = "Staat of provincie";
+"localityName" = "Plaats";
 "countryName" = "Land";
 "organizationName" = "Organisatie";
 "organizationalUnitName" = "Organisatie-eenheid";
 "commonName" = "Gemeenschappelijke naam";
+"surname" = "Achternaam";
+"givenName" = "Voornaam";
 "emailAddress" = "Email Adres";
+
 
 /* Authentication username */
 "Username" = "Gebruikersnaam";

@@ -21,6 +21,13 @@
 "browserNotCompatible" = "We hebben gedetecteerd dat de browser die u op dit moment gebruikt niet word ondersteund voor deze site. Onze aanbeveling is Firefox te gebruiken. Hieronder staat een link om de laatste versie van deze browser te downloaden.";
 "alternativeBrowsers" = "Als alternatief kunt u ook de volgende compatibele browsers gebruiken";
 "alternativeBrowserSafari" = "Als alternatief kunt u ook Safari gebruiken.";
+
+/* 2FA */
+"Verification Code" = "Verificatie Code";
+"Enter the 6-digit verification code from your TOTP application." = "Voer de 6-cijferige verificatiecode in van uw TOTP programma.";
+"You provided an invalid TOTP key." = "U gaf een ongeldige TOTP sleutel op.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Tweestapsverificatie is uitgeschakeld. Ga naar de Instellingen module om tweestapsverificatie weer aan te zetten en de TOTP-applicatie opnieuw te configureren. ";
+
 "Download" = "Download";
 "Language" = "Taal";
 "choose" = "Kies...";
