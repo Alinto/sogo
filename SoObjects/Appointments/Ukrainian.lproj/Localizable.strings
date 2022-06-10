@@ -9,9 +9,12 @@ vtodo_class1 = "(Особисте завдання)";
 vtodo_class2 = "(Конфіденційне завдання)";
 
 /* Receipts */
-"The event \"%{Summary}\" was created" = "Було створено захід \"%{Summary}\"";
-"The event \"%{Summary}\" was deleted" = "Захід \"%{Summary}\" було видалено";
-"The event \"%{Summary}\" was updated" = "Захід \"%{Summary}\" було оновлено";
+"The event \"%{Summary}\" was created" = "Захід \"%{Summary}\" створено.";
+"The event \"%{Summary}\" was deleted" = "Захід \"%{Summary}\" видалено";
+"The event \"%{Summary}\" was updated" = "Захід \"%{Summary}\" оновлено";
+"The task \"%{Summary}\" was created" = "Завдання \"%{Summary}\" створено.";
+"The task \"%{Summary}\" was deleted" = "Завдання \"%{Summary}\" видалено.";
+"The task \"%{Summary}\" was updated" = "Завдання \"%{Summary}\" оновлено.";
 "The following attendees(s) were notified" = "Наступні учасники були сповіщені";
 "The following attendees(s) were added" = "Додано таких учасників";
 "The following attendees(s) were removed" = "Вилучено таких учасників";

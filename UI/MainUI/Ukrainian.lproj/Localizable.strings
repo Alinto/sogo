@@ -4,7 +4,7 @@
 "Username" = "Лоґін";
 "Password" = "Пароль";
 "Domain" = "Домен";
-"Remember username" = "Пам’ятати мене";
+"Remember username" = "Запам’ятати мене";
 "Connect" = "Увійти";
 
 /* Appears while authentication is in progress */

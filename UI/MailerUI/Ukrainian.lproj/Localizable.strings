@@ -187,6 +187,7 @@
 "InboxFolderName"  = "Вхідні";
 "DraftsFolderName" = "Чернетки";
 "JunkFolderName" = "Спам";
+"TemplatesFolderName" = "Шаблони";
 "SieveFolderName"  = "Папки";
 "Folders"          = "Папки"; /* title line */
 
@@ -432,6 +433,9 @@
 "Set as Sent" = "Встановити як Надіслані";
 "Set as Trash" = "Встановити як Кошик";
 
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Встановити як шаблони";
+
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Встановити як Спам";
 
@@ -453,6 +457,9 @@
 "Your email has been saved" = "Лист збережено";
 "Your email has been sent" = "Листа надіслано";
 "Folder compacted" = "Папка стиснута";
+
+"New draft" = "Нова чернетка";
+"Create new draft with this template" = "Створити нову чернетку за допомогою цього шаблону";
 
 /* Advanced search */
 "Enter Subject" = "Введіть Тему";

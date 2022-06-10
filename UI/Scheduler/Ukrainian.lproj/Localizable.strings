@@ -221,6 +221,11 @@
 "view_next31" = "Наступні 31 день";
 "view_thismonth" = "Цей місяць";
 "view_thisyear" = "Цей рік";
+"view_last7" = "Останні 7 днів";
+"view_last14" = "Останні 14 днів";
+"view_last31" = "Останній 31 день";
+"view_lastmonth" = "Останній місяць";
+"view_lastyear" = "Торік";
 "view_future" = "Всі майбутні події";
 "view_selectedday" = "Вибраний день";
 "view_not_started" = "Нерозпочаті задачі";
@@ -499,6 +504,8 @@ validate_untilbeforeend    = "Повторення повинно закінчу
 "and" = "та";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Неузгоджений час з одним з учасників.\nІгнорувати та зберегти поточні налаштування?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Бажаєте видалити їх і надіслати запрошення іншим учасникам?";
 
 /* events list */
 "Due" = "Термін";

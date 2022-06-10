@@ -41,6 +41,8 @@
      = "Ймовірно будь-хто з користувачів Інтернет зможе отримати доступ до Вашої адресної книги \"%{0}\", навіть якщо не має облікового запису у цій системі. Чи Ви бажаєте надати такий доступ?";
 "Give Access" = "Дати доступ";
 "Keep Private" = "Залишити у приватному доступі";
+"Expand" = "Розгорнути";
+"Reduce" = "Зменшити";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -122,11 +124,17 @@
 "S/MIME Certificate" = "Сертифікат S/MIME";
 "Subject Name" = "Суб'єкт";
 "Issuer" = "Видавник";
+"streetAddress" = "Вулиця";
+"stateOrProvinceName" = "Штат або область";
+"localityName" = "Населений пункт";
 "countryName" = "Країна";
 "organizationName" = "Організація";
 "organizationalUnitName" = "Організаційний підрозділ";
 "commonName" = "Загальна назва";
+"surname" = "Прізвище";
+"givenName" = "Ім’я";
 "emailAddress" = "Адреса електронної пошти";
+
 
 /* Authentication username */
 "Username" = "Логін";
