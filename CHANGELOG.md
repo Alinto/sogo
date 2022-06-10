@@ -1,5 +1,48 @@
 # Changelog
 
+## [5.7.0](https://github.com/inverse-inc/sogo/compare/SOGo-5.6.0...SOGo-5.7.0) (2022-06-10)
+
+### Features
+
+* **addressbook(web):** import vList from versit file ([51dc929](https://github.com/inverse-inc/sogo/commit/51dc929d0c62945f8736a399c1f9c74655c75e09))
+* **preferences:** password constraints for SQL sources ([2ef849c](https://github.com/inverse-inc/sogo/commit/2ef849ca653e0429e09c560381eb0b289415f5ab))
+
+### Bug Fixes
+
+* **admininistration(js):** improve handling of unauthorized access ([1328a25](https://github.com/inverse-inc/sogo/commit/1328a2566b21cf0de4f04547b50c50d507b383d6))
+* **administration(js):** add rgba colors to theme preview ([cddd016](https://github.com/inverse-inc/sogo/commit/cddd016e5384397e24b3e95e81a7d3f72e4ffb7e))
+* **administration(js):** fix toast when saving ACLs ([1e9ae31](https://github.com/inverse-inc/sogo/commit/1e9ae3184b3c011b7ab14f6d78ce647cb7af26e7))
+* **administration:** add theme preview ([3321745](https://github.com/inverse-inc/sogo/commit/33217456fc28f07a2ac707d8763d4e8630a5e822))
+* **calendar:** disable wrapping of labels in mail templates ([bd40b95](https://github.com/inverse-inc/sogo/commit/bd40b95f704e1b69d3ecf6a56e9bf6503379bf03))
+* **calendar:** filter by matching property values ([5452cd7](https://github.com/inverse-inc/sogo/commit/5452cd7396ef419bde39e531b9d1b87468ece6f8))
+* **core:** don't auto-remove a subscription if any source is in error ([373ac51](https://github.com/inverse-inc/sogo/commit/373ac51e62b8d50b9a8aa938c048dbf53bdbb992))
+* **mail(js):** fix url for protocol Handler registration ([09ac2df](https://github.com/inverse-inc/sogo/commit/09ac2dfda392110e5b152045f6acc56e36c4ac93)), closes [#5513](https://sogo.nu/bugs/view.php?id=5513)
+* **mail(js):** refresh of parent window when saving draft/template ([715cf71](https://github.com/inverse-inc/sogo/commit/715cf71ba3bfae3a849d302dcec20eded3c2494f))
+* **mail(js):** transition to a message using the router ([412d73b](https://github.com/inverse-inc/sogo/commit/412d73b166acccf96d0288f6d2dca8be0c41a315))
+* **mail:** add default label & color for $forwarded flag ([580a73c](https://github.com/inverse-inc/sogo/commit/580a73c8576cd56bf4ec62d7d108d3bfb7b80545)), closes [#5534](https://sogo.nu/bugs/view.php?id=5534)
+* **mail:** remove unused directive in mail editor ([a40d3b6](https://github.com/inverse-inc/sogo/commit/a40d3b62964ec33ecb7c5d5639d9cd00659723d6))
+* **preferences(js):** prohibit deleting the last editable mail identity ([9337915](https://github.com/inverse-inc/sogo/commit/9337915890e1b82603f6d47999eabf3e91e952b6))
+* **preferences:** keep mail identities when none is provided when saving ([36303be](https://github.com/inverse-inc/sogo/commit/36303bef9d62aa99ab2d9f52d7ffdfb4cb12ebef))
+
+### Enhancements
+
+* **js:** improve defintion of some controllers ([35f9f35](https://github.com/inverse-inc/sogo/commit/35f9f35ef08731a4c5847360a47e8eb2cae2970f) [0cf025b](https://github.com/inverse-inc/sogo/commit/0cf025b0afa2b8333e51b63101063afa232b62e2))
+* **tool:** cache IMAP delimiters when updating sieve filters ([2aaad3d](https://github.com/inverse-inc/sogo/commit/2aaad3de221a5dfe4934747be2aca2034d06904a), [c87ce46](https://github.com/inverse-inc/sogo/commit/c87ce46d297c1830a9e269333773c3479c50f381))
+
+### Localization
+
+* **bg_BG:** update Bulgarian translation ([1684c23](https://github.com/inverse-inc/sogo/commit/1684c234a38e2dcd12447dd41bae771e1c131fae))
+* **de:** update German translation ([825d341](https://github.com/inverse-inc/sogo/commit/825d341f8da6aaca704b78850ba30727f8961d8d))
+* **hu:** update Hungarian translation ([b272e2d](https://github.com/inverse-inc/sogo/commit/b272e2dee6a60263bb11d1887092f288030d8255))
+* **it:** update Italian translation ([fa39e2a](https://github.com/inverse-inc/sogo/commit/fa39e2a19ab37fa30a85abe05f7454d4cca85c63))
+* **ja:** fix mail reply and forward templates ([ab5f5ab](https://github.com/inverse-inc/sogo/commit/ab5f5abc80dae822d07e7fcbe1ca2c94f0d609c0))
+* **nl:** update Dutch translation ([5b96075](https://github.com/inverse-inc/sogo/commit/5b960759d20bf34f610022a476983b4a1ac182cc))
+* **ru:** update Russian translation ([2ae6b46](https://github.com/inverse-inc/sogo/commit/2ae6b46c5558a09977792a9c03d3d94ed0c10db9))
+* **tr_TR:** update README file with new Turkish translation contributor ([2df931b](https://github.com/inverse-inc/sogo/commit/2df931bc3aecfd0b76a41cfcedf0705ca7ab0d1f))
+* **tr_TR:** update Turkish (Turkey) translation ([3aea397](https://github.com/inverse-inc/sogo/commit/3aea397af93a950c129d53abd7390fc0ea241bd2))
+* **tr_TR:** update Turkish (Turkey) translation ([dec49c2](https://github.com/inverse-inc/sogo/commit/dec49c21548befde769cd69250cea846987bff8d))
+* **uk:** update Ukrainian translation ([515d030](https://github.com/inverse-inc/sogo/commit/515d03080e7cfb380146f65e6792a220ccae30ac))
+
 ## [5.6.0](https://github.com/inverse-inc/sogo/compare/SOGo-5.5.1...SOGo-5.6.0) (2022-05-04)
 
 ### Features
