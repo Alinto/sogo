@@ -1,0 +1,79 @@
+"Inviting the following persons is prohibited:" = "Мына адамдарды шақыруға тыйым салынады:";
+"Personal Calendar" = "Дербес күнтізбе";
+vevent_class0 = "(Көпшілік оқиға)";
+vevent_class1 = "(Жеке оқиға)";
+vevent_class2 = "(Құпия оқиға)";
+
+vtodo_class0 = "(Көпшілік тапсырма)";
+vtodo_class1 = "(Жеке тапсырма)";
+vtodo_class2 = "(Құпия тапсырма)";
+
+/* Receipts */
+"The event \"%{Summary}\" was created" = "\"%{Summary}\" іс-шарасы қалыптастырылды";
+"The event \"%{Summary}\" was deleted" = "\"%{Summary}\" іс-шарасы жойылды";
+"The event \"%{Summary}\" was updated" = "\"%{Summary}\" іс-шарасы жаңартылды";
+"The following attendees(s) were notified" = "Мына шақырылушылар хабардар етілді";
+"The following attendees(s) were added" = "Мына адамдар шақырылғандар тізіміне қосылды";
+"The following attendees(s) were removed" = "Мына адамдар шақырылғандар тізімінен алып тасталды";
+
+/* IMIP messages */
+"calendar_label" = "Күнтізбе";
+"startDate_label" = "Басталуы";
+"endDate_label" = "Аяқталуы";
+"time_label" = "Уақыты";
+"to_label" = "кімге";
+"due_label" = "... дейін дайын болуы тиіс:";
+"location_label" = "Орналасқан жері";
+"summary_label" = "Қысқаша мазмұны:";
+"comment_label" = "Түсіндірме";
+"organizer_label" = "Ұйымдастырушы";
+"attendee_label" = "Қатысушы";
+
+/* Invitation */
+"Event Invitation: \"%{Summary}\"" = "Іс-шараға шақыру: \"%{Summary}\"";
+"(sent by %{SentBy}) " = "(%{SentBy} жіберді) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} сізді %{Summary} шақырды.\n\nБасталуы: %{StartDate}\nАяқталуы: %{EndDate}\nСипаттама: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} сізді %{Summary} шақырды.\nБасталуы: %{StartDate} в %{StartTime}\nАяқталуы: %{EndDate} %{EndTime}\nСипаттама: %{Description}";
+
+/* Deletion */
+"Event Cancelled: \"%{Summary}\"" = "Іс-шара өткізілмейтін болды: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}мына кездесуді өткізбейтін болды: %{Summary}.\n\nБасталуы: %{StartDate}\nАяқталуы: %{EndDate}\nСипаттама: %{Description}";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText} мына кездесуді өткізбейтін болды: %{Summary}.\n\nБасталуы: %{StartDate} %{StartTime}\nАяқталуы: %{EndDate} %{EndTime}\nСипаттама: %{Description}";
+
+/* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "%{OldStartDate} белгіленген \"%{Summary}\" кездесуі өзгертілді";
+"The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
+= "%{OldStartDate} %{OldStartTime} белгіленген \"%{Summary}\" іс-шарасы өзгертілді.";
+"The following parameters have changed in the \"%{Summary}\" meeting:"
+= "\"%{Summary}\" іс-шарасында келесі параметрлер өзгертілді:";
+"Please accept or decline those changes."
+= "Осы өзгертулерді растаңыз немесе күшін жойыңыз.";
+
+/* Reply */
+"Accepted invitation: \"%{Summary}\"" = "Қабылданған шақыру: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "Қабылданбаған шақыру: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Басқаға жүктелген шақыру: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "Әзірге шақыру бойынша шешім жоқ: \"%{Summary}\"";
+"%{Attendee} %{SentByText}has accepted your event invitation."
+= "%{Attendee} %{SentByText}жоспарланған іс-шараға қатысуға келісті.";
+"%{Attendee} %{SentByText}has declined your event invitation."
+= "%{Attendee} %{SentByText}жоспарланған іс-шараға қатысудан бас тартты.";
+"%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
+= "%{Attendee} %{SentByText}шақыруды басқаға жүктеді %{Delegate}.";
+"%{Attendee} %{SentByText}has not yet decided upon your event invitation."
+= "%{Attendee} %{SentByText}жоспарланған іс-шараға қатысу жөнінде шешім қабылдаған жоқ.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Ескерту: \"%{Summary}\" - %{StartDate}";
+
+/* Resources */
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Ресурсқа қолжетімділік жоқ: \"%{Cn} %{SystemEmail}\"";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "\"%{Cn} %{SystemEmail}\" ресурсына өтінімдердің шекті саны (%{NumberOfSimultaneousBookings}) толды. Бәсекелес іс-шара \"%{EventTitle}\" деп аталады, ол %{StartDate} басталады.";
+
+/* Participation role */
+"Your participation is required to this event" = "Сіздің қатысуыңыз бұл оқиға үшін қажет";
+"Your participation is optional to this event" = "Сіздің қатысуыңыз бұл оқиға үшін міндетті емес";
+"Your participation is not required to this event" = "Бұл үшін сіздің қатысуыңыз қажет емес события";

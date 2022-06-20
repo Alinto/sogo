@@ -1,0 +1,491 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "Қалыптастыру";
+"Empty Trash" = "Себетті тазарту";
+"Empty Junk Folder" = "Қалаусыз пошта папкасын тазарту";
+"Delete"      = "Жою";
+"Expunge"     = "Тазарту";
+"Forward"     = "Басқаға жіберу";
+"Get Mail"    = "Алу";
+"Junk"        = "Спам";
+"Not junk"    = "Спам емес";
+"Reply"       = "Жауап беру";
+"Reply All"   = "Барлығына жауап беру";
+"Print"       = "Басып шығару";
+"Stop"        = "Стоп";
+"Write"       = "Жазу";
+"Search"      = "Іздеу";
+"Send" = "Жіберу";
+"Contacts" = "Байланыс кітапшасы";
+"Attach" = "Тіркеу";
+"Save" = "Сақтау";
+"Options" = "Опциялар";
+"Close" = "Жабу";
+"Size" = "Өлшем";
+
+/* Tooltips */
+"Send this message now" = "Бұл хатты қазір жіберу";
+"Select a recipient from an Address Book" = "Байланыс кітапшасынан алушыларды таңдау";
+"Include an attachment" = "Файл қосу";
+"Save this message" = "Осы хатты сақтау";
+"Get new messages" = "Жаңа хаттар алу";
+"Create a new message" = "Жаңа хат жазу";
+"Go to address book" = "Байланыс кітапшасына өту";
+"Reply to the message" = "Хатқа жауап беру";
+"Reply to sender and all recipients" = "Жіберушіге және барлық алушыларға жауап жазу";
+"Forward selected message" = "Таңдалған хатты басқаға жіберу";
+"Delete selected message or folder" = "Таңдалған хатты немесе папканы жою";
+"Print this message" = "Осы хатты басып шығару";
+"Stop the current transfer" = "Ағымдағы операцияны тоқтату";
+"Attachment" = "Салымдар";
+"Unread" = "Оқылмаған хаттар";
+"Flagged" = "Жалаумен белгіленген хаттар";
+"Search multiple mailboxes" = "Папкалардан іздеу";
+
+/* Main Frame  */
+"Home"                 = "Басталуы";
+"Calendar"             = "Күнтізбе";
+"Addressbook"          = "Байланыс кітапшасы";
+"Mail"                 = "Пошта";
+"Right Administration" = "Қолжетімділік құқығы";
+"Help" = "Көмек";
+
+/* Mail account main windows */
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "SOGo поштасына қош келдіңіз! Хаттарды көру үшін сол жақтағы папкалар ағашын пайдаланыңыз.";
+"Read messages"       = "Хаттарды оқу";
+
+/* Tooltip for fab button */
+"Write a new message" = "Жаңа хат жазу";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Хатты жаңа терезеде жазу";
+
+"Share" = "Бірлесіп қолдану";
+"Account" = "Пайдаланушы";
+"Shared Account" = "Ортақ есептік жазба";
+
+/* A mailbox is selected, but no message (only shown on large screens) */
+"No message selected" = "Хаттар таңдалмады";
+
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "Бірде—бір папка таңдалмады";
+
+"An error occured while communicating with the mail server" = "Пошта серверіне жүгіну кезінде қате кетті.";
+
+/* Mailbox actions */
+
+/* Compact Folder success message */
+"Folder compacted" = "Папка сығымдалған";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Қалаусыз пошта папкасы тазартылды";
+
+/* Empty Trash success message */
+"Trash emptied" = "Себет тазартылды";
+
+/* acls */
+"Access rights to" = "... кіру құқығы";
+"For user" = "Пайдаланушы үшін";
+"Any Authenticated User" = "Кез келген аутентификацияланған пайдаланушы";
+"View this folder" = "Осы папканы көру";
+"Read mails from this folder" = "Папкадағы хаттарды оқу";
+"Mark mails read and unread" = "Хаттарды оқылған/оқылмаған деп белгілеу";
+"Modify the flags of the mails in this folder" = "Папкадағы хаттарды жалаумен белгілеу";
+"Insert, copy and move mails into this folder" = "Хаттарды осы папкаға қосу, көшіру және ауыстыру";
+"Post mails" = "Папкада хаттар қалыптастыру";
+"Add subfolders to this folder" = "Осы папкадан ішкі папкалар ашу";
+"Remove this folder" = "Осы папканы жою";
+"Erase mails from this folder" = "Осы папкадағы хаттарды жою";
+"Expunge this folder" = "Осы папканы сығымдау";
+"Export This Folder" = "Осы папканы экспорттау";
+"Modify the acl of this folder" = "Осы папкаға қолжетімділік құқығын басқару";
+"Saved Messages.zip" = "Messages.zip-ке сақталды";
+"Update" = "Жаңарту";
+"Cancel" = "Кері қарай";
+
+/* Mail edition */
+"From"          = "Кімнен";
+"Subject"       = "Тақырып";
+"To"            = "Кімге";
+"Cc"            = "Көшірме";
+"Bcc"           = "Жасырын көшірме";
+"Reply-To"	= "Кері мекенжай";
+"Add address"   = "Мекенжай қосу";
+"Body"          = "Хаттың мазмұны";
+"Open" = "Ашу";
+"Select All" = "Барлығын таңдау";
+"Select Message" = "Хатты таңдаңыз";
+"Attach Web Page..." = "Веб-парақшаларды тіркеу ...";
+"file" = "файл";
+"files" = "файлдар";
+"Save all" = "Барлығын сақтау";
+"to"            = "Кімге";
+"cc"            = "Көшірме";
+"bcc"           = "Жасырын көшірме";
+"Add a recipient" = "Алушыны қосу";
+"Edit Draft..." = "Жоба жазбаны өңдеу...";
+"Load Images" = "Суреттер жүктеу";
+"Return Receipt" = "Табыстау туралы хабарлама";
+"Choose which identity to send this message from" = "Бұл хатты қай сәйкестендіргішпен жіберу керектігін таңдаңыз";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Бұл хаттың иесі оның оқылуы туралы хабарлама сұратты. Хабарлама жібересіз бе?";
+"Return Receipt (displayed) - %@"= "Табыстау туралы хабарлама (дисплейде көрінеді) - %@";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.";
+"Security" = "Қауіпсіздік";
+"Sign" = "Қол қою";
+"Encrypt" = "Шифрлау";
+"Priority" = "Маңыздылығы";
+"highest" = "Ең жоғары";
+"high" = "Жоғары";
+"normal" = "Әдеттегі";
+"low" = "Төмен";
+"lowest" = "Ең төмен";
+"This mail is being sent from an unsecure network!" = "Бұл пошта қауіпті желіден жіберілді!";
+"Address Book" = "Байланыс кітапшасы";
+"Search For" = "Не іздеу керек?";
+
+/* Popup "show" */
+"all"     = "барлығы";
+"read"    = "оқылған хаттар";
+"unread"  = "оқылмаған хаттар";
+"deleted" = "жойылған хаттар";
+"flagged" = "жалаумен белгіленген хаттар";
+
+/* MailListView */
+"Sender" = "Жіберуші";
+"Subject or Sender" = "Тақырып немесе Жіберуші";
+"To or Cc" = "Кімге немесе көшірме";
+"Entire Message" = "Тұтас хат";
+"Date"          = "Күні";
+"View"          = "Көру";
+"All"           = "Барлығы";
+"No message"    = "Хаттар жоқ";
+"messages"      = "хаттар";
+"Yesterday"     = "Кеше";
+"first"         = "бірінші";
+"previous"      = "алдыңғы";
+"next"          = "келесі";
+"last"          = "соңғы";
+"msgnumber_to"  = "дейін";
+"msgnumber_of"  = "-ден";
+"Mark Unread" = "Оқылмаған деп белгілеу";
+"Mark Read"   = "Оқылған деп белгілеу";
+"Untitled" = "Тақырыпсыз";
+
+/* Filter option in messages list */
+"Show unread messages only" = "Тек оқылмаған хаттарды көрсету";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Тек белгіленген хаттарды көрсету";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Белгі бойынша сүзгіленді";
+
+/* Tree */
+"SentFolderName"   = "Жіберілген хаттар";
+"TrashFolderName"  = "Себет";
+"InboxFolderName"  = "Кіріс хаттар";
+"DraftsFolderName" = "Жоба жазбалар";
+"JunkFolderName" = "Спам";
+"SieveFolderName"  = "Папкалар";
+"Folders"          = "Папкалар"; /* title line */
+
+/* MailMoveToPopUp */
+"MoveTo"        = "&hellip;-ке көшіру";
+
+/* Address Popup menu */
+"Add to Address Book..." = "...байланыс кітапшасына қосу";
+"Successfully created card" = "Карточка жасалды";
+"Compose Mail To" = "... үшін хат жазу";
+"Create Filter From Message..." = "... хатынан сүзгі жасау";
+
+/* Image Popup menu */
+"Save Image" = "Суретті сақтау";
+"Save Attachment" = "Қолданбаларды сақтау";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "Жаңа терезеде ашу";
+"Copy Folder Location" = "Папканың мекенжайын көшіру";
+"Subscribe..." = "...жазылу";
+"Mark Folder Read" = "Папкадағы хаттарды оқылған деп белгілеу";
+"New Folder..." = "Папка ашу...";
+"Compact This Folder" = "Осы папканы сығымдау";
+"Search Messages..." = "Хаттарды іздеу...";
+"Sharing..." = "...папкасын бірлесіп қолдану";
+"New Subfolder..." = "...ішкі папкасын ашу";
+"Rename Folder..." = "...папкасының атын өзгерту";
+"Delete Folder" = "Папканы жою";
+"Use This Folder For" = "Бұл папканы ... үшін пайдалану";
+"Get Messages for Account" = "Жаңа хаттар алу";
+"Properties..." = "Сипаты...";
+"Delegation..." = "...басқаға жүктеу";
+
+/* Use This Folder menu */
+"Sent Messages" = "Жіберілген хаттар";
+"Drafts" = "Жоба жазбалар";
+"Deleted Messages" = "Жойылған хаттар";
+"Junk Messages" = "Спам хаттар";
+
+/* Message list popup menu */
+"Open Message In New Window" = "Хатты жаңа терезеде ашу";
+"Reply to Sender Only" = "Жіберушіге жауап беру";
+"Reply to All" = "Барлығына жауап беру";
+"Edit As New..." = "Жаңа ... ретінде өңдеу";
+"Move To" = "... ауыстыру";
+"Copy To" = "... көшіру";
+"Label" = "Белгі";
+"Mark" = "Белгілеу";
+"Save As..." = "...ретінде сақтау";
+"Print Preview" = "Алдын ала қарап, басып шығару";
+"View Message Source" = "Бастапқы мәтінді қарау";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "Оқиғаға айналдыру";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "Тапсырмаға айналдыру";
+
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Хатты жүктеу";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Хатты zip форматында жүктеу";
+
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Барлық салымдарды жүктеу";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "салымдар";
+
+"Print..." = "Басып шығару...";
+"Delete Message" = "Хатты жою";
+"Delete Selected Messages" = "Таңдалған хаттарды жою";
+"Mark the selected messages as junk" = "Таңдалған хаттарды спам ретінде белгілеу";
+"Mark the selected messages as not junk" = "Таңдалған хаттарды спам емес деп көрсету";
+
+/* Text appended to the recipients list when there are too many recipients */
+"and %{0} more..." = "және тағы %{0}...";
+
+/* Button label to hide extended list of recipients */
+"Hide" = "Жасыру";
+
+/* Number of selected messages in list */
+"selected" = "таңдалды";
+
+/* Date formatting from one time to another time */
+"to_time" = "-ға";
+
+/* Date formatting from one day to another day */
+"to_date" = "-ға";
+
+/* Encrypted message notification */
+"This message is encrypted" = "Бұл хат шифрланған";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Бұл хаттың шифрын ашу мүмкін емес. Поштаның баптаулар модулінен S/MIME сертификатын жүктегеніңізге көз жеткізіңіз.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Хатқа қойылған қолды тексерудің сәті түспеді";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "Хат өзгертілген";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Сертификатты тану қатесі. Жаңа сертификат орнатуыңызды сұраймыз.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "Есептік жазбамен байланысты сертификат жоқ.";
+
+/* Invalid S/MIME signature */
+"Digital signature is not valid" = "Цифрлық қолтаңба жарамсыз";
+
+/* Valid S/MIME signature */
+"Message is signed" = "Хатқа қол қойылды";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Хатқа қол қойылды, бірақ сертификат жіберушінің электронды пошта мекенжайына сәйкес емес";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Цифрлық қолтаңба жарамсыз";
+
+"This Folder" = "Ағымдағы папка";
+
+/* Label popup menu */
+"None" = "Барлық белгілерді жою";
+
+/* Mark popup menu */
+"As Read" = "оқылған хаттар ретінде";
+"Thread As Read" = "оқылған тармақ ретінде";
+"As Read By Date..." = "...күні бойынша оқылған ретінде";
+"All Read" = "барлығын оқылған хаттар ретінде";
+"Flag" = "Жалау";
+"As Junk" = "Спам";
+"As Not Junk" = "Спам емес";
+"Run Junk Mail Controls" = "Спам сүзгісін іске қосу";
+"Search messages in" = "-дан хаттар іздеу";
+"Search" = "Іздеу";
+"Search subfolders" = "Ішкі папкалардан іздеу";
+"Match any of the following" = "Шарттардың кез келгенін орындау";
+"Match all of the following" = "Барлық шарттарды орындау";
+"contains" = "қамтиды";
+"does not contain" = "қамтымайды";
+"No matches found" = "Сәйкестіктер табылмады";
+"results found" = "нәтиже табылды";
+"result found" = "нәтиже табылды";
+"Please specify at least one filter" = "Кемінде бір сүзгіні көрсетіңіз";
+
+/* Folder operations */
+"Name" = "Атауы";
+"Enter the new name of your folder"
+ ="Папканың жаңа атауын енгізіңіз";
+"Do you really want to move this folder into the trash ?"
+ = "Бұл папканы шынымен себетке ауыстырғыңыз келе ме?";
+"Operation failed" = "Операция сәтсіз аяқталды";
+"Quota" = "Квота:";
+"quotasFormat" = "%{1}МБ-ның %{0}% толы";
+"messageQuotasFormat" = "хаттардың %{1} / %{0}%";
+"Unable to move/delete folder." = "Бұл папканың орнын ауыстыру/жою мүмкін емес.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "Пошта жәшігін себетке ауыстыру мүмкін емес. Оны дереу жойғыңыз келе ме?";
+
+/* Confirmation message when deleting multiple messages */
+"Are you sure you want to delete the selected messages?" = "Таңдалған хаттарды шынымен жойғыңыз келе ме?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} хат көшірілді";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} хаттың орны ауыстырылды";
+
+"Please select a message." = "Хатты таңдауыңызды сұраймыз.";
+"Please select a message to print." = "Басып шығаруға жіберу үшін хат таңдаңыз.";
+"Please select only one message to print." = "Басып шығаруға тек бір хатты таңдауыңызды сұраймыз.";
+"The message you have selected doesn't exist anymore." = "Сіз таңдаған хат жойылған.";
+"The folder with name \"%{0}\" could not be created."
+= "\"%{0}\" атты папканы қалыптастырудың сәті түспеді.";
+"This folder could not be renamed to \"%{0}\"."
+= "Бұл папканың атауын \"%{0}\" деп өзгерту мүмкін болмады.";
+"The folder could not be deleted."
+= "Папканы жою мүмкін болмады. ";
+"The trash could not be emptied."
+= "Себетті тазарта алмадым.";
+"The folder functionality could not be changed."
+= "Папканың мақсатын өзгертуге болмайды.";
+"You need to choose a non-virtual folder!" = "Виртуалды емес папканы таңдауыңыз керек!";
+"Moving a message into its own folder is impossible!"
+= "Хатты ол орналасқан жерге ауыстыру мүмкін емес!";
+"Copying a message into its own folder is impossible!"
+= "Хатты ол орналасқан жерге көшіру мүмкін емес!";
+
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "Хаттарды себетке ауыстыру мүмкін емес. Оларды дереу жойғыңыз келе ме?";
+
+/* Message editing */
+"Please specify a subject." = "Тақырыбын жазуыңызды сұраймыз.";
+"error_missingsubject" = "Хаттың тақырыбы көрсетілмеген";
+"error_missingrecipients" = "Алушының мекенжайы көрсетілмеген";
+"Send Anyway" = "Бәрібір жіберу";
+"Error while saving the draft" = "Жоба жазбаны сақтау кезіндегі қате";
+
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Себет тазартылмады.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Қалаусыз пошта папкасы тазартылмады.";
+
+/* Error when uploading a file attachment */
+"Error while uploading the file \"%{0}\":" = "\"%{0}\" файлын жүктеу кезіндегі қате:";
+"There is an active file upload. Closing the window will interrupt it." = "Файл жүктеліп жатыр. Терезені жабу жүктелімді тоқтатады.";
+"Message is too big" = "Хат тым ауқымды";
+
+/* Appears while sending the message */
+"Sending" = "Жөнелтілуде";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Жөнелтілді";
+
+"cannot send message: (smtp) all recipients discarded" = "Хатты жіберу мүмкін емес: барлық алушыларға, алушылардың ешқайсысы расталмаған.";
+"cannot send message (smtp) - recipients discarded" = "Хатты жіберу мүмкін емес. Келесі мекенжайлар қате";
+"cannot send message: (smtp) error when connecting" = "Хатты жіберу мүмкін емес: SMTP серверіне қосылу қатесі.";
+"cannot sign email without certificate" = "Хатқа қол қою мүмкін емес, себебі электронды поштаның есептік жазбасы мен сертификат арасында байланыс жоқ.";
+"cannot sign message because the certificate can't be read" = "Хатқа қол қою мүмкін емес, себебі электронды поштаның есептік жазбасымен байланысты сертификат оқылмайды.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "Хатқа қол қою мүмкін емес, себебі жіберушінің мекенжайы электронды поштаның есептік жазбасымен байланысты сертификатқа енгізілмеген.";
+
+/* Contacts list in mail editor */
+"Email" = "E-mail";
+"More mail options" = "Көбірек хат опциялары";
+"Delegation" = "Басқаға жүктеу";
+"Add User" = "Пайдаланушы қосу";
+"Add a tag" = "Тэг қосу";
+"reply" = "жауап";
+"Edit" = "Өңдеу";
+"Yes" = "Иә";
+"No" = "Жоқ";
+"Location" = "Орын";
+"Rename" = "Атауын өзгерту";
+"Compact" = "Сығымдау";
+"Export" = "Экспорт";
+"Set as Drafts" = "Жоба жазбалар ретінде орнату";
+"Set as Sent" = "Жіберілген хаттар ретінде орнату";
+"Set as Trash" = "Себет ретінде орнату";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "Спам ретінде орнату";
+
+"Sort" = "Сұрыптау";
+"Order Received" = "Тапсырма алынды";
+"Descending Order" = "Кему тәртібімен";
+"Back" = "Кері қарай";
+"Copy messages" = "Хаттарды көшіру";
+"More messages options" = "Көбірек хат опциялары";
+"Mark as Unread" = "Оқылмаған деп белгілеу";
+"Mark as Read" = "Оқылған деп белгілеу";
+"Closing Window ..." = "... терезесі жабылады";
+"Tried to send too many mails. Please wait." = "Тым көп хат жібермек болды. Күте тұрыңыз.";
+"View Mail" = "Поштаны көру";
+"This message contains external images." = "Бұл хат сыртқы суреттерді қамтиды.";
+"Expanded" = "Ашылған";
+"Add a Criteria" = "Өлшемшарт қосу";
+"More search options" = "Көбірек іздеу опциялары";
+"Your email has been saved" = "Хат сақталды";
+"Your email has been sent" = "Хат жөнелтілді";
+"Folder compacted" = "Папка сығымдалды";
+
+/* Advanced search */
+"Enter Subject" = "Тақырып енгізіңіз";
+"Enter From" = "Жіберушіні енгізіңіз";
+"Enter To" = "Алушыны енгізіңіз";
+"Enter Cc" = "Жасырын көшірмені енгізіңіз";
+"Enter Body" = "Хатты енгізіңіз";
+"match" = "сәйкес келеді";
+"does not match" = "сәйкес келмейді";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Іздеу саласы";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Жазылымдарды басқару";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Сүзгі";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

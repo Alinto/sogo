@@ -1,0 +1,112 @@
+/* this file is in UTF-8 format! */
+
+"title" = "SOGo";
+"Username" = "Логин";
+"Password" = "Пароль";
+"Domain" = "Домен";
+"Remember username" = "Пайдаланушы атын есте сақтау";
+"Connect" = "Қосылыс";
+
+/* Appears while authentication is in progress */
+"Authenticating" = "Қолжетімділікті тексеру";
+
+/* Appears when authentication succeeds */
+"Welcome" = "Қош келдіңіз";
+
+"Authentication Failed" = "Қолжетімділікті тексеру сәтсіз аяқталды";
+"Wrong username or password." = "Қате логин немесе пароль.";
+"Retry" = "Қайталау";
+"Login failed due to unhandled error case:" = "Қатенің өңделмеген жағдайына байланысты кіру мүмкін болмады:";
+"cookiesNotEnabled" = "Сіз жүйеге кіре алмайсыз, өйткені сіздің браузеріңізде (интернеттегі беттерді қарау бағдарламасы) cookies өшірулі. Біздің сайтқа браузеріңіздің баптауларында cookies пайдалануға рұқсат беруіңізді сұраймыз.";
+"browserNotCompatible" = "Біз сіздің интернет-беттерді қарау бағдарламаңыз (browser) біздің сайтымызда пайдаланылатын технологияны қолданбайтынын анықтадық. Үйлесімді бағдарламалардың бірін пайдалануды ұсынамыз (ең жақсы үйлесімділік тәртібінде): Firefox, Internet Explorer, Safari, Chrome. Жаңа Firefox-ты мына жерден жүктеп алуға болады:";
+"alternativeBrowsers" = "Балама ретінде келесі бағдарламаларды пайдалана аласыз:";
+"alternativeBrowserSafari" = "Сондай-ақ Safari-ді пайдалануға болады.";
+
+/* 2FA */
+"Verification Code" = "Верификация коды";
+"Enter the 6-digit verification code from your TOTP application." = "Екі факторлы аутентификация қолданбасынан 6 таңбалы растау кодын енгізіңіз.";
+"You provided an invalid TOTP key." = "Енгізілген TOTP-код қате.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Екі факторлы аутентификация өшірулі. Баптаулардан екі факторлы аутентификацияны қосып, TOTP бағдарламасын қайта баптаңыз.";
+
+"Download" = "Жүктеу";
+"Language" = "Тіл";
+"choose" = "Таңдау...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Bosnian" = "Bosanski";
+"Bulgarian" = "Български";
+"Catalan" = "Català";
+"ChineseChina" = "简体中文";
+"ChineseTaiwan" = "正體中文";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"German" = "Deutsch";
+"Hebrew" = "עברית";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
+"Italian" = "Italiano";
+"Japanese" = "日本語";
+"Kazakh" = "Қазақ";
+"Latvian" = "Latviešu";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"Montenegrin" = "Crnogorski";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
+"Russian" = "Русский";
+"Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"About" = "Жүйе туралы";
+"AboutBox" = "SOGo дегеніміз масштабталулық мен қарапайымдылыққа негізделген топтық жұмыстың толық функциялы сервері. Inverse компаниясы әзірлеген. <br/><br/>\nSOGo AJAX негізіндегі бай веб-интерфейсті қамтамасыз етеді және CalDAV және CardDAV секілді стандартты хаттамаларды пайдалану есебінен өзінің бірнеше клиентіне қолдау көрсетеді. <br/><br/>\nSOGo <a href=\"http://gnu.org/licenses/gpl.html\">лицензиясының GNU GPL</a> 2 немесе одан кейінгі нұсқасымен таралады, SOGo бөліктері 2-нұсқалы GNU LGPL лицензиясымен таралады. Бұл еркін бағдарламалық қамтылым: оны өз қалауыңызша өзгерте, тарата аласыз. Заңмен рұқсат етілетін шектерде ЕШҚАНДАЙ КЕПІЛДІК жоқ. <br/><br/>\nҚолдаудың түрлі нұсқаларымен танысу үшін, <a href=\"http://www.sogo.nu/en/support/community.html\">мына бетке</a> кіріңіз.";
+"Your account was locked due to too many failed attempts." = "Сіздің аккаунтыңыз сәтсіз әрекеттердің тым көп болуына байланысты бұғатталды.";
+"Your account was locked due to an expired password." = "Сіздің аккаунтыңыз парольдің жарамдылық мерзімінің өтуіне байланысты бұғатталды.";
+"Login failed due to unhandled error case" = "Қатенің өңделмеген жағдайына байланысты кіру мүмкін болмады";
+"Change your Password" = "Пароліңізді өзгертіңіз";
+"The password was changed successfully." = "Пароль ойдағыдай өзгертілді.";
+"Your password has expired, please enter a new one below" = "Сіздің пароліңіз ескірді, төменге жаңасын енгізіңіз";
+"Password must not be empty." = "Пароль бос болмауы керек.";
+"The passwords do not match. Please try again." = "Парольдер сәйкес келмейді. Тағы қайталап көріңіз.";
+"Password Grace Period" = "Пароль жарамдылығының жеңілдікті кезеңі";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Есептік жазбаңыздың бұғатталуына дейін %{0} кіру мүмкіндігіңіз қалды. Қалаулар диалогтық терезесінде пароліңізді өзгертуіңізді сұраймыз.";
+"Password about to expire" = "Жақын арада парольдің мерзімі өтеді";
+"Your password is going to expire in %{0} %{1}." = "Сіздің пароліңіз %{0} %{1} дейін жарамды болады.";
+"days" = "күнге";
+"hours" = "сағатқа";
+"minutes" = "минутқа";
+"seconds" = "секундқа";
+"Password change failed" = "Парольді өзгерту қатесі";
+"Password change failed - Permission denied" = "Парольді өзгерту қатесі – Қолжетімділікке тыйым салынған";
+"Password change failed - Insufficient password quality" = "Парольді өзгерту қатесі – парольдің күрделілігі жеткіліксіз";
+"Password change failed - Password is too short" = "Парольді өзгерту қатесі - пароль тым қысқа";
+"Password change failed - Password is too young" = "Парольді өзгерту қатесі - пароль тым жас";
+"Password change failed - Password is in history" = "Парольді өзгерту қатесі – пароль бұрыннан бар";
+"Unhandled policy error: %{0}" = "Саясаттың өңделмеген қателері: %{0}";
+"Unhandled error response" = "Unhandled error response";
+"Password change is not supported." = "Парольді өзгерту қолданылмайды.";
+"Unhandled HTTP error code: %{0}" = "Өңделмеген қателер HTTP-код: %{0}";
+"New password" = "Жаңа пароль";
+"Confirmation" = "Растау";
+"Cancel" = "Кері қарай";
+"Please wait..." = "Күте тұрыңыз...";
+"Close" = "Жабу";
+"Missing search parameter" = "Іздеу параметрі жоқ";
+"Missing type parameter" = "Тип параметрі жоқ";
