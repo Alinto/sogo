@@ -69,7 +69,7 @@
   NSString *newString;
   unichar *characters, *currentChar, *lastChar, *newPart, *newCurrentChar;
   NSUInteger max;
-  BOOL isEscaped, isQuoted;
+  BOOL isEscaped;
 
   values = [NSMutableArray array];
 
@@ -87,17 +87,7 @@
 
   while (currentChar < lastChar)
     {
-      if (isQuoted)
-        {
-          if (*currentChar == '"')
-            isQuoted = NO;
-          else
-            {
-              *newCurrentChar = *currentChar;
-              newCurrentChar++;
-            }
-        }
-      else if (isEscaped)
+      if (isEscaped)
         {
           if (*currentChar == 'n' || *currentChar == 'N')
             *newCurrentChar = '\n';
@@ -114,9 +104,7 @@
         }
       else
         {
-          if (*currentChar == '"')
-            isQuoted = YES;
-          else if (*currentChar == '\\')
+          if (*currentChar == '\\')
             isEscaped = YES;
           else if (*currentChar == ',')
             {
