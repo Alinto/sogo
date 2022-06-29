@@ -83,7 +83,6 @@
   newCurrentChar = newPart;
 
   isEscaped = NO;
-  isQuoted = NO;
 
   while (currentChar < lastChar)
     {
