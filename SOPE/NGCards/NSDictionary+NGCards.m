@@ -59,7 +59,7 @@
           && ![subValue hasSuffix: @"\""])
         subValue = [NSString stringWithFormat: @"\"%@\"", subValue];
 
-      escaped = [subValue escapedForCards];
+      escaped = [subValue escapedForCardsAsAttributes: asAttributes];
       if ([escaped length] > 0)
         {
           [aString appendString: escaped];
