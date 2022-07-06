@@ -26,6 +26,7 @@ $(TEST_TOOL)_OBJC_FILES += \
 	TestNGMimeMessageGenerator.m \
 	TestNGMimeType.m \
 	\
+	TestNGNetUtlilities.m \
 	TestNSData+Crypto.m \
 	TestNSString+Crypto.m \
 	TestNSString+URLEscaping.m \

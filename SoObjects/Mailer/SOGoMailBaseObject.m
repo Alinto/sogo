@@ -28,6 +28,7 @@
 #import <NGExtensions/NSURL+misc.h>
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
+#import <NGStreams/NGInternetSocketAddress.h>
 
 #import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoSystemDefaults.h>
@@ -138,7 +139,7 @@
   NGImap4ConnectionManager *manager;
   NGImap4Connection *newConnection;
   NSString *password;
-  NSHost *host;
+  NGInternetSocketAddress *host;
   SOGoSystemDefaults *sd;
   BOOL usesSSO;
 
@@ -147,14 +148,14 @@
   // We first check if we're trying to establish an IMAP connection to localhost
   // for an account number greater than 0 (default account). We prevent that
   // for security reasons if admins use an IMAP trust.
-  host = [NSHost hostWithName: [[self imap4URL] host]];
+  host = [NGInternetSocketAddress addressWithPort:0 onHost:[[self imap4URL] host]];
 
   sd = [SOGoSystemDefaults sharedSystemDefaults];
   usesSSO = [[sd authenticationType] isEqualToString: @"cas"] || [[sd authenticationType] isEqualToString: @"saml2"];
 
   if (![[[self mailAccountFolder] nameInContainer] isEqualToString: @"0"] &&
       usesSSO &&
-      [[host address] isEqualToString: @"127.0.0.1"])
+      [host isLocalhost])
     {
       [self errorWithFormat: @"Trying to use localhost for additional IMAP account - aborting."];
       return nil;
