@@ -18,7 +18,7 @@
     // Default plugins that have successfully passed through Angular's $sanitize service
     var defaultConfiguration = {
       toolbarGroups: [
-        { name: 'basicstyles', groups: [ 'basicstyles', 'colors', 'list', 'indent', 'blocks', 'align', 'links', 'insert', 'spellchecker', 'styles', 'mode' ] }
+        { name: 'basicstyles', groups: [ 'basicstyles', 'colors', 'list', 'indent', 'blocks', 'align', 'links', 'insert', 'spellchecker', 'styles', 'mode', 'emoji' ] }
       ],
 
       // The default plugins included in the basic setup define some buttons that
