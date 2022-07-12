@@ -44,6 +44,7 @@
 #import "NSString+Crypto.h"
 
 #import "SQLSource.h"
+#import "SOGoPasswordPolicy.h"
 
 /**
  * The view MUST contain the following columns:
@@ -145,7 +146,7 @@
   ASSIGN(_authenticationFilter, [udSource objectForKey: @"authenticationFilter"]);
   ASSIGN(_loginFields, [udSource objectForKey: @"LoginFieldNames"]);
   ASSIGN(_mailFields, [udSource objectForKey: @"MailFieldNames"]);
-  ASSIGN(_userPasswordPolicy, [udSource objectForKey: @"userPasswordPolicy"]);
+  ASSIGN(_userPasswordPolicy, [SOGoPasswordPolicy createPasswordPolicyRegex: [udSource objectForKey: @"userPasswordPolicy"]]);
   ASSIGN(_userPasswordAlgorithm, [udSource objectForKey: @"userPasswordAlgorithm"]);
   ASSIGN(_keyPath, [udSource objectForKey: @"keyPath"]);
   ASSIGN(_imapLoginField, [udSource objectForKey: @"IMAPLoginFieldName"]);

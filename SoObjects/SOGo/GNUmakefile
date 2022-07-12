@@ -129,6 +129,7 @@ SOGo_OBJC_FILES = \
 	SOGoUserManager.m		\
 	LDAPSource.m			\
 	LDAPSourceSchema.m		\
+	SOGoPasswordPolicy.m	\
 	SQLSource.m			\
 	SOGoUserProfile.m		\
 	SOGoSQLUserProfile.m		\
