@@ -1018,6 +1018,12 @@
   return results;
 }
 
+
+/**
+ * @see [SOGoContactFolder lookupContactsWithQualifier:andSortOrdering:indDomain:]
+ * @see [SOGoContactSourceFolder lookupContactsWithQualifier:andSortOrdering:indDomain:]
+ * @see [SOGoFolder(CardDAV) _appendComponentsProperties:matchingQualifier:toResponse:context:]
+ */
 - (NSArray *) lookupContactsWithQualifier: (EOQualifier *) qualifier
                           andSortOrdering: (EOSortOrdering *) ordering
                                  inDomain: (NSString *) domain
@@ -1043,7 +1049,7 @@
               adaptorCtx = [channel adaptorContext];
               adaptor = [adaptorCtx adaptor];
             }
-          sql = [NSMutableString stringWithFormat: @"SELECT c_uid FROM %@ WHERE (", [_viewURL gcsTableName]];
+          sql = [NSMutableString stringWithFormat: @"SELECT c_name FROM %@ WHERE (", [_viewURL gcsTableName]];
 
           if (qualifier)
             [qualifier appendSQLToString: sql
