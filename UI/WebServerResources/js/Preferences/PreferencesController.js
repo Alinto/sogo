@@ -563,21 +563,6 @@
       }
     };
 
-    this.validateVacationStartDate = function(date) {
-      var d = vm.preferences.defaults, r = true;
-      if (d &&
-          d.Vacation &&
-          d.Vacation.enabled) {
-        if (d.Vacation.startDateEnabled) {
-          r = (!d.Vacation.endDateEnabled ||
-               !d.Vacation.endDate ||
-               date.getTime() <= d.Vacation.endDate.getTime());
-        }
-      }
-
-      return r;
-    };
-
     this.validateVacationEndDate = function(date) {
       var d = vm.preferences.defaults, r = true;
       if (d &&
