@@ -74,10 +74,9 @@ static const NSString *POLICY_MIN_LENGTH = @"POLICY_MIN_LENGTH";
         NSInteger index = [[self policies] indexOfObject: label];
         
         if (0 < value) {
-          NSMutableDictionary *newPolicy = [[NSMutableDictionary alloc] initWithDictionary: policy];
+          NSMutableDictionary *newPolicy = [NSMutableDictionary dictionaryWithDictionary: policy];
           [newPolicy setObject:[[self regexPoliciesWithCount: value] objectAtIndex: index] forKey:@"regex"]; 
           [passwordPolicy addObject: newPolicy];
-          [newPolicy release];
         } else {
             // Do nothing
         }
@@ -99,7 +98,7 @@ static const NSString *POLICY_MIN_LENGTH = @"POLICY_MIN_LENGTH";
             NSNumber *value = [policy objectForKey:@"value"];
             if (0 < value) {
                 NSString *newLabel = [[translations objectForKey: label] 
-                                    stringByReplacingOccurrencesOfString: @"%@"
+                                    stringByReplacingOccurrencesOfString: @"%{0}"
                                     withString: [value stringValue]];
                 [userTranslatedPasswordPolicy addObject:[NSDictionary dictionaryWithObjectsAndKeys:
                                                 newLabel, @"label", 
