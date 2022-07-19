@@ -150,6 +150,9 @@
 @implementation SOGoMailJapaneseReply
 @end
 
+@implementation SOGoMailKazakhReply
+@end
+
 @implementation SOGoMailLatvianReply
 @end
 

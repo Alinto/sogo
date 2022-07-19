@@ -155,6 +155,15 @@
 @interface SOGoACLItalianRemovalAdvisory : SOGoACLRemovalAdvisory
 @end
 
+@interface SOGoACLKazakhAdditionAdvisory : SOGoACLAdditionAdvisory
+@end
+
+@interface SOGoACLKazakhModificationAdvisory : SOGoACLModificationAdvisory
+@end
+
+@interface SOGoACLKazakhRemovalAdvisory : SOGoACLRemovalAdvisory
+@end
+
 @interface SOGoACLNorwegianBokmalAdditionAdvisory : SOGoACLAdditionAdvisory
 @end
 

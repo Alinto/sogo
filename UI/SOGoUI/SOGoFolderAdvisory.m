@@ -321,6 +321,12 @@
 @implementation SOGoFolderJapaneseRemovalAdvisory
 @end
 
+@implementation SOGoFolderKazakhAdditionAdvisory
+@end
+
+@implementation SOGoFolderKazakhRemovalAdvisory
+@end
+
 @implementation SOGoFolderLatvianAdditionAdvisory
 @end
 

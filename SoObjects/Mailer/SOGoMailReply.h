@@ -102,6 +102,9 @@
 @interface SOGoMailJapaneseReply : SOGoMailReply
 @end
 
+@interface SOGoMailKazakhReply : SOGoMailReply
+@end
+
 @interface SOGoMailLatvianReply : SOGoMailReply
 @end
 
