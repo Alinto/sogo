@@ -1,0 +1,484 @@
+/* toolbar */
+"Save and Close" = "Сақтау және жабу";
+"Close" = "Сақтамай жабу";
+"Preferences saved" = "Баптаулар сақталды";
+
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Сақталмаған өзгерістер";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Конфигурацияға енгізілген өзгерістерді сақтағыңыз келе ме?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Сақтау";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Сақтамау";
+
+/* tabs */
+"General" = "Жалпы";
+"Calendar Options" = "Күнтізбе";
+"Contacts Options" = "Контактілер";
+"Mail Options" = "Пошта";
+"IMAP Accounts" = "IMAP есептік жазбалары";
+"Vacation" = "Демалыс";
+"Forward" = "Басқаға жіберу";
+"Password" = "Пароль";
+"Categories" = "Санаттар";
+"Appointments invitations" = "Шақырулар";
+"Name" = "Аты";
+"Color" = "Түсі";
+"Add" = "Қосу";
+"Delete" = "Жою";
+
+/* contacts categories */
+"contacts_category_labels" = "Әріптес, Бәсекелес, Клиент, Дос, Отбасы мүшесі, Серіктес, Жеткізуші, Баспасөз, VIP";
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Еңбек демалысы жайлы хабарламаның автоматты жөнелтілімін қосу";
+"Enable custom auto reply subject" = "Автожауап хабарламасының бапталатын тақырыбы";
+"Auto reply subject" = "Автожауап хабарламасының тақырыбы";
+"You can write ${subject} to insert the original subject" = "Бастапқы тақырыпқа қою үшін ${subject} жазуыңызға болады";
+"Auto reply message" = "Автожауап хабарламасының мәтіні";
+"Email addresses" = "Электронды пошта мекенжайлары";
+"Add default email addresses" = "Әдепкі e-mail мекенжайларды қосу";
+"Days between responses" = "Жауаптар арасындағы күндер";
+"Do not send responses to mailing lists" = "Пошта таратылымы тізіміне жауап бермеу";
+"Activation Constraints" = "Белсендіруді шектеу";
+"Enable auto reply on" = "Автожауап қосу";
+"First day of vacation" = "Демалыстың бірінші күні";
+"Disable auto reply on" = "Автожауапты өшіру";
+"Last day of vacation" = "Демалыстың соңғы күні";
+"Enter date" = "Күнді енгізіңіз";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "... автоматты жауап қосу";
+"Enter time" = "Уақытын енгізіңіз";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "... автоматты жаапты өшіру";
+"Enable auto reply on these days" = "Мына күндерде автожауапты қосу";
+"Always send vacation message response" = "Әрдайым демалыс туралы жауап хабарламасын жіберу";
+"The vacation message is sent prior to apply your filters." = "Демалыс туралы хабарлама сүзгілер қолданғанға дейін жіберіледі.";
+"Discard incoming mails during vacation" = "Демалыс кезінде кіріс хаттар алмау";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Демалыс туралы хабарлама жіберіледі, бірақ кіріс хаттар сіздің пошта жәшігіңізге түспейді.";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Хабарламаңызды және автоматты жауапты қосқыңыз келетін электронды пошта мекенжайларын көрсетуіңізді сұраймыз.";
+"Your vacation message must not end with a single dot on a line." = "Уақытша болмайтыныңыз туралы хабарлама дара нүктелі тармақпен аяқталмауы керек.";
+"End date of your auto reply must be in the future."
+= "Автожауабыңыздың аяқталу күні келер шақты көрсетуі тиіс.";
+
+/* forward messages */
+"Forward incoming messages" = "Кіріс хаттарды басқаға жіберу";
+"Keep a copy" = "Көшірме қалдыру";
+"Enter an email" = "Электронды пошта мекенжайын енгізіңіз";
+"Add another email" = "Тағы бір электронды пошта мекенжайын қосу";
+"Please specify an address to which you want to forward your messages."
+= "Хаттарыңызды қайта бағыттағыңыз келетін мекенжайды көрсетуіңізді сұраймыз.";
+"You are not allowed to forward your messages to an external email address." = "Сіз хаттарыңызды сыртқы электронды пошта мекенжайына жібере алмайсыз.";
+"You are not allowed to forward your messages to an internal email address." = "Сіз хаттарыңызды ішкі электронды пошта мекенжайына жібере алмайсыз.";
+"You are not allowed to forward your messages to this domain:" = " Сіз хаттарыңызды көрсетілген доменге жібере алмайсыз:";
+
+/* d & t */
+"Time Zone" = "Сағаттық белдеу";
+"Short Date Format" = "Қысқа күн форматы";
+"Long Date Format" = "Толық күн форматы";
+"Time Format" = "Уақыт форматы";
+"default" = "Әдепкі қалып бойынша";
+"Default Module" = "Әдепкі модуль";
+"Save" = "Сақтау";
+"shortDateFmt_0" = "%d-%b-%y";
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
+
+"longDateFmt_0" = "%A %e %B %Y";
+"longDateFmt_1" = "%e %b. %Y";
+"longDateFmt_2" = "%e %B %Y";
+"longDateFmt_3" = "%A, %B %d, %Y";
+"longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
+"timeFmt_0" = "%H:%M";
+"timeFmt_1" = "%H.%M";
+"timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
+
+/* Timezone autocompletion */
+"No matches found." = "Сәйкестіктер табылмады.";
+
+/* calendar */
+"Week begins on" = "Аптаның басталу күні";
+"Day start time" = "Жұмыс күнінің басталуы";
+"Day end time" = "Жұмыс күнінің аяқталуы";
+"Day start time must be prior to day end time." = "Күннің басталу уақыты оның аяқталу уақытынан бұрын болуы тиіс.";
+"Week days to display" = "Аптаның көрсетілетін күндері";
+"Show time as busy outside working hours" = "Жұмыстан тыс уақытты бос емес деп көрсету";
+"First week of year" = "Жылдың алғашқы аптасы";
+"Enable reminders for Calendar items" = "Күнтізбе оқиғалары үшін ескерту қосу";
+"Play a sound when a reminder comes due" = "Құлақтандыру іске қосылған кезде дыбысты ойнату";
+"Default reminder" = "Әдепкі құлақтандыру";
+"firstWeekOfYear_January1" = "1 қаңтарда басталады";
+"firstWeekOfYear_First4DayWeek" = "Алғашқы 4 күндік апта";
+"firstWeekOfYear_FirstFullWeek" = "Алғашқы толық апта";
+"Prevent from being invited to appointments" = "Кездесулерге шақыруларды қабылдамау";
+"White list for appointment invitations" = "Кездесулерге шақырулардың ақ тізімі";
+"Contacts Names" = "Контактілердің аттары";
+"Duplicate name" = "Атты қосарлау";
+"Calendar categories must have unique names." = "Күнтізбе санаттарының атаулары бірегей болуы тиіс.";
+
+/* Default Calendar */
+"Default calendar" = "Әдепкі күнтізбе";
+"selectedCalendar" = "Таңдалған күнтізбе";
+"personalCalendar" = "Дербес күнтізбе";
+"firstCalendar" = "Алғашқы рұқсат етілген күнтізбе";
+"reminder_NONE" = "Ескертпеу";
+"reminder_5_MINUTES_BEFORE" = "5 минут бұрын";
+"reminder_10_MINUTES_BEFORE" = "10 минут бұрын";
+"reminder_15_MINUTES_BEFORE" = "15 минут бұрын ";
+"reminder_30_MINUTES_BEFORE" = "30 минут бұрын ";
+"reminder_45_MINUTES_BEFORE" = "45 минут бұрын ";
+"reminder_1_HOUR_BEFORE" = "1 сағат бұрын ";
+"reminder_2_HOURS_BEFORE" = "2 сағат бұрын ";
+"reminder_5_HOURS_BEFORE" = "5 сағат бұрын ";
+"reminder_15_HOURS_BEFORE" = "15 сағат бұрын ";
+"reminder_1_DAY_BEFORE" = "1 күн бұрын ";
+"reminder_2_DAYS_BEFORE" = "2 күн бұрын ";
+"reminder_1_WEEK_BEFORE" = "1 апта бұрын ";
+
+/* Mailer */
+"Labels" = "Белгілер";
+"Label" = "Белгі";
+"IMAP Label" = "IMAP белгілер";
+"Invalid label" = "Бос орынды, сондай-ақ ( ) { } % * \" \\ қолданбаңыз";
+"Duplicate label" = "Белгіні қосарлау";
+"IMAP labels must have unique names." = "IMAP белгілердің атаулары бірегей болуы тиіс.";
+"New label" = "Жаңа белгі";
+"Show subscribed mailboxes only" = "Тек мен жазылған пошта жәшіктерін көрсету";
+"Synchronize only default mail folders (EAS)" = "Тек әдепкі пошта папкаларын үйлестіру (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Барлық пошта жәшіктеріндегі оқылмаған хаттар санын тексеру";
+"Sort messages by threads" = "Хаттарды тақырыбы бойынша сұрыптау ";
+"Always open mail composer" = "Әрдайым хат өңдегішті ашу";
+"Inside current window" = "Ағымдағы терезе ішінде";
+"In a popup window" = "Қалқымалы терезеде";
+"When sending mail, add unknown recipients to my" = "Жіберу кезінде белгісіз алушыларды келесіге қосу:";
+"Address Book" = "Байланыс кітапшасы";
+"Forward messages" = "Хаттарды басқаға жіберу";
+"messageforward_inline" = "Хат мазмұнында";
+"messageforward_attached" = "Қосымшада";
+"When replying to a message" = "Хатқа жауап беру кезінде";
+"replyplacement_above" = "Менің жауабымды келтірілген мәтіннің үстінен бастау";
+"replyplacement_below" = "Менің жауабымды келтірілген мәтіннің астынан бастау";
+"And place my signature" = "Және қолтаңбаны орналастыру";
+"signatureplacement_above" = "жауаптың астына";
+"signatureplacement_below" = "келтірілетін хат мәтінінің астына";
+"Compose messages in" = "Хаттарды жазу";
+"composemessagestype_html" = "HTML түрінде";
+"composemessagestype_text" = "Қарапайым мәтін түрінде";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Әдепкі қаріп өлшемі";
+
+"Display remote inline images" = "Желідегі суреттерді көрсету";
+"displayremoteinlineimages_never" = "Ешқашан";
+"displayremoteinlineimages_always" = "Үнемі";
+"Auto save every" = "Автоматты сақтау әрбір";
+"minutes" = "минут сайын";
+"Automatically mark messages as read" = "Хаттарды оқылған деп автоматты түрде белгілеу";
+"Immediately on display" = "Бірден көрсету";
+"After displaying for" = "...үшін көрсеткеннен кейін";
+"seconds" = "секунд";
+
+/* Contact */
+"Personal Address Book" = "Жеке байланыс кітапшасы";
+"Collected Address Book" = "Жиналған мекенжайлар";
+"Contact categories must have unique names." = "Контактілер санаттарының атаулары бірегей болуы тиіс.";
+
+/* IMAP Accounts */
+"Settings" = "Баптаулар";
+"Security" = "Қауіпсіздік";
+"Mail Account" = "Поштаның есептік жазбасы";
+"New Mail Account" = "Поштаның жаңа есептік жазбасы";
+"Server Name" = "Сервердің атауы";
+"Port" = "Порт";
+"Encryption" = "Шифрлау";
+"None" = "Жоқ";
+"User Name" = "Пайдаланушы аты";
+"Full Name" = "Толық есімі";
+"Email" = "E-mail";
+"Reply To Email" = "email-ге жауап беру";
+"Signature" = "Қолы";
+"Identities" = "Сәйкестендіргіштер";
+"Always use the default identity when replying to messages" = "Хаттарға жауап беру кезінде үнемі әдепкі сәйкестендіргішті пайдалану";
+"Default Identity" = "Әдепкі сәйкестендіргіш";
+"New Identity" = "Жаңа сәйкестендіргіш";
+"(Click to create)" = "(Қалыптастыру үшін басыңыз)";
+"Please enter your signature below" = "Төменге қолыңызды қойыңыз";
+"Please specify a valid sender address." = "Жіберушінің дұрыс мекенжайын көрсетуіңізді сұраймыз.";
+"Please specify a valid reply-to address." = "Жауап беру үшін дұрыс мекенжайды көрсетуіңізді сұраймыз.";
+"Specify a hostname other than the local host" = "localhost-тан басқа хост атауын көрсетіңіз";
+
+"No certificate installed" = "Сертификат жоқ";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "SSL сертификаты PKCS#12 (PFX) форматын қолдануы тиіс.";
+"Uninstall" = "Жою";
+"Choose PKCS12 Certificate .." = "PKCS12... сертификатын таңдаңыз";
+"Certificate Import Password" = "Сертификатты импорттау паролі";
+"Upload" = "Жүктеу";
+"When composing a message" = "Хат қалыптастыру кезінде";
+"Digitally sign the message by default" = "Хаттың әдепкі цифрлық қолтаңбасымен қол қою";
+"Always try to encrypt the message" = "Әрдайым хатты шифрлауға тырысу";
+"An error occurred while importing the certificate. Verify your password." = "Сертификатты импорттау кезіндегі қате. Пароліңізді тексеріңіз.";
+
+/* Additional Parameters */
+"Additional Parameters" = "Қосымша параметрлер";
+
+/* password */
+"Current password" = "Ағымдағы пароль";
+"New password" = "Жаңа пароль";
+"Confirmation" = "Жаңа парольді қайталау";
+"Change" = "Өзгерту";
+"Passwords don't match" = "Парольдер сәйкес емес";
+
+/* Event+task classifications */
+"Default events classification" = "Әдепкі оқиға";
+"Default tasks classification" = "Әдепкі тапсырма";
+"PUBLIC_item" = "Көпшілік";
+"CONFIDENTIAL_item" = "Құпия";
+"PRIVATE_item" = "Жеке";
+
+/* Event+task categories */
+"Calendar Category" = "Күнтізбе санаты";
+"Add Calendar Category" = "Күнтізбе санатын қосу";
+"New category" = "Жаңа санат";
+"Reset to defaults" = "Әдепкі параметрлер";
+"Remove Calendar Category" = "Күнтізбе санатын жою";
+"Contact Category" = "Контактілер санаты";
+"Add Contact Category" = "Контактілер санатын қосу";
+"Remove Contact Category" = "Контактілер санатын жою";
+"category_none" = "Санатсыз";
+"calendar_category_labels" = "Жылдық,Туған күн,Іскерлік,Қоңыраулар,Клиенттер,Бәсекелестер,Тұтынушылар,Таңдамалы, ...кейін,Сыйлықтар,Мерекелер,Идеялар,Кездесулер,Проблемалар,Әр түрлі,Жеке,Жобалар,Мемлекеттік мереке,Мәртебе,Жеткізушілер,Саяхат,Еңбек демалысы";
+
+/* Default module */
+"Calendar" = "Күнтізбе";
+"Contacts" = "Байланыс кітапшасы";
+"Mail" = "Пошта";
+"Last" = "Соңғы пайдаланылғаны";
+"Default Module " = "Әдепкі модуль";
+"SOGo Version" = "SOGo нұсқасы";
+
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "Баптауларды сақтап, бетті қазір қайта жүктеу керек пе?";
+"Language" = "Тіл";
+"choose" = "Таңдау ...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Bosnian" = "Bosanski";
+"Bulgarian" = "Български";
+"Catalan" = "Català";
+"ChineseChina" = "简体中文";
+"ChineseTaiwan" = "正體中文";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"German" = "Deutsch";
+"Hebrew" = "עברית";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
+"Italian" = "Italiano";
+"Japanese" = "日本語";
+"Kazakh" = "Қазақ";
+"Latvian" = "Latviešu";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"Montenegrin" = "Crnogorski";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
+"Russian" = "Русский";
+"Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"Refresh View" = "Түрін жаңарту";
+"refreshview_manually" = "Қолмен";
+"refreshview_every_minute" = "Минут сайын";
+"refreshview_every_2_minutes" = "Әрбір 2 минут сайын";
+"refreshview_every_5_minutes" = "Әрбір 5 минут сайын";
+"refreshview_every_10_minutes" = "Әрбір 10 минут сайын";
+"refreshview_every_20_minutes" = "Әрбір 20 минут сайын";
+"refreshview_every_30_minutes" = "Әрбір 30 минут сайын";
+"refreshview_once_per_hour" = "Сағатына бір рет";
+"Enable Desktop Notifications" = "Жұмыс үстеліндегі хабарландыруларды қосу";
+
+/* Return receipts */
+"When I receive a request for a return receipt" = "Жеткізу туралы хабарламалар сұратуын алған кезімде";
+"Never send a return receipt" = "Еш уақытта жеткізу туралы хабарламалар жібермеу";
+"Allow return receipts for some messages" = "Кейбір хаттар үшін жеткізу туралы хабарламаға рұқсат беру";
+"If I'm not in the To or Cc of the message" = "Егер мен бұл хатта Кімге немесе Көшірме өрісінде болмасам";
+"If the sender is outside my domain" = "Егер жіберуші менің доменімнен тыс болса";
+"In all other cases" = "Басқа жағдайлардың барлығында";
+"Never send" = "Ешқашан жібермеу";
+"Always send" = "Үнемі жіберу";
+"Ask me" = "Менен сұрау";
+
+/* Filters - UIxPreferences */
+"Filters" = "Сүзгілер";
+"Active" = "Белсенділері";
+"Move Up" = "Жоғары жылжыту";
+"Move Down" = "Төмен жылжыту";
+"Connection error" = "Қосылу қатесі";
+"Service temporarily unavailable" = "Сервис уақытша қолжетімсіз";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Сүзгі қосу";
+
+/* Filters - UIxFilterEditor */
+"Filter name" = "Сүзгі атауы";
+/* Button label */
+"Add a condition" = "Шарт қосу";
+/* Button label */
+"Add an action" = "Әрекет қосу";
+"For incoming messages that" = "Кіріс хаттар үшін, оның ішінде";
+"match all of the following rules" = "Көрсетілген барлық қағидаларға сәйкес келетін";
+"match any of the following rules" = "Көрсетілген ережелердің кез келгеніне сәйкес келетін";
+"match all messages" = "барлық хаттар";
+"Perform these actions" = "Келесі әрекеттерді орындау";
+"Untitled Filter" = "Атаусыз сүзгі";
+"Subject" = "Тақырып";
+"From" = "Кімнен";
+"To" = "Кімге";
+"Cc" = "Көшірме";
+"To or Cc" = "Кімге немесе Көшірме";
+"Size (Kb)" = "Өлшем (кБ)";
+"Header" = "Тақырыпат";
+"Body" = "Хат мазмұны";
+"Flag the message with" = "Хатты ... ретінде белгілеу";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Жалау";
+
+"Discard the message" = "Хатты жою";
+"File the message in" = "Хатты ...-ға көшіру";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Пошта жәшігі";
+
+"Keep the message" = "Хат қалдыру";
+"Forward the message to" = "хатты ...қайта бағыттау";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "Email-ге";
+
+"Send a reject message" = "Бас тарту туралы хат жіберу";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Хат";
+
+"Send a vacation message" = "Демалыс туралы хабарлама жолдау";
+"Stop processing filter rules" = "Сүзгілердің орындалуын тоқтату";
+"is under" = "аз";
+"is over" = "көп";
+"is" = "тең";
+"is not" = "тең емес";
+"contains" = "қамтиды";
+"does not contain" = "қамтымайды";
+"matches" = "сәйкес келеді";
+"does not match" = "сәйкес келмейді";
+"matches regex" = "тұрақты өрнекке сәйкес";
+"does not match regex" = "тұрақты өрнекке сәйкес емес";
+/* Placeholder for the value field of a condition */
+"Value" = "Мән";
+"Seen" = "Қаралды";
+"Deleted" = "Жойылды";
+"Answered" = "Жауабымен";
+"Flagged" = "Жалаумен белгіленді";
+"Junk" = "Спам";
+"Not Junk" = "Спам емес";
+
+/* Password policy */
+"The password was changed successfully." = "Пароль ойдағыдай өзгертілді.";
+"Password must not be empty." = "Пароль бос болмауы керек";
+"The passwords do not match. Please try again." = "Парольдер сәйкес келмейді. Қайталап көріңіз.";
+"Password change failed" = "Пароль өзгертілмеді";
+"Password change failed - Permission denied" = "Пароль өзгертілмеді – қолжетімділікке тыйым салынған.";
+"Password change failed - Insufficient password quality" = "Пароль өзгертілмеді – жаңа парольдің сапасы жеткіліксіз.";
+"Password change failed - Password is too short" = "Пароль өзгертілмеді – пароль тым қысқа";
+"Password change failed - Password is too young" = "Пароль өзгертілмеді - пароль тым жас";
+"Password change failed - Password is in history" = "Пароль өзгертілмеді – пароль бұрыннан бар";
+"Unhandled policy error: %{0}" = "Unhandled policy error: %{0}";
+"Unhandled error response" = "Unhandled error response";
+"Password change is not supported." = "Парольді өзгерту қолданылмайды.";
+"Unhandled HTTP error code: %{0}" = "Unhandled HTTP error code: %{0}";
+"Cancel" = "Кері қарай";
+"Invitations" = "Шақырулар";
+"Edit Filter" = "Сүзгіні өңдеу";
+"Delete Filter" = "Сүзгіні жою";
+"Create Filter" = "Сүзгі жасау";
+"Delete Label" = "Белгіні жою";
+"Create Label" = "Белгі жасау";
+"Accounts" = "Есептік жазбалар";
+"Edit Account" = "Есептік жазбаны өңдеу";
+"Delete Account" = "Есептік жазбаны жою";
+"Create Account" = "Есептік жазба қалыптастыру";
+"Account Name" = "Есептік жазбаның атауы";
+"SSL" = "SSL";
+"TLS" = "TLS";
+
+/* Avatars */
+"Use Gravatar" = "Gravatar қолдану";
+"Alternate Avatar" = "Балама аватар";
+"none" =  "Пайдаланбау";
+"identicon" = "Сәйкестендіргіш белгішесі";
+"monsterid" = "Құбыжық";
+"wavatar" = "Ваватар";
+"retro" = "Ретро";
+
+/* Animation Level */
+"Animation Level" = "Анимация";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Қалыпты";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Шектеулі";
+"animation_NONE" = "Өшірулі";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "Қолданба көмегімен екі факторлы аутентификация қосу";
+"You must enter this key into your TOTP application." = "Бірреттік кодтарды (TOTP) пайдалануға негізделген екі факторлы аутентификация қолданбасына осы кілтті енгізуіңіз керек.";
+"If you do not and you log out you will not be able to login again." = "Егер мұны жасамай, жүйеден шығатын болсаңыз, қайтадан кіре алмайсыз.";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "Sieve сыртқы скрипті белсенді";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve дегеніміз – электронды поштаны сүзгілеуге қолданылуы мүмкін бағдарламалау тілі. Егер SOGo-ға сүзгілеріңізді, демалыс пен қайта бағыттау баптауларын өңдеуге мүмкіндік берсеңіз, сіздің белсенді скриптіңіз өшірілетін болады.";
+"Let SOGo handle everything" = "SOGo-ға барлығын басқару мүмкіндігін беру";

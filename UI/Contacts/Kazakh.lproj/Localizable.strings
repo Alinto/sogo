@@ -1,0 +1,365 @@
+/* this file is in UTF-8 format! */
+
+"Contact" = "Контакт";
+"Address" = "Мекенжай";
+"Photos" = "Сурет";
+"Other" = "Басқасы";
+"Address Books" = "Байланыс кітапшалары";
+"Addressbook" = "Байланыс кітапшасы";
+"Addresses" = "Мекенжайлар";
+"Update" = "Жаңарту";
+"Cancel" = "Кері қарай";
+"Common" = "Жалпы";
+"Contact editor" = "Контакт өңдегіш";
+"Contact viewer" = "Контактілерді көру";
+"Email" = "E-mail";
+"Screen Name" = "Толық есімі";
+"Extended" = "Кеңейтілген";
+"Fax" = "Факс";
+"Firstname" = "Есімі";
+"Home" = "Үй";
+"HomePhone" = "Үй телефоны";
+"Lastname" = "Тегі";
+"Location" = "Орналасқан жері";
+"Add a category" = "Санат қосу";
+"MobilePhone" = "Ұялы телефон";
+"Name" = "Есімі";
+"OfficePhone" = "Жұмыс телефоны";
+"Organization" = "Ұйым";
+"Work Phone" = "Жұмыс";
+"Cell" = "Ұялы";
+"Pager" = "Пейджер";
+"Pref" = "Предп.";
+"Phone" = "Телефон";
+"Phones" = "Телефондар";
+"Postal" = "Пошта мекенжайы";
+"Save" = "Сақтау";
+"Internet" = "Интернет";
+"Unit" = "Бөлім";
+"delete" = "жою";
+"edit" = "өңдеу";
+"invalidemailwarn" = "Көрсетілген e-mail мекенжай қате";
+"new" = "жаңа";
+"Preferred Phone" = "Телефон";
+"Move To" = "-ға ауыстыру";
+"Copy To" = "Көшіру";
+"Add to" = "-ға қосу";
+"To" = "Кімге";
+"Carbon Copy (Cc)" = "Көшірме (Cc)";
+"Blind Carbon Copy (Bcc)" = "Жасырын көшірме (Bcc)";
+
+/* Search scope: name fields */
+"name" = "Аты";
+
+/* Search scope: name fields */
+"c_cn" = "Аты";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "Қосымша email";
+
+/* Search scope: screen name field */
+"nsaimid" = "Көрсетілетін аты";
+
+/* Search scope: mail fields */
+"mail" = "Пошта";
+
+/* Search scope: mail fields */
+"c_mail" = "Пошта";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Телефон";
+
+/* Search scope: telephone field */
+"homephone" = "Телефон";
+
+/* Search scope: mobile field */
+"mobile" = "Ұялы";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Факс";
+
+/* Search scope: pager field */
+"pager" = "Пейджер";
+
+/* Search scope: categories field */
+"c_categories" = "Санаттар";
+
+/* Search scope: categories field */
+"vcardcategories" = "Санаттар";
+
+/* Search scope: title field */
+"title" = "Лауазым";
+
+/* Search scope: organization field */
+"c_o" = "Ұйым";
+
+/* Search scope: organization field */
+"o" = "Ұйым";
+
+/* Search scope: department field */
+"ou" = "Бөлім";
+
+/* Search scope: city field */
+"l" = "Қала";
+
+/* Search scope: country field */
+"c" = "Ел";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Үй мекенжайы";
+
+/* Search scope: state/province field */
+"st" = "Облыс, өлке";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Үй облысы, өлкесі";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "Пошта индексі";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "Пошта индексі";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "Үй елі";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Бастапқы бет";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Веб-бет";
+
+/* Search scope: note field */
+"description" = "Ескертпе";
+
+/* Subheader of empty addressbook */
+"No contact" = "Байланыс жоқ";
+
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Осы байланыс кітапшасын көру үшін іздеуді іске қосу";
+
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "контактілер";
+
+/* No contact matching search criteria */
+"No matching contact" = "тиісті контакт жоқ";
+
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "тиісті контактілер";
+
+/* Number of selected contacts in list */
+"selected" = "таңдалды";
+
+/* Empty right pane */
+"No contact selected" = "контакт таңдалмады";
+
+/* Tooltips */
+"Create a new address book card" = "Байланыс кітапшасына жаңа жазба жасау";
+"Create a new list" = "Жаңа тізім жасау";
+"Edit the selected card" = "Таңдалған карточканы өңдеу";
+"Send a mail message" = "Пошта хабарламасын жіберу";
+"Delete selected card or address book" = "Таңдалған карточканы немесе байланыс кітапшасын жою";
+"Reload all contacts" = "Барлық контактілерді қайта жүктеу";
+"htmlMailFormat_UNKNOWN" = "Белгісіз";
+"htmlMailFormat_FALSE" = "Қарапайым мәтін";
+"htmlMailFormat_TRUE" = "HTML";
+"Name or Email" = "Есімі немесе e-mail";
+"Category" = "Санат";
+"Personal Addressbook" = "Жеке байланыс кітапшасы";
+"Search in Addressbook" = "Байланыс кітапшасынан іздеу";
+"New Card" = "Жаңа контакт";
+"New List" = "Жаңа тізім";
+"Edit" = "Өзгерту";
+"Properties" = "Сипаты";
+"Sharing..." = "Жалпы қолжетімділік...";
+"Write" = "Жазу";
+"Delete" = "Жою";
+"Instant Message" = "Жылдам хабарлама";
+"Add..." = "...қосу";
+"Remove" = "Жою";
+"Please wait..." = "Күте тұрыңыз...";
+"No possible subscription" = "Ықтимал жазылымдар жоқ";
+"Preferred" = "Таңдамалы";
+"Display" = "Көрінетін есім";
+"Display Name" = "Көрінетін есім";
+"Additional Email" = "Қосымша e-mail";
+"Phone Number" = "Телефон нөмірі";
+"Prefers to receive messages formatted as" = "Хабарламаларды ... түрінде алуды жөн көреді";
+"Categories" = "Санаттар";
+"First" = "Аты";
+"Last" = "Тегі";
+"Nickname" = "Лақап аты";
+"Telephone" = "Телефоны";
+"Work" = "Жұмыс";
+"Mobile" = "Ұялы";
+"Pager" = "Пейджер";
+
+/* categories */
+"contacts_category_labels" = "Әріптес, Бәсекелес, Клиент, Дос, Отбасы, Серіктес, Жеткізуші, Баспасөз, VIP";
+"New category" = "Жаңа санаттар";
+
+/* adresses */
+"Title" = "Лауазым";
+"Service" = "Сервис";
+"Company" = "Компания";
+"Department" = "Бөлім";
+"City" = "Қала";
+"State_Province" = "Облыс, өлке";
+"ZIP_Postal Code" = "Пошта индексі";
+"Country" = "Ел";
+"Web Page" = "Веб-бет";
+"Other Infos" = "Өзге ақпарат";
+"Note" = "Ескертпе";
+"Timezone" = "Сағаттық белдеу";
+"Birthday" = "Туған күні";
+"Birthday (yyyy-mm-dd)" = "Туған күні (ЖЖЖЖ-АА-КК)";
+"Freebusy URL" = "Freebusy URL";
+"Add as..." = "...ретінде қосу";
+"Recipient" = "Алушы";
+"Carbon Copy" = "Көшірме";
+"Blind Carbon Copy" = "Жасырын көшірме";
+"New Addressbook..." = "Жаңа байланыс кітапшасы...";
+"Subscribe to an Addressbook..." = "...байланыс кітапшасына жазылу";
+"Remove the selected Addressbook" = "Таңдалған байланыс кітапшасын жою";
+"Subscribe to a shared contact" = "Ортақ байланыс кітапшасына жазылу";
+"Search User" = "Пайдаланушыларды іздеу";
+"Name of the Address Book" = "Байланыс кітапшасының аты";
+"Are you sure you want to delete the selected address book?"
+= "Таңдалған байланыс кітапшасын шынымен жойғыңыз келе ме?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "\"%{0}\" байланыс кітапшасын шынымен жойғыңыз келе ме?";
+"You cannot remove nor unsubscribe from a public addressbook."
+= "Таңдалған байланыс кітапшасын жоя алмайсыз, оған жазылымнан бас тарта да алмайсыз.";
+"You cannot remove nor unsubscribe from your personal addressbook."
+= "Жеке байланыс кітапшасын жоя алмайсыз, оған жазылымнан бас тарта да алмайсыз.";
+"Are you sure you want to delete the selected contacts?"
+= "Таңдалған контактілерді шынымен жойғыңыз келе ме?";
+"Are you sure you want to delete the card of %{0}?" = "%{0} карточкасын шынымен жойғыңыз келе ме?";
+"You cannot delete the card of \"%{0}\"."
+= "\"%{0}\" жазбасын жоя алмайсыз.";
+"You cannot subscribe to a folder that you own!"
+= "Өз иелігіңіздегі папкаға сіз жазыла алмайсыз.";
+"Unable to subscribe to that folder!"
+= "Бұл папкаға жазылу мүмкін емес.";
+
+/* security */
+"Security" = "Қауіпсіздік";
+"Uninstall" = "Жою";
+"Error reading the card certificate." = "Сертификат карточкасын оқу қатесі.";
+"No certificate associated to card." = "Карточкамен байланысты сертификат жоқ.";
+
+/* acls */
+"Access rights to" = "... қолжетімділік құқығы";
+"For user" = "Пайдаланушы үшін";
+"Any Authenticated User" = "Кез келген аутентификацияланған пайдаланушы";
+"Public Access" = "Көпшілік қолжетімділік";
+"This person can add cards to this addressbook."
+= "Бұл адам осы байланыс кітапшасына жазбалар қоса алады";
+"This person can edit the cards of this addressbook."
+= "Бұл адам осы байланыс кітапшасындағы жазбаларды өңдей алады";
+"This person can list the content of this addressbook."
+= "Бұл адам осы байланыс кітапшасындағы карточкалар тізімін көре алады";
+"This person can read the cards of this addressbook."
+= "Бұл адам осы байланыс кітапшасындағы жазбаларды оқи алады";
+"This person can erase cards from this addressbook."
+= "Бұл адам осы байланыс кітапшасындағы жазбаларды жоя алады";
+"The selected contact has no email address."
+= "Таңдалған контактінің электронды пошта мекенжайы жоқ.";
+"Please select a contact." = "Контактіні таңдауыңызды сұраймыз.";
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} карточка көшірілді";
+"%{0} card(s) moved" = "%{0} карточка ауыстырылды";
+"SoAccessDeniedException" = "Сіз бұл байланыс кітапшасына жаза алмайсыз.";
+"Forbidden" = "Тыйым салынған";
+"Invalid Contact" = "Таңдалған контакт жойылған.";
+"Unknown Destination Folder" = "Таңдалған байланыс кітапшасы жойылған.";
+
+/* Lists */
+"List details" = "Тізім мәліметтері";
+"List name" = "Тізімнің атауы";
+"List nickname" = "Тізімнің лақап аты";
+"List description" = "Тізімнің сипаттаммасы";
+"Members" = "Мүшелер";
+"Contacts" = "Контактілер";
+"Add" = "Қосу";
+"Lists can't be moved or copied." = "Тізімдердің орнын ауыстыруға немесе көшіруге болмайды.";
+"Export" = "Экспорт";
+"Export Address Book..." = "...байланыс кітапшасын экспорттау";
+"View Raw Source" = "Бастапқы кодты көру";
+
+/* Import */
+"Import Cards" = "Контактілерді импорттау";
+"Select a vCard or LDIF file." = "vCard немесе LDIF файлын таңдаңыз.";
+"Upload" = "Жүктеу";
+"Uploading" = "Жүктелуде";
+"Done" = "Дайын";
+"An error occured while importing contacts." = "Контактілерді импорттау кезінде қате кетті.";
+"No card was imported." = "Жазбалар импортталмады.";
+"A total of %{0} cards were imported in the addressbook." = "Байланыс кітапшасына барлығы %{0} жазба импортталды.";
+"Reload" = "Жаңарту";
+
+/* Properties window */
+"Address Book Name" = "Байланыс кітапшасының атауы";
+"Links to this Address Book" = "Осы байланыс кітапшасына сілтемелер";
+"Authenticated User Access" = "Авторланған пайдаланушылар қолжетімділігі";
+"CardDAV URL" = "CardDAV URL";
+"Options" = "Опциялар";
+"Rename" = "Қайта атау";
+"Subscriptions" = "Жазылымдар";
+"Global Addressbooks" = "Ауқымды байланыс кітапшасы";
+"Search" = "Іздеу";
+"Sort" = "Сұрыптау";
+"Descending Order" = "Кему тәртібімен";
+"Back" = "Кері қайту";
+"Select All" = "Барлығын таңдау";
+"Copy contacts" = "Контактілерді көшіру";
+"More messages options" = "Көбірек хат опциялары";
+"New Contact" = "Жаңа контакт";
+"Close" = "Жабу";
+"More contact options" = "Көбірек хат опциялары";
+"Organization Unit" = "Ұйымдық бөлімше";
+"Add Organizational Unit" = "Ұйымдық бөлімше қосу";
+"Type" = "Тип";
+"Email Address" = "Электронды пошта мекенжайы";
+"New Email Address" = "Жаңа электронды пошта мекенжайы";
+"New Phone Number" = "Жаңа телефон нөмірі";
+"URL" = "URL";
+"New URL" = "Жаңа URL";
+"street" = "көше";
+"street (continued)" = "көше (жалғасы)";
+"Postoffice" = "пошта бөлімшесі";
+"Region" = "Облыс";
+"Postal Code" = "Пошта индексі";
+"New Address" = "Жаңа мекенжай";
+"Reset" = "Бастапқы қалпына келтіру";
+"Description" = "Сипаттама";
+"Add Member" = "Қатысушы қосу";
+"Subscribe" = "Қол қою";
+"Add Birthday" = "Туған күн қосу";
+"Import" = "Импорт";
+"More options" = "Көбірек опция";
+"Role" = "Рөл";
+"Add Screen Name" = "Экран атауын қосу";
+"Custom 1" = "Бапталатын 1";
+"Custom 2" = "Бапталатын 2";
+"Custom 3" = "Бапталатын 3";
+"Custom 4" = "Бапталатын 4";
+"Custom Value" = "Бапталатын мән";
+"New Custom Value" = "Жаңа бапталатын мән";
+"Synchronization" = "Үйлестіру";
+"Synchronize" = "Үйлестіру";
+"Sucessfully subscribed to address book" = "Байланыс кітапшасына сәтті жазылым";
+"A similar card already exists. Would you like to save it anyway?" = "Мұндай карточка бұрыннан бар. Сонда да сақтағыңыз келе ме?";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "Іздеу саласы";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Бөлектеуді ауыстыру";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

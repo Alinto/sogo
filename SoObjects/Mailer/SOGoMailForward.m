@@ -351,6 +351,9 @@
 @implementation SOGoMailJapaneseForward
 @end
 
+@implementation SOGoMailKazakhForward
+@end
+
 @implementation SOGoMailLatvianForward
 @end
 

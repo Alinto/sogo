@@ -1,0 +1,27 @@
+/* this file is in UTF-8 format! */
+
+"Help" = "Көмек";
+"Close" = "Жабу";
+"Modules" = "Модульдер";
+/* Modules short names */
+"ACLs" = "Қолжетімділік тізімдері (ACL)";
+/* Modules titles */
+"ACLs_title" = "Пайдаланушылық папкаларға қолжетімділік тізімдерін басқару (ACL)";
+/* Modules descriptions */
+"ACLs_description" = "<p> Әкімшілендірудің бұл модулі пайдаланушылардың күнтізбелері мен байланыс кітапшалары үшін қолжетімділік тізімдерін (ACL) өзгертуге мүмкіндік береді. </p><p> ACL тізімдерін өзгерту үшін, терезенің жоғарғы бөлігіндегі іздеу жолағына пайдаланушы атын енгізіп, қажетті папканы екі рет шертіңіз. </p>";
+"Name or Email" = "Аты немесе e-mail";
+"ACLs saved" = "ACL сақталды";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Құқықтарды өңдеу үшін іздеуді бастау";
+/* Rights module: Empty search result */
+"No matching user" = "Тиісті пайдаланушы жоқ";
+/* Rights module: no selection */
+"No resource selected" = "Ресурс таңдалмады";
+"Add User" = "Пайдаланушы қосу";
+"Subscribe User" = "Пайдаланушыны жазу";
+"Rights" = "Құқық";
+"Search Users" = "Пайдаланушыларды іздеу";
+"users found" = "пайдаланушы табылды";
+"No resource" = "Ресурс жоқ";
+"Any Authenticated User" = "Кез келген авторланған пайдаланушы";
+"Public Access" = "Көпшілік қолжетімділік";

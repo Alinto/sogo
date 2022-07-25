@@ -1,0 +1,648 @@
+/* this file is in UTF-8 format! */
+
+/* Tooltips */
+"Create a new event" = "Жаңа оқиға қалыптастыру";
+"Create a new task" = "Жаңа тапсырма қалыптастыру";
+"Edit this event or task" = "Осы оқиғаны немесе тапсырманы өңдеу";
+"Print the current calendar view" = "Күнтізбені осы күйінде басып шығару";
+"Delete this event or task" = "Осы оқиғаны немесе тапсырманы жою";
+"Go to today" = "Бүгінге өту";
+"Switch to day view" = "Күннің сипатына өту";
+"Switch to week view" = "Апта сипатына өту";
+"Switch to month view" = "Айдың сипатына өту";
+"Switch to multi-columns day view" = "Бірнеше бағанмен күн сипатына өту";
+"Reload all calendars" = "Барлық күнтізбелерді қайта жүктеу";
+
+/* Tabs */
+"Date" = "Күні";
+"Calendars" = "Күнтізбелер";
+"No events for selected criteria" = "Таңдалған өлшемшарт үшін оқиғалар жоқ";
+"No tasks for selected criteria" = "Таңдалған өлшемшарт үшін тапсырмалар жоқ";
+
+/* Day */
+"DayOfTheMonth" = "Айдың күні";
+"dayLabelFormat" = "%d/%m/%Y";
+"today" = "Бүгін";
+"Previous Day" = "Алдыңғы күн";
+"Next Day" = "Келесі күн";
+
+/* Week */
+"Week" = "Апта";
+"this week" = "осы апта";
+"Week %d" = "Апта %d";
+"Previous Week" = "Алдыңғы апта";
+"Next Week" = "Келесі апта";
+
+/* Month */
+"this month" = "осы ай";
+"Previous Month" = "Алдыңғы ай";
+"Next Month" = "Келесі ай";
+
+/* Year */
+"this year" = "осы жыл";
+
+/* Menu */
+"Calendar" = "Күнтізбе";
+"Contacts" = "Байланыс кітапшасы";
+"New Calendar..." = "Жаңа күнтізбе...";
+"Delete Calendar" = "Күнтізбені жою";
+"Unsubscribe Calendar" = "Күнтізбеге жазылымды жою";
+"Sharing..." = "Жалпы қолжетімділік...";
+"Export Calendar..." = "Күнтізбені экспорттау...";
+"Import Events..." = "Оқиғалар импорты...";
+"Import Events" = "Оқиғалар импорты";
+"Select an iCalendar file (.ics)." = "iCalendar файлды (.ics) таңдаңыз.";
+"Upload" = "Жүктеу";
+"Uploading" = "Жүктелу үстінде";
+"Publish Calendar..." = "Күнтізбені жариялау...";
+"Reload Remote Calendars" = "Жойылған күнтізбелерді жаңарту";
+"Properties" = "Сипаты";
+"Done" = "Дайын";
+"An error occurred while importing calendar." = "Күнтізбені импорттау қатесі.";
+"No event was imported." = "Оқиғалар импортталмады.";
+"A total of %{0} events were imported in the calendar." = " Күнтізбеге барлығы %{0} оқиға импортталды.";
+"Compose E-Mail to All Attendees" = "Шақырылғандардың барлығына хат жазу";
+"Compose E-Mail to Undecided Attendees" = "Шешім қабылдамаған шақырылушылардың барлығына хат жазу";
+
+/* Relative dates */
+"Yesterday" = "Кеше";
+"Today" = "Бүгін";
+"Tomorrow" = "Ертең";
+"Last %@" = "Соңғы %@";
+
+/* Folders */
+"Personal calendar" = "Дербес күнтізбе";
+
+/* Misc */
+"OpenGroupware.org" = "OpenGroupware.org";
+"Forbidden" = "Тыйым салынған";
+
+/* acls */
+"Access rights to" = "...қолжетімділік құқығы";
+"For user" = "Пайдаланушы үшін";
+"Any Authenticated User" = "Кез келген аутентификацияланған пайдаланушы";
+"Public Access" = "Көпшілік қолжетімділік";
+"label_Public" = "Көпшілік оқиға";
+"label_Private" = "Жеке оқиға";
+"label_Confidential" = "Құпия";
+"label_Viewer" = "Барлығын көрсету";
+"label_DAndTViewer" = "Күнін және уақытын көрсету";
+"label_Modifier" = "Өзгерту";
+"label_Responder" = "Жауап беру";
+"label_None" = "Ештеңе";
+"View All" = "Барлығын көрсету";
+"View the Date & Time" = "Күнін және уақытын көрсету";
+"Modify" = "Өзгерту";
+"Respond To" = "Жауап беру";
+"None" = "Жоқ";
+"This person can create objects in my calendar."
+= "Бұл қатысушы менің күнтізбеме жазба жасай алады.";
+"This person can erase objects from my calendar."
+= "Бұл қатысушы менің күнтізбемдегі жазбаларды жоя алады.";
+
+/* Button Titles */
+"Subscribe to a Calendar..." = "...күнтізбесіне жазылу";
+"Remove the selected Calendar" = "Таңдалған күнтізбені жою";
+"New calendar" = "Жаңа күнтізбе...";
+"Name of the Calendar" = "Күнтізбе атауы";
+"new" = "Жаңа";
+"Print view" = "Басып шығару";
+"Print" = "Басып шығару";
+"edit" = "Өзгерту";
+"delete" = "Жою";
+"proposal" = "Ұсыныс";
+"Save and Close" = "Сақтау және жабу";
+"Close" = "Жабу";
+"Invite Attendees" = "Қатысушылар шақыру";
+"Attach" = "Бекіту";
+"Update" = "Жаңарту";
+"Cancel" = "Кері қайту";
+"Reset" = "Бастапқы қалпына келтіру";
+"Save" = "Сақтау";
+"show_rejected_apts" = "Қабылданбаған кездесулерді көрсету";
+"hide_rejected_apts" = "Қабылданбаған кездесулерді жасыру";
+
+/* Schedule */
+"Schedule" = "Кесте";
+"No appointments found" = "Тағайындалған кездесулер табылмады";
+"Meetings proposed by you" = "Сіздің кездесу туралы ұсыныстарыңыз";
+"Meetings proposed to you" = "Сізге ұсынылған кездесулер";
+"sched_startDateFormat" = "%d/%m %H:%M";
+"action" = "Әрекет";
+"accept" = "Келісу";
+"decline" = "Бас тарту";
+"more attendees" = "Тағы шақыру";
+"Hide already accepted and rejected appointments" = "Келіскендер мен бас тартқандарды жасыру.";
+"Show already accepted and rejected appointments" = "Келіскендер мен бас тартқандарды көрсету.";
+
+/* Print view */
+"LIST" = "Тізім";
+"Print Settings" = "Басып шығару баптаулары";
+"Title" = "Тақырыпат";
+"Layout" = "Таңба";
+"What to Print" = "Нені басып шығару керек?";
+"Options" = "Опциялар";
+"Tasks with no due date" = "Орындау мерзімі көрсетілмеген тапсырмалар";
+"Display working hours only" = "Тек жұмыс сағаттарын көрсету";
+"Completed tasks" = "Орындалған тапсырмалар";
+"Display events and tasks colors" = "Оқиғалар мен тапсырмалардың түстерін көрсету";
+"Borders" = "Шекаралар";
+"Backgrounds" = "Шарттар";
+"Page Format" = "Бет форматы";
+
+/* Appointments */
+"Appointment viewer" = "Кездесулерді көру";
+"Appointment editor" = "Кездесу өңдегіш";
+"Appointment proposal" = "Кездесу ұсынысы";
+"Appointment on" = "Кездесу";
+"Start" = "Басталуы";
+"End" = "Аяқталуы";
+"Due Date" = "...мерзімге";
+"Name" = "Атауы";
+"Email" = "E-mail";
+"Status" = "Күйі";
+"% complete" = "% орындалды";
+"Location" = "Орын";
+"Add a category" = "Санат қосу";
+"Priority" = "Басымдық";
+"Privacy" = "Бейресмилік";
+"Cycle" = "Цикл";
+"Cycle End" = "Циклдың соңы";
+"Categories" = "Санаттар";
+"Classification" = "Жіктелім";
+"Duration" = "Ұзақтығы";
+"Attendees" = "Қатысушылар";
+"Resources" = "Ресурстар";
+"Organizer" = "Ұйымдастырушы";
+"Description" = "Сипаттама";
+"Document" = "Құжат";
+"Category" = "Санат";
+"Repeat" = "Қайталау";
+"Reminder" = "Ескерту";
+"General" = "Жалпы";
+"Reply" = "Жауап";
+"Created by" = "Қалыптастырылды";
+"You are invited to participate" = "Сізді қатысуға шақырды";
+"Target" = "Мекенжай";
+"attributes" = "төлсипаттар";
+"attendees" = "қатысушылар";
+"delegated from" = "-дан жүктелді";
+
+/* checkbox title */
+"is private" = "жеке";
+
+/* classification */
+"Public" = "Көпшілік";
+"Private" = "Жеке";
+
+/* text used in overviews and tooltips */
+"empty title" = "Бос тақырыпат";
+"private appointment" = "Жеке кездесу";
+"Change..." = "...өзгерту";
+
+/* Appointments (participation state) */
+"partStat_NEEDS-ACTION" = "Әрекетті талап етеді";
+"partStat_ACCEPTED" = "Қатысамын";
+"partStat_DECLINED" = "Қатыспаймын";
+"partStat_TENTATIVE" = "Кейінірек растаймын";
+"partStat_DELEGATED" = "Басқаға жүктеймін";
+"partStat_OTHER" = "Басқасы";
+
+/* Appointments (error messages) */
+"Conflicts found!" = "Қайшылық анықталды!";
+"Invalid iCal data!" = "iCal деректері қате!";
+"Could not create iCal data!" = "iCal форматында деректер қалыптастыра алмадым!";
+
+/* Searching */
+"view_all" = "Барлығы";
+"view_today" = "Бүгін";
+"view_next7" = "Келесі 7 күн";
+"view_next14" = "Келесі 14 күн";
+"view_next31" = "Келесі 31 күн";
+"view_thismonth" = "Осы ай";
+"view_thisyear" = "Осы жыл";
+"view_future" = "Барлық болашақ іс-шаралар";
+"view_selectedday" = "Таңдалған күн";
+"view_not_started" = "Басталмаған тапсырмалар";
+"view_overdue" = "Мерзімі өткен тапсырмалар";
+"view_incomplete" = "Аяқталмаған тапсырмалар";
+"View" = "Көрсету";
+"Title, category or location" = "Тақырыпат, санат немесе орын";
+"Entire content" = "Барлық мазмұн";
+"Search" = "Іздеу";
+"Search attendees" = "Қатысушыларды іздеу";
+"Search resources" = "Ресурстарды іздеу";
+"Search appointments" = "Кездесулерді іздеу";
+"All day Event" = "Күні бойы";
+"check for conflicts" = "Қайшылыққа тексеру";
+"URL" = "URL";
+"newAttendee" = "Қатысушы қосу";
+
+/* calendar modes */
+"Overview" = "Шолу";
+"Chart" = "Карта";
+"List" = "Тізім";
+"Columns" = "Бағандар";
+
+/* Priorities */
+"prio_0" = "Көрсетілмеген";
+"prio_1" = "Аса жоғары";
+"prio_2" = "Өте жоғары";
+"prio_3" = "Жоғары";
+"prio_4" = "Ортадан жоғары";
+"prio_5" = "Қалыпты";
+"prio_6" = "Ортадан төмен";
+"prio_7" = "Төмен";
+"prio_8" = "Өте төмен";
+"prio_9" = "Аса төмен";
+
+/* access classes (privacy) */
+"PUBLIC_vevent" = "Көпшілік оқиға";
+"CONFIDENTIAL_vevent" = "Құпия оқиға";
+"PRIVATE_vevent" = "Жеке оқиға";
+"PUBLIC_vtodo" = "Көпшілік тапсырма";
+"CONFIDENTIAL_vtodo" = "Құпия тапсырма";
+"PRIVATE_vtodo" = "Жеке тапсырма";
+
+/* status type */
+"status_" = "Көрсетілмеген";
+"status_NOT-SPECIFIED" = "Көрсетілмеген";
+"status_TENTATIVE" = "Алдын ала";
+"status_CONFIRMED" = "Расталды";
+"status_CANCELLED" = "Қабылданбады";
+"status_NEEDS-ACTION" = "Күтуде";
+"status_IN-PROCESS" = "Орындалуда";
+"status_COMPLETED" = "Орындалды";
+
+/* Priority level */
+"low" = "төмен";
+
+/* Priority level */
+"normal" = "қалыпты";
+
+/* Priority level */
+"high" = "жоғары";
+
+/* Cycles */
+"cycle_once" = "цикл_бір рет";
+"cycle_daily" = "цикл_күн сайын";
+"cycle_weekly" = "цикл_апта сайын";
+"cycle_2weeks" = "цикл_әрбір_2_апта";
+"cycle_4weeks" = "цикл_әрбір_4_апта";
+"cycle_monthly" = "цикл_ай сайын";
+"cycle_weekday" = "цикл_жұмыс_күндерінде";
+"cycle_yearly" = "цикл_жыл сайын";
+"cycle_end_never" = "цикл_ешқашан_аяқталмайды";
+"cycle_end_until" = "цикл_...дейін_аяқталады";
+"Recurrence pattern" = "Қайталау үлгісі";
+"Range of recurrence" = "Қайталау диапазоны";
+"Daily" = "Күн сайын";
+"Multi-Columns" = "Бірнеше бағанмен";
+"Weekly" = "Апта сайын";
+"Monthly" = "Ай сайын";
+"Yearly" = "Жыл сайын";
+"Every" = "Әрбір ";
+"Days" = "күн";
+"Week(s)" = "апта";
+"On" = "...-ға";
+"Month(s)" = "ай";
+
+/* [Event recurrence editor] Ex: _The_ first Sunday */
+"The" = "  ";
+"Recur on day(s)" = "... күндерде қайталанады";
+"Year(s)" = "жыл";
+
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
+"cycle_of" = "-дан";
+"No end date" = "Аяқталу күні жоқ";
+"Create" = "Қалыптастыру";
+"appointment(s)" = "кездесу(кездесулер)";
+"Repeat until" = "...дейін қайталау";
+"End Repeat" = "Қайталауды тоқтату";
+"Never" = "Ешқашан";
+"After" = "...кейін";
+"On Date" = "...күні";
+"times" = "рет";
+"First" = "Бірінші";
+"Second" = "Екінші";
+"Third" = "Үшінші";
+"Fourth" = "Төртінші";
+"Fift" = "Бесінші";
+"Last" = "Соңғы";
+
+/* Appointment categories */
+"category_none" = "жоқ";
+"category_labels" = "Жылдық,Туған күн, Істер,Қоңыраулар,Клиенттер,Бәсекелестер,Тұтынушылар,Таңдамалы,...оқиғадан кейін,Сыйлықтар,Мерекелер,Идеялар,Кездесулер,Проблемалар,Әр түрлі,Жеке,Жобалар,Мемлекеттік мереке,Мәртебе,Жеткізушілер,Саяхат,Демалыс";
+"repeat_NEVER" = "Қайталамау";
+"repeat_DAILY" = "Күн сайын";
+"repeat_WEEKLY" = "Апта сайын";
+"repeat_BI-WEEKLY" = "Әрбір екі апта сайын";
+"repeat_EVERY WEEKDAY" = "Әрбір жұмыс күні";
+"repeat_MONTHLY" = "Ай сайын";
+"repeat_YEARLY" = "Жыл сайын";
+"repeat_CUSTOM" = "Баптау...";
+"reminder_NONE" = "Ескертпеу";
+"reminder_0" = "Іс-шара кезінде";
+"reminder_5_MINUTES_BEFORE" = "5 минут бұрын";
+"reminder_10_MINUTES_BEFORE" = "10 минут бұрын";
+"reminder_15_MINUTES_BEFORE" = "15 минут бұрын";
+"reminder_30_MINUTES_BEFORE" = "30 минут бұрын";
+"reminder_45_MINUTES_BEFORE" = "45 минут бұрын";
+"reminder_1_HOUR_BEFORE" = "1 сағат бұрын";
+"reminder_2_HOURS_BEFORE" = "2 сағат бұрын";
+"reminder_5_HOURS_BEFORE" = "5 сағат бұрын";
+"reminder_15_HOURS_BEFORE" = "15 сағат бұрын";
+"reminder_1_DAY_BEFORE" = "1 күн бұрын";
+"reminder_2_DAYS_BEFORE" = "2 күн бұрын";
+"reminder_1_WEEK_BEFORE" = "1 апта бұрын";
+"reminder_CUSTOM" = "Баптау...";
+"reminder_MINUTES" = "минут";
+"reminder_HOURS" = "сағат";
+"reminder_DAYS" = "күн";
+"reminder_WEEKS" = "апта";
+"reminder_BEFORE" = "дейін";
+"reminder_AFTER" = "кейін";
+"reminder_START" = "оқиғаның басталуына/н";
+"reminder_END" = "оқиғаның аяқталуына/н";
+"Reminder Details" = "Ескерту мәліметтері";
+"Choose a Reminder Action" = "Ескерту үшін әрекет таңдау";
+"Show an Alert" = "Хабарлама көрсету";
+"Send an E-mail" = "Е-mail хабарлама жіберу";
+"Email Organizer" = "Ұйымдастырушыға еmail";
+"Email Attendees" = "Қатысушыларға еmail";
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
+
+/* Arial label for reminder units */
+"Reminder units" = "Ескерту уақытының бірліктері";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "Ескерту ережесі";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "Ескертудің тәуелділігі";
+
+/* transparency */
+"Show Time as Free" = "Бос уақыт ретінде көрсету";
+
+/* email notifications */
+"Send Appointment Notifications" = "Кездесулер туралы ескерту жіберу";
+"From" = "Кімнен";
+"To" = "Кімге";
+
+/* validation errors */
+validate_notitle           = "Атауы жоқ. Жалғастырасыз ба?";
+validate_invalid_startdate = "Басталу күні қате!";
+validate_invalid_enddate   = "Аяқталу күні қате!";
+validate_endbeforestart    = "Басталу күні аяқталу күнінен кейін";
+validate_untilbeforeend    = "Қайталау алғашқы көрінгеннен кейін аяқталуы тиіс.";
+
+"Events" = "Оқиғалар";
+"Tasks" = "Тапсырмалар";
+"Show completed tasks" = "Орындалған тапсырмаларды көрсету";
+
+/* tabs */
+"Task" = "Тапсырма";
+"Event" = "Оқиға";
+"Recurrence" = "Қайталау";
+
+/* toolbar */
+"New Event" = "Жаңа оқиға";
+"New Task" = "Жаңа тапсырма";
+"Edit" = "Өзгерту";
+"Delete" = "Жою";
+"Go to Today" = "Бүгін";
+"Day View" = "Күн";
+"Week View" = "Апта";
+"Month View" = "Ай";
+"Reload" = "Жаңарту";
+
+/* Number of selected components in events or tasks list */
+"selected" = "таңдалды";
+"eventPartStatModificationError" = "Сіздің қатысу мәртебеңізді өзгерту мүмкін емес.";
+
+/* menu */
+"New Event..." = "Жаңа оқиға...";
+"New Task..." = "Жаңа тапсырма...";
+"Edit Selected Event..." = "Таңдалған тапсырманы өңдеу...";
+"Delete Selected Event" = "Таңдалған тапсырманы жою";
+"Select All" = "Барлығын таңдау";
+"Workweek days only" = "Тек аптаның жұмыс күндері";
+"Tasks in View" = "...түріндегі тапсырмалар";
+"eventDeleteConfirmation" = "Келесі оқиғалар жойылады:";
+"taskDeleteConfirmation" = "Келесі тапсырмалар жойылады:";
+"Would you like to continue?" = "Жалғастырасыз ба?";
+"You cannot remove nor unsubscribe from your personal calendar."
+= "Дербес күнтізбені жоя алмайсыз, оған жазылымды да өшіре алмайсыз.";
+"Are you sure you want to delete the calendar \"%{0}\"?"
+= "\"%{0}\" күнтізбесін шынымен жоойғыңыз келе ме?";
+"Are you sure you want to delete the selected components?"
+= "Таңдалған компоненттерді шынымен жойғыңыз келе ме?";
+
+/* Participation role */
+"Role" = "Рөл";
+
+/* Participant role: participation is required */
+"Participant" = "Қатысушы";
+
+/* Participant role: participation is required */
+"req-participant" = "Қатысушы";
+
+/* Participant role: participation is optional */
+"Optional Participant" = "Міндетті емес қатысушы";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Ықтимал қатысушы";
+
+/* Participant role: participant is copied for information purposes only */
+"Non Participant" = "Қатысушы емес";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Қатысушы емес";
+
+/* Participant role: participant is chair of the calendar entity */
+"Chair" = "Ұйымдастырушы";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Ұйымдастырушы";
+
+/* Participant status: needs action */
+"Needs action" = "Әрекетті талап етеді";
+
+/* Participant status: event accepted */
+"Accepted" = "Қабылданды";
+
+/* Participant status: event declined */
+"Declined" = "Қабылданбады";
+
+/* Participant status: tentatively accepted */
+"Tentative" = "Алдын ала";
+
+"Free" = "Бос";
+"Busy" = "Бос емес";
+"Maybe busy" = "Бос болмауы мүмкін";
+"No free-busy information" = "Бостығы туралы ақпарат жоқ";
+
+/* FreeBusy panel buttons and labels */
+"Suggest time slot" = "Аралық ұсыну";
+"Zoom" = "Арттыру";
+"Previous slot" = "Алдыңғы аралық";
+"Next slot" = "Келесі аралық";
+"Previous hour" = "Алдыңғы сағат";
+"Next hour" = "Келесі сағат";
+"Work days only" = "Тек жұмыс күндері";
+"The whole day" = "Күні бойы";
+"Between" = "арасында";
+"and" = "және";
+"A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
+= "Шақырылғандардың біреуінде немесе бірнешесінде уақыт жағынан қайшылық бар.\nҚайшылыққа қарамастан ағымдағы баптауларды сақтағыңыз келе ме?";
+
+/* events list */
+"Due" = "Мерзім";
+"(Private Event)" = "(Жеке оқиға)";
+vevent_class0 = "(Көпшілік оқиға)";
+vevent_class1 = "(Жеке оқиға)";
+vevent_class2 = "(Құпия оқиға)";
+
+/* tasks list */
+"Descending Order" = "Кему тәртібімен";
+vtodo_class0 = "(Көпшілік тапсырма)";
+vtodo_class1 = "(Жеке тапсырма)";
+vtodo_class2 = "(Құпия тапсырма)";
+"closeThisWindowMessage" = "Рахмет! Бұл терезені жабуыңызға немесе көруіңізге болады ";
+"Multicolumn Day View" = "Күн бірнеше бағанмен";
+"Please select an event or a task." = "Оқиғаны немесе тапсырманы таңдауыңызды сұраймыз.";
+"editRepeatingItem" = "Өзгертуге қайталанатын оқиғаны таңдадыңыз. Бұл оқиғаның сипаттарын өзгерте отырып, оларды барлық қайталаулар үшін немесе тек таңдалған оқиға үшін өзгертуіңізге болады. Нені өзгерткіңіз келеді?";
+"button_thisOccurrenceOnly" = "Тек осы көрінуін";
+"button_allOccurrences" = "Барлық көрінулерді";
+"Edit This Occurrence" = "Осы көрінуді өңдеу";
+"Edit All Occurrences" = "Барлық көрінулерді өңдеу";
+"Update This Occurrence" = "Осы көрінуді жаңарту";
+"Update All Occurrences" = "Барлық көрінулерді жаңарту";
+
+/* Properties dialog */
+"Color" = "Түсі";
+"Include in free-busy" = "Бос/бос емес мәртебесін қосу";
+"Synchronization" = "Үйлестіру";
+"Synchronize" = "Үйлестіру";
+"Tag" = "Белгі";
+"Display" = "Түр";
+"Show alarms" = "Хабарламаларды көрсету";
+"Show tasks" = "Тапсырмаларды көрсету";
+"Notifications" = "Ескертулер";
+"Receive a mail when I modify my calendar" = "Өз күнтізбемді өзгерткенімде хат алу";
+"Receive a mail when someone else modifies my calendar" = "Менің күнтізбемді басқа адам өзгерткенде хат алу";
+"When I modify my calendar, send a mail to" = "Егер күнтізбені өзгертсем, хатты мына мекенжайға жіберу";
+"Email Address" = "Электронды пошта мекенжайы";
+"Export" = "Экспорт";
+
+
+/* Show only the calendar for which the menu is displayed */
+"Show Only This Calendar" = "Тек осы күнтізбені көрсету";
+
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "Барлық күнтізбелерді көрсету";
+
+"Links to this Calendar" = "Осы күнтізбеге сілтемелер";
+"Authenticated User Access" = "Авторланған пайдаланушылардың қолжетімділігі";
+"CalDAV URL" = "CalDAV URL";
+"WebDAV ICS URL" = "WebDAV ICS URL";
+"WebDAV XML URL" = "WebDAV XML URL";
+
+/* Error messages */
+"dayFieldInvalid" = "Күндер өрісінде нөлден көп санды көрсетіңіз.";
+"weekFieldInvalid" = "Апталар өрісінде нөлден көп санды көрсетіңіз.";
+"monthFieldInvalid" = "Айлар өрісінде нөлден көп санды көрсетіңіз.";
+"monthDayFieldInvalid" = "Айдың күні өрісінде нөлден көп санды көрсетіңіз.";
+"yearFieldInvalid" = "Жылдар өрісінде нөлден көп санды көрсетіңіз.";
+"appointmentFieldInvalid" = "Хабарламалар өрісінде нөлден көп санды көрсетіңіз.";
+"recurrenceUnsupported" = "Қайталаулардың бұл түрі әзірше қолданылмайды.";
+"Please specify a calendar name." = "Күнтізбе атауын көрсетуіңізді сұраймыз.";
+"tagNotDefined" = "Бұл күнтізбені үйлестіргіңіз келсе, белгіні (tag) көрсетуіңіз керек.";
+"tagAlreadyExists" = "Көрсетілген белгі басқа күнтізбеде қолданыста.";
+"tagHasChanged" = "Егер осы күнтізбедегі белгіні ауыстырсаңыз, онда мобильді құрылғыңыздағы деректерді қайта үйлестіру қажет болады. \nЖалғастырасыз ба?";
+"tagWasAdded" = "Егер бұл күнтізбені үйлестіргіңіз келсе, онда мобильді құрылғыңыздағы деректерді қайта үйлестіру қажет болады. \nЖалғастырасыз ба?";
+"tagWasRemoved" = "Егер бұл күнтізбені жойсаңыз, онда мобильді құрылғыңыздағы деректерді қайта үйлестіру қажет болады.\n Жалғастырасыз ба?";
+"DestinationCalendarError" = "Бастапқы және мақсатты күнтізбелер өзара сәйкес. Басқа мақсатты күнтізбе таңдауыңызды сұраймыз.";
+"EventCopyError" = "Көшіру сәтсіз аяқталды. Басқа күнтізбеге көшіруге тырысып көріңіз.";
+"Please select at least one calendar" = "Кемінде бір күнтізбе таңдаңыз";
+"Open Task..." = "...тапсырмасын ашу";
+"Mark Completed" = "Аяқталған деп белгілеу";
+"Delete Task" = "Тапсырманы жою";
+"Delete Event" = "Оқиғаны жою";
+"Copy event to my calendar" = "Оқиғаны менің күнтізбеме көшіру";
+"View Raw Source" = "Хаттың бастапқы кодын көрсету";
+"Move To" = "-ға ауыстыру";
+"Copy To" = "-ға көшіру";
+"Subscriptions" = "Жазылымдар";
+"Subscribe to a shared calendar" = "Ортақ күнтізбеге жазылу";
+"Subscribe to a web calendar..." = "...желісіндегі күнтізбеге жазылу";
+"URL of the Calendar" = "Күнтізбе URL-ы";
+"Web Calendar" = "Web Calendar";
+"Web Calendars" = "Интернеттегі күнтізбе";
+"Reload on login" = "Кіру кезінде қайта жүктеу";
+"Invalid number." = "Саны қате.";
+"Please identify yourself to %{0}" = "Өзіңізді таныстыруыңызды сұраймыз %{0}";
+"quantity" = "сан";
+"Current view" = "Ағымдағы түр";
+"Selected events and tasks" = "Таңдалған оқиғалар мен тапсырмалар";
+"Custom date range" = "Даталардың арнайы диапазоны";
+"Select starting date" = "Бастапқы датаны таңдаңыз";
+"Select ending date" = "Соңғы датаны таңдаңыз";
+"Delegated to" = "Басқаға жүктелді ";
+"Keep sending me updates" = "Маған жаңартулар жіберуді жалғастыру";
+"OK" = "ОК";
+"Confidential" = "Құпия";
+"Enable" = "Қолжетімді";
+"Filter" = "Сүзгі";
+"Sort" = "Сұрыптау";
+"Back" = "Кері қарай";
+"Day" = "Күн";
+"Month" = "Ай";
+"New Appointment" = "Жаңа кіру";
+"filters" = "сүзгілер";
+"Today" = "Бүгін";
+"More options" = "Көбірек опция";
+"Delete This Occurrence" = "Осы көрінуді жою";
+"Delete All Occurrences" = "Барлық көрінулерді жою";
+"Add Recurrence Date" = "Қайталау күнін қосу";
+"Add From" = "Басталу өрісін қосу";
+"Add Due" = "...мерзіміне даярлауды қосу";
+"Import" = "Импорт";
+"Rename" = "Қайта атау";
+"Import Calendar" = "Күнтізбені импорттау";
+"Select an ICS file." = "iCalendar файл (.ics) таңдаңыз.";
+
+/* Notification when user subscribes to a calendar */
+"Successfully subscribed to calendar" = "Күнтізбеге сәтті жазылым";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "Бөлектеуді ауыстыру";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "Типі бойынша іздеу";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";

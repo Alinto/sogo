@@ -351,6 +351,15 @@
 @implementation SOGoACLItalianRemovalAdvisory
 @end
 
+@implementation SOGoACLKazakhModificationAdvisory
+@end
+
+@implementation SOGoACLKazakhAdditionAdvisory
+@end
+
+@implementation SOGoACLKazakhRemovalAdvisory
+@end
+
 @implementation SOGoACLNorwegianBokmalAdditionAdvisory
 @end
 
