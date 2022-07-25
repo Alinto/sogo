@@ -53,6 +53,7 @@ SOGo and its associated components are available in various languages. The follo
 * [is] Icelandic - Anna Jonna Armannsdottir
 * [it] Italian - Alessio Fattorini
 * [jp] Japanese - Ryo Yamamoto
+* [kk] Kazakh - Nazym Idrissova
 * [lv] Latvian - Juris Balandis
 * [lt] Lithuanian - Mantas Liobė
 * [mk_MK] Macedonian - Miroslav Jovanovic
