@@ -258,9 +258,10 @@ static NSArray *reminderValues = nil;
 - (NSArray *) passwordPolicy
 {
   NSObject <SOGoSource> *userSource;
-
-  userSource = [user authenticationSource];
   NSMutableDictionary *translations = [[NSMutableDictionary alloc] init];
+  
+  userSource = [user authenticationSource];
+  
   for(NSDictionary *policy in [userSource userPasswordPolicy]) {
     [translations setObject:[self labelForKey:[policy objectForKey:@"label"]] 
                      forKey: [policy objectForKey:@"label"]];
