@@ -45,6 +45,7 @@
 #import <SOGo/SOGoTextTemplateFile.h>
 #import <SOGo/WOResourceManager+SOGo.h>
 #import <SOGo/SOGoBuild.h>
+#import <SOGo/SOGoPasswordPolicy.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailAccounts.h>
 
@@ -257,9 +258,21 @@ static NSArray *reminderValues = nil;
 - (NSArray *) passwordPolicy
 {
   NSObject <SOGoSource> *userSource;
-
+  NSMutableDictionary *translations = [[NSMutableDictionary alloc] init];
+  NSDictionary *policy;
+  NSDictionary *translatedUserPolicy;
+  
   userSource = [user authenticationSource];
-  return [userSource userPasswordPolicy];
+  
+  for(policy in [userSource userPasswordPolicy]) {
+    [translations setObject:[self labelForKey:[policy objectForKey:@"label"]] 
+                     forKey: [policy objectForKey:@"label"]];
+  }
+  translatedUserPolicy = [SOGoPasswordPolicy createPasswordPolicyLabels: [userSource userPasswordPolicy] 
+                                                                     withTranslations: translations];
+  [translations release];
+  
+  return translatedUserPolicy;
 }
 
 //

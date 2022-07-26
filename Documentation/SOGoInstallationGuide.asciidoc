@@ -1694,6 +1694,33 @@ userPasswordPolicy = (
 );
 ----
 
+Pre-defined constants can also be used :
+
+----
+userPasswordPolicy = (
+  {
+    label = "POLICY_MIN_LOWERCASE_LETTER";
+    value = 1;
+  },
+  {
+    label = "POLICY_MIN_UPPERCASE_LETTER";
+    value = 1;
+  },
+  {
+    label = "POLICY_MIN_DIGIT";
+    value = 2;
+  },
+  {
+    label = "POLICY_MIN_SPECIAL_SYMBOLS";
+    value = 1;
+  },
+  {
+    label = "POLICY_MIN_LENGTH";
+    value = 8;
+  }
+);
+----
+
 |userPasswordAlgorithm
 |The default algorithm used for password encryption when changing
 passwords. Possible values are: `none`, `plain`, `crypt`, `md5`,
