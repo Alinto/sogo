@@ -294,12 +294,11 @@
           destinationCalendar = Calendar.$get(this.component.destinationCalendar),
           options = initOrganizer? { organizerCalendar: destinationCalendar } : {},
           promises = [];
-      var emailRE = /([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)/i,
-          i, address;
+      var i, address;
       if (partial) options.partial = partial;
 
       function createCard(str) {
-        var match = str.match(emailRE),
+        var match = str.match(String.emailRE),
             email = match[0],
             name = str.replace(new RegExp(" *<?" + email + ">? *"), '');
         vm.showAttendeesEditor |= initOrganizer;
@@ -333,7 +332,7 @@
                card.charCodeAt(i) == 32 ||   // space
                card.charCodeAt(i) == 44 ||   // ,
                card.charCodeAt(i) == 59) &&  // ;
-              emailRE.test(address)) {
+              String.emailRE.test(address)) {
             promises.push(createCard(address).then(addCard));
             address = '';
           }
@@ -341,7 +340,7 @@
             address += card.charAt(i);
           }
         }
-        if (address && emailRE.test(address)) {
+        if (address && String.emailRE.test(address)) {
           promises.push(createCard(address).then(addCard));
         }
       }

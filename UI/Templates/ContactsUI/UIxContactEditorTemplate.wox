@@ -199,7 +199,8 @@
                     <label>
                       <var:string label:value="Email Address"/>
                     </label>
-                    <input type="email" ng-model="email.value"
+                    <input type="text" ng-model="email.value"
+                           ng-pattern="editor.emailRE"
                            sg-focus-on="email_{{$index}}"/>
                   </md-input-container>
                 </div>
