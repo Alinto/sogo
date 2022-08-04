@@ -45,7 +45,7 @@
       is_localhost = [addr isLocalhost];
 
       error = [NSString stringWithFormat:
-                          @"expected '%@' to be a localhost address", *curHost];
+                          @"expected '%@' to be a localhost address. Is libnss-myhostname installed and activated in /etc/nsswitch.conf?", *curHost];
       testWithMessage(is_localhost, error);
 
       curHost++;
