@@ -130,7 +130,8 @@
           <!-- start -->
           <div ng-if="editor.component.start">
             <div class="pseudo-input-container">
-              <label class="pseudo-input-label"><var:string label:value="From"/></label>
+              <label class="pseudo-input-label"><var:string label:value="DateFrom"
+/></label>
             </div>
             <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
               <md-button class="md-icon-button" type="button" ng-click="editor.removeStartDate(eventForm)">
@@ -138,7 +139,8 @@
               </md-button>
               <md-datepicker ng-model="editor.component.start"
                              ng-change="editor.adjustStartTime()"
-                             label:md-placeholder="From"> <!-- date picker--></md-datepicker>
+                             label:md-placeholder="DateFrom"
+> <!-- date picker--></md-datepicker>
               <sg-timepicker ng-model="editor.startTime"
                              ng-required="editor.component.start"
                              ng-change="editor.adjustStartTime()"><!-- time picker --></sg-timepicker>

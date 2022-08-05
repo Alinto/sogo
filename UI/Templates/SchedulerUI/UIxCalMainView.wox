@@ -664,11 +664,13 @@
           <md-list-item ng-repeat="conflict in $AttendeeConflictDialogController.conflictError.conflicts">
             <md-icon>schedule</md-icon>
             <div class="pseudo-input-container">
-              <label class="pseudo-input-label"><var:string label:value="From"/></label>
+              <label class="pseudo-input-label"><var:string label:value="DateFrom"
+/></label>
               <div>{{conflict.startDate}}</div>
             </div>
             <div class="pseudo-input-container md-flex">
-              <label class="pseudo-input-label"><var:string label:value="To"/></label>
+              <label class="pseudo-input-label"><var:string label:value="DateTo"
+/></label>
               <div>{{conflict.endDate}}</div>
             </div>
           </md-list-item>

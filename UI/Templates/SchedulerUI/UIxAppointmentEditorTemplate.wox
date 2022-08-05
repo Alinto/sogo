@@ -159,13 +159,15 @@
           <div layout="row">
             <div flex="50">
               <div class="pseudo-input-container">
-                <label class="pseudo-input-label"><var:string label:value="From"/></label>
+                <label class="pseudo-input-label"><var:string label:value="DateFrom"
+/></label>
               </div>
               <div layout="row" layout-align="start end" layout-wrap="layout-wrap">
                 <md-datepicker ng-model="editor.component.start"
                                required="required"
                                ng-change="editor.adjustStartTime()"
-                               label:md-placeholder="From"><!-- date picker --></md-datepicker>
+                               label:md-placeholder="DateFrom"
+><!-- date picker --></md-datepicker>
                 <sg-timepicker ng-model="editor.startTime"
                                ng-change="editor.adjustStartTime()"
                                ng-required="!editor.component.isAllDay"
@@ -174,14 +176,16 @@
             </div>
             <div flex="50">
               <div class="pseudo-input-container">
-                <label class="pseudo-input-label"><var:string label:value="To"/></label>
+                <label class="pseudo-input-label"><var:string label:value="DateTo"
+/></label>
               </div>
               <div layout="row" layout-align="start end" layout-wrap="layout-wrap">
                 <md-datepicker ng-model="editor.component.end"
                                required="required"
                                ng-change="editor.adjustEndTime()"
                                md-min-date="editor.component.start"
-                               label:md-placeholder="To"><!-- date picker --></md-datepicker>
+                               label:md-placeholder="DateTo"
+><!-- date picker --></md-datepicker>
                 <sg-timepicker ng-model="editor.endTime"
                                ng-change="editor.adjustEndTime()"
                                ng-required="!editor.component.isAllDay"
@@ -341,11 +345,13 @@
              ng-repeat="conflict in editor.attendeeConflictError.conflicts">
           <md-icon>schedule</md-icon>
           <div class="pseudo-input-container">
-            <label class="pseudo-input-label"><var:string label:value="From"/></label>
+            <label class="pseudo-input-label"><var:string label:value="DateFrom"
+/></label>
             <div>{{conflict.startDate}} <md-icon>trending_flat</md-icon></div>
           </div>
           <div class="pseudo-input-container md-flex">
-            <label class="pseudo-input-label"><var:string label:value="To"/></label>
+            <label class="pseudo-input-label"><var:string label:value="DateTo"
+/></label>
             <div>{{conflict.endDate}}</div>
           </div>
         </div>
