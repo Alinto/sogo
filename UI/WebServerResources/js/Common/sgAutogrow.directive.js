@@ -55,7 +55,7 @@
         }
 
         elem.on('keyup', $mdUtil.debounce(AutoGrowTextArea, 200));
-        elem.on('paste', AutoGrowTextArea);
+        elem.on('paste', $mdUtil.debounce(AutoGrowTextArea, 0));
 
         var deregisterWatcher = scope.$watch(function() {
           return elem[0].value;
