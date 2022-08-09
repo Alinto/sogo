@@ -413,7 +413,7 @@
   davPrivileges = [NSMutableArray array];
 
   privileges = [[webdavAclManager davPermissionsForRoles: roles
-				  onObject: self] objectEnumerator];
+                                                onObject: self] objectEnumerator];
   while ((privilege = [privileges nextObject]))
     [davPrivileges addObject: davElementWithContent (@"privilege", XMLNS_WEBDAV,
 						     privilege)];

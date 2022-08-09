@@ -3076,15 +3076,15 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 }
 
 /* folder management */
-- (BOOL) create
+- (NSException *) create
 {
-  BOOL rc;
   SOGoUserSettings *userSettings;
   NSMutableDictionary *calendarSettings;
+  NSException *error;
   SOGoUser *ownerUser;
 
-  rc = [super create];
-  if (rc)
+  error = [super create];
+  if (!error)
     {
       ownerUser = [SOGoUser userWithLogin: [self ownerInContext: context]];
       userSettings = [ownerUser userSettings];
@@ -3097,7 +3097,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       [userSettings synchronize];
     }
 
-  return rc;
+  return error;
 }
 
 - (void) removeFolderSettings: (NSMutableDictionary *) moduleSettings

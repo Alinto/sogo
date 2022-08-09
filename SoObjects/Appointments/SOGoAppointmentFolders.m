@@ -398,20 +398,18 @@ static SoSecurityManager *sm = nil;
   if ([subfolderNames containsObject: newName])
     {
       content = [NSString stringWithFormat: @"A collection named '%@' already exists.", newName];
-      error = [NSException exceptionWithDAVStatus: 403
+      error = [NSException exceptionWithDAVStatus: 405
                                            reason: content];
     }
   else
     {
-      properties = [[createContext request]
-		     davPatchedPropertiesWithTopTag: @"mkcalendar"];
+      properties = [[createContext request] davPatchedPropertiesWithTopTag: @"mkcalendar"];
       setProperties = [properties objectForKey: @"set"];
       newDisplayName = [self _fetchPropertyWithName: @"{DAV:}displayname"
                                             inArray: setProperties];
       if (![newDisplayName length])
 	newDisplayName = newName;
-      error
-	= [self newFolderWithName: newDisplayName andNameInContainer: newName];
+      error = [self newFolderWithName: newDisplayName andNameInContainer: newName];
       if (!error)
 	{
 	  newFolder = [self lookupName: newName

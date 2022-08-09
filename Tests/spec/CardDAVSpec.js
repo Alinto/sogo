@@ -97,6 +97,13 @@ describe('CardDAV extensions', function() {
     await webdav_su.deleteObject(resource)
   })
 
+  it("addressbook already exists", async function() {
+    const response = await webdav.makeCollection(resource)
+    expect(response[0].status)
+      .withContext(`HTTP status code of MKCOL`)
+      .toEqual(405)
+  })
+
   // CARDDAV:addressbook-query Report
   // https://datatracker.ietf.org/doc/html/rfc6352#section-8.6
   it("supports for addressbook-query on GCS folder", async function() {

@@ -556,7 +556,7 @@ static NSArray *childRecordFields = nil;
 	  && [userLogin isEqualToString: [self ownerInContext: context]]
           && [user canAuthenticate]
 	  && [self folderIsMandatory]
-	  && [self create])
+	  && ![self create])
 	ocsFolder = [self ocsFolderForPath: [self ocsPath]];
       [ocsFolder retain];
     }
@@ -569,7 +569,7 @@ static NSArray *childRecordFields = nil;
   return folder;
 }
 
-- (BOOL) create
+- (NSException *) create
 {
   NSException *result;
   result = [[self folderManager] createFolderOfType: [self folderType]
@@ -580,7 +580,7 @@ static NSArray *childRecordFields = nil;
       && [[context request] handledByDefaultHandler])
     [self sendFolderAdvisoryTemplate: @"Addition"];
 
-  return (result == nil);
+  return result;
 }
 
 - (NSException *) delete
