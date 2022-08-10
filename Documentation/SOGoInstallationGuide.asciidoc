@@ -195,7 +195,7 @@ Software Downloads
 
 [NOTE]
 In order to access the production builds, you need a proper support contract
-from https://sogo.nu/support/index_new.html#support-plans[Inverse]. Continue
+from https://sogo.nu/support/index_new.html#support-plans[Alinto]. Continue
 with the configuration once you received your username and password.
 
 SOGo can be installed using the `yum` utility. To do so, first create
@@ -204,8 +204,8 @@ content:
 
 ----
 [SOGo]
-name=Inverse SOGo Repository
-baseurl=https://<username>:<password>@packages.inverse.ca/SOGo/release/5/rhel/7/$basearch
+name=Alinto SOGo Repository
+baseurl=https://<username>:<password>@packages.sogo.nu/release/5/rhel/7/$basearch
 gpgcheck=1
 ----
 
@@ -214,12 +214,13 @@ Any non-URL safe characters in username/password must be URL-encoded.  For
 example, if your password is `so%go`, you must set the value in your
 configuration file to `so%25go` - where `%` is encoded to `%25`.
 
-Inverse signs its RPM packages with its GPG key. Integrity verification happens
+Alinto signs its RPM packages with its GPG key. Integrity verification happens
 all by itself on package installation, all you need to do is first import the
 key into your rpm keychain:
 
 ----
-rpm --import "https://pgp.mit.edu/pks/lookup?op=get&search=0xCB2D3A2AA0030E2C"
+rpm --import "http://pgp.mit.edu/pks/lookup?op=get&search=0xCB2D3A2AA0030E2C"
+rpm --import "https://keys.openpgp.org/vks/v1/by-fingerprint/74FFC6D72B925A34B5D356BDF8A27B36A6E2EAE9"
 ----
 
 Some of the softwares on which SOGo depends are available from the repository
@@ -236,7 +237,7 @@ For RHEL/CentOS 8
 yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 ----
 
-SOGo relies on the GNUstep and ytnef packages provided by Inverse and must not use the
+SOGo relies on the GNUstep and ytnef packages provided by Alinto and must not use the
 packages from EPEL. Adjust the repository definition to exclude those packages:
 
 ----
@@ -823,10 +824,10 @@ is being installed.
 You can also, using the filter attribute, restrict the results to match
 various criteria. For example, you could define, in your
 `.GNUstepDefaults` file, the following filter to return only entries
-belonging to the organization _Inverse_ with a _mail_ address and
+belonging to the organization _Alinto_ with a _mail_ address and
 not _inactive_:
 
- filter = "(o='Inverse' AND mail='*' AND status <> 'inactive')";
+ filter = "(o='Alinto' AND mail='*' AND status <> 'inactive')";
 
 Since LDAP sources can serve as user repositories for authentication as
 well as address books, you can specify the following for each source to
@@ -915,7 +916,7 @@ would be:
     bindDN = "cn=sogo,ou=services,dc=inverse,dc=ca";
     bindPassword = zot;
     canAuthenticate = YES;
-    displayName = "Inverse Groups";
+    displayName = "Alinto Groups";
     hostname = ldap://127.0.0.1:389;
     id = inverse_groups;
     isAddressBook = YES;
@@ -2981,7 +2982,7 @@ http://www.microsoft.com/en-us/legal/intellectualproperty/
  
 and send an email to iplicreq@microsoft.com
 
-Inverse inc. provides this software for free, but is not responsible for
+Alinto provides this software for free, but is not responsible for
 anything related to its usage.
 
 Microsoft Enterprise ActiveSync Tuning
@@ -3097,8 +3098,8 @@ Mozilla Thunderbird and Lightning
 
 Alternatively, you can access SOGo with a GroupDAV and a CalDAV client.
 A typical well-integrated setup is to use Mozilla Thunderbird and
-Mozilla Lightning along with Inverse's _SOGo Connector_ plug in to
-synchronize your address books and the Inverse's _SOGo Integrator_ plug
+Mozilla Lightning along with Alinto's _SOGo Connector_ plug in to
+synchronize your address books and the Alinto's _SOGo Integrator_ plug
 in to provide a complete integration of the features of SOGo into
 Thunderbird and Lightning. Refer to the documentation of Thunderbird to
 configure an initial IMAP account pointing to your SOGo server and using

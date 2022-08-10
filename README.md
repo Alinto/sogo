@@ -14,16 +14,16 @@ There are multiple ways you can contribute to the project
 
 You can browse the lastest version of the source code online from Inverse's github repository:
 
-* [https://github.com/inverse-inc/sogo](https://github.com/inverse-inc/sogo)
+* [https://github.com/Alinto/sogo](https://github.com/Alinto/sogo)
 
 To compile SOGo, you first need to obtain the source code of both SOGo and SOPE. The source code of SOPE and SOGo can be obtained from Inverse's github repositories:
 
-* [https://github.com/inverse-inc/sope/archive/master.zip](https://github.com/inverse-inc/sope/archive/master.zip)
-* [https://github.com/inverse-inc/sogo/archive/master.zip](https://github.com/inverse-inc/sogo/archive/master.zip)
+* [https://github.com/Alinto/sope/archive/master.zip](https://github.com/Alinto/sope/archive/master.zip)
+* [https://github.com/Alinto/sogo/archive/master.zip](https://github.com/Alinto/sogo/archive/master.zip)
 
 The source code of the SOGo Connector extension for Thunderbird 78+ can be obtained from Inverse's github repository:
 
-* [https://github.com/inverse-inc/sogo-connector](https://github.com/inverse-inc/sogo-connector)
+* [https://github.com/Alinto/sogo-connector](https://github.com/Alinto/sogo-connector)
 
 Please refer to the [FAQ](https://sogo.nu/support.html#/faq) for [compilation instructions](https://sogo.nu/support/faq/how-do-i-compile-sogo.html).
 
@@ -31,7 +31,7 @@ Please refer to the [FAQ](https://sogo.nu/support.html#/faq) for [compilation in
 
 SOGo and its associated components are available in various languages. The following list describes the official translations alongside their maintainers:
 
-* [en] English - [Inverse inc.](https://www.inverse.ca/)
+* [en] English - [Alinto](https://www.alinto.net)
 * [ar] Arabic - Anass Ahmed
 * [eu] Basque - Gorka Gonzalez
 * [bs_BA] Bosnian - Refik Bećirović
@@ -45,7 +45,7 @@ SOGo and its associated components are available in various languages. The follo
 * [da_DK] Danish (Denmark) - Altibox
 * [nl] Dutch - Roel van Os
 * [fi] Finnish - Kari Salmu
-* [fr] French - [Inverse](https://www.inverse.ca/)
+* [fr] French - [Alinto](https://www.alinto.net)
 * [de] German - Alexander Greiner-Baer
 * [he] Hebrew - Raz Aidlitz
 * [hu] Hungarian - Sándor Kuti
@@ -75,4 +75,4 @@ SOGo and its associated components are available in various languages. The follo
 * [uk] Ukrainian - Oleksa Stasevych
 * [cy] Welsh - Iona Bailey
  
-If you would like to translate the software in an other language, please consult the [FAQ](https://sogo.nu/support/faq/how-to-translate-sogo-in-another-language.html). You can also subscribe to the SOGo i18n mailing list to follow string additions or changes. To subscribe to i18n@sogo.nu, send an email to i18n-request@sogo.nu with SUBSCRIBE i18n as the subject. Archived posts are [available online](https://lists.inverse.ca/sogo/arc/i18n).
+If you would like to translate the software in an other language, please consult the [FAQ](https://sogo.nu/support/faq/how-to-translate-sogo-in-another-language.html). You can also subscribe to the SOGo i18n mailing list to follow string additions or changes. To subscribe to i18n@sogo.nu, send an email to i18n-request@sogo.nu with SUBSCRIBE i18n as the subject. Archived posts are [available online](https://mailing.sogo.nu/sympa/sogo/arc/i18n).
