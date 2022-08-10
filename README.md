@@ -75,4 +75,4 @@ SOGo and its associated components are available in various languages. The follo
 * [uk] Ukrainian - Oleksa Stasevych
 * [cy] Welsh - Iona Bailey
  
-If you would like to translate the software in an other language, please consult the [FAQ](https://sogo.nu/support/faq/how-to-translate-sogo-in-another-language.html). You can also subscribe to the SOGo i18n mailing list to follow string additions or changes. To subscribe to i18n@sogo.nu, send an email to i18n-request@sogo.nu with SUBSCRIBE i18n as the subject. Archived posts are [available online](https://mailing.sogo.nu/sympa/sogo/arc/i18n).
+If you would like to translate the software in an other language, please consult the [FAQ](https://sogo.nu/support/faq/how-to-translate-sogo-in-another-language.html).
