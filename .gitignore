@@ -31,3 +31,14 @@ tags
 .DS_Store
 Tests/package-lock.json
 .vscode
+.configure-test*
+
+# CKEditor
+UI/WebServerResources/js/vendor/ckeditor/samples/
+UI/WebServerResources/js/vendor/ckeditor/skins/n1theme/readme.md
+UI/WebServerResources/js/vendor/ckeditor/*.md
+UI/WebServerResources/js/vendor/ckeditor/adapters/jquery.js
+UI/WebServerResources/js/vendor/ckeditor/bender-runner.config.json
+UI/WebServerResources/js/vendor/ckeditor/plugins/onchange/docs
+UI/WebServerResources/js/vendor/ckeditor/plugins/scayt/*.md
+UI/WebServerResources/js/vendor/ckeditor/skins/n1theme/*.md
