@@ -314,7 +314,7 @@ footer:
   recto: &shared_footer
     #columns: "<50% =0% >50%"
     left:
-      content: 'Copyright © Inverse inc.'
+      content: 'Copyright © Alinto'
     center:
       content: '{chapter-title}'
     right:

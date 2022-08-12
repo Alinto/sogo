@@ -199,7 +199,7 @@ from https://sogo.nu/support/index_new.html#support-plans[Alinto]. Continue
 with the configuration once you received your username and password.
 
 SOGo can be installed using the `yum` utility. To do so, first create
-the `/etc/yum.repos.d/inverse.repo` configuration file with the following
+the `/etc/yum.repos.d/sogo.repo` configuration file with the following
 content:
 
 ----

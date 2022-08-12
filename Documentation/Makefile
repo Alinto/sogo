@@ -8,7 +8,7 @@ HTML = $(patsubst %.asciidoc,%.html, $(ASCIIDOCS))
 	asciidoctor-pdf \
 		-a pdf-fontsdir=fonts \
 		-a release_version=`git describe --abbrev=0 --tags | cut -d'-' -f 2` \
-		-a release_month=`date +%B` \
+		-a release_month=`LANG=en_US.UTF-8 date +%B` \
 		-a pdf-theme=asciidoctor-pdf-theme.yml \
 		--trace \
 		$<
@@ -17,7 +17,7 @@ HTML = $(patsubst %.asciidoc,%.html, $(ASCIIDOCS))
 	asciidoctor \
 		-D . \
 		-a release_version=`git describe --abbrev=0 --tags | cut -d'-' -f 2` \
-		-a release_month=`date +%B` \
+		-a release_month=`LANG=en_US.UTF-8 date +%B` \
 		-n \
 		$<
 
