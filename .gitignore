@@ -32,6 +32,7 @@ tags
 Tests/package-lock.json
 .vscode
 .configure-test*
+UI/WebServerResources/package-lock.json
 
 # CKEditor
 UI/WebServerResources/js/vendor/ckeditor/samples/
