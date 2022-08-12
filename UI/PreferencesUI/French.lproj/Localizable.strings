@@ -263,6 +263,7 @@
 "POLICY_MIN_SPECIAL_SYMBOLS" = "Au moins %{0} caractère(s) special(aux)";
 "POLICY_MIN_LENGTH" = "Longueur d'au moins %{0} caractère(s)";
 
+
 /* Event+task classifications */
 "Default events classification" = "Classification par défaut des événements";
 "Default tasks classification" = "Classification par défaut des tâches";
