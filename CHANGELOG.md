@@ -1,5 +1,35 @@
 # Changelog
 
+### [5.7.1](https://github.com/Alinto/sogo/compare/SOGo-5.7.0...SOGo-5.7.1) (2022-08-12)
+
+
+### Bug Fixes
+
+* **addressbook(dav):** improve handling of addressbook-query ([0720dc4](https://github.com/Alinto/sogo/commit/0720dc44fdd01b189902b189ff50dfb0549b0a8a))
+* **calendar:** update all quick fields when updating event ([a6f7c1e](https://github.com/Alinto/sogo/commit/a6f7c1ea61b8d4d68042e6a1fb15f43645a26f55)), closes [#5546](https://bugs.sogo.nu/view.php?id=5546)
+* **core:** adjustments for IPv6 ([edd64a3](https://github.com/Alinto/sogo/commit/edd64a396ef7a7227d5c45cc1deb61ef3e2b6112))
+* **core:** don't remove double quotes when parsing versit strings ([6bed6c0](https://github.com/Alinto/sogo/commit/6bed6c0e20bb1eec8968e3823d16c2f5002333b5)), closes [#3530](https://bugs.sogo.nu/view.php?id=3530) [#3930](https://bugs.sogo.nu/view.php?id=3930)
+* **core:** don't remove double quotes when parsing versit strings ([ebf032e](https://github.com/Alinto/sogo/commit/ebf032ee6bc7efa0a873e08ebd8b700dc5bb7bc6) [d99aa82](https://github.com/Alinto/sogo/commit/d99aa82a31d4f9e1a0f9f9173fcf4b9ea0b18653)), closes [#3530](https://bugs.sogo.nu/view.php?id=3530)
+* **core:** handle argon2i password scheme ([2f9f610](https://github.com/Alinto/sogo/commit/2f9f6102108e68e866e5ef9db34b3cf291c57bec)), closes [#5531](https://bugs.sogo.nu/view.php?id=5531)
+* **dav:** return 405 when collection already exists ([95eecc4](https://github.com/Alinto/sogo/commit/95eecc402ad0060b4656cf9d1280a0690fcc9a2d)), closes [/datatracker.ietf.org/doc/html/rfc4918#section-9](https://bugs.sogo.nu/view.php?id=section-9)
+* **i18n:** new localized strings for SQL-based password policies ([5e6ad77](https://github.com/Alinto/sogo/commit/5e6ad77d4ca0ac53dd7c9efb53469dd5129767f2))
+* **mail(js):** add CKEditor plugins emoji and bidi ([e18dc2c](https://github.com/Alinto/sogo/commit/e18dc2cd5ac8a0de5b9f18147e62efb216484e96))
+* **mail(js):** handle paste action from contextual menu ([efe78c5](https://github.com/Alinto/sogo/commit/efe78c5179f43c1d7de5a8be95682bc855e45667)), closes [#5488](https://bugs.sogo.nu/view.php?id=5488)
+* **mail(js):** resolve sub mailboxes in global search ([407bc53](https://github.com/Alinto/sogo/commit/407bc538df8028316f84149485425de2fbc93c96)), closes [#5559](https://bugs.sogo.nu/view.php?id=5559)
+* **mail:** use encoding from MIME part ([27d45b6](https://github.com/Alinto/sogo/commit/27d45b6d76bb094c916f8a0e3f50b7ce628fbbd6))
+* **preferences(js):** don't filter vacation start date ([2ae03d5](https://github.com/Alinto/sogo/commit/2ae03d50953b04345fe17cc4641ab095f5e2e2e6))
+* **preferences:** regex in Sieve scripts are now case sensitive ([adfd175](https://github.com/Alinto/sogo/commit/adfd17568136c2aea007881a82f5c65d43e0211d)), closes [#5561](https://bugs.sogo.nu/view.php?id=5561)
+* **web(js):** improve validation of email addresses ([67ccf74](https://github.com/Alinto/sogo/commit/67ccf748edcec8d495de35f431d7d0f3cf35fc6e))
+
+
+### Localization
+
+* **fr:** Update French translations ([a418baa](https://github.com/Alinto/sogo/commit/a418baa2762fd1000ad4782baf895315e48f5d76))
+* **hu:** Update Hungarian translations ([abc2df0](https://github.com/Alinto/sogo/commit/abc2df0da0a14bacb7df28c2f41674401c33c285))
+* **kk:** add Kazakh translation ([a667c69](https://github.com/Alinto/sogo/commit/a667c69f3c600c47cba0bd4b846b100633852ac9))
+* **kk:** Add Kazakh translation by Nazym Idrissova ([d1971b7](https://github.com/Alinto/sogo/commit/d1971b76e2631e3d44b0af0eff33437de0127fe2))
+* **Password policies** Add constants to make password policies localizable ([5e6ad77](https://github.com/Alinto/sogo/commit/5e6ad77d4ca0ac53dd7c9efb53469dd5129767f2))
+
 ## [5.7.0](https://github.com/inverse-inc/sogo/compare/SOGo-5.6.0...SOGo-5.7.0) (2022-06-10)
 
 ### Features
