@@ -238,7 +238,10 @@
                                                  hours:[date hourOfDay]
                                                minutes:[date minuteOfHour]
                                                seconds:0];
-              [rule setUntilDate: untilDate];
+              if ([event isAllDay])
+                [rule setUntil: [untilDate descriptionWithCalendarFormat: @"%Y%m%d"]];
+              else
+                [rule setUntilDate: untilDate];
               [date release];
             }
         }
