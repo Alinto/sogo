@@ -278,6 +278,13 @@
         this.showRecurrenceEditor = true;
     };
 
+    this.destinationCalendars = function () {
+      if (this.component.isErasable)
+        return Calendar.$findAll(null, true, this.component.pid);
+      else
+        return [Calendar.$get(this.component.pid)];
+    };
+
     this.changeCalendar = function () {
       var updateRequired = (this.component.attendees && this.component.attendees.length > 0);
       if (updateRequired)

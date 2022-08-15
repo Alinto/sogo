@@ -837,10 +837,21 @@ static NSArray *reminderValues = nil;
   return rc;
 }
 
-- (BOOL) isReadOnly
+- (BOOL) isEditable
 {
- return [self getEventRWType] != componentReadableWritable;
+ return [self getEventRWType] == componentReadableWritable;
 }
+
+- (BOOL) isErasable
+{
+  NSString *owner, *userLogin;
+
+  userLogin = [[context activeUser] login];
+  owner = [componentCalendar ownerInContext: context];
+
+  return ([owner isEqualToString: userLogin] || [[componentCalendar aclsForUser: userLogin] containsObject: SOGoRole_ObjectEraser]);
+}
+
 //
 //- (NSString *) emailAlarmsEnabled
 //{

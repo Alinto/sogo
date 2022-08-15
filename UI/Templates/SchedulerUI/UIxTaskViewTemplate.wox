@@ -125,19 +125,22 @@
     <!-- actions -->
 
     <!-- editable but not recurrent -->
-    <md-dialog-actions ng-show="::editor.component.isEditable()">
+    <md-dialog-actions ng-show="::editor.component.isActionable()">
       <md-button class="md-warn" label:aria-label="Delete Task"
+                 ng-show="::editor.component.isErasable"
                  ng-click="editor.deleteAllOccurrences()">
         <var:string label:value="Delete"/>
       </md-button>
       <div class="md-flex"><!-- spacer --></div>
-      <md-button ng-click="editor.edit()">
+      <md-button type="button"
+                 ng-show="::editor.component.isEditable"
+                 ng-click="editor.edit()">
         <var:string label:value="Edit"/>
       </md-button>
     </md-dialog-actions>
     <!-- editable and recurrent -->
-    <md-dialog-actions ng-show="::editor.component.isEditableOccurrence()">
-      <md-menu>
+    <md-dialog-actions ng-show="::editor.component.isActionableOccurrence()">
+      <md-menu ng-show="::editor.component.isErasable">
         <md-button class="md-warn"
                    label:aria-label="Delete Task"
                    ng-click="$mdMenu.open()"
@@ -162,7 +165,7 @@
         </md-menu-content>
       </md-menu>
       <div class="md-flex"><!-- spacer --></div>
-      <md-menu>
+      <md-menu ng-show="::editor.component.isEditable">
         <md-button label:aria-label="Edit"
                    ng-click="$mdMenu.open()"
                    md-menu-origin="md-menu-origin">

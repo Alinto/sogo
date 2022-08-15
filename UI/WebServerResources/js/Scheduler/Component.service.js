@@ -672,8 +672,8 @@
    * @desc Check if the component is editable and not an occurrence of a recurrent component
    * @returns true or false
    */
-  Component.prototype.isEditable = function() {
-    return (!this.occurrenceId && !this.isReadOnly);
+  Component.prototype.isActionable = function() {
+    return (!this.occurrenceId && !this.userHasRSVP && (this.isEditable || this.isErasable));
   };
 
   /**
@@ -682,8 +682,8 @@
    * @desc Check if the component is editable and an occurrence of a recurrent component
    * @returns true or false
    */
-  Component.prototype.isEditableOccurrence = function() {
-    return (this.occurrenceId && !this.isReadOnly);
+  Component.prototype.isActionableOccurrence = function() {
+    return (this.occurrenceId && !this.userHasRSVP && (this.isEditable || this.isErasable));
   };
 
   /**
@@ -704,18 +704,6 @@
    */
   Component.prototype.isInvitationOccurrence = function() {
     return (this.occurrenceId && this.userHasRSVP);
-  };
-
-  /**
-   * @function isMovable
-   * @memberof Component.prototype
-   * @desc Return true if the component can be moved to a different calendar which occurs in two cases:
-   *       - the component is editable, ie is owned by the current user;
-   *       - the component is an invitation and the current user is an attendee.
-   * @returns true or false
-   */
-  Component.prototype.isMovable = function() {
-    return (!this.isReadOnly || this.userHasRSVP);
   };
 
   /**
@@ -810,7 +798,7 @@
    */
   Component.prototype.canRemindAttendeesByEmail = function() {
     return this.alarm.action == 'email' &&
-      !this.isReadOnly &&
+      this.isEditable &&
       this.attendees && this.attendees.length > 0;
   };
 
