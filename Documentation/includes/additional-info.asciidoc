@@ -5,6 +5,7 @@
     This file is part of the SOGo project.
     Authors: 
       - Inverse inc. <info@inverse.ca>
+      - Alinto <contact@sogo.nu>
 
     Copyright (C) 2008-2022 Inverse inc.
     License: GFDL 1.2 or later. http://www.gnu.org/licenses/fdl.html
