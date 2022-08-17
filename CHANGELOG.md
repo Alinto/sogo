@@ -1,13 +1,17 @@
 # Changelog
 
-### [5.7.1](https://github.com/Alinto/sogo/compare/SOGo-5.7.0...SOGo-5.7.1) (2022-08-12)
+### [5.7.1](https://github.com/Alinto/sogo/compare/SOGo-5.7.0...SOGo-5.7.1) (2022-08-17)
 
+### Enhancements
+
+* **core:** IPv6 support ([edd64a3](https://github.com/Alinto/sogo/commit/edd64a396ef7a7227d5c45cc1deb61ef3e2b6112))
 
 ### Bug Fixes
 
 * **addressbook(dav):** improve handling of addressbook-query ([0720dc4](https://github.com/Alinto/sogo/commit/0720dc44fdd01b189902b189ff50dfb0549b0a8a))
 * **calendar:** update all quick fields when updating event ([a6f7c1e](https://github.com/Alinto/sogo/commit/a6f7c1ea61b8d4d68042e6a1fb15f43645a26f55)), closes [#5546](https://bugs.sogo.nu/view.php?id=5546)
-* **core:** adjustments for IPv6 ([edd64a3](https://github.com/Alinto/sogo/commit/edd64a396ef7a7227d5c45cc1deb61ef3e2b6112))
+* **calendar:** remove time from until date of rrule of all-day event ([3f7fef0](https://github.com/Alinto/sogo/commit/3f7fef0788caca8ef899db69d7636fc31f4ada8e))
+* **calendar(js):** conditional display of edit and delete buttons ([16459c7](https://github.com/Alinto/sogo/commit/16459c7b3d22ecf6eae5850277992d866575e539))
 * **core:** don't remove double quotes when parsing versit strings ([6bed6c0](https://github.com/Alinto/sogo/commit/6bed6c0e20bb1eec8968e3823d16c2f5002333b5)), closes [#3530](https://bugs.sogo.nu/view.php?id=3530) [#3930](https://bugs.sogo.nu/view.php?id=3930)
 * **core:** don't remove double quotes when parsing versit strings ([ebf032e](https://github.com/Alinto/sogo/commit/ebf032ee6bc7efa0a873e08ebd8b700dc5bb7bc6) [d99aa82](https://github.com/Alinto/sogo/commit/d99aa82a31d4f9e1a0f9f9173fcf4b9ea0b18653)), closes [#3530](https://bugs.sogo.nu/view.php?id=3530)
 * **core:** handle argon2i password scheme ([2f9f610](https://github.com/Alinto/sogo/commit/2f9f6102108e68e866e5ef9db34b3cf291c57bec)), closes [#5531](https://bugs.sogo.nu/view.php?id=5531)
@@ -20,7 +24,6 @@
 * **preferences(js):** don't filter vacation start date ([2ae03d5](https://github.com/Alinto/sogo/commit/2ae03d50953b04345fe17cc4641ab095f5e2e2e6))
 * **preferences:** regex in Sieve scripts are now case sensitive ([adfd175](https://github.com/Alinto/sogo/commit/adfd17568136c2aea007881a82f5c65d43e0211d)), closes [#5561](https://bugs.sogo.nu/view.php?id=5561)
 * **web(js):** improve validation of email addresses ([67ccf74](https://github.com/Alinto/sogo/commit/67ccf748edcec8d495de35f431d7d0f3cf35fc6e))
-
 
 ### Localization
 
