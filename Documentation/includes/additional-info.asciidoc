@@ -4,9 +4,9 @@
 
     This file is part of the SOGo project.
     Authors: 
-      - Alinto <contact@sogo.nu>
+      - Inverse inc. <info@inverse.ca>
 
-    Copyright (C) 2008-2022 Alinto
+    Copyright (C) 2008-2022 Inverse inc.
     License: GFDL 1.2 or later. http://www.gnu.org/licenses/fdl.html
 
 ////
