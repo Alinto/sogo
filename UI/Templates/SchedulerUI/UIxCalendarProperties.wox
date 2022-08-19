@@ -79,9 +79,10 @@
             <var:string label:value="When I modify my calendar, send a mail to"/>
           </md-checkbox>
           <md-input-container flex-offset="5" md-no-float="md-no-float">
-            <input type="email"
+            <input type="text"
                    label:placeholder="Email Address"
                    ng-model="properties.calendar.notifiedUserOnPersonalModifications"
+                   ng-pattern="properties.emailRE"
                    ng-required="properties.calendar.notifications.notifyUserOnPersonalModifications"
                    ng-disabled="!properties.calendar.notifications.notifyUserOnPersonalModifications"/>
           </md-input-container>

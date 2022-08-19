@@ -164,9 +164,10 @@
                   <md-input-container class="md-block"
                                       ng-hide="$AccountDialogController.customFromIsReadonly()">
                     <label><var:string label:value="Reply To Email"/></label>
-                    <input type="email"
+                    <input type="text"
                            autocomplete="off"
-                           ng-model="identity.replyTo"/>
+                           ng-model="identity.replyTo"
+                           ng-pattern="$AccountDialogController.emailRE"/>
                   </md-input-container>
                   <md-input-container
                       class="md-block md-flex"

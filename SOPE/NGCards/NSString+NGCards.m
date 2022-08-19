@@ -83,19 +83,21 @@
   newCurrentChar = newPart;
 
   isEscaped = NO;
-  isQuoted = NO;
+  isQuoted = (max > 1 && [self hasPrefix: @"\""] && [self hasSuffix: @"\""]);
+  if (isQuoted)
+    {
+      // Remove leading and trailing quotes
+      currentChar++;
+      lastChar--;
+    }
 
   while (currentChar < lastChar)
     {
       if (isQuoted)
         {
-          if (*currentChar == '"')
-            isQuoted = NO;
-          else
-            {
-              *newCurrentChar = *currentChar;
-              newCurrentChar++;
-            }
+          // Don't escape characters
+          *newCurrentChar = *currentChar;
+          newCurrentChar++;
         }
       else if (isEscaped)
         {
@@ -114,16 +116,14 @@
         }
       else
         {
-          if (*currentChar == '"')
-            isQuoted = YES;
-          else if (*currentChar == '\\')
+          if (*currentChar == '\\')
             isEscaped = YES;
           else if (*currentChar == ',')
             {
-              newString = [[NSString alloc]
-                            initWithCharactersNoCopy: newPart
-                                              length: (newCurrentChar - newPart)
-                                        freeWhenDone: YES];
+              // The comma is a value delimiter
+              newString = [[NSString alloc] initWithCharactersNoCopy: newPart
+                                                              length: (newCurrentChar - newPart)
+                                                        freeWhenDone: YES];
               [values addObject: newString];
               [newString release];
               newPart = NSZoneMalloc (NULL, max * sizeof (unichar));
@@ -138,10 +138,9 @@
       currentChar++;
     }
 
-  newString = [[NSString alloc]
-                initWithCharactersNoCopy: newPart
-                                  length: (newCurrentChar - newPart)
-                            freeWhenDone: YES];
+  newString = [[NSString alloc] initWithCharactersNoCopy: newPart
+                                                  length: (newCurrentChar - newPart)
+                                            freeWhenDone: YES];
   [values addObject: newString];
   [newString release];
 
@@ -150,7 +149,7 @@
   return values;
 }
 
-- (NSString *) escapedForCards
+- (NSString *) escapedForCardsAsAttributes: (BOOL) asAttributes
 {
   NSMutableString *string;
   unsigned int len, i;
@@ -165,32 +164,28 @@
     {
       c = [self characterAtIndex: i];
 
-      if (isQuoted)
-        {
-          if (c == '"')
-            isQuoted = NO;
-
-          [string appendFormat: @"%C", c];
-          continue;
-        }
+      if (!isQuoted || !asAttributes)
+        switch (c)
+          {
+          case ',':
+            [string appendString: @"\\,"];
+            continue;
+            //case ':':
+            // [string appendString: @"\\:"];
+            //break;
+          case ';':
+            [string appendString:  @"\\;"];
+            continue;
+          }
 
       switch (c)
         {
         case '"':
-          isQuoted = YES;
+          isQuoted = !isQuoted;
           [string appendFormat: @"%C", c];
           break;
         case '\\':
           [string appendString: @"\\\\"];
-          break;
-        case ',':
-          [string appendString: @"\\,"];
-          break;
-          //case ':':
-          // [string appendString: @"\\:"];
-          //break;
-        case ';':
-          [string appendString:  @"\\;"];
           break;
         case'\n':
           [string appendString: @"\\n"];

@@ -16,6 +16,7 @@
     this.account = account;
     this.accountId = accountId;
     this.hostnameRE = usesSSO && accountId > 0 ? /^(?!(127\.0\.0\.1|localhost(?:\.localdomain)?)$)/ : /./;
+    this.emailRE = String.emailRE;
     this.addressesSearchText = '';
     this.ckConfig = {
       'autoGrow_minHeight': 70,

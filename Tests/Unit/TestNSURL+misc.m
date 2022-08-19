@@ -59,6 +59,30 @@
   test([[queryComp valueForKey: @"key1"] isEqualToString: @"value123"]);
   test([[queryComp valueForKey: @"key2"] isEqualToString: @"val2"]);
 
+  urlStr = @"http://domain/path";
+  url = [NSURL URLWithString: urlStr];
+  queryComp = [url queryComponents];
+  error = [NSString stringWithFormat:
+                          @"expected '%@' to have no entries, got %d", urlStr, [queryComp count]];
+  testWithMessage([queryComp count] == 0, error);
+
 }
+
+- (void) test_IpV6Address
+{
+  NSURL *url;
+  NSString *error;
+  NSString *host = @"2001:0db8:85a3:0000:0000:8a2e:0370:7334";
+  NSString *urlhost;
+  url = [NSURL URLWithString: @"mysql://user:pass@[2001:0db8:85a3:0000:0000:8a2e:0370:7334]:1234/path"];
+  testWithMessage([[url scheme] isEqualToString: @"mysql"], @"unexpected scheme");
+  urlhost = [url host];
+  error = [NSString
+                stringWithFormat: @"hostname is '%@' instead of '%@' ",
+                host, urlhost];
+  testWithMessage([urlhost isEqualToString: host], error);
+  testWithMessage([[url port] intValue] == 1234, @"port does not match");
+}
+
 
 @end

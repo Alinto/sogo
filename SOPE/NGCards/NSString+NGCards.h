@@ -34,7 +34,7 @@
 
 - (NSString *) foldedForVersitCards;
 - (NSArray *) asCardAttributeValues;
-- (NSString *) escapedForCards;
+- (NSString *) escapedForCardsAsAttributes: (BOOL) asAttributes;
 - (NSString *) rfc822Email;
 
 - (NSTimeInterval) durationAsTimeInterval;

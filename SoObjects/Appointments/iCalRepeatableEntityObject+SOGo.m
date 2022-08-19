@@ -1,6 +1,6 @@
 /* iCalRepeatableEntityObject+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2017 Inverse inc.
+ * Copyright (C) 2007-2022 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSTimeZone.h>
 #import <Foundation/NSValue.h>
 
 #import <NGCards/iCalByDayMask.h>
@@ -125,6 +126,17 @@
           ud = [[context activeUser] userDefaults];
           timeZone = [ud timeZone];
           [untilDate setTimeZone: timeZone];
+
+          if ([(iCalEvent *)self isAllDay])
+            {
+              NSInteger offset;
+
+              // Convert the dates to the user's timezone
+              offset = [timeZone secondsFromGMTForDate: untilDate];
+              untilDate = [untilDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+                                               seconds:-offset];
+            }
+
           [repeat setObject: [untilDate iso8601DateString] forKey: @"until"];
         }
       if ([[rule byDay] length])
@@ -260,14 +272,21 @@
                                          calendarFormat: @"%Y-%m-%d"];
                   if (date)
                     {
-                      // Adjust timezone
-                      ud = [[context activeUser] userDefaults];
-                      date = [NSCalendarDate dateWithYear: [date yearOfCommonEra]
-                                                    month: [date monthOfYear]
-                                                      day: [date dayOfMonth]
-                                                     hour: 0 minute: 0 second: 0
-                                                 timeZone: [ud timeZone]];
-                      [rule setUntilDate: date];
+                      if (isAllDay)
+                        {
+                          [rule setUntil: [date descriptionWithCalendarFormat: @"%Y%m%d"]];
+                        }
+                      else
+                        {
+                          // Adjust timezone
+                          ud = [[context activeUser] userDefaults];
+                          date = [NSCalendarDate dateWithYear: [date yearOfCommonEra]
+                                                        month: [date monthOfYear]
+                                                          day: [date dayOfMonth]
+                                                         hour: 0 minute: 0 second: 0
+                                                     timeZone: [ud timeZone]];
+                          [rule setUntilDate: date];
+                        }
                     }
                 }
 

@@ -279,7 +279,7 @@
       if (angular.isString(this[type])) {
         // The recipient is a string; try to extract the name
         var emailRE = /<?(([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?))/i;
-        var match = this[type].match(emailRE);
+        var match = this[type].match(String.emailRE);
         if (match) {
           address = this[type].substring(0, match.index);
           address = address.replace(/^\"? *(.+?)\"? *$/, "$1");

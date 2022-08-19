@@ -255,7 +255,6 @@ static NSArray *tasksFields = nil;
                                   timeZone: userTZ];
     endDate = [[newDate lastDayOfMonth] endOfDay];
   }
-  NSLog(@"***[UIxCalListingActions _setupDatesWithPopup:%@ andUserTZ:%@] %@ => %@", popupValue, userTZ, startDate, endDate);
 }
 
 - (void) _setupContext

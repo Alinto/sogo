@@ -34,7 +34,7 @@
             <md-input-container flex="50" flex-xs="100">
               <label><var:string label:value="Calendar"/></label>
               <md-select ng-model="editor.component.destinationCalendar">
-                <md-option ng-repeat="calendar in editor.service.$findAll(null, true)"
+                <md-option ng-repeat="calendar in editor.destinationCalendars()"
                            ng-value="calendar.id">
                   <div layout="row" layout-align="start center">
                     <div class="sg-color-chip"

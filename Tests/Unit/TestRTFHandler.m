@@ -279,7 +279,7 @@
 - (void) test_spanish_accents
 {
   NSString *file =@"spanish_accents.rtf";
-  NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"Calibri\"><font color=\"#000000\">xñxáxéxíxóxú</font><font color=\"#000000\"><br></font></font></body></html>";
+  NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"Calibri\"><font color=\"#000000\">x&#241;x&#225;x&#233;x&#237;x&#243;x&#250;</font><font color=\"#000000\"><br></font></font></body></html>";
 
   [self checkHTMLConversionOfRTFFile: file
                  againstExpectedHTML: expected];
@@ -288,7 +288,7 @@
 - (void) test_cyr_event_ru_editor
 {
   NSString *file =@"cyr_event_ru_editor.rtf";
-  NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"Calibri\"><font face=\"Calibri Cyr\"><font color=\"#000000\">йчсмй</font></font><font color=\"#000000\"><br></font></font></body></html>";
+  NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"Calibri\"><font face=\"Calibri Cyr\"><font color=\"#000000\">&#1081;&#1095;&#1089;&#1084;&#1081;</font></font><font color=\"#000000\"><br></font></font></body></html>";
 
   [self checkHTMLConversionOfRTFFile: file
                  againstExpectedHTML: expected];

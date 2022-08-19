@@ -431,7 +431,8 @@
  * @apiSuccess (Success 200) {String} localizedDueTime        Formatted due time
  * @apiSuccess (Success 200) {String} localizedCompletedDate  Formatted completed date
  * @apiSuccess (Success 200) {String} localizedCompletedTime  Formatted completed time
- * @apiSuccess (Success 200) {Number} isReadOnly              1 if task is read-only
+ * @apiSuccess (Success 200) {Number} isEditable              1 if task can be edited by the active user
+ * @apiSuccess (Success 200) {Number} isErasable              1 if task can be deleted by the active user
  * @apiSuccess (Success 200) {Object[]} [attachUrls]          Attached URLs
  * @apiSuccess (Success 200) {String} attachUrls.value        URL
  *
@@ -561,7 +562,8 @@
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                        [componentCalendar nameInContainer], @"pid",
                        [componentCalendar displayName], @"calendar",
-                       [NSNumber numberWithBool: [self isReadOnly]], @"isReadOnly",
+                       [NSNumber numberWithBool: [self isEditable]], @"isEditable",
+                       [NSNumber numberWithBool: [self isErasable]], @"isErasable",
                        [self alarm], @"alarm",
 		       nil];
 

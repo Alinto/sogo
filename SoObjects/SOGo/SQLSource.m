@@ -44,6 +44,7 @@
 #import "NSString+Crypto.h"
 
 #import "SQLSource.h"
+#import "SOGoPasswordPolicy.h"
 
 /**
  * The view MUST contain the following columns:
@@ -145,7 +146,7 @@
   ASSIGN(_authenticationFilter, [udSource objectForKey: @"authenticationFilter"]);
   ASSIGN(_loginFields, [udSource objectForKey: @"LoginFieldNames"]);
   ASSIGN(_mailFields, [udSource objectForKey: @"MailFieldNames"]);
-  ASSIGN(_userPasswordPolicy, [udSource objectForKey: @"userPasswordPolicy"]);
+  ASSIGN(_userPasswordPolicy, [SOGoPasswordPolicy createPasswordPolicyRegex: [udSource objectForKey: @"userPasswordPolicy"]]);
   ASSIGN(_userPasswordAlgorithm, [udSource objectForKey: @"userPasswordAlgorithm"]);
   ASSIGN(_keyPath, [udSource objectForKey: @"keyPath"]);
   ASSIGN(_imapLoginField, [udSource objectForKey: @"IMAPLoginFieldName"]);
@@ -1018,6 +1019,12 @@
   return results;
 }
 
+
+/**
+ * @see [SOGoContactFolder lookupContactsWithQualifier:andSortOrdering:indDomain:]
+ * @see [SOGoContactSourceFolder lookupContactsWithQualifier:andSortOrdering:indDomain:]
+ * @see [SOGoFolder(CardDAV) _appendComponentsProperties:matchingQualifier:toResponse:context:]
+ */
 - (NSArray *) lookupContactsWithQualifier: (EOQualifier *) qualifier
                           andSortOrdering: (EOSortOrdering *) ordering
                                  inDomain: (NSString *) domain
@@ -1043,7 +1050,7 @@
               adaptorCtx = [channel adaptorContext];
               adaptor = [adaptorCtx adaptor];
             }
-          sql = [NSMutableString stringWithFormat: @"SELECT c_uid FROM %@ WHERE (", [_viewURL gcsTableName]];
+          sql = [NSMutableString stringWithFormat: @"SELECT c_name FROM %@ WHERE (", [_viewURL gcsTableName]];
 
           if (qualifier)
             [qualifier appendSQLToString: sql

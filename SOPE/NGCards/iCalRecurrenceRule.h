@@ -102,6 +102,7 @@ extern NSString *iCalWeekDayString[];
 - (int) repeatCount;
 
 - (void) setUntilDate: (NSCalendarDate *) _untilDate;
+- (void) setUntil: (NSString *) _until;
 - (NSCalendarDate *) untilDate;
 
 - (BOOL) isInfinite;

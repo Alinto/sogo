@@ -50,7 +50,7 @@ https://www.facebook.com/caldavsynchronizer/[CalDav Synchronizer on Facebook]
 Enterprise Support
 ~~~~~~~~~~~~~~~~~~
 
-Inverse (http://inverse.ca/[http://inverse.ca]) offers professional services around SOGo to help organizations deploy the solution and
+Alinto (https://alinto.com/[http://alinto.com]) offers professional services around SOGo to help organizations deploy the solution and
 migrate from their legacy systems.
 
 For enterprise support on the integration between SOGo and Microsoft Outlook using the Outlook CalDav Synchronizer, please visit https://caldavsynchronizer.org/enterprise

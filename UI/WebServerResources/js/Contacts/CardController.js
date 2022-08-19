@@ -11,16 +11,17 @@
   function CardController($scope, $timeout, $window, $mdDialog, sgSettings, AddressBook, Card, Dialog, sgHotkeys, focus, $state, $stateParams, stateCard) {
     var vm = this, hotkeys = [];
 
-    vm.card = stateCard;
+    this.card = stateCard;
 
-    vm.currentFolder = AddressBook.selectedFolder;
-    vm.allEmailTypes = Card.$EMAIL_TYPES;
-    vm.allTelTypes = Card.$TEL_TYPES;
-    vm.allUrlTypes = Card.$URL_TYPES;
-    vm.allAddressTypes = Card.$ADDRESS_TYPES;
-    vm.categories = {};
-    vm.userFilterResults = [];
-    vm.showRawSource = false;
+    this.currentFolder = AddressBook.selectedFolder;
+    this.allEmailTypes = Card.$EMAIL_TYPES;
+    this.allTelTypes = Card.$TEL_TYPES;
+    this.allUrlTypes = Card.$URL_TYPES;
+    this.allAddressTypes = Card.$ADDRESS_TYPES;
+    this.categories = {};
+    this.userFilterResults = [];
+    this.showRawSource = false;
+    this.emailRE = String.emailRE;
 
 
     _registerHotkeys(hotkeys);

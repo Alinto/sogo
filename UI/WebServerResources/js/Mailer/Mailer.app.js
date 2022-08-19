@@ -299,7 +299,7 @@
    */
   stateVirtualMailboxOfMessage.$inject = ['$q', 'Mailbox', 'decodeUriFilter', '$stateParams'];
   function stateVirtualMailboxOfMessage($q, Mailbox, decodeUriFilter, $stateParams) {
-    var mailboxId = decodeUriFilter($stateParams.mailboxId);
+    var mailboxId = decodeUriFilter(decodeUriFilter($stateParams.mailboxId));
 
     if (Mailbox.$virtualMode) {
       Mailbox.selectedFolder.resetSelectedMessage();

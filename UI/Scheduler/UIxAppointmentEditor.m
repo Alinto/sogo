@@ -238,7 +238,10 @@
                                                  hours:[date hourOfDay]
                                                minutes:[date minuteOfHour]
                                                seconds:0];
-              [rule setUntilDate: untilDate];
+              if ([event isAllDay])
+                [rule setUntil: [untilDate descriptionWithCalendarFormat: @"%Y%m%d"]];
+              else
+                [rule setUntilDate: untilDate];
               [date release];
             }
         }
@@ -669,7 +672,8 @@
  * @apiSuccess (Success 200) {String} endDate                 End date (ISO8601)
  * @apiSuccess (Success 200) {String} localizedEndDate        Formatted end date
  * @apiSuccess (Success 200) {String} [localizedEndTime]      Formatted end time
- * @apiSuccess (Success 200) {Number} isReadOnly              1 if event is read-only
+ * @apiSuccess (Success 200) {Number} isEditable              1 if event can be edited by the active user
+ * @apiSuccess (Success 200) {Number} isErasable              1 if event can be deleted by the active user
  * @apiSuccess (Success 200) {Number} userHasRSVP             1 if owner is invited
  * @apiSuccess (Success 200) {Number} [reply]                 0 if needs-action, 1 if accepted, 2 if declined, 3 if tentative, 4 if delegated
  * @apiSuccess (Success 200) {Object[]} [attachUrls]          Attached URLs
@@ -823,7 +827,8 @@
                        [componentCalendar nameInContainer], @"pid",
                        [componentCalendar displayName], @"calendar",
                        [NSNumber numberWithBool: isAllDay], @"isAllDay",
-                       [NSNumber numberWithBool: [self isReadOnly]], @"isReadOnly",
+                       [NSNumber numberWithBool: [self isEditable]], @"isEditable",
+                       [NSNumber numberWithBool: [self isErasable]], @"isErasable",
                        [NSNumber numberWithBool: [self userHasRSVP]], @"userHasRSVP",
                        [eventStartDate iso8601DateString], @"startDate",
                        [eventEndDate iso8601DateString], @"endDate",

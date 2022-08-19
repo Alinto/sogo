@@ -159,6 +159,7 @@
                                           forAllDay: isAllDay]
 	      forKey: @"c_startdate"];
     }
+
   if ([endDate isNotNull])
     {
       if (isAllDay)
@@ -210,11 +211,14 @@
               forKey: @"c_cycleenddate"];
       [row setObject: [self cycleInfo] forKey: @"c_cycleinfo"];
     }
+  else
+    {
+      [row setObject: [NSNull null] forKey: @"c_cycleenddate"];
+      [row setObject: [NSNull null] forKey: @"c_cycleinfo"];
+    }
 
-  if ([participants length] > 0)
-    [row setObject: participants forKey: @"c_participants"];
-  if ([partmails length] > 0)
-    [row setObject: partmails forKey: @"c_partmails"];
+  [row setObject: participants forKey: @"c_participants"];
+  [row setObject: partmails forKey: @"c_partmails"];
 
   if ([status isNotNull])
     {
@@ -241,9 +245,11 @@
       NSString *email;
 
       email = [organizer valueForKey: @"rfc822Email"];
-      if (email)
+      if (email) // can be empty
 	[row setObject:email forKey: @"c_orgmail"];
     }
+  else
+    [row setObject: [NSNull null] forKey: @"c_orgmail"];
 
   /* construct partstates */
   count = [attendees count];
@@ -259,11 +265,13 @@
 	[partstates appendString: @"\n"];
       [partstates appendFormat: @"%d", stat];
     }
-  [row setObject:partstates forKey: @"c_partstates"];
+  [row setObject: partstates forKey: @"c_partstates"];
   [partstates release];
 
   /* handle alarms */
-  [self updateNextAlarmDateInRow: row  forContainer: theContainer  nameInContainer: nameInContainer];
+  [self updateNextAlarmDateInRow: row
+                    forContainer: theContainer
+                 nameInContainer: nameInContainer];
 
   /* handle categories */
   categories = [self categories];

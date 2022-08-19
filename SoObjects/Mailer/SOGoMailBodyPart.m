@@ -513,11 +513,12 @@ static BOOL debugOn = NO;
 //   [self debugWithFormat:@"  fetched %d bytes: %@", [data length],
 // 	[self partInfo]];
 
-  // TODO: wrong, could be encoded
 	  response = [localContext response];
 	  mimeType = [self davContentType];
 	  if ([mimeType isEqualToString: @"application/x-xpinstall"])
 	    mimeType = @"application/octet-stream";
+          else if (!asAttachment)
+            mimeType = [self contentTypeForBodyPartInfo: [self partInfo]];
 
 	  [response setHeader: mimeType forKey: @"content-type"];
 	  [response setHeader: [NSString stringWithFormat:@"%d", (int)[data length]]

@@ -15,6 +15,13 @@ describe('read and set calendar properties', function() {
     await webdav.deleteObject(resource)
   })
 
+  it("calendar already exists", async function() {
+    const response = await webdav.makeCalendar(resource)
+    expect(response[0].status)
+      .withContext(`HTTP status code of MKCALENDAR`)
+      .toEqual(405)
+  })
+
   // CalDAVPropertiesTest
 
   it("propfind", async function() {

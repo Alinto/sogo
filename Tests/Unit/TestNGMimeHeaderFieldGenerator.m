@@ -88,10 +88,10 @@
       @"=?utf-8?q?a=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6?=\n"
       @" =?utf-8?q?=D0=B6=D0=B6?=", nil],
     [NSArray arrayWithObjects:
-      @"aжжжжжжжжжжжжжжжжжжжжж",
+      @"aжжжжжжжжжжжжжжжжжжжжжж",
       @"=?utf-8?q?a=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6?=\n"
       @" =?utf-8?q?=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6?=\n"
-      @" =?utf-8?q?=D0=B6?=", nil],
+      @" =?utf-8?q?=D0=B6=D0=B6?=", nil],
     nil
   ];
   NSArray *caseData;

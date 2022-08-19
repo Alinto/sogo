@@ -5,8 +5,9 @@
     This file is part of the SOGo project.
     Authors:
       - Inverse inc. <info@inverse.ca>
+      - Alinto <contact@sogo.nu>
 
-    Copyright (C) 2008-2022 Inverse inc.
+    Copyright (C) 2008-2022 Inverse inc. / Alinto
     License: GFDL 1.2 or later. http://www.gnu.org/licenses/fdl.html
 
 ////
@@ -15,14 +16,14 @@ Commercial Support and Contact Information
 ------------------------------------------
 
 For any questions or comments, do not hesitate to contact us by writing
-an email to support@inverse.ca.
+an email to contact@sogo.nu.
 
-Inverse (https://inverse.ca/) offers professional services around SOGo
+Alinto (https://alinto.com) offers professional services around SOGo
 to help organizations deploy the solution, customize, migrate versions or
 from another system, performance tuning or aligning with best practices.
 
 Hourly rates or support packages are offered to best suit your needs.
 
-Please visit https://inverse.ca/ for details.
+Please visit https://alinto.com/ for details.
 
 // vim: set syntax=asciidoc tabstop=2 shiftwidth=2 expandtab:

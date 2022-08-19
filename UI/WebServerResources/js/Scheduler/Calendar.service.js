@@ -116,7 +116,7 @@
    * @param {bool} [writable] - if true, returns only the list of writable calendars
    * @returns the list of calendars
    */
-  Calendar.$findAll = function(data, writable) {
+  Calendar.$findAll = function(data, writable, contextId) {
     var _this = this;
     if (data) {
       this.$calendars = [];
@@ -144,7 +144,7 @@
 
     if (writable) {
       return _.union(this.$calendars, _.filter(this.$subscriptions, function(calendar) {
-        return calendar.isOwned || calendar.acls.objectCreator;
+        return calendar.isOwned || calendar.acls.objectCreator || calendar.id == contextId;
       }));
     }
 

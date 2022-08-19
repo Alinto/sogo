@@ -31,8 +31,7 @@
 
 - (void) test_isLocalhost
 {
-  // @"localhost6",
-  NSString *addrStr[] = { @"127.0.0.1", @"127.1.2.3", @"localhost",  @"something.localhost", @"localhost.",  nil };
+  NSString *addrStr[] = { @"127.0.0.1", @"127.1.2.3", @"localhost",  @"something.localhost", @"localhost.", @"::1", nil };
   NSString **curHost;
   BOOL is_localhost;
   NSString *error;
@@ -46,7 +45,7 @@
       is_localhost = [addr isLocalhost];
 
       error = [NSString stringWithFormat:
-                          @"expected '%@' to be a localhost address", *curHost];
+                          @"expected '%@' to be a localhost address. Is libnss-myhostname installed and activated in /etc/nsswitch.conf?", *curHost];
       testWithMessage(is_localhost, error);
 
       curHost++;

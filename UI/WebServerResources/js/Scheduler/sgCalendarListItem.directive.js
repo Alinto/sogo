@@ -245,6 +245,7 @@
           function PropertiesDialogController($scope, $mdDialog, srcCalendar) {
             var vm = this;
 
+            vm.emailRE = String.emailRE;
             vm.calendar = new Calendar(srcCalendar.$omit());
             vm.saveProperties = saveProperties;
             vm.close = close;

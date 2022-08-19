@@ -257,6 +257,12 @@
 "Confirmation" = "Confirmation";
 "Change" = "Changer";
 "Passwords don't match" = "Les mots de passe ne correspondent pas";
+"POLICY_MIN_LOWERCASE_LETTER" = "Au moins %{0} lettre(s) minuscule(s)";
+"POLICY_MIN_UPPERCASE_LETTER" = "Au moins %{0} lettre(s) majuscule(s)";
+"POLICY_MIN_DIGIT" = "Au moins %{0} chiffre(s)";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Au moins %{0} caractère(s) special(aux)";
+"POLICY_MIN_LENGTH" = "Longueur d'au moins %{0} caractère(s)";
+
 
 /* Event+task classifications */
 "Default events classification" = "Classification par défaut des événements";

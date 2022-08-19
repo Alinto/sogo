@@ -46,7 +46,7 @@ device, or Outlook 2013
 
 SOGo is developed by a community of developers located mainly in North
 America and Europe. More information can be found on
-http://www.sogo.nu/.
+https://www.sogo.nu/.
 
 Installation
 ------------
@@ -167,7 +167,7 @@ For example, one would replace:
 
 by:
 
- <Seq about="http://inverse.ca/sogo-integrator/extensions" isi:updateURL="https://sogo.acme.com/plugins/updates.php?plugin=%ITEM_ID%&amp;version=%ITEM_VERSION%&amp;platform=%PLATFORM%">
+ <Seq about="https://sogo.nu" isi:updateURL="https://sogo.acme.com/plugins/updates.php?plugin=%ITEM_ID%&amp;version=%ITEM_VERSION%&amp;platform=%PLATFORM%">
 
 if the SOGo server is accessible from the following URL:
 

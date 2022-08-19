@@ -257,6 +257,12 @@
 "Confirmation" = "Megerősítés";
 "Change" = "Módosítás";
 "Passwords don't match" = "Jelszavak nem egyeznek meg";
+"POLICY_MIN_LOWERCASE_LETTER" = "Legalább %{0} kisbetű";
+"POLICY_MIN_UPPERCASE_LETTER" = "Legalább %{0} nagybetű";
+"POLICY_MIN_DIGIT" = "Legalább %{0} szám";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Legalább %{0} különleges karakter";
+"POLICY_MIN_LENGTH" = "Legalább %{0} karakter";
+
 
 /* Event+task classifications */
 "Default events classification" = "Események alapértelmezett besorolása";

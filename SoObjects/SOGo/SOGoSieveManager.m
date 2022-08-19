@@ -128,7 +128,7 @@ static NSString *sieveScriptName = @"sogo";
   if (!sieveOperators)
     {
       sieveOperators = [NSArray arrayWithObjects: @"is", @"contains",
-                                @"matches", @"regex",
+                                @"matches", @"regex", @"regex :comparator \"i;octet\"",
                                 @"over", @"under", nil];
       [sieveOperators retain];
     }
@@ -367,6 +367,8 @@ static NSString *sieveScriptName = @"sogo";
           requirement = [operatorRequirements objectForKey: baseOperator];
           if (requirement)
             [requirements addObjectUniquely: requirement];
+          if ([baseOperator isEqualToString: @"regex"])
+            baseOperator = @"regex :comparator \"i;octet\""; // case-sensitive comparator
           *operator = baseOperator;
         }
       else

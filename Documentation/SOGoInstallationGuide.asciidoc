@@ -195,17 +195,17 @@ Software Downloads
 
 [NOTE]
 In order to access the production builds, you need a proper support contract
-from https://sogo.nu/support/index_new.html#support-plans[Inverse]. Continue
+from https://sogo.nu/support/index_new.html#support-plans[Alinto]. Continue
 with the configuration once you received your username and password.
 
 SOGo can be installed using the `yum` utility. To do so, first create
-the `/etc/yum.repos.d/inverse.repo` configuration file with the following
+the `/etc/yum.repos.d/sogo.repo` configuration file with the following
 content:
 
 ----
 [SOGo]
-name=Inverse SOGo Repository
-baseurl=https://<username>:<password>@packages.inverse.ca/SOGo/release/5/rhel/7/$basearch
+name=Alinto SOGo Repository
+baseurl=https://<username>:<password>@packages.sogo.nu/release/5/rhel/7/$basearch
 gpgcheck=1
 ----
 
@@ -214,12 +214,13 @@ Any non-URL safe characters in username/password must be URL-encoded.  For
 example, if your password is `so%go`, you must set the value in your
 configuration file to `so%25go` - where `%` is encoded to `%25`.
 
-Inverse signs its RPM packages with its GPG key. Integrity verification happens
+Alinto signs its RPM packages with its GPG key. Integrity verification happens
 all by itself on package installation, all you need to do is first import the
 key into your rpm keychain:
 
 ----
-rpm --import "https://pgp.mit.edu/pks/lookup?op=get&search=0xCB2D3A2AA0030E2C"
+rpm --import "http://pgp.mit.edu/pks/lookup?op=get&search=0xCB2D3A2AA0030E2C"
+rpm --import "https://keys.openpgp.org/vks/v1/by-fingerprint/74FFC6D72B925A34B5D356BDF8A27B36A6E2EAE9"
 ----
 
 Some of the softwares on which SOGo depends are available from the repository
@@ -236,7 +237,7 @@ For RHEL/CentOS 8
 yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 ----
 
-SOGo relies on the GNUstep and ytnef packages provided by Inverse and must not use the
+SOGo relies on the GNUstep and ytnef packages provided by Alinto and must not use the
 packages from EPEL. Adjust the repository definition to exclude those packages:
 
 ----
@@ -351,7 +352,7 @@ The following table describes the general parameters that can be set:
 |S |WOWorkersCount
 |The amount of instances of SOGo that will be spawned
 to handle multiple requests simultaneously. When started from the init
-script, that amount is overriden by the `PREFORK` value
+script, that amount is overridden by the `PREFORK` value
 in `/etc/sysconfig/sogo` or `/etc/default/sogo`. A value of 3 is a
 reasonable default for low usage. The maximum value depends on the CPU
 and IO power provided by your machine: a value set too high will
@@ -369,7 +370,8 @@ Defaults to 5 when unset.
 
 |S |WOPort
 |The TCP listening address and port used by the SOGo
-daemon. The format is `ipaddress:port`.
+daemon. The format is `ipaddress:port`. To bind to an IPv6 address, use
+`[ipv6address]:port`, e.g. `[::1]:20000`.
 
 Defaults to `127.0.0.1:20000` when unset.
 
@@ -822,10 +824,10 @@ is being installed.
 You can also, using the filter attribute, restrict the results to match
 various criteria. For example, you could define, in your
 `.GNUstepDefaults` file, the following filter to return only entries
-belonging to the organization _Inverse_ with a _mail_ address and
+belonging to the organization _Alinto_ with a _mail_ address and
 not _inactive_:
 
- filter = "(o='Inverse' AND mail='*' AND status <> 'inactive')";
+ filter = "(o='Alinto' AND mail='*' AND status <> 'inactive')";
 
 Since LDAP sources can serve as user repositories for authentication as
 well as address books, you can specify the following for each source to
@@ -914,7 +916,7 @@ would be:
     bindDN = "cn=sogo,ou=services,dc=inverse,dc=ca";
     bindPassword = zot;
     canAuthenticate = YES;
-    displayName = "Inverse Groups";
+    displayName = "Alinto Groups";
     hostname = ldap://127.0.0.1:389;
     id = inverse_groups;
     isAddressBook = YES;
@@ -937,7 +939,7 @@ even when using multiple domains.
 |The field that returns the complete name.
 
 |IDFieldName
-|The field that starts a user DN if bindFields is not used. This field
+|The field that starts a user DN if bindFields is not used. This field
 must be unique across the entire SOGo domain.
 
 |UIDFieldName
@@ -1136,14 +1138,14 @@ ModulesConstraints = {
 attributes used by the schema of the LDAP source.  Each entry must have
 an attribute name as key and an array of strings as value. This enables
 actual fields to be mapped one after another when fetching contact
-informations.
+information.
 
 See the LDAP Attribute Mapping section below for an example and a list
 of supported attributes.
 
 |objectClasses
 |When the _modifiers_ list (see below) is set, or when using LDAP-based
-user addressbooks (see _abOU_ below), this list of object classes will
+user address books (see _abOU_ below), this list of object classes will
 be applied to new records as they are created.
 
 |GroupObjectClasses
@@ -1156,7 +1158,7 @@ and `posixgroup`.
 modifications to the address book defined by this LDAP source.
 
 |abOU
-|This field enables LDAP-based user addressbooks by specifying the value
+|This field enables LDAP-based user address books by specifying the value
 of the address book container beneath each user entry, for example:
 `ou=addressbooks,uid=username,dc=domain`.
 |=======================================================================
@@ -1693,6 +1695,33 @@ userPasswordPolicy = (
 );
 ----
 
+Pre-defined constants can also be used :
+
+----
+userPasswordPolicy = (
+  {
+    label = "POLICY_MIN_LOWERCASE_LETTER";
+    value = 1;
+  },
+  {
+    label = "POLICY_MIN_UPPERCASE_LETTER";
+    value = 1;
+  },
+  {
+    label = "POLICY_MIN_DIGIT";
+    value = 2;
+  },
+  {
+    label = "POLICY_MIN_SPECIAL_SYMBOLS";
+    value = 1;
+  },
+  {
+    label = "POLICY_MIN_LENGTH";
+    value = 8;
+  }
+);
+----
+
 |userPasswordAlgorithm
 |The default algorithm used for password encryption when changing
 passwords. Possible values are: `none`, `plain`, `crypt`, `md5`,
@@ -1700,7 +1729,7 @@ passwords. Possible values are: `none`, `plain`, `crypt`, `md5`,
 `sha256-crypt`, `sha512`, `sha512-crypt`, its ssha (e.g. `ssha` or
 `ssha256`) variants, `blf-crypt`, `PBKDF2`, and `sym-aes-128-cbc`.
 The `argon2i` and `argon2id` password hashing algorithms are supported
-if SOGo is compiled with `libsodium`.
+if SOGo is compiled with `libsodium`. `argon2` is a synonym for `argon2i`.
 Passwords can have the scheme prepended in the form
 `{scheme}encryptedPass`.
 
@@ -2953,7 +2982,7 @@ http://www.microsoft.com/en-us/legal/intellectualproperty/
  
 and send an email to iplicreq@microsoft.com
 
-Inverse inc. provides this software for free, but is not responsible for
+Alinto provides this software for free, but is not responsible for
 anything related to its usage.
 
 Microsoft Enterprise ActiveSync Tuning
@@ -3069,8 +3098,8 @@ Mozilla Thunderbird and Lightning
 
 Alternatively, you can access SOGo with a GroupDAV and a CalDAV client.
 A typical well-integrated setup is to use Mozilla Thunderbird and
-Mozilla Lightning along with Inverse's _SOGo Connector_ plug in to
-synchronize your address books and the Inverse's _SOGo Integrator_ plug
+Mozilla Lightning along with Alinto's _SOGo Connector_ plug in to
+synchronize your address books and the Alinto's _SOGo Integrator_ plug
 in to provide a complete integration of the features of SOGo into
 Thunderbird and Lightning. Refer to the documentation of Thunderbird to
 configure an initial IMAP account pointing to your SOGo server and using

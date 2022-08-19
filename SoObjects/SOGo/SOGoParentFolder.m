@@ -178,7 +178,7 @@ static SoSecurityManager *sm = nil;
       [folder setDisplayName: [self defaultFolderName]];
       [folder setOCSPath: [NSString stringWithFormat: @"%@/%@", OCSPath, folderName]];
       
-      if ([folder create])
+      if (![folder create])
         [subFolders setObject: folder forKey: folderName];
     }
     else if (folderType == SOGoCollectedFolder)
@@ -190,7 +190,7 @@ static SoSecurityManager *sm = nil;
         [folder setDisplayName: [self collectedFolderName]];
         [folder setOCSPath: [NSString stringWithFormat: @"%@/%@", OCSPath, folderName]];
         
-        if ([folder create])
+        if (![folder create])
           [subFolders setObject: folder forKey: folderName];
         
         [ud setSelectedAddressBook:folderName];
@@ -406,14 +406,23 @@ static SoSecurityManager *sm = nil;
       [newFolder setDisplayName: name];
       [newFolder setOCSPath: [NSString stringWithFormat: @"%@/%@",
                                        OCSPath, newNameInContainer]];
-      if ([newFolder create])
+      error = [newFolder create];
+      if (!error)
 	{
 	  [subFolders setObject: newFolder forKey: newNameInContainer];
 	  error = nil;
 	}
+      else if ([[error name] isEqual: @"GCSExitingFolder"])
+        {
+          error = [self exceptionWithHTTPStatus: 405
+                                         reason: [error reason]];
+        }
       else
-        error = [self exceptionWithHTTPStatus: 400
-                                       reason: @"The new folder could not be created"];
+        {
+          [self errorWithFormat: @"An error occured when creating a folder: %@ - %@", [error name], [error reason]];
+          error = [self exceptionWithHTTPStatus: 400
+                                         reason: @"The new folder could not be created"];
+        }
     }
 
   return error;

@@ -1,5 +1,7 @@
 /* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 
+String.emailRE = /([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([\u00C0-\u017Fa-z0-9]{1}[\u00C0-\u017Fa-z0-9\-]{0,62}[\u00C0-\u017Fa-z0-9]{1})|[\u00C0-\u017Fa-z])\.)+[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)/;
+
 String.prototype.endsWith = function(suffix) {
   return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
@@ -135,10 +137,13 @@ String.prototype.formatted = function() {
 };
 
 String.prototype.isValidEmail = function(strict) {
-  var emailRE = strict ?
-      /^([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$/i : /([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)/i;
+  var result = emailRE.test(this);
 
-  return emailRE.test(this);
+  if (strict && result) {
+    result = emailRE.exec(this)[0] == this;
+  }
+
+  return result;
 };
 
 String.prototype.asCSSIdentifier = function() {

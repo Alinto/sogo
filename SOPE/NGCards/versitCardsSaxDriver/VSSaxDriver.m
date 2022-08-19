@@ -837,7 +837,7 @@ static NSCharacterSet *whitespaceCharSet = nil;
       /* a regular content tag */
     
       /* 
-         check whether the tga value is encoded in quoted printable,
+         check whether the tag value is encoded in quoted printable,
          this one is used with Outlook vCards (see data/ for examples)
       */
       // TODO: make the encoding check more generic
