@@ -279,9 +279,14 @@
     };
 
     this.destinationCalendars = function () {
-      if (this.component.isErasable)
+      if (this.component.isNew)
+        // New component, return all writable calendars
+        return Calendar.$findAll(null, true);
+      else if (this.component.isErasable)
+        // Movable component, return all writable calendars including current one
         return Calendar.$findAll(null, true, this.component.pid);
       else
+        // Component can't be moved
         return [Calendar.$get(this.component.pid)];
     };
 
