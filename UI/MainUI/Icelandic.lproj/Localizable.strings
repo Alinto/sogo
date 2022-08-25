@@ -61,7 +61,7 @@
 "AboutBox" = "Hugbúnaðarþróun Inverse hefur framleitt SOGo sem er hópvinnukerfi með öllum þáttum og nýjungum, sem hefur það að markmiði að vera einfalt og skalast vel.<br/><br/>
 SOGo býður upp á auðugt vefviðmót sem byggt er á AJAX viðmóti og það styður fjölda af biðlaraforritum með því að nota staðlaðar samskiptareglur eins og t.d. CalDAV og CardDAV.<br/><br/>
 SOGo er dreift í samkvæmt hugbúnaðarleyfinu <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> útgáfu 2 eða nýrri og sumum hlutum er dreift samkvæmt GNU LGPL útgáfu 2. Þetta er frjáls og opinn hugbúnaður: þér er frjálst að breyta honum og dreifa honum. Það er ENGIN ÁBYRGÐ, að því marki sem leyfilegt er, lögum samkvæmt.<br/><br/>
-Sjá <a href=\"http://www.sogo.nu/en/support/community.html\">þessa síðu</a> til að skoða ýmsa möguleika á þjónustu.";
+Sjá <a href=\"https://www.sogo.nu/support.html#/community\">þessa síðu</a> til að skoða ýmsa möguleika á þjónustu.";
 "Your account was locked due to too many failed attempts." = "Your account was locked due to too many failed attempts.";
 "Your account was locked due to an expired password." = "Your account was locked due to an expired password.";
 "Login failed due to unhandled error case" = "Login failed due to unhandled error case";

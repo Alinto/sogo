@@ -54,7 +54,7 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 "About" = "Apie";
-"AboutBox" = "SOGo yra višiskai funkcionalus grupinio darbo serveris, dėmesį kreipiantis mastą ir papratumą.  \nSOGo numato daug AJAX-pagrindo interneto sąsajų ir palaiko keletą vietinių klientų naudojant standartinius protokolus, tokius kaip CalDAV ir CardDAV.  \nSOGo yra platinamas pagal <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a>  2 versiją ar vėlesnę. Dalys yra platinamos pagal GNU LGPL 2 versiją. Tai yra nemoka programinė įranga: Jūs galite laisvai keisti ir platinti ją, kiek leidžia įstatymai.  \nIeškokite <a href=\"http://www.sogo.nu/en/support/community.html\">čia</a> apie įvairias palaikymo galimybes.";
+"AboutBox" = "SOGo yra višiskai funkcionalus grupinio darbo serveris, dėmesį kreipiantis mastą ir papratumą.  \nSOGo numato daug AJAX-pagrindo interneto sąsajų ir palaiko keletą vietinių klientų naudojant standartinius protokolus, tokius kaip CalDAV ir CardDAV.  \nSOGo yra platinamas pagal <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a>  2 versiją ar vėlesnę. Dalys yra platinamos pagal GNU LGPL 2 versiją. Tai yra nemoka programinė įranga: Jūs galite laisvai keisti ir platinti ją, kiek leidžia įstatymai.  \nIeškokite <a href=\"https://www.sogo.nu/support.html#/community\">čia</a> apie įvairias palaikymo galimybes.";
 "Your account was locked due to too many failed attempts." = "Jūsų paskyra užblokuota dėl daugelio klaidingų prisijungimų.";
 "Your account was locked due to an expired password." = "Jūsų paskyra užblokuota dėl pasibaigusio slaptažodžio.";
 "Login failed due to unhandled error case" = "Prisijungti nepavyko dėl neaiškios klaidos";
@@ -85,7 +85,7 @@
 "Confirmation" = "Patvirtinimas";
 "Cancel" = "Atšaukti";
 "Please wait..." = "Prašome palaukti...";
-"AboutBox" = "SOGo yra višiskai funkcionalus grupinio darbo serveris, dėmesį kreipiantis mastą ir papratumą.  \nSOGo numato daug AJAX-pagrindo interneto sąsajų ir palaiko keletą vietinių klientų naudojant standartinius protokolus, tokius kaip CalDAV ir CardDAV.  \nSOGo yra platinamas pagal <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a>  2 versiją ar vėlesnę. Dalys yra platinamos pagal GNU LGPL 2 versiją. Tai yra nemoka programinė įranga: Jūs galite laisvai keisti ir platinti ją, kiek leidžia įstatymai.  \nIeškokite <a href=\"http://www.sogo.nu/en/support/community.html\">čia</a> apie įvairias palaikymo galimybes.";
+"AboutBox" = "SOGo yra višiskai funkcionalus grupinio darbo serveris, dėmesį kreipiantis mastą ir papratumą.  \nSOGo numato daug AJAX-pagrindo interneto sąsajų ir palaiko keletą vietinių klientų naudojant standartinius protokolus, tokius kaip CalDAV ir CardDAV.  \nSOGo yra platinamas pagal <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a>  2 versiją ar vėlesnę. Dalys yra platinamos pagal GNU LGPL 2 versiją. Tai yra nemoka programinė įranga: Jūs galite laisvai keisti ir platinti ją, kiek leidžia įstatymai.  \nIeškokite <a href=\"https://www.sogo.nu/support.html#/community\">čia</a> apie įvairias palaikymo galimybes.";
 "Close" = "Uždarytis";
 "Missing search parameter" = "Trūksta paieškos parametrų";
 "Missing type parameter" = "Trūksta rūšes parametrų";

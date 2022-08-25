@@ -75,7 +75,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "O";
-"AboutBox" = "Vyvinuté Inverse, SOGo je plne vybavený groupware server s dôrazom na škálovateľnosť a jednoduchosť.<br/><br/>\nSOGo ponúka bohaté web rozhranie na báze AJAX-u a natívne podporuje mnoho klientov použitím štandardov, ako sú CalDAV a CardDAV.<br/><br/>\nSOGo je distribuované pod licenciou <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> verzie 2 alebo novšej a niektoré časti pod licenciou GNU LGPL verzie 2. Toto je voľne šíriteľný softvér: môžete ho meniť a šíriť ďalej. Neexistuje ŽIADNA ZÁRUKA v rozsahu povolenom zákonom.<br/><br/>\nPozrite si <a href=\"http://www.sogo.nu/en/support/community.html\">túto stránku</a> pre rôzne možnosti podpory.";
+"AboutBox" = "Vyvinuté Inverse, SOGo je plne vybavený groupware server s dôrazom na škálovateľnosť a jednoduchosť.<br/><br/>\nSOGo ponúka bohaté web rozhranie na báze AJAX-u a natívne podporuje mnoho klientov použitím štandardov, ako sú CalDAV a CardDAV.<br/><br/>\nSOGo je distribuované pod licenciou <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> verzie 2 alebo novšej a niektoré časti pod licenciou GNU LGPL verzie 2. Toto je voľne šíriteľný softvér: môžete ho meniť a šíriť ďalej. Neexistuje ŽIADNA ZÁRUKA v rozsahu povolenom zákonom.<br/><br/>\nPozrite si <a href=\"https://www.sogo.nu/support.html#/community\">túto stránku</a> pre rôzne možnosti podpory.";
 "Your account was locked due to too many failed attempts." = "Váš účet bol zablokovaný z dôvodu mnohých neúspešných pokusov o prihlásenie.";
 "Your account was locked due to an expired password." = "Váš účet bol zablokovaný z dôvodu vypršania platnosti hesla.";
 "Login failed due to unhandled error case" = "Prihlásenie zlyhalo z dôvodu nespracovanej chyby.";

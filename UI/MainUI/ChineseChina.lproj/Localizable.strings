@@ -68,7 +68,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "关于";
-"AboutBox" = "SOGo作为Inverse开发的产品,  是一款专注于可扩展及高易用性的全机能协作服务器软件。<br/><br/>\nSOGo 基于 AJAX，通过标准协议，如CalDAV和CardDAV，支持多种本地客户端。<br/><br/>\n SOGo 基于<a href=\"http://gnu.org/licenses/gpl.html\"> GNU GPL</a> version 2 或新版发布，并且部分基于GNU LGPL version 2: 这是一款自由软件,你可以在法律的允许范围内自由的修改发布。<br/><br/>\n请到<a href=\"http://www.sogo.nu/en/support/community.html\">这里</a>查看更多支持选项。";
+"AboutBox" = "SOGo作为Inverse开发的产品,  是一款专注于可扩展及高易用性的全机能协作服务器软件。<br/><br/>\nSOGo 基于 AJAX，通过标准协议，如CalDAV和CardDAV，支持多种本地客户端。<br/><br/>\n SOGo 基于<a href=\"http://gnu.org/licenses/gpl.html\"> GNU GPL</a> version 2 或新版发布，并且部分基于GNU LGPL version 2: 这是一款自由软件,你可以在法律的允许范围内自由的修改发布。<br/><br/>\n请到<a href=\"https://www.sogo.nu/support.html#/community\">这里</a>查看更多支持选项。";
 "Your account was locked due to too many failed attempts." = "错误次数上限，您的账户已被锁定。请联系管理员解锁。";
 "Your account was locked due to an expired password." = "您的账户因密码到期而锁定。";
 "Login failed due to unhandled error case" = "未知错误，登录失败";

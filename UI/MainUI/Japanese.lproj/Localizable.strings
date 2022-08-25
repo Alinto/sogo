@@ -68,7 +68,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "SOGoについて";
-"AboutBox" = "Inverseが開発したSOGoは、拡張性と単純さに重点を置いたフル装備のグループウェアサーバーです。<br/><br/>\nSOGoはAjaxに基づいたWebインターフェイスと、CalDAVとCardDavといった標準プロトコルを使用した機種固有の複数のアプリケーションをサポートしています。<br/><br/>\nSOGoは<a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a>バージョン2以降で、その一部はGNU LGPLバージョン2で配布されています。これはフリーソフトウェアです: 変更や再配布は自由にできます。法律で許される範囲内で無保証です。<br/><br/>\n様々なサポートの選択肢については、<a href=\"http://www.sogo.nu/en/support/community.html\">このページ</a>を参照してください。";
+"AboutBox" = "Inverseが開発したSOGoは、拡張性と単純さに重点を置いたフル装備のグループウェアサーバーです。<br/><br/>\nSOGoはAjaxに基づいたWebインターフェイスと、CalDAVとCardDavといった標準プロトコルを使用した機種固有の複数のアプリケーションをサポートしています。<br/><br/>\nSOGoは<a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a>バージョン2以降で、その一部はGNU LGPLバージョン2で配布されています。これはフリーソフトウェアです: 変更や再配布は自由にできます。法律で許される範囲内で無保証です。<br/><br/>\n様々なサポートの選択肢については、<a href=\"https://www.sogo.nu/support.html#/community\">このページ</a>を参照してください。";
 "Your account was locked due to too many failed attempts." = "ログインの失敗の回数が多すぎるためアカウントをロックしました。";
 "Your account was locked due to an expired password." = "パスワードの期限切れのためアカウントをロックしています。";
 "Login failed due to unhandled error case" = "対処できないエラーによりログインできませんでした。";
