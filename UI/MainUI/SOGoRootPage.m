@@ -206,6 +206,7 @@ static const NSString *kJwtKey = @"jwt";
   WOCookie *authCookie, *xsrfCookie;
   SOGoWebAuthenticator *auth;
   SOGoUserDefaults *ud;
+  SOGoUserSettings *us;
   SOGoUser *loggedInUser;
   NSDictionary *params;
   NSString *username, *password, *language, *domain, *remoteHost;
