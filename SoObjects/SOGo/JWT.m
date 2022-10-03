@@ -124,7 +124,7 @@ static const NSString *kTyp = @"JWT";
    unsigned char hs256[HS256_TOKEN_LENGH] = {};
    NSString *headerBase64, *payloadBase64, *content, *token;
    NSArray *sortedKeys;
-   NSMutableDictionary *sortedDict
+   NSMutableDictionary *sortedDict;
 
    // Reorder dictionary keys
    sortedKeys = [[dict allKeys] sortedArrayUsingSelector: @selector(compare:)];
