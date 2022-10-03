@@ -317,7 +317,9 @@
           row = [channel fetchAttributes: attrs  withZone: NULL];
           value = [row objectForKey: @"c_password"];
 
-          rc = [self _isPassword: _pwd  equalTo: value];
+          if (_pwd != (id)[NSNull null]) {
+            rc = [self _isPassword: _pwd  equalTo: value];
+          }
           [channel cancelFetch];
         }
       else
@@ -338,11 +340,13 @@
  * @param oldPassword the previous password.
  * @param newPassword the new password.
  * @param perr will be set if the new password is not conform to the policy.
+ * @param passwordRecovery YES of this is password recovery, NO otherwise. If password recovery is set, old password won't be checked
  * @return YES if the password was successfully changed.
  */
 - (BOOL) changePasswordForLogin: (NSString *) login
                     oldPassword: (NSString *) oldPassword
                     newPassword: (NSString *) newPassword
+               passwordRecovery: (BOOL) passwordRecovery
                            perr: (SOGoPasswordPolicyError *) perr
 {
   BOOL didChange, isOldPwdOk, isPolicyOk;
@@ -362,7 +366,7 @@
   // Verify current password
   isOldPwdOk = [self checkLogin:login password:oldPassword perr:perr expire:0 grace:0];
 
-  if (isOldPwdOk)
+  if (isOldPwdOk || passwordRecovery)
     {
       if ([_userPasswordPolicy count])
         {
@@ -386,7 +390,7 @@
         }
     }
 
-  if (isOldPwdOk && isPolicyOk)
+  if ((isOldPwdOk || passwordRecovery) && isPolicyOk)
     {
       // Encrypt new password
       NSString *encryptedPassword = [self _encryptPassword: newPassword];

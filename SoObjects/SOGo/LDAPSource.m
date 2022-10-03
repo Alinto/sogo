@@ -708,14 +708,20 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   return didChange;
 }
 
-//
-//
-//
+/**
+ * Change a user's password.
+ * @param login the user's login name.
+ * @param oldPassword the previous password.
+ * @param newPassword the new password.
+ * @param perr will be set if the new password is not conform to the policy.
+ * @param passwordRecovery YES of this is password recovery, NO otherwise. If password recovery is set, old password won't be checked
+ * @return YES if the password was successfully changed.
+ */
 - (BOOL) changePasswordForLogin: (NSString *) login
                     oldPassword: (NSString *) oldPassword
                     newPassword: (NSString *) newPassword
+               passwordRecovery: (BOOL) passwordRecovery
                            perr: (SOGoPasswordPolicyError *) perr
-
 {
   NGLdapConnection *bindConnection;
   NSString *userDN;

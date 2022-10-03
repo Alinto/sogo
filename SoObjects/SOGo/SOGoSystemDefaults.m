@@ -755,4 +755,34 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return v;
 }
 
+- (BOOL) isPasswordRecoveryEnabled
+{
+  return [self boolForKey: @"SOGoPasswordRecovery"];
+}
+
+- (NSArray *) passwordRecoveryDomains
+{
+  static NSArray *passwordRecoveryDomains = nil;
+
+  if (!passwordRecoveryDomains)
+    {
+      passwordRecoveryDomains = [self stringArrayForKey: @"SOGoPasswordRecoveryDomains"];
+      [passwordRecoveryDomains retain];
+    }
+
+  return passwordRecoveryDomains;
+}
+
+- (NSString *) JWTSecret
+{
+  NSString *secret;
+
+  secret = [self stringForKey: @"SOGoJWTSecret"];
+
+  if (!secret)
+    secret = @"SOGo"; // Default secret
+
+  return secret;
+}
+
 @end

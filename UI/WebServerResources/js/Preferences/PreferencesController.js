@@ -55,6 +55,7 @@
           });
         });
     };
+    
 
     this.onDesktopNotificationsChange = function() {
       if (this.preferences.defaults.SOGoDesktopNotifications)

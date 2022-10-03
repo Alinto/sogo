@@ -72,6 +72,7 @@ SOGo_HEADER_FILES = \
 	SOGoDAVAuthenticator.h		\
 	SOGoProxyAuthenticator.h	\
 	SOGoStaticAuthenticator.h	\
+	SOGoEmptyAuthenticator.h	\
 	SOGoWebAuthenticator.h		\
 	SOGoWebDAVAclManager.h		\
 	SOGoWebDAVValue.h		\
@@ -88,7 +89,9 @@ SOGo_HEADER_FILES = \
 	\
 	SOGoCredentialsFile.h		\
 	SOGoTextTemplateFile.h		\
-	SOGoZipArchiver.h
+	SOGoZipArchiver.h	\
+	\
+	JWT.h
 
 all::
 	@touch SOGoBuild.m
@@ -154,6 +157,7 @@ SOGo_OBJC_FILES = \
 	SOGoDAVAuthenticator.m		\
 	SOGoProxyAuthenticator.m	\
 	SOGoStaticAuthenticator.m	\
+	SOGoEmptyAuthenticator.m	\
 	SOGoWebAuthenticator.m		\
 	SOGoWebDAVAclManager.m		\
 	SOGoWebDAVValue.m		\
@@ -170,7 +174,9 @@ SOGo_OBJC_FILES = \
 	\
 	SOGoCredentialsFile.m		\
 	SOGoTextTemplateFile.m		\
-	SOGoZipArchiver.m
+	SOGoZipArchiver.m	\
+	\
+	JWT.m
 
 SOGo_C_FILES += lmhash.c aes.c crypt_blowfish.c pkcs5_pbkdf2.c
 

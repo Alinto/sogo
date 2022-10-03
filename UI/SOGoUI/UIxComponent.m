@@ -792,7 +792,12 @@ static SoProduct      *commonProduct      = nil;
   // needs to be created (or destroyed) during the session initialization
   if ([_actionName isEqualToString: @"connect"] ||
       [_actionName isEqualToString: @"changePassword"] ||
-      [_actionName isEqualToString: @"logoff"])
+      [_actionName isEqualToString: @"logoff"] ||
+      [_actionName isEqualToString: @"passwordRecovery"] ||
+      [_actionName isEqualToString: @"passwordRecoveryEmail"] || 
+      [_actionName isEqualToString: @"passwordRecoveryCheck"] || 
+      [_actionName isEqualToString: @"passwordRecoveryEnabled"]
+      )
     {
       return [super performActionNamed: _actionName];
     }

@@ -49,12 +49,16 @@
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoWebAuthenticator.h>
+#import <SOGo/SOGoEmptyAuthenticator.h>
+#import <SOGo/SOGoMailer.h>
 
 #if defined(MFA_CONFIG)
 #include <liboath/oath.h>
 #endif
 
 #import "SOGoRootPage.h"
+
+static const NSString *kJwtKey = @"jwt";
 
 @implementation SOGoRootPage
 
@@ -202,7 +206,6 @@
   WOCookie *authCookie, *xsrfCookie;
   SOGoWebAuthenticator *auth;
   SOGoUserDefaults *ud;
-  SOGoUserSettings *us;
   SOGoUser *loggedInUser;
   NSDictionary *params;
   NSString *username, *password, *language, *domain, *remoteHost;
@@ -626,6 +629,11 @@
   return ([[self loginDomains] count] > 0);
 }
 
+- (BOOL) hasPasswordRecovery
+{
+  return [[SOGoSystemDefaults sharedSystemDefaults] isPasswordRecoveryEnabled];
+}
+
 - (void) setItem: (id) _item
 {
   ASSIGN (item, _item);
@@ -671,7 +679,7 @@
 
 - (WOResponse *) changePasswordAction
 {
-  NSString *username, *domain, *password, *newPassword, *value;
+  NSString *username, *domain, *password, *newPassword, *value, *token;
   WOCookie *authCookie, *xsrfCookie;
   NSDictionary *message;
   NSArray *creds;
@@ -681,6 +689,7 @@
   SOGoWebAuthenticator *auth;
   WOResponse *response;
   WORequest *request;
+  BOOL passwordRecovery;
 
   request = [context request];
   message = [[request contentAsString] objectFromJSONString];
@@ -689,6 +698,7 @@
   value = [[context request] cookieValueForKey: [auth cookieNameInContext: context]];
   creds = nil;
   username = nil;
+  passwordRecovery = NO;
 
   if (value)
     {
@@ -711,6 +721,12 @@
   newPassword = [message objectForKey: @"newPassword"];
   // overwrite the value from the session to compare the actual input
   password = [message objectForKey: @"oldPassword"];
+  // get session id for password recovery
+  token = [message objectForKey: @"token"];
+  // If no old password but sessionid set, this is password recovery mode
+  if ((!password || password == [NSNull null]) && token) {
+    passwordRecovery = YES;
+  }
 
   // Validate required parameters
   if (!username)
@@ -718,7 +734,7 @@
      response = [self responseWithStatus: 403
                               andString: @"Missing 'username' parameter"];
     }
-  else if (!password)
+  else if (!password && !passwordRecovery)
     {
      response = [self responseWithStatus: 403
                               andString: @"Missing 'oldPassword' parameter"];
@@ -737,6 +753,8 @@
                             inDomain: domain
                          oldPassword: password
                          newPassword: newPassword
+                    passwordRecovery: passwordRecovery
+                               token: token
                                 perr: &error])
         {
           if (creds)
@@ -754,23 +772,238 @@
             }
 
           response = [self responseWith204];
-          authCookie = [auth cookieWithUsername: username
-                                    andPassword: newPassword
-                                      inContext: context];
-          [response addCookie: authCookie];
+          if (!passwordRecovery) {
+            authCookie = [auth cookieWithUsername: username
+                                      andPassword: newPassword
+                                        inContext: context];
+            [response addCookie: authCookie];
 
-          // We update the XSRF protection cookie
-          creds = [auth parseCredentials: [authCookie value]];
-          xsrfCookie = [WOCookie cookieWithName: @"XSRF-TOKEN"
-                                          value: [[SOGoSession valueForSessionKey: [creds lastObject]] asSHA1String]];
-          [xsrfCookie setPath: [NSString stringWithFormat: @"/%@/", [request applicationName]]];
-          [response addCookie: xsrfCookie];
+            // We update the XSRF protection cookie
+            creds = [auth parseCredentials: [authCookie value]];
+            xsrfCookie = [WOCookie cookieWithName: @"XSRF-TOKEN"
+                                            value: [[SOGoSession valueForSessionKey: [creds lastObject]] asSHA1String]];
+            [xsrfCookie setPath: [NSString stringWithFormat: @"/%@/", [request applicationName]]];
+            [response addCookie: xsrfCookie];
+          }
         }
       else
         response = [self _responseWithLDAPPolicyError: error];
     }
 
   return response;
+}
+
+/**
+ * This action get password recovery data for specified user (mode, secret question, recovery email)
+ * @return Response
+ */
+- (WOResponse *) passwordRecoveryAction
+{
+  NSString *username, *domain;
+  NSDictionary *jsonData, *message;
+  WORequest *request;
+  SOGoUserManager *um;
+
+  username = nil;
+  domain = nil;
+  request = [context request];
+
+  message = [[request contentAsString] objectFromJSONString];
+  username = [message objectForKey: @"userName"];
+  domain = [message objectForKey: @"domain"];
+  um = [SOGoUserManager sharedUserManager];
+
+
+  jsonData = [um getPasswordRecoveryInfosForUsername: username domain: domain];
+  return [self responseWithStatus: 200
+          andJSONRepresentation: jsonData];
+}
+
+/**
+ * This action generates JWT token and send password recovery mail
+ * Then the JWT token is passed and controlled to changePassword (when clicking on link)
+ * @return Response
+ */
+- (WOResponse *) passwordRecoveryEmailAction
+{
+  NSString *username, *domain, *mode, *uid, *mailDomain, *fromEmail, *toEmail, *jwtToken, *url, *mailContent;
+  NSDictionary *message, *info;
+  WORequest *request;
+  SOGoUserManager *um;
+  SOGoUserDefaults *userDefaults;
+  WOResponse *response;
+  SOGoDomainDefaults *dd;
+  SOGoUser *ownerUser;
+  SOGoMailer *mailer;
+  NSException *e;
+
+  username = nil;
+  domain = nil;
+  request = [context request];
+  message = [[request contentAsString] objectFromJSONString];
+  username = [message objectForKey: @"userName"];
+  domain = [message objectForKey: @"domain"];
+  mailDomain = [message objectForKey: @"mailDomain"];
+  mode = [message objectForKey: @"mode"];
+  um = [SOGoUserManager sharedUserManager];
+  jwtToken = [request formValueForKey:@"token"];
+
+  if (!mode && jwtToken) {
+    response = [self _standardDefaultAction];
+  } else if ([mode isEqualToString: SOGoPasswordRecoverySecondaryEmail]) {
+    if (mailDomain && username) {
+        // Email recovery
+
+        // Create email from
+        fromEmail = [NSString stringWithFormat:@"noreply@%@", mailDomain];
+
+        // Get password recovery email
+        info = [um contactInfosForUserWithUIDorEmail: username];
+        uid = [info objectForKey: @"c_uid"];
+        userDefaults = [SOGoUserDefaults defaultsForUser: uid
+                              inDomain: domain];
+        toEmail = [userDefaults passwordRecoverySecondaryEmail];
+
+        if (toEmail) {
+          // Generate token
+          jwtToken = [um generateAndSavePasswordRecoveryTokenWithUid: uid username: username domain: domain];
+
+          // Send mail
+          ownerUser = [SOGoUser userWithLogin: username];
+          dd = [ownerUser domainDefaults];
+          mailer = [SOGoMailer mailerWithDomainDefaults: dd];
+          url = [NSString stringWithFormat:@"%@%@?token=%@"
+                      , [[request headers] objectForKey:@"origin"]
+                      , [request uri]
+                      , jwtToken];
+
+          mailContent = [NSString stringWithFormat: @"Subject: %@\n\n%@"
+                            , [self labelForKey: @"Password reset"]
+                            , [self labelForKey: @"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}"]];
+          // Replace message placeholders
+          mailContent = [mailContent stringByReplacingOccurrencesOfString: @"%{0}" withString: username];
+          mailContent = [mailContent stringByReplacingOccurrencesOfString: @"%{1}" withString: url];
+          e = [mailer sendMailData: [mailContent dataUsingEncoding: NSUTF8StringEncoding]
+                      toRecipients: [NSArray arrayWithObjects: toEmail, nil]
+                            sender: fromEmail
+                 withAuthenticator: [SOGoEmptyAuthenticator sharedSOGoEmptyAuthenticator]
+                         inContext: [self context]];
+
+          if (!e) {
+            response = [self responseWithStatus: 200
+                andJSONRepresentation: nil];
+          } else {
+            [self logWithFormat: @"Password recovery exception for user %@ : %@", uid, [e reason]];
+            response = [self responseWithStatus: 403
+                              andString: @"Password recovery email in error"];
+          }
+        } else {
+          [self logWithFormat: @"No recovery email found for password recovery for user %@", uid];
+          response = [self responseWithStatus: 403
+                              andString: @"Invalid configuration for email password recovery"];
+        }
+    } else {
+      [self logWithFormat: @"No user domain found for password recovery"];
+      response = [self responseWithStatus: 403
+                              andString: @"Invalid configuration for email password recovery"];
+    }
+  }
+
+  return response;
+}
+ 
+/**
+ * This action check secret question answer and generates JWT token.
+ * Then the JWT token is passed and controlled to changePassword
+ * @return Response
+ */
+- (WOResponse *) passwordRecoveryCheckAction
+{
+  NSString *username, *domain, *token, *mode;
+  NSDictionary *message;
+  WORequest *request;
+  SOGoUserManager *um;
+  WOResponse *response;
+
+  username = nil;
+  domain = nil;
+  request = [context request];
+  message = [[request contentAsString] objectFromJSONString];
+  username = [message objectForKey: @"userName"];
+  domain = [message objectForKey: @"domain"];
+  mode = [message objectForKey: @"mode"];
+  um = [SOGoUserManager sharedUserManager];
+
+  if ([mode isEqualToString: SOGoPasswordRecoveryQuestion]) {
+    // Secret question recovery
+    token = [um getTokenAndCheckPasswordRecoveryDataForUsername: username domain: domain withData: message];
+    if (!token) {
+      response = [self responseWithStatus: 403
+                  andString: @"Invalid secret question answer"];
+    } else {
+      response = [self responseWithStatus: 200
+              andJSONRepresentation: [NSDictionary dictionaryWithObject: token forKey: kJwtKey]];
+    }
+  } else {
+    response = [self responseWithStatus: 403
+              andJSONRepresentation: nil];
+  }
+
+  return response;
+}
+
+/**
+ * Check if password recovery is enabled for user domain
+ * @return Response
+ */
+- (WOResponse *) passwordRecoveryEnabledAction
+{
+  NSString *username, *domain, *domainName;
+  NSArray *usernameComponents, *passwordRecoveryDomains;
+  NSDictionary *message, *result;
+  WORequest *request;
+
+  username = nil;
+  domain = nil;
+  domainName = nil;
+  result = nil;
+  request = [context request];
+
+  message = [[request contentAsString] objectFromJSONString];
+  username = [message objectForKey: @"userName"];
+  domain = [message objectForKey: @"domain"];
+  if ([[SOGoSystemDefaults sharedSystemDefaults]
+                             isPasswordRecoveryEnabled]) {
+      // If no domain, try to retrieve domain from username
+      if (nil != domain && domain != [NSNull null]) {
+        domainName = domain;
+      } else if (nil != username) {
+        usernameComponents = [username componentsSeparatedByString:@"@"]; // Split on @ and take right part
+        if (2 == [usernameComponents count]) {
+          domainName = [[usernameComponents objectAtIndex: 1] lowercaseString];
+        }
+      }
+
+      result = [NSDictionary dictionaryWithObject: domainName forKey: @"domain"];
+  }
+  
+  passwordRecoveryDomains = [[SOGoSystemDefaults sharedSystemDefaults]
+                             passwordRecoveryDomains];
+  if (![[SOGoSystemDefaults sharedSystemDefaults] isPasswordRecoveryEnabled]) {
+    return [self responseWithStatus: 403
+            andJSONRepresentation: nil];
+  } else if (username && [NSNull null] != username && 
+      domainName && passwordRecoveryDomains && 
+      [passwordRecoveryDomains containsObject: domainName]) {
+    return [self responseWithStatus: 200
+            andJSONRepresentation: result];
+  } else if (username && [NSNull null] != username && !passwordRecoveryDomains) {
+    return [self responseWithStatus: 200
+            andJSONRepresentation: result];
+  } else {
+    return [self responseWithStatus: 403
+            andJSONRepresentation: nil];
+  }
 }
 
 - (BOOL) isTotpEnabled

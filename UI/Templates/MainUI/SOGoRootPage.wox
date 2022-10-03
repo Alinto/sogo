@@ -41,72 +41,84 @@
             <var:if condition="hasLoginSuffix">
               <input type="hidden" ng-model="app.creds.loginSuffix" var:value="loginSuffix"/>
             </var:if>
-            <md-input-container class="md-block">
-              <label><var:string label:value="Username"/></label>
-              <md-icon>person</md-icon>
-              <input autocorrect="off" autocapitalize="off" type="text" ng-model="app.creds.username" ng-required="true"/>
-            </md-input-container>
-            <md-input-container class="md-block">
-              <label><var:string label:value="Password"/></label>
-              <md-icon>email</md-icon>
-              <input type="password" ng-model="app.creds.password" ng-required="true"/>
-            </md-input-container>
-
-            <!-- LANGUAGES SELECT -->
-            <div layout="row" layout-align="start end">
-              <md-icon>language</md-icon>
-              <md-input-container class="md-flex">
-                <label><var:string label:value="choose"/></label>
-                <md-select ng-model="app.creds.language"
-                           var:placeholder="localizedLanguage"
-                           ng-change="app.changeLanguage($event)">
-                  <var:foreach list="languages" item="item">
-                    <md-option var:value="item">
-                      <var:string value="languageText"/>
-                    </md-option>
-                  </var:foreach>
-                </md-select>
+            <div ng-if="!app.loginState">
+              <md-input-container class="md-block">
+                <label><var:string label:value="Username"/></label>
+                <md-icon>person</md-icon>
+                <input autocorrect="off" autocapitalize="off" type="text" ng-model="app.creds.username" ng-required="true" ng-change="app.usernameChanged()" ng-blur="app.retrievePasswordRecoveryEnabled()" />
               </md-input-container>
-            </div>
+              <md-input-container class="md-block">
+                <label><var:string label:value="Password"/></label>
+                <md-icon>email</md-icon>
+                <input type="password" ng-model="app.creds.password" ng-required="true"/>
+              </md-input-container>
+              
 
-            <!-- DOMAINS SELECT -->
-            <var:if condition="hasLoginDomains">
+              <!-- LANGUAGES SELECT -->
               <div layout="row" layout-align="start end">
-	        <md-icon>domain</md-icon>
+                <md-icon>language</md-icon>
                 <md-input-container class="md-flex">
-                  <md-select class="md-flex" ng-model="app.creds.domain" label:placeholder="choose">
-                    <var:foreach list="loginDomains" item="item">
+                  <label><var:string label:value="choose"/></label>
+                  <md-select ng-model="app.creds.language"
+                            var:placeholder="localizedLanguage"
+                            ng-change="app.changeLanguage($event)">
+                    <var:foreach list="languages" item="item">
                       <md-option var:value="item">
-                        <var:string value="item"/>
+                        <var:string value="languageText"/>
                       </md-option>
                     </var:foreach>
                   </md-select>
                 </md-input-container>
               </div>
-	    </var:if>
-            
-            <div layout="row" layout-align="center center">
-              <md-switch class="md-accent md-hue-2"
-                         ng-model="app.creds.rememberLogin"
-                         label:arial-label="Remember username">
-                <var:string label:value="Remember username"/>
-              </md-switch>
+
+              <!-- DOMAINS SELECT -->
+              <var:if condition="hasLoginDomains">
+                <div layout="row" layout-align="start end">
+                  <md-icon>domain</md-icon>
+                        <md-input-container class="md-flex">
+                          <md-select class="md-flex" ng-model="app.creds.domain" label:placeholder="choose" ng-change="app.retrievePasswordRecoveryEnabled()">
+                            <var:foreach list="loginDomains" item="item">
+                              <md-option var:value="item">
+                                <var:string value="item"/>
+                              </md-option>
+                            </var:foreach>
+                          </md-select>
+                        </md-input-container>
+                      </div>
+              </var:if>
+              
+              <div layout="row" layout-align="center center">
+                <md-switch class="md-accent md-hue-2"
+                          ng-model="app.creds.rememberLogin"
+                          label:arial-label="Remember username">
+                  <var:string label:value="Remember username"/>
+                </md-switch>
+              </div>
+            </div>
+
+            <!-- Password recovery -->
+            <div layout="row" layout-align="center center" ng-if="app.passwordRecovery.passwordRecoveryEnabled">
+              <div ng-if="app.showLogin">
+                <a href="#" ng-click="app.passwordRecoveryInfo()" sg-ripple-click="loginContent"><var:string label:value="Password lost"/></a>
+              </div>
             </div>
 
             <!-- CONNECT BUTTON -->
-            <div layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="space-between center" ng-if="!app.loginState">
               <md-button class="md-icon-button"
                          label:aria-label="About"
                          ng-click="app.showAbout()">
                 <md-icon>info</md-icon>
               </md-button>
-              <md-button class="md-fab md-accent md-hue-2" type="submit"
-                         label:aria-label="Connect"
-                         ng-if="!app.loginState"
-                         ng-disabled="loginForm.$invalid"
-                         sg-ripple-click="loginContent">
-                <md-icon>arrow_forward</md-icon>
-              </md-button>
+              <div>
+                <md-button class="md-fab md-accent md-hue-2" type="submit"
+                          label:aria-label="Connect"
+                          ng-if="!app.loginState"
+                          ng-disabled="loginForm.$invalid"
+                          sg-ripple-click="loginContent">
+                  <md-icon>arrow_forward</md-icon>
+                </md-button>
+              </div>
             </div>
 
           <sg-ripple class="md-default-theme md-accent md-bg"
@@ -181,16 +193,20 @@
             </div>
             </var:if>
 
-            <!-- Password policy: Password is expired -->
+            <!-- Password policy: Password is expired / password recovery-->
             <div layout="column" layout-align="center center"
-                 ng-switch-when="passwordexpired">
-              <md-icon class="md-accent md-hue-1 sg-icon--large">watch_later</md-icon>
-              <div class="md-default-theme md-accent md-hue-1 md-fg md-padding">
+                 ng-switch-when="passwordchange">
+              <md-icon class="md-accent md-hue-1 sg-icon--large" ng-if="!app.isInPasswordRecoveryMode()">watch_later</md-icon>
+              <md-icon class="md-accent md-hue-1 sg-icon--large" ng-if="app.isInPasswordRecoveryMode()">vpn_key</md-icon>
+              <div class="md-default-theme md-accent md-hue-1 md-fg md-padding" ng-if="!app.isInPasswordRecoveryMode()">
                 <var:string label:value="Your password has expired, please enter a new one below"/>
+              </div>
+              <div class="md-default-theme md-accent md-hue-1 md-fg md-padding" ng-if="app.isInPasswordRecoveryMode()">
+                <var:string label:value="Please enter a new password below"/>
               </div>
               <div flex="100">
                 <div layout="row" layout-xs="column">
-                 <md-input-container class="md-block" flex="flex">
+                 <md-input-container class="md-block" flex="flex" ng-if="!app.isInPasswordRecoveryMode()">
                     <label><var:string label:value="Current password"/>
                     </label>
                     <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.oldPassword"/>
@@ -239,6 +255,59 @@
               </div>
             </div>
 
+            <!-- Password recovery -->
+            <var:if condition="hasPasswordRecovery">
+              <div layout="column" layout-align="center center"
+                  ng-switch-when="passwordrecovery">
+                <md-icon class="md-accent md-hue-1 sg-icon--large">vpn_key</md-icon>
+                <div flex="100">
+                  <div layout="row" layout-xs="column" class="md-padding">
+                    <div ng-if="'SecretQuestion' === app.passwordRecovery.passwordRecoveryMode">
+                      {{ app.passwordRecovery.passwordRecoveryQuestion }}
+                      <md-input-container class="md-block">
+                        <label><var:string label:value="Answer"/></label>
+                        <input autocorrect="off" autocapitalize="off" type="text" ng-model="app.passwordRecovery.passwordRecoveryQuestionAnswer" />
+                      </md-input-container>
+                    </div>
+                    <div ng-if="'SecondaryEmail' === app.passwordRecovery.passwordRecoveryMode">
+                      {{ app.passwordRecovery.passwordRecoverySecondaryEmailText }}
+                    </div>
+                  </div>
+                  <div layout="row" layout-align="end center">
+                    <md-button ng-click="app.passwordRecoveryAbort()" type="button" >
+                      <var:string label:value="Back"/>
+                    </md-button>
+                    <div ng-if="'SecretQuestion' === app.passwordRecovery.passwordRecoveryMode">
+                      <md-button ng-click="app.passwordRecoveryCheck()" type="button" >
+                        <var:string label:value="Next"/>
+                      </md-button>
+                    </div>
+                    <div ng-if="'SecondaryEmail' === app.passwordRecovery.passwordRecoveryMode">
+                      <md-button ng-click="app.passwordRecoveryEmail()" type="button" >
+                        <var:string label:value="Next"/>
+                      </md-button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div layout="column" layout-align="center center"
+                  ng-switch-when="sendrecoverymail">
+                  <md-icon class="md-accent md-hue-1 sg-icon--large">local_shipping</md-icon>
+                <div flex="100">
+                  <div layout="row" layout-xs="column" class="md-padding">
+                    <div ng-if="'SecondaryEmail' === app.passwordRecovery.passwordRecoveryMode">
+                      <var:string label:value="A password reset link has been sent, please check your recovery e-mail mailbox and click on the link"/>
+                    </div>
+                  </div>
+                  <div layout="row" layout-align="end center">
+                    <md-button ng-click="app.passwordRecoveryAbort()" type="button" >
+                      <var:string label:value="Back"/>
+                    </md-button>
+                  </div>
+                </div>
+              </div>
+            </var:if>
+
             <!-- Logged in -->
             <div layout="column" layout-align="center center"
                  ng-switch-when="logged">
@@ -277,6 +346,7 @@
         </div>
       </div>
     </md-content>
+    
   </main>
 
   <script type="text/ng-template" id="aboutBox.html">

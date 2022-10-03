@@ -786,6 +786,29 @@ Default value is `YES`, or enabled.
 authentication and global address books. Multiple sources can be
 specified as an array of dictionaries.
 
+|S |SOGoPasswordRecovery
+|Boolean enable password recovery with secret question or secondary e-mail. Only for database user source.
+
+|S |SOGoPasswordRecoveryDomains
+|List of domains where password recovery is enabled. If empty, enabled for all domains
+
+|U |SOGoPasswordRecoveryMode
+|User password recovery mode. Values can be `Disabled`, `SecretQuestion` or `SecondaryEmail`.
+
+|U |SOGoPasswordRecoveryQuestion
+|User password recovery secret question. Values can be `SecretQuestion1`, `SecretQuestion2` or `SecretQuestion3`.
+
+|U |SOGoPasswordRecoveryQuestionAnswer
+|User password recovery secret question answer when mode is `SecretQuestion`.
+
+|U |SOGoPasswordRecoverySecondaryEmail
+|User password recovery e-mail when mode is `SecondaryEmail`.
+
+|S |SOGoJWTSecret
+|JWT secret according to RFC-7519. Default value is `SOGo`.
+
+
+
 |=======================================================================
 
 Authentication using LDAP

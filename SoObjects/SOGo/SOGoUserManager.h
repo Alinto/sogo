@@ -99,9 +99,16 @@
 
 - (BOOL) changePasswordForLogin: (NSString *) login
                        inDomain: (NSString *) domain
-		    oldPassword: (NSString *) oldPassword
-		    newPassword: (NSString *) newPassword
-			   perr: (SOGoPasswordPolicyError *) perr;
+                    oldPassword: (NSString *) oldPassword
+                    newPassword: (NSString *) newPassword
+               passwordRecovery: (BOOL) passwordRecovery
+                          token: (NSString *) token
+                           perr: (SOGoPasswordPolicyError *) perr;
+- (NSDictionary *) getPasswordRecoveryInfosForUsername: (NSString *) username domain:(NSString *) domain;
+- (NSString *) generateAndSavePasswordRecoveryTokenWithUid: (NSString *) uid username: (NSString *) username domain:(NSString *) domain;
+- (NSString *) getTokenAndCheckPasswordRecoveryDataForUsername: (NSString *) username domain:(NSString *) domain withData:(NSDictionary *) passwordRecoveryData;
+- (NSString *) getPasswordRecoveryTokenFor: (NSString *) username domain:(NSString *) domain;
+- (BOOL) isPasswordRecoveryTokenValidFor: (NSString *) token uid: (NSString *) uid;
 @end
 
 #endif /* SOGOUSERMANAGER_H */

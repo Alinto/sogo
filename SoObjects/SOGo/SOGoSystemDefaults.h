@@ -115,6 +115,10 @@
 - (int) maximumPictureSize;
 - (BOOL) easSearchInBody;
 
+- (BOOL) isPasswordRecoveryEnabled;
+- (NSArray *) passwordRecoveryDomains;
+- (NSString *) JWTSecret;
+
 @end
 
 #endif /* SOGOSYSTEMDEFAULTS_H */

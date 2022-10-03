@@ -394,6 +394,26 @@
   };
 
   /**
+   * @function isItemSecretQuestion
+   * @memberof Preferences.prototype
+   * @desc Check if the customer pick the secret question for e-mail recovery
+   * @returns true if secret question is selected
+   */
+  Preferences.prototype.isItemSecretQuestion = function() {
+    return "SecretQuestion" == this.defaults.SOGoPasswordRecoveryMode;
+  };
+
+  /**
+   * @function isItemSecondaryEmail
+   * @memberof Preferences.prototype
+   * @desc Check if the customer pick the email for password recovery
+   * @returns true if email is selected
+   */
+  Preferences.prototype.isItemSecondaryEmail = function () {
+    return "SecondaryEmail" == this.defaults.SOGoPasswordRecoveryMode;
+  };
+
+  /**
    * @function authorizeNotifications
    * @memberof Preferences.prototype
    * @desc Request authorization to send notifications
