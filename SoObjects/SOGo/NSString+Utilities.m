@@ -90,7 +90,7 @@ static int cssEscapingCount;
 {
   NSRange r;
   NSString *newUrl;
-  
+
   r = [self rangeOfString:@"?" options: NSBackwardsSearch];
   if (r.length > 0)
     newUrl = [self substringToIndex: NSMaxRange (r) - 1];
@@ -187,7 +187,7 @@ static int cssEscapingCount;
       [selfCopy replaceCharactersInRange: *rangePtr
                               withString: newUrlText];
       offset += ([newUrlText length] - [urlText length]);
-      
+
       // Add range for further substitutions
       currentUrlRange = NSMakeRange (rangePtr->location, [newUrlText length]);
       [ranges addNonNSObject: &currentUrlRange
@@ -379,7 +379,7 @@ static int cssEscapingCount;
 
   if ([self length] == 0) return @"";
 
-  data = [self dataUsingEncoding: NSUTF32StringEncoding];
+  data = [self dataUsingEncoding: NSUTF32LittleEndianStringEncoding];
   chars = [data bytes];
   len = [data length]/4;
 
@@ -456,7 +456,7 @@ static int cssEscapingCount;
 
   self = [[NSString alloc] initWithBytesNoCopy: buf
                                         length: (j*sizeof(wchar_t))
-                                      encoding: NSUTF32StringEncoding
+                                      encoding: NSUTF32LittleEndianStringEncoding
                                   freeWhenDone: YES];
   return [self autorelease];
 }
@@ -698,7 +698,7 @@ static int cssEscapingCount;
     }
   else
     time = -1;
-  
+
   return time;
 }
 
@@ -806,7 +806,7 @@ static int cssEscapingCount;
   newString = [NSString stringWithFormat: @"%@%@",
                         newPrefix,
                 [self substringFromIndex: oldPrefixLength]];
-  
+
   return newString;
 }
 
@@ -817,7 +817,7 @@ static int cssEscapingCount;
   NSString *result;
   NSUInteger i, passLength, theKeyLength, keyLength;
   unichar p, k, e;
- 
+
   if ([theKey length] > 0)
     {
       // The length of the key must be greater (or equal) than
@@ -832,7 +832,7 @@ static int cssEscapingCount;
           [key appendString: theKey];
           keyLength += theKeyLength;
         }
- 
+
       encryptedPassword = [NSMutableData data];
       for (i = 0; i < passLength; i++)
         {
@@ -841,15 +841,15 @@ static int cssEscapingCount;
           e = p ^ k;
           [encryptedPassword appendBytes: (void *)&e length: 2];
         }
- 
+
       result = [encryptedPassword stringByEncodingBase64];
     }
   else
     result = nil;
- 
+
   return result;
 }
- 
+
 - (NSString *) decryptWithKey: (NSString *) theKey
 {
   NSMutableString *result;
@@ -858,7 +858,7 @@ static int cssEscapingCount;
   unichar *decryptedPassword;
   NSUInteger i, theKeyLength, keyLength, decodedLength;
   unichar p, k;
- 
+
   if ([theKey length] > 0)
     {
       decoded = [self dataByDecodingBase64];
@@ -870,13 +870,13 @@ static int cssEscapingCount;
       keyLength = 0;
       decodedLength = ([decoded length] / 2); /* 1 unichar = 2 bytes/char */
       theKeyLength = [theKey length];
- 
+
       while (keyLength < decodedLength)
         {
           [key appendString: theKey];
           keyLength += theKeyLength;
         }
- 
+
       result = [NSMutableString string];
       for (i = 0; i < decodedLength; i++)
         {
