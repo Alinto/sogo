@@ -984,8 +984,10 @@ static const NSString *kJwtKey = @"jwt";
           domainName = [[usernameComponents objectAtIndex: 1] lowercaseString];
         }
       }
-
-      result = [NSDictionary dictionaryWithObject: domainName forKey: @"domain"];
+      
+      if (domainName) {
+        result = [NSDictionary dictionaryWithObject: domainName forKey: @"domain"];
+      }
   }
   
   passwordRecoveryDomains = [[SOGoSystemDefaults sharedSystemDefaults]

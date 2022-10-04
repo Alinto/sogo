@@ -757,7 +757,7 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
 
 - (BOOL) isPasswordRecoveryEnabled
 {
-  return [self boolForKey: @"SOGoPasswordRecovery"];
+  return [self boolForKey: @"SOGoPasswordRecoveryEnabled"];
 }
 
 - (NSArray *) passwordRecoveryDomains

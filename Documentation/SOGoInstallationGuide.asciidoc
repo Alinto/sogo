@@ -786,7 +786,7 @@ Default value is `YES`, or enabled.
 authentication and global address books. Multiple sources can be
 specified as an array of dictionaries.
 
-|S |SOGoPasswordRecovery
+|S |SOGoPasswordRecoveryEnabled
 |Boolean enable password recovery with secret question or secondary e-mail. Only for database user source.
 
 |S |SOGoPasswordRecoveryDomains
