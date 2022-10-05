@@ -384,6 +384,12 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return [self boolForKey: @"SOGoEnableEMailAlarms"];
 }
 
+- (BOOL) disableOrganizerEventCheck
+{
+  return [self boolForKey: @"SOGoDisableOrganizerEventCheck"];
+}
+
+
 - (NSString *) faviconRelativeURL
 {
   return [self stringForKey: @"SOGoFaviconRelativeURL"];
@@ -784,5 +790,6 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
 
   return secret;
 }
+
 
 @end

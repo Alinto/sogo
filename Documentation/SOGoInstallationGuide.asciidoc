@@ -1528,6 +1528,9 @@ URL could be set to something like:
 
 See the "EMail reminders" section in this document for more information.
 
+|S |SOGoDisableOrganizerEventCheck
+|Parameter used to disable organizer's calendar event check
+
 |S |OCSStoreURL
 |Parameter used to set the database URL so that SOGo can use to store
 all content data. You must also set `OCSAclURL` and `OCSCacheFolderURL`

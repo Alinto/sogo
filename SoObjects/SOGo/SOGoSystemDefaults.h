@@ -50,6 +50,8 @@
 
 - (BOOL) enableEMailAlarms;
 
+- (BOOL) disableOrganizerEventCheck;
+
 - (NSString *) faviconRelativeURL;
 - (NSString *) zipPath;
 - (int) port;
