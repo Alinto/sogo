@@ -153,9 +153,7 @@
     this.restoreLogin = function() {
       vm.loginState = false;
       delete vm.creds.verificationCode;
-      if (vm.isInPasswordRecoveryMode()) {
-        vm.passwordRecoveryAbort();
-      }
+      vm.passwordRecoveryAbort();
     };
 
     this.continueLogin = function() {
