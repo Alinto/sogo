@@ -17,6 +17,12 @@ $sg-login-width: grid-step(5);
       }
     }
 
+    .password-lost-link {
+      color: rgb(255, 255, 255);
+      font-size: 0.9em;
+      text-decoration: none;
+    }
+
     // Overwrite Chrome autofill yellow background
     // http://stackoverflow.com/questions/2781549/removing-input-background-colour-for-chrome-autocomplete
     @-webkit-keyframes autofill {

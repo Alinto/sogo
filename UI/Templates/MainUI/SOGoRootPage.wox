@@ -99,7 +99,7 @@
             <!-- Password recovery -->
             <div layout="row" layout-align="center center" ng-if="app.passwordRecovery.passwordRecoveryEnabled">
               <div ng-if="app.showLogin">
-                <a href="#" ng-click="app.passwordRecoveryInfo()" sg-ripple-click="loginContent"><var:string label:value="Password lost"/></a>
+                <a href="#" ng-click="app.passwordRecoveryInfo()" sg-ripple-click="loginContent" class="password-lost-link"><var:string label:value="Password lost"/></a>
               </div>
             </div>
 
