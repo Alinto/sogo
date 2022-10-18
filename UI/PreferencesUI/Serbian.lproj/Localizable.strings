@@ -44,11 +44,18 @@
 "Add default email addresses" = "Додај подразумевану адресу епоште";
 "Days between responses" = "Дани између одговора";
 "Do not send responses to mailing lists" = "Не одговарај на поштанске листе";
+"Activation Constraints" = "Активирање ограничења";
 "Enable auto reply on" = "Омогући аутоматски одговор ";
 "First day of vacation" = "Први дан одмора";
 "Disable auto reply on" = "Онемогући аутоматски одговор ";
 "Last day of vacation" = "Последњи дан одмора";
 "Enter date" = "Унесите датум";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Омогући аутоматски одговор у";
+"Enter time" = "Унесите време";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Онемогући аутоматски одговор у";
+"Enable auto reply on these days" = "Омогући аутоматски одговор овим данима";
 "Always send vacation message response" = "Увек пошаљи поруку аутоматског одговора за време одмора";
 "The vacation message is sent prior to apply your filters." = "Порука за одмор се шаље пре примене Ваших филтера.";
 "Discard incoming mails during vacation" = "Одбаците долазну пошту током одмора";
@@ -61,6 +68,8 @@
 
 /* forward messages */
 "Forward incoming messages" = "Проследите долазне поруке";
+"Always forward" = "Увек проследи";
+"Incoming messages are forwarded prior to apply your filters." = "Долазне поруке се прослеђују пре него што се примене Ваши филтери.";
 "Keep a copy" = "Задржите копију";
 "Enter an email" = "Унесите адресу ел. поште";
 "Add another email" = "Додајте адресу ел. поште";
@@ -194,6 +203,10 @@
 "displayremoteinlineimages_always" = "Увек";
 "Auto save every" = "Аутоматски сачувај на сваких";
 "minutes" = "минута";
+"Automatically mark messages as read" = "Аутоматски обележи поруке као прочитане";
+"Immediately on display" = "Одмах прикажи";
+"After displaying for" = "После приказивања за";
+"seconds" = "секунде";
 
 /* Contact */
 "Personal Address Book" = "Лични адресар";
@@ -244,6 +257,12 @@
 "Confirmation" = "Потврда";
 "Change" = "Измени";
 "Passwords don't match" = "Лозинке се не подударају";
+"POLICY_MIN_LOWERCASE_LETTER" = "Минимум %{0} малих слова";
+"POLICY_MIN_UPPERCASE_LETTER" = "Минимум %{0} великих слова";
+"POLICY_MIN_DIGIT" = "Минимум %{0} бројева";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Минимум %{0} специјалних карактера";
+"POLICY_MIN_LENGTH" = "Минимална дужина је %{0} карактера";
+
 
 /* Event+task classifications */
 "Default events classification" = "Подразумевана класификација догађаја";
@@ -471,3 +490,11 @@
 "An external Sieve script is active" = "Екстерна Sieve скрипта је активна";
 "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve је програмски језик за филтрирање електронске поште. Уколико SOGo управља вашим филтерима, подешавањима одмора и прослеђивањем порука, ваша активна скрипта биће онемогућена-";
 "Let SOGo handle everything" = "Нека SOGo управља свиме";
+
+/* Password Recovery */
+"Password recovery mode" = "Password recovery";
+"Question" = "Question";
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password recovery" = "Password recovery";
+"Password change" = "Password change";
