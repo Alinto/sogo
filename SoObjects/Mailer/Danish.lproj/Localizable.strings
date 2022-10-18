@@ -1,2 +1,5 @@
-"SieveFolderName"  = "Filtre";
 "OtherUsersFolderName"   = "Andre brugere";
+"SharedFoldersName" = "Delte mapper";
+
+"Report: Marked messages as junk" = "Rapport: De markerede meddelelser er uønsket post";
+"Report: Marked messages as not junk" = "Rapport: De markerede meddelelser er ikke uønsket post";

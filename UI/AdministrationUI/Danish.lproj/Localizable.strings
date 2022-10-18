@@ -9,3 +9,19 @@
 "ACLs_title" = "Users folders ACLs management";
 /* Modules descriptions */
 "ACLs_description" = "<p>The Access Control Lists administration module allows to change the ACLs of each user's Calendars and Address books.</p><p>To modify the ACLs of a user's folder, type the name of the user in the search field at the top of the window and double-click on the desired folder.</p>";
+"Name or Email" = "Navn eller e-mail";
+"ACLs saved" = "ACLs gemt";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Start en søgning for at redigere rettighederne";
+/* Rights module: Empty search result */
+"No matching user" = "Ingen matchende bruger";
+/* Rights module: no selection */
+"No resource selected" = "Ingen ressource valgt";
+"Add User" = "Tilføj bruger";
+"Subscribe User" = "Tilmeld bruger";
+"Rights" = "Rettigheder";
+"Search Users" = "Søg brugere";
+"users found" = "Brugere fundet";
+"No resource" = "Ingen ressource";
+"Any Authenticated User" = "Enhver godkendt bruger";
+"Public Access" = "Offentlig adgang";
