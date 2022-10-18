@@ -112,8 +112,8 @@
 "Missing type parameter" = "Paramètre de type manquant";
 
 /* Password Recovery */
-"Answer" = "Réponse";
 "Secondary e-mail" = "E-mail secondaire";
+"Answer" = "Réponse";
 "Password lost" = "Mot de passe perdu";
 "No password recovery method has been defined for this user" = "Aucune méthode de récupération de mot de passe n'a été définie pour cet utilisateur";
 "Invalid secret question answer" = "La réponse à la question secrète n'est pas valide";
