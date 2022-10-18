@@ -3,6 +3,18 @@
 "Close" = "Avslutt";
 "Preferences saved" = "Preferanser lagret";
 
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Endringer ikke lagret";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Vil du lagre endringene du har gjort i konfigurasjonen? ";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Lagre";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Ikke lagre";
+
 /* tabs */
 "General" = "Generelt";
 "Calendar Options" = "Kalenderinnstillinger";
@@ -24,13 +36,30 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Aktiver auto-svar ved fravær";
+"Enable custom auto reply subject" = "Aktiver tilpasset autosvaremne ";
+"Auto reply subject" = "Autosvar emne ";
+"You can write ${subject} to insert the original subject" = "Du kan skrive ${emne} for å sette inn det originale emnet ";
 "Auto reply message" = "Auto-svar melding";
-"Email addresses (separated by commas)" = "E-postadresser (separert med komma)";
+"Email addresses" = "E-postadresser";
 "Add default email addresses" = "Legg til standard e-postadresser";
 "Days between responses" = "Dager mellom svar";
 "Do not send responses to mailing lists" = "Ikke send svar til e-postlister";
+"Activation Constraints" = "Aktiveringsbegrensninger ";
+"Enable auto reply on" = "Aktiver automatisk svar på";
+"First day of vacation" = "Første feriedag";
 "Disable auto reply on" = "Skru av auto-svar";
+"Last day of vacation" = "Siste feriedag";
+"Enter date" = "Legg til dato";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Aktiver automatisk svar kl";
+"Enter time" = "Legg til klokkeslett";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Skru av autosvar kl. ";
+"Enable auto reply on these days" = "Aktiver automatisk svar for disse dagene";
 "Always send vacation message response" = "Alltid send ferie melding";
+"The vacation message is sent prior to apply your filters." = "Feriemeldingen sendes før du bruker filtrene dine. ";
+"Discard incoming mails during vacation" = "Kast innkommende e-post under ferie";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Feriemeldingen sendes, men innkommende meldinger leveres ikke til innboksen din. ";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Skriv melding og angi din e-postadresse som du vil aktivere auto-svar for.";
 "Your vacation message must not end with a single dot on a line." = "Fraværsmeldingen kan ikke slutte med ett ensomt punktum på en linje.";
@@ -39,14 +68,19 @@
 
 /* forward messages */
 "Forward incoming messages" = "Videresend innkommende e-post";
+"Always forward" = "Alltid videresende";
+"Incoming messages are forwarded prior to apply your filters." = "Innkommende meldinger videresendes før du bruker filtrene dine. ";
 "Keep a copy" = "Behold en kopi";
+"Enter an email" = "Skriv inn en e-post";
+"Add another email" = "Legg til en e-post";
 "Please specify an address to which you want to forward your messages."
 = "Angi adressen du vil videresende dine meldinger til.";
 "You are not allowed to forward your messages to an external email address." = "Du har ikke lov til å videresende mail til en ekstern e-mail addresse.";
 "You are not allowed to forward your messages to an internal email address." = "Du har ikke love til å videresende mail til en ekstern e-mail addresse.";
+"You are not allowed to forward your messages to this domain:" = "Du har ikke lov til å videresende meldinger til dette domenet: ";
 
 /* d & t */
-"Current Time Zone" = "Gjeldende tidssone";
+"Time Zone" = "Tidssone";
 "Short Date Format" = "Kort datoformat";
 "Long Date Format" = "Langt datoformat";
 "Time Format" = "Tidsformat";
@@ -68,22 +102,36 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
-   
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
+
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
 "longDateFmt_2" = "%A, %d %B, %Y";
 "longDateFmt_3" = "%d %B, %Y";
 "longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
 "timeFmt_0" = "%I:%M %p";
 "timeFmt_1" = "%H:%M";
 "timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
+
+/* Timezone autocompletion */
+"No matches found." = "Ingen treff";
 
 /* calendar */
 "Week begins on" = "Uken begynner med";
 "Day start time" = "Dagen begynner kl.";
 "Day end time" = "Dagen slutter kl.";
 "Day start time must be prior to day end time." = "Dagens starttid må være før dagens sluttid.";
+"Week days to display" = "Ukedager å vise ";
 "Show time as busy outside working hours" = "Vis tid som opptatt utenfor arbeidstid";
 "First week of year" = "Første uken i året";
 "Enable reminders for Calendar items" = "Aktivere påminnelser for kalenderelementer";
@@ -95,6 +143,8 @@
 "Prevent from being invited to appointments" = "Hindre fra å bli invitert til avtaler";
 "White list for appointment invitations" = "Hviteliste for avtale invitasjoner";
 "Contacts Names" = "Kontakters navn";
+"Duplicate name" = "Duplikatnavn";
+"Calendar categories must have unique names." = "Kalenderkategorier må ha ulike navn.";
 
 /* Default Calendar */
 "Default calendar" = "Standard kalender";
@@ -118,8 +168,18 @@
 /* Mailer */
 "Labels" = "Merkelapper";
 "Label" = "Etikett";
+"IMAP Label" = "IMAP etikett ";
+"Invalid label" = "Ikke bruk mellomrom eller ( ) { } % * \" \\";
+"Duplicate label" = "Duplikatetikett ";
+"IMAP labels must have unique names." = "IMAP etiketter må ha ulike navn. ";
+"New label" = "Ny etikett ";
 "Show subscribed mailboxes only" = "Vis bare abonnerte postbokser";
+"Synchronize only default mail folders (EAS)" = "Synkroniser kun standard e-postmapper (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Hent alle usette meldinger for alle postbokser";
 "Sort messages by threads" = "Sorter meldinger etter tråder";
+"Always open mail composer" = "Alltid åpne postkomponist ";
+"Inside current window" = "Inne i gjeldende vindu";
+"In a popup window" = "I et pop-up vindu";
 "When sending mail, add unknown recipients to my" = "Ved sending av mail, legg til ukjente mottakere til min";
 "Address Book" = "Adressebok";
 "Forward messages" = "Videresend meldinger";
@@ -134,17 +194,28 @@
 "Compose messages in" = "Opprett melding i";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Ren text";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Standard skriftstørrelse ";
+
 "Display remote inline images" = "Vis bilder lenket til fra andre nettsteder";
 "displayremoteinlineimages_never" = "Aldri";
 "displayremoteinlineimages_always" = "Alltid";
 "Auto save every" = "Lagre automatisk";
 "minutes" = "minutter";
+"Automatically mark messages as read" = "Merk meldinger som lest automatisk ";
+"Immediately on display" = "Umiddelbart utstilt ";
+"After displaying for" = "Etter å ha vist for ";
+"seconds" = "sekunder";
 
 /* Contact */
 "Personal Address Book" = "Personlig addressebok";
 "Collected Address Book" = "Samlet addressebok";
+"Contact categories must have unique names." = "Kontaktkategorier må ha ulike navn. ";
 
 /* IMAP Accounts */
+"Settings" = "Innstillinger ";
+"Security" = "Sikkerhet";
 "Mail Account" = "Epost konto";
 "New Mail Account" = "Ny e-postkonto";
 "Server Name" = "Servernavn";
@@ -156,18 +227,42 @@
 "Email" = "E-post";
 "Reply To Email" = "Svar til e-post";
 "Signature" = "Signatur";
+"Identities" = "Identiteter ";
+"Always use the default identity when replying to messages" = "Bruk alltid standardidentiteten når du svarer på meldinger ";
+"Default Identity" = "Standard identitet";
+"New Identity" = "Ny identitet ";
 "(Click to create)" = "(Klikk for å opprette)";
 "Please enter your signature below" = "Vennligst fyll ut signatur under";
 "Please specify a valid sender address." = "Vennligst angi en gyldig avsenderadresse.";
 "Please specify a valid reply-to address." = "Vennligst angi en gyldig svar-til-adresse.";
+"Specify a hostname other than the local host" = "Angi et annet vertsnavn enn den lokale verten ";
+
+"No certificate installed" = "Ingen sertifikat installert ";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "SSL-sertifikatet må bruke formatet PKCS#12 (PFX).";
+"Uninstall" = "Avinstaller ";
+"Choose PKCS12 Certificate .." = "Velg PKCS12 sertifikat ..";
+"Certificate Import Password" = "Sertifikatpassord ";
+"Upload" = "Last opp ";
+"When composing a message" = "Når du skriver en melding";
+"Digitally sign the message by default" = "Signer meldingen digitalt som standard";
+"Always try to encrypt the message" = "Prøv alltid å kryptene meldingen";
+"An error occurred while importing the certificate. Verify your password." = "Det oppstod en feil under import av sertifikatet. Bekreft passordet ditt. ";
 
 /* Additional Parameters */
 "Additional Parameters" = "Øvrige parametre";
 
 /* password */
+"Current password" = "Nåværende passord";
 "New password" = "Nytt passord";
 "Confirmation" = "Bekreft";
 "Change" = "Endre";
+"Passwords don't match" = "Passordene er ikke like ";
+"POLICY_MIN_LOWERCASE_LETTER" = "Minst %{0} liten bokstav";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minst %{0} stor bokstav";
+"POLICY_MIN_DIGIT" = "Minst %{0} tall ";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minst %{0} spesialtegn ";
+"POLICY_MIN_LENGTH" = "Minimum %{0} karakterer ";
+
 
 /* Event+task classifications */
 "Default events classification" = "Standard hendelsesklassifikasjon";
@@ -179,6 +274,8 @@
 /* Event+task categories */
 "Calendar Category" = "Kalender kategori";
 "Add Calendar Category" = "Legg til kalender kategori";
+"New category" = "Ny kategori ";
+"Reset to defaults" = "Tilbake til standardinnstillinger ";
 "Remove Calendar Category" = "Fjern kalender kategori";
 "Contact Category" = "Kontakt kategori";
 "Add Contact Category" = "Legg til kontakt kategori";
@@ -221,7 +318,9 @@
 "Japanese" = "日本語";
 "Kazakh" = "Қазақ";
 "Latvian" = "Latviešu";
+"Lithuanian" = "Lietuvių";
 "Macedonian" = "Makedonsk";
+"Montenegrin" = "Crnogorski";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "Polish" = "Polski";
@@ -239,6 +338,7 @@
 "TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
 "Refresh View" = "Oppdater Visning";
 "refreshview_manually" = "Manuelt";
 "refreshview_every_minute" = "Hvert minutt";
@@ -248,6 +348,7 @@
 "refreshview_every_20_minutes" = "Hvert 20. minutt";
 "refreshview_every_30_minutes" = "Hvert 30. minutt";
 "refreshview_once_per_hour" = "Hver time";
+"Enable Desktop Notifications" = "Aktiver skrivebordvarsler";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Når jeg mottar anmodning om en returkvittering";
@@ -267,6 +368,9 @@
 "Move Down" = "Flytt ned";
 "Connection error" = "Koblingsfeil";
 "Service temporarily unavailable" = "Tjeneste midlertidig utilgjengelig";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Aktiver filter";
 
 /* Filters - UIxFilterEditor */
 "Filter name" = "Filternavn";
@@ -289,11 +393,27 @@
 "Header" = "Tittel";
 "Body" = "Kropp";
 "Flag the message with" = "Flagg meldingen med";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Flagg";
+
 "Discard the message" = "Forkast meldingen";
 "File the message in" = "Fil meldingen i";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Postkasse";
+
 "Keep the message" = "Behold meldingen";
 "Forward the message to" = "Videresend melding til";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "E-post";
+
 "Send a reject message" = "Send en avvisningsmelding";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Melding";
+
 "Send a vacation message" = "Send en feriemelding";
 "Stop processing filter rules" = "Stopp prosessering av filterregler";
 "is under" = "er under";
@@ -345,9 +465,36 @@
 "TLS" = "TLS";
 
 /* Avatars */
+"Use Gravatar" = "Bruk gravatar";
 "Alternate Avatar" = "Alternativ Avatar";
 "none" =  "Ingen";
 "identicon" = "Identitetsikon";
 "monsterid" = "Monster";
 "wavatar" = "Wavatar";
 "retro" = "Retro";
+
+/* Animation Level */
+"Animation Level" = "Animasjons-nivå ";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Normal";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Begrenset";
+"animation_NONE" = "Ingen";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "Aktiver to-faktor autentisering ved hjelp av en TOTP-applikasjon";
+"You must enter this key into your TOTP application." = "Du må angi denne nøkkelen i TOTP-applikasjonen. ";
+"If you do not and you log out you will not be able to login again." = "Hvis du ikke gjør dette, og logger ut igjen kan du ikke logge på. ";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "Et ekstremt Sieve-skript er aktivt ";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve er et programmeringsspråk som kan brukes til e-postfiltrering. Hvis du lar SOGo håndtere filtrene, ferie- og videresendingsinnstillingene dine, vil det aktive skriptet bli deaktivert. ";
+"Let SOGo handle everything" = "La SOGo håndtere alt. ";
+
+/* Password Recovery */
+"Password recovery mode" = "Password recovery";
+"Question" = "Question";
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password recovery" = "Password recovery";
+"Password change" = "Password change";
