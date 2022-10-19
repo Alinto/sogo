@@ -790,7 +790,7 @@ specified as an array of dictionaries.
 |Boolean enable password recovery with secret question or secondary e-mail. Default value is `NO`.
 
 |S |SOGoPasswordRecoveryDomains
-|List of domains where password recovery is enabled. If empty, enabled for all domains.
+|List of domains where password recovery is enabled, for example `(example.org, example.net)`. If empty array `()`, disabled for all domains. If not set, enabled for all domains.
 
 |U |SOGoPasswordRecoveryMode
 |User password recovery mode. Values can be `Disabled`, `SecretQuestion` or `SecondaryEmail`.
