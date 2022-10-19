@@ -281,7 +281,7 @@
       this.passwordRecovery.passwordRecoveryToken = null;
       this.passwordRecovery.passwordRecoverySecondaryEmailText = null;
       this.passwordRecovery.passwordRecoveryMailDomain = null;
-      $window.location.href = vm.url;
+      $window.location.reload(true);
     };
 
     this.usernameChanged = function () {
