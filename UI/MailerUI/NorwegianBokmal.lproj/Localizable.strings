@@ -87,7 +87,7 @@
 /* acls */
 "Access rights to" = "Tilgangsrettighet til";
 "For user" = "For bruker";
-"Any Authenticated User" = "Hvilken som heldst autentisert bruker";
+"Any Authenticated User" = "Hvilken som helst autentisert bruker";
 "View this folder" = "Vis denne mappen";
 "Read mails from this folder" = "Les meldinger fra denne mappen";
 "Mark mails read and unread" = "Markere meldinger, leste og uleste";
@@ -183,7 +183,7 @@
 
 /* Tree */
 "SentFolderName"   = "Sendt";
-"TrashFolderName"  = "Søppel";
+"TrashFolderName"  = "Papirkurv";
 "InboxFolderName"  = "Innboks";
 "DraftsFolderName" = "Kladder";
 "JunkFolderName" = "Søppelpost";
