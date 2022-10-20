@@ -137,10 +137,10 @@ String.prototype.formatted = function() {
 };
 
 String.prototype.isValidEmail = function(strict) {
-  var result = emailRE.test(this);
+  var result = String.emailRE.test(this);
 
   if (strict && result) {
-    result = emailRE.exec(this)[0] == this;
+    result = String.emailRE.exec(this)[0] == this;
   }
 
   return result;
