@@ -1358,7 +1358,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
               rules = [component recurrenceRulesWithTimeZone: tz];
               exRules = [component exceptionRulesWithTimeZone: tz];
             }
-          
+
+          rules = [rules uniqueObjects];
+
           // Calculate the occurrences for the given range
           records = [NSMutableArray array];
           ranges =
