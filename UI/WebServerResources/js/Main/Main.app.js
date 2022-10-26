@@ -41,7 +41,8 @@
         passwordRecoveryToken: null,
         passwordRecoveryLinkTimer: null,
         passwordRecoverySecondaryEmailText: null,
-        passwordRecoveryMailDomain: null
+        passwordRecoveryMailDomain: null,
+        showLoader: false
       };
 
       // Show login once everything is initialized
@@ -219,6 +220,7 @@
 
     this.passwordRecoveryInfo = function () {
       vm.loginState = 'passwordrecovery';
+      vm.passwordRecovery.showLoader = true;
       Authentication.passwordRecovery(this.creds.username, this.creds.domain).then(function (data) {
         vm.passwordRecovery.passwordRecoveryMode = data.mode;
         if ('SecretQuestion' === data.mode) {
@@ -230,24 +232,30 @@
           vm.loginState = 'error';
           vm.errorMessage = l('No password recovery method has been defined for this user');
         }
+        vm.passwordRecovery.showLoader = false;
       }, function (msg) {
         vm.loginState = 'error';
         vm.errorMessage = msg;
+        vm.passwordRecovery.showLoader = false;
       });
     };
 
     this.passwordRecoveryEmail = function () {
+      vm.passwordRecovery.showLoader = true;
       Authentication.passwordRecoveryEmail(this.creds.username, this.creds.domain
         , this.passwordRecovery.passwordRecoveryMode
         , this.passwordRecovery.passwordRecoveryMailDomain).then(function () {
           vm.loginState = 'sendrecoverymail';
+          vm.passwordRecovery.showLoader = false;
       }, function (msg) {
         vm.loginState = 'error';
         vm.errorMessage = msg;
+          vm.passwordRecovery.showLoader = false;
       });
     };
 
     this.passwordRecoveryCheck = function () {
+      vm.passwordRecovery.showLoader = true;
       Authentication.passwordRecoveryCheck(this.creds.username, this.creds.domain
                                           , this.passwordRecovery.passwordRecoveryMode
                                           , this.passwordRecovery.passwordRecoveryQuestionKey
@@ -259,9 +267,11 @@
         } else if ("SecondaryEmail" == vm.passwordRecovery.passwordRecoveryMode) {
           vm.loginState = 'sendrecoverymail';
         }
+        vm.passwordRecovery.showLoader = false;
       }, function (msg) {
         vm.loginState = 'error';
         vm.errorMessage = msg;
+        vm.passwordRecovery.showLoader = false;
       });
     };
 
@@ -281,6 +291,7 @@
       this.passwordRecovery.passwordRecoveryToken = null;
       this.passwordRecovery.passwordRecoverySecondaryEmailText = null;
       this.passwordRecovery.passwordRecoveryMailDomain = null;
+      this.passwordRecovery.showLoader = false;
       $window.location.reload(true);
     };
 

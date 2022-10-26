@@ -261,19 +261,28 @@
                   ng-switch-when="passwordrecovery">
                 <md-icon class="md-accent md-hue-1 sg-icon--large">vpn_key</md-icon>
                 <div flex="100">
-                  <div layout="row" layout-xs="column" class="md-padding">
+                  <div layout="row" layout-xs="column" class="md-padding" layout-align="center center">
+                    <div ng-if="app.passwordRecovery.showLoader">
+                      <md-progress-circular class="md-hue-1"
+                                    md-mode="indeterminate"
+                                    md-diameter="32"><!-- password recovery progress --></md-progress-circular>
+                    </div>
                     <div ng-if="'SecretQuestion' === app.passwordRecovery.passwordRecoveryMode">
-                      {{ app.passwordRecovery.passwordRecoveryQuestion }}
-                      <md-input-container class="md-block">
-                        <label><var:string label:value="Answer"/></label>
-                        <input autocorrect="off" autocapitalize="off" type="text" ng-model="app.passwordRecovery.passwordRecoveryQuestionAnswer" />
-                      </md-input-container>
+                      <div ng-if="!app.passwordRecovery.showLoader">
+                        {{ app.passwordRecovery.passwordRecoveryQuestion }}
+                        <md-input-container class="md-block">
+                          <label><var:string label:value="Answer"/></label>
+                          <input autocorrect="off" autocapitalize="off" type="text" ng-model="app.passwordRecovery.passwordRecoveryQuestionAnswer" />
+                        </md-input-container>
+                      </div>
                     </div>
                     <div ng-if="'SecondaryEmail' === app.passwordRecovery.passwordRecoveryMode">
-                      {{ app.passwordRecovery.passwordRecoverySecondaryEmailText }}
+                      <div ng-if="!app.passwordRecovery.showLoader">
+                        {{ app.passwordRecovery.passwordRecoverySecondaryEmailText }}
+                      </div>
                     </div>
                   </div>
-                  <div layout="row" layout-align="end center">
+                  <div layout="row" layout-align="end center" ng-if="!app.passwordRecovery.showLoader">
                     <md-button ng-click="app.passwordRecoveryAbort()" type="button" >
                       <var:string label:value="Back"/>
                     </md-button>
