@@ -56,7 +56,6 @@
 - (void) setMethod: (NSString *) _method;
 - (NSString *) method;
 
-// - (void) setStartDate: (NSCalendarDate *) newStartDate;
 - (NSCalendarDate *) startDate;
 
 - (NSArray *) events;
