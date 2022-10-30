@@ -877,6 +877,8 @@ void handle_eas_terminate(int signum)
       [self _ensureFolder: (SOGoMailFolder *)[accountFolder draftsFolderInContext: context]];
       [self _ensureFolder: [accountFolder sentFolderInContext: context]];
       [self _ensureFolder: (SOGoMailFolder *)[accountFolder trashFolderInContext: context]];
+      [self _ensureFolder: (SOGoMailFolder *)[accountFolder junkFolderInContext: context]];
+      [self _ensureFolder: (SOGoMailFolder *)[accountFolder templatesFolderInContext: context]];
     }
 
   allFoldersMetadata = [NSMutableArray array];
