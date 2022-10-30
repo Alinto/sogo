@@ -38,39 +38,38 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation NGMimeMessage (ActiveSync)
 
-- (void) _addRecipients: (NSEnumerator *) enumerator
-                toArray: (NSMutableArray *) recipients
-{
-  NGMailAddressParser *parser;
-  NSEnumerator *addressList;
-  NGMailAddress *address;
-  NSString *s;
-
-  while ((s = [enumerator nextObject]))
-    {
-      parser = [NGMailAddressParser mailAddressParserWithString: s];
-      addressList = [[parser parseAddressList] objectEnumerator];
-      
-      while ((address = [addressList nextObject]))
-        [recipients addObject: [address address]];
-    }
-}
-
 - (NSArray *) allRecipients
 {
-  NSMutableArray *recipients;
+  NSMutableArray *allRecipients;
+  NSArray *recipients;
+  NSString *fieldNames[] = {@"to", @"cc", @"bcc"};
+  unsigned int count;
 
-  recipients = [NSMutableArray array];
+  allRecipients = [NSMutableArray arrayWithCapacity: 16];
 
-  [self _addRecipients: [[self headersForKey: @"to"] objectEnumerator]
-               toArray: recipients];
+  for (count = 0; count < 3; count++)
+    {
+      recipients = [self headersForKey: fieldNames[count]];
+      if ([recipients count] > 0)
+        [allRecipients addObjectsFromArray: recipients];
+    }
 
-  [self _addRecipients: [[self headersForKey: @"cc"] objectEnumerator]
-               toArray: recipients];
-
-  [self _addRecipients: [[self headersForKey: @"bcc"] objectEnumerator]
-               toArray: recipients];
-
-  return recipients;
+  return allRecipients;
 }
+
+- (NSArray *) allBareRecipients
+{
+  NSMutableArray *bareRecipients;
+  NSEnumerator *allRecipients;
+  NSString *recipient;
+
+  bareRecipients = [NSMutableArray array];
+
+  allRecipients = [[self allRecipients] objectEnumerator];
+  while ((recipient = [allRecipients nextObject]))
+    [bareRecipients addObject: [recipient pureEMailAddress]];
+
+  return bareRecipients;
+}
+
 @end
