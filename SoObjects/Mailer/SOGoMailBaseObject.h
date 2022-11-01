@@ -39,7 +39,7 @@
     SOGoMailObject
 */
 
-@class NSString, NSArray, NSURL;
+@class NSString, NSArray, NSURL, NSMutableDictionary;
 @class NGImap4ConnectionManager, NGImap4Connection;
 @class SOGoMailAccount, SOGoMailAccounts;
 
@@ -48,6 +48,7 @@
   NSURL             *imap4URL;
   NGImap4Connection *imap4;
   BOOL              imap4ExceptionsEnabled;
+  NSMutableDictionary *headers;
 }
 
 - (BOOL) isFolderish;
@@ -83,6 +84,14 @@
 - (BOOL) isBodyPartKey: (NSString *) key;
 
 - (int) IMAP4IDFromAppendResult: (NSDictionary *) result;
+
+/* contents */
+- (void) setHeaders: (NSDictionary *) newHeaders;
+- (NSDictionary *) headers;
+
+/* operations */
+- (NSArray *) allRecipients;
+- (NSArray *) allBareRecipients;
 
 @end
 

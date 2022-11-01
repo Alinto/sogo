@@ -98,7 +98,6 @@ static BOOL debugSoParts       = NO;
 {
   if ((self = [super init]))
     {
-      headers = nil;
       headerPart = nil;
       coreInfos = nil;
     }
@@ -108,7 +107,6 @@ static BOOL debugSoParts       = NO;
 
 - (void) dealloc
 {
-  [headers release];
   [headerPart release];
   [coreInfos release];
   [super dealloc];

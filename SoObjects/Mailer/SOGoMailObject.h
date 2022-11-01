@@ -57,7 +57,6 @@ extern NSArray *SOGoMailCoreInfoKeys;
 {
   id coreInfos;
   id headerPart;
-  NSDictionary *headers;
 }
 
 /* message */

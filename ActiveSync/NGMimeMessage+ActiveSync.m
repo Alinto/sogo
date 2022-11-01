@@ -29,48 +29,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #import "NGMimeMessage+ActiveSync.h"
 
-#import <Foundation/NSArray.h>
-
-#import <NGMail/NGMailAddress.h>
-#import <NGMail/NGMailAddressParser.h>
-
-#import <SOGo/NSString+Utilities.h>
-
 @implementation NGMimeMessage (ActiveSync)
 
-- (void) _addRecipients: (NSEnumerator *) enumerator
-                toArray: (NSMutableArray *) recipients
-{
-  NGMailAddressParser *parser;
-  NSEnumerator *addressList;
-  NGMailAddress *address;
-  NSString *s;
-
-  while ((s = [enumerator nextObject]))
-    {
-      parser = [NGMailAddressParser mailAddressParserWithString: s];
-      addressList = [[parser parseAddressList] objectEnumerator];
-      
-      while ((address = [addressList nextObject]))
-        [recipients addObject: [address address]];
-    }
-}
-
-- (NSArray *) allRecipients
-{
-  NSMutableArray *recipients;
-
-  recipients = [NSMutableArray array];
-
-  [self _addRecipients: [[self headersForKey: @"to"] objectEnumerator]
-               toArray: recipients];
-
-  [self _addRecipients: [[self headersForKey: @"cc"] objectEnumerator]
-               toArray: recipients];
-
-  [self _addRecipients: [[self headersForKey: @"bcc"] objectEnumerator]
-               toArray: recipients];
-
-  return recipients;
-}
 @end

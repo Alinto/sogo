@@ -87,9 +87,6 @@
 
 static NSString *contentTypeValue = @"text/plain; charset=utf-8";
 static NSString *htmlContentTypeValue = @"text/html; charset=utf-8";
-static NSString *headerKeys[] = {@"subject", @"to", @"cc", @"bcc",
-                                 @"from", @"replyTo", @"message-id",
-                                 nil};
 
 #warning -[NGImap4Connection postData:flags:toFolderURL:] should be enhanced \
   to return at least the new uid
@@ -131,7 +128,6 @@ static NSString    *userAgent      = nil;
     {
       sourceIMAP4ID = -1;
       IMAP4ID = -1;
-      headers = [[NSMutableDictionary alloc] init];
       certificates = [[NSMutableDictionary alloc] init];
       text = @"";
       path = nil;
@@ -148,7 +144,6 @@ static NSString    *userAgent      = nil;
 
 - (void) dealloc
 {
-  [headers release];
   [certificates release];
   [text release];
   [path release];
@@ -197,120 +192,6 @@ static NSString    *userAgent      = nil;
 }
 
 /* contents */
-
-- (void) setHeaders: (NSDictionary *) newHeaders
-{
-  id headerValue;
-  unsigned int count;
-  NSString *messageID, *priority, *pureSender, *replyTo, *receipt;
-
-  for (count = 0; count < 8; count++)
-    {
-      headerValue = [newHeaders objectForKey: headerKeys[count]];
-      if (headerValue)
-	[headers setObject: headerValue
-                    forKey: headerKeys[count]];
-      else if ([headers objectForKey: headerKeys[count]])
-	[headers removeObjectForKey: headerKeys[count]];
-    }
-
-  messageID = [headers objectForKey: @"message-id"];
-  if (!messageID)
-    {
-      messageID = [NSString generateMessageID];
-      [headers setObject: messageID forKey: @"message-id"];
-    }
-
-  priority = [newHeaders objectForKey: @"X-Priority"];
-  if (priority)
-    {
-      // newHeaders come from MIME message; convert X-Priority to Web representation
-      [headers setObject: priority  forKey: @"X-Priority"];
-      [headers removeObjectForKey: @"priority"];
-      if ([priority isEqualToString: @"1 (Highest)"])
-        {
-          [headers setObject: @"HIGHEST"  forKey: @"priority"];
-        }
-      else if ([priority isEqualToString: @"2 (High)"])
-        {
-          [headers setObject: @"HIGH"  forKey: @"priority"];
-        }
-      else if ([priority isEqualToString: @"4 (Low)"])
-        {
-          [headers setObject: @"LOW"  forKey: @"priority"];
-        }
-      else if ([priority isEqualToString: @"5 (Lowest)"])
-        {
-          [headers setObject: @"LOWEST"  forKey: @"priority"];
-        }
-    }
-  else
-    {
-      // newHeaders come from Web form; convert priority to MIME header representation
-      priority = [newHeaders objectForKey: @"priority"];
-      if ([priority intValue] == 1)
-        {
-          [headers setObject: @"1 (Highest)"  forKey: @"X-Priority"];
-        }
-      else if ([priority intValue] == 2)
-        {
-          [headers setObject: @"2 (High)"  forKey: @"X-Priority"];
-        }
-      else if ([priority intValue] == 4)
-        {
-          [headers setObject: @"4 (Low)"  forKey: @"X-Priority"];
-        }
-      else if ([priority intValue] == 5)
-        {
-          [headers setObject: @"5 (Lowest)"  forKey: @"X-Priority"];
-        }
-      else
-        {
-          [headers removeObjectForKey: @"X-Priority"];
-        }
-      if (priority)
-        {
-          [headers setObject: priority  forKey: @"priority"];
-        }
-    }
-
-  replyTo = [headers objectForKey: @"replyTo"];
-  if ([replyTo length] > 0)
-    {
-      [headers setObject: replyTo forKey: @"reply-to"];
-    }
-  [headers removeObjectForKey: @"replyTo"];
-
-  receipt = [newHeaders objectForKey: @"Disposition-Notification-To"];
-  if ([receipt length] > 0)
-    {
-      [headers setObject: @"true"  forKey: @"receipt"];
-      [headers setObject: receipt forKey: @"Disposition-Notification-To"];
-    }
-  else
-    {
-      receipt = [newHeaders objectForKey: @"receipt"];
-      if ([receipt boolValue])
-        {
-          [headers setObject: receipt  forKey: @"receipt"];
-          pureSender = [[newHeaders objectForKey: @"from"] pureEMailAddress];
-          if (pureSender)
-            {
-              [headers setObject: pureSender forKey: @"Disposition-Notification-To"];
-            }
-        }
-      else
-        {
-          [headers removeObjectForKey: @"receipt"];
-          [headers removeObjectForKey: @"Disposition-Notification-To"];
-        }
-    }
-}
-
-- (NSDictionary *) headers
-{
-  return headers;
-}
 
 - (void) setText: (NSString *) newText
 {
@@ -1946,46 +1827,6 @@ static NSString    *userAgent      = nil;
   [d appendData: content];
 
   return d;
-}
-
-//
-//
-//
-- (NSArray *) allRecipients
-{
-  NSMutableArray *allRecipients;
-  NSArray *recipients;
-  NSString *fieldNames[] = {@"to", @"cc", @"bcc"};
-  unsigned int count;
-
-  allRecipients = [NSMutableArray arrayWithCapacity: 16];
-
-  for (count = 0; count < 3; count++)
-    {
-      recipients = [headers objectForKey: fieldNames[count]];
-      if ([recipients count] > 0)
-        [allRecipients addObjectsFromArray: recipients];
-    }
-
-  return allRecipients;
-}
-
-//
-//
-//
-- (NSArray *) allBareRecipients
-{
-  NSMutableArray *bareRecipients;
-  NSEnumerator *allRecipients;
-  NSString *recipient;
-
-  bareRecipients = [NSMutableArray array];
-
-  allRecipients = [[self allRecipients] objectEnumerator];
-  while ((recipient = [allRecipients nextObject]))
-    [bareRecipients addObject: [recipient pureEMailAddress]];
-
-  return bareRecipients;
 }
 
 //

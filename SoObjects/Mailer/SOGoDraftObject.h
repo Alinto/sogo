@@ -54,7 +54,6 @@
   NSString *path;
   int IMAP4ID;
   int sourceIMAP4ID;
-  NSMutableDictionary *headers;
   NSString *inReplyTo;
   NSString *text;
   NSString *sourceURL;
@@ -77,8 +76,6 @@
 			toAll: (BOOL) toAll;
 - (void) fetchMailForForwarding: (SOGoMailObject *) sourceMail;
 
-- (void) setHeaders: (NSDictionary *) newHeaders;
-- (NSDictionary *) headers;
 - (void) setText: (NSString *) newText;
 - (NSString *) text;
 - (void) setIsHTML: (BOOL) aBool;
@@ -118,10 +115,6 @@
 /* NGMime representations */
 
 - (NSData *) mimeMessageForRecipient: (NSString *) theRecipient;
-
-/* operations */
-- (NSArray *) allRecipients;
-- (NSArray *) allBareRecipients;
 
 - (NSException *) delete;
 - (NSException *) sendMail;

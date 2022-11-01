@@ -31,10 +31,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define __NGMIMEMESSAGEACTIVESYNC_H__
 
 #import <NGMail/NGMimeMessage.h>
+#import "SOGoMailBaseObject.h"
 
 @class NSArray;
+@class SOGoMailObject;
 
-@interface NGMimeMessage (ActiveSync)
+@interface NGMimeMessage (ActiveSync) : SOGoMailBaseObject
 
 - (NSArray *) allRecipients;
 
