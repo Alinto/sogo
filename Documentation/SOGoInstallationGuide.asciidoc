@@ -2092,7 +2092,10 @@ The default value is `YES`.
 
 |S |NGImap4AuthMechanism
 |Trigger the use of the IMAP `AUTHENTICATE` command with the specified
-SASL mechanism. Please note that feature might be limited at this time.
+SASL mechanism. Using `AUTHENTICATE` instead of `LOGIN` is also necessary
+to enable UTF-8 characters in users' passwords. To enable simple use of
+`AUTHENTICATE` for this purpose, set this setting to `plain`. Please note 
+that this feature might be limited at this time.
 
 |D |NGImap4ConnectionGroupIdPrefix
 |Prefix to prepend to names in IMAP ACL transactions, to indicate the
