@@ -3619,7 +3619,7 @@ void handle_eas_terminate(int signum)
     }
 
   error = [self _sendMail: data
-               recipients: [message allRecipients]
+               recipients: [message allBareRecipients]
                 saveInSentItems: ([(id)[theDocumentElement getElementsByTagName: @"SaveInSentItems"] count] ? YES : NO)];
 
   if (error)
@@ -4180,7 +4180,7 @@ void handle_eas_terminate(int signum)
       data = [generator generateMimeFromPart: messageToSend];
 
       error = [self _sendMail: data
-                   recipients: [messageFromSmartForward allRecipients]
+                   recipients: [messageFromSmartForward allBareRecipients]
                     saveInSentItems:  ([(id)[theDocumentElement getElementsByTagName: @"SaveInSentItems"] count] ? YES : NO)];
 
       if (error)

@@ -36,7 +36,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @interface NGMimeMessage (ActiveSync)
 
-- (NSArray *) allRecipients;
+- (NSArray *) allBareRecipients;
 
 @end
 
