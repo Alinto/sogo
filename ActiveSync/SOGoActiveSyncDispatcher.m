@@ -293,6 +293,39 @@ void handle_eas_terminate(int signum)
 //
 //
 //
+- (SOGoAppointmentObject *) _eventObjectWithUID: (NSString *) uid
+{
+  SOGoAppointmentFolder *folder;
+  SOGoAppointmentObject *eventObject;
+  NSArray *folders;
+  NSEnumerator *e;
+  NSString *cname;
+
+  eventObject = nil;
+
+  folders = [[[context activeUser] calendarsFolderInContext: context] subFolders];
+  e = [folders objectEnumerator];
+  while (eventObject == nil && (folder = [e nextObject]))
+    {
+      cname = [folder resourceNameForEventUID: uid];
+      if (cname)
+        {
+          eventObject = [folder lookupName: cname inContext: context
+                                   acquire: NO];
+          if ([eventObject isKindOfClass: [NSException class]])
+            eventObject = nil;
+        }
+    }
+
+  if (eventObject)
+    return eventObject;
+  else
+    return [NSException exceptionWithHTTPStatus:404 /* Not Found */];
+}
+
+//
+//
+//
 - (id) collectionFromId: (NSString *) theCollectionId
                    type: (SOGoMicrosoftActiveSyncFolderType) theFolderType
 {
@@ -313,7 +346,9 @@ void handle_eas_terminate(int signum)
     case ActiveSyncEventFolder:
     case ActiveSyncTaskFolder:
       {
-        collection = [[[[context activeUser] homeFolderInContext: context] lookupName: @"Calendar" inContext: context acquire: NO] lookupName: theCollectionId inContext: context acquire: NO];
+        collection = [[[context activeUser] homeFolderInContext: context] lookupName: @"Calendar" inContext: context acquire: NO];
+        if (![collection isKindOfClass: [NSException class]])
+          collection = [collection lookupName: theCollectionId inContext: context acquire: NO];
         if (!collection || ([collection isKindOfClass: [NSException class]]))
            collection = nil;
       }
@@ -643,6 +678,12 @@ void handle_eas_terminate(int signum)
         SOGoMailFolder *folderToUpdate;
 
         accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
+        if ([accountsFolder isKindOfClass: [NSException class]])
+          {
+            [theResponse setStatus: 403];
+            [self logWithFormat: @"Mail - Forbidden access for user %@", [[context activeUser] loginInDomain]];
+            return;
+          }
         currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
   
         folderToUpdate = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", serverId]
@@ -688,6 +729,12 @@ void handle_eas_terminate(int signum)
 	NSString *nameInCache;
 
         appointmentFolders = [userFolder privateCalendars: @"Calendar" inContext: context];
+        if ([appointmentFolders isKindOfClass: [NSException class]])
+          {
+            [theResponse setStatus: 403];
+            [self logWithFormat: @"Calendar - Forbidden access for user %@", [[context activeUser] loginInDomain]];
+            return;
+          }
 
         folderToUpdate = [appointmentFolders lookupName: [NSString stringWithFormat: @"%@", serverId]
                                               inContext: context
@@ -798,7 +845,7 @@ void handle_eas_terminate(int signum)
 - (void) processFolderSync: (id <DOMElement>) theDocumentElement
                 inResponse: (WOResponse *) theResponse
 {
-  NSString *key, *cKey, *nkey, *name, *serverId, *parentId, *nameInCache, *personalFolderName, *syncKey, *folderType, *operation;
+  NSString *key, *cKey, *nkey, *name, *serverId, *parentId, *nameInCache, *personalFolderName, *syncKey, *folderType, *operation, *parent;
   NSMutableDictionary *cachedGUIDs, *metadata;
   NSMutableArray *folders, *processedFolders, *allFoldersMetadata;
   NSDictionary *folderMetadata, *imapGUIDs;
@@ -814,17 +861,18 @@ void handle_eas_terminate(int signum)
   int status, command_count, i, type, fi, count;
   BOOL first_sync;
 
-  metadata = [self globalMetadataForDevice];
-  syncKey = [[(id)[theDocumentElement getElementsByTagName: @"SyncKey"] lastObject] textValue];
-  s = [NSMutableString string];
-  personalFolderName = [[[context activeUser] personalCalendarFolderInContext: context] nameInContainer];
-
   first_sync = NO;
   status = 1;
   command_count = 0;
+  personalFolderName = nil;
   commands = [NSMutableString string];
-
   processedFolders = [NSMutableArray array];
+  s = [NSMutableString string];
+
+  metadata = [self globalMetadataForDevice];
+  syncKey = [[(id)[theDocumentElement getElementsByTagName: @"SyncKey"] lastObject] textValue];
+  if ([[context activeUser] canAccessModule: @"Calendar"])
+    personalFolderName = [[[context activeUser] personalCalendarFolderInContext: context] nameInContainer];
 
   [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
@@ -1099,14 +1147,16 @@ void handle_eas_terminate(int signum)
          [[o properties] removeObjectForKey: @"CleanoutDate"];
 
          [o save];
-              
+
          command_count++;
        }
    }
 
+  folders = [NSMutableArray array];
+
   // We get the list of subscribed calendars
-  folders = [[[[[context activeUser] homeFolderInContext: context] lookupName: @"Calendar" inContext: context acquire: NO] subFolders] mutableCopy];
-  [folders autorelease];
+  if ([personalFolderName length])
+    [folders addObjectsFromArray: [[[[context activeUser] homeFolderInContext: context] lookupName: @"Calendar" inContext: context acquire: NO] subFolders]];
 
   // We get the list of subscribed address books
   [folders addObjectsFromArray: [[[[context activeUser] homeFolderInContext: context] lookupName: @"Contacts" inContext: context acquire: NO] subFolders]];
@@ -1166,9 +1216,19 @@ void handle_eas_terminate(int signum)
          {
            if ([[folders objectAtIndex:fi] isKindOfClass: [SOGoAppointmentFolder class]])
              {
-               type = ([[[folders objectAtIndex:fi] nameInContainer] isEqualToString: personalFolderName] ? 8 : 13);
+               if ([[[folders objectAtIndex:fi] nameInContainer] isEqualToString: personalFolderName])
+                 {
+                   type = 8;
+                   parent = @"0";
+                 }
+               else
+                 {
+                   type = 13;
+                   parent = [NSString stringWithFormat: @"vevent/%@",personalFolderName];
+                 }
+
                [commands appendFormat: @"<%@><ServerId>%@</ServerId><ParentId>%@</ParentId><DisplayName>%@</DisplayName><Type>%d</Type></%@>", operation,
-                   [name stringByEscapingURL], @"0", [[[folders objectAtIndex:fi] displayName] activeSyncRepresentationInContext: context], type, operation];
+                   [name stringByEscapingURL], [parent stringByEscapingURL], [[[folders objectAtIndex:fi] displayName] activeSyncRepresentationInContext: context], type, operation];
 
                command_count++;
 
@@ -1176,7 +1236,17 @@ void handle_eas_terminate(int signum)
                [o save];
 
                name = [NSString stringWithFormat: @"vtodo/%@", [[folders objectAtIndex:fi] nameInContainer]];
-               type = ([[[folders objectAtIndex:fi] nameInContainer] isEqualToString: personalFolderName] ? 7 : 15);
+               if ([[[folders objectAtIndex:fi] nameInContainer] isEqualToString: personalFolderName])
+                 {
+                   type = 7;
+                   parent = @"0";
+                 }
+               else
+                 {
+                   type = 15;
+                   parent = [NSString stringWithFormat: @"vtodo/%@",personalFolderName];
+                 }
+
 
                // We always sync the "Default Tasks folder" (7). For "User-created Tasks folder" (15), we check if we include it in
                // the sync process by checking if "Show tasks" is enabled. If not, we skip the folder entirely.
@@ -1184,7 +1254,7 @@ void handle_eas_terminate(int signum)
                    (type == 15 && [[folders objectAtIndex: fi] showCalendarTasks]))
                  {
                    [commands appendFormat: @"<%@><ServerId>%@</ServerId><ParentId>%@</ParentId><DisplayName>%@</DisplayName><Type>%d</Type></%@>", operation,
-                             [name stringByEscapingURL], @"0", [[[folders objectAtIndex:fi] displayName] activeSyncRepresentationInContext: context], type, operation];
+                       [name stringByEscapingURL], [parent stringByEscapingURL], [[[folders objectAtIndex:fi] displayName] activeSyncRepresentationInContext: context], type, operation];
 
                    command_count++;
 
@@ -1219,9 +1289,19 @@ void handle_eas_terminate(int signum)
              } 
            else if ([[folders objectAtIndex:fi] isKindOfClass: [SOGoContactGCSFolder class]])
              {
-               type = ([[[folders objectAtIndex:fi] nameInContainer] isEqualToString: personalFolderName] ? 9 : 14);
+               if ([[[folders objectAtIndex:fi] nameInContainer] isEqualToString: personalFolderName])
+                 {
+                   type = 9;
+                   parent = @"0";
+                 }
+               else
+                 {
+                   type = 14;
+                   parent = [NSString stringWithFormat: @"vcard/%@",personalFolderName];
+                 }
+
                [commands appendFormat: @"<%@><ServerId>%@</ServerId><ParentId>%@</ParentId><DisplayName>%@</DisplayName><Type>%d</Type></%@>", operation,
-                   [name stringByEscapingURL], @"0", [[[folders objectAtIndex:fi] displayName] activeSyncRepresentationInContext: context], type, operation];
+                   [name stringByEscapingURL], [parent stringByEscapingURL], [[[folders objectAtIndex:fi] displayName] activeSyncRepresentationInContext: context], type, operation];
 
                command_count++;
 
@@ -1848,6 +1928,9 @@ void handle_eas_terminate(int signum)
                                            inContext: context
                                              acquire: NO];
 
+          if ([appointmentObject isKindOfClass: [NSException class]])
+            appointmentObject = [self _eventObjectWithUID:[event uid]];
+
           // Create the appointment if it is not added to calendar yet
           if ([appointmentObject isKindOfClass: [NSException class]])
             {
@@ -2416,6 +2499,11 @@ void handle_eas_terminate(int signum)
           realCollectionId = [collectionId realCollectionIdWithFolderType: &folderType];
           realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
 
+          // We avoid loading the cache metadata if we can't get the real connection. This can happen
+          // for example if the IMAP server is down. We just skip the folder for now.
+          if (!realCollectionId)
+            continue;
+
           if (folderType == ActiveSyncMailFolder)
               folderMetadata = [self _folderMetadataForKey: [NSString stringWithFormat: @"folder%@", [[collectionId stringByUnescapingURL] substringFromIndex:5]]];
           else
@@ -2857,7 +2945,7 @@ void handle_eas_terminate(int signum)
     {
       currentFolder = [systemSources objectForKey: [allKeys objectAtIndex: i]];
       allContacts = [currentFolder lookupContactsWithFilter: query
-                                                 onCriteria: @"name_or_address"
+                                                 onCriteria: nil
                                                      sortBy: @"c_cn"
                                                    ordering: NSOrderedAscending
                                                    inDomain: [[context activeUser] domain]];
@@ -3026,7 +3114,7 @@ void handle_eas_terminate(int signum)
 - (void) processSearchMailbox: (id <DOMElement>) theDocumentElement
 		   inResponse: (WOResponse *) theResponse
 {
-  NSString *folderId, *realCollectionId, *itemId;
+  NSString *folderId, *realCollectionId, *itemId, *bodyPreferenceType, *mimeSupport;
   NSMutableArray *folderIdentifiers;
   SOGoMailAccounts *accountsFolder;
   SOGoMailAccount *accountFolder;
@@ -3050,12 +3138,20 @@ void handle_eas_terminate(int signum)
       return;
     }
 
+  bodyPreferenceType = [[(id)[[(id)[theDocumentElement getElementsByTagName: @"BodyPreference"] lastObject] getElementsByTagName: @"Type"] lastObject] textValue];
+  [context setObject: bodyPreferenceType  forKey: @"BodyPreferenceType"];
+  mimeSupport = [[(id)[theDocumentElement getElementsByTagName: @"MIMESupport"] lastObject] textValue];
+  [context setObject: mimeSupport  forKey: @"MIMESupport"];
+
+  [context setObject: @"8" forKey: @"MIMETruncation"];
+
   // FIXME: support more than one CollectionId tag + DeepTraversal
   folderId = [[(id)[[(id)[theDocumentElement getElementsByTagName: @"Query"] lastObject] getElementsByTagName: @"CollectionId"] lastObject] textValue];
   folderIdentifiers = [NSMutableArray array];
 
   // Android 6 will send search requests with no collection ID - so we search in all folders.
-  if (!folderId)
+  // Outlook Mobile App sends search requests with CollectionId=0 - We treat this as an all-folder-search.
+  if (!folderId || [folderId isEqualToString: @"0"])
     {
       NSArray *foldersInCache;
       SOGoCacheGCSObject *o;
@@ -3123,7 +3219,7 @@ void handle_eas_terminate(int signum)
 	  [s appendFormat: @"<LongId>%@+%@</LongId>", folderId, itemId];
 	  [s appendFormat: @"<CollectionId xmlns=\"AirSyncBase:\">%@</CollectionId>", folderId];
 	  [s appendString: @"<Properties>"];
-	  [s appendFormat: [mailObject activeSyncRepresentationInContext: context]];
+	  [s appendString: [mailObject activeSyncRepresentationInContext: context]];
 	  [s appendString: @"</Properties>"];
 	  [s appendFormat: @"</Result>"];
 	}
@@ -3179,7 +3275,7 @@ void handle_eas_terminate(int signum)
   NSException *error;
   NSString *from;
 
-  authenticator = [SOGoDAVAuthenticator sharedSOGoDAVAuthenticator];
+  authenticator = [[context activeUser] authenticatorInContext: context];
   dd = [[context activeUser] domainDefaults];
   
   // We generate the Sender
@@ -3573,6 +3669,48 @@ void handle_eas_terminate(int signum)
         }
      }
 
+  if ([(id)[[(id)[theDocumentElement getElementsByTagName: @"UserInformation"] lastObject] getElementsByTagName: @"Get"] lastObject])
+    {
+      NSArray *identities;
+      int i;
+
+      identities = [[context activeUser] allIdentities];
+
+      [s appendString: @"<UserInformation>"];
+      [s appendString: @"<Get>"];
+
+      if ([[context objectForKey: @"ASProtocolVersion"] floatValue] >= 14.1)
+        {
+          [s appendString: @"<Accounts>"];
+          [s appendString: @"<Account>"];
+          [s appendFormat: @"<UserDisplayName>%@</UserDisplayName>", [[[identities objectAtIndex: 0] objectForKey: @"fullName"] activeSyncRepresentationInContext: context] ];
+        }
+
+      [s appendString: @"<EmailAddresses>"];
+
+      if ([[context objectForKey: @"ASProtocolVersion"] floatValue] >= 14.1)
+        [s appendFormat: @"<PrimarySmtpAddress>%@</PrimarySmtpAddress>", [[[identities objectAtIndex: 0] objectForKey: @"email"] activeSyncRepresentationInContext: context] ];
+      else
+        [s appendFormat: @"<SmtpAddress>%@</SmtpAddress>", [[[identities objectAtIndex: 0] objectForKey: @"email"] activeSyncRepresentationInContext: context] ];
+
+      if ([identities count] > 1)
+        {
+          for (i = 1; i < [identities count]; i++)
+            [s appendFormat: @"<SmtpAddress>%@</SmtpAddress>", [[[identities objectAtIndex: i] objectForKey: @"email"] activeSyncRepresentationInContext: context] ];
+        }
+
+      [s appendString: @"</EmailAddresses>"];
+
+      if ([[context objectForKey: @"ASProtocolVersion"] floatValue] >= 14.1)
+        {
+          [s appendString: @"</Account>"];
+          [s appendString: @"</Accounts>"];
+        }
+
+      [s appendString: @"</Get>"];
+      [s appendString: @"</UserInformation>"];
+    }
+
   [s appendString: @"</Settings>"];
   
   d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
@@ -3891,6 +4029,8 @@ void handle_eas_terminate(int signum)
                       [map setObject: [currentAttachment objectForKey: @"mimetype"] forKey: @"content-type"];
                       [map setObject: [currentAttachment objectForKey: @"encoding"] forKey: @"content-transfer-encoding"];
                       [map addObject: [NSString stringWithFormat: @"attachment; filename=\"%@\"", [currentAttachment objectForKey: @"filename"]] forKey: @"content-disposition"];
+                      if ([[currentAttachment objectForKey: @"bodyId"] length])
+                        [map setObject: [currentAttachment objectForKey: @"bodyId"] forKey: @"content-id"];
                       bodyPart = [[[NGMimeBodyPart alloc] initWithHeader: map] autorelease];
 
                       fdata = [[NGMimeFileData alloc] initWithBytes:[bodydata bytes]  length:[bodydata length]];

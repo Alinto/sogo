@@ -36,6 +36,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSString.h>
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSTimeZone.h>
+#import <Foundation/NSValue.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
@@ -60,6 +61,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGMime/NGMimeFileData.h>
 #import <NGMime/NGMimeMultipartBody.h>
 #import <NGMime/NGMimeType.h>
+#import <NGMime/NGMimeHeaderFields.h>
 #import <NGMail/NGMimeMessageParser.h>
 #import <NGMail/NGMimeMessage.h>
 #import <NGMail/NGMimeMessageGenerator.h>
@@ -68,6 +70,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserFolder.h>
+#import <SOGo/NSArray+Utilities.h>
 
 #include "iCalTimeZone+ActiveSync.h"
 #include "NSData+ActiveSync.h"
@@ -259,6 +262,68 @@ struct GlobalObjectId {
 //
 //
 //
+- (NSString *) _personalNameFrom: (NSArray *) enveloppeAddresses
+{
+  NGImap4EnvelopeAddress *address;
+  NSString *email, *rc, *name;
+  NSMutableArray *addresses;
+  int i, max;
+
+  rc = nil;
+  max = [enveloppeAddresses count];
+
+  if (max > 0)
+    {
+      addresses = [NSMutableArray array];
+      for (i = 0; i < max; i++)
+        {
+          address = [enveloppeAddresses objectAtIndex: i];
+          name = [address personalName];
+          email = [NSString stringWithFormat: @"%@", (name ? name : [address baseEMail])];
+
+          if (email)
+            [addresses addObject: email];
+        }
+      rc = [addresses componentsJoinedByString: @";"];
+    }
+
+  return rc;
+}
+
+
+//  Format replyTo
+//
+//  If there are multiple e-mail addresses, they are separated by a semi-colon.
+- (NSString *) _replyToAddressesFrom: (NSArray *) enveloppeAddresses
+{
+  NSMutableArray *addresses;
+  NSString *rc;
+  NGImap4EnvelopeAddress *address;
+  NSString *email;
+  int count, max;
+
+  rc = nil;
+  max = [enveloppeAddresses count];
+
+  if (max > 0)
+    {
+      addresses = [NSMutableArray array];
+      for (count = 0; count < max; count++)
+        {
+          address = [enveloppeAddresses objectAtIndex: count];
+          email = [NSString stringWithFormat: @"%@", [address email]];
+
+          [addresses addObject: email];
+        }
+      rc = [addresses componentsJoinedByString: @"; "];
+    }
+
+  return rc;
+}
+
+//
+//
+//
 - (NSData *) _preferredBodyDataInMultipartUsingType: (int) theType
                                     nativeTypeFound: (int *) theNativeTypeFound
 {
@@ -392,7 +457,7 @@ struct GlobalObjectId {
 
       body = [thePart body];
 
-      if ([body isKindOfClass: [NGMimeMultipartBody class]])
+      if ([body isKindOfClass: [NGMimeMultipartBody class]] || [body isKindOfClass: [NGMimeMessage class]])
         {
           [self _sanitizedMIMEPart: body
                          performed: b];
@@ -444,6 +509,13 @@ struct GlobalObjectId {
           RELEASE(fdata);
           *b = YES;
         }
+      else if ([body isKindOfClass: [NSData class]])
+        {
+          [thePart setHeader: @"base64"  forKey: @"content-transfer-encoding"];
+          [thePart setBody: [body dataByEncodingBase64]];
+          [thePart setHeader: [NSString stringWithFormat:@"%d", (int)[[thePart body] length]]
+                                         forKey: @"content-length"];
+	}
     }
 }
 
@@ -727,7 +799,19 @@ struct GlobalObjectId {
             break;
         }
 
-      return [theContent substringToIndex: i];
+      // If we didn't find a "space" character search again for &# to avoid
+      // truncating the content in the middle of a XML entity
+      if (i < 0)
+        {
+          for (i = len-2 ; i >= 0; i--)
+            {
+              if ([theContent characterAtIndex: i] == '&' && [theContent characterAtIndex: i+1] == '#')
+                break;
+            }
+        }
+
+      if (i >= 0)
+        return [theContent substringToIndex: i];
     }
 
   *wasTruncated = 0;
@@ -836,7 +920,13 @@ struct GlobalObjectId {
   // If there are multiple e-mail addresses, they are separated by commas."
   value = [self _emailAddressesFrom: [[self envelope] to]];
   if (value)
-    [s appendFormat: @"<To xmlns=\"Email:\">%@</To>", [value activeSyncRepresentationInContext: context]];
+    {
+      [s appendFormat: @"<To xmlns=\"Email:\">%@</To>", [value activeSyncRepresentationInContext: context]];
+      // DisplayTo - If there are multiple display names, they are separated by semi-colons.
+      value = [self _personalNameFrom: [[self envelope] to]];
+      if (value)
+        [s appendFormat: @"<DisplayTo xmlns=\"Email:\">%@</DisplayTo>", [value activeSyncRepresentationInContext: context]];
+    }
 
   // From
   value = [self _emailAddressesFrom: [[self envelope] from]];
@@ -855,10 +945,9 @@ struct GlobalObjectId {
   value = [self date];
   if (value)
     [s appendFormat: @"<DateReceived xmlns=\"Email:\">%@</DateReceived>", [value activeSyncRepresentationInContext: context]];
+  else
+    [s appendFormat: @"<DateReceived xmlns=\"Email:\">%@</DateReceived>", [[NSDate date] activeSyncRepresentationInContext: context]];
 
-  // DisplayTo
-  [s appendFormat: @"<DisplayTo xmlns=\"Email:\">%@</DisplayTo>", [[context activeUser] login]];
-  
   // Cc - same syntax as the To field
   value = [self _emailAddressesFrom: [[self envelope] cc]];
   if (value)
@@ -959,7 +1048,7 @@ struct GlobalObjectId {
       if ([event startDate])
         [s appendFormat: @"<StartTime xmlns=\"Email:\">%@</StartTime>", [[event startDate] activeSyncRepresentationInContext: context]];
       
-      if ([event timeStampAsDate])
+      if ([event timeStampAsDate] && [[event timeStampAsDate] dayOfMonth] > 0 && [[event timeStampAsDate] monthOfYear] > 0)
         [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event timeStampAsDate] activeSyncRepresentationInContext: context]];
       else if ([event created])
         [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event created] activeSyncRepresentationInContext: context]];
@@ -1040,10 +1129,11 @@ struct GlobalObjectId {
       [s appendFormat: @"<ContentClass xmlns=\"Email:\">%@</ContentClass>", @"urn:content-classes:message"];
     }
 
-  // Reply-To - FIXME
-  //NSArray *replyTo = [[message objectForKey: @"envelope"] replyTo];
-  //if ([replyTo count])
-  //  [s appendFormat: @"<Reply-To xmlns=\"Email:\">%@</Reply-To>", [addressFormatter stringForArray: replyTo]];
+  // ReplyTo
+  value = [self _replyToAddressesFrom: [self replyToEnvelopeAddresses]];
+  if (value)
+    [s appendFormat: @"<Reply-To xmlns=\"Email:\">%@</Reply-To>", [value activeSyncRepresentationInContext: context]];
+
   
   // InternetCPID - 65001 == UTF-8, we use this all the time for now.
   //              - 20127 == US-ASCII
@@ -1249,7 +1339,7 @@ struct GlobalObjectId {
             {
               if ([[value objectForKey: @"bodyId"] length])
                 {
-                  [s appendFormat: @"<ContentId>%@</ContentId>", [[value objectForKey: @"bodyId"] activeSyncRepresentationInContext: context]];
+                  [s appendFormat: @"<ContentId>%@</ContentId>", [[[value objectForKey: @"bodyId"] stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"<>"]] activeSyncRepresentationInContext: context]];
                   [s appendFormat: @"<IsInline>%d</IsInline>", 1];
                 }
 
@@ -1439,18 +1529,22 @@ struct GlobalObjectId {
 }
 
 - (NSString *) storeMail: (NSDictionary *) theValues
+                inBuffer: (NSMutableString *) theBuffer
                inContext: (WOContext *) _context
 {
-  NSString *dateReceived, *folder, *s;
+  NSString *dateReceived, *folder, *s, *serverId, *messageId;
   NGMimeMessageGenerator *generator;
-  NGMimeMessage *bounceMessage;
+  NGMimeMessage *draftMessage;
+  NGMimeBodyPart *bodyPart;
+  NGMimeMultipartBody *body;
   NSDictionary *identity;
   NGMutableHashMap *map;
   NGImap4Client *client;
   NSData *message_data;
+  NSArray *attachmentKeys;
 
-  id o, result;
-  int bodyType;
+  id o, a, result, attachments;
+  int bodyType, i;
 
   identity = [[context activeUser] primaryIdentity];
   message_data = nil;
@@ -1470,11 +1564,21 @@ struct GlobalObjectId {
       map = [[[NGMutableHashMap alloc] initWithCapacity: 1] autorelease];
 
       [map setObject: [NSString stringWithFormat: @"%@ <%@>", [identity objectForKey: @"fullName"], [identity objectForKey: @"email"]]  forKey: @"from"];
+
       if ((o = [theValues objectForKey: @"To"]))
           [map setObject: o  forKey: @"to"];
 
+      if ((o = [theValues objectForKey: @"Cc"]))
+          [map setObject: o  forKey: @"cc"];
+
+      if ((o = [theValues objectForKey: @"Bcc"]))
+          [map setObject: o  forKey: @"bcc"];
+
+      if ((o = [theValues objectForKey: @"Reply-To"]))
+          [map setObject: o  forKey: @"Reply-To"];
+
       if ((o = [theValues objectForKey: @"Subject"]))
-        [map setObject: o  forKey: @"subject"];
+          [map setObject: o  forKey: @"subject"];
 
       o = [[theValues objectForKey: @"DateReceived"] calendarDate];
 
@@ -1500,17 +1604,114 @@ struct GlobalObjectId {
 #endif
 
       [map setObject: dateReceived forKey: @"date"];
-      [map setObject: [NSString generateMessageID] forKey: @"message-id"];
-      [map setObject: (bodyType == 1 ? @"text/plain; charset=utf-8" : @"text/html; charset=utf-8")
-              forKey: @"content-type"];
-      [map setObject: @"quoted-printable" forKey: @"content-transfer-encoding"];
 
-      bounceMessage = [[[NGMimeMessage alloc] initWithHeader: map] autorelease];
+      messageId = [NSString generateMessageID];
+      [map setObject: messageId forKey: @"message-id"];
 
-      [bounceMessage setBody: [[NSString stringWithFormat: @"%@", [[theValues objectForKey: @"Body"] objectForKey: @"Data"] ] dataUsingEncoding: NSUTF8StringEncoding]];
+      attachmentKeys = [self fetchFileAttachmentKeys];
+
+      if ((attachments = [theValues objectForKey: @"Attachments"]) || [attachmentKeys count])
+        {
+          [map setObject: @"multipart/mixed" forKey: @"content-type"];
+          draftMessage = [[[NGMimeMessage alloc] initWithHeader: map] autorelease];
+          body = [[[NGMimeMultipartBody alloc] initWithPart: draftMessage] autorelease];
+
+          map = [[[NGMutableHashMap alloc] initWithCapacity: 1] autorelease];
+
+          [map setObject: (bodyType == 1 ? @"text/plain; charset=utf-8" : @"text/html; charset=utf-8")
+                  forKey: @"content-type"];
+          [map setObject: @"quoted-printable" forKey: @"content-transfer-encoding"];
+
+          bodyPart = [[[NGMimeBodyPart alloc] initWithHeader:map] autorelease];
+
+          [bodyPart setBody: [[NSString stringWithFormat: @"%@", [[theValues objectForKey: @"Body"] objectForKey: @"Data"] ] dataUsingEncoding: NSUTF8StringEncoding]];
+
+          [body addBodyPart: bodyPart];
+
+           // Add attachments from the original mail - skip deletions
+           if ([attachmentKeys count])
+             {
+               id currentAttachment;
+               NGHashMap *response;
+               NSData *bodydata;
+               NSArray *paths;
+               NGMimeFileData *fdata;
+               int i, ii;
+               BOOL found;
+
+               paths = [attachmentKeys keysWithFormat: @"BODY[%{path}]"];
+               response = [[self fetchParts: paths] objectForKey: @"RawResponse"];
+
+               for (i = 0; i < [attachmentKeys count]; i++)
+                 {
+                   currentAttachment = [attachmentKeys objectAtIndex: i];
+                   found = NO;
+                   for (ii = 0; ii < [attachments count]; ii++)
+                     {
+                       // no ClientId means its a deletio
+                       if (![[attachments objectAtIndex: ii] objectForKey: @"ClientId"] &&
+                           [[[[attachments objectAtIndex: ii] objectForKey: @"FileReference"] lastPathComponent] isEqualToString: [currentAttachment objectForKey: @"path"]])
+                         {
+                           found = YES;
+                           break;
+                         }
+                      }
+
+                   // skip deletions
+                   if (found)
+                     continue;
+
+                   bodydata = [[[response objectForKey: @"fetch"] objectForKey: [NSString stringWithFormat: @"body[%@]", [currentAttachment objectForKey: @"path"]]] valueForKey: @"data"];
+
+                   map = [[[NGMutableHashMap alloc] initWithCapacity: 1] autorelease];
+                   [map setObject: [currentAttachment objectForKey: @"mimetype"] forKey: @"content-type"];
+                   [map setObject: [currentAttachment objectForKey: @"encoding"] forKey: @"content-transfer-encoding"];
+                   [map addObject: [NSString stringWithFormat: @"attachment; filename=\"%@\"", [currentAttachment objectForKey: @"filename"]] forKey: @"content-disposition"];
+                   bodyPart = [[[NGMimeBodyPart alloc] initWithHeader: map] autorelease];
+
+                   fdata = [[NGMimeFileData alloc] initWithBytes:[bodydata bytes]  length:[bodydata length]];
+                   [bodyPart setBody: fdata];
+                   RELEASE(fdata);
+                   [body addBodyPart: bodyPart];
+                 }
+              }
+
+          // add new attachments
+          for (i = 0; i < [attachments count]; i++)
+            {
+
+               map = [[[NGMutableHashMap alloc] initWithCapacity: 1] autorelease];
+               a = [attachments objectAtIndex: i];
+
+               // no ClientId means its a deletion
+               if (![a objectForKey: @"ClientId"])
+                 continue;
+
+               [map setObject: @"application/octet-stream" forKey: @"content-type"]; // FIXME ?? can we guess the right content-type
+               [map setObject: @"base64" forKey: @"content-transfer-encoding"];
+               [map setObject: [NSString stringWithFormat: @"attachment; filename=\"%@\"", [a objectForKey: @"DisplayName"]] forKey: @"content-disposition"];
+
+               bodyPart = [[[NGMimeBodyPart alloc] initWithHeader:map] autorelease];
+               [bodyPart setBody: [[a objectForKey: @"Content"] stringByDecodingBase64]];
+               [body addBodyPart: bodyPart];
+            }
+
+
+          [draftMessage setBody: body];
+        }
+      else
+        {
+          [map setObject: (bodyType == 1 ? @"text/plain; charset=utf-8" : @"text/html; charset=utf-8")
+                  forKey: @"content-type"];
+          [map setObject: @"quoted-printable" forKey: @"content-transfer-encoding"];
+
+          draftMessage = [[[NGMimeMessage alloc] initWithHeader: map] autorelease];
+
+          [draftMessage setBody: [[NSString stringWithFormat: @"%@", [[theValues objectForKey: @"Body"] objectForKey: @"Data"] ] dataUsingEncoding: NSUTF8StringEncoding]];
+        }
 
       generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
-      message_data = [generator generateMimeFromPart: bounceMessage];
+      message_data = [generator generateMimeFromPart: draftMessage];
     }
 
   if (message_data)
@@ -1530,8 +1731,32 @@ struct GlobalObjectId {
                      toFolder: folder
                     withFlags: [NSArray arrayWithObjects: @"draft", nil]];
 
+      serverId = [NSString stringWithFormat: @"%d", [self IMAP4IDFromAppendResult: result]];
+
+      [theBuffer appendString: @"<ApplicationData>"];
+      [theBuffer appendFormat: @"<ConversationId xmlns=\"Email2:\">%@</ConversationId>", [[messageId dataUsingEncoding: NSUTF8StringEncoding] activeSyncRepresentationInContext: context]];
+
+      if ([attachments count])
+        {
+          [theBuffer appendString: @"<Attachments xmlns=\"AirSyncBase:\">"];
+
+          for (i = 0; i < [attachments count]; i++)
+            {
+              a = [attachments objectAtIndex: i];
+
+              [theBuffer appendString: @"<Attachment>"];
+              [theBuffer appendFormat: @"<ClientId xmlns=\"AirSyncBase:\">%@</ClientId>", [a objectForKey: @"ClientId"]];
+              [theBuffer appendFormat: @"<FileReference xmlns=\"AirSyncBase:\">mail/%@/%@/%d</FileReference>", [[[self container] relativeImap4Name] stringByEscapingURL], serverId, i+2];
+              [theBuffer appendString: @"</Attachment>"];
+            }
+
+            [theBuffer appendString: @"</Attachments>"];
+          }
+
+      [theBuffer appendString: @"</ApplicationData>"];
+
       if ([[result objectForKey: @"result"] boolValue])
-        return [NSString stringWithFormat: @"%d", [self IMAP4IDFromAppendResult: result]];
+        return serverId;
     }
 
   return nil;

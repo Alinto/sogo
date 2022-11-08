@@ -189,7 +189,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   processIdentifierInCache = [[self globalMetadataForDevice] objectForKey: key];
 
   // Don't update the cache if another request is processing the same collection.
-  // I case of a merged folder we have to check personal folder's lock.
+  // In case of a merged folder we have to check personal folder's lock.
   a = [key componentsSeparatedByString: @"/"];
   pkey = [NSString stringWithFormat: @"%@/personal", [a objectAtIndex:0]];
 
@@ -346,8 +346,34 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           anAddition = [additions objectAtIndex: i];
           is_new = YES;
 
-          clientId = [[(id)[anAddition getElementsByTagName: @"ClientId"] lastObject] textValue];
+
+/*
+FIXME
+    <Add>
+     <ClientId>338</ClientId>
+     <ApplicationData>
+      <To xmlns="Email:">&lt;foot@bar.com&gt;</To>
+      <Cc xmlns="Email:"/>
+      <Subject xmlns="Email:">test</Subject>
+      <Reply-To xmlns="Email:">foo@bar.com</Reply-To>
+      <Importance xmlns="Email:">1</Importance>
+      <Read xmlns="Email:">1</Read>
+      <Attachments xmlns="AirSyncBase:">
+       <Add>
+        <ClientId>152-ab557915-8451-49a7-a9c6-a9ac153021ad</ClientId>
+
+
+-> lastObject returns the ClientId in Attachments element -> try with objectAtIndex: 0 -> is this correct?
+*/
+          //clientId = [[(id)[anAddition getElementsByTagName: @"ClientId"] lastObject] textValue];
+          clientId = [[(id)[anAddition getElementsByTagName: @"ClientId"] objectAtIndex: 0] textValue];
+
           allValues = [NSMutableDictionary dictionaryWithDictionary: [[(id)[anAddition getElementsByTagName: @"ApplicationData"]  lastObject] applicationData]];
+
+          // FIXME: ignore the <Add> elements of Attachemnts - above  (id)[theDocumentElement getElementsByTagName: @"Add"]; return any <Add> elements instead of only the direct childs of the <commands> element ..
+          if (![allValues count])
+            continue;
+
           
           switch (theFolderType)
             {
@@ -402,23 +428,39 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             case ActiveSyncMailFolder:
             default:
               {
-                 // Support SMS to Exchange eMail sync.
+                 // Support Draft Mail/SMS to Exchange eMail sync.
                  NSString *serverId;
+                 NSMutableString *s;
+                 NSDictionary *result;
+                 NSNumber *modseq;
+
+                 serverId = nil;
+                 s = [NSMutableString string];
+
                  sogoObject = [SOGoMailObject objectWithName: @"Mail" inContainer: theCollection];
-                 serverId = [sogoObject storeMail: allValues  inContext: context];
+                 serverId = [sogoObject storeMail: allValues  inBuffer: s inContext: context];
                  if (serverId)
                    {
+                     sogoObject = [theCollection lookupName: serverId inContext: context acquire: 0];
+                     [sogoObject takeActiveSyncValues: allValues  inContext: context];
+
                      // Everything is fine, lets generate our response
-                     // serverId = clientId - There is no furhter processing after adding the SMS to the inbox.
                      [theBuffer appendString: @"<Add>"];
                      [theBuffer appendFormat: @"<ClientId>%@</ClientId>", clientId];
                      [theBuffer appendFormat: @"<ServerId>%@</ServerId>", serverId];
                      [theBuffer appendFormat: @"<Status>%d</Status>", 1];
+                     [theBuffer appendString: s];
                      [theBuffer appendString: @"</Add>"];
+
 
                      folderMetadata = [self _folderMetadataForKey: [self _getNameInCache: theCollection withType: theFolderType]];
                      syncCache = [folderMetadata objectForKey: @"SyncCache"];
-                     [syncCache setObject: @"0" forKey: serverId];
+
+                     result = [sogoObject fetchParts: [NSArray arrayWithObject: @"MODSEQ"]];
+                     modseq = [[[result objectForKey: @"RawResponse"] objectForKey: @"fetch"] objectForKey: @"modseq"];
+
+                     [syncCache setObject: [modseq stringValue] forKey: serverId];
+
                      [self _setFolderMetadata: folderMetadata  forKey: [self _getNameInCache: theCollection withType: theFolderType]];
 
                      continue;
@@ -688,6 +730,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 NSDictionary *result;
                 NSNumber *modseq;
 
+                // Process an update to a Draft Mail.
+                if ([allChanges objectForKey: @"Body"])
+                  {
+                    NSString *serverId;
+                    NSMutableString *s;
+
+                    serverId = nil;
+                    s = [NSMutableString string];
+
+                    serverId = [sogoObject storeMail: allChanges  inBuffer: s inContext: context];
+                    if (serverId)
+                      {
+                        // we delete the original email - next sync will update the client with the new mail
+                        [sogoObject delete];
+                        sogoObject = [theCollection lookupName: serverId inContext: context acquire: 0];
+                      }
+                  }
+
                 [sogoObject takeActiveSyncValues: allChanges  inContext: context];
 
                 result = [sogoObject fetchParts: [NSArray arrayWithObject: @"MODSEQ"]];
@@ -702,7 +762,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
           [theBuffer appendString: @"<Change>"];
           [theBuffer appendFormat: @"<ServerId>%@</ServerId>", origServerId];
-          [theBuffer appendFormat: @"<Status>%d</Status>", 1];
+
+          // A body element is sent only for draft mails - status 8 will delete the mail on the client - the next sync update fetch the new mail
+          if ([allChanges objectForKey: @"Body"] && theFolderType == ActiveSyncMailFolder)
+            [theBuffer appendFormat: @"<Status>%d</Status>", 8];
+          else
+            [theBuffer appendFormat: @"<Status>%d</Status>", 1];
+
           [theBuffer appendString: @"</Change>"];
         }
     }
@@ -824,7 +890,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               // FIXME: handle errors here
               if (deletesAsMoves && theFolderType == ActiveSyncMailFolder)
 		{
-		  [(SOGoMailFolder *)[sogoObject container] deleteUIDs: [NSArray arrayWithObjects: serverId, nil] useTrashFolder: &useTrash inContext: context];
+		  [(SOGoMailFolder *)[sogoObject container] deleteUIDs: [NSArray arrayWithObjects: serverId, nil]
+                                                        useTrashFolder: &useTrash
+                                                             inContext: context];
 		}
               else if (theFolderType == ActiveSyncEventFolder || theFolderType == ActiveSyncTaskFolder || theFolderType == ActiveSyncContactFolder)
                 {
@@ -1401,7 +1469,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               }
           }
 
-        allMessages = [theCollection syncTokenFieldsWithProperties: nil  matchingSyncToken: theSyncKey  fromDate: theFilterType  initialLoad: initialLoadInProgress];
+        allMessages = [theCollection syncTokenFieldsWithProperties: nil
+                                                 matchingSyncToken: theSyncKey
+                                                          fromDate: theFilterType
+                                                       initialLoad: initialLoadInProgress];
         max = [allMessages count];
         
         allCacheObjects = [NSMutableArray array];
@@ -2525,15 +2596,41 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       //[output appendFormat: @"<Status>%d</Status>", 14];
     }
 
-  [output appendString: @"<Collections>"];
   s = nil;
 
   // We enter our loop detection change
   for (i = 0; i < (heartbeatInterval/internalInterval); i++)
     {
+      // Terminate the process if we need to
       if ([self easShouldTerminate])
         break;
 
+      // We first check of any of the collections we want to sync are already
+      // in an other sync process. If that's the case, we do not do anything
+      // and we return immediately. So we'll let the other sync process terminate
+      for (j = 0; j < [allCollections count]; j++)
+        {
+          aCollection = [allCollections objectAtIndex: j];
+          globalMetadata = [self globalMetadataForDevice];
+
+          key = [NSString stringWithFormat: @"SyncRequest+%@", [[[(id)[aCollection getElementsByTagName: @"CollectionId"] lastObject] textValue] stringByUnescapingURL]];
+
+          if (!([[globalMetadata objectForKey: key] isEqual: processIdentifier]))
+            {
+              if (debugOn)
+                [self logWithFormat: @"EAS - Discard response %@", [self globalMetadataForDevice]];
+
+              [output appendString: @"<Status>13</Status>"];
+              [output appendString: @"</Sync>"];
+              d = [[output dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+              [theResponse setContent: d];
+              RELEASE(output);
+              return;
+            }
+
+        }
+
+      // We're good to go to sync the collections
       s = [NSMutableString string];
 
       for (j = 0; j < [allCollections count]; j++)
@@ -2544,21 +2641,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                              inBuffer: s
                        changeDetected: &changeDetected
                   maxSyncResponseSize: maxSyncResponseSize];
-
-          // Don't return a response if another Sync is waiting.
-          globalMetadata = [self globalMetadataForDevice];
-          key = [NSString stringWithFormat: @"SyncRequest+%@", [[[(id)[aCollection getElementsByTagName: @"CollectionId"] lastObject] textValue] stringByUnescapingURL]];
-
-          if (!([[globalMetadata objectForKey: key] isEqual: processIdentifier]))
-            {
-              if (debugOn)
-                [self logWithFormat: @"EAS - Discard response %@", [self globalMetadataForDevice]];
-
-              [theResponse setStatus: 503];
-
-              RELEASE(output);
-              return;
-            }
 
           if ((maxSyncResponseSize > 0 && [s length] >= maxSyncResponseSize))
             break;
@@ -2616,6 +2698,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   //
   if (changeDetected || [[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"2.5"] || [[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"12.0"])
     {
+      [output appendString: @"<Collections>"];
+
       // We always return the last generated response.
       // If we only return <Sync><Collections/></Sync>,
       // iOS powered devices will simply crash.

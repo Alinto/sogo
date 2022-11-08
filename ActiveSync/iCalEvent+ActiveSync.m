@@ -135,7 +135,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // StartTime -- http://msdn.microsoft.com/en-us/library/ee157132(v=exchg.80).aspx
   if ([self startDate])
     {
-      if ([self isAllDay] && !tz)
+      if ([self isAllDay] && !tz && [[context objectForKey: @"ASProtocolVersion"] floatValue] < 16.0)
         [s appendFormat: @"<StartTime xmlns=\"Calendar:\">%@</StartTime>",
            [[[self startDate] dateByAddingYears: 0 months: 0 days: 0
                                           hours: 0 minutes: 0
@@ -148,7 +148,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // EndTime -- http://msdn.microsoft.com/en-us/library/ee157945(v=exchg.80).aspx
   if ([self endDate])
     {
-      if ([self isAllDay] && !tz)
+      if ([self isAllDay] && !tz && [[context objectForKey: @"ASProtocolVersion"] floatValue] < 16.0)
         [s appendFormat: @"<EndTime xmlns=\"Calendar:\">%@</EndTime>",
            [[[self endDate] dateByAddingYears: 0 months: 0 days: 0
                                         hours: 0 minutes: 0
@@ -194,7 +194,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
           attendee = [attendees objectAtIndex: i];
           [s appendFormat: @"<Attendee_Email xmlns=\"Calendar:\">%@</Attendee_Email>", [[attendee rfc822Email] activeSyncRepresentationInContext: context]];
-          [s appendFormat: @"<Attendee_Name xmlns=\"Calendar:\">%@</Attendee_Name>", [[attendee cn] activeSyncRepresentationInContext: context]];
+          if ([[attendee cn] length])
+            [s appendFormat: @"<Attendee_Name xmlns=\"Calendar:\">%@</Attendee_Name>", [[attendee cn] activeSyncRepresentationInContext: context]];
+          else
+            [s appendFormat: @"<Attendee_Name xmlns=\"Calendar:\">%@</Attendee_Name>", [[attendee rfc822Email] activeSyncRepresentationInContext: context]];
           
           attendee_status = [self _attendeeStatus: attendee];
             
@@ -328,7 +331,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       iCalAlarm *alarm;
       
-      alarm = [self firstDisplayOrAudioAlarm];
+      alarm = [self firstSupportedAlarm];
       [s appendString: [alarm activeSyncRepresentationInContext: context]];
     }
 
@@ -454,6 +457,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSCalendarDate *oldstart;
   NSTimeZone *userTimeZone;
   iCalTimeZone *tz;
+  iCalAlarm *alarm;
   id o;
   int deltasecs;
 
@@ -589,23 +593,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         }
     }
 
-  //
-  // If an alarm is deinfed with an action != DISPLAY, we ignore the alarm - don't want to overwrite. 
-  //
-  if ([self hasAlarms] && [[[[self alarms] objectAtIndex: 0] action] caseInsensitiveCompare: @"DISPLAY"] != NSOrderedSame)
-    {
-      // Ignore the alarm for now
-    }
-  else if ((o = [theValues objectForKey: @"Reminder"]) && [o length])
+  if ((o = [theValues objectForKey: @"Reminder"]) && [o length])
     {           
+      if ([self hasAlarms])
+        alarm = [[self firstSupportedAlarm] mutableCopy];
+      else
+        alarm = [[iCalAlarm alloc] init];
+
       // NOTE: Outlook sends a 15 min reminder (18 hour for allday) if no reminder is specified  
       // although no default reminder is defined (File -> Options -> Clendar -> Calendar Options - > Default Reminders)
       //
       // http://answers.microsoft.com/en-us/office/forum/office_2013_release-outlook/desktop-outlook-calendar-creates-entries-with/9aef72d8-81bb-4a32-a6ab-bf7d216fb811?page=5&tm=1395690285088 
       //
-      iCalAlarm *alarm;
       
-      alarm = [[iCalAlarm alloc] init];
       [alarm takeActiveSyncValues: theValues  inContext: context];
 
       [self removeAllAlarms];
@@ -868,6 +868,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               // { "Attendee_Email" = "sogo3@example.com"; "Attendee_Name" = "Wolfgang Fritz"; "Attendee_Status" = 5; "Attendee_Type" = 1; }
               attendee = [o objectAtIndex: i];
               
+              if ([self isOrganizer: [attendee objectForKey: @"Attendee_Email"]])
+                continue;
+
               person = [iCalPerson elementWithTag: @"attendee"];
               [person setCn: [attendee objectForKey: @"Attendee_Name"]];
               [person setEmail: [attendee objectForKey: @"Attendee_Email"]];

@@ -46,6 +46,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalTimeZone.h>
+#import <NGCards/iCalTrigger.h>
 
 #import <Appointments/iCalEntityObject+SOGo.h>
 

@@ -34,6 +34,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSString.h>
 
 static NSArray *asElementArray = nil;
+static NSArray *considerAsSameArray = nil;
 
 @implementation NGDOMElement (ActiveSync)
 
@@ -101,7 +102,44 @@ static NSArray *asElementArray = nil;
   int i, count;
   
   if (!asElementArray)
-    asElementArray = [[NSArray alloc] initWithObjects: @"Attendee", @"Category", @"Exception", nil];
+    asElementArray = [[NSArray alloc] initWithObjects: @"Attendee", @"Category", @"Exception", @"Add", @"Delete", nil];
+
+// FIXME
+/* if the client sends
+<attachments>
+<add>
+...
+</add>
+<add>
+...
+</add>
+</attachments>
+
+the result is a NSarray i.e. {add1; add2; ...}
+
+if the client sends
+
+<attachments>
+<add>
+...
+</add>
+<add>
+...
+</add>
+<delete>
+...
+</delete>
+<delete>
+...
+</delete>
+</attachments>
+
+
+the result is a NSDictionary ie. Add = { }; Delete = { }; the dictionary would contain only one entry for add
+*/
+  if (!considerAsSameArray)
+    considerAsSameArray = [[NSArray alloc] initWithObjects: @"Add", @"Delete", nil];
+
 
   data = [NSMutableDictionary dictionary];
 
@@ -151,7 +189,7 @@ static NSArray *asElementArray = nil;
                       if (!innerTag)
                         innerTag = [innerElement tagName];
 
-                      if ([innerTag isEqualToString: [innerElement tagName]])
+                      if ([innerTag isEqualToString: [innerElement tagName]] || [considerAsSameArray containsObject: innerTag])
                         {
                           if ([(id)innerElement isTextNode])
                             [innerElements addObject: [(NGDOMElement *)innerElement textValue]];
