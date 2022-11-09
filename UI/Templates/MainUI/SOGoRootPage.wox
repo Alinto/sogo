@@ -50,7 +50,8 @@
               <md-input-container class="md-block">
                 <label><var:string label:value="Password"/></label>
                 <md-icon>email</md-icon>
-                <input type="password" ng-model="app.creds.password" ng-required="true"/>
+                <input id="passwordField" type="password" ng-model="app.creds.password" ng-required="true"/>
+                <md-icon id="password-visibility-icon" ng-click="app.changePasswordVisibility()">visibility</md-icon>
               </md-input-container>
               
 

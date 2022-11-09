@@ -29,7 +29,7 @@
       this.verificationCodePattern = '\\d{6}';
 
       // Password policy - change expired password
-      this.passwords = { newPassword: null, newPasswordConfirmation: null, oldPassword: null };
+      this.passwords = { newPassword: null, newPasswordConfirmation: null, oldPassword: null, visible: false };
 
       // Password recovery
       this.passwordRecovery = {
@@ -317,6 +317,17 @@
       }
     };
 
+    this.changePasswordVisibility = function () {
+      this.passwords.visible = !this.passwords.visible;
+      var field = document.getElementById("passwordField");
+      if (this.passwords.visible) {
+        field.type = "text";
+        document.getElementById("password-visibility-icon").innerHTML = 'visibility_off';
+      } else {
+        field.type = "password";
+        document.getElementById("password-visibility-icon").innerHTML = 'visibility';
+      }
+    }
   }
 
   angular
