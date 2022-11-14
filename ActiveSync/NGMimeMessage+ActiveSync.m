@@ -40,8 +40,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 - (NSArray *) allRecipients
 {
+  NGMailAddressParser *parser;
+  NSEnumerator *addressList;
   NSMutableArray *allRecipients;
-  NSArray *recipients;
+  NGMailAddress *address;
+  NSEnumerator *recipients;
+  NSString *s;
   NSString *fieldNames[] = {@"to", @"cc", @"bcc"};
   unsigned int count;
 
@@ -49,9 +53,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   for (count = 0; count < 3; count++)
     {
-      recipients = [self headersForKey: fieldNames[count]];
-      if ([recipients count] > 0)
-        [allRecipients addObjectsFromArray: recipients];
+      recipients = [[self headersForKey: fieldNames[count]] objectEnumerator];
+      while ((s = [recipients nextObject]))
+        {
+          parser = [NGMailAddressParser mailAddressParserWithString: s];
+          addressList = [[parser parseAddressList] objectEnumerator];
+          while ((address = [addressList nextObject]))
+            [allRecipients addObject: [address address]];
+       }
     }
 
   return allRecipients;
