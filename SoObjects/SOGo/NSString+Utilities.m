@@ -891,4 +891,85 @@ static int cssEscapingCount;
   return result;
 }
 
+/**
+ * Get the safe string avoiding HTML injection
+ * @param stripHTMLCode Remove all HTML code from content
+ * @return A safe string
+ */
+- (NSString *) stringWithoutHTMLInjection: (BOOL)stripHTMLCode
+{
+  NSString *result, *text;
+  NSScanner *theScanner;
+  NSError *error;
+  NSRegularExpression *regex;
+
+  text = nil;
+  error = nil;
+  regex = nil;
+  result = [NSString stringWithString: self];
+
+  if (stripHTMLCode) {
+    // Author : https://www.codercrunch.com/question/1251681838/how-remove-html-tags-string-ios
+    theScanner = [NSScanner scannerWithString: result];
+    while ([theScanner isAtEnd] == NO) {
+      // find start of tag
+      [theScanner scanUpToString: @"<" intoString: NULL];
+      // find end of tag
+      [theScanner scanUpToString: @">" intoString: &text];
+      // replace the found tag with a space
+      //(you can filter multi-spaces out later if you wish)
+      result = [result stringByReplacingOccurrencesOfString:
+              [NSString stringWithFormat: @"%@>", text]
+              withString: @" "];
+    } 
+  } else {
+    // Clean XSS
+    // Examples of injection : https://cheatsheetseries.owasp.org/cheatsheets/XSS_Filter_Evasion_Cheat_Sheet.html#xss-locator-polygot
+    result = [self stringByReplacingOccurrencesOfString:@"<script" withString:@""];
+    result = [result stringByReplacingOccurrencesOfString:@"</script>" withString:@""];
+
+    // Remove javascript:
+    regex = [NSRegularExpression regularExpressionWithPattern:@"j[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*a[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*v[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*a[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*s[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*c[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*r[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*i[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*p[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*t[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*:"
+                                 options: NSRegularExpressionCaseInsensitive error:&error];
+    result = [regex stringByReplacingMatchesInString:result options:0 range:NSMakeRange(0, [result length]) withTemplate:@""];
+
+    // Remove vbscript:
+    regex = [NSRegularExpression regularExpressionWithPattern:@"v[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*b[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*s[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*r[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*i[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*p[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*t[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*:"
+                                 options: NSRegularExpressionCaseInsensitive error:&error];
+    result = [regex stringByReplacingMatchesInString:result options:0 range:NSMakeRange(0, [result length]) withTemplate:@""];
+
+    // Remove livescript:
+    regex = [NSRegularExpression regularExpressionWithPattern:@"l[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*i[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*v[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*e[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*s[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*c[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*r[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*i[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*p[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*t[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*:"
+                                 options: NSRegularExpressionCaseInsensitive error:&error];
+    result = [regex stringByReplacingMatchesInString:result options:0 range:NSMakeRange(0, [result length]) withTemplate:@""];
+
+    // Remove <script
+    regex = [NSRegularExpression regularExpressionWithPattern:@"<[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*s[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*c[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*r[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*i[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*p[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*t" 
+                                 options: NSRegularExpressionCaseInsensitive error:&error];
+    result = [regex stringByReplacingMatchesInString:result options:0 range:NSMakeRange(0, [result length]) withTemplate:@"<scr***"];
+
+    // Remove </script
+    regex = [NSRegularExpression regularExpressionWithPattern:@"<[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*/[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*s[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*c[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*r[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*i[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*p[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*t" 
+                                 options: NSRegularExpressionCaseInsensitive error:&error];
+    result = [regex stringByReplacingMatchesInString:result options:0 range:NSMakeRange(0, [result length]) withTemplate:@"</scr***"];
+
+    // Remove <iframe
+    regex = [NSRegularExpression regularExpressionWithPattern:@"<[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*i[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*f[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*r[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*a[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*m[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*e" 
+                                 options: NSRegularExpressionCaseInsensitive error:&error];
+    result = [regex stringByReplacingMatchesInString:result options:0 range:NSMakeRange(0, [result length]) withTemplate:@"<ifr***"];
+
+    // Remove onload
+    regex = [NSRegularExpression regularExpressionWithPattern:@"onload=" 
+                                 options: NSRegularExpressionCaseInsensitive error:&error];
+    result = [regex stringByReplacingMatchesInString:result options:0 range:NSMakeRange(0, [result length]) withTemplate:@"onl***="];
+
+    // Remove onmouseover
+    regex = [NSRegularExpression regularExpressionWithPattern:@"onmouseover=" 
+                                 options: NSRegularExpressionCaseInsensitive error:&error];
+    result = [regex stringByReplacingMatchesInString:result options:0 range:NSMakeRange(0, [result length]) withTemplate:@"onmouseo***="];
+  }  
+  
+  return result;
+}
+
 @end

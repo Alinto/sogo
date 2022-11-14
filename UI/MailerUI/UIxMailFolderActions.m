@@ -76,7 +76,7 @@
 
   request = [context request];
   params = [[request contentAsString] objectFromJSONString];
-  folderName = [params objectForKey: @"name"];
+  folderName = [[params objectForKey: @"name"] stringWithoutHTMLInjection: YES];
   if ([folderName length] > 0)
     {
       encodedFolderName = [folderName stringByEncodingImap4FolderName];
@@ -142,7 +142,7 @@
   // Retrieve new folder name from JSON payload
   request = [context request];
   params = [[request contentAsString] objectFromJSONString];
-  newFolderName = [params objectForKey: @"name"];
+  newFolderName = [[params objectForKey: @"name"] stringWithoutHTMLInjection: YES];
 
   if (!newFolderName || [newFolderName length] == 0)
     {
