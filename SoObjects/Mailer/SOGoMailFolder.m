@@ -2364,7 +2364,7 @@ static NSInteger _compareFetchResultsByUIDDict (id entry1, id entry2, NSDictiona
   NSArray *a, *uids;
   NSDictionary *d;
   id fetchResults, sortedResults;
-  NSUInteger i;
+  NSUInteger index;
   NSMutableDictionary *uidsDict;
 
   int i;
@@ -2434,8 +2434,8 @@ static NSInteger _compareFetchResultsByUIDDict (id entry1, id entry2, NSDictiona
   else
     {
       uidsDict = [[NSMutableDictionary alloc] init];
-      for (i = 0 ; i < [uids length] ; i++) {
-        [uidsDict setObject:[NSNumber numberWithInt: i] forKey: [NSString stringWithFormat:@"%d", [[uids objectAtIndex: i] intValue]]];
+      for (index = 0 ; index < [uids length] ; index++) {
+        [uidsDict setObject:[NSNumber numberWithInt: index] forKey: [NSString stringWithFormat:@"%d", [[uids objectAtIndex: index] intValue]]];
       }
       sortedResults = [fetchResults sortedArrayUsingFunction: _compareFetchResultsByUIDDict
                                                     context: uidsDict];
