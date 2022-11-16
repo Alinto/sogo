@@ -120,6 +120,22 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
     return NSOrderedAscending;
 }
 
+static NSInteger _compareFetchResultsByUIDDict (id entry1, id entry2, NSDictionary *uids)
+{
+  NSString *uid1, *uid2;
+  NSUInteger pos1, pos2;
+
+  uid1 = [entry1 objectForKey: @"uid"];
+  uid2 = [entry2 objectForKey: @"uid"];
+  pos1 = [[uids objectForKey: [NSString stringWithFormat: @"%@", uid1]] intValue];
+  pos2 = [[uids objectForKey: [NSString stringWithFormat: @"%@", uid2]] intValue];
+
+  if (pos1 > pos2)
+    return NSOrderedDescending;
+  else
+    return NSOrderedAscending;
+}
+
 @interface NGImap4Connection (PrivateMethods)
 
 - (NSString *) imap4FolderNameForURL: (NSURL *) url;
@@ -2348,6 +2364,8 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
   NSArray *a, *uids;
   NSDictionary *d;
   id fetchResults, sortedResults;
+  NSUInteger i;
+  NSMutableDictionary *uidsDict;
 
   int i;
   uint64_t highestmodseq = 0;
@@ -2415,8 +2433,13 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
     }
   else
     {
-      sortedResults = [fetchResults sortedArrayUsingFunction: _compareFetchResultsByUID
-                                                    context: uids];
+      uidsDict = [[NSMutableDictionary alloc] init];
+      for (i = 0 ; i < [uids length] ; i++) {
+        [uidsDict setObject:[NSNumber numberWithInt: i] forKey: [NSString stringWithFormat:@"%d", [[uids objectAtIndex: i] intValue]]];
+      }
+      sortedResults = [fetchResults sortedArrayUsingFunction: _compareFetchResultsByUIDDict
+                                                    context: uidsDict];
+      [uidsDict release];
     }
 
   for (i = 0; i < [sortedResults count]; i++)
