@@ -63,6 +63,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGMime/NGMimeBodyPart.h>
 #import <NGMime/NGMimeFileData.h>
 #import <NGMime/NGMimeType.h>
+#import <NGMime/NGMimeHeaderFields.h>
 #import <NGMime/NGMimeMultipartBody.h>
 #import <NGMime/NGConcreteMimeType.h>
 #import <NGMail/NGMimeMessageParser.h>
@@ -4027,6 +4028,7 @@ void handle_eas_terminate(int signum)
                   for (j = 0; j < [aparts count]; j++)
                     {
                       apart = [aparts objectAtIndex: j];
+
                       if ([[[apart contentType] type] isEqualToString: @"text"] && [[[apart contentType] subType] isEqualToString: @"html"])
                         htmlPart = apart;
                       if ([[[apart contentType] type] isEqualToString: @"text"] && [[[apart contentType] subType] isEqualToString: @"plain"])
@@ -4035,12 +4037,23 @@ void handle_eas_terminate(int signum)
                 }
               else
                 {
-                  if ([[[part contentType] type] isEqualToString: @"text"] && [[[part contentType] subType] isEqualToString: @"html"])
+                  if ([[(NGMimeContentDispositionHeaderField *)[part headerForKey: @"content-disposition"] type] hasPrefix: @"attachment"])
+                    {
+                      if ([[part body] isKindOfClass: [NSData class]] && ! [[[part contentType] type] isEqualToString: @"text"])
+                        {
+                          // Ensure base64 encoding of non-text parts - text parts are encoded individually.
+                          [part setHeader: @"base64"  forKey: @"content-transfer-encoding"];
+                          [part setBody: [[part body] dataByEncodingBase64]];
+                          [part setHeader: [NSString stringWithFormat:@"%d", (int)[[part body] length]]
+                                   forKey: @"content-length"];
+                        }
+
+                      [attachments addObject: part];
+                    }
+                  else if ([[[part contentType] type] isEqualToString: @"text"] && [[[part contentType] subType] isEqualToString: @"html"])
                     htmlPart = part;
                   else if ([[[part contentType] type] isEqualToString: @"text"] && [[[part contentType] subType] isEqualToString: @"plain"])
                     textPart = part;
-                  else
-                    [attachments addObject: part];
                }
             }
         }
