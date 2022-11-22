@@ -219,7 +219,7 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSDictionary *
 
 /* Sorting */
 
-- (NSArray *) _sortFetchResultsWithUID: (NSArray *)fetchResults uids: (NSDictionary *)uids
+- (NSArray *) _sortFetchResultsWithUID: (NSArray *)fetchResults uids: (NSArray *)uids
 {
   NSUInteger index;
   NSMutableDictionary *uidsDict;
