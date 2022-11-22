@@ -97,8 +97,10 @@
   int intValue;
 
   data = [objectRecord objectForKey: @"c_content"];
-  if (data)
+  if (data && [data isKindOfClass: [NSString class]])
     ASSIGN (content, data);
+  else
+    ASSIGN (content, [NSString stringWithUTF8String:[data bytes]]);
   data = [objectRecord objectForKey: @"c_version"];
   if (data)
     version = [data unsignedIntValue];
