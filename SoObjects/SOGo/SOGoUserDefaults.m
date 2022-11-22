@@ -147,7 +147,7 @@ NSString *SOGoPasswordRecoverySecondaryEmail = @"SecondaryEmail";
       rc = NO;
 
       if ([fullName length])
-        [identity setObject: fullName forKey: @"fullName"];
+        [identity setObject: [fullName stringWithoutHTMLInjection: YES] forKey: @"fullName"];
       if ([email length])
         [identity setObject: email forKey: @"email"];
       if ([replyTo length])
@@ -797,7 +797,21 @@ NSString *SOGoPasswordRecoverySecondaryEmail = @"SecondaryEmail";
 
 - (NSArray *) mailIdentities
 {
-  return [self arrayForKey: @"SOGoMailIdentities"];
+  NSMutableArray *mailIdentities;
+  NSMutableDictionary *mailIdentity;
+  NSUInteger i;
+
+  // Remove possible XSS injection
+  mailIdentities = [NSMutableArray arrayWithArray: [self arrayForKey: @"SOGoMailIdentities"]];
+  for (i = 0 ; i < [mailIdentities length] ; i++) {
+    mailIdentity = [mailIdentities objectAtIndex: i];
+    if ([mailIdentity objectForKey: @"fullName"]) {
+      [mailIdentity setObject: [[mailIdentity objectForKey: @"fullName"] stringWithoutHTMLInjection: YES] forKey: @"fullName"];
+      [mailIdentities setObject: mailIdentity atIndexedSubscript: i];
+    }
+  }
+
+  return mailIdentities;
 }
 
 - (void) setMailForceDefaultIdentity: (BOOL) newValue
