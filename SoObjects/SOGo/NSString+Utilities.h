@@ -26,6 +26,7 @@
 @class NSCharacterSet;
 @class NSDictionary;
 @class NSObject;
+@class NSRegularExpression;
 
 @interface NSString (SOGoURLExtension)
 
