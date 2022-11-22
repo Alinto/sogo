@@ -112,17 +112,17 @@
 "Missing type parameter" = "Mangler typeparameter";
 
 /* Password Recovery */
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password lost" = "Password lost";
-"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
-"Invalid secret question answer" = "Invalid secret question answer";
-"Next" = "Next";
-"Back" = "Back";
-"Please enter a new password below" = "Please enter a new password below";
-"A link will be sent to %{0}" = "A link will be sent to %{0}";
-"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
-"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
-"Password recovery email in error" = "Password recovery email in error";
-"Password reset" = "Password reset";
-"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";
+"Secondary e-mail" = "Sekundær e-post";
+"Answer" = "Svar";
+"Password lost" = "Passord tapt";
+"No password recovery method has been defined for this user" = "Ingen metode for tilbakestilling av passord er definert for denne brukeren";
+"Invalid secret question answer" = "Ugyldig svar på hemmelig spørsmål";
+"Next" = "Neste";
+"Back" = "Tilbake";
+"Please enter a new password below" = "Vennligst skriv nytt passord under";
+"A link will be sent to %{0}" = "En link vil bli sendt til %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "Link for tilbakestilling av passord har blitt sendt. Sjekk din innboks og klikk på linken. ";
+"Invalid configuration for email password recovery" = "Ugyldig konfigurasjon for tilbakestilling av passord ";
+"Password recovery email in error" = "Feil med e-post for tilbakestilling av passord";
+"Password reset" = "Tilbakestill passord";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hei %{0},\nDet har kommet en forespørsel om å endre ditt passord!\n\nHvis du ikke sendte denne forespørselen, kan du se bort i fra denne e-posten. \n\nDersom du har bedt om passordendring, vennligst klikk på linken for å endre ditt passord: %{1}";
