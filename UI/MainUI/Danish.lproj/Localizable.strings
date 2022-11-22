@@ -112,17 +112,17 @@
 "Missing type parameter" = "Manglende typeparameter";
 
 /* Password Recovery */
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password lost" = "Password lost";
-"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
-"Invalid secret question answer" = "Invalid secret question answer";
-"Next" = "Next";
-"Back" = "Back";
-"Please enter a new password below" = "Please enter a new password below";
-"A link will be sent to %{0}" = "A link will be sent to %{0}";
-"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
-"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
-"Password recovery email in error" = "Password recovery email in error";
-"Password reset" = "Password reset";
-"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";
+"Secondary e-mail" = "Sekundær e-mail";
+"Answer" = "Svar";
+"Password lost" = "Adgangskode mistet";
+"No password recovery method has been defined for this user" = "Der er ikke defineret nogen metode til gendannelse af adgangskoden for denne bruger";
+"Invalid secret question answer" = "Ugyldigt hemmeligt spørgsmålssvar";
+"Next" = "Næste";
+"Back" = "Tilbage";
+"Please enter a new password below" = "Venligst indtast en ny adgangskoden nedenfor";
+"A link will be sent to %{0}" = "Et link vil blive sendt til %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "Et link til nulstilling af adgangskode er blevet sendt. Tjek venligst din indbakke på din gendannelses e-mail";
+"Invalid configuration for email password recovery" = "Ugyldig konfiguration til gendannelse af e-mail adgangskode";
+"Password recovery email in error" = "E-mail til gendannelse af adgangskode fejler";
+"Password reset" = "Adgangskode nulstilling";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hej %{0},\nDer var en anmodning om ændring af din adgangskode!\n\nHvis du ikke har anmodet om denne ændret, kan du ignorerer denne e-mail.\n\nEllers, venligst klik på linket for at ændre din adgangskode: %{1}";

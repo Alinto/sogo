@@ -492,9 +492,9 @@
 "Let SOGo handle everything" = "Lad SOGo klare alt";
 
 /* Password Recovery */
-"Password recovery mode" = "Password recovery";
-"Question" = "Question";
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password recovery" = "Password recovery";
-"Password change" = "Password change";
+"Password recovery mode" = "Gendan adgangskode";
+"Question" = "Spørgsmål";
+"Secondary e-mail" = "Sekundær e-mail";
+"Answer" = "Svar";
+"Password recovery" = "Gendan adgangskode";
+"Password change" = "Ændre adgangskode";

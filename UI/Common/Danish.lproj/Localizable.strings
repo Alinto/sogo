@@ -224,9 +224,9 @@
 "Move forward" = "Gå frem";
 
 /* Password Recovery */
-"passwordRecovery_Disabled" = "Disabled";
-"passwordRecovery_SecretQuestion" = "Secret question";
-"passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
-"passwordRecovery_SecretQuestion2" = "What was your first car ?";
-"passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
-"passwordRecovery_SecondaryEmail" = "Secondary E-mail";
+"passwordRecovery_Disabled" = "Deaktiver";
+"passwordRecovery_SecretQuestion" = "Hemmeligt spørgsmål";
+"passwordRecovery_SecretQuestion1" = "Hvad er navnet på dit første kæledyr?";
+"passwordRecovery_SecretQuestion2" = "Hvad var din første bil?";
+"passwordRecovery_SecretQuestion3" = "Hvad er din yndlings film?";
+"passwordRecovery_SecondaryEmail" = "Sekundær E-mail";
