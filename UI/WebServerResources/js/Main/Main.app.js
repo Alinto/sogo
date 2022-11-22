@@ -152,9 +152,14 @@
     };
 
     this.restoreLogin = function() {
-      vm.loginState = false;
-      delete vm.creds.verificationCode;
-      vm.passwordRecoveryAbort();
+      vm.showLogin = false;
+      if ('SecretQuestion' === vm.passwordRecovery.passwordRecoveryMode) {
+        rippleDo('loginContent');
+        vm.passwordRecoveryInfo();
+      } else {
+        delete vm.creds.verificationCode;
+        vm.passwordRecoveryAbort();
+      }
     };
 
     this.continueLogin = function() {
