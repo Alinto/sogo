@@ -1334,7 +1334,8 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
   SOGoSystemDefaults *sd;
   NSString *uid, *suffix;
   NSMutableString *obfuscatedSecondaryEmail;
-  NSInteger secondaryEmailLength = 0, obfuscatedSecondaryEmailLength = 0, i = 0;
+  NSInteger i, j;
+  NSRange range;
 
   userDefaults = nil;
   info = [self contactInfosForUserWithUIDorEmail: username];
@@ -1362,17 +1363,21 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
                           [userDefaults passwordRecoveryQuestion], kSecretQuestionKey, 
                           nil];
     } else if (nil != userDefaults && [[userDefaults passwordRecoveryMode] isEqualToString: SOGoPasswordRecoverySecondaryEmail]) {
-      secondaryEmailLength = [[userDefaults passwordRecoverySecondaryEmail] length];
-      // Obfuscate 80% of email. Compute nb character obfuscated
-      obfuscatedSecondaryEmailLength = (NSUInteger)(0.8 * secondaryEmailLength);
-      obfuscatedSecondaryEmail = [NSMutableString stringWithString: @"*"];
-      for (i = 1 ; i < secondaryEmailLength ; i++) {
-        if (i < obfuscatedSecondaryEmailLength
-            && ![[[userDefaults passwordRecoverySecondaryEmail] substringWithRange:NSMakeRange(i, 1)] isEqualToString: @"@"]) {
-          [obfuscatedSecondaryEmail appendString: @"*"];
-        } else {
-          [obfuscatedSecondaryEmail appendString: [[userDefaults passwordRecoverySecondaryEmail] substringWithRange:NSMakeRange(i, 1)]];
-        }
+      // Obfuscate email
+      obfuscatedSecondaryEmail = [userDefaults passwordRecoverySecondaryEmail];
+
+      range = [obfuscatedSecondaryEmail rangeOfString: @"@"];
+      if (range.location != NSNotFound) {
+          for (i = 1 ; i < (range.location - 1) ; i++) {
+              obfuscatedSecondaryEmail = [obfuscatedSecondaryEmail stringByReplacingCharactersInRange:NSMakeRange(i, 1) withString:@"*"];
+          }
+          i = range.location + 2;
+          range = [obfuscatedSecondaryEmail rangeOfString:@"." options:NSBackwardsSearch];
+          if (range.location != NSNotFound) {
+              for (j = i ; j < (range.location - 1) ; j++) {
+                  obfuscatedSecondaryEmail = [obfuscatedSecondaryEmail stringByReplacingCharactersInRange:NSMakeRange(j, 1) withString:@"*"];
+              }
+          }
       }
 
       data = [NSDictionary dictionaryWithObjectsAndKeys: [userDefaults passwordRecoveryMode], kModeKey, obfuscatedSecondaryEmail, kObfuscatedSecondaryEmailKey, nil];
