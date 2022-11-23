@@ -511,7 +511,9 @@
   NSString *v;
 
   /* The "identification" term is used in the human sense here. */
-  if ([[context activeUser] primaryIdentity] && [[[context activeUser] primaryIdentity] objectForKey:@"fullName"]) {
+  if ([[context activeUser] primaryIdentity] 
+          && [[[context activeUser] primaryIdentity] objectForKey:@"fullName"]
+          && [[[[[context activeUser] primaryIdentity] objectForKey:@"fullName"] stringByReplacingOccurrencesOfString:@" " withString:@""] length] > 0) {
     v = [[[context activeUser] primaryIdentity] objectForKey:@"fullName"];
   } else {
     v = [[context activeUser] cn];
