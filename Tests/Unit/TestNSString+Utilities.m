@@ -96,4 +96,19 @@
   testEquals(result, @"kill me");
 }
 
+
+- (void) test_stringWithoutHTMLInjection
+{
+  testEquals([[NSString stringWithString:@"<a href=\"\">foo</a>bar"] stringWithoutHTMLInjection: YES], @" foo bar");
+  testEquals([[NSString stringWithString:@"fb <foo@bar.com>"] stringWithoutHTMLInjection: YES], @"fb <foo@bar.com>");
+  testEquals([[NSString stringWithString:@"Test\n<script>alert(\"foobar\");"] stringWithoutHTMLInjection: NO], @"Test\n<scr***>alert(\"foobar\");");
+  testEquals([[NSString stringWithString:@"<img vbscript:test"] stringWithoutHTMLInjection: NO], @"<img test");
+  testEquals([[NSString stringWithString:@"<img javascript:test"] stringWithoutHTMLInjection: NO], @"<img test");
+  testEquals([[NSString stringWithString:@"<img livescript:test"] stringWithoutHTMLInjection: NO], @"<img test");
+  testEquals([[NSString stringWithString:@"foobar <iframe src=\"\">bar</iframe>"] stringWithoutHTMLInjection: NO], @"foobar <ifr*** src=\"\">bar</iframe>");
+  testEquals([[NSString stringWithString:@"foobar <img onload=foo bar"] stringWithoutHTMLInjection: NO], @"foobar <img onl***=foo bar");
+  testEquals([[NSString stringWithString:@"foobar <img onmouseover=foo bar"] stringWithoutHTMLInjection: NO], @"foobar <img onmouseo***=foo bar");
+}
+
+
 @end

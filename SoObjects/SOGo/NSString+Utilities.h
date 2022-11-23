@@ -22,11 +22,11 @@
 #define NSSTRING_URL_H
 
 #import <Foundation/NSString.h>
+#import <Foundation/NSRegularExpression.h>
 
 @class NSCharacterSet;
 @class NSDictionary;
 @class NSObject;
-@class NSRegularExpression;
 
 @interface NSString (SOGoURLExtension)
 
