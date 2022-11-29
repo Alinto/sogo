@@ -112,7 +112,7 @@
 "Bcc"           = "Blindkopi";
 "Reply-To"	= "Svar-til";
 "Add address"   = "Legg til adresse";
-"Body"          = "Kropp";
+"Body"          = "Format";
 "Open" = "Åpne";
 "Select All" = "Velg alle";
 "Select Message" = "Velg melding ";
@@ -128,11 +128,11 @@
 "Load Images" = "Last inn bilder";
 "Return Receipt" = "Returkvittering";
 "Choose which identity to send this message from" = "Velg hvilken identitet du vil sende denne meldingen fra";
-"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "The sender of this message has asked to be notified when you read this message. Do you wish to notify the sender?";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Avsenderen av denne meldingen har bedt om å bli varslet når du leser meldingen. Ønsker du å varsle avsenderen?";
 "Return Receipt (displayed) - %@"= "Returkvittering (vist) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Dette er en returkvittering for e-posten du sendte til %@.\n\nMerk: Denne returkvitteringen forteller bare at meldingen ble vist hos mottaker. Det er ingen garanti at mottaker har lest eller forstått innholdet i e-postmeldingen.";
 "Security" = "Sikkerhet";
-"Sign" = "Signér ";
+"Sign" = "Signer";
 "Encrypt" = "Kryptér";
 "Priority" = "Prioritet";
 "highest" = "Høyest";
@@ -241,10 +241,10 @@
 "View Message Source" = "Vis meldingskilde";
 
 /* Message view "more" menu: create an event from message */
-"Convert To Event" = "Convert To Event";
+"Convert To Event" = "Konverter til hendelse";
 
 /* Message view "more" menu: create a task from message */
-"Convert To Task" = "Convert To Task";
+"Convert To Task" = "Konverter til oppgave";
 
 /* Message view "more" menu: download message as an eml file */
 "Download message" = "Last ned melding";
@@ -265,10 +265,10 @@
 "Mark the selected messages as not junk" = "Marker de valgte meldingene som søppel.";
 
 /* Text appended to the recipients list when there are too many recipients */
-"and %{0} more..." = "and %{0} more...";
+"and %{0} more..." = "og %{0} mer...";
 
 /* Button label to hide extended list of recipients */
-"Hide" = "Hide";
+"Hide" = "Skjul";
 
 /* Number of selected messages in list */
 "selected" = "valgt";
@@ -352,7 +352,7 @@
 = "Postkassen kunne ikke flyttes til papirkurven. Vil du slette den umiddelbart? ";
 
 /* Confirmation message when deleting multiple messages */
-"Are you sure you want to delete the selected messages?" = "Are you sure you want to delete the selected messages?";
+"Are you sure you want to delete the selected messages?" = "Er du sikker på at du vil slette de markerte meldingene?";
 
 /* Notification on the number of messages successfuly copied */
 "%{0} message(s) copied" = "%{0} melding(er) kopiert";
@@ -437,7 +437,7 @@
 "Set as Templates" = "Angi som Maler";
 
 /* Set the folder as the one holding Junk mails */
-"Set as Junk" = "Set as Junk";
+"Set as Junk" = "Sett som Søppelpost";
 
 "Sort" = "Sorter";
 "Order Received" = "Ordre Mottatt ";

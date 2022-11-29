@@ -391,7 +391,7 @@
 "To or Cc" = "Til eller Kopi";
 "Size (Kb)" = "Størrelse (Kb)";
 "Header" = "Tittel";
-"Body" = "Kropp";
+"Body" = "Format";
 "Flag the message with" = "Flagg meldingen med";
 
 /* Select field label of "flag message" mail filter action */

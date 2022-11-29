@@ -548,11 +548,11 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 
 
 /* Show only the calendar for which the menu is displayed */
-"Show Only This Calendar" = "Show Only This Calendar";
+"Show Only This Calendar" = "Vis kun denne kalenderen";
 
 
 /* Show all calendar (personal, subscriptions and web) */
-"Show All Calendars" = "Show All Calendars";
+"Show All Calendars" = "Vis alle kalendere";
 
 "Links to this Calendar" = "Linker til denne kalenderen";
 "Authenticated User Access" = "Autentisert brukertilgang";

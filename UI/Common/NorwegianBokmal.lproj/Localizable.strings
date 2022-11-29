@@ -147,7 +147,7 @@
 "Wrong username or password." = "Feil brukernavn eller passord";
 
 /* Error message displayed bellow search field when the search string has less than the required number of characters */
-"Enter at least %{minimumSearchLength} characters" = "Enter at least %{minimumSearchLength} characters";
+"Enter at least %{minimumSearchLength} characters" = "Skriv minst %{minimumSearchLength} tegn";
 
 /* Error message displayed when a file upload exceeds WOMaxUploadSize */
 "File size upload limit reached" = "Opplastningsgrense for filstørrelse er oppnådd ";
