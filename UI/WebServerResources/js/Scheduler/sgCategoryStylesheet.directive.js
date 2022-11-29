@@ -26,11 +26,11 @@
       template: [
         '<style type="text/css">',
         /* Background color */
-        '  .bg-category{{ ngModel.id }} {',
+        '  .bg-category{{ ngModel.id | cssEscape }} {',
         '    background-color: {{ ngModel.color }} !important;',
         '  }',
         /* Border color */
-        '  .bdr-category{{ ngModel.id }} {',
+        '  .bdr-category{{ ngModel.id | cssEscape }} {',
         '    border-color: {{ ngModel.color }} !important;',
         '  }',
         '</style>'
