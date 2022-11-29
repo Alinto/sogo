@@ -547,10 +547,13 @@
               $mdDialog.cancel = vm.originalModalCancel;
               $mdDialog.hide();
             }, function(response) {
-              if (response.status == CalendarSettings.ConflictHTTPErrorCode)
+              vm.allowResubmit(form);
+
+              if (response.status == CalendarSettings.ConflictHTTPErrorCode) {
                 vm.attendeeConflictError = _.isObject(response.data.message) ? response.data.message : { reject: response.data.message };
-              else
+              } else {
                 vm.edit(form);
+              }
             });
         }
       });
@@ -580,6 +583,11 @@
 
     this.edit = function (form) {
       this.attendeeConflictError = false;
+      form.$setPristine();
+      form.$setDirty();
+    };
+
+    this.allowResubmit = function (form) {
       form.$setPristine();
       form.$setDirty();
     };
