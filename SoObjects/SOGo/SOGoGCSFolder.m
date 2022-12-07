@@ -431,6 +431,12 @@ static NSArray *childRecordFields = nil;
 
   cache = [SOGoCache sharedCache];
   record = [[cache valueForKey: _path] objectFromJSONString];
+  // FIXME: Improve MacOSX Ventura support 
+  // Check if the problem will be fixed by Apple or if this fix should be kept in the future
+  // Ticket #5639
+  if ([[context request] isMacOSXVenturaCalendarApp]) {
+    _path = [_path stringByReplacingOccurrencesOfString:@"Personal" withString:@"personal"];
+  }
 
   // We check if we got a cache miss or a potentially bogus
   // entry from the cache

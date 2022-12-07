@@ -221,10 +221,21 @@ static SoSecurityManager *sm = nil;
     while ((row = [fc fetchAttributes: attrs withZone: NULL]))
     {
       key = [row objectForKey: @"c_path4"];
+      // FIXME: Improve MacOSX Ventura support 
+      // Check if the problem will be fixed by Apple or if this fix should be kept in the future
+      // Ticket #5639
+      if ([[context request] isMacOSXVenturaCalendarApp]) {
+        if ([key isEqualToString:@"personal"]) {
+          key = @"Personal";
+        }
+      }
+      
       if ([key isKindOfClass: [NSString class]])
       {
         folder = [subFolderClass objectWithName: key inContainer: self];
-        [folder setOCSPath: [NSString stringWithFormat: @"%@/%@", OCSPath, key]];
+          [folder setOCSPath: [NSString stringWithFormat: @"%@/%@", OCSPath, key]];
+        
+        if (folder)
         [subFolders setObject: folder forKey: key];
       }
     }
