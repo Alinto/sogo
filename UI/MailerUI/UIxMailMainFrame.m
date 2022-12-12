@@ -42,6 +42,7 @@
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserSettings.h>
@@ -580,6 +581,20 @@
 - (SOGoMailLabel *) currentLabel
 {
   return _currentLabel;
+}
+
+- (BOOL) isMailSharingEnabled {
+  BOOL result;
+  SOGoSystemDefaults *sd;
+
+  result = YES;
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if (nil != [sd disableSharing] 
+    && NSNotFound != [[sd disableSharing] indexOfObject: kDisableSharingMail]) {
+      result = NO;
+  }
+
+  return result;
 }
 
 @end /* UIxMailMainFrame */

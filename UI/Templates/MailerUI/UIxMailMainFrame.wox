@@ -279,12 +279,14 @@
             <var:string label:value="Set as Templates"/>
           </md-button>
         </md-menu-item>
-        <md-divider ng-show="::($menuCtrl.folder.type != 'additional')"><!-- divider --></md-divider>
-        <md-menu-item ng-show="::($menuCtrl.folder.type != 'additional')">
-          <md-button type="button" ng-click="$menuCtrl.share()">
-            <var:string label:value="Sharing..."/>
-          </md-button>
-        </md-menu-item>
+        <var:if condition="isMailSharingEnabled">
+          <md-divider ng-show="::($menuCtrl.folder.type != 'additional')"><!-- divider --></md-divider>
+          <md-menu-item ng-show="::($menuCtrl.folder.type != 'additional')">
+            <md-button type="button" ng-click="$menuCtrl.share()">
+              <var:string label:value="Sharing..."/>
+            </md-button>
+          </md-menu-item>
+        </var:if>
       </md-menu-content>
     </div>
   </script>

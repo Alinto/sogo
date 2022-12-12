@@ -791,5 +791,18 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return secret;
 }
 
+- (NSArray *) disableSharing
+{
+  static NSArray *disableSharing = nil;
+
+  if (!disableSharing)
+    {
+      disableSharing = [self stringArrayForKey: @"SOGoDisableSharing"];
+      [disableSharing retain];
+    }
+  
+  return disableSharing;
+}
+
 
 @end

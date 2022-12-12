@@ -583,15 +583,17 @@
             <var:string label:value="Export"/>
           </md-button>
         </md-menu-item>
-        <md-divider
-            ng-hide="::($menuCtrl.calendar.isSubscription || $menuCtrl.calendar.isWebCalendar)">
-          <!-- divider -->
-        </md-divider>
-        <md-menu-item ng-hide="::($menuCtrl.calendar.isSubscription || $menuCtrl.calendar.isWebCalendar)">
-          <md-button ng-click="$menuCtrl.share()">
-            <var:string label:value="Sharing..."/>
-          </md-button>
-        </md-menu-item>
+        <var:if condition="isCalendarSharingEnabled">
+          <md-divider
+              ng-hide="::($menuCtrl.calendar.isSubscription || $menuCtrl.calendar.isWebCalendar)">
+            <!-- divider -->
+          </md-divider>
+          <md-menu-item ng-hide="::($menuCtrl.calendar.isSubscription || $menuCtrl.calendar.isWebCalendar)">
+            <md-button ng-click="$menuCtrl.share()">
+              <var:string label:value="Sharing..."/>
+            </md-button>
+          </md-menu-item>
+        </var:if>
       </md-menu-content>
     </div>
   </script>
