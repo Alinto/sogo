@@ -226,7 +226,7 @@
         },
 
         passwordRecovery: function (userName, domain) {
-          const self = this;
+          var self = this;
 
           var d = $q.defer(),
             xsrfCookie = $cookies.get('XSRF-TOKEN');
@@ -257,7 +257,7 @@
 
 
         passwordRecoveryEmail: function (userName, domain, mode, mailDomain) {
-          const self = this;
+          var self = this;
 
           var d = $q.defer(),
             xsrfCookie = $cookies.get('XSRF-TOKEN');
@@ -283,7 +283,7 @@
 
 
         passwordRecoveryCheck: function (userName, domain, mode, question, answer, mailDomain) {
-          const self = this;
+          var self = this;
 
           var d = $q.defer(),
             xsrfCookie = $cookies.get('XSRF-TOKEN');
@@ -308,7 +308,7 @@
         },
 
         passwordRecoveryEnabled: function (userName, domain) {
-          const self = this;
+          var self = this;
 
           var d = $q.defer();
           
