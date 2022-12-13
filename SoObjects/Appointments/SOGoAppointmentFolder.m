@@ -2591,10 +2591,14 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return componentSet;
 }
 
-- (void) setDavDescription: (NSString *) description
+- (NSException *) setDavDescription: (NSString *) description
 {
-  [self setFolderPropertyValue: description
+  if (description) {
+    [self setFolderPropertyValue: description
                     inCategory: @"DavDescription"];
+  }
+
+  return nil;
 }
 
 - (NSString *) davDescription

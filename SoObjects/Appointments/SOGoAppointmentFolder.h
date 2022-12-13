@@ -195,7 +195,7 @@ typedef enum {
                          startDate: (NSCalendarDate **) theStartDate
                            endDate: (NSCalendarDate **) theEndDate;
 
-- (void) setDavDescription:(NSString *)description;
+- (NSException *)setDavDescription:(NSString *)description;
 - (NSString *) davDescription;
 
 @end
