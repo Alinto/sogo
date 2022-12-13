@@ -1551,6 +1551,9 @@
 	  currentValue = [setProps objectForKey: currentProp];
 	  exception = [self performSelector: methodSel
                                  withObject: currentValue];
+    if (![exception isKindOfClass: [NSException class]]) {
+      exception = nil;
+    }
 	}
       else
 	exception = [NSException exceptionWithDAVStatus: 403

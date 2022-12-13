@@ -195,6 +195,9 @@ typedef enum {
                          startDate: (NSCalendarDate **) theStartDate
                            endDate: (NSCalendarDate **) theEndDate;
 
+- (void) setDavDescription:(NSString *)description;
+- (NSString *) davDescription;
+
 @end
 
 #endif /* __Appointments_SOGoAppointmentFolder_H__ */

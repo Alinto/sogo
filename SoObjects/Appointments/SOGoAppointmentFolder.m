@@ -2038,6 +2038,13 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 {
   NSException *error;
   NSString *realColor;
+  
+  if ([newColor length] == 7
+      && [newColor hasPrefix: @"#"])
+    {
+      // Missing alpha channel
+      newColor = [newColor stringByAppendingString: @"FF"];
+    }
 
   if ([newColor length] == 9
       && [newColor hasPrefix: @"#"])
@@ -2584,9 +2591,21 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return componentSet;
 }
 
+- (void) setDavDescription: (NSString *) description
+{
+  [self setFolderPropertyValue: description
+                    inCategory: @"DavDescription"];
+}
+
 - (NSString *) davDescription
 {
-  return @"";
+  NSString *davDescription;
+
+  davDescription = [self folderPropertyValueInCategory: @"DavDescription"];
+  if (!davDescription)
+    davDescription = @"";
+
+  return davDescription;
 }
 
 /*
