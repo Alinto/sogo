@@ -20,13 +20,42 @@
      </md-dialog>
 
   */
-  sgRippleClick.$inject = ['$log', '$timeout'];
-  function sgRippleClick($log, $timeout) {
+  sgRippleClick.$inject = ['$log', '$timeout', '$rootScope'];
+  function sgRippleClick($log, $timeout, scope) {
+    
+    function rippleEffect(element, coordinates, container, content) {
+      // Show ripple
+      angular.element(container).css({ 'overflow': 'hidden', 'position': 'relative' });
+      angular.element(content).css({ top: container.scrollTop + 'px' });
+      
+      element.css({
+        'top': (coordinates.top - container.offsetTop + container.scrollTop) + 'px',
+        'left': (coordinates.left - container.offsetLeft) + 'px',
+        'height': '400vmin',
+        'width': '400vmin'
+      });
+
+      // Show ripple content
+      content.classList.remove('ng-hide');
+    }
+
+    scope.$on('sgRippleDo', function (e, containerName) {
+      const container = document.getElementById(containerName);
+      container.classList.remove('ng-hide');
+      rippleEffect(
+            angular.element(document.querySelector('sg-ripple'))
+            , { left: (window.innerWidth / 2), top: (window.innerHeight / 2) }
+            , container
+            , document.querySelector('sg-ripple-content')
+      );
+    });
 
     return {
       restrict: 'A',
       compile: compile
     };
+
+    
 
     function compile(tElement, tAttrs) {
 
@@ -90,26 +119,16 @@
           }
 
           if (content.classList.contains('ng-hide')) {
-            // Show ripple
-            angular.element(container).css({ 'overflow': 'hidden', 'position': 'relative' });
-            angular.element(content).css({ top: container.scrollTop + 'px' });
             $timeout(function() {
               // Wait until next digest for CSS animation to work
-              ripple.css({
-	        'top': (coordinates.top - container.offsetTop + container.scrollTop) + 'px',
-	        'left': (coordinates.left - container.offsetLeft) + 'px',
-	        'height': '400vmin',
-	        'width': '400vmin'
-	      });
-              // Show ripple content
-              content.classList.remove('ng-hide');
+              rippleEffect(ripple, coordinates, container, content);
             });
           }
           else {
             // Hide ripple layer
             ripple.css({
               'top': (coordinates.top - container.offsetTop + container.scrollTop) + 'px',
-	      'left': (coordinates.left - container.offsetLeft) + 'px',
+	            'left': (coordinates.left - container.offsetLeft) + 'px',
               'height': '0px',
               'width': '0px'
             });

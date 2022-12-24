@@ -684,6 +684,9 @@ Possible values are:
 
 Defaults to `NO` when unset.
 
+|S |SOGoDisableSharing
+|List of modules where sharing should be disabled, for example `(Mail, Calendar)`. Modules can be `Mail`, `Contacts` and `Calendar`. Default value empty list (sharing enabled for everybody).
+
 |S |SOGoPasswordChangeEnabled
 |Parameter used to allow or not users to change their passwords from
 SOGo.
@@ -785,6 +788,29 @@ Default value is `YES`, or enabled.
 |Parameter used to set the LDAP and/or SQL sources used for
 authentication and global address books. Multiple sources can be
 specified as an array of dictionaries.
+
+|S |SOGoPasswordRecoveryEnabled
+|Boolean enable password recovery with secret question or secondary e-mail. Default value is `NO`.
+
+|S |SOGoPasswordRecoveryDomains
+|List of domains where password recovery is enabled, for example `(example.org, example.net)`. If empty array `()`, disabled for all domains. If not set, enabled for all domains.
+
+|U |SOGoPasswordRecoveryMode
+|User password recovery mode. Values can be `Disabled`, `SecretQuestion` or `SecondaryEmail`.
+
+|U |SOGoPasswordRecoveryQuestion
+|User password recovery secret question. Values can be `SecretQuestion1`, `SecretQuestion2` or `SecretQuestion3`.
+
+|U |SOGoPasswordRecoveryQuestionAnswer
+|User password recovery secret question answer when mode is `SecretQuestion`.
+
+|U |SOGoPasswordRecoverySecondaryEmail
+|User password recovery e-mail when mode is `SecondaryEmail`.
+
+|S |SOGoJWTSecret
+|JWT secret according to RFC-7519. Default value is `SOGo`.
+
+
 
 |=======================================================================
 
@@ -1505,6 +1531,9 @@ URL could be set to something like:
 
 See the "EMail reminders" section in this document for more information.
 
+|S |SOGoDisableOrganizerEventCheck
+|Parameter used to disable organizer's calendar event check
+
 |S |OCSStoreURL
 |Parameter used to set the database URL so that SOGo can use to store
 all content data. You must also set `OCSAclURL` and `OCSCacheFolderURL`
@@ -2066,7 +2095,10 @@ The default value is `YES`.
 
 |S |NGImap4AuthMechanism
 |Trigger the use of the IMAP `AUTHENTICATE` command with the specified
-SASL mechanism. Please note that feature might be limited at this time.
+SASL mechanism. Using `AUTHENTICATE` instead of `LOGIN` is also necessary
+to enable UTF-8 characters in users' passwords. To enable simple use of
+`AUTHENTICATE` for this purpose, set this setting to `plain`. Please note 
+that this feature might be limited at this time.
 
 |D |NGImap4ConnectionGroupIdPrefix
 |Prefix to prepend to names in IMAP ACL transactions, to indicate the

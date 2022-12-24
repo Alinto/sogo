@@ -6,7 +6,7 @@
     xmlns:label="OGo:label"
     xmlns:rsrc="OGo:url">
 
-  <div layout="column" class="layout-fill sg-reversible">
+  
     <md-card style="overflow: hidden">
       <md-toolbar>
         <div class="md-toolbar-tools">
@@ -503,5 +503,4 @@
         </md-button>
       </md-card-actions>
     </md-card>
-  </div>
 </container>

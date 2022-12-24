@@ -384,6 +384,12 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return [self boolForKey: @"SOGoEnableEMailAlarms"];
 }
 
+- (BOOL) disableOrganizerEventCheck
+{
+  return [self boolForKey: @"SOGoDisableOrganizerEventCheck"];
+}
+
+
 - (NSString *) faviconRelativeURL
 {
   return [self stringForKey: @"SOGoFaviconRelativeURL"];
@@ -754,5 +760,49 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
 
   return v;
 }
+
+- (BOOL) isPasswordRecoveryEnabled
+{
+  return [self boolForKey: @"SOGoPasswordRecoveryEnabled"];
+}
+
+- (NSArray *) passwordRecoveryDomains
+{
+  static NSArray *passwordRecoveryDomains = nil;
+
+  if (!passwordRecoveryDomains)
+    {
+      passwordRecoveryDomains = [self stringArrayForKey: @"SOGoPasswordRecoveryDomains"];
+      [passwordRecoveryDomains retain];
+    }
+
+  return passwordRecoveryDomains;
+}
+
+- (NSString *) JWTSecret
+{
+  NSString *secret;
+
+  secret = [self stringForKey: @"SOGoJWTSecret"];
+
+  if (!secret)
+    secret = @"SOGo"; // Default secret
+
+  return secret;
+}
+
+- (NSArray *) disableSharing
+{
+  static NSArray *disableSharing = nil;
+
+  if (!disableSharing)
+    {
+      disableSharing = [self stringArrayForKey: @"SOGoDisableSharing"];
+      [disableSharing retain];
+    }
+  
+  return disableSharing;
+}
+
 
 @end

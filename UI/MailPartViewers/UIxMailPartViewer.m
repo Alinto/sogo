@@ -198,7 +198,7 @@
   return [NSDictionary dictionaryWithObjectsAndKeys:
                          [self className], @"type",
                        type, @"contentType",
-                       [[self generateResponse] contentAsString], @"content",
+                       [[[self generateResponse] contentAsString] stringWithoutHTMLInjection: NO], @"content",
                        [self filenameForDisplay], @"filename",
                        [self preferredPathExtension], @"extension",
                        [[self sizeFormatter] stringForObjectValue: [bodyInfo objectForKey: @"size"]], @"size",

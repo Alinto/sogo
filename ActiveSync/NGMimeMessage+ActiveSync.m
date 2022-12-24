@@ -38,39 +38,47 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation NGMimeMessage (ActiveSync)
 
-- (void) _addRecipients: (NSEnumerator *) enumerator
-                toArray: (NSMutableArray *) recipients
+- (NSArray *) allRecipients
 {
   NGMailAddressParser *parser;
   NSEnumerator *addressList;
+  NSMutableArray *allRecipients;
   NGMailAddress *address;
+  NSEnumerator *recipients;
   NSString *s;
+  NSString *fieldNames[] = {@"to", @"cc", @"bcc"};
+  unsigned int count;
 
-  while ((s = [enumerator nextObject]))
+  allRecipients = [NSMutableArray arrayWithCapacity: 16];
+
+  for (count = 0; count < 3; count++)
     {
-      parser = [NGMailAddressParser mailAddressParserWithString: s];
-      addressList = [[parser parseAddressList] objectEnumerator];
-      
-      while ((address = [addressList nextObject]))
-        [recipients addObject: [address address]];
+      recipients = [[self headersForKey: fieldNames[count]] objectEnumerator];
+      while ((s = [recipients nextObject]))
+        {
+          parser = [NGMailAddressParser mailAddressParserWithString: s];
+          addressList = [[parser parseAddressList] objectEnumerator];
+          while ((address = [addressList nextObject]))
+            [allRecipients addObject: [address address]];
+       }
     }
+
+  return allRecipients;
 }
 
-- (NSArray *) allRecipients
+- (NSArray *) allBareRecipients
 {
-  NSMutableArray *recipients;
+  NSMutableArray *bareRecipients;
+  NSEnumerator *allRecipients;
+  NSString *recipient;
 
-  recipients = [NSMutableArray array];
+  bareRecipients = [NSMutableArray array];
 
-  [self _addRecipients: [[self headersForKey: @"to"] objectEnumerator]
-               toArray: recipients];
+  allRecipients = [[self allRecipients] objectEnumerator];
+  while ((recipient = [allRecipients nextObject]))
+    [bareRecipients addObject: [recipient pureEMailAddress]];
 
-  [self _addRecipients: [[self headersForKey: @"cc"] objectEnumerator]
-               toArray: recipients];
-
-  [self _addRecipients: [[self headersForKey: @"bcc"] objectEnumerator]
-               toArray: recipients];
-
-  return recipients;
+  return bareRecipients;
 }
+
 @end

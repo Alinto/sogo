@@ -242,5 +242,21 @@
   return ([[cc userAgent] rangeOfString: @"Android"].location != NSNotFound);
 }
 
+- (BOOL) isMacOSXVenturaCalendarApp
+{
+  WEClientCapabilities *cc;
+  BOOL b;
+
+  cc = [self clientCapabilities];
+
+  b = (
+        (
+          [[cc userAgent] rangeOfString: @"macOS/13"].location != NSNotFound
+          && [[cc userAgent] rangeOfString: @"dataaccessd"].location != NSNotFound
+        )
+       );
+
+  return b;
+}
 
 @end

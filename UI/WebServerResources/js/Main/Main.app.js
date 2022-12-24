@@ -1,19 +1,19 @@
 /* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 /* JavaScript for MainUI (SOGoRootPage) */
-
 (function() {
   'use strict';
 
   angular.module('SOGo.MainUI', ['SOGo.Common', 'SOGo.Authentication']);
+  const PASSWORD_RECOVERY_TIMER_MS = 2000;
 
   /**
    * @ngInject
    */
-  LoginController.$inject = ['$scope', '$window', '$timeout', 'Dialog', '$mdDialog', 'Authentication', 'sgFocus'];
-  function LoginController($scope, $window, $timeout, Dialog, $mdDialog, Authentication, focus) {
+  LoginController.$inject = ['$scope', '$window', '$timeout', 'Dialog', '$mdDialog', 'Authentication', 'sgFocus', 'sgRippleClick'];
+  function LoginController($scope, $window, $timeout, Dialog, $mdDialog, Authentication, focus, rippleDo) {
     var vm = this;
 
-    this.$onInit = function() {
+    this.$onInit = function () {
       this.creds = {
         username: $window.cookieUsername,
         password: null,
@@ -29,11 +29,56 @@
       this.verificationCodePattern = '\\d{6}';
 
       // Password policy - change expired password
-      this.passwords = { newPassword: null, newPasswordConfirmation: null, oldPassword: null };
+      this.passwords = { newPassword: null, newPasswordConfirmation: null, oldPassword: null, visible: false };
+
+      // Password recovery
+      this.passwordRecovery = {
+        passwordRecoveryEnabled: false,
+        passwordRecoveryQuestionKey: null,
+        passwordRecoveryQuestion: null,
+        passwordRecoveryMode: null,
+        passwordRecoveryQuestionAnswer: null,
+        passwordRecoveryToken: null,
+        passwordRecoveryLinkTimer: null,
+        passwordRecoverySecondaryEmailText: null,
+        passwordRecoveryMailDomain: null,
+        showLoader: false
+      };
 
       // Show login once everything is initialized
       this.showLogin = false;
-      $timeout(function() { vm.showLogin = true; }, 100);
+      $timeout(function () {
+        vm.showLogin = true;
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        let token = urlParams.get('token');
+
+        if (0 < window.location.pathname.indexOf("passwordRecoveryEmail") && token) {
+          token = token.replace(/\//g, ''); // remove trailing '/'
+          const tokenArray = token.split(".");
+
+          // Retrieve info from token
+          if (3 === tokenArray.length) {
+            vm.passwordRecovery.passwordRecoveryToken = token;
+            const info = JSON.parse(atob(tokenArray[1]));
+            vm.creds.username = info.username;
+            vm.creds.domain = info.domain;
+            vm.passwordRecovery.passwordRecoveryToken = token;
+            vm.passwordRecovery.passwordRecoveryMode = "SecondaryEmail";
+            vm.passwordRecovery.passwordRecoveryEnabled = true;
+
+            vm.loginState = 'passwordchange';
+            vm.showLogin = false;
+            rippleDo('loginContent');
+          }
+          
+        } else {
+          vm.retrievePasswordRecoveryEnabled();
+        }
+       }, 100);
+
+      
     };
 
     this.login = function() {
@@ -98,7 +143,7 @@
             vm.errorMessage = l('Your password is going to expire in %{0} %{1}.', value, string);
           }
           else if (msg.passwordexpired) {
-            vm.loginState = 'passwordexpired';
+            vm.loginState = 'passwordchange';
             vm.url = msg.url;
           }
 
@@ -107,8 +152,14 @@
     };
 
     this.restoreLogin = function() {
-      vm.loginState = false;
-      delete vm.creds.verificationCode;
+      vm.showLogin = false;
+      if ('SecretQuestion' === vm.passwordRecovery.passwordRecoveryMode) {
+        rippleDo('loginContent');
+        vm.passwordRecoveryInfo();
+      } else {
+        delete vm.creds.verificationCode;
+        vm.passwordRecoveryAbort();
+      }
     };
 
     this.continueLogin = function() {
@@ -138,6 +189,10 @@
       $window.location.href = ApplicationBaseURL + 'login?language=' + this.creds.language;
     };
 
+    this.hello = function (form) {
+      return !true;
+    }
+
     this.canChangePassword = function(form) {
       if (this.passwords.newPasswordConfirmation && this.passwords.newPasswordConfirmation.length &&
           this.passwords.newPassword != this.passwords.newPasswordConfirmation) {
@@ -150,14 +205,15 @@
       if (this.passwords.newPassword && this.passwords.newPassword.length > 0 &&
           this.passwords.newPasswordConfirmation && this.passwords.newPasswordConfirmation.length &&
           this.passwords.newPassword == this.passwords.newPasswordConfirmation &&
-          this.passwords.oldPassword && this.passwords.oldPassword.length > 0)
+          ((this.isInPasswordRecoveryMode()) || 
+          (!this.loginState && this.passwords.oldPassword && this.passwords.oldPassword.length > 0))) 
         return true;
 
       return false;
     };
 
     this.changePassword = function() {
-      Authentication.changePassword(this.creds.username, this.creds.domain, this.passwords.newPassword, this.passwords.oldPassword).then(function(data) {
+      Authentication.changePassword(this.creds.username, this.creds.domain, this.passwords.newPassword, this.passwords.oldPassword, this.passwordRecovery.passwordRecoveryToken).then(function(data) {
         vm.loginState = 'message';
         vm.url = data.url;
         vm.errorMessage = l('The password was changed successfully.');
@@ -167,6 +223,116 @@
       });
     };
 
+    this.passwordRecoveryInfo = function () {
+      vm.loginState = 'passwordrecovery';
+      vm.passwordRecovery.showLoader = true;
+      Authentication.passwordRecovery(this.creds.username, this.creds.domain).then(function (data) {
+        vm.passwordRecovery.passwordRecoveryMode = data.mode;
+        if ('SecretQuestion' === data.mode) {
+          vm.passwordRecovery.passwordRecoveryQuestion = data.secretQuestionLabel;
+          vm.passwordRecovery.passwordRecoveryQuestionKey = data.secretQuestion;
+        } else if ('SecondaryEmail' === data.mode) {
+          vm.passwordRecovery.passwordRecoverySecondaryEmailText = l("A link will be sent to %{0}", data.obfuscatedRecoveryEmail);
+        } else if ('Disabled' === data.mode) {
+          vm.loginState = 'error';
+          vm.errorMessage = l('No password recovery method has been defined for this user');
+        }
+        vm.passwordRecovery.showLoader = false;
+      }, function (msg) {
+        vm.loginState = 'error';
+        vm.errorMessage = msg;
+        vm.passwordRecovery.showLoader = false;
+      });
+    };
+
+    this.passwordRecoveryEmail = function () {
+      vm.passwordRecovery.showLoader = true;
+      Authentication.passwordRecoveryEmail(this.creds.username, this.creds.domain
+        , this.passwordRecovery.passwordRecoveryMode
+        , this.passwordRecovery.passwordRecoveryMailDomain).then(function () {
+          vm.loginState = 'sendrecoverymail';
+          vm.passwordRecovery.showLoader = false;
+      }, function (msg) {
+        vm.loginState = 'error';
+        vm.errorMessage = msg;
+          vm.passwordRecovery.showLoader = false;
+      });
+    };
+
+    this.passwordRecoveryCheck = function () {
+      vm.passwordRecovery.showLoader = true;
+      Authentication.passwordRecoveryCheck(this.creds.username, this.creds.domain
+                                          , this.passwordRecovery.passwordRecoveryMode
+                                          , this.passwordRecovery.passwordRecoveryQuestionKey
+                                          , this.passwordRecovery.passwordRecoveryQuestionAnswer
+                                          , this.passwordRecovery.passwordRecoveryMailDomain).then(function (token) {
+        if ("SecretQuestion" == vm.passwordRecovery.passwordRecoveryMode) {
+          vm.passwordRecovery.passwordRecoveryToken = token;
+          vm.loginState = 'passwordchange';
+        } else if ("SecondaryEmail" == vm.passwordRecovery.passwordRecoveryMode) {
+          vm.loginState = 'sendrecoverymail';
+        }
+        vm.passwordRecovery.showLoader = false;
+      }, function (msg) {
+        vm.loginState = 'error';
+        vm.errorMessage = msg;
+        vm.passwordRecovery.showLoader = false;
+      });
+    };
+
+    this.isInPasswordRecoveryMode = function () {
+      return (("SecretQuestion" == this.passwordRecovery.passwordRecoveryMode ||
+        "SecondaryEmail" == this.passwordRecovery.passwordRecoveryMode) &&
+        this.passwordRecovery.passwordRecoveryToken) ? true : false;
+    };
+
+    this.passwordRecoveryAbort = function () {
+      this.passwords = { newPassword: null, newPasswordConfirmation: null, oldPassword: null };
+      this.loginState = false;
+      this.passwordRecovery.passwordRecoveryEnabled = false;
+      this.passwordRecovery.passwordRecoveryQuestion = null;
+      this.passwordRecovery.passwordRecoveryMode = null;
+      this.passwordRecovery.passwordRecoveryQuestionAnswer = null;
+      this.passwordRecovery.passwordRecoveryToken = null;
+      this.passwordRecovery.passwordRecoverySecondaryEmailText = null;
+      this.passwordRecovery.passwordRecoveryMailDomain = null;
+      this.passwordRecovery.showLoader = false;
+      $window.location.reload(true);
+    };
+
+    this.usernameChanged = function () {
+      if (this.passwordRecovery.passwordRecoveryLinkTimer) {
+        clearTimeout(this.passwordRecovery.passwordRecoveryLinkTimer);
+      }
+
+      this.passwordRecovery.passwordRecoveryLinkTimer = setTimeout(() => {
+        vm.retrievePasswordRecoveryEnabled();
+        this.passwordRecovery.passwordRecoveryLinkTimer = null;
+      }, PASSWORD_RECOVERY_TIMER_MS);
+    };
+
+    this.retrievePasswordRecoveryEnabled = function () {
+      if (this.creds.username || this.creds.domain) {
+        Authentication.passwordRecoveryEnabled(this.creds.username, this.creds.domain).then(function (mailDomain) {
+          vm.passwordRecovery.passwordRecoveryMailDomain = mailDomain;
+          vm.passwordRecovery.passwordRecoveryEnabled = true;
+        }, function () {
+          vm.passwordRecovery.passwordRecoveryEnabled = false;
+        });
+      }
+    };
+
+    this.changePasswordVisibility = function () {
+      this.passwords.visible = !this.passwords.visible;
+      var field = document.getElementById("passwordField");
+      if (this.passwords.visible) {
+        field.type = "text";
+        document.getElementById("password-visibility-icon").innerHTML = 'visibility_off';
+      } else {
+        field.type = "password";
+        document.getElementById("password-visibility-icon").innerHTML = 'visibility';
+      }
+    }
   }
 
   angular

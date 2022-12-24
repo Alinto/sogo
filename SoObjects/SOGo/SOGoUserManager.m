@@ -23,6 +23,8 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
+#import <NGObjWeb/WOApplication.h>
+
 #import "NSArray+Utilities.h"
 #import "NSString+Utilities.h"
 #import "NSString+Crypto.h"
@@ -32,8 +34,22 @@
 #import "SOGoUserManager.h"
 #import "SOGoCache.h"
 #import "SOGoSource.h"
+#import "SOGoUserDefaults.h"
+#import "SOGoUserSettings.h"
+#import "WOResourceManager+SOGo.h"
+#import "JWT.h"
 
 static Class NSNullK;
+
+static const int kJwtDurationS = 600; // 10 minutes
+static const NSString *kUidKey = @"uid";
+static const NSString *kUsernameKey = @"username";
+static const NSString *kDomainKey = @"domain";
+static const NSString *kPasswordRecoveryTokenKey = @"passwordRecoveryToken";
+static const NSString *kModeKey = @"mode";
+static const NSString *kSecretQuestionKey = @"secretQuestion";
+static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail";
+
 
 @implementation SOGoUserManagerRegistry
 
@@ -453,7 +469,8 @@ static Class NSNullK;
                               inDomain: (NSString *) domain
                            oldPassword: (NSString *) oldPassword
                            newPassword: (NSString *) newPassword
-                           perr: (SOGoPasswordPolicyError *) perr
+                      passwordRecovery: (BOOL) passwordRecovery
+                                  perr: (SOGoPasswordPolicyError *) perr
 {
   NSObject <SOGoSource> *sogoSource;
   NSString *currentID;
@@ -472,6 +489,7 @@ static Class NSNullK;
       didChange = [sogoSource changePasswordForLogin: login
                                          oldPassword: oldPassword
                                          newPassword: newPassword
+                                    passwordRecovery: passwordRecovery
                                                 perr: perr];
     }
 
@@ -740,25 +758,45 @@ static Class NSNullK;
                        inDomain: (NSString *) domain
                     oldPassword: (NSString *) oldPassword
                     newPassword: (NSString *) newPassword
+               passwordRecovery: (BOOL) passwordRecovery
+                          token: (NSString *) token
                            perr: (SOGoPasswordPolicyError *) perr
 {
-  NSString *jsonUser, *userLogin;
+  NSString *jsonUser, *userLogin, *uid, *userToken;
   NSMutableDictionary *currentUser;
   BOOL didChange;
   SOGoSystemDefaults *sd;
+  NSDictionary *info;
+  SOGoUserSettings *us;
 
   jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: login];
   currentUser = [jsonUser objectFromJSONString];
 
   if ([currentUser isKindOfClass: NSNullK])
     currentUser = nil;
+  
+  // Check session id for password recovery
+  userToken = [self getPasswordRecoveryTokenFor: login domain: domain];
+  info = [self contactInfosForUserWithUIDorEmail: login];
+  uid = [info objectForKey: @"c_uid"];
 
-  if ([self _sourceChangePasswordForLogin: login
+  if (passwordRecovery && (![userToken isEqualToString: token] || ![self isPasswordRecoveryTokenValidFor: userToken uid: uid])) {
+    didChange = NO;
+    *perr = PolicyPasswordRecoveryInvalidToken;
+  } else if ([self _sourceChangePasswordForLogin: login
                                  inDomain: domain
                               oldPassword: oldPassword
                               newPassword: newPassword
+                         passwordRecovery: passwordRecovery
                                      perr: perr])
     {
+      if (passwordRecovery) {
+        // Reset session id
+        us = [SOGoUserSettings settingsForUser: uid];
+        [us removeObjectForKey: kPasswordRecoveryTokenKey];
+        [us synchronize];
+      }
+
       didChange = YES;
 
       if (!currentUser)
@@ -1281,6 +1319,186 @@ static Class NSNullK;
       login = [currentSource lookupLoginByDN: theDN];
 
   return login;
+}
+
+/**
+ * Get password reovery info for specific user (mode, secret question, obfuscated recovery email)
+ * @param username Username
+ * @param domain Domain
+ * @return User informations
+ */
+- (NSDictionary *) getPasswordRecoveryInfosForUsername: (NSString *) username domain:(NSString *) domain
+{
+  SOGoUserDefaults *userDefaults;
+  NSDictionary *info, *data;
+  SOGoSystemDefaults *sd;
+  NSString *uid, *suffix;
+  NSMutableString *obfuscatedSecondaryEmail;
+  NSInteger i, j;
+  NSRange range;
+
+  userDefaults = nil;
+  info = [self contactInfosForUserWithUIDorEmail: username];
+  uid = [info objectForKey: @"c_uid"];
+  
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if ([sd enableDomainBasedUID]
+      && ![[info objectForKey: @"DomainLessLogin"] boolValue])
+    {
+      suffix = [NSString stringWithFormat: @"@%@", domain];
+
+      // Don't add @domain suffix if it's already there
+      if (![uid hasSuffix: suffix])
+        uid = [NSString stringWithFormat: @"%@%@", uid, suffix];
+
+      userDefaults = [SOGoUserDefaults defaultsForUser: uid
+                              inDomain: domain];
+    } else {
+      userDefaults = [SOGoUserDefaults defaultsForUser: uid
+                              inDomain: nil];
+    }
+
+    if (nil != userDefaults && [[userDefaults passwordRecoveryMode] isEqualToString: SOGoPasswordRecoveryQuestion]) {
+      data = [NSDictionary dictionaryWithObjectsAndKeys: [userDefaults passwordRecoveryMode], kModeKey, 
+                          [userDefaults passwordRecoveryQuestion], kSecretQuestionKey, 
+                          nil];
+    } else if (nil != userDefaults && [[userDefaults passwordRecoveryMode] isEqualToString: SOGoPasswordRecoverySecondaryEmail]) {
+      // Obfuscate email
+      obfuscatedSecondaryEmail = [userDefaults passwordRecoverySecondaryEmail];
+
+      range = [obfuscatedSecondaryEmail rangeOfString: @"@"];
+      if (range.location != NSNotFound) {
+          for (i = 1 ; i < (range.location - 1) ; i++) {
+              obfuscatedSecondaryEmail = [obfuscatedSecondaryEmail stringByReplacingCharactersInRange:NSMakeRange(i, 1) withString:@"*"];
+          }
+          i = range.location + 2;
+          range = [obfuscatedSecondaryEmail rangeOfString:@"." options:NSBackwardsSearch];
+          if (range.location != NSNotFound) {
+              for (j = i ; j < (range.location - 1) ; j++) {
+                  obfuscatedSecondaryEmail = [obfuscatedSecondaryEmail stringByReplacingCharactersInRange:NSMakeRange(j, 1) withString:@"*"];
+              }
+          }
+      }
+
+      data = [NSDictionary dictionaryWithObjectsAndKeys: [userDefaults passwordRecoveryMode], kModeKey, obfuscatedSecondaryEmail, kObfuscatedSecondaryEmailKey, nil];
+    } else {
+      data = [NSDictionary dictionaryWithObject: SOGoPasswordRecoveryDisabled forKey: kModeKey];
+    }
+
+  return data;
+}
+
+/**
+ * (Email recovery) Generates and save in user pref the JWT token 
+ * @param uid User id
+ * @param username Username
+ * @param domain Domain
+ * @return JWT Token
+ */
+- (NSString *) generateAndSavePasswordRecoveryTokenWithUid: (NSString *) uid username: (NSString *) username domain:(NSString *) domain
+{
+  NSString *jwtToken;
+  SOGoUserSettings *us;
+
+  us = [SOGoUserSettings settingsForUser: uid];
+  jwtToken = [[JWT sharedInstance] getJWTWithData: 
+                        [NSDictionary dictionaryWithObjectsAndKeys: uid, kUidKey, username, kUsernameKey, domain, kDomainKey, nil]
+                        andValidity: kJwtDurationS];
+
+  [us setObject: jwtToken forKey: kPasswordRecoveryTokenKey];
+  [us synchronize];
+
+  return jwtToken;
+}
+
+/**
+ * (Secret Question) Check secret question answer, generates and save in user pref the JWT token
+ * @param username Username
+ * @param domain Domain
+ * @param passwordRecoveryData Password recovery data (answer, ...)
+ * @return JWT Token
+ */
+- (NSString *) getTokenAndCheckPasswordRecoveryDataForUsername: (NSString *) username domain:(NSString *) domain withData:(NSDictionary *) passwordRecoveryData
+{
+  NSString *mode, *questionKey, *answer, *uid, *suffix, *token;
+  SOGoUserDefaults *userDefaults;
+  SOGoSystemDefaults *sd;
+  NSDictionary *info;
+
+  mode = [passwordRecoveryData objectForKey:@"mode"];
+  questionKey = [passwordRecoveryData objectForKey:@"question"];
+  answer = [[[passwordRecoveryData objectForKey:@"answer"] lowercaseString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+  token = nil;
+  userDefaults = nil;
+  info = [self contactInfosForUserWithUIDorEmail: username];
+  uid = [info objectForKey: @"c_uid"];
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if ([sd enableDomainBasedUID]
+      && ![[info objectForKey: @"DomainLessLogin"] boolValue])
+    {
+      suffix = [NSString stringWithFormat: @"@%@", domain];
+
+      // Don't add @domain suffix if it's already there
+      if (![uid hasSuffix: suffix])
+        uid = [NSString stringWithFormat: @"%@%@", uid, suffix];
+
+      userDefaults = [SOGoUserDefaults defaultsForUser: uid
+                              inDomain: domain];
+    } else {
+      userDefaults = [SOGoUserDefaults defaultsForUser: uid
+                              inDomain: nil];
+    }
+
+   if ([sd isPasswordRecoveryEnabled] && nil != userDefaults && [[userDefaults passwordRecoveryMode] isEqualToString: mode]) {
+    if ([[userDefaults passwordRecoveryQuestion] isEqualToString: questionKey] 
+        && [[[[userDefaults passwordRecoveryQuestionAnswer] lowercaseString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString: answer]) {
+          token = [self generateAndSavePasswordRecoveryTokenWithUid: uid username: username domain: domain];
+    }
+   }
+
+  return token;
+}
+
+/**
+ * Get token for username / domain stored in user pref
+ * @param username Username
+ * @param domain Domain
+ * @return JWT Token
+ */
+- (NSString *) getPasswordRecoveryTokenFor: (NSString *) username domain: (NSString *) domain
+{
+  NSString *uid;
+  NSDictionary *info;
+  SOGoUserSettings *us;
+
+  info = [self contactInfosForUserWithUIDorEmail: username];
+  uid = [info objectForKey: @"c_uid"];
+  us = [SOGoUserSettings settingsForUser: uid];
+  [us synchronize];
+
+  return [us stringForKey: kPasswordRecoveryTokenKey];
+}
+
+/**
+ * Check if JWT token is valid
+ * @param token Username
+ * @param uid User id
+ * @return True or False
+ */
+- (BOOL) isPasswordRecoveryTokenValidFor: (NSString *) token uid: (NSString *) uid {
+  BOOL isJWTValid, isJWTExpired, r;
+  NSDictionary *results;
+
+  r = NO;
+  results = [[JWT sharedInstance] getDataWithJWT: token andValidity: &isJWTValid isExpired: &isJWTExpired];
+  if (isJWTValid && !isJWTExpired 
+                 && [results objectForKey: kUidKey]
+                 && [[results objectForKey: kUidKey] isEqualToString: uid]) {
+                  r = YES;
+  }
+
+  return r;
 }
 
 @end

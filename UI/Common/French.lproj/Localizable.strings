@@ -222,3 +222,11 @@
 
 /* Hotkey description to move forward in current view */
 "Move forward" = "Reculer";
+
+/* Password Recovery */
+"passwordRecovery_Disabled" = "Désactivée";
+"passwordRecovery_SecretQuestion" = "Question secrète";
+"passwordRecovery_SecretQuestion1" = "Quel est le nom de votre premier animal de compagnie ?";
+"passwordRecovery_SecretQuestion2" = "Quelle était votre première voiture ?";
+"passwordRecovery_SecretQuestion3" = "Quel est votre film préféré ?";
+"passwordRecovery_SecondaryEmail" = "E-mail secondaire";

@@ -58,12 +58,12 @@
   while ((currentKey = [keys nextObject]))
     {
       currentValue = [[self objectForKey: currentKey] jsonRepresentation];
-      currentPair = [NSString stringWithFormat: @"%@: %@",
+      currentPair = [NSString stringWithFormat: @"%@:%@",
 			      [currentKey jsonRepresentation], currentValue];
       [values addObject: currentPair];
     }
   representation = [NSString stringWithFormat: @"{%@}",
-			     [values componentsJoinedByString: @", "]];
+			     [values componentsJoinedByString: @","]];
 
   return representation;
 }

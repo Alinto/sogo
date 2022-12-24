@@ -6,11 +6,28 @@
 "Domain" = "Domæne";
 "Remember username" = "Husk brugernavn";
 "Connect" = "Tilslut";
+
+/* Appears while authentication is in progress */
+"Authenticating" = "Godkendelse";
+
+/* Appears when authentication succeeds */
+"Welcome" = "Velkommen";
+
+"Authentication Failed" = "Godkendelse mislykkedes";
 "Wrong username or password." = "Forkert brugernavn eller adgangskode.";
+"Retry" = "Prøv igen";
+"Login failed due to unhandled error case:" = "Login mislykkedes på grund af denne fejl:";
 "cookiesNotEnabled" = "Du kan ikke logge ind fordi din browsers cookies er slået fra. Du skal aktivere cookies i din browsers indstillinger og derefter prøve igen.";
 "browserNotCompatible" = "Vi har registreret, at din browsers version ikke understøttes på denne hjemmeside. Vores anbefaling er at bruge Firefox. Klik på linket nedenfor for at downloade den nyeste version af denne browser.";
 "alternativeBrowsers" = "Alternativt kan du også bruge følgende kompatible browsere";
 "alternativeBrowserSafari" = "Alternativt kan du også bruge Safari.";
+
+/* 2FA */
+"Verification Code" = "Bekræftelseskode";
+"Enter the 6-digit verification code from your TOTP application." = "Indtast den 6-cifrede bekræftelseskode fra din TOTP-applikation.";
+"You provided an invalid TOTP key." = "Du har angivet en ugyldig TOTP-nøgle.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "To-faktor-godkendelse er blevet deaktiveret. Gå til indstillinger for at gendanne to-faktor-godkendelse og genkonfigurere din TOTP-applikation";
+
 "Download" = "Download";
 "Language" = "Sprog";
 "choose" = "Vælg ...";
@@ -21,7 +38,6 @@
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
 "ChineseTaiwan" = "Chinese (Taiwan)";
-"Croatian" = "Hrvatski";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -58,6 +74,7 @@
 "TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
 "About" = "Om";
 "AboutBox" = "Developed by Inverse, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>⏎ SOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>⏎ SOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>⏎ See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
 "Your account was locked due to too many failed attempts." = "Din konto er låst på grund af for mange mislykkede forsøg.";
@@ -90,3 +107,22 @@
 "Confirmation" = "Bekræftelse";
 "Cancel" = "Annullér";
 "Please wait..." = "Vent venligst ...";
+"Close" = "Luk";
+"Missing search parameter" = "Manglende søgeparameter";
+"Missing type parameter" = "Manglende typeparameter";
+
+/* Password Recovery */
+"Secondary e-mail" = "Sekundær e-mail";
+"Answer" = "Svar";
+"Password lost" = "Adgangskode mistet";
+"No password recovery method has been defined for this user" = "Der er ikke defineret nogen metode til gendannelse af adgangskoden for denne bruger";
+"Invalid secret question answer" = "Ugyldigt hemmeligt spørgsmålssvar";
+"Next" = "Næste";
+"Back" = "Tilbage";
+"Please enter a new password below" = "Venligst indtast en ny adgangskoden nedenfor";
+"A link will be sent to %{0}" = "Et link vil blive sendt til %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "Et link til nulstilling af adgangskode er blevet sendt. Tjek venligst din indbakke på din gendannelses e-mail";
+"Invalid configuration for email password recovery" = "Ugyldig konfiguration til gendannelse af e-mail adgangskode";
+"Password recovery email in error" = "E-mail til gendannelse af adgangskode fejler";
+"Password reset" = "Adgangskode nulstilling";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hej %{0},\nDer var en anmodning om ændring af din adgangskode!\n\nHvis du ikke har anmodet om denne ændret, kan du ignorerer denne e-mail.\n\nEllers, venligst klik på linket for at ændre din adgangskode: %{1}";

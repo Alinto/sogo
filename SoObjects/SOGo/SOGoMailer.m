@@ -30,10 +30,10 @@
 
 #import "NSString+Utilities.h"
 #import "SOGoStaticAuthenticator.h"
+#import "SOGoEmptyAuthenticator.h"
 #import "SOGoSystemDefaults.h"
 #import "SOGoUser.h"
 #import "SOGoUserManager.h"
-
 #import "SOGoMailer.h"
 
 //
@@ -243,7 +243,7 @@
   NS_DURING
     {
       [client connect];
-      if ([authenticationType isEqualToString: @"plain"])
+      if ([authenticationType isEqualToString: @"plain"] && ![authenticator isKindOfClass: [SOGoEmptyAuthenticator class]])
         {
           /* XXX Allow static credentials by peeking at the classname */
           if ([authenticator isKindOfClass: [SOGoStaticAuthenticator class]])
@@ -262,7 +262,7 @@
                                                    reason: @"cannot send message:"
                                   @" (smtp) authentication failure"];
         }
-      else if (authenticationType)
+      else if (authenticationType && ![authenticator isKindOfClass: [SOGoEmptyAuthenticator class]])
         result = [NSException
                    exceptionWithHTTPStatus: 500
                    reason: @"cannot send message:"

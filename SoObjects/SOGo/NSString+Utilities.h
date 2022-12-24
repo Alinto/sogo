@@ -22,6 +22,7 @@
 #define NSSTRING_URL_H
 
 #import <Foundation/NSString.h>
+#import <Foundation/NSRegularExpression.h>
 
 @class NSCharacterSet;
 @class NSDictionary;
@@ -73,6 +74,8 @@
 
 /* OpenSSL multiline DN */
 - (NSArray *) componentsFromMultilineDN;
+
+- (NSString *) stringWithoutHTMLInjection: (BOOL)stripHTMLCode;
 
 #ifndef GNUSTEP_BASE_LIBRARY
 - (BOOL) boolValue;

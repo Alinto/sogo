@@ -490,3 +490,11 @@
 "An external Sieve script is active" = "An external Sieve script is active";
 "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled.";
 "Let SOGo handle everything" = "Let SOGo handle everything";
+
+/* Password Recovery */
+"Password recovery mode" = "Password recovery";
+"Question" = "Question";
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password recovery" = "Password recovery";
+"Password change" = "Password change";

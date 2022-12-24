@@ -33,6 +33,14 @@ extern NSString *SOGoWeekStartJanuary1;
 extern NSString *SOGoWeekStartFirst4DayWeek;
 extern NSString *SOGoWeekStartFirstFullWeek;
 
+extern NSString *SOGoPasswordRecoveryDisabled;
+extern NSString *SOGoPasswordRecoveryQuestion;
+extern NSString *SOGoPasswordRecoveryQuestion1;
+extern NSString *SOGoPasswordRecoveryQuestion2;
+extern NSString *SOGoPasswordRecoveryQuestion3;
+extern NSString *SOGoPasswordRecoverySecondaryEmail;
+
+
 @interface SOGoUserDefaults : SOGoDefaultsSource
 {
   NSString *userLanguage;
@@ -235,6 +243,16 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 /* contacts */
 - (void) setContactsCategories: (NSArray *) newValues;
 - (NSArray *) contactsCategories;
+
+/* Password recovery */
+- (void) setPasswordRecoveryMode: (NSString *) newValue;
+- (NSString *) passwordRecoveryMode;
+- (void) setPasswordRecoveryQuestion: (NSString *) newValue;
+- (NSString *) passwordRecoveryQuestion;
+- (void) setPasswordRecoveryQuestionAnswer: (NSString *) newValue;
+- (NSString *) passwordRecoveryQuestionAnswer;
+- (void) setPasswordRecoverySecondaryEmail: (NSString *) newValue;
+- (NSString *) passwordRecoverySecondaryEmail;
 
 @end
 

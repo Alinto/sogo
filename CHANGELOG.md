@@ -1,5 +1,42 @@
 # Changelog
 
+## [5.8.0](https://github.com/Alinto/sogo/compare/SOGo-5.7.1...SOGo-5.8.0) (2022-11-29)
+
+
+### Features
+
+* **password-recovery:** Add password recovery with secret question or secondary email ([656807b](https://github.com/Alinto/sogo/commit/656807b77d393c5d6f67915eb7dce54f53812791) [77062be](https://github.com/Alinto/sogo/commit/77062befc56252bef059dafe3751bcd049028cf0) [33940b1](https://github.com/Alinto/sogo/commit/33940b14ea4992ac62bd14d86942b898d3dd8fec) [e269df8](https://github.com/Alinto/sogo/commit/e269df8c6ee186b9efd9be9fd2d200e65304f063) [b7531bc](https://github.com/Alinto/sogo/commit/b7531bc59b0e05319952256de1065dbc29fa8ba9) [c4dd695](https://github.com/Alinto/sogo/commit/c4dd695b12cf707d8f916373e11957bc105125fd) [1ea8b9f](https://github.com/Alinto/sogo/commit/1ea8b9fb1f8458cb636a3be96eb29d8f89d5bbef) [2e1b22c](https://github.com/Alinto/sogo/commit/2e1b22cb230d84e87b669fda4f143329b248a624) [440a15b](https://github.com/Alinto/sogo/commit/440a15ba9858306d78bcbfdba6f94d0a84aaf6fb) [58540f1](https://github.com/Alinto/sogo/commit/58540f15e21ac7cb54e52881b693feb175517cf4) [d363474](https://github.com/Alinto/sogo/commit/d3634747d52cfa40e9bd6f4064e377fe1eec65ed) [9b023f4](https://github.com/Alinto/sogo/commit/9b023f43d516d31dcb13e4756cd0bb9a3c2ee8b7) [18c92da](https://github.com/Alinto/sogo/commit/18c92dac3195e037609286538c2914a76032467f) [d50080e](https://github.com/Alinto/sogo/commit/d50080ea5bf12a9b5e000ea595303f612d803679))
+
+
+### Bug Fixes
+* **addressbook:** Fix invalid template ([04dd78d](https://github.com/Alinto/sogo/commit/04dd78d738e3c9017063a66b58a59116d3438474))
+* **addressbook:** Fix NSException on address book where uppercaseString is called on data ([c62b043](https://github.com/Alinto/sogo/commit/c62b043e26111ee4d6073b9b37931e15f3b95753))
+* **calendar(js):** destination calendars of new components ([3eeebbc](https://github.com/Alinto/sogo/commit/3eeebbc83be064e65138ee6f777e1eaf0e2b5931)), closes [#5581](https://bugs.sogo.nu/view.php?id=5581)
+* **calendar:** Update c_startdate field when updating event. Fixes [#4376](https://bugs.sogo.nu/view.php?id=4376) ([549d6a8](https://github.com/Alinto/sogo/commit/549d6a8463a1eb971f892a44c587bc28d8f669e0))
+* **core:** Fix NSException when c_content is NULL. Closes [#5644](https://bugs.sogo.nu/view.php?id=5644). Original fix by [@jvdsn](https://github.com/jvdsn). ([2786064](https://github.com/Alinto/sogo/commit/27860648c18a3557b5eeacc0999a95dfd9ff63d8))
+* **mail(js):** fix validation of email addresses. Closes [#5594](https://bugs.sogo.nu/view.php?id=5594) ([d194b1e](https://github.com/Alinto/sogo/commit/d194b1e921f5cdf864cc5d4202e2a1c6ffb5ab51))
+* **security:** Security fix for WSTG-INPV-02. Add XSS protection. Fixes [#5642](https://bugs.sogo.nu/view.php?id=5642). ([efac49a](https://github.com/Alinto/sogo/commit/efac49ae91a4a325df9931e78e543f707a0f8e5e) [f5c6fcc](https://github.com/Alinto/sogo/commit/f5c6fcc3508312d47cc581059d8f3a4fe0d426a2) [dcbfd83](https://github.com/Alinto/sogo/commit/dcbfd830d46f047a911c0f028a8686ba6ef889b0) [714acfc](https://github.com/Alinto/sogo/commit/714acfc838ab26fc9de52cbf382faa410708ab4c) [1e0f5f0](https://github.com/Alinto/sogo/commit/1e0f5f00890f751e84d67be4f139dd7f00faa5f3) [b1f8489](https://github.com/Alinto/sogo/commit/b1f84891b04122344c8e4cce7ed8b9888811250b) [6971ebd](https://github.com/Alinto/sogo/commit/6971ebd2d191e414811b808face33aba1e850bed) [a010f62](https://github.com/Alinto/sogo/commit/a010f629f0493464e097c6ee7630cbd059eab24c))
+* **ui:** Change active user name on top left with primary identity ([49879ef](https://github.com/Alinto/sogo/commit/49879efbc666b80e99d2b6d70d99df3f6612871c) [26b9429](https://github.com/Alinto/sogo/commit/26b9429396df8ade2978111d9b66bcdcf5528beb))
+* **eas:** Use bare email address. Closes [#5612](https://bugs.sogo.nu/view.php?id=5612) and [#5640](https://bugs.sogo.nu/view.php?id=5640) ([2d9a709](https://github.com/Alinto/sogo/commit/2d9a70944beb3b43bdc506694286bc833da971e4) [e1c7e32](https://github.com/Alinto/sogo/commit/e1c7e32f84811197582bd14b0080f6ae2f7d3a82))
+* **eas:** Ensure correct encoding of attachments. Closes [#5330](https://bugs.sogo.nu/view.php?id=5330) ([dff907a](https://github.com/Alinto/sogo/commit/dff907a158f9b8d7d2ca69e2ad33c7a4dd562abf))
+* **eas:** Ensure Templates and Junk folder exits. Closes [#5626](https://bugs.sogo.nu/view.php?id=5626) ([2ffe3d7](https://github.com/Alinto/sogo/commit/2ffe3d79d2ffd62b0be22522e17ab9b8d9de1eea))
+
+
+### Enhancements
+
+* **mail:** Improve IMAP fetch sorting using NSDictionary keys instead of indexOfObject ([40b5c09](https://github.com/Alinto/sogo/commit/40b5c0918a9ddfea629f3a0d36bc908f94696a3a) [48c7375](https://github.com/Alinto/sogo/commit/48c7375544d882e6f594aca14d1c25dfc668ed4b) [60ec315](https://github.com/Alinto/sogo/commit/60ec3152e8f50e1d13b3ab0a553e8a3b8195c908) [38e886a](https://github.com/Alinto/sogo/commit/38e886a3e0c6c8986fef4a7b170f0c225e4ef5df))
+* **calendar:** Add SOGoDisableOrganizerEventCheck parameter - this parameter is used to avoid checking calendar event's organizer ([cddfdb9](https://github.com/Alinto/sogo/commit/cddfdb90f9c2bf5d61db619899ccce280ab13419))
+* **calendar:** Refresh data when clicking on 'today' ([5fb82fe](https://github.com/Alinto/sogo/commit/5fb82fe414ed6cbac5f1396078ec87e87691123b))
+* **login:** Add button to discover password ([7bfa900](https://github.com/Alinto/sogo/commit/7bfa900ae10eb9c7fe7aa6bbbf0f7c600ce57ccb))
+
+
+### Localization
+
+* **da_DK:** Update Danish translations ([37291fa](https://github.com/Alinto/sogo/commit/37291facc73fa9600075ef677d47b09ff75e9d2c) [0409ee3](https://github.com/Alinto/sogo/commit/0409ee37be46c24ecffea640fe72774432492ec8))
+* **fr:** Update French translations ([4c01ea2](https://github.com/Alinto/sogo/commit/4c01ea210ed9d0e67763ec941cf33b7f76087690))
+* **nb_NO:** Update Norwegian Bokmål translations ([119e387](https://github.com/Alinto/sogo/commit/119e3870cf961b35778af745a9da3e3e41185214) [57fb622](https://github.com/Alinto/sogo/commit/57fb62244d4a494b867226010541fcb6fd20a7d9) [96cd188](https://github.com/Alinto/sogo/commit/96cd1880dac59d0bfc6af4e87598b1c8b15d20c0) [0cd7a17](https://github.com/Alinto/sogo/commit/0cd7a170a0e78726fa61970ceb0169caff28a0ce))
+* **sr:** Update Serbian translations ([e51aee8](https://github.com/Alinto/sogo/commit/e51aee8ce0a9276c5ed5b5c9059641b44617bc9d))
+
 ### [5.7.1](https://github.com/Alinto/sogo/compare/SOGo-5.7.0...SOGo-5.7.1) (2022-08-17)
 
 ### Enhancements

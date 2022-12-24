@@ -987,7 +987,7 @@ andAttribute: (EOAttribute *)_attribute
   NSDictionary	      *currentRow;
   NSNumber            *storedVersion;
   BOOL                isNewRecord, hasInsertDelegate, hasUpdateDelegate;
-  NSCalendarDate      *nowDate;
+  NSCalendarDate      *nowDate, *startDate;
   NSNumber            *now;
   EOEntity *quickTableEntity, *storeTableEntity;
   NSArray *rows;
@@ -1002,6 +1002,7 @@ andAttribute: (EOAttribute *)_attribute
 	  error   = nil;
 	  nowDate = [NSCalendarDate date];
 	  now     = [NSNumber numberWithUnsignedInt:[nowDate timeIntervalSince1970]];
+    startDate = nil;
 
 	  if (doLogStore)
 	    [self logWithFormat:@"should store content: '%@'\n%@", _name, _content];
@@ -1071,6 +1072,7 @@ andAttribute: (EOAttribute *)_attribute
 
 		  [contentRow setObject:_name forKey:@"c_name"];
 		  [contentRow setObject:now forKey:@"c_lastmodified"];
+
 		  if (isNewRecord)
 		    {
 		      [contentRow setObject:now forKey:@"c_creationdate"];
@@ -1141,6 +1143,14 @@ andAttribute: (EOAttribute *)_attribute
 			}
 		      else
 			{
+        // Update c_startdate for appointments
+        if ([theComponent respondsToSelector:@selector(startDate)]) {
+          startDate = [theComponent startDate];
+          if (startDate) {
+            [quickRow setObject:[NSNumber numberWithUnsignedInt:[startDate timeIntervalSince1970]] forKey:@"c_startdate"];
+          }
+        }
+      
 			  if (!ofFlags.sameTableForQuick)
 			    error = (hasUpdateDelegate
 				     ? [quickChannel updateRowX: quickRow

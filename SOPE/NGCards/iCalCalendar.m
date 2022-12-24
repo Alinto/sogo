@@ -133,7 +133,26 @@
 - (NSString *) method
 {
   return [[self uniqueChildWithTag: @"method"] flattenedValuesForKey: @""];
+} 
+
+- (NSCalendarDate *) startDate
+{
+  // Parse all dtstart to find the earlier
+  NSCalendarDate *calendarDate, *tmpCalendarDate;
+  NSUInteger i;
+
+  calendarDate = nil;
+  if ([[self allObjects] count] > 0) {
+    calendarDate = [[[[self allObjects] objectAtIndex: 0] uniqueChildWithTag: @"dtstart"] dateTime];
+    for (i = 0U ; i < [[self allObjects] count] ; i++) {
+      tmpCalendarDate = [[[[self allObjects] objectAtIndex: i] uniqueChildWithTag: @"dtstart"] dateTime];
+      if ([tmpCalendarDate timeIntervalSince1970] < [calendarDate timeIntervalSince1970]) calendarDate = tmpCalendarDate;
+    }
+  }
+  
+  return calendarDate;
 }
+
 
 - (void) addToEvents: (iCalEvent *) _event
 {

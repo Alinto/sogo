@@ -57,9 +57,10 @@
 	      grace: (int *) _grace;
 
 - (BOOL) changePasswordForLogin: (NSString *) login
-		    oldPassword: (NSString *) oldPassword
-		    newPassword: (NSString *) newPassword
-			   perr: (SOGoPasswordPolicyError *) perr;
+                    oldPassword: (NSString *) oldPassword
+                    newPassword: (NSString *) newPassword
+               passwordRecovery: (BOOL) passwordRecovery
+                           perr: (SOGoPasswordPolicyError *) perr;
 
 - (NSDictionary *) lookupContactEntry: (NSString *) theID
                              inDomain: (NSString *) domain;

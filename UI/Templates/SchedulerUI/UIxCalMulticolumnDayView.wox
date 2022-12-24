@@ -40,7 +40,7 @@
       </md-button>
       <md-button class="hide show-gt-sm" label:aria-label="Today"
                  var:date="todayQueryParameters.day"
-                 ng-click="calendar.changeDate($event)"
+                 ng-click="calendar.changeDate($event, null, true)"
                  md-no-ink="md-no-ink">
         <var:string label:value="Today"/>
       </md-button>

@@ -26,6 +26,7 @@
 "Verification Code" = "Верификациони код";
 "Enter the 6-digit verification code from your TOTP application." = "Унесите 6-цифрени код из ваше Google Authenticator апликације.";
 "You provided an invalid TOTP key." = "Унели сте неисправан код.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Двофакторска аутентификација је онемогућена. Посетите модул Пodešavawa да бисте вратили двофакторску аутентификацију и поново конфигурисали своју ТОТП апликацију.";
 
 "Download" = "Преузимање";
 "Language" = "Језик";
@@ -109,3 +110,19 @@
 "Close" = "Затвори";
 "Missing search parameter" = "Недостаје параметар претраге";
 "Missing type parameter" = "Недостаје тип параметра";
+
+/* Password Recovery */
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password lost" = "Password lost";
+"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
+"Invalid secret question answer" = "Invalid secret question answer";
+"Next" = "Next";
+"Back" = "Back";
+"Please enter a new password below" = "Please enter a new password below";
+"A link will be sent to %{0}" = "A link will be sent to %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
+"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
+"Password recovery email in error" = "Password recovery email in error";
+"Password reset" = "Password reset";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";

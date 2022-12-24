@@ -1638,4 +1638,40 @@ static NSArray *reminderValues = nil;
   return results;
 }
 
+// Password recovery
+
+- (NSArray *) passwordRecoveryList
+{
+  return [NSArray arrayWithObjects:
+                    SOGoPasswordRecoveryDisabled,
+                  SOGoPasswordRecoveryQuestion,
+                  SOGoPasswordRecoverySecondaryEmail,
+                  nil];
+}
+
+- (NSArray *) passwordRecoveryQuestionList
+{
+  return [NSArray arrayWithObjects:
+                  SOGoPasswordRecoveryQuestion1,
+                  SOGoPasswordRecoveryQuestion2,
+                  SOGoPasswordRecoveryQuestion3,
+                  nil];
+}
+
+- (NSString *) itemPasswordRecoveryText
+{
+  return [self commonLabelForKey: [NSString stringWithFormat: @"passwordRecovery_%@",
+                                      item]];
+}
+
+- (BOOL) shouldDisplayPasswordRecovery
+{
+  return [[SOGoSystemDefaults sharedSystemDefaults] isPasswordRecoveryEnabled];
+}
+
+- (BOOL) shouldDisplayPasswordSection
+{
+  return [self shouldDisplayPasswordRecovery] || [self shouldDisplayPasswordChange];
+}
+
 @end

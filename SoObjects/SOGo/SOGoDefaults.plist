@@ -195,4 +195,7 @@
     };
 
     SOGoSubscriptionFolderFormat = "%{FolderName} (%{UserName} <%{Email}>)";
+
+    SOGoPasswordRecoveryMode = "Disabled";
+    SOGoPasswordRecoveryQuestion = "SecretQuestion1";
 }

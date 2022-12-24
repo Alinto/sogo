@@ -32,6 +32,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserSettings.h>
+#import <SOGo/SOGoSystemDefaults.h>
 
 #import <Appointments/SOGoAppointmentFolders.h>
 
@@ -359,6 +360,20 @@
                                nil];
 
   return repeatFrequencies;
+}
+
+- (BOOL) isCalendarSharingEnabled {
+  BOOL result;
+  SOGoSystemDefaults *sd;
+
+  result = YES;
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if (nil != [sd disableSharing] 
+    && NSNotFound != [[sd disableSharing] indexOfObject: kDisableSharingCalendar]) {
+      result = NO;
+  }
+
+  return result;
 }
 
 @end

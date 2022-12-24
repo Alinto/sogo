@@ -12,6 +12,8 @@ publish_info_text = "Afsenderen informerer dig om vedlagte begivenheden.";
 cancel_info_text = "Din invitation eller hele begivenheden er aflyst.";
 request_info_no_attendee = "Foreslår et møde til deltagerne. Du modtager denne besked som en notifikation, du er ikke deltager";
 Appointment = "Aftale";
+"Status Update" = "Status opdatering";
+was = "var";
 
 Organizer = "Arrangør";
 Time = "Tid";
@@ -32,10 +34,16 @@ reply_info = "Dette er et svar på en begivenhed inviteret af dig.";
 "to" = "til";
 "Untitled" = "Ikke navngivet";
 "Size" = "Størrelse";
-"Digital signature is not valid" = "Digital signatur ikke er gyldig";
-"Message is signed" = "Beskeden er signeret";
 "Subject" = "Emne";
 "From" = "Fra";
 "Date" = "Dato";
 "To" = "Til";
 "Issuer" = "Udsteder";
+/* Tooltips */
+"View Attachment" = "Vis vedhæftet";
+"Save Attachment" = "Gem vedhæftede";
+"CC" = "CC";
+"Cancel" = "Anullér";
+"OK" = "OK";
+"Comment" = "Kommentar";
+"Description" = "Beskrivelse";

@@ -110,3 +110,19 @@
 "Close" = "Fermer";
 "Missing search parameter" = "Paramètre de recherche manquant";
 "Missing type parameter" = "Paramètre de type manquant";
+
+/* Password Recovery */
+"Secondary e-mail" = "E-mail secondaire";
+"Answer" = "Réponse";
+"Password lost" = "Mot de passe perdu";
+"No password recovery method has been defined for this user" = "Aucune méthode de récupération de mot de passe n'a été définie pour cet utilisateur";
+"Invalid secret question answer" = "La réponse à la question secrète n'est pas valide";
+"Next" = "Suivant";
+"Back" = "Retour";
+"Please enter a new password below" = "Veuillez saisir un nouveau mot de passe ci-dessous";
+"A link will be sent to %{0}" = "Un lien va être envoyé à %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "Un lien vous permettant de redéfinir votre mot de passe vous a été envoyé, veuillez vérifier votre boite e-mail de récupération";
+"Invalid configuration for email password recovery" = "Configuration invvalide pour la récupération de mot de passe par e-mail";
+"Password recovery email in error" = "Erreur lors de l'envoi de l'email de récupération";
+"Password reset" = "Réinitialisation de mot de passe";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Bonjour %{0},\nUne demande de changement de mot de passe a été initiée.\n\nSi vous n'êtes pas à l'origine de cet e-mail, n'en tenez pas compte.\n\nSi vous en êtes bien à l'origine, veuillez cliquer sur le lien ci-dessous pour modifier votre mot de passe: %{1}";

@@ -109,12 +109,14 @@
                       <var:string label:value="Export"/>
                     </md-button>
                   </md-menu-item>
-                  <md-menu-divider><!-- divider --></md-menu-divider>
-                  <md-menu-item>
-                    <md-button type="button" ng-click="app.share(folder)">
-                      <var:string label:value="Sharing..."/>
-                    </md-button>
-                  </md-menu-item>
+                  <var:if condition="isContactSharingEnabled">
+                    <md-menu-divider><!-- divider --></md-menu-divider>
+                    <md-menu-item>
+                      <md-button type="button" ng-click="app.share(folder)">
+                        <var:string label:value="Sharing..."/>
+                      </md-button>
+                    </md-menu-item>
+                  </var:if>
                 </md-menu-content>
               </md-menu>
             </md-list-item>

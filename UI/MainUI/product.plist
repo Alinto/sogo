@@ -173,6 +173,26 @@
           pageName = "SOGoRootPage";
           actionName = "changePassword";
         };
+        passwordRecovery = {
+          protectedBy = "<public>";
+          pageName = "SOGoRootPage";
+          actionName = "passwordRecovery";
+        };
+        passwordRecoveryEmail = {
+          protectedBy = "<public>";
+          pageName = "SOGoRootPage";
+          actionName = "passwordRecoveryEmail";
+        };
+        passwordRecoveryCheck = {
+          protectedBy = "<public>";
+          pageName = "SOGoRootPage";
+          actionName = "passwordRecoveryCheck";
+        };
+        passwordRecoveryEnabled = {
+          protectedBy = "<public>";
+          pageName = "SOGoRootPage";
+          actionName = "passwordRecoveryEnabled";
+        };
         loading = {
           protectedBy = "<public>";
           pageName    = "UIxLoading";

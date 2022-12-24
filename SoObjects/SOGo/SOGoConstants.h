@@ -36,6 +36,8 @@ typedef enum
   PolicyPasswordTooShort = 6,
   PolicyPasswordTooYoung = 7,
   PolicyPasswordInHistory = 8,
+  PolicyPasswordRecoveryFailed = 9,
+  PolicyPasswordRecoveryInvalidToken = 10,
   PolicyNoError = 65535,
 } SOGoPasswordPolicyError;
 

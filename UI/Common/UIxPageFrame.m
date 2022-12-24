@@ -497,7 +497,7 @@
   return [[sd authenticationType] isEqualToString: @"cas"];
 }
 
-- (BOOL) usesSAML2Authentication
+- (BOOL) usesSAML2Authenticationx
 {
   SOGoSystemDefaults *sd;
 
@@ -511,7 +511,13 @@
   NSString *v;
 
   /* The "identification" term is used in the human sense here. */
-  v = [[context activeUser] cn];
+  if ([[context activeUser] primaryIdentity] 
+          && [[[context activeUser] primaryIdentity] objectForKey:@"fullName"]
+          && [[[[[context activeUser] primaryIdentity] objectForKey:@"fullName"] stringByReplacingOccurrencesOfString:@" " withString:@""] length] > 0) {
+    v = [[[context activeUser] primaryIdentity] objectForKey:@"fullName"];
+  } else {
+    v = [[context activeUser] cn];
+  }
 
   return (v ? v : @"");
 }

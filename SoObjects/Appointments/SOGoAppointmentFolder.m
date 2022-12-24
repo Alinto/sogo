@@ -1358,7 +1358,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
               rules = [component recurrenceRulesWithTimeZone: tz];
               exRules = [component exceptionRulesWithTimeZone: tz];
             }
-          
+
+          rules = [rules uniqueObjects];
+
           // Calculate the occurrences for the given range
           records = [NSMutableArray array];
           ranges =
@@ -2036,6 +2038,13 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 {
   NSException *error;
   NSString *realColor;
+  
+  if ([newColor length] == 7
+      && [newColor hasPrefix: @"#"])
+    {
+      // Missing alpha channel
+      newColor = [newColor stringByAppendingString: @"FF"];
+    }
 
   if ([newColor length] == 9
       && [newColor hasPrefix: @"#"])
@@ -2582,9 +2591,25 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return componentSet;
 }
 
+- (NSException *) setDavDescription: (NSString *) description
+{
+  if (description) {
+    [self setFolderPropertyValue: description
+                    inCategory: @"DavDescription"];
+  }
+
+  return nil;
+}
+
 - (NSString *) davDescription
 {
-  return @"";
+  NSString *davDescription;
+
+  davDescription = [self folderPropertyValueInCategory: @"DavDescription"];
+  if (!davDescription)
+    davDescription = @"";
+
+  return davDescription;
 }
 
 /*

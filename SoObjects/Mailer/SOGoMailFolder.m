@@ -104,15 +104,15 @@ static NSComparisonResult _compareFetchResultsByMODSEQ (id entry1, id entry2, vo
   return [modseq1 compare: modseq2];
 }
 
-static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
+static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSDictionary *uids)
 {
   NSString *uid1, *uid2;
   NSUInteger pos1, pos2;
 
   uid1 = [entry1 objectForKey: @"uid"];
   uid2 = [entry2 objectForKey: @"uid"];
-  pos1 = [uids indexOfObject: uid1];
-  pos2 = [uids indexOfObject: uid2];
+  pos1 = [[uids objectForKey: [NSString stringWithFormat: @"%@", uid1]] intValue];
+  pos2 = [[uids objectForKey: [NSString stringWithFormat: @"%@", uid2]] intValue];
 
   if (pos1 > pos2)
     return NSOrderedDescending;
@@ -215,6 +215,26 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
   [urlString appendString: @"/"];
 
   return urlString;
+}
+
+/* Sorting */
+
+- (NSArray *) _sortFetchResultsWithUID: (NSArray *)fetchResults uids: (NSArray *)uids
+{
+  NSUInteger index;
+  NSMutableDictionary *uidsDict;
+  NSArray *result;
+
+  result = nil;
+  uidsDict = [[NSMutableDictionary alloc] init];
+  for (index = 0 ; index < [uids length] ; index++) {
+    [uidsDict setObject:[NSNumber numberWithInt: index] forKey: [NSString stringWithFormat:@"%d", [[uids objectAtIndex: index] intValue]]];
+  }
+  result = [fetchResults sortedArrayUsingFunction: _compareFetchResultsByUID
+                                                context: uidsDict];
+  [uidsDict release];
+
+  return result;
 }
 
 /* listing the available folders */
@@ -1929,8 +1949,7 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
          {
            response = [client fetchUids: uids parts: properties];
            results = [response objectForKey: @"fetch"];
-           sortedResults = (NSArray *)[results sortedArrayUsingFunction: _compareFetchResultsByUID
-                                                                context: (void *)uids];
+           sortedResults = [self _sortFetchResultsWithUID:results uids: uids];
          }
      }
 
@@ -2415,8 +2434,7 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSArray *uids)
     }
   else
     {
-      sortedResults = [fetchResults sortedArrayUsingFunction: _compareFetchResultsByUID
-                                                    context: uids];
+      sortedResults = [self _sortFetchResultsWithUID:fetchResults uids: uids];
     }
 
   for (i = 0; i < [sortedResults count]; i++)

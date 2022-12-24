@@ -221,6 +221,11 @@
 "view_next31" = "Наредних 31 дан";
 "view_thismonth" = "Овог месеца";
 "view_thisyear" = "Ове године";
+"view_last7" = "Последњих 7 дана";
+"view_last14" = "Последњих 14 дана";
+"view_last31" = "Последњих 31 дан";
+"view_lastmonth" = "Прошли месец";
+"view_lastyear" = "Прошле године";
 "view_future" = "Сви будући догађаји";
 "view_selectedday" = "Изабрани дан";
 "view_not_started" = "Нема започетих задатака";
@@ -499,6 +504,8 @@ validate_untilbeforeend    = "Понављање се мора завршити 
 "and" = "и";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Конфликт времена постоји са једним или више учесника.\nДа ли желите да задржите тренутна подешавања у сваком случају?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Да ли желите да их уклоните и пошаљете позив преосталим учесницима?";
 
 /* events list */
 "Due" = "Рок";
@@ -579,7 +586,7 @@ vtodo_class2 = "(Поверљиви задатак)";
 "Move To" = "Премести у";
 "Copy To" = "Копирај у";
 "Subscriptions" = "Претплате";
-"Subscribe to a shared folder" = "Претплати се на дељени директоријум";
+"Subscribe to a shared calendar" = "Претплати се на дељени календар";
 "Subscribe to a web calendar..." = "Претплати се на веб календар...";
 "URL of the Calendar" = "Линк ка календару";
 "Web Calendar" = "Веб календар";

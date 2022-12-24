@@ -267,47 +267,88 @@
       </md-tab>
 
       <!-- PASSWORD OPTIONS -->
-      <var:if condition="shouldDisplayPasswordChange">
+      <var:if condition="shouldDisplayPasswordSection">
         <md-tab id="generalPasswordView"
-                aria-controls="generalPasswordView-content"
-                label:label="Password">
-          <md-content id="passwordView" class="md-padding">
-            <div layout="row" layout-xs="column">
-              <md-input-container class="md-block" flex="flex">
-                <label><var:string label:value="Current password"/>
-                </label>
-                <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.oldPassword"/>
-              </md-input-container>
-              <md-input-container class="md-block" flex="flex">
-                <label><var:string label:value="New password"/>
-                </label>
-                <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.newPassword"/>
-                <div class="sg-hint">
-                  <ul class="sg-padded">
-                    <var:foreach list="passwordPolicy" item="item">
-                      <li><var:string value="item.label"/></li>
-                    </var:foreach>
-                  </ul>
+                  aria-controls="generalPasswordView-content"
+                  label:label="Password">
+            <md-content id="passwordView" class="md-padding">
+              <!-- Password recovery -->
+              <var:if condition="shouldDisplayPasswordRecovery">
+                <h5><var:string label:value="Password recovery"/></h5>
+                <div layout="row" layout-align="start start">
+                  <md-input-container class="md-block md-input-has-value">
+                    <label><var:string label:value="Password recovery mode"/></label>
+                      <md-select ng-model="app.preferences.defaults.SOGoPasswordRecoveryMode">
+                        <var:foreach list="passwordRecoveryList" item="item">
+                          <md-option var:value="item">
+                            <var:string value="itemPasswordRecoveryText"/>
+                          </md-option>
+                        </var:foreach>
+                      </md-select>
+                  </md-input-container>
                 </div>
-              </md-input-container>
-              <md-input-container class="md-block" flex="flex">
-                <label><var:string label:value="Confirmation"/>
-                </label>
-                <input type="password" name="newPasswordConfirmation" sg-no-dirty-check="true" ng-model="app.passwords.newPasswordConfirmation"/>
-                <div ng-messages="preferencesForm.newPasswordConfirmation.$error">
-                  <div ng-message="newPasswordMismatch"><var:string label:value="Passwords don't match"/></div>
+                <div layout="row" layout-align="start start" ng-if="app.preferences.isItemSecretQuestion()">
+                  <md-input-container class="md-block md-input-has-value">
+                    <label><var:string label:value="Question"/></label>
+                      <md-select ng-model="app.preferences.defaults.SOGoPasswordRecoveryQuestion">
+                        <var:foreach list="passwordRecoveryQuestionList" item="item">
+                          <md-option var:value="item">
+                            <var:string value="itemPasswordRecoveryText"/>
+                          </md-option>
+                        </var:foreach>
+                      </md-select>
+                  </md-input-container>
+                  <md-input-container class="md-block">
+                    <label><var:string label:value="Answer"/></label>
+                    <input autocorrect="off" autocapitalize="off" type="text" ng-model="app.preferences.defaults.SOGoPasswordRecoveryQuestionAnswer" ng-required="app.preferences.isItemSecretQuestion()"/>
+                  </md-input-container>
                 </div>
-              </md-input-container>
-            </div>
-            <div layout="row" layout-align="end center">
-              <md-button ng-click="app.changePassword()" type="button" ng-disabled="!app.canChangePassword(preferencesForm)">
-                <var:string label:value="Change"/>
-              </md-button>
-            </div>
+                <div layout="row" layout-align="start start" ng-if="app.preferences.isItemSecondaryEmail()">
+                  <md-input-container class="md-block">
+                    <label><var:string label:value="Secondary e-mail"/></label>
+                    <input autocorrect="off" autocapitalize="off" type="text" ng-model="app.preferences.defaults.SOGoPasswordRecoverySecondaryEmail" ng-required="app.preferences.isItemSecondaryEmail()" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"/>
+                  </md-input-container>
+                </div>
+              </var:if>
+              <!-- Password change -->
+              <var:if condition="shouldDisplayPasswordChange">
+                <h5><var:string label:value="Password change"/></h5>
+                <div layout="row" layout-xs="column">
+                  <md-input-container class="md-block" flex="flex">
+                    <label><var:string label:value="Current password"/>
+                    </label>
+                    <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.oldPassword"/>
+                  </md-input-container>
+                  <md-input-container class="md-block" flex="flex">
+                    <label><var:string label:value="New password"/>
+                    </label>
+                    <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.newPassword"/>
+                    <div class="sg-hint">
+                      <ul class="sg-padded">
+                        <var:foreach list="passwordPolicy" item="item">
+                          <li><var:string value="item.label"/></li>
+                        </var:foreach>
+                      </ul>
+                    </div>
+                  </md-input-container>
+                  <md-input-container class="md-block" flex="flex">
+                    <label><var:string label:value="Confirmation"/>
+                    </label>
+                    <input type="password" name="newPasswordConfirmation" sg-no-dirty-check="true" ng-model="app.passwords.newPasswordConfirmation"/>
+                    <div ng-messages="preferencesForm.newPasswordConfirmation.$error">
+                      <div ng-message="newPasswordMismatch"><var:string label:value="Passwords don't match"/></div>
+                    </div>
+                  </md-input-container>
+                </div>
+                <div layout="row" layout-align="end center">
+                  <md-button ng-click="app.changePassword()" type="button" ng-disabled="!app.canChangePassword(preferencesForm)">
+                    <var:string label:value="Change"/>
+                  </md-button>
+                </div>
+              </var:if>
           </md-content>
         </md-tab>
       </var:if>
-
     </md-tabs>
   </script>
 

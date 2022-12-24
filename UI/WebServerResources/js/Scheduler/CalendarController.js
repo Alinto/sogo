@@ -171,11 +171,15 @@
     };
 
     // Change calendar's date
-    this.changeDate = function($event, newDate) {
+    this.changeDate = function($event, newDate, isToday = false) {
       var date = newDate? newDate.getDayString() : angular.element($event.currentTarget).attr('date');
       if (newDate)
         _formatDate(newDate);
       $state.go('calendars.view', { day: date });
+      // Refresh calendar data if click on today
+      if (isToday) {
+        $rootScope.$emit('calendars:list');
+      }
       // $state.transitionTo('calendars.view', { day: date });
     };
 

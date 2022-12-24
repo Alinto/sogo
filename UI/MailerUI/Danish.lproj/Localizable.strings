@@ -3,16 +3,19 @@
 /* Icon's label */
 "Create"      = "Opret";
 "Empty Trash" = "Tøm papirkurv";
+"Empty Junk Folder" = "Tøm uønsket mappe";
 "Delete"      = "Slet";
 "Expunge"     = "Slet";
 "Forward"     = "Videresend";
 "Get Mail"    = "Hent besked";
 "Junk"        = "Uønsket post";
+"Not junk"    = "Ikke uønsket";
 "Reply"       = "Besvar";
 "Reply All"   = "Besvar alle";
 "Print"       = "Udskriv";
 "Stop"        = "Stop";
 "Write"       = "Skriv";
+"Search"      = "Søg";
 "Send" = "Send";
 "Contacts" = "Kontakter";
 "Attach" = "Vedhæft";
@@ -20,6 +23,7 @@
 "Options" = "Indstillinger";
 "Close" = "Luk";
 "Size" = "Størrelse";
+
 /* Tooltips */
 "Send this message now" = "Send denne besked nu";
 "Select a recipient from an Address Book" = "Vælg en modtager fra en adressebog";
@@ -32,31 +36,59 @@
 "Reply to sender and all recipients" = "Svar afsender og alle modtagere";
 "Forward selected message" = "Videresend valgte besked";
 "Delete selected message or folder" = "Slet valgte besked eller mappe";
-"Mark the selected messages as junk" = "Markér de valgte meddelelser som uønsket post";
 "Print this message" = "Udskriv denne besked";
 "Stop the current transfer" = "Stop den aktuelle overførsel";
 "Attachment" = "Vedhæftet";
 "Unread" = "Ulæst";
 "Flagged" = "Markeret";
+"Search multiple mailboxes" = "Søg i flere postkasser";
+
 /* Main Frame  */
-"Home"                 = "Hjem"; 
+"Home"                 = "Hjem";
 "Calendar"             = "Kalender";
 "Addressbook"          = "Adressebog";
 "Mail"                 = "Mail";
 "Right Administration" = "Højre administration";
 "Help" = "Hjælp";
+
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Velkommen til Sogo Mailer. Brug mappernet til venstre for at gennemse dine mail-konti!";
 "Read messages"       = "Læs beskeder";
+
+/* Tooltip for fab button */
 "Write a new message" = "Skriv en ny besked";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Skriv besked i nyt vindue";
+
 "Share" = "Del";
 "Account" = "Konto";
 "Shared Account" = "Delt konto";
+
+/* A mailbox is selected, but no message (only shown on large screens) */
+"No message selected" = "Ingen besked valgt";
+
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "Ingen postkasse valgt";
+
+"An error occured while communicating with the mail server" = "Der opstod en fejl under kommunikation med mailserveren";
+
+/* Mailbox actions */
+
+/* Compact Folder success message */
+"Folder compacted" = "Mappe komprimeret";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Uønsket mappe tømt";
+
+/* Empty Trash success message */
+"Trash emptied" = "Papirkurven tømt";
+
 /* acls */
 "Access rights to" = "Adgangsrettigheder til";
 "For user" = "For bruger";
 "Any Authenticated User" = "Alle godkendte brugere";
-"List and see this folder" = "Udvid og se denne mappe";
+"View this folder" = "Vis denne mappe";
 "Read mails from this folder" = "Læs beskeder fra denne mappe";
 "Mark mails read and unread" = "Markér beskeder som læst og ulæst";
 "Modify the flags of the mails in this folder" = "Redigér markeringerne af beskederne i denne mappe";
@@ -66,10 +98,12 @@
 "Remove this folder" = "Fjern denne mappe";
 "Erase mails from this folder" = "Slet beskeder fra denne mappe";
 "Expunge this folder" = "Slet denne mappe";
+"Export This Folder" = "Eksportér denne mappe";
 "Modify the acl of this folder" = "Rediger ACL i denne mappe";
 "Saved Messages.zip" = "Gemte beskeder.zip";
 "Update" = "Opdatér";
 "Cancel" = "Annullér";
+
 /* Mail edition */
 "From"          = "Fra";
 "Subject"       = "Emne";
@@ -78,20 +112,28 @@
 "Bcc"           = "Bcc";
 "Reply-To"	= "Svar til";
 "Add address"   = "Tilføj adresse";
-"Attachments" = "Vedhæftede filer";
+"Body"          = "Krop";
 "Open" = "Åbn";
 "Select All" = "Vælg alle";
+"Select Message" = "Vælg besked";
 "Attach Web Page..." = "Vedhæft hjemmeside ...";
-"Attach File(s)..." = "Vedhæft fil(er) ...";
+"file" = "Fil";
+"files" = "Filer";
+"Save all" = "Gem alt";
 "to"            = "Til";
 "cc"            = "Cc";
 "bcc"           = "Bcc";
+"Add a recipient" = "Tilføj en modtager";
 "Edit Draft..." = "Redigér kladde ...";
 "Load Images" = "Indlæs billeder";
 "Return Receipt" = "Kvittering";
+"Choose which identity to send this message from" = "Vælg hvilken identitet denne besked skal sendes fra";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Afsenderen af ​​denne besked har bedt om at blive underrettet, når du læser denne besked. Vil du underrette afsenderen?";
 "Return Receipt (displayed) - %@"= "Kvittering (vist) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Dette er en kvittering for den besked, du har sendt til %@\n\nBemærk:. Denne kvittering anerkender kun, at budskabet blev vist på modtagerens computer. Der er ingen garanti for, at modtageren har læst eller forstået indholdet i beskeden.";
+"Security" = "Sikkerhed";
+"Sign" = "Tegn";
+"Encrypt" = "Kryptér";
 "Priority" = "Prioritet";
 "highest" = "Højeste";
 "high" = "Høj";
@@ -101,12 +143,14 @@
 "This mail is being sent from an unsecure network!" = "Denne besked bliver sendt fra et usikkert netværk!";
 "Address Book" = "Adressebog";
 "Search For" = "Søg efter";
+
 /* Popup "show" */
 "all"     = "alle";
 "read"    = "Læs";
 "unread"  = "Ulæst";
 "deleted" = "Slettet";
 "flagged" = "Markerede";
+
 /* MailListView */
 "Sender" = "Afsender";
 "Subject or Sender" = "Emne eller afsender";
@@ -117,6 +161,7 @@
 "All"           = "Alle";
 "No message"    = "Ingen besked";
 "messages"      = "Beskeder";
+"Yesterday"     = "I går";
 "first"         = "Første";
 "previous"      = "Forrige";
 "next"          = "Næste";
@@ -126,22 +171,39 @@
 "Mark Unread" = "Marker som ulæst";
 "Mark Read"   = "Mark som læst";
 "Untitled" = "Ikke navngivet";
+
+/* Filter option in messages list */
+"Show unread messages only" = "Vis kun ulæste beskeder";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Vis kun beskeder markeret med flag";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Filtreret efter mærkat";
+
 /* Tree */
 "SentFolderName"   = "Sendte Beskeder";
 "TrashFolderName"  = "Papirkurv";
 "InboxFolderName"  = "Indbakke";
 "DraftsFolderName" = "Kladder";
+"JunkFolderName" = "Uønsket";
+"TemplatesFolderName" = "Skabeloner";
 "SieveFolderName"  = "Filtre";
 "Folders"          = "Mapper"; /* title line */
+
 /* MailMoveToPopUp */
 "MoveTo"        = "Flyt ...";
+
 /* Address Popup menu */
 "Add to Address Book..." = "Tilføj til adressebog ...";
+"Successfully created card" = "Kortet er oprettet ";
 "Compose Mail To" = "Skriv mail til";
 "Create Filter From Message..." = "Opret filter fra besked ...";
+
 /* Image Popup menu */
 "Save Image" = "Gem billede";
 "Save Attachment" = "Gem vedhæftede";
+
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Åben i nyt vindue";
 "Copy Folder Location" = "Kopier mappens lokation";
@@ -158,10 +220,13 @@
 "Get Messages for Account" = "Hent beskeder til konto";
 "Properties..." = "Egenskaber ...";
 "Delegation..." = "Delegationen ...";
+
 /* Use This Folder menu */
 "Sent Messages" = "Sendte beskeder";
 "Drafts" = "Kladder";
 "Deleted Messages" = "Slettede beskeder";
+"Junk Messages" = "Uønsket beskeder";
+
 /* Message list popup menu */
 "Open Message In New Window" = "Åben besked i nyt vindue";
 "Reply to Sender Only" = "Svar kun afsenderen";
@@ -174,12 +239,81 @@
 "Save As..." = "Gem som ...";
 "Print Preview" = "Se udskrift";
 "View Message Source" = "Se beskedens kilde";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "Konvertér til begivenhed";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "Konvertér til opgaver";
+
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Download besked";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Download besked (zip)";
+
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Download alle vedhæftede filer";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "Vedhæftet filer";
+
 "Print..." = "Udskriv ...";
 "Delete Message" = "Slet besked";
 "Delete Selected Messages" = "Slet valgte beskeder";
+"Mark the selected messages as junk" = "Markér de valgte meddelelser som uønsket post";
+"Mark the selected messages as not junk" = "Markér de valgte meddelelser som ikke uønsket post";
+
+/* Text appended to the recipients list when there are too many recipients */
+"and %{0} more..." = "Og %{0} mere...";
+
+/* Button label to hide extended list of recipients */
+"Hide" = "Skjul";
+
+/* Number of selected messages in list */
+"selected" = "Valgte";
+
+/* Date formatting from one time to another time */
+"to_time" = "Til";
+
+/* Date formatting from one day to another day */
+"to_date" = "Til";
+
+/* Encrypted message notification */
+"This message is encrypted" = "Denne besked er krypteret";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Denne besked kan ikke dekrypteres. Sørg for, at du har uploadet dit S/MIME-certifikat fra mail præferencemodulet.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Kan ikke bekræfte beskedsignaturen";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "Beskeden er blevet ændret";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Fejl ved læsning af certifikatet. Installer venligst et nyt certifikat.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "Intet certifikat knyttet til kontoen.";
+
+/* Invalid S/MIME signature */
+"Digital signature is not valid" = "Digital underskrift er ikke gyldig";
+
+/* Valid S/MIME signature */
+"Message is signed" = "Beskeden er underskrevet";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Beskeden er underskrevet, men certifikatet matcher ikke afsenderens e-mailadresse";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Digital underskrift er ikke gyldig";
+
 "This Folder" = "Denne mappe";
+
 /* Label popup menu */
 "None" = "Ingen";
+
 /* Mark popup menu */
 "As Read" = "Som læst";
 "Thread As Read" = "Tråd som læst";
@@ -189,15 +323,43 @@
 "As Junk" = "Som uønsket";
 "As Not Junk" = "Som Ikke uønsket";
 "Run Junk Mail Controls" = "Kør uønsket post kontroller";
+"Search messages in" = "Søg beskeder i";
+"Search" = "Søg";
+"Search subfolders" = "Søg i undermapper";
+"Match any of the following" = "Match enhver af følgende ";
+"Match all of the following" = "Match alle følgende";
+"contains" = "indeholder";
+"does not contain" = "indeholder ikke";
+"No matches found" = "Ingen match fundet";
+"results found" = "Resultater fundet";
+"result found" = "Resultat fundet";
+"Please specify at least one filter" = "Angiv venligst mindst ét ​​filter";
+
 /* Folder operations */
 "Name" = "Navn";
 "Enter the new name of your folder"
- = "Indtast det nye navn på din mappe";
+ ="Indtast det nye navn på din mappe";
 "Do you really want to move this folder into the trash ?"
  = "Er du sikker på, at du vil flytte denne mappe til papirkurven?";
 "Operation failed" = "Handlingen mislykkedes";
 "Quota" = "Kvote:";
 "quotasFormat" = "%{0}% used on %{1} MB";
+"messageQuotasFormat" = "%{0}% af %{1} msgs";
+"Unable to move/delete folder." = "Kan ikke flytte/slette mappe.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "Postkassen kunne ikke flyttes til papirkurven. Vil du slette den med det samme?";
+
+/* Confirmation message when deleting multiple messages */
+"Are you sure you want to delete the selected messages?" = "Er du sikker på du vil slette de valgte beskeder?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} besked(er) kopieret ";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} besked(er) flyttet";
+
 "Please select a message." = "Vælg venligst en besked.";
 "Please select a message to print." = "Vælg en besked til udskrivning.";
 "Please select only one message to print." = "Vælg kun én besked til at udskrive.";
@@ -217,16 +379,120 @@
 = "Det er umuligt at flytte en besked til dens egen mappe!";
 "Copying a message into its own folder is impossible!"
 = "Det er umuligt at kopiere en besked til dens egen mappe! ";
+
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
 = "Beskederne kunne ikke flyttes til papirkurven. Vil du slette dem med det samme?";
+
 /* Message editing */
+"Please specify a subject." = "Vælg venligst et emne.";
 "error_missingsubject" = "Emne mangler";
 "error_missingrecipients" = "Ingen modtagere angivet";
 "Send Anyway" = "Send alligevel";
-/* Message sending */
+"Error while saving the draft" = "Fejl under lagring af kladden";
+
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Det er ikke muligt ikke at tømme papirkurven";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Kan ikke tømme uønsket mappe.";
+
+/* Error when uploading a file attachment */
+"Error while uploading the file \"%{0}\":" = "Fejl under upload af filen \"%{0}\":";
+"There is an active file upload. Closing the window will interrupt it." = "Der er en aktiv filupload. Lukning af vinduet vil afbryde det.";
+"Message is too big" = "Besked er for stor";
+
+/* Appears while sending the message */
+"Sending" = "Sender";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Sendt";
+
 "cannot send message: (smtp) all recipients discarded" = "Kan ikke sende besked: alle modtagere er ugyldige.";
 "cannot send message (smtp) - recipients discarded" = "Kan ikke sende besked. Følgende adresser er ugyldige";
 "cannot send message: (smtp) error when connecting" = "Kan ikke sende besked: Fejl ved oprettelse til SMTP-server.";
+"cannot sign email without certificate" = "Beskeden kan ikke underskrives, fordi der ikke er noget certifikat knyttet til e-mailkontoen.";
+"cannot sign message because the certificate can't be read" = "Beskeden kan ikke underskrives, fordi det certifikat, der er knyttet til mailkontoen, ikke kan læses.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "Beskeden kan ikke underskrives, fordi afsenderadressen ikke er inkluderet i det certifikat, der er knyttet til e-mailkontoen.";
+
 /* Contacts list in mail editor */
 "Email" = "Mail";
+"More mail options" = "Flere mailindstillinger";
+"Delegation" = "Delegation";
+"Add User" = "Tilføj bruger";
+"Add a tag" = "Tilføj et tag";
+"reply" = "Svar";
+"Edit" = "Redigér";
+"Yes" = "Ja";
+"No" = "Nej";
+"Location" = "Sted";
+"Rename" = "Omdøb";
+"Compact" = "Kompakt";
+"Export" = "Eksportér";
+"Set as Drafts" = "Indstil som kladder ";
+"Set as Sent" = "Indstil som sendt";
+"Set as Trash" = "Indstil som papirkurv";
+
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Indstil som skabeloner";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "Indstil som uønsket";
+
+"Sort" = "Sortér";
+"Order Received" = "Ordre modtaget";
+"Descending Order" = "Faldende rækkefølge";
+"Back" = "Tilbage";
+"Copy messages" = "Kopier beskeder";
+"More messages options" = "Flere beskedindstillinger";
+"Mark as Unread" = "Markér som ulæst";
+"Mark as Read" = "Markér som læst";
+"Closing Window ..." = "Lukker vindue ...";
+"Tried to send too many mails. Please wait." = "Forsøgte at sende for mange mails. Vent venligst.";
+"View Mail" = "Vis e-mail";
+"This message contains external images." = "Denne besked indeholder eksterne billeder.";
+"Expanded" = "Udvidet";
+"Add a Criteria" = "Tilføj et kriterie";
+"More search options" = "Flere søgeindstillinger";
+"Your email has been saved" = "Din e-mail er gemt";
+"Your email has been sent" = "Din e-mail er sendt";
+"Folder compacted" = "Mappe komprimeret";
+
+"New draft" = "Ny kladde";
+"Create new draft with this template" = "Lav ny kladde med denne skabelon";
+
+/* Advanced search */
+"Enter Subject" = "Vælg emne";
+"Enter From" = "Indtast fra";
+"Enter To" = "Indtast til";
+"Enter Cc" = "Indtast Cc";
+"Enter Body" = "Indtast brødtekst";
+"match" = "Match";
+"does not match" = "Matcher ikke";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Søgeomfang";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Administrer abonnementer";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Filter";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

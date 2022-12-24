@@ -20,6 +20,8 @@
       PolicyPasswordTooShort: 6,
       PolicyPasswordTooYoung: 7,
       PolicyPasswordInHistory: 8,
+      PolicyPasswordRecoveryFailed: 9,
+      PolicyPasswordRecoveryInvalidToken: 10,
       PolicyNoError: 65535
     })
 
@@ -168,7 +170,7 @@
           return d.promise;
         }, // login: function(data) { ...
 
-        changePassword: function(userName, domain, newPassword, oldPassword) {
+        changePassword: function(userName, domain, newPassword, oldPassword, token) {
           var d = $q.defer(),
               xsrfCookie = $cookies.get('XSRF-TOKEN');
 
@@ -180,8 +182,12 @@
             headers: {
               'X-XSRF-TOKEN' : xsrfCookie
             },
-            data: { userName: userName, newPassword: newPassword, oldPassword: oldPassword }
+            data: { userName: userName, newPassword: newPassword, oldPassword: oldPassword, token: token }
           }).then(function() {
+            // Clean cookies for reauthenticate
+            $cookies.remove('XSRF-TOKEN', { path: '/SOGo/' });
+            $cookies.remove('0xHIGHFLYxSOGo', { path: '/SOGo/' });
+
             d.resolve({url: redirectUrl(userName, domain)});
           }, function(response) {
             var error,
@@ -205,6 +211,8 @@
               error = l("Password change failed - Password is too young");
             } else if (perr == passwordPolicyConfig.PolicyPasswordInHistory) {
               error = l("Password change failed - Password is in history");
+            } else if (perr == passwordPolicyConfig.PolicyPasswordRecoveryInvalidToken) {
+              error = l("Invalid token. Could not change password");
             } else {
               error = l("Unhandled policy error: %{0}").formatted(perr);
               perr = passwordPolicyConfig.PolicyPasswordUnknown;
@@ -213,6 +221,105 @@
             // Restore the cookie
             $cookies.put('XSRF-TOKEN', xsrfCookie, {path: '/SOGo/'});
             d.reject(error);
+          });
+          return d.promise;
+        },
+
+        passwordRecovery: function (userName, domain) {
+          var self = this;
+
+          var d = $q.defer(),
+            xsrfCookie = $cookies.get('XSRF-TOKEN');
+
+          $cookies.remove('XSRF-TOKEN', { path: '/SOGo/' });
+
+          $http({
+            method: 'POST',
+            url: '/SOGo/so/passwordRecovery',
+            headers: {
+              'X-XSRF-TOKEN': xsrfCookie
+            },
+            data: { userName: userName, domain: domain }
+          }).then(function (response) {
+            d.resolve(Object.assign(
+              { url: redirectUrl(userName, domain) }, 
+              response.data, 
+              'SecretQuestion' === response.data.mode ? { secretQuestionLabel: l('passwordRecovery_' + response.data.secretQuestion) } : {},
+              'SecondaryEmail' === response.data.mode ? { obfuscatedRecoveryEmail: response.data.obfuscatedSecondaryEmail } : {}
+              ));
+          }, function () {
+            // Restore the cookie
+            $cookies.put('XSRF-TOKEN', xsrfCookie, { path: '/SOGo/' });
+            d.reject(l("Unhandled policy error: %{0}").formatted(passwordPolicyConfig.PolicyPasswordRecoveryFailed));
+          });
+          return d.promise;
+        },
+
+
+        passwordRecoveryEmail: function (userName, domain, mode, mailDomain) {
+          var self = this;
+
+          var d = $q.defer(),
+            xsrfCookie = $cookies.get('XSRF-TOKEN');
+
+          $cookies.remove('XSRF-TOKEN', { path: '/SOGo/' });
+
+          $http({
+            method: 'POST',
+            url: '/SOGo/so/passwordRecoveryEmail',
+            headers: {
+              'X-XSRF-TOKEN': xsrfCookie
+            },
+            data: { userName: userName, domain: domain, mode: mode, mailDomain: mailDomain }
+          }).then(function (response) {
+            d.resolve(response.data.jwt);
+          }, function (response) {
+            // Restore the cookie
+            $cookies.put('XSRF-TOKEN', xsrfCookie, { path: '/SOGo/' });
+            d.reject(l(response.data));
+          });
+          return d.promise;
+        },
+
+
+        passwordRecoveryCheck: function (userName, domain, mode, question, answer, mailDomain) {
+          var self = this;
+
+          var d = $q.defer(),
+            xsrfCookie = $cookies.get('XSRF-TOKEN');
+
+          $cookies.remove('XSRF-TOKEN', { path: '/SOGo/' });
+
+          $http({
+            method: 'POST',
+            url: '/SOGo/so/passwordRecoveryCheck',
+            headers: {
+              'X-XSRF-TOKEN': xsrfCookie
+            },
+            data: { userName: userName, domain: domain, mode: mode, question: question, answer: answer, mailDomain: mailDomain }
+          }).then(function (response) {
+            d.resolve(response.data.jwt);
+          }, function (response) {
+            // Restore the cookie
+            $cookies.put('XSRF-TOKEN', xsrfCookie, { path: '/SOGo/' });
+            d.reject(l(response.data));
+          });
+          return d.promise;
+        },
+
+        passwordRecoveryEnabled: function (userName, domain) {
+          var self = this;
+
+          var d = $q.defer();
+          
+          $http({
+            method: 'POST',
+            url: '/SOGo/so/passwordRecoveryEnabled',
+            data: { userName: userName, domain: domain }
+          }).then(function (response) {
+            d.resolve(response.data.domain);
+          }, function () {
+            d.reject();
           });
           return d.promise;
         }

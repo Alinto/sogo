@@ -56,6 +56,8 @@
 - (void) setMethod: (NSString *) _method;
 - (NSString *) method;
 
+- (NSCalendarDate *) startDate;
+
 - (NSArray *) events;
 - (NSArray *) todos;
 - (NSArray *) journals;

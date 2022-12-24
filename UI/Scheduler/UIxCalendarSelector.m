@@ -182,7 +182,7 @@ _intValueFromHex (NSString *hexString)
           fActiveTasks = [folder activeTasks];
 
           [calendar setObject: folderName forKey: @"id"];
-          [calendar setObject: fDisplayName forKey: @"name"];
+          [calendar setObject: [fDisplayName stringWithoutHTMLInjection: YES] forKey: @"name"];
           [calendar setObject: [folder calendarColor] forKey: @"color"];
           isActive = [NSNumber numberWithBool: [folder isActive]];
           [calendar setObject: isActive forKey: @"active"];

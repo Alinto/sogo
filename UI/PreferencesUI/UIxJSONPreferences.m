@@ -206,6 +206,18 @@ static SoProduct *preferencesProduct = nil;
   if (![[defaults source] objectForKey: @"SOGoCalendarDefaultReminder"])
     [[defaults source] setObject: [defaults calendarDefaultReminder] forKey: @"SOGoCalendarDefaultReminder"];
 
+  if (![[defaults source] objectForKey: @"SOGoPasswordRecoveryMode"])
+    [[defaults source] setObject: [defaults passwordRecoveryMode] forKey: @"SOGoPasswordRecoveryMode"];
+
+  if (![[defaults source] objectForKey: @"SOGoPasswordRecoveryQuestion"])
+    [[defaults source] setObject: [defaults passwordRecoveryQuestion] forKey: @"SOGoPasswordRecoveryQuestion"];
+
+  if (![[defaults source] objectForKey: @"SOGoPasswordRecoveryQuestionAnswer"])
+    [[defaults source] setObject: [defaults passwordRecoveryQuestionAnswer] forKey: @"SOGoPasswordRecoveryQuestionAnswer"];
+
+  if (![[defaults source] objectForKey: @"SOGoPasswordRecoverySecondaryEmail"])
+    [[defaults source] setObject: [defaults passwordRecoverySecondaryEmail] forKey: @"SOGoPasswordRecoverySecondaryEmail"];
+
   // Populate default calendar categories, based on the user's preferred language
   if (![[defaults source] objectForKey: @"SOGoCalendarCategories"])
     {

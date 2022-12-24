@@ -52,6 +52,7 @@
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/WORequest+SOGo.h>
+#import <SOGo/SOGoSystemDefaults.h>
 
 #import "iCalCalendar+SOGo.h"
 #import "iCalEvent+SOGo.h"
@@ -2580,7 +2581,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 
           // Verify if the event is still present in the organizer calendar
           organizerUID = [[masterEvent organizer] uidInContext: context];
-          if (organizerUID)
+          if (organizerUID && ![[SOGoSystemDefaults sharedSystemDefaults] disableOrganizerEventCheck])
             {
               object = [self _lookupEvent: [masterEvent uid]
                                    forUID: organizerUID];

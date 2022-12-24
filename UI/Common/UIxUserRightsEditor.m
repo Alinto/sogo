@@ -29,6 +29,7 @@
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserManager.h>
+#import <SOGo/SOGoSystemDefaults.h>
 
 #import <UI/SOGoUI/SOGoACLAdvisory.h>
 
@@ -258,12 +259,35 @@
   NSDictionary *currentUser, *jsonResponse;;
   NSEnumerator *usersList;
   NSString *currentUid;
-  NSArray *o;
+  NSArray *o, *reqPathArray;
+  SOGoSystemDefaults *sd;
 
   request = [[self context] request];
   response = [self responseWithStatus: 200];
   users = [[request contentAsString] objectFromJSONString];
   usersList = [users objectEnumerator];
+  reqPathArray = [request requestHandlerPathArray];
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+
+  // Disable sharing
+  if (NSNotFound != [reqPathArray indexOfObject: kDisableSharingMail]
+    && nil != [sd disableSharing] 
+    && NSNotFound != [[sd disableSharing] indexOfObject: kDisableSharingMail]) {
+      response = [self responseWithStatus: 403];
+      return response;
+  }
+   if (NSNotFound != [reqPathArray indexOfObject: kDisableSharingContacts]
+    && nil != [sd disableSharing] 
+    && NSNotFound != [[sd disableSharing] indexOfObject: kDisableSharingContacts]) {
+      response = [self responseWithStatus: 403];
+      return response;
+  }
+   if (NSNotFound != [reqPathArray indexOfObject: kDisableSharingCalendar]
+    && nil != [sd disableSharing] 
+    && NSNotFound != [[sd disableSharing] indexOfObject: kDisableSharingCalendar]) {
+      response = [self responseWithStatus: 403];
+      return response;
+  }
 
   while ((currentUser = [usersList nextObject]))
     {

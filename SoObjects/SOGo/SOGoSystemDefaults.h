@@ -22,6 +22,11 @@
 #define SOGOSYSTEMDEFAULTS_H
 
 #import <SOGo/SOGoDomainDefaults.h>
+#import <SOGo/NSString+Utilities.h>
+
+static const NSString *kDisableSharingMail = @"Mail";
+static const NSString *kDisableSharingContacts = @"Contacts";
+static const NSString *kDisableSharingCalendar = @"Calendar";
 
 @interface SOGoSystemDefaults : SOGoDomainDefaults
 {
@@ -49,6 +54,8 @@
 - (BOOL) isAddressBookDAVAccessEnabled;
 
 - (BOOL) enableEMailAlarms;
+
+- (BOOL) disableOrganizerEventCheck;
 
 - (NSString *) faviconRelativeURL;
 - (NSString *) zipPath;
@@ -114,6 +121,12 @@
 - (int) maximumSyncResponseSize;
 - (int) maximumPictureSize;
 - (BOOL) easSearchInBody;
+
+- (BOOL) isPasswordRecoveryEnabled;
+- (NSArray *) passwordRecoveryDomains;
+- (NSString *) JWTSecret;
+
+- (NSArray *) disableSharing;
 
 @end
 

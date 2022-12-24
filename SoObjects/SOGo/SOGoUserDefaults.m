@@ -39,6 +39,14 @@ NSString *SOGoWeekStartJanuary1 = @"January1";
 NSString *SOGoWeekStartFirst4DayWeek = @"First4DayWeek";
 NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 
+NSString *SOGoPasswordRecoveryDisabled = @"Disabled";
+NSString *SOGoPasswordRecoveryQuestion = @"SecretQuestion";
+NSString *SOGoPasswordRecoveryQuestion1 = @"SecretQuestion1";
+NSString *SOGoPasswordRecoveryQuestion2 = @"SecretQuestion2";
+NSString *SOGoPasswordRecoveryQuestion3 = @"SecretQuestion3";
+NSString *SOGoPasswordRecoverySecondaryEmail = @"SecondaryEmail";
+
+
 @implementation SOGoUserDefaults
 
 + (NSString *) userProfileClassName
@@ -139,7 +147,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
       rc = NO;
 
       if ([fullName length])
-        [identity setObject: fullName forKey: @"fullName"];
+        [identity setObject: [fullName stringWithoutHTMLInjection: YES] forKey: @"fullName"];
       if ([email length])
         [identity setObject: email forKey: @"email"];
       if ([replyTo length])
@@ -789,7 +797,25 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 
 - (NSArray *) mailIdentities
 {
-  return [self arrayForKey: @"SOGoMailIdentities"];
+  NSMutableArray *mailIdentities;
+  NSMutableDictionary *mailIdentity;
+  NSString *fullName;
+  NSUInteger i;
+
+  // Remove possible XSS injection
+  mailIdentities = [NSMutableArray arrayWithArray: [self arrayForKey: @"SOGoMailIdentities"]];
+  for (i = 0 ; i < [mailIdentities length] ; i++) {
+    mailIdentity = [NSMutableDictionary dictionaryWithDictionary: [mailIdentities objectAtIndex: i]];
+    if (mailIdentity && [mailIdentity objectForKey: @"fullName"]) {
+      fullName = [NSString stringWithString: [mailIdentity objectForKey: @"fullName"]];
+      if (fullName) {
+        [mailIdentity setObject: [fullName stringWithoutHTMLInjection: YES] forKey: @"fullName"];
+        [mailIdentities setObject: mailIdentity atIndexedSubscript: i];
+      }
+    }
+  }
+
+  return mailIdentities;
 }
 
 - (void) setMailForceDefaultIdentity: (BOOL) newValue
@@ -939,6 +965,46 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 - (NSArray *) contactsCategories
 {
   return [self stringArrayForKey: @"SOGoContactsCategories"];
+}
+
+- (void) setPasswordRecoveryMode: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoPasswordRecoveryMode"];
+}
+
+- (NSString *) passwordRecoveryMode
+{
+  return [self stringForKey: @"SOGoPasswordRecoveryMode"];
+}
+
+- (void) setPasswordRecoveryQuestion: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoPasswordRecoveryQuestion"];
+}
+
+- (NSString *) passwordRecoveryQuestion
+{
+  return [self stringForKey: @"SOGoPasswordRecoveryQuestion"];
+}
+
+- (void) setPasswordRecoveryQuestionAnswer: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoPasswordRecoveryQuestionAnswer"];
+}
+
+- (NSString *) passwordRecoveryQuestionAnswer
+{
+  return [self stringForKey: @"SOGoPasswordRecoveryQuestionAnswer"];
+}
+
+- (void) setPasswordRecoverySecondaryEmail: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoPasswordRecoverySecondaryEmail"];
+}
+
+- (NSString *) passwordRecoverySecondaryEmail
+{
+  return [self stringForKey: @"SOGoPasswordRecoverySecondaryEmail"];
 }
 
 @end

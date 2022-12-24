@@ -314,7 +314,7 @@ static NSString    *userAgent      = nil;
 
 - (void) setText: (NSString *) newText
 {
-  ASSIGN (text, newText);
+  ASSIGN (text, [newText stringWithoutHTMLInjection: NO]);
 }
 
 - (NSString *) text

@@ -493,6 +493,20 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
   return [self responseWithStatus: 204];
 }
 
+- (BOOL) isContactSharingEnabled {
+  BOOL result;
+  SOGoSystemDefaults *sd;
+
+  result = YES;
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if (nil != [sd disableSharing] 
+    && NSNotFound != [[sd disableSharing] indexOfObject: kDisableSharingContacts]) {
+      result = NO;
+  }
+
+  return result;
+}
+
 - (id) defaultAction
 {
   // NSString *check;

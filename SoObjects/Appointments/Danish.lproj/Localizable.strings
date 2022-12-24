@@ -1,3 +1,4 @@
+"Inviting the following persons is prohibited:" = "Det er forbudt at invitere følgende personer:";
 "Personal Calendar" = "Personlig kalender";
 vevent_class0 = "(Offentlig begivenhed)";
 vevent_class1 = "(Privat begivenhed)";
@@ -6,32 +7,44 @@ vevent_class2 = "(Hemmelig begivenhed)";
 vtodo_class0 = "(Offentlig opgave)";
 vtodo_class1 = "(Privat opgave)";
 vtodo_class2 = "(Hemmelig opgave)";
+
 /* Receipts */
 "The event \"%{Summary}\" was created" = "Begivenheden \"%{Summary}\" blev oprettet";
 "The event \"%{Summary}\" was deleted" = "Begivenheden \"%{Summary}\" blev slettet";
 "The event \"%{Summary}\" was updated" = "Begivenheden \"%{Summary}\" blev opdateret";
+"The task \"%{Summary}\" was created" = "Opgaven \"%{Summary}\" blev oprettet";
+"The task \"%{Summary}\" was deleted" = "Opgaven \"%{Summary}\" blev slettet";
+"The task \"%{Summary}\" was updated" = "Opgaven \"%{Summary}\" blev opdateret";
 "The following attendees(s) were notified" = "Følgende deltager(e) blev underrettet";
 "The following attendees(s) were added" = "Følgende deltager(e) blev tilføjet";
 "The following attendees(s) were removed" = "Følgende deltager(e) blev fjernet";
+
 /* IMIP messages */
 "calendar_label" = "Kalender";
 "startDate_label" = "Start";
 "endDate_label" = "Slut";
+"time_label" = "Tid";
+"to_label" = "Til";
 "due_label" = "Forfaldsdato:";
 "location_label" = "Sted";
 "summary_label" = "Resumé:";
 "comment_label" = "Kommentér:";
+"organizer_label" = "Arrangør";
+"attendee_label" = "Deltager";
+
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Begivenhed Invitation: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(Sendt af%{SentBy})";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}har inviteret dig til  %{Summary}.\n\nStart: %{StartDate}\nSlut: %{EndDate}\nBeskrivelse: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer}%{SentByText} har inviteret dig til%{Summary}.\n\nStart:%{StartDate}ved%{StartTime}\nEnd:%{EndDate}ved%{endTime}\nDescription:%{Description}";
+
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Begivenhed Annulleret: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}har aflyst denne begivenhed: %{Summary}.\n\nStart: %{StartDate}\nSlut: %{EndDate}\nBeskrivelse: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}har annulleret denne begivenhed: %{Summary}.\n\nStart: %{StartDate} %{StartTime}\nSlut: %{EndDate} %{EndTime}\nBeskrivelse: %{Description}";
+
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "Aftalen \"%{Summary}\" for %{OldStartDate} er ændret";
@@ -41,6 +54,7 @@ vtodo_class2 = "(Hemmelig opgave)";
 = "Følgende parametre har ændret sig i \"%{Summary}\" møde:";
 "Please accept or decline those changes."
 = "Venligst acceptér eller afvis disse ændringer.";
+
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Accepterede invitationen: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Afslåede invitationen: \"%{Summary}\"";
@@ -54,6 +68,15 @@ vtodo_class2 = "(Hemmelig opgave)";
 = "%{Attendee} %{SentByText} har delegeret en invitation til %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText} har endnu ikke taget stilling til din begivenhedsinvitation.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Påmindelse: \"%{Summary}\" - %{StartDate}";
+
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Kan ikke tilgå ressourcen: \"%{Cn} %{SystemEmail}\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Maksimalt antal tilladte indkaldelser (%{NumberOfSimultaneousBookings}) er nået for ressource \"%{Cn} %{SystemEmail}\". Konflikter med begivenheden \"%{EventTitle}\", som starter %{StartDate}.";
+
+/* Participation role */
+"Your participation is required to this event" = "Din deltagelse er påkrævet til denne begivenhed";
+"Your participation is optional to this event" = "Din deltagelse er valgfri til denne begivenhed";
+"Your participation is not required to this event" = "Din deltagelse er ikke påkrævet til denne begivenhed";

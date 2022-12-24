@@ -708,14 +708,53 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   return didChange;
 }
 
-//
-//
-//
+- (BOOL)  _ldapAdminModifyAttribute: (NSString *) theAttribute
+                     withValue: (NSString *) theValue
+                        userDN: (NSString *) theUserDN
+                    connection: (NGLdapConnection *) bindConnection
+{
+  NGLdapModification *mod;
+  NGLdapAttribute *attr;
+  NSArray *changes;
+
+  BOOL didChange;
+
+  attr = [[NGLdapAttribute alloc] initWithAttributeName: theAttribute];
+  [attr addStringValue: theValue];
+
+  mod = [NGLdapModification replaceModification: attr];
+
+  changes = [NSArray arrayWithObject: mod];
+
+  if ([bindConnection bindWithMethod: @"simple"
+                              binddn: _bindDN
+                         credentials: _password])
+    {
+      didChange = [bindConnection modifyEntryWithDN: theUserDN
+                                            changes: changes];
+    }
+  else
+    didChange = NO;
+
+  RELEASE(attr);
+
+  return didChange;
+}
+
+/**
+ * Change a user's password.
+ * @param login the user's login name.
+ * @param oldPassword the previous password.
+ * @param newPassword the new password.
+ * @param perr will be set if the new password is not conform to the policy.
+ * @param passwordRecovery YES of this is password recovery, NO otherwise. If password recovery is set, old password won't be checked
+ * @return YES if the password was successfully changed.
+ */
 - (BOOL) changePasswordForLogin: (NSString *) login
                     oldPassword: (NSString *) oldPassword
                     newPassword: (NSString *) newPassword
+               passwordRecovery: (BOOL) passwordRecovery
                            perr: (SOGoPasswordPolicyError *) perr
-
 {
   NGLdapConnection *bindConnection;
   NSString *userDN;
@@ -781,20 +820,38 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 
                     if (encryptedPass != nil)
                       {
-                        if ([bindConnection bindWithMethod: @"simple"
+                        if (!passwordRecovery) {
+                          if ([bindConnection bindWithMethod: @"simple"
                                                     binddn: userDN
                                                credentials: oldPassword])
-                          {
-                            didChange = [self _ldapModifyAttribute: @"userPassword"
-                                                         withValue: encryptedPass
-                                                            userDN: userDN
-                                                          password: oldPassword
-                                                        connection: bindConnection];
-                            if (didChange)
                               {
-                                *perr = PolicyNoError;
+                                didChange = [self _ldapModifyAttribute: @"userPassword"
+                                                            withValue: encryptedPass
+                                                                userDN: userDN
+                                                              password: oldPassword
+                                                            connection: bindConnection];
+                                if (didChange)
+                                  {
+                                    *perr = PolicyNoError;
+                                  }
                               }
-                          }
+                        } else {
+                          // Password recovery
+                          // As old password is unknown, we use admin binding
+                          if ([bindConnection bindWithMethod: @"simple"
+                                                      binddn: _bindDN
+                                                 credentials: _password])
+                              {
+                                didChange = [self _ldapAdminModifyAttribute: @"userPassword"
+                                                                  withValue: encryptedPass
+                                                                     userDN: userDN
+                                                                 connection: bindConnection];
+                                if (didChange)
+                                  {
+                                    *perr = PolicyNoError;
+                                  }
+                              }
+                        }
                       }
                   }
 
