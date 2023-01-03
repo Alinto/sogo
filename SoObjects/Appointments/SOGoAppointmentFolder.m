@@ -2594,8 +2594,15 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 - (NSException *) setDavDescription: (NSString *) description
 {
   if (description) {
+    // FIXME: Improve MacOSX Ventura support 
+    // Check if the problem will be fixed by Apple or if this fix should be kept in the future
+    // Ticket #5639
+    if ([[context request] isMacOSXVenturaCalendarApp]) {
+      description = [description stringByReplacingOccurrencesOfString:@"/Personal" withString:@"/personal"];
+    }
+    
     [self setFolderPropertyValue: description
-                    inCategory: @"DavDescription"];
+                      inCategory: @"DavDescription"];
   }
 
   return nil;

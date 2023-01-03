@@ -460,10 +460,21 @@ static NSArray *childRecordFields = nil;
 
 - (NSString *) folderReference
 {
+  NSString *realNameInContainer;
+
+  realNameInContainer = [self realNameInContainer];
+  
+  // FIXME: Improve MacOSX Ventura support 
+  // Check if the problem will be fixed by Apple or if this fix should be kept in the future
+  // Ticket #5639
+  if ([[context request] isMacOSXVenturaCalendarApp]) {
+    realNameInContainer = [realNameInContainer stringByReplacingOccurrencesOfString:@"Personal" withString:@"personal"];
+  }
+
   return [NSString stringWithFormat: @"%@:%@/%@",
 		   owner,
 		   [container nameInContainer],
-		   [self realNameInContainer]];
+		   realNameInContainer];
 }
 
 - (NSArray *) pathArrayToFolder
