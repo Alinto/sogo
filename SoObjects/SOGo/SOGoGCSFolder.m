@@ -401,6 +401,13 @@ static NSArray *childRecordFields = nil;
 
 - (void) setOCSPath: (NSString *) _path
 {
+  // FIXME: Improve MacOSX Ventura support 
+  // Check if the problem will be fixed by Apple or if this fix should be kept in the future
+  // Ticket #5639
+  if ([[context request] isMacOSXVenturaCalendarApp]) {
+    _path = [_path stringByReplacingOccurrencesOfString:@"/Personal" withString:@"/personal"];
+  }
+  
   if (![ocsPath isEqualToString:_path])
     {
       if (ocsPath)
@@ -463,7 +470,7 @@ static NSArray *childRecordFields = nil;
   NSString *realNameInContainer;
 
   realNameInContainer = [self realNameInContainer];
-  
+
   // FIXME: Improve MacOSX Ventura support 
   // Check if the problem will be fixed by Apple or if this fix should be kept in the future
   // Ticket #5639
