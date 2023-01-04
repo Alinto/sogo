@@ -53,6 +53,10 @@
 
 #import "UIxPreferences.h"
 
+#if defined(MFA_CONFIG)
+#include <liboath/oath.h>
+#endif
+
 static NSArray *reminderItems = nil;
 static NSArray *reminderValues = nil;
 
@@ -1585,6 +1589,69 @@ static NSArray *reminderValues = nil;
                 }
             }
         }
+
+
+#if defined(MFA_CONFIG)
+      // Check TOTP token
+      NSString *verificationCode;
+
+      if ([v objectForKey: @"SOGoTOTPEnabled"]
+          && 1 == [[v objectForKey: @"SOGoTOTPEnabled"] intValue]
+          && ![[user userDefaults] totpEnabled]) {
+        
+        verificationCode = [v objectForKey: @"totpVerificationCode"];
+
+        if ([verificationCode length] == 6 && [verificationCode unsignedIntValue] > 0)
+            {
+              unsigned int code;
+              const char *real_secret;
+              char *secret;
+
+              size_t secret_len;
+
+              const auto time_step = OATH_TOTP_DEFAULT_TIME_STEP_SIZE;
+              const auto digits = 6;
+
+              real_secret = [[user totpKey] UTF8String];
+
+              auto result = oath_init();
+              auto t = time(NULL);
+              auto left = time_step - (t % time_step);
+
+              char otp[digits + 1];
+
+              oath_base32_decode (real_secret,
+                                  strlen(real_secret),
+                                  &secret, &secret_len);
+
+              result = oath_totp_generate2(secret,
+                                           secret_len,
+                                           t,
+                                           time_step,
+                                           OATH_TOTP_DEFAULT_START_TIME,
+                                           digits,
+                                           0,
+                                           otp);
+
+              sscanf(otp, "%u", &code);
+
+              oath_done();
+              free(secret);
+
+              if (code != [verificationCode unsignedIntValue])
+                {
+                  results = (id <WOActionResults>) [self responseWithStatus: 485
+                         andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Invalid TOTP verification code", @"message", nil]];
+                  return results;
+                }
+            } else {
+              results = (id <WOActionResults>) [self responseWithStatus: 485
+                         andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Invalid TOTP verification code", @"message", nil]];
+              return results;
+            }
+      }
+      [v removeObjectForKey: @"totpVerificationCode"];
+#endif
 
       [[[user userDefaults] source] setValues: v];
 
