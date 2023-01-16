@@ -26,6 +26,7 @@
 
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoSystemDefaults.h>
 
 #import <Appointments/SOGoWebAppointmentFolder.h>
 
@@ -147,6 +148,11 @@
   NS_ENDHANDLER;
 
   return response;
+}
+
+- (BOOL) isEasUIEnabled
+{
+  return ![[SOGoSystemDefaults sharedSystemDefaults] isEasUIDisabled];
 }
 
 @end

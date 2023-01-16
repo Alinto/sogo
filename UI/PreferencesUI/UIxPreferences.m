@@ -1741,4 +1741,9 @@ static NSArray *reminderValues = nil;
   return [self shouldDisplayPasswordRecovery] || [self shouldDisplayPasswordChange];
 }
 
+- (BOOL) isEasUIEnabled
+{
+  return ![[SOGoSystemDefaults sharedSystemDefaults] isEasUIDisabled];
+}
+
 @end

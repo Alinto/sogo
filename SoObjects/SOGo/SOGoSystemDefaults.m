@@ -746,6 +746,11 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return [self boolForKey: @"SOGoEASSearchInBody"];
 }
 
+- (BOOL) isEasUIDisabled
+{
+  return [self boolForKey: @"SOGoEASDisableUI"];
+}
+
 //
 // See https://msdn.microsoft.com/en-us/library/gg672032(v=exchg.80).aspx
 //

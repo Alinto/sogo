@@ -20,15 +20,17 @@
       </div>
     </md-toolbar>
 
-    <md-dialog-content class="md-dialog-content" layout="column">
-      <md-checkbox
-          ng-model="properties.addressbook.synchronize"
-          ng-disabled="properties.addressbook.id == 'personal'"
-          ng-true-value="1"
-          ng-false-value="0">
-        <var:string label:value="Synchronize"/> (Microsoft Enterprise ActiveSync)
-      </md-checkbox>
-    </md-dialog-content>
+    <var:if condition="isEasUIEnabled">
+      <md-dialog-content class="md-dialog-content" layout="column">
+        <md-checkbox
+            ng-model="properties.addressbook.synchronize"
+            ng-disabled="properties.addressbook.id == 'personal'"
+            ng-true-value="1"
+            ng-false-value="0">
+          <var:string label:value="Synchronize"/> (Microsoft Enterprise ActiveSync)
+        </md-checkbox>
+      </md-dialog-content>
+    </var:if>
 
     <md-dialog-actions>
       <md-button type="button" ng-click="properties.close()"><var:string label:value="Cancel"/></md-button>

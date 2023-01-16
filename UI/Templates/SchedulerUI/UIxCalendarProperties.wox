@@ -43,14 +43,16 @@
               ng-false-value="0">
             <var:string label:value="Show tasks"/>
           </md-checkbox>
-          <md-checkbox
-              ng-model="properties.calendar.synchronize"
-              ng-show="!properties.calendar.isWebCalendar"
-              ng-disabled="properties.calendar.id == 'personal'"
-              ng-true-value="1"
-              ng-false-value="0">
-            <var:string label:value="Synchronize"/> (Microsoft Enterprise ActiveSync)
-          </md-checkbox>
+          <var:if condition="isEasUIEnabled">
+            <md-checkbox
+                ng-model="properties.calendar.synchronize"
+                ng-show="!properties.calendar.isWebCalendar"
+                ng-disabled="properties.calendar.id == 'personal'"
+                ng-true-value="1"
+                ng-false-value="0">
+              <var:string label:value="Synchronize"/> (Microsoft Enterprise ActiveSync)
+            </md-checkbox>
+          </var:if>
           <md-checkbox
               ng-model="properties.calendar.reloadOnLogin"
               ng-show="properties.calendar.isWebCalendar"

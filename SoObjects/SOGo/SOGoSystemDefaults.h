@@ -121,8 +121,9 @@ static const NSString *kDisableSharingCalendar = @"Calendar";
 - (int) maximumSyncResponseSize;
 - (int) maximumPictureSize;
 - (BOOL) easSearchInBody;
+- (BOOL) isEasUIDisabled;
 
-- (BOOL) isPasswordRecoveryEnabled;
+- (BOOL)isPasswordRecoveryEnabled;
 - (NSArray *) passwordRecoveryDomains;
 - (NSString *) JWTSecret;
 

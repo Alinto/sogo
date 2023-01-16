@@ -2965,6 +2965,9 @@ If not set, it defaults to `102400` bytes, or 100 KB.
 |S |SOGoEASSearchInBody
 |Parameter used to enable EAS Search operation in all parts of a message.
 
+|S |SOGoEASDisableUI
+|Parameter used to disable EAS user interface options. Default value is `NO`
+
 Defaults to `NO`, which means to search only in Subject- and From-header.
 |=======================================================================
 
