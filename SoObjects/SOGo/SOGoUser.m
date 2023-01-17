@@ -1059,7 +1059,7 @@
 
 - (SOGoAppointmentFolder *) personalCalendarFolderInContext: (WOContext *) context
 {
-  return [[self calendarsFolderInContext: context] lookupPersonalFolder: @"personal"
+  return [[self calendarsFolderInContext: context] lookupPersonalFolder: [[context request] isMacOSXVenturaCalendarApp] ? @"Personal" : @"personal"
                                                          ignoringRights: YES];
 }
 

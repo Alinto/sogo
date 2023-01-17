@@ -189,8 +189,8 @@
 }
 
 - (NSArray *) davCalendarScheduleOutboxURL
-{
-  return [self _davSpecialCalendarURLWithName: @"personal"];
+{  
+  return [[context request] isMacOSXVenturaCalendarApp] ? [self _davSpecialCalendarURLWithName: @"Personal"] : [self _davSpecialCalendarURLWithName: @"personal"];
 }
 
 - (NSArray *) _calendarProxiedUsersWithWriteAccess: (BOOL) write

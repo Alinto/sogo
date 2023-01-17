@@ -150,7 +150,7 @@ static NSArray *childRecordFields = nil;
   if ([pathElements count] > 1)
     ocsName = [pathElements objectAtIndex: 1];
   else
-    ocsName = @"personal";
+    ocsName = [[context request] isMacOSXVenturaCalendarApp] ? @"Personal" : @"personal";
 
   path = [NSString stringWithFormat: @"/Users/%@/%@/%@",
 		   login, [pathElements objectAtIndex: 0], ocsName];
