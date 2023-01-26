@@ -226,7 +226,7 @@ static SoSecurityManager *sm = nil;
       // Ticket #5639
       if ([[context request] isMacOSXVenturaCalendarApp]) {
         if ([key isEqualToString:@"personal"]) {
-          key = @"Personal";
+          key = @"PERSONAL";
         }
       }
       

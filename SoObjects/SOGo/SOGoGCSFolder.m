@@ -405,7 +405,7 @@ static NSArray *childRecordFields = nil;
   // Check if the problem will be fixed by Apple or if this fix should be kept in the future
   // Ticket #5639
   if ([[context request] isMacOSXVenturaCalendarApp]) {
-    _path = [_path stringByReplacingOccurrencesOfString:@"/Personal" withString:@"/personal"];
+    _path = [_path stringByReplacingOccurrencesOfString:@"/PERSONAL" withString:@"/personal"];
   }
   
   if (![ocsPath isEqualToString:_path])
@@ -442,7 +442,7 @@ static NSArray *childRecordFields = nil;
   // Check if the problem will be fixed by Apple or if this fix should be kept in the future
   // Ticket #5639
   if ([[context request] isMacOSXVenturaCalendarApp]) {
-    _path = [_path stringByReplacingOccurrencesOfString:@"Personal" withString:@"personal"];
+    _path = [_path stringByReplacingOccurrencesOfString:@"PERSONAL" withString:@"personal"];
   }
 
   // We check if we got a cache miss or a potentially bogus
@@ -475,7 +475,7 @@ static NSArray *childRecordFields = nil;
   // Check if the problem will be fixed by Apple or if this fix should be kept in the future
   // Ticket #5639
   if ([[context request] isMacOSXVenturaCalendarApp]) {
-    realNameInContainer = [realNameInContainer stringByReplacingOccurrencesOfString:@"Personal" withString:@"personal"];
+    realNameInContainer = [realNameInContainer stringByReplacingOccurrencesOfString:@"PERSONAL" withString:@"personal"];
   }
 
   return [NSString stringWithFormat: @"%@:%@/%@",

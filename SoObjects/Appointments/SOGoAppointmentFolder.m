@@ -2598,7 +2598,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     // Check if the problem will be fixed by Apple or if this fix should be kept in the future
     // Ticket #5639
     if ([[context request] isMacOSXVenturaCalendarApp]) {
-      description = [description stringByReplacingOccurrencesOfString:@"/Personal" withString:@"/personal"];
+      description = [description stringByReplacingOccurrencesOfString:@"/PERSONAL" withString:@"/personal"];
     }
     
     [self setFolderPropertyValue: description
