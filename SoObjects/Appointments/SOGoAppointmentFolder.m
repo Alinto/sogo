@@ -2548,7 +2548,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                                 XMLNS_GROUPDAV, nil];
           [colType addObject: gdVTodoCol];
         }
-      if ([[nameInContainer lowercaseString] isEqualToString: @"personal"])
+      if ([nameInContainer isEqualToString: @"personal"])
         [colType addObject: [NSArray arrayWithObjects: @"schedule-outbox",
                                      XMLNS_CALDAV, nil]];
     }
