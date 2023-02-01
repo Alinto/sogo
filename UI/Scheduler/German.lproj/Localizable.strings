@@ -386,17 +386,17 @@
 "Reminder relation" = "Bezug der Erinnerung";
 
 /* transparency */
-"Show Time as Free" = "Zeige Zeit als Verfügbar";
+"Show Time as Free" = "Zeige Zeit als verfügbar";
 
 /* email notifications */
-"Send Appointment Notifications" = "Verabredungsbenachrichtigungen senden";
+"Send Appointment Notifications" = "Terminbenachrichtigungen senden";
 "From" = "Von";
 "To" = "Bis";
 
 /* validation errors */
-validate_notitle           = "Sie haben keinen Titel eingegeben. Wollen Sie trotzdem fortfahren?";
-validate_invalid_startdate = "Ungültiges Beginndatum !";
-validate_invalid_enddate   = "Ungültiges Enddatum !";
+validate_notitle           = "Sie haben keinen Titel eingegeben. Möchten Sie trotzdem fortfahren?";
+validate_invalid_startdate = "Ungültiges Beginndatum!";
+validate_invalid_enddate   = "Ungültiges Enddatum!";
 validate_endbeforestart    = "Ihr Ende ist vor dem Beginndatum.";
 validate_untilbeforeend    = "Die Wiederholung muss nach dem ersten Auftreten enden.";
 
@@ -438,9 +438,9 @@ validate_untilbeforeend    = "Die Wiederholung muss nach dem ersten Auftreten en
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Der persönliche Kalender kann weder gelöscht noch abbestellt werden.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
-= "Wollen Sie diesen Kalender wirklich löschen \"%{0}\"?";
+= "Möchten Sie diesen Kalender wirklich löschen \"%{0}\"?";
 "Are you sure you want to delete the selected components?"
-= "Wollen Sie wirklich die ausgewählten Komponenten löschen?";
+= "Möchten Sie die ausgewählten Komponenten wirklich löschen?";
 
 /* Participation role */
 "Role" = "Rolle";
@@ -498,7 +498,7 @@ validate_untilbeforeend    = "Die Wiederholung muss nach dem ersten Auftreten en
 "Between" = "Zwischen";
 "and" = "und";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
-= "Dieser Termin überschneidet sich mit dem Termin mindestens eines Teilnehmers.\nWollen sie die Einstellungen trotzdem so belassen?";
+= "Dieser Termin überschneidet sich mit dem Termin mindestens eines Teilnehmers.\nMöchten Sie die Einstellungen trotzdem so belassen?";
 "Would you like to remove them and send the invitation to the remaining attendees?"
 = "Möchten Sie diese entfernen, und die Einladung an die verbleibenden Teilnehmer schicken?";
 
@@ -517,7 +517,7 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "closeThisWindowMessage" = "Vielen Dank! Sie können dieses Fenster jetzt schließen.";
 "Multicolumn Day View" = "Mehrspaltige Tagesansicht";
 "Please select an event or a task." = "Bitte wählen Sie einen Termin oder eine Aufgabe aus!";
-"editRepeatingItem" = "Sie bearbeiten einen sich wiederholenden Termin. Wollen Sie alle seine Ereignisse bearbeiten oder nur diese einzelne Instanz?";
+"editRepeatingItem" = "Sie bearbeiten einen sich wiederholenden Termin. Möchten Sie alle Ereignisse bearbeiten oder nur diese einzelne Instanz?";
 "button_thisOccurrenceOnly" = "Nur diese Instanz";
 "button_allOccurrences" = "Alle Ereignisse";
 "Edit This Occurrence" = "Diese Instanz ändern";
