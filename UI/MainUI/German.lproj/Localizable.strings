@@ -18,7 +18,7 @@
 "Retry" = "Erneut versuchen";
 "Login failed due to unhandled error case:" = "Anmeldung ist wegen folgendem unbehandelten Fehler fehlgeschlagen:";
 "cookiesNotEnabled" = "Anmeldung an SOGo ist nicht möglich, da Cookies in Ihrem Browser deaktiviert sind. Bitte aktivieren Sie Cookies in Ihrem Browser und versuchen Sie es erneut.";
-"browserNotCompatible" = "Wir haben festgestellt, dass Ihre Browserversion im Moment nicht von SOGo unterstützt wird. Wir empfehlen Firefox zu verwenden. Klicken Sie unten auf den Link, um die aktuelle Version dieses Browsers zu installieren.";
+"browserNotCompatible" = "Wir haben festgestellt, dass Ihre Browser-Version im Moment nicht von SOGo unterstützt wird. Wir empfehlen Firefox zu verwenden. Klicken Sie unten auf den Link, um die aktuelle Version dieses Browsers zu installieren.";
 "alternativeBrowsers" = "Sie können auch die folgenden Browser benutzen";
 "alternativeBrowserSafari" = "Sie können auch Safari benutzen.";
 
@@ -76,7 +76,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "Über";
-"AboutBox" = "Entwickelt von Inverse. SOGo ist ein vollständiger Groupware-Server mit Fokus auf Skalierbarkeit und Unkompliziertheit.<br/><br/>\nSOGo bietet ein umfangreiches, auf AJAX basierendes Web-Interface. Durch die Verwendung von Protokollstandards wie etwa CalDAV und CardDAV werden verschiedene native Clients unterstützt.<br/><br/>\nSOGo wird unter der <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPLv2</a> oder höher, Teile unter der <a href=\"http://gnu.org/licenses/lgpl.html\">GNU LGPLv2</a> angeboten. Dies ist freie Software: Sie haben die Freiheit sie zu verändern und erneut zu verbreiten. Es besteht KEINE GEWÄHRLEISTUNG, soweit dies gesetzlich zulässig ist.<br/><br/>\nAuf <a href=\"http://www.sogo.nu/en/support/community.html\">dieser Seite</a> (in englischer Sprache) können Sie sich über weitere Support-Möglichkeiten informieren.";
+"AboutBox" = "Entwickelt von Inverse und Alinto. SOGo ist ein vollständiger Groupware-Server mit Fokus auf Skalierbarkeit und Unkompliziertheit.<br/><br/>\nSOGo bietet ein umfangreiches, auf AJAX basierendes Web-Interface. Durch die Verwendung von Protokollstandards wie etwa CalDAV und CardDAV werden verschiedene native Clients unterstützt.<br/><br/>\nSOGo wird unter der <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> Version 2 oder höher, und Teile unter der GNU LGPL Version 2 angeboten. Dies ist freie Software: Sie haben die Freiheit sie zu verändern und erneut zu verbreiten. Es besteht KEINE GEWÄHRLEISTUNG, soweit dies gesetzlich zulässig ist.<br/><br/>\nAuf <a href=\"http://www.sogo.nu/en/support/community.html\">dieser Seite</a> (in englischer Sprache) können Sie sich über weitere Support-Möglichkeiten informieren.";
 "Your account was locked due to too many failed attempts." = "Ihr Konto wurde wegen zu vieler fehlgeschlagener Anmeldeversuche gesperrt.";
 "Your account was locked due to an expired password." = "Ihr Konto wurde wegen eines abgelaufenen Passwortes gesperrt.";
 "Login failed due to unhandled error case" = "Die Anmeldung ist aufgrund eines unbehandelten Fehlers fehlgeschlagen";
@@ -110,3 +110,19 @@
 "Close" = "Schließen";
 "Missing search parameter" = "Fehlender Suchparameter";
 "Missing type parameter" = "Fehlender Typparameter";
+
+/* Password Recovery */
+"Secondary e-mail" = "Zweit-E-Mail";
+"Answer" = "Antwort";
+"Password lost" = "Passwort vergessen";
+"No password recovery method has been defined for this user" = "Es wurde keine Methode zur Passwortwiederherstellung für diese Nutzer*in definiert.";
+"Invalid secret question answer" = "Ungültige Antwort auf die geheime Frage";
+"Next" = "Weiter";
+"Back" = "Zurück";
+"Please enter a new password below" = "Bitte unten ein neues Passwort eingeben";
+"A link will be sent to %{0}" = "Ein Link wird gesendet an %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "Ein Link für das Zurücksetzen des Passwortes wurde verschickt. Bitte kontrollieren Sie ihr Postfach für die Wiederherstellungs-E-Mail, und klicken Sie auf den Link.";
+"Invalid configuration for email password recovery" = "Ungültige Konfiguration für die Passwortwiederherstellung per E-Mail";
+"Password recovery email in error" = "Fehlerhafte Passwortwiederherstellungs-E-Mail";
+"Password reset" = "Passwort zurücksetzen";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hallo %{0},\nEs gab eine Anfrage, Ihr Passwort zu ändern!\n\nWenn Sie diese Anfrage nicht gestellt haben, ignorieren Sie bitte diese E-Mail\n\nAnsonsten klicken Sie bitte auf diesen Link, um Ihr Passwort zu ändern: %{1}";

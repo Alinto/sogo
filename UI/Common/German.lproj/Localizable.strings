@@ -106,6 +106,7 @@
 "Personal" = "Persönlich";
 "To Do" = "To-Do";
 "Later" = "Später";
+"Forwarded" = "Weitergeleitet";
 "Return Receipt Sent" = "Empfangsbestätigung gesendet";
 "a2_Sunday" = "So";
 "a2_Monday" = "Mo";
@@ -221,3 +222,11 @@
 
 /* Hotkey description to move forward in current view */
 "Move forward" = "Weiter";
+
+/* Password Recovery */
+"passwordRecovery_Disabled" = "Deaktiviert";
+"passwordRecovery_SecretQuestion" = "Geheimfrage";
+"passwordRecovery_SecretQuestion1" = "Wie lautet der Name Ihres ersten Haustiers?";
+"passwordRecovery_SecretQuestion2" = "Was war Ihr erstes Auto?";
+"passwordRecovery_SecretQuestion3" = "Wie lautet Ihr Lieblingsfilm?";
+"passwordRecovery_SecondaryEmail" = "Zweit-E-Mail";

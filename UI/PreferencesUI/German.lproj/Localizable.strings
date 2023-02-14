@@ -101,7 +101,10 @@
 "shortDateFmt_11" = "%y.%m.%d";
 "shortDateFmt_12" = "%Y/%m/%d";
 "shortDateFmt_13" = "%Y.%m.%d";
-"shortDateFmt_14" = "";
+"shortDateFmt_14" = "%Y.%m.%d";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
 
 "longDateFmt_0" = "%A, %d. %B %Y";
 "longDateFmt_1" = "%A, %e. %B %Y";
@@ -254,6 +257,12 @@
 "Confirmation" = "Bestätigung";
 "Change" = "Ändern";
 "Passwords don't match" = "Die Passwörter stimmen nicht überein";
+"POLICY_MIN_LOWERCASE_LETTER" = "Mindestens %{0} Kleinbuchstaben";
+"POLICY_MIN_UPPERCASE_LETTER" = "Mindestens %{0} Großbuchstaben";
+"POLICY_MIN_DIGIT" = "Mindestens %{0} Ziffern";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Mindestens %{0} Sonderzeichen";
+"POLICY_MIN_LENGTH" = "Mindestlänge %{0} Zeichen";
+
 
 /* Event+task classifications */
 "Default events classification" = "Standard Einstufung Termine";
@@ -476,8 +485,18 @@
 "Enable two-factor authentication using a TOTP application" = "Zwei-Faktor-Authentifizierung mit einer TOTP Anwendung aktivieren.";
 "You must enter this key into your TOTP application." = "Sie müssen diesen Schlüssel in Ihre TOTP Anwendung eingeben.";
 "If you do not and you log out you will not be able to login again." = "Wenn Sie das nicht tun und sich abmelden, können Sie sich nicht mehr anmelden.";
+"Enter TOTP verification code :" = "TOTP Verifikationskode eingeben:";
+"Invalid TOTP verification code" = "TOTP Verifikationskode ungültig";
 
 /* External Sieve scripts */
 "An external Sieve script is active" = "Ein externes Sieve-Script ist aktiv";
 "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve ist eine Programmiersprache, die zur E-Mail-Filterung verwendet wird. Wenn Sie ihre Filter, Abwesenheits- und E-Mail-Weiterleitungs-Einstellungen über SOGo verwalten, wird ihr aktives Script deaktiviert.";
 "Let SOGo handle everything" = "Alles über SOGo verwalten";
+
+/* Password Recovery */
+"Password recovery mode" = "Passwortwiederherstellung";
+"Question" = "Frage";
+"Secondary e-mail" = "Zweit-E-Mail";
+"Answer" = "Antwort";
+"Password recovery" = "Passwortwiederherstellung";
+"Password change" = "Passwortänderung";
