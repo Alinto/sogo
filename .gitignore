@@ -44,3 +44,5 @@ UI/WebServerResources/js/vendor/ckeditor/plugins/onchange/docs
 UI/WebServerResources/js/vendor/ckeditor/plugins/scayt/*.md
 UI/WebServerResources/js/vendor/ckeditor/skins/n1theme/*.md
 
+# Transifex
+.tx/config_20230213185112.bak
