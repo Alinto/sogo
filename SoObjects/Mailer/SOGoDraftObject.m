@@ -2174,7 +2174,8 @@ static NSString    *userAgent      = nil;
                     toRecipients: [NSArray arrayWithObject: recipient]
                           sender: [self sender]
                     withAuthenticator: [self authenticatorInContext: context]
-                       inContext: context];
+                       inContext: context
+                   systemMessage: NO];
 
           if (error)
             return error;
@@ -2199,7 +2200,8 @@ static NSString    *userAgent      = nil;
                   toRecipients: [self allBareRecipients]
                         sender: [self sender]
                 withAuthenticator: [self authenticatorInContext: context]
-                     inContext: context];
+                     inContext: context
+                 systemMessage: NO];
     }
 
   if (!error && copyToSent)

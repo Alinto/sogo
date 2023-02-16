@@ -154,6 +154,9 @@
     {
       ASSIGN (mailingMechanism, [dd mailingMechanism]);
       ASSIGN (smtpServer, [dd smtpServer]);
+      smtpMasterUserEnabled = [dd smtpMasterUserEnabled];
+      ASSIGN (smtpMasterUserUsername, [dd smtpMasterUserUsername]);
+      ASSIGN (smtpMasterUserPassword, [dd smtpMasterUserPassword]);
       ASSIGN (authenticationType,
               [[dd smtpAuthenticationType] lowercaseString]);
     }
@@ -167,6 +170,9 @@
     {
       mailingMechanism = nil;
       smtpServer = nil;
+      smtpMasterUserEnabled = NO;
+      smtpMasterUserUsername = nil;
+      smtpMasterUserPassword = nil;
       authenticationType = nil;
     }
 
@@ -177,6 +183,8 @@
 {
   [mailingMechanism release];
   [smtpServer release];
+  [smtpMasterUserUsername release];
+  [smtpMasterUserPassword release];
   [authenticationType release];
   [super dealloc];
 }
@@ -226,6 +234,7 @@
                          sender: (NSString *) sender
               withAuthenticator: (id <SOGoAuthenticator>) authenticator
                       inContext: (WOContext *) woContext
+                  systemMessage: (BOOL) isSystemMessage
 {
   NSString *currentTo, *login, *password;
   NSMutableArray *toErrors;
@@ -254,13 +263,26 @@
                                      inDomain: [[authenticator userInContext: woContext] domain]];
 
           password = [authenticator passwordInContext: woContext];
-          if ([login length] == 0
+
+          if (isSystemMessage 
+              && ![[[SOGoUserManager sharedUserManager] getEmailForUID: [[authenticator userInContext: woContext] loginInDomain]] isEqualToString: sender] 
+              && smtpMasterUserEnabled) {
+            if (![client plainAuthenticateUser: smtpMasterUserUsername
+                                   withPassword: smtpMasterUserPassword]) {
+              result = [NSException exceptionWithHTTPStatus: 500
+                                                   reason: @"cannot send message:"
+                                  @" (smtp) authentication failure"];
+              [self errorWithFormat: @"Could not connect to the SMTP server with master credentials %@", smtpServer];
+            }
+          } else {
+            if ([login length] == 0
               || [login isEqualToString: @"anonymous"]
               || ![client plainAuthenticateUser: login
                                    withPassword: password])
-            result = [NSException exceptionWithHTTPStatus: 500
-                                                   reason: @"cannot send message:"
-                                  @" (smtp) authentication failure"];
+              result = [NSException exceptionWithHTTPStatus: 500
+                                                    reason: @"cannot send message:"
+                                    @" (smtp) authentication failure"];
+          }
         }
       else if (authenticationType && ![authenticator isKindOfClass: [SOGoEmptyAuthenticator class]])
         result = [NSException
@@ -327,6 +349,7 @@
 			sender: (NSString *) sender
              withAuthenticator: (id <SOGoAuthenticator>) authenticator
                      inContext: (WOContext *) woContext
+                 systemMessage: (BOOL) isSystemMessage
 {
   NSException *result;
 
@@ -399,7 +422,8 @@
                             toRecipients: recipients
                                   sender: [sender pureEMailAddress]
                        withAuthenticator: authenticator
-                               inContext: woContext];
+                               inContext: woContext 
+                           systemMessage: isSystemMessage];
 	}
     }
 
@@ -411,6 +435,7 @@
 			sender: (NSString *) sender
              withAuthenticator: (id <SOGoAuthenticator>) authenticator
                      inContext: (WOContext *) woContext
+                 systemMessage: (BOOL) isSystemMessage
 {
   NSData *mailData;
 
@@ -421,7 +446,8 @@
 	       toRecipients: recipients
                      sender: sender
           withAuthenticator: authenticator
-                  inContext: woContext];
+                  inContext: woContext
+              systemMessage: isSystemMessage];
 }
 
 - (NSException *) sendMailAtPath: (NSString *) filename
@@ -429,6 +455,7 @@
 			  sender: (NSString *) sender
                withAuthenticator: (id <SOGoAuthenticator>) authenticator
                        inContext: (WOContext *) woContext
+                   systemMessage: (BOOL) isSystemMessage
 {
   NSException *result;
   NSData *mailData;
@@ -439,7 +466,8 @@
 		   toRecipients: recipients
                          sender: sender
               withAuthenticator: authenticator
-                      inContext: woContext];
+                      inContext: woContext
+                  systemMessage: isSystemMessage];
   else
     result = [NSException exceptionWithHTTPStatus: 500
 			  reason: @"cannot send message: no data"

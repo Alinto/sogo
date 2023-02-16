@@ -3384,7 +3384,8 @@ void handle_eas_terminate(int signum)
                        toRecipients: theRecipients
                              sender: from
                   withAuthenticator: authenticator
-                          inContext: context];
+                          inContext: context
+                      systemMessage: NO];
 
   if (error)
     {

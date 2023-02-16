@@ -953,7 +953,8 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSDictionary *
                             toRecipients: [NSArray arrayWithObject: recipient]
                                   sender: [[identities objectAtIndex: 0] objectForKey: @"email"]
                             withAuthenticator: [self authenticatorInContext: context]
-                               inContext: context];
+                               inContext: context
+                           systemMessage: NO];
 
                   if (error)
                     break;

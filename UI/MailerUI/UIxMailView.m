@@ -697,7 +697,8 @@ static NSString *mailETag = nil;
                 toRecipients: [NSArray arrayWithObject: email]
                       sender: [self _matchingIdentityEMail]
            withAuthenticator: [self authenticatorInContext: context]
-                   inContext: context])
+                   inContext: context
+               systemMessage: YES])
     [self _flagMessageWithMDNSent];
 }
 

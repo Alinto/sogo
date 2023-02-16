@@ -292,6 +292,21 @@
   return server;
 }
 
+- (BOOL) smtpMasterUserEnabled
+{
+  return [self boolForKey: @"SOGoSMTPMasterUserEnabled"];
+}
+
+- (NSString *) smtpMasterUserUsername
+{
+  return [self stringForKey: @"SOGoSMTPMasterUserUsername"];
+}
+
+- (NSString *) smtpMasterUserPassword
+{
+  return [self stringForKey: @"SOGoSMTPMasterUserPassword"];
+}
+
 - (NSString *) smtpAuthenticationType
 {
   return [[self stringForKey: @"SOGoSMTPAuthenticationType"] lowercaseString];

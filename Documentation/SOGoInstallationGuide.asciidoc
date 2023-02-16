@@ -1927,6 +1927,15 @@ To disable TLS verification for localhost domains, add
 Current, only `PLAIN` is supported and other values will cause
 the authentication to fail.
 
+|D |SOGoSMTPMasterUserEnabled
+|Enable specific SMTP user account for system e-mails (notifications, reminders, ...). Default is `NO`.
+
+|D |SOGoSMTPMasterUserUsername
+|SMTP account username for master account (`SOGoSMTPMasterUserEnabled` enabled).
+
+|D |SOGoSMTPMasterUserPassword
+|SMTP account password for master account (`SOGoSMTPMasterUserEnabled` enabled).
+
 |S |WOSendMail
 |The path of the sendmail binary.
 
