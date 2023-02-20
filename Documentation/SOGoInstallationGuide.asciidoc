@@ -2801,9 +2801,13 @@ As a reference, the _cronjob_ should de defined like this:
 * * * * *     /usr/sbin/sogo-ealarms-notify
 ----
 
-If your mail server requires use of SMTP AUTH, specify a credential file
-using `-p /path/to/credFile`. This file should contain the username and
-password, separated by a colon (`username:password`)
+If your mail server requires use of SMTP AUTH, you can use the following parameters in the configuration file :
+
+```
+SOGoSMTPMasterUserEnabled = YES;
+SOGoSMTPMasterUserUsername = "foo";
+SOGoSMTPMasterUserPassword = "bar";
+```
 
 _Cronjob_ — Vacation messages activation and expiration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
