@@ -3258,6 +3258,9 @@ current version of SOGo from the previous release.
 
 [cols="100a"]
 |=======================================================================
+h|5.8.1
+|New options `SOGoSMTPMasterUserEnabled`, `SOGoSMTPMasterUserUsername` and `SOGoSMTPMasterUserPassword` has been added. Those parameters replace the `-p` option for sogo-ealarms-notify.
+
 h|5.6.0
 |The session table (`OCSSessionsFolderURL`) must be dropped prior to restart sogod.
 This will allow users to use larger passwords (up to 2048 characters).
