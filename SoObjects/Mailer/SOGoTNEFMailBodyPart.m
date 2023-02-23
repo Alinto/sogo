@@ -705,15 +705,17 @@ unsigned char GetRruleMonthNum(unsigned char a, unsigned char b) {
                   if (isObject)
                     {
                       // This is an "embedded object", so skip the 16-byte identifier first.
-                      memcpy(&object_signature, filedata->data + 16, sizeof(DWORD));
-                      if (TNEFCheckForSignature(object_signature) == 0) {
-                        TNEFInitialize(&emb_tnef);
-                        emb_tnef.Debug = tnef.Debug;
-                        if (TNEFParseMemory(filedata->data + 16, filedata->size - 16, &emb_tnef) != -1)
-                          {
-                            isRealAttachment = NO;
-                          }
-                        TNEFFree(&emb_tnef);
+                      if (NULL != filedata->data) {
+                        memcpy(&object_signature, filedata->data + 16, sizeof(DWORD));
+                        if (TNEFCheckForSignature(object_signature) == 0) {
+                          TNEFInitialize(&emb_tnef);
+                          emb_tnef.Debug = tnef.Debug;
+                          if (TNEFParseMemory(filedata->data + 16, filedata->size - 16, &emb_tnef) != -1)
+                            {
+                              isRealAttachment = NO;
+                            }
+                          TNEFFree(&emb_tnef);
+                       }
                       }
                     }
                   else
@@ -798,16 +800,18 @@ unsigned char GetRruleMonthNum(unsigned char a, unsigned char b) {
                             }
 
                           NSData *attachment;
-                          if (isObject)
-                            attachment = [NSData dataWithBytes: filedata->data + 16 length: filedata->size - 16];
-                          else
-                            attachment = [NSData dataWithBytes: filedata->data length: filedata->size];
+                          if (NULL != filedata->data) {
+                            if (isObject)
+                              attachment = [NSData dataWithBytes: filedata->data + 16 length: filedata->size - 16];
+                            else
+                              attachment = [NSData dataWithBytes: filedata->data length: filedata->size];
 
-                          [self bodyPartForAttachment: attachment
-                                             withName: partName
-                                              andType: type
-                                           andSubtype: subtype
-                                         andContentId: cid];
+                            [self bodyPartForAttachment: attachment
+                                              withName: partName
+                                                andType: type
+                                            andSubtype: subtype
+                                          andContentId: cid];
+                          }
 
                           // count++;
                         }
