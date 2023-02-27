@@ -25,7 +25,10 @@ case "$1" in
           # (they do not really belong there, we are violating Debian
           # packaging guidelines, but OTOH moving these files now would
           # break lots of setups)
-          chmod a+x /usr/share/doc/sogo/*.sh
+          if [ -d "/usr/share/doc/sogo" ] 
+          then
+            chmod a+x /usr/share/doc/sogo/*.sh
+          fi
 
           # Enforce owner+mode on configuration
           chmod 750 /etc/sogo
