@@ -25,7 +25,7 @@ case "$1" in
           # (they do not really belong there, we are violating Debian
           # packaging guidelines, but OTOH moving these files now would
           # break lots of setups)
-          if [ -d "/usr/share/doc/sogo" ] 
+          if [ -d "/usr/share/doc/sogo" ] && [ $(ls -al /usr/share/doc/sogo/ | grep .sh |  wc -l) -gt 0 ] 
           then
             chmod a+x /usr/share/doc/sogo/*.sh
           fi
