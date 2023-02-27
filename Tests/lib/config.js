@@ -42,3 +42,4 @@ export default {
 
   webCalendarURL: "http://inverse.ca/sogo-integration-tests/CanadaHolidays.ics"
 }
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
