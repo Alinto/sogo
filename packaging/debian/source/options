@@ -1,1 +1,1 @@
-compression = "xz"
+compression = "gzip"
