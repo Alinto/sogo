@@ -135,7 +135,7 @@ binary-arch: build-arch install-arch
 	dh_installdeb
 	dh_gencontrol
 	dh_md5sums
-	dh_builddeb
+	dh_builddeb -- -Zgzip
 
 binary-indep: build install
 # We have nothing to do by default.
