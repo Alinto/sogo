@@ -785,6 +785,7 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSDictionary *
                   NSDictionary *message;
                   NSData *content;
                   NSArray *flags;
+                  NGImap4Client *dstClient;
 
                   // Fetch messages
                   result = [client fetchUids: uids parts: [NSArray arrayWithObjects: @"RFC822", @"FLAGS", nil]];
@@ -794,7 +795,7 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSDictionary *
                       if ([result isKindOfClass: [NSArray class]] && [result count] > 0)
                         {
                           // Copy each message to the other account
-                          client = [[account imap4Connection] client];
+                          dstClient = [[account imap4Connection] client];
                           [[account imap4Connection] selectFolder: imapDestinationFolder];
                           messages = [result objectEnumerator];
                           result = nil;
@@ -803,7 +804,7 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSDictionary *
                               if ((content = [message valueForKey: @"message"]) != nil)
                                 {
                                   flags = [message valueForKey: @"flags"];
-                                  result = [client append: content toFolder: imapDestinationFolder withFlags: flags];
+                                  result = [dstClient append: content toFolder: imapDestinationFolder withFlags: flags];
                                   if ([[result objectForKey: @"result"] boolValue])
                                     result = nil;
                                   else
