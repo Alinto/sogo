@@ -191,6 +191,40 @@
       }
     }
 
+    function eventHash(data) {
+      var hash = 0, i, chr, json;
+      json = JSON.stringify({
+        type: data.type,
+        status: data.status,
+        selected: data.selected,
+        repeat: data.repeat,
+        pid: data.pid,
+        destinationCalendar: data.destinationCalendar,
+        delta: data.delta,
+        classification: data.classification,
+        isNew: data.isNew,
+        categories: data.categories,
+        alarm: data.alarm,
+        type: data.type,
+        summary: data.summary,
+        status: data.status,
+        organizer: data.organizer,
+        location: data.location,
+        isAllDay: data.isAllDay,
+        comment: data.comment,
+        attendees: data.attendees
+      });
+
+      if (json.length === 0) return hash;
+      for (i = 0; i < json.length; i++) {
+        chr = json.charCodeAt(i);
+        hash = ((hash << 5) - hash) + chr;
+        hash |= 0;
+      }
+
+      return hash;
+    }
+
     function newComponent($event, type, baseComponent) {
       var component;
 
@@ -206,6 +240,23 @@
       // UI/Templates/SchedulerUI/UIxAppointmentEditorTemplate.wox or
       // UI/Templates/SchedulerUI/UIxTaskEditorTemplate.wox
       var templateUrl = 'UIx' + type.capitalize() + 'EditorTemplate';
+
+      // TODO: Improve Angular implementation
+      var originalCancel = $mdDialog.cancel;
+      var originalDataHash = eventHash(component);
+
+      $mdDialog.cancel = () => {
+        var newDataHash = eventHash(component);
+
+        if (originalDataHash === newDataHash) {
+          originalCancel();
+          $mdDialog.cancel = originalCancel;
+        } else if (confirm(l('You have modified data unsaved. Do you want to close popup and loose data ?'))) {
+          originalCancel();
+          $mdDialog.cancel = originalCancel;
+        }
+      };
+
       return $mdDialog.show({
         parent: angular.element(document.body),
         targetEvent: $event,

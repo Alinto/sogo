@@ -4,12 +4,22 @@
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
-  <md-dialog flex="60" flex-sm="80" flex-xs="100">
+  <md-dialog 
+  flex="{{ editor.isFullscreen?    100 : 60 }}"
+  flex-sm="{{ editor.isFullscreen? 100 : 80 }}">
     <form name="eventForm" class="md-inline-form" ng-submit="editor.save(eventForm)">
       <md-toolbar>
         <div class="md-toolbar-tools sg-no-transition">
           <md-icon class="material-icons sg-icon-toolbar-bg">event</md-icon>
           <!-- summary -->
+          <md-button ng-click="editor.toggleFullscreen($event)"
+                     class="md-icon-button hide show-gt-xs"
+                     aria-hidden="true"
+                     ng-if="!isPopup">
+            <md-tooltip ng-if="centerIsClose" md-direction="bottom">{{ ::'Reduce' | loc }}</md-tooltip>
+            <md-tooltip ng-else="centerIsClose" md-direction="bottom">{{ ::'Expand' | loc }}</md-tooltip>
+            <md-icon>{{ editor.isFullscreen ? 'fullscreen_exit' : 'fullscreen' }}</md-icon>
+          </md-button>
           <md-icon ng-if="editor.component.classification == 'confidential'">visibility_off</md-icon>
           <md-icon ng-if="editor.component.classification == 'private'">vpn_key</md-icon>
           <md-input-container class="md-flex">
