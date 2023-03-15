@@ -58,6 +58,11 @@ ifeq ($(DIST_CODENAME), focal)
 MFA_CONFIG=--enable-mfa
 endif
 
+# Ubuntu 22.04
+ifeq ($(DIST_CODENAME), jammy)
+MFA_CONFIG=--enable-mfa
+endif
+
 include /etc/GNUstep/GNUstep.conf
 include /usr/share/GNUstep/Makefiles/common.make
 
