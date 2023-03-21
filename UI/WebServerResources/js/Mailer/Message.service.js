@@ -293,7 +293,7 @@
       }
     }
 
-    return address;
+    return punycode.toUnicode(address);
   };
 
   /**
@@ -341,8 +341,19 @@
    * @returns the HTML representation of the body
    */
   Message.prototype.$content = function() {
+    // Punycode
+    this.to.forEach(function (element, i, arr) {
+      if (element.email && element.email.indexOf('@') > 0)
+        arr[i].email = punycode.toUnicode(element.email);
+    });
+    if (this.from && this.from.indexOf('@') > 0)
+      this.from = punycode.toUnicode(this.from);
+
     var _this = this,
         parts = [],
+        
+      
+
         _visit = function(part) {
           part.msgclass = 'msg-attachment-other';
           if (part.type == 'UIxMailPartAlternativeViewer') {
@@ -874,6 +885,22 @@
   };
 
   /**
+   * @function $punycode
+   * @memberof Message.prototype
+   * @desc Encode an email address string
+   * @returns an RFC 3492  email encoded
+   */
+  Message.prototype.punycode = function(element) {
+    var re = /<(.*)>|^([\w\-\.@]+)$/gm;
+    var r = re.exec(element);
+    var puny = element;
+    if (r && r.length > 0 && r[1]) {
+      puny = r[1];
+    }
+    return element.replace(puny, punycode.toASCII(puny));
+  };
+
+  /**
    * @function $send
    * @memberof Message.prototype
    * @desc Send the message.
@@ -884,6 +911,18 @@
         data = this.$omit();
 
     Message.$log.debug('send = ' + JSON.stringify(data, undefined, 2));
+
+    // Punycode
+    data.to.forEach(function (element, i, arr) {
+      arr[i] = _this.punycode(element);
+    });
+    data.bcc.forEach(function (element, i, arr) {
+      arr[i] = _this.punycode(element);
+    });
+    data.cc.forEach(function (element, i, arr) {
+      arr[i] = _this.punycode(element);
+    });
+    data.from = _this.punycode(data.from);
 
     return Message.$$resource.post(this.$absolutePath({asDraft: true}), 'send', data).then(function(response) {
       if (response.status == 'success') {
