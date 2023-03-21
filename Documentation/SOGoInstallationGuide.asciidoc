@@ -761,8 +761,8 @@ Default value is `0`, or disabled.
 
 |S |SOGoMessageSubmissionBlockInterval
 |Number of seconds, default to `300` (or 5 minutes). Note that
-_SOGoCacheCleanupInterval_ must be set to a value equal or higher than
-_SOGoFailedLoginBlockInterval_.
+_SOGoMessageSubmissionBlockInterval_ must be set to a value equal or lower than
+_SOGoCacheCleanupInterval_.
 
 |S |SOGoMaximumRequestCount
 |Parameter used to control the number of requests a user can send to the SOGo

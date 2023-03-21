@@ -866,7 +866,7 @@ static NSArray *infoKeys = nil;
                                                   [self labelForKey: @"Tried to send too many mails. Please wait."],
                                        @"message",
                                        nil];
-          return [self responseWithStatus: 200
+          return [self responseWithStatus: 405
                                 andString: [jsonResponse jsonRepresentation]];
         }
       
