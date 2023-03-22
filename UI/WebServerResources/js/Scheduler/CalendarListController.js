@@ -45,6 +45,7 @@
     vm.reload = reload;
     vm.cancelSearch = cancelSearch;
     vm.mode = { search: false, multiple: 0 };
+    vm.isComponentOpened = false;
 
 
     this.$onInit = function() {
@@ -161,36 +162,6 @@
       openComponent($event, task, 'task');
     }
 
-    function openComponent($event, component, type) {
-      if (component.viewable) {
-        var promise = $q.when();
-
-        // Load component before opening dialog
-        if (angular.isUndefined(component.$futureComponentData)) {
-          component = Calendar.$get(component.pid).$getComponent(component.id, component.occurrenceId);
-          promise = component.$futureComponentData;
-        }
-
-        promise.then(function() {
-          // UI/Templates/SchedulerUI/UIxAppointmentViewTemplate.wox or
-          // UI/Templates/SchedulerUI/UIxTaskViewTemplate.wox
-          var templateUrl = 'UIx' + type.capitalize() + 'ViewTemplate';
-          $mdDialog.show({
-            parent: angular.element(document.body),
-            targetEvent: $event,
-            clickOutsideToClose: true,
-            escapeToClose: true,
-            templateUrl: templateUrl,
-            controller: 'ComponentController',
-            controllerAs: 'editor',
-            locals: {
-              stateComponent: component
-            }
-          });
-        });
-      }
-    }
-
     function eventHash(data) {
       var hash = 0, i, chr, json;
       json = JSON.stringify({
@@ -223,6 +194,61 @@
       }
 
       return hash;
+    }
+
+    function openComponent($event, component, type) {
+      if (component.viewable) {
+        var promise = $q.when();
+
+        // Load component before opening dialog
+        if (angular.isUndefined(component.$futureComponentData)) {
+          component = Calendar.$get(component.pid).$getComponent(component.id, component.occurrenceId);
+          promise = component.$futureComponentData;
+        }
+
+        if (vm.isComponentOpened) { // Prevent opening a new modal if there is already one opened (multiple clicks)
+          return;
+        }
+
+        if ('appointment' === type) {
+          // TODO: Improve Angular implementation
+          var originalCancel = $mdDialog.cancel;
+          var originalDataHash = eventHash(component);
+          vm.isComponentOpened = true;
+
+          $mdDialog.cancel = () => {
+            var newDataHash = eventHash(component);
+
+            if (originalDataHash === newDataHash) {
+              originalCancel();
+              $mdDialog.cancel = originalCancel;
+              vm.isComponentOpened = false;
+            } else if (confirm(l('You have modified data unsaved. Do you want to close popup and loose data ?'))) {
+              originalCancel();
+              $mdDialog.cancel = originalCancel;
+              vm.isComponentOpened = false;
+            }
+          };
+        }
+
+        promise.then(function() {
+          // UI/Templates/SchedulerUI/UIxAppointmentViewTemplate.wox or
+          // UI/Templates/SchedulerUI/UIxTaskViewTemplate.wox
+          var templateUrl = 'UIx' + type.capitalize() + 'ViewTemplate';
+          $mdDialog.show({
+            parent: angular.element(document.body),
+            targetEvent: $event,
+            clickOutsideToClose: true,
+            escapeToClose: true,
+            templateUrl: templateUrl,
+            controller: 'ComponentController',
+            controllerAs: 'editor',
+            locals: {
+              stateComponent: component
+            }
+          });
+        });
+      }
     }
 
     function newComponent($event, type, baseComponent) {
