@@ -716,15 +716,21 @@ static NSArray *infoKeys = nil;
           mime = [draftFileAttachement objectForKey: @"part"];
           if ([mime isImage]) {
             contentId = [mime contentId];
-            contentId = [contentId stringByReplacingOccurrencesOfString: @"<" withString: @"cid:"];
-            contentId = [contentId stringByReplacingOccurrencesOfString: @">" withString: @""];
+            if (contentId) {
+              contentId = [contentId stringByReplacingOccurrencesOfString: @"<" withString: @"cid:"];
+              contentId = [contentId stringByReplacingOccurrencesOfString: @">" withString: @""];
 
-            if ([[mime encoding] isEqualToString: @"base64"]) {
-              lText = [text stringByReplacingOccurrencesOfString: contentId 
-              withString: [NSString stringWithFormat: @"data:%@;base64,%@", 
-                [[mime contentType] stringValue], 
-                [NSString stringWithUTF8String: [[mime body] bytes]]]];
-              [self setText: lText];
+              if ([[mime encoding] isEqualToString: @"base64"] && contentId) {
+                lText = [text stringByReplacingOccurrencesOfString: contentId 
+                withString: [NSString stringWithFormat: @"data:%@;base64,%@", 
+                  [[mime contentType] stringValue], 
+                  [NSString stringWithUTF8String: [[mime body] bytes]]]];
+                [self setText: lText];
+              } else {
+                [self warnWithFormat: @"Empty content id [1] : %@", contentId];
+              }
+            } else {
+              [self warnWithFormat: @"Empty content id [2] : %@", contentId];
             }
           }
         }                  
