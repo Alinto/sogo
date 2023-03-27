@@ -76,7 +76,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "О системе";
-"AboutBox" = "SOGo это полнофункциональный сервер групповой работы с акцентом на масштабируемость и простоту. Разработан компанией Inverse. <br/><br/>\nSOGo обеспечивает богатый, основанный на  AJAX веб-интерфейс и поддерживает несколько собственных клиентов за счет использования стандартных протоколов, таких как CalDAV и CardDAV. <br/><br/>\nSOGo распространяется под <a href=\"http://gnu.org/licenses/gpl.html\">лицензией GNU GPL</a> версии 2 или более поздней версии, части SOGo распространяются под лицензией GNU LGPL версии 2. Это свободное программное обеспечение: вы можете свободно изменять и распространять его. Не существует НИКАКИХ ГАРАНТИЙ в пределах, допускаемых законом. <br/><br/>\nПосетите <a href=\"http://www.sogo.nu/en/support/community.html\">эту страницу</a> для ознакомления с различными вариантами поддержки.";
+"AboutBox" = "Developed by Inverse and Alinto, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
 "Your account was locked due to too many failed attempts." = "Ваш аккаунт был заблокирован из-за слишком большого числа неудачных попыток.";
 "Your account was locked due to an expired password." = "Ваш аккаунт был заблокирован в связи с истечение срока действия пароля.";
 "Login failed due to unhandled error case" = "Войти не удалось из-за необработанного случая ошибки";
@@ -110,3 +110,19 @@
 "Close" = "Закрыть";
 "Missing search parameter" = "Отсутствует параметр поиска";
 "Missing type parameter" = "Отсутствует параметр типа";
+
+/* Password Recovery */
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password lost" = "Password lost";
+"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
+"Invalid secret question answer" = "Invalid secret question answer";
+"Next" = "Next";
+"Back" = "Back";
+"Please enter a new password below" = "Please enter a new password below";
+"A link will be sent to %{0}" = "A link will be sent to %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
+"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
+"Password recovery email in error" = "Password recovery email in error";
+"Password reset" = "Password reset";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";
