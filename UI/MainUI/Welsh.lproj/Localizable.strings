@@ -16,10 +16,18 @@
 "Authentication Failed" = "Dilysu wedi Methu";
 "Wrong username or password." = "Enw defnyddiwr neu gyfrinair anghywir.";
 "Retry" = "Ailgynnig";
+"Login failed due to unhandled error case:" = "Login failed due to unhandled error case:";
 "cookiesNotEnabled" = "Allwch chi ddim mewngofnodi gan fod cwcis eich porwr wedi eu hanalluogi. Galluogwch y cwcis yng ngosodiadau'ch porwr a rhowch gynnig arall arni.";
 "browserNotCompatible" = "Mae'n ymddangos nad yw'r safle hwn yn cynnal fersiwn presennol eich porwr. Rydym yn argymell defnyddio Firefox. Cliciwch ar y ddolen isod i lawrlwytho'r fersiwn mwyaf diweddar o'r porwr yma.";
 "alternativeBrowsers" = "Gallwch hefyd ddefnyddio'r porwyr yma";
 "alternativeBrowserSafari" = "Gallwch hefyd ddefnyddio Safari.";
+
+/* 2FA */
+"Verification Code" = "Verification Code";
+"Enter the 6-digit verification code from your TOTP application." = "Enter the 6-digit verification code from your TOTP application.";
+"You provided an invalid TOTP key." = "You provided an invalid TOTP key.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application.";
+
 "Download" = "Lawrlwytho";
 "Language" = "Iaith";
 "choose" = "Dewis ...";
@@ -68,7 +76,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "Ynghylch";
-"AboutBox" = "Datblygwyd SOGo gan Inverse fel gweinydd grwpwedd llawn nodweddion sydd â phwyslais ar ei symlrwydd a'i addasrwydd i grwpiau o wahanol faint.<br/><br/>\nMae SOGo yn cynnig rhyngwyneb Gwe cyfoethog sy'n seiliedig ar AJAX ac sy'n cefnogi sawl cleient brodorol drwy ddefnyddio protocolau safonol fel CalDAV a CardDAV.<br/><br/>\nCaiff SOGo ei ddosbarthu o dan <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> fersiwn 2 neu ddiweddarach ac mae rhannau'n cael eu dosbarth o dan GNU LGPL fersiwn 2. Mae hon yn feddalwedd rydd: mae gennych ryddid i'w newid a'i hailddosbarthu. Does DIM GWARANT, i'r graddau y caniateir hynny gan y gyfraith.<br/><br/>\nGweler <a href=\"http://www.sogo.nu/en/support/community.html\">y dudalen hon</a> i weld gwahanol ddewisiadau o ran cefnogaeth.";
+"AboutBox" = "Developed by Inverse and Alinto, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
 "Your account was locked due to too many failed attempts." = "Cafodd eich cyfrif ei gloi oherwydd gormod o gynigion aflwyddiannus.";
 "Your account was locked due to an expired password." = "Cafodd eich cyfrif ei gloi oherwydd cyfrinair a ddaeth i ben.";
 "Login failed due to unhandled error case" = "Methu mewngofnodi oherwydd nad oes modd trin gwall";
@@ -102,3 +110,19 @@
 "Close" = "Cau";
 "Missing search parameter" = "Paramedr chwilio ar goll";
 "Missing type parameter" = "Paramedr math ar goll";
+
+/* Password Recovery */
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password lost" = "Password lost";
+"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
+"Invalid secret question answer" = "Invalid secret question answer";
+"Next" = "Next";
+"Back" = "Back";
+"Please enter a new password below" = "Please enter a new password below";
+"A link will be sent to %{0}" = "A link will be sent to %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
+"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
+"Password recovery email in error" = "Password recovery email in error";
+"Password reset" = "Password reset";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";
