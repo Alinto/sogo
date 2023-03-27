@@ -76,7 +76,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "Više o";
-"AboutBox" = "SOGo je rješenje koje je razvila firma Inverse, s fokusom na skaliranje i jednostavnost posjeduje punu funkcionalnost za upravljanje grupama i timovima.<br/><br/>\nSOGo nudi bogat AJAX-bazirani Web interfejs i podržava višen E-mail klijenata koji koriste standardne protokole kao što su CalDAV i CardDAV.<br/><br/>\nSOGo se distribuira pod licencom <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> verzija 2 ili novija, dok neki dijelovi su distribuirani pod licencom GNU LGPL verzija 2. Ovo je slobodan/besplatan softvere: možete da ga modifikujete i redistribuirate. Ne postoji garancija za softvare, u mjeri u kojoj je to definirano zakonom.<br/><br/>\nPogledajte <a href=\"http://www.sogo.nu/en/support/community.html\"> ovu stranicu </a> za mogućnosti podrške.";
+"AboutBox" = "Developed by Inverse and Alinto, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
 "Your account was locked due to too many failed attempts." = "Vaš račun je zaključan zbog više neuspješnih prijava.";
 "Your account was locked due to an expired password." = "Vaš račun je zaključan jer vam je šifra istekla.";
 "Login failed due to unhandled error case" = "Neuspješna prijava zbog greške.";
@@ -110,3 +110,19 @@
 "Close" = "Zatvoriti";
 "Missing search parameter" = "Nedostaje parametar za traženje";
 "Missing type parameter" = "Nedostaje tip parametra";
+
+/* Password Recovery */
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password lost" = "Password lost";
+"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
+"Invalid secret question answer" = "Invalid secret question answer";
+"Next" = "Next";
+"Back" = "Back";
+"Please enter a new password below" = "Please enter a new password below";
+"A link will be sent to %{0}" = "A link will be sent to %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
+"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
+"Password recovery email in error" = "Password recovery email in error";
+"Password reset" = "Password reset";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";
