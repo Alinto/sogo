@@ -623,6 +623,7 @@ vtodo_class2 = "(Hemmelig opgave)";
 "Rename" = "Omdøb";
 "Import Calendar" = "Importer kalender";
 "Select an ICS file." = "Vælg en ICS fil";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "Du har ændret data, der ikke er gemt. Vil du lukke popup og miste data?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Tilmeldte sig kalenderen";

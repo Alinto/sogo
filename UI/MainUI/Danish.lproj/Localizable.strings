@@ -76,7 +76,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "Om";
-"AboutBox" = "Developed by Inverse, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>⏎ SOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>⏎ SOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>⏎ See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
+"AboutBox" = "Udviklet af Inverse og Alinto, SOGo er en fuldt udstyret groupware-server med fokus på skalerbarhed og enkeldhed.<br/><br/>\nSOGo leverer en rig AJAX-baseret webgrænseglade og understøtter flere indbyggede klienter gennem brug af standard protokoller såsom CalDAV og CardDAV.<br/><br/>\nSOGo distribueres under <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 eller nyere, og dele distribueres under GNU LGPL version 2. Dette er gratis software: du er fri til at ændre og omdistribuere den. Der er INGEN GARANTI, i det omfang loven tillader det.<br/><br/>\nSe <a href=\"http://www.sogo.nu/en/support/community.html\"> denne side</a> for forskellige supportmuligheder.";
 "Your account was locked due to too many failed attempts." = "Din konto er låst på grund af for mange mislykkede forsøg.";
 "Your account was locked due to an expired password." = "Din konto er låst på grund af en udløbet adgangskode.";
 "Login failed due to unhandled error case" = "Login mislykkedes på grund af denne fejl";
