@@ -26,6 +26,7 @@
 "Verification Code" = "Verifikacioni kod";
 "Enter the 6-digit verification code from your TOTP application." = "Unesite 6-tocifreni verifikacioni kod iz vaše TOTP aplikacije.";
 "You provided an invalid TOTP key." = "TOTP ključ koji ste unijeli nije validan.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application.";
 
 "Download" = "Preuzimanje";
 "Language" = "Jezik";
@@ -75,10 +76,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "O";
-"AboutBox" = "Razvijen od strane Inverse-a, SOGo je potpuno funkcionalan grupver server fokusiran na skalabilnost i laku upotrebu<br/><br/>
-SOGo pruža bogati AJAX-bazirani veb interfejs i podržava više nativnih klijenata kroz korišćenje standardnih protokola kao što su CalDAV i CardDAV.<br/><br/>
-SOGo se distribuira sa licencom  <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> verzija 2 ili kasnija a delovi se distribuiraju kroz GNU LGPL verzija 2. Ovo je besplatan softver: slobodni ste da menjate i ponovo distribuirate. NEMA GARANCIJE, u meri u kojoj to dopušta zakon.<br/><br/>
-Pogledajte <a href=\"http://www.sogo.nu/en/support/community.html\">ovu stranicu</a> za različite opcije podrške.";
+"AboutBox" = "Developed by Inverse and Alinto, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
 "Your account was locked due to too many failed attempts." = "Vaš nalog je zaključan zbog više neuspješnih pokušaja prijave.";
 "Your account was locked due to an expired password." = "Vaš nalog je zaključan zbog istekle lozinke.";
 "Login failed due to unhandled error case" = "Prijavljivanje nije uspjelo zbog neobrađene greške:";
@@ -112,3 +110,19 @@ Pogledajte <a href=\"http://www.sogo.nu/en/support/community.html\">ovu stranicu
 "Close" = "Zatvori";
 "Missing search parameter" = "Nedostaje parametar pretrage";
 "Missing type parameter" = "Nedostaje parametar tip";
+
+/* Password Recovery */
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password lost" = "Password lost";
+"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
+"Invalid secret question answer" = "Invalid secret question answer";
+"Next" = "Next";
+"Back" = "Back";
+"Please enter a new password below" = "Please enter a new password below";
+"A link will be sent to %{0}" = "A link will be sent to %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
+"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
+"Password recovery email in error" = "Password recovery email in error";
+"Password reset" = "Password reset";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";
