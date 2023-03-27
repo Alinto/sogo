@@ -76,7 +76,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "Про систему";
-"AboutBox" = "SOGo - це сервер групового рішення побудований на основі проекту OpenGroupware.org (OGo) та серверу додатків SOPE. Основна його перевага - це масштабованість.<br/><br/>\nSOGo забезпечує зручний веб-інтерфейс на основі технології AJAX та підтримує багато клієнтських програм, застосовуючи такі стандартні протоколи: CalDAV, CardDAV та GroupDAV.<br/><br/>\nВсі права застережено © 2006-2009 Inverse inc.<br/>\nВсі права застережено © 2002-2005 SKYRIX Software AG<br/><br/>\nЦе програмне забезпечення розповсюджується під ліцензією <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> версія 2.<br/>\nОкремі частини цього програмного забезпечення розповсюджуються під ліцензією GNU LGPL версія 2.<br/><br/>\nЦе вільне програмне забезпечення: ви можете вільно змінювати його та розповсюджувати. На це програмне забезпечення відсутня ГАРАНТІЯ в межах, визначених законодавством.";
+"AboutBox" = "Developed by Inverse and Alinto, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
 "Your account was locked due to too many failed attempts." = "Ваш обліковий запис заблоковано через велику кількість невдалих спроб авторизації.";
 "Your account was locked due to an expired password." = "Ваш обліковий запис заблоковано, оскільки закінчився термін дії пароля.";
 "Login failed due to unhandled error case" = "Невдала спроба авторизація через невизначену помилку";
@@ -110,3 +110,19 @@
 "Close" = "Закрити";
 "Missing search parameter" = "Відсутній параметр пошуку";
 "Missing type parameter" = "Відсутній параметр типу";
+
+/* Password Recovery */
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password lost" = "Password lost";
+"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
+"Invalid secret question answer" = "Invalid secret question answer";
+"Next" = "Next";
+"Back" = "Back";
+"Please enter a new password below" = "Please enter a new password below";
+"A link will be sent to %{0}" = "A link will be sent to %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
+"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
+"Password recovery email in error" = "Password recovery email in error";
+"Password reset" = "Password reset";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";
