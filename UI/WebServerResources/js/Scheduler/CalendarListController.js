@@ -267,9 +267,14 @@
       // UI/Templates/SchedulerUI/UIxTaskEditorTemplate.wox
       var templateUrl = 'UIx' + type.capitalize() + 'EditorTemplate';
 
+      if (vm.isComponentOpened) { // Prevent opening a new modal if there is already one opened (multiple clicks)
+        return;
+      }
+
       // TODO: Improve Angular implementation
       var originalCancel = $mdDialog.cancel;
       var originalDataHash = eventHash(component);
+      vm.isComponentOpened = true;
 
       $mdDialog.cancel = () => {
         var newDataHash = eventHash(component);
@@ -277,9 +282,11 @@
         if (originalDataHash === newDataHash) {
           originalCancel();
           $mdDialog.cancel = originalCancel;
+          vm.isComponentOpened = false;
         } else if (confirm(l('You have modified data unsaved. Do you want to close popup and loose data ?'))) {
           originalCancel();
           $mdDialog.cancel = originalCancel;
+          vm.isComponentOpened = false;
         }
       };
 
