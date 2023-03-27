@@ -222,3 +222,11 @@
 
 /* Hotkey description to move forward in current view */
 "Move forward" = "Mozgatás előre";
+
+/* Password Recovery */
+"passwordRecovery_Disabled" = "Letiltva";
+"passwordRecovery_SecretQuestion" = "Biztonsági kérdés";
+"passwordRecovery_SecretQuestion1" = "Mi a neve az első kisállatodnak?";
+"passwordRecovery_SecretQuestion2" = "Mi volt az első autód típusa?";
+"passwordRecovery_SecretQuestion3" = "Mi a kedvenc filmed?";
+"passwordRecovery_SecondaryEmail" = "Másodlagos email cím";
