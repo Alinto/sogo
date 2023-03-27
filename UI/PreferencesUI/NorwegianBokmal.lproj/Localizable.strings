@@ -485,6 +485,8 @@
 "Enable two-factor authentication using a TOTP application" = "Aktiver to-faktor autentisering ved hjelp av en TOTP-applikasjon";
 "You must enter this key into your TOTP application." = "Du må angi denne nøkkelen i TOTP-applikasjonen. ";
 "If you do not and you log out you will not be able to login again." = "Hvis du ikke gjør dette, og logger ut igjen kan du ikke logge på. ";
+"Enter TOTP verification code :" = "Tast inn TOTP verifiseringskode : ";
+"Invalid TOTP verification code" = "Ugyldig TOTP verifiseringskode ";
 
 /* External Sieve scripts */
 "An external Sieve script is active" = "Et ekstremt Sieve-skript er aktivt ";
