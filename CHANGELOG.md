@@ -1,5 +1,10 @@
 # Changelog
 
+## [5.8.2](https://github.com/Alinto/sogo/compare/SOGo-5.8.1...SOGo-5.8.2) (2023-03-28)
+
+### Bug Fixes
+
+* **calendar:** Impossible to create a new event after creating a new one. Closes [#5718](https://bugs.sogo.nu/view.php?id=5718) ([f813b78c](https://github.com/Alinto/sogo/commit/f813b78c3cbe9ea4764fa2af2ea108b58ae26c37))
 
 ## [5.8.1](https://github.com/Alinto/sogo/compare/SOGo-5.8.0...SOGo-5.8.1) (2023-03-28)
 
