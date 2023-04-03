@@ -21,6 +21,13 @@
 "browserNotCompatible" = "Kami mendeteksi bahwa versi browser Anda saat ini tidak didukung di situs ini. Rekomendasi kami gunakan Firefox. Klik pada link di bawah untuk mendownload versi terbaru dari browser ini.";
 "alternativeBrowsers" = "Kemungkinan lain, anda juga dapat menggunakan browser yang cocok berikut";
 "alternativeBrowserSafari" = "Alternatif lain, anda juga dapat menggunakan safari.";
+
+/* 2FA */
+"Verification Code" = "Verification Code";
+"Enter the 6-digit verification code from your TOTP application." = "Enter the 6-digit verification code from your TOTP application.";
+"You provided an invalid TOTP key." = "You provided an invalid TOTP key.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application.";
+
 "Download" = "Unduh";
 "Language" = "Bahasa";
 "choose" = "Pilih";
@@ -42,6 +49,7 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
 "Japanese" = "日本語";
 "Kazakh" = "Қазақ";
@@ -68,7 +76,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "Tentang";
-"AboutBox" = "Dikembangkan oleh Inverse, SOGo merupakan groupware server penuh fitur dengan fokus pada skalabilitas dan kesederhanaan \n\n\nSOGo menyediakan antarmuka Web yang kaya berbasis AJAX dan suport beberapa klien asli melalui penggunaan protokol standar seperti CaIDAV dan CardDAV\n\nSOGo is didistribusikan dibawah <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> versi 2 atau terbaru dan bagian bagianya didistribusikan dibawah GNU LGPL versi 2. ini adalah sofwer gratis: anda bebas mengubah dan mendistribusikannya. Tidak ada JAMINAN, selama diizinkan oleh hukum.\n\nLihat  <a href=\"http://www.sogo.nu/en/support/community.html\"> Halaman ini </a> untuk berbagai pilihan suport.";
+"AboutBox" = "Developed by Inverse and Alinto, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
 "Your account was locked due to too many failed attempts." = "Akun Anda terkunci karena terlalu banyak usaha yang gagal.";
 "Your account was locked due to an expired password." = "Akun Anda terkunci karena sandi kadaluarsa.";
 "Login failed due to unhandled error case" = "Login gagal karena kesalahan tak tertangani";
@@ -102,3 +110,19 @@
 "Close" = "Tutup";
 "Missing search parameter" = "Kehilangan parameter pencarian";
 "Missing type parameter" = "Kehilangan jenis parameter ";
+
+/* Password Recovery */
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password lost" = "Password lost";
+"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
+"Invalid secret question answer" = "Invalid secret question answer";
+"Next" = "Next";
+"Back" = "Back";
+"Please enter a new password below" = "Please enter a new password below";
+"A link will be sent to %{0}" = "A link will be sent to %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
+"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
+"Password recovery email in error" = "Password recovery email in error";
+"Password reset" = "Password reset";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";

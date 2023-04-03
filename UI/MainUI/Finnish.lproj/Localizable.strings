@@ -16,10 +16,18 @@
 "Authentication Failed" = "Tunnistautuminen epäonnistui";
 "Wrong username or password." = "Väärä käyttäjätunnus tai salasana.";
 "Retry" = "Yritä uudelleen";
+"Login failed due to unhandled error case:" = "Login failed due to unhandled error case:";
 "cookiesNotEnabled" = "Et voi kirjautua koska selaimesi evästeet eivät ole käytössä. Salli evästeet selaimen asetuksista ja yritä uudelleen.";
 "browserNotCompatible" = "Olemme havainneet että selaimesi versiota ei tällä hetkellä tueta tällä sivustolla. Suosituksemme on käyttää Firefoxia. Napsauta alla olevaa linkkiä ladataksesi uusimman version tästä selaimesta.";
 "alternativeBrowsers" = "Vaihtoehtoisesti voit myös käyttää seuraavia yhteensopivia selaimia";
 "alternativeBrowserSafari" = "Vaihtoehtoisesti voit myös käyttää Safaria.";
+
+/* 2FA */
+"Verification Code" = "Verification Code";
+"Enter the 6-digit verification code from your TOTP application." = "Enter the 6-digit verification code from your TOTP application.";
+"You provided an invalid TOTP key." = "You provided an invalid TOTP key.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application.";
+
 "Download" = "Lataa";
 "Language" = "Kieli";
 "choose" = "Valitse ...";
@@ -68,7 +76,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "Tietoa";
-"AboutBox" = "Kehittänyt Inverse, SOGo on täysiverinen groupware palvelin jossa on keskitytty skaalautuvuuteen ja yksinkertaisuuteen. <br/><br/>⏎ SOGo tarjoaa rikkaan AJAX-pohjaisen web-käyttöliittymän ja tukee useita natiivi asiakasohjelmistoja käyttämällä protokolla standardeja kuten CalDAV ja CardDAV. <br/> ⏎ SOGon jakelu tapahtuu <a href=\"http://gnu.org/licenses/gpl.html\"> GNU GPL </ a> version 2 tai uudempi lisenssillä ja osat jaetaan GNU LGPL version 2 lisenssillä. Tämä on vapaa ohjelma: voit vapaasti muuttaa ja jakaa sitä edelleen. Ohjelmistolla EI OLE TAKUUTA lain sallimissa puitteissa. <br/> ⏎ Katso <a href=\"http://www.sogo.nu/en/support/community.html\"> tämä sivu </> saadaksesi tietoa eri tukivaihtoehdoista.";
+"AboutBox" = "Developed by Inverse and Alinto, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
 "Your account was locked due to too many failed attempts." = "Tilisi on lukittu liian monen epäonnistuneen yrityksen vuoksi.";
 "Your account was locked due to an expired password." = "Tilisi on lukittu vanhentuneen salasanan vuoksi.";
 "Login failed due to unhandled error case" = "Sisäänkirjaus epäonnistui käsittelemättömään virheeseen";
@@ -102,3 +110,19 @@
 "Close" = "Sulje";
 "Missing search parameter" = "Puuttuva hakuehto";
 "Missing type parameter" = "Puuttuva tyyppiehto";
+
+/* Password Recovery */
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password lost" = "Password lost";
+"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
+"Invalid secret question answer" = "Invalid secret question answer";
+"Next" = "Next";
+"Back" = "Back";
+"Please enter a new password below" = "Please enter a new password below";
+"A link will be sent to %{0}" = "A link will be sent to %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
+"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
+"Password recovery email in error" = "Password recovery email in error";
+"Password reset" = "Password reset";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";

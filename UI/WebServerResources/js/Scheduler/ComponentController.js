@@ -216,6 +216,7 @@
       this.categories = {};
       this.showRecurrenceEditor = this.component.$hasCustomRepeat;
       this.showAttendeesEditor = this.component.attendees && this.component.attendees.length;
+      this.isFullscreen = false;
 
       if (this.component.type == 'appointment') {
         this.component.initAttendees();
@@ -295,6 +296,10 @@
       if (updateRequired)
         this.component.$attendees.initOrganizer(Calendar.$get(this.component.destinationCalendar));
     };
+
+    this.toggleFullscreen = function() {
+      vm.isFullscreen = !vm.isFullscreen;
+    }
 
     // Autocomplete cards for attendees
     this.cardFilter = function ($query) {

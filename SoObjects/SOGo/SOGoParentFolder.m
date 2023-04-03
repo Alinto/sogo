@@ -144,7 +144,7 @@ static SoSecurityManager *sm = nil;
 
 - (NSString *) defaultFolderName
 {
-  return @"Personal";
+  return [[context request] isMacOSXVenturaCalendarApp] ? @"PERSONAL" : @"Personal";
 }
 
 - (NSString *) collectedFolderName
@@ -173,7 +173,7 @@ static SoSecurityManager *sm = nil;
   {
     if (folderType == SOGoPersonalFolder)
     {
-      folderName = @"personal";
+      folderName = [[context request] isMacOSXVenturaCalendarApp] ? @"PERSONAL" : @"personal";
       folder = [subFolderClass objectWithName: folderName inContainer: self];
       [folder setDisplayName: [self defaultFolderName]];
       [folder setOCSPath: [NSString stringWithFormat: @"%@/%@", OCSPath, folderName]];
@@ -226,7 +226,7 @@ static SoSecurityManager *sm = nil;
       // Ticket #5639
       if ([[context request] isMacOSXVenturaCalendarApp]) {
         if ([key isEqualToString:@"personal"]) {
-          key = @"Personal";
+          key = @"PERSONAL";
         }
       }
       
@@ -241,7 +241,7 @@ static SoSecurityManager *sm = nil;
     }
     if (folderType == SOGoPersonalFolder)
     {
-      if (![subFolders objectForKey: @"personal"])
+      if (![subFolders objectForKey: @"personal"] || ![subFolders objectForKey: @"Personal"]  || ![subFolders objectForKey: @"PERSONAL"])
         [self createSpecialFolder: SOGoPersonalFolder];
     }
     else if (folderType == SOGoCollectedFolder)

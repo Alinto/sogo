@@ -143,7 +143,9 @@
   [mailer sendMimePart: message
           toRecipients: [NSArray arrayWithObject: [to objectForKey: @"email"]]
                 sender: [to objectForKey: @"email"]
-     withAuthenticator: staticAuthenticator inContext: nil];
+     withAuthenticator: staticAuthenticator 
+             inContext: nil
+        systemMessage: YES];
 }
 
 - (void) _processAlarm: (iCalAlarm *) alarm

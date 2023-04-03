@@ -137,7 +137,7 @@ static NSNumber *yesObject = nil;
   newEntry = [NSMutableDictionary new];
   identifier = [davPermission keysWithFormat: @"{%{ns}}%{method}"];
   if ([aclTree objectForKey: identifier])
-    [self warnWithFormat:
+    [self logWithFormat:
             @"entry '%@' already exists in DAV permissions table",
           identifier];
   [aclTree setObject: newEntry forKey: identifier];

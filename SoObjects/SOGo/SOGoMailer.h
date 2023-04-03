@@ -36,6 +36,9 @@
 {
   NSString *mailingMechanism;
   NSString *smtpServer;
+  BOOL *smtpMasterUserEnabled;
+  NSString *smtpMasterUserUsername;
+  NSString *smtpMasterUserPassword;
   NSString *authenticationType;
 }
 
@@ -43,21 +46,24 @@
 
 - (id) initWithDomainDefaults: (SOGoDomainDefaults *) dd;
 - (BOOL) requiresAuthentication;
-- (NSException *) sendMailData: (NSData *) data
-		  toRecipients: (NSArray *) recipients
-			sender: (NSString *) sender
-             withAuthenticator: (id <SOGoAuthenticator>) authenticator
-                     inContext: (WOContext *) woContext;
-- (NSException *) sendMailAtPath: (NSString *) filename
-		    toRecipients: (NSArray *) recipients
-			  sender: (NSString *) sender
-               withAuthenticator: (id <SOGoAuthenticator>) authenticator
-                       inContext: (WOContext *) woContext;
-- (NSException *) sendMimePart: (id <NGMimePart>) part
-		  toRecipients: (NSArray *) recipients
-			sender: (NSString *) sender
-             withAuthenticator: (id <SOGoAuthenticator>) authenticator
-                     inContext: (WOContext *) woContext;
+- (NSException *)sendMailData:(NSData *)data
+                 toRecipients:(NSArray *)recipients
+                       sender:(NSString *)sender
+            withAuthenticator:(id<SOGoAuthenticator>)authenticator
+                    inContext:(WOContext *)woContext
+                systemMessage:(BOOL)isSystemMessage;
+- (NSException *)sendMailAtPath:(NSString *)filename
+                   toRecipients:(NSArray *)recipients
+                         sender:(NSString *)sender
+              withAuthenticator:(id<SOGoAuthenticator>)authenticator
+                      inContext:(WOContext *)woContext
+                  systemMessage:(BOOL)isSystemMessage;
+- (NSException *)sendMimePart:(id<NGMimePart>)part
+                 toRecipients:(NSArray *)recipients
+                       sender:(NSString *)sender
+            withAuthenticator:(id<SOGoAuthenticator>)authenticator
+                    inContext:(WOContext *)woContext
+                systemMessage:(BOOL)isSystemMessage;
 
 @end
 

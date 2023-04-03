@@ -258,7 +258,15 @@
                 </div>
                 <div flex="100" flex-sm="60" flex-gt-sm="50">
                   <var:string label:value="You must enter this key into your TOTP application."/> <b><var:string label:value="If you do not and you log out you will not be able to login again."/></b>
+                  <md-input-container class="md-block md-input-has-value md-auto-horizontal-margin">
+                    <label><var:string label:value="Enter TOTP verification code :"/></label>
+                    <input type="text" ng-model="app.preferences.defaults.totpVerificationCode" name="totpVerificationCode" autocomplete="one-time-code" id="totpVerificationCode" sg-no-dirty-check="true" ng-change="app.resetTotpVerificationCode(preferencesForm)"/>
+                    <div ng-messages="preferencesForm.totpVerificationCode.$error">
+                      <div ng-message="invalidTotpCode"><var:string label:value="Invalid TOTP verification code"/></div>
+                    </div>
+                  </md-input-container>
                 </div>
+                
               </div>
             </var:if>
 
@@ -654,15 +662,17 @@
               </md-checkbox>
             </div>
 
-            <div>
-              <md-checkbox
-                  ng-model="app.preferences.defaults.SOGoMailSynchronizeOnlyDefaultFolders"
-                  ng-true-value="1"
-                  ng-false-value="0"
-                  label:aria-label="Synchronize only default mail folders (EAS)">
-                <var:string label:value="Synchronize only default mail folders (EAS)"/>
-              </md-checkbox>
-            </div>
+            <var:if condition="isEasUIEnabled">
+              <div>
+                <md-checkbox
+                    ng-model="app.preferences.defaults.SOGoMailSynchronizeOnlyDefaultFolders"
+                    ng-true-value="1"
+                    ng-false-value="0"
+                    label:aria-label="Synchronize only default mail folders (EAS)">
+                  <var:string label:value="Synchronize only default mail folders (EAS)"/>
+                </md-checkbox>
+              </div>
+            </var:if>
 
             <div>
               <md-checkbox

@@ -129,8 +129,8 @@
 "Return Receipt" = "Уведомление о вручении";
 "Choose which identity to send this message from" = "Выберите, с каким идентификатором отправить это сообщение";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Отправитель этого сообщения запросил уведомление о прочтении. Отправить уведомление?";
-"Return Receipt (displayed) - %@"= "Уведомление о вручении (отображается на дисплее) -% @";
-"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.";
+"Return Receipt (displayed) - %@"= "Уведомление о вручении (отображено на дисплее) - %@";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Это уведомление о прочтении сообщения, которое Вы отправили на адрес %@.\n\nПримечание: Это уведомление о прочтении означает лишь то, что сообщение было отображено на компьютере получателя. Оно не гарантирует того, что получатель прочёл или понял содержимое сообщения.";
 "Security" = "Безопасность";
 "Sign" = "Подписать";
 "Encrypt" = "Зашифровать";

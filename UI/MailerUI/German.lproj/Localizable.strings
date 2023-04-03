@@ -8,7 +8,7 @@
 "Expunge"     = "Expunge";
 "Forward"     = "Weiterleiten";
 "Get Mail"    = "Abrufen";
-"Junk"        = "Junk";
+"Junk"        = "Spam";
 "Not junk"    = "Kein Spam";
 "Reply"       = "Antworten";
 "Reply All"   = "Allen Antworten";
@@ -39,7 +39,7 @@
 "Print this message" = "Gewählte Nachricht drucken";
 "Stop the current transfer" = "Derzeitige Übertragung stoppen";
 "Attachment" = "Anhang";
-"Unread" = "Ungelesene";
+"Unread" = "Ungelesen";
 "Flagged" = "Markiert";
 "Search multiple mailboxes" = "In mehreren Postfächern suchen";
 

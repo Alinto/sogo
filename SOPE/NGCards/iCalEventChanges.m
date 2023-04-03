@@ -149,6 +149,9 @@
     [updatedProperties addObject:@"exrule"];
   if(!IS_EQUAL([_from exceptionDates], [_to exceptionDates], isEqual:))
     [updatedProperties addObject:@"exdate"];
+  if ([_from respondsToSelector: @selector(lastPossibleRecurrenceStartDate)] && [_to respondsToSelector: @selector(lastPossibleRecurrenceStartDate)])
+    if(!IS_EQUAL([_from lastPossibleRecurrenceStartDate], [_to lastPossibleRecurrenceStartDate], isEqual:))
+      [updatedProperties addObject:@"reccurencesStartDate"];
 }
 
 - (BOOL)hasChanges {

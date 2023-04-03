@@ -140,7 +140,8 @@ module.exports = function(grunt) {
       //'<%= src %>/ng-file-upload/ng-file-upload{,.min}.js{,map}',
       '<%= src %>/ng-sortable/dist/ng-sortable.min.js{,map}',
       '<%= src %>/lodash/lodash{,.min}.js',
-      '<%= src %>/qrcodejs/qrcode{,.min}.js'
+      '<%= src %>/qrcodejs/qrcode{,.min}.js',
+      '<%= src %>/punycode/punycode.js'
     ];
     for (var j = 0; j < js.length; j++) {
       var files = grunt.file.expand(grunt.template.process(js[j], {data: options}));
@@ -150,6 +151,13 @@ module.exports = function(grunt) {
         var dest = options.js_dest + paths[paths.length - 1];
         grunt.file.copy(src, dest);
         grunt.log.ok("copy " + src + " => " + dest);
+        // Patch for module.exports for puny code
+        if (dest.indexOf('punycode') > 0) {
+          var fs = require('fs');
+          var fileContent = fs.readFileSync(dest, { encoding: 'utf8', flag: 'r' });
+          fileContent = fileContent.replace("module.exports", "//module.exports");
+          fs.writeFileSync(dest, fileContent);
+        }
       }
     }
     /*

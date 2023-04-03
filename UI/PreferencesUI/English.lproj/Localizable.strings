@@ -485,6 +485,8 @@
 "Enable two-factor authentication using a TOTP application" = "Enable two-factor authentication using a TOTP application";
 "You must enter this key into your TOTP application." = "You must enter this key into your TOTP application.";
 "If you do not and you log out you will not be able to login again." = "If you do not and you log out you will not be able to login again.";
+"Enter TOTP verification code :" = "Enter TOTP verification code :";
+"Invalid TOTP verification code" = "Invalid TOTP verification code";
 
 /* External Sieve scripts */
 "An external Sieve script is active" = "An external Sieve script is active";

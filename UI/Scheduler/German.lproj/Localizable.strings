@@ -221,6 +221,11 @@
 "view_next31" = "Termine in den nächsten 31 Tagen";
 "view_thismonth" = "Termine in diesem Kalendermonat";
 "view_thisyear" = "Dieses Jahr";
+"view_last7" = "Die letzten 7 Tage";
+"view_last14" = "Die letzten 14 Tage";
+"view_last31" = "Die letzten 31 Tage";
+"view_lastmonth" = "Den letzten Monat";
+"view_lastyear" = "Das letzte Jahr";
 "view_future" = "Alle zukünftigen Termine";
 "view_selectedday" = "Momentan gewählter Tag";
 "view_not_started" = "Nicht begonnene Aufgaben";
@@ -618,6 +623,7 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "Rename" = "Umbenennen";
 "Import Calendar" = "Kalender importieren";
 "Select an ICS file." = "Eine ICS-Datei auswählen.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "Sie haben Daten geändert, aber nicht gespeichert. Möchten Sie das Popup schließen, und die Daten verlieren?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Der Kalender wurde erfolgreich abonniert";

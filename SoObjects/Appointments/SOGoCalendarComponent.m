@@ -919,7 +919,8 @@
                            toRecipients: [NSArray arrayWithObject: email]
                                  sender: shortSenderEmail
                       withAuthenticator: [self authenticatorInContext: context]
-                              inContext: context];
+                              inContext: context
+                          systemMessage: YES];
 		}
 	    }
 	}
@@ -1022,7 +1023,8 @@
                toRecipients: [NSArray arrayWithObject: email]
                      sender: [attendee rfc822Email]
           withAuthenticator: [self authenticatorInContext: context]
-                  inContext: context];
+                  inContext: context
+              systemMessage: YES];
 }
 
 
@@ -1175,7 +1177,8 @@
 		    toRecipients: [NSArray arrayWithObject: recipientEmail]
                           sender: senderEmail
                withAuthenticator: authenticator
-                       inContext: context];
+                       inContext: context
+                   systemMessage: YES];
 	}
       
       if ([[self container] notifyUserOnPersonalModifications] &&
@@ -1192,7 +1195,8 @@
 		    toRecipients: [NSArray arrayWithObject: recipientEmail]
                           sender: senderEmail
                withAuthenticator: authenticator
-                       inContext: context];
+                       inContext: context
+                   systemMessage: YES];
 
 	  [headerMap setObject: o forKey: @"to"];
 	}
@@ -1207,7 +1211,8 @@
 		    toRecipients: [NSArray arrayWithObject: recipientEmail]
                           sender: senderEmail
                withAuthenticator: authenticator
-                       inContext: context];
+                       inContext: context
+                   systemMessage: YES];
     }
 
 }

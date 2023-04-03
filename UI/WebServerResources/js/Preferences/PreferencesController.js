@@ -456,8 +456,10 @@
         });
       }
 
-      if (sendForm)
+      if (sendForm) {
+        var self = this;
         return this.preferences.$save().then(function(data) {
+          self.preferences.defaults.totpVerificationCode = ''
           if (!options || !options.quick) {
             $mdToast.show(
               $mdToast.simple()
@@ -466,10 +468,19 @@
                 .hideDelay(2000));
             form.$setPristine();
           }
+        }).catch(function(e) {
+          if (485 == e.status) {
+            form.totpVerificationCode.$setValidity('invalidTotpCode', false);
+          }
         });
+      }
 
       return $q.reject('Invalid form');
     };
+
+    this.resetTotpVerificationCode = function(form) {
+      form.totpVerificationCode.$setValidity('invalidTotpCode', true);
+    }
 
     this.canChangePassword = function(form) {
       if (this.passwords.newPasswordConfirmation && this.passwords.newPasswordConfirmation.length &&

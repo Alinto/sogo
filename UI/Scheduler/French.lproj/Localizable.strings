@@ -623,6 +623,7 @@ vtodo_class2 = "(Tâche confidentielle)";
 "Rename" = "Renommer";
 "Import Calendar" = "Importer un calendrier";
 "Select an ICS file." = "Sélectionnez un fichier ICS.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "Vous avez des modifications qui ne sont pas sauvegardées. Souhaitez-vous fermer la fenêtre et perdre les données ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Abonnement au calendrier complété";

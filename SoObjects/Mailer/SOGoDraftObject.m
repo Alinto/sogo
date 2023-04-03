@@ -859,7 +859,7 @@ static NSString    *userAgent      = nil;
 //
 //
 //
-- (void) _fetchAttachmentsFromMail: (SOGoMailObject *) sourceMail
+- (void) _fetchAttachmentsFromMail: (SOGoMailObject *) sourceMail onlyImages: (BOOL) onlyImages
 {
   NSMutableDictionary *currentInfo;
   NSArray *attachments;
@@ -871,15 +871,19 @@ static NSString    *userAgent      = nil;
   for (count = 0; count < max; count++)
     {
       currentInfo = [attachments objectAtIndex: count];
-      [self saveAttachment: [currentInfo objectForKey: @"body"]
+      if (!onlyImages
+        || (onlyImages && [[NGMimeBodyPart imageMimeTypes] containsObject: [currentInfo objectForKey: @"mimetype"]])) {
+        [self saveAttachment: [currentInfo objectForKey: @"body"]
               withMetadata: currentInfo];
+      }
+      
     }
 }
 
 //
 //
 //
-- (void) _fileAttachmentsFromPart: (id) thePart
+- (void) _fileAttachmentsFromPart: (id) thePart onlyImages: (BOOL) onlyImages
 {
   // Small hack to avoid SOPE's stupid behavior to wrap a multipart
   // object in a NGMimeBodyPart.
@@ -889,10 +893,15 @@ static NSString    *userAgent      = nil;
 
   if ([thePart isKindOfClass: [NGMimeBodyPart class]])
     {
-      NSString *filename, *mimeType;
+      NSString *filename, *mimeType, *bodyId;
       id body;
 
+      if (onlyImages && ![thePart isImage]) {
+        return;
+      }
+
       mimeType = [[thePart contentType] stringValue];
+      bodyId = [[thePart contentId] stringValue];
       body = [thePart body];
       filename = [(NGMimeContentDispositionHeaderField *)[thePart headerForKey: @"content-disposition"] filename];
 
@@ -906,6 +915,7 @@ static NSString    *userAgent      = nil;
           currentInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                                filename, @"filename",
                                              mimeType, @"mimetype",
+                                             bodyId, @"bodyid", 
                                              nil];
           [self saveAttachment: body
                   withMetadata: currentInfo];
@@ -919,7 +929,7 @@ static NSString    *userAgent      = nil;
       parts = [thePart parts];
       for (i = 0; i < [parts count]; i++)
         {
-          [self _fileAttachmentsFromPart: [parts objectAtIndex: i]];
+          [self _fileAttachmentsFromPart: [parts objectAtIndex: i] onlyImages: onlyImages];
         }
     }
 }
@@ -928,7 +938,7 @@ static NSString    *userAgent      = nil;
 //
 //
 //
-- (void) _fetchAttachmentsFromEncryptedMail: (SOGoMailObject *) sourceMail
+- (void) _fetchAttachmentsFromEncryptedMail: (SOGoMailObject *) sourceMail onlyImages: (BOOL) onlyImages
 {
   NSData *certificate;
 
@@ -941,7 +951,7 @@ static NSString    *userAgent      = nil;
       NGMimeMessage *m;
 
       m = [[sourceMail content] messageFromEncryptedDataAndCertificate: certificate];
-      [self _fileAttachmentsFromPart: [m body]];
+      [self _fileAttachmentsFromPart: [m body] onlyImages: onlyImages];
     }
 }
 
@@ -949,12 +959,12 @@ static NSString    *userAgent      = nil;
 //
 //
 //
-- (void) _fetchAttachmentsFromOpaqueSignedMail: (SOGoMailObject *) sourceMail
+- (void) _fetchAttachmentsFromOpaqueSignedMail: (SOGoMailObject *) sourceMail onlyImages: (BOOL) onlyImages
 {
   NGMimeMessage *m;
 
   m = [[sourceMail content] messageFromOpaqueSignedData];
-  [self _fileAttachmentsFromPart: [m body]];
+  [self _fileAttachmentsFromPart: [m body] onlyImages: onlyImages];
 }
 
 
@@ -973,7 +983,7 @@ static NSString    *userAgent      = nil;
 
   [sourceMail fetchCoreInfos];
 
-  [self _fetchAttachmentsFromMail: sourceMail];
+  [self _fetchAttachmentsFromMail: sourceMail onlyImages: NO];
   info = [NSMutableDictionary dictionaryWithCapacity: 16];
   subject = [sourceMail subject];
   if ([subject length] > 0)
@@ -1057,6 +1067,22 @@ static NSString    *userAgent      = nil;
   [self setSourceIMAP4ID: [[sourceMail nameInContainer] intValue]];
   [self setSourceFolderWithMailObject: sourceMail];
 
+
+  ud = [[context activeUser] userDefaults];
+  // TODO: Change mailMessageForwarding for reply
+  if ([[ud mailMessageForwarding] isEqualToString: @"inline"])
+  {
+    [self setText: [sourceMail contentForInlineForward]];
+    if ([sourceMail isEncrypted])
+      [self _fetchAttachmentsFromEncryptedMail: sourceMail onlyImages: YES];
+    else if ([sourceMail isOpaqueSigned])
+      [self _fetchAttachmentsFromOpaqueSignedMail: sourceMail onlyImages: YES];
+    else
+      [self _fetchAttachmentsFromMail: sourceMail onlyImages: YES];
+  }
+
+    [self save];
+
   [self storeInfo];
 }
 
@@ -1090,15 +1116,16 @@ static NSString    *userAgent      = nil;
 
   /* attach message */
   ud = [[context activeUser] userDefaults];
+
   if ([[ud mailMessageForwarding] isEqualToString: @"inline"])
     {
       [self setText: [sourceMail contentForInlineForward]];
       if ([sourceMail isEncrypted])
-        [self _fetchAttachmentsFromEncryptedMail: sourceMail];
+        [self _fetchAttachmentsFromEncryptedMail: sourceMail onlyImages: NO];
       else if ([sourceMail isOpaqueSigned])
-        [self _fetchAttachmentsFromOpaqueSignedMail: sourceMail];
+        [self _fetchAttachmentsFromOpaqueSignedMail: sourceMail onlyImages: NO];
       else
-        [self _fetchAttachmentsFromMail: sourceMail];
+        [self _fetchAttachmentsFromMail: sourceMail onlyImages: NO];
     }
   else
     {
@@ -1195,7 +1222,7 @@ static NSString    *userAgent      = nil;
                     withMetadata: (NSMutableDictionary *) metadata
 {
   NSFileManager *fm;
-  NSString *p, *pmime, *name, *baseName, *extension, *mimeType;
+  NSString *p, *pmime, *pbodyId, *name, *baseName, *extension, *mimeType, *bodyId;
   int i;
 
   if (![_attach isNotNull])
@@ -1216,6 +1243,7 @@ static NSString    *userAgent      = nil;
   fm = [NSFileManager defaultManager];
   p = [self pathToAttachmentWithName: name];
   i = 1;
+  bodyId = nil;
 
   while ([fm isReadableFileAtPath: p])
     {
@@ -1242,6 +1270,18 @@ static NSString    *userAgent      = nil;
           [[NSFileManager defaultManager] removeFileAtPath: p  handler: nil];
           return [NSException exceptionWithHTTPStatus: 500 /* Server Error */
                                                reason: @"Could not write attachment to draft!"];
+        }
+    }
+  
+  bodyId = [metadata objectForKey: @"bodyId"];
+  if ([bodyId length] > 0)
+    {
+      pbodyId = [self pathToAttachmentWithName: [NSString stringWithFormat: @".%@.bodyid", name]];
+      if (![[bodyId dataUsingEncoding: NSUTF8StringEncoding] writeToFile: pbodyId  atomically: YES])
+        {
+          [[NSFileManager defaultManager] removeFileAtPath: p  handler: nil];
+          return [NSException exceptionWithHTTPStatus: 500 /* Server Error */
+                                               reason: @"Could not write body idattachment to draft!"];
         }
     }
 
@@ -1381,6 +1421,27 @@ static NSString    *userAgent      = nil;
   return s;
 }
 
+- (NSString *) bodyIdForAttachmentWithName: (NSString *) _name
+{
+  NSString *s, *p;
+  NSData *bodyIdData;
+
+  p = [self pathToAttachmentWithName: [NSString stringWithFormat: @".%@.bodyid", _name]];
+  bodyIdData = [NSData dataWithContentsOfFile: p];
+  if (bodyIdData)
+    {
+      s = [[NSString alloc] initWithData: bodyIdData
+                                encoding: NSUTF8StringEncoding];
+      [s autorelease];
+    }
+  else
+    {
+      s = nil;
+    }
+
+  return s;
+}
+
 - (NSString *) contentDispositionForAttachmentWithName: (NSString *) _name
                                         andContentType: (NSString *) _type
 {
@@ -1440,6 +1501,9 @@ static NSString    *userAgent      = nil;
       attachAsString = YES;
     else if ([s hasPrefix: @"message/rfc822"])
       attachAsRFC822 = YES;
+  }
+  if ((s = [self bodyIdForAttachmentWithName:_name]) != nil) {
+    [map setObject: s forKey: @"content-id"];
   }
   if ((s = [self contentDispositionForAttachmentWithName: _name andContentType: s]))
     {
@@ -2174,7 +2238,8 @@ static NSString    *userAgent      = nil;
                     toRecipients: [NSArray arrayWithObject: recipient]
                           sender: [self sender]
                     withAuthenticator: [self authenticatorInContext: context]
-                       inContext: context];
+                       inContext: context
+                   systemMessage: NO];
 
           if (error)
             return error;
@@ -2199,7 +2264,8 @@ static NSString    *userAgent      = nil;
                   toRecipients: [self allBareRecipients]
                         sender: [self sender]
                 withAuthenticator: [self authenticatorInContext: context]
-                     inContext: context];
+                     inContext: context
+                 systemMessage: NO];
     }
 
   if (!error && copyToSent)

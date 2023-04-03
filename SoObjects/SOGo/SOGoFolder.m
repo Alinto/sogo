@@ -200,16 +200,16 @@
 
   selfName = [self realNameInContainer];
   otherName = [otherFolder realNameInContainer];
-  if ([selfName isEqualToString: @"personal"])
+  if ([[selfName  lowercaseString] isEqualToString: @"personal"])
     {
-      if ([otherName isEqualToString: @"personal"])
+      if ([[otherName lowercaseString] isEqualToString: @"personal"])
 	comparison = NSOrderedSame;
       else
 	comparison = NSOrderedAscending;
     }
   else
     {
-      if ([otherName isEqualToString: @"personal"])
+      if ([[otherName lowercaseString] isEqualToString: @"personal"])
 	comparison = NSOrderedDescending;
       else
 	comparison = NSOrderedSame;

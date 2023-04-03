@@ -42,6 +42,7 @@
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/WOResourceManager+SOGo.h>
+#import <SOGo/NGMimeBodyPart+SOGo.h>
 #import <SOGoUI/UIxComponent.h>
 #import <Mailer/SOGoDraftObject.h>
 #import <Mailer/SOGoMailObject+Draft.h>
@@ -702,6 +703,40 @@ static NSArray *infoKeys = nil;
   return [[self attachmentAttrs] count] > 0 ? YES : NO;
 }
 
+/*
+ * This method replace cid images in body with base64 inline image data
+ */
+- (void) setBase64ImagesInText:(SOGoDraftObject *) draft
+{
+  NSString *contentId, *lText;
+  NGMimeBodyPart *mime;
+
+  if ([self isHTML] && [[draft fetchAttachmentAttrs] count] > 0) {
+        for (NSDictionary *draftFileAttachement in [draft fetchAttachmentAttrs]) {
+          mime = [draftFileAttachement objectForKey: @"part"];
+          if ([mime isImage]) {
+            contentId = [mime contentId];
+            if (contentId) {
+              contentId = [contentId stringByReplacingOccurrencesOfString: @"<" withString: @"cid:"];
+              contentId = [contentId stringByReplacingOccurrencesOfString: @">" withString: @""];
+
+              if ([[mime encoding] isEqualToString: @"base64"] && contentId) {
+                lText = [text stringByReplacingOccurrencesOfString: contentId 
+                withString: [NSString stringWithFormat: @"data:%@;base64,%@", 
+                  [[mime contentType] stringValue], 
+                  [NSString stringWithUTF8String: [[mime body] bytes]]]];
+                [self setText: lText];
+              } else {
+                [self warnWithFormat: @"Empty content id [1] : %@", contentId];
+              }
+            } else {
+              [self warnWithFormat: @"Empty content id [2] : %@", contentId];
+            }
+          }
+        }                  
+    }
+}
+
 - (id <WOActionResults>) editAction
 {
   id <WOActionResults> response;
@@ -720,7 +755,6 @@ static NSArray *infoKeys = nil;
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                               [self localeCode], @"locale",
                               [NSNumber numberWithBool: [self isHTML]], @"isHTML",
-                              text, @"text",
                               nil];
   if ((value = [self from]))
     [data setObject: value forKey: @"from"];
@@ -736,6 +770,10 @@ static NSArray *infoKeys = nil;
     [data setObject: value forKey: @"subject"];
   if ((value = [self attachmentAttrs]))
     [data setObject: value forKey: @"attachmentAttrs"];
+
+  [self setBase64ImagesInText: co];
+  [data setObject: text forKey: @"text"];
+    
 
   response = [self responseWithStatus: 200
                             andString: [data jsonRepresentation]];
@@ -834,7 +872,7 @@ static NSArray *infoKeys = nil;
                                                   [self labelForKey: @"Tried to send too many mails. Please wait."],
                                        @"message",
                                        nil];
-          return [self responseWithStatus: 200
+          return [self responseWithStatus: 405
                                 andString: [jsonResponse jsonRepresentation]];
         }
       

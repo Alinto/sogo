@@ -60,7 +60,10 @@
 - (NSString *) vacationFooterTemplateFile;
 - (NSString *) mailingMechanism;
 - (NSString *) smtpServer;
-- (NSString *) smtpAuthenticationType;
+- (BOOL)smtpMasterUserEnabled;
+- (NSString *)smtpMasterUserUsername;
+- (NSString *) smtpMasterUserPassword;
+- (NSString *)smtpAuthenticationType;
 - (NSString *) mailSpoolPath;
 - (float) softQuotaRatio;
 - (BOOL) mailKeepDraftsAfterSend;

@@ -761,8 +761,8 @@ Default value is `0`, or disabled.
 
 |S |SOGoMessageSubmissionBlockInterval
 |Number of seconds, default to `300` (or 5 minutes). Note that
-_SOGoCacheCleanupInterval_ must be set to a value equal or higher than
-_SOGoFailedLoginBlockInterval_.
+_SOGoMessageSubmissionBlockInterval_ must be set to a value equal or lower than
+_SOGoCacheCleanupInterval_.
 
 |S |SOGoMaximumRequestCount
 |Parameter used to control the number of requests a user can send to the SOGo
@@ -1927,6 +1927,15 @@ To disable TLS verification for localhost domains, add
 Current, only `PLAIN` is supported and other values will cause
 the authentication to fail.
 
+|D |SOGoSMTPMasterUserEnabled
+|Enable specific SMTP user account for system e-mails (notifications, reminders, ...). Default is `NO`.
+
+|D |SOGoSMTPMasterUserUsername
+|SMTP account username for master account (`SOGoSMTPMasterUserEnabled` enabled).
+
+|D |SOGoSMTPMasterUserPassword
+|SMTP account password for master account (`SOGoSMTPMasterUserEnabled` enabled).
+
 |S |WOSendMail
 |The path of the sendmail binary.
 
@@ -2792,9 +2801,13 @@ As a reference, the _cronjob_ should de defined like this:
 * * * * *     /usr/sbin/sogo-ealarms-notify
 ----
 
-If your mail server requires use of SMTP AUTH, specify a credential file
-using `-p /path/to/credFile`. This file should contain the username and
-password, separated by a colon (`username:password`)
+If your mail server requires use of SMTP AUTH, you can use the following parameters in the configuration file :
+
+```
+SOGoSMTPMasterUserEnabled = YES;
+SOGoSMTPMasterUserUsername = "foo";
+SOGoSMTPMasterUserPassword = "bar";
+```
 
 _Cronjob_ — Vacation messages activation and expiration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2964,6 +2977,9 @@ If not set, it defaults to `102400` bytes, or 100 KB.
 
 |S |SOGoEASSearchInBody
 |Parameter used to enable EAS Search operation in all parts of a message.
+
+|S |SOGoEASDisableUI
+|Parameter used to disable EAS user interface options. Default value is `NO`
 
 Defaults to `NO`, which means to search only in Subject- and From-header.
 |=======================================================================
@@ -3242,6 +3258,9 @@ current version of SOGo from the previous release.
 
 [cols="100a"]
 |=======================================================================
+h|5.8.1
+|New options `SOGoSMTPMasterUserEnabled`, `SOGoSMTPMasterUserUsername` and `SOGoSMTPMasterUserPassword` has been added. Those parameters replace the `-p` option for sogo-ealarms-notify.
+
 h|5.6.0
 |The session table (`OCSSessionsFolderURL`) must be dropped prior to restart sogod.
 This will allow users to use larger passwords (up to 2048 characters).

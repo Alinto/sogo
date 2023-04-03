@@ -238,7 +238,8 @@
           toRecipients: [NSArray arrayWithObject: recipient]
                 sender: from
      withAuthenticator: [self authenticatorInContext: context]
-             inContext: context];
+             inContext: context
+         systemMessage: YES];
 }
 
 @end

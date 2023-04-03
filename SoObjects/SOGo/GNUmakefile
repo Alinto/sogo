@@ -91,7 +91,9 @@ SOGo_HEADER_FILES = \
 	SOGoTextTemplateFile.h		\
 	SOGoZipArchiver.h	\
 	\
-	JWT.h
+	JWT.h	\
+	\
+	NGMimeBodyPart+SOGo.h
 
 all::
 	@touch SOGoBuild.m
@@ -176,7 +178,9 @@ SOGo_OBJC_FILES = \
 	SOGoTextTemplateFile.m		\
 	SOGoZipArchiver.m	\
 	\
-	JWT.m
+	JWT.m	\
+	\
+	NGMimeBodyPart+SOGo.m
 
 SOGo_C_FILES += lmhash.c aes.c crypt_blowfish.c pkcs5_pbkdf2.c
 

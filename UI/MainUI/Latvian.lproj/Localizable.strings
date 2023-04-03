@@ -21,6 +21,13 @@
 "browserNotCompatible" = "Mēs esam noteikuši, ka jūsu pārlūkprogrammas versija pašlaik netiek atbalstīta šajā vietnē. Mūsu ieteikums ir izmantot Firefox. Noklikšķiniet uz tālāk norādītās saites, lai lejupielādētu visjaunāko šīs pārlūkprogrammas versiju.";
 "alternativeBrowsers" = "Alternatīvi var izmantot arī šādas saderīgas pārlūkprogrammas";
 "alternativeBrowserSafari" = "Alternatīvi, jūs varat arī izmantot Safari.";
+
+/* 2FA */
+"Verification Code" = "Verification Code";
+"Enter the 6-digit verification code from your TOTP application." = "Enter the 6-digit verification code from your TOTP application.";
+"You provided an invalid TOTP key." = "You provided an invalid TOTP key.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application.";
+
 "Download" = "Lejupielādēt";
 "Language" = "Valoda";
 "choose" = "Izvēlieties...";
@@ -69,7 +76,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "Par";
-"AboutBox" = "SOGo izstrādātās inversā, bezmaksas grupprogrammatūras serveris ar uzsvaru uz mērogojamību un vienkāršību.<br/><br/>\nAJAX-based sniedz bagātu SOGo Web interfeisu un atbalsta vairāki klienti, izmantojot standarta protokolus CalDAV un CardDAV.<br/><br/>\nSOGo tiek izplatīts saskaņā ar <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> versiju 2 vai jaunāku un detaļas tiek izplatītas saskaņā ar GNU LGPL versiju 2. Šī ir bezmaksas programmatūra: tu vari to mainīt un izplatīt. Nav NEKĀDAS GARANTIJAS, likums to atļauj.<br/><br/>\nSkatīt <a href=\"http://www.sogo.nu/en/support/community.html\">šo lapu</a> par dažādām atbalsta iespējām.";
+"AboutBox" = "Developed by Inverse and Alinto, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
 "Your account was locked due to too many failed attempts." = "Jūsu konts ir bloķēts, jo tika veikti pārāk daudz nesekmīgu mēģinājumu.";
 "Your account was locked due to an expired password." = "Jūsu konts ir bloķēts, jo ir beidzies paroles derīguma termiņš.";
 "Login failed due to unhandled error case" = "Pieteikšanās neizdevās nezināmas kļūdas dēļ";
@@ -103,3 +110,19 @@
 "Close" = "Aizvērt";
 "Missing search parameter" = "Trūkst meklēšanas parametru";
 "Missing type parameter" = "Trūkst tipa parametru";
+
+/* Password Recovery */
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password lost" = "Password lost";
+"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
+"Invalid secret question answer" = "Invalid secret question answer";
+"Next" = "Next";
+"Back" = "Back";
+"Please enter a new password below" = "Please enter a new password below";
+"A link will be sent to %{0}" = "A link will be sent to %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
+"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
+"Password recovery email in error" = "Password recovery email in error";
+"Password reset" = "Password reset";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";

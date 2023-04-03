@@ -888,7 +888,8 @@ static const NSString *kJwtKey = @"jwt";
                       toRecipients: [NSArray arrayWithObjects: toEmail, nil]
                             sender: fromEmail
                  withAuthenticator: [SOGoEmptyAuthenticator sharedSOGoEmptyAuthenticator]
-                         inContext: [self context]];
+                         inContext: [self context]
+                     systemMessage: YES];
 
           if (!e) {
             response = [self responseWithStatus: 200
