@@ -1,6 +1,6 @@
 /* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 
-(function() {
+(function () {
   'use strict';
 
   /**
@@ -16,7 +16,7 @@
     this.$mailbox = mailbox;
     this.$hasUnsafeContent = false;
     this.$loadUnsafeContent = false;
-    this.editable = {to: [], cc: [], bcc: []};
+    this.editable = { to: [], cc: [], bcc: [] };
     this.selected = false;
 
     // Data is immediately available
@@ -49,7 +49,7 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Message constructor
    */
-  Message.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'sgMessage_STATUS', 'Resource', 'Preferences', function($q, $timeout, $log, Settings, Message_STATUS, Resource, Preferences) {
+  Message.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'sgMessage_STATUS', 'Resource', 'Preferences', function ($q, $timeout, $log, Settings, Message_STATUS, Resource, Preferences) {
     angular.extend(Message, {
       STATUS: Message_STATUS,
       $q: $q,
@@ -67,7 +67,7 @@
       Message.$tags = {};
     }
     if (Preferences.defaults.SOGoMailDisplayRemoteInlineImages &&
-        Preferences.defaults.SOGoMailDisplayRemoteInlineImages == 'always') {
+      Preferences.defaults.SOGoMailDisplayRemoteInlineImages == 'always') {
       Message.$displayRemoteInlineImages = true;
     }
 
@@ -81,16 +81,16 @@
   try {
     angular.module('SOGo.MailerUI');
   }
-  catch(e) {
+  catch (e) {
     angular.module('SOGo.MailerUI', ['SOGo.Common']);
   }
   angular.module('SOGo.MailerUI')
     .constant('sgMessage_STATUS', {
-      NOT_LOADED:      0,
+      NOT_LOADED: 0,
       DELAYED_LOADING: 1,
-      LOADING:         2,
-      LOADED:          3,
-      DELAYED_MS:      300
+      LOADING: 2,
+      LOADED: 3,
+      DELAYED_MS: 300
     })
     .factory('Message', Message.$factory);
 
@@ -101,11 +101,11 @@
    * @param {string} search - the search string to match
    * @returns a collection of strings
    */
-  Message.filterTags = function(query, excludedTags) {
+  Message.filterTags = function (query, excludedTags) {
     var re = new RegExp(query, 'i'),
-        results = [];
+      results = [];
 
-    _.forEach(_.keys(Message.$tags), function(tag) {
+    _.forEach(_.keys(Message.$tags), function (tag) {
       var pair = Message.$tags[tag];
       if (pair[0].search(re) != -1) {
         if (!_.includes(excludedTags, tag))
@@ -122,14 +122,14 @@
    * @desc Extend instance with new data and massage some attributes.
    * @param {object} data - attributes of message
    */
-  Message.prototype.init = function(data) {
+  Message.prototype.init = function (data) {
     var _this = this;
     angular.extend(this, data);
     this.$formatFullAddresses();
     this.$loadUnsafeContent = false;
-    _.forEach(this.flags, function(flag, i) {
+    _.forEach(this.flags, function (flag, i) {
       if (flag.charAt(0) == '$') {
-        _this.flags.splice(i, 1,'_' + flag);
+        _this.flags.splice(i, 1, '_' + flag);
       }
     });
     // isread will be undefined when composing a new message -- assume unseen flag is not set.
@@ -142,12 +142,12 @@
    * @desc Build the path of the message
    * @returns a string representing the path relative to the mail module
    */
-  Message.prototype.$absolutePath = function(options) {
+  Message.prototype.$absolutePath = function (options) {
     var _this = this, id = this.id;
 
     function buildPath() {
       var path;
-      path = _.map(_this.$mailbox.path.split('/'), function(component) {
+      path = _.map(_this.$mailbox.path.split('/'), function (component) {
         return 'folder' + component.asCSSIdentifier();
       });
       path.splice(0, 0, _this.accountId); // insert account ID
@@ -174,12 +174,12 @@
    * @desc Change the UID of the message. This happens when saving a draft.
    * @param {number} uid - the new message UID
    */
-  Message.prototype.$setUID = function(uid) {
+  Message.prototype.$setUID = function (uid) {
     var oldUID = (this.uid || -1), _this = this, index;
 
     if (oldUID != parseInt(uid)) {
       this.uid = parseInt(uid);
-      this.$absolutePath({nocache: true});
+      this.$absolutePath({ nocache: true });
       if (oldUID > -1) {
         oldUID = oldUID.toString();
         if (angular.isDefined(this.$mailbox.uidsMap[oldUID])) {
@@ -189,7 +189,7 @@
           this.$mailbox.$messages[index].uid = this.uid;
 
           // Update messages list of mailbox
-          _.forEach(['from', 'to', 'subject'], function(attr) {
+          _.forEach(['from', 'to', 'subject'], function (attr) {
             _this.$mailbox.$messages[index][attr] = _this.editable[attr];
           });
         }
@@ -197,7 +197,7 @@
       else {
         // Refresh selected folder if it's the drafts mailbox
         if (this.$mailbox.constructor.selectedFolder &&
-            this.$mailbox.constructor.selectedFolder.type == 'draft') {
+          this.$mailbox.constructor.selectedFolder.type == 'draft') {
           this.$mailbox.constructor.selectedFolder.$filter();
         }
       }
@@ -210,13 +210,13 @@
    * @desc Format all sender and recipients addresses with a complete description (name <email>).
    *       This function also generates the avatar URL for each email address and a short name
    */
-  Message.prototype.$formatFullAddresses = function() {
+  Message.prototype.$formatFullAddresses = function () {
     var _this = this;
     var identities = _.map(_this.$mailbox.$account.identities, 'email');
 
     // Build long representation of email addresses
-    _.forEach(['from', 'to', 'cc', 'bcc', 'reply-to'], function(type) {
-      _.forEach(_this[type], function(data) {
+    _.forEach(['from', 'to', 'cc', 'bcc', 'reply-to'], function (type) {
+      _.forEach(_this[type], function (data) {
         if (data.name && data.name != data.email) {
           data.full = data.name + ' <' + data.email + '>';
 
@@ -225,7 +225,7 @@
             data.shortname = data.name;
           else if (data.name.split(' ').length)
             // If we have "Alice Foo" or "Foo, Alice" as name, we grab "Alice"
-            data.shortname = _.first(_.last(data.name.split(/, */)).split(/ +/)).replace('\'','');
+            data.shortname = _.first(_.last(data.name.split(/, */)).split(/ +/)).replace('\'', '');
         }
         else if (data.email) {
           data.full = '<' + data.email + '>';
@@ -248,13 +248,13 @@
    * @desc Format all recipients into a very compact string
    * @returns a compacted string of all recipients
    */
-  Message.prototype.$shortRecipients = function(max) {
+  Message.prototype.$shortRecipients = function (max) {
     var _this = this, result = [], count = 0, total = 0;
 
     // Build short representation of email addresses
-    _.forEach(['to', 'cc', 'bcc'], function(type) {
-      total += _this[type]? _this[type].length : 0;
-      _.forEach(_this[type], function(data, i) {
+    _.forEach(['to', 'cc', 'bcc'], function (type) {
+      total += _this[type] ? _this[type].length : 0;
+      _.forEach(_this[type], function (data, i) {
         if (count < max)
           result.push(data.shortname);
         count++;
@@ -273,7 +273,7 @@
    * @desc Format the first address of a specific type with a short description.
    * @returns a string of the name or the email of the envelope address type
    */
-  Message.prototype.$shortAddress = function(type) {
+  Message.prototype.$shortAddress = function (type) {
     var address = '';
     if (this[type]) {
       if (angular.isString(this[type])) {
@@ -302,14 +302,14 @@
    * @desc Check if 'Reply to All' is an appropriate action on the message.
    * @returns true if the message is not a draft and has more than one recipient
    */
-  Message.prototype.allowReplyAll = function() {
+  Message.prototype.allowReplyAll = function () {
     var identities = _.map(this.$mailbox.$account.identities, 'email');
     var recipientsCount = 0;
-    recipientsCount = _.reduce(['to', 'cc', 'bcc', 'reply-to'], _.bind(function(count, type) {
+    recipientsCount = _.reduce(['to', 'cc', 'bcc', 'reply-to'], _.bind(function (count, type) {
       var typeCount = 0;
       if (this[type]) {
         typeCount = this[type].length;
-        _.forEach(this[type], function(recipient) {
+        _.forEach(this[type], function (recipient) {
           if (_.indexOf(identities, recipient.email) >= 0) {
             typeCount--;
           }
@@ -329,7 +329,7 @@
    * @memberof Message.prototype
    * @desc Mark the message to load unsafe resources when calling $content().
    */
-  Message.prototype.loadUnsafeContent = function() {
+  Message.prototype.loadUnsafeContent = function () {
     this.$loadUnsafeContent = true;
     delete this.$parts;
   };
@@ -340,125 +340,127 @@
    * @desc Get the message body as accepted by SCE (Angular Strict Contextual Escaping).
    * @returns the HTML representation of the body
    */
-  Message.prototype.$content = function() {
+  Message.prototype.$content = function () {
     // Punycode
-    this.to.forEach(function (element, i, arr) {
-      if (element.email && element.email.indexOf('@') > 0)
-        arr[i].email = punycode.toUnicode(element.email);
-    });
+    if (this.to && this.to.length > 0) {
+      this.to.forEach(function (element, i, arr) {
+        if (element.email && element.email.indexOf('@') > 0)
+          arr[i].email = punycode.toUnicode(element.email);
+      });
+    }
     if (this.from && this.from.indexOf('@') > 0)
       this.from = punycode.toUnicode(this.from);
 
     var _this = this,
-        parts = [],
-        
-      
+      parts = [],
 
-        _visit = function(part) {
-          part.msgclass = 'msg-attachment-other';
-          if (part.type == 'UIxMailPartAlternativeViewer') {
-            _visit(_.find(part.content, function(alternatePart) {
-              return part.preferredPart == alternatePart.contentType;
-            }));
+
+
+      _visit = function (part) {
+        part.msgclass = 'msg-attachment-other';
+        if (part.type == 'UIxMailPartAlternativeViewer') {
+          _visit(_.find(part.content, function (alternatePart) {
+            return part.preferredPart == alternatePart.contentType;
+          }));
+        }
+        // Can be used for UIxMailPartMixedViewer, UIxMailPartMessageViewer, and UIxMailPartSignedViewer
+        else if (angular.isArray(part.content)) {
+          if (part.type == 'UIxMailPartSignedViewer' && part['supports-smime'] === 1) {
+            _this.signed = {
+              valid: part.valid,
+              certificate: part.certificates[part.certificates.length - 1],
+              message: part.message
+            };
           }
-          // Can be used for UIxMailPartMixedViewer, UIxMailPartMessageViewer, and UIxMailPartSignedViewer
-          else if (angular.isArray(part.content)) {
-            if (part.type == 'UIxMailPartSignedViewer' && part['supports-smime'] === 1) {
+          else if (part.type == 'UIxMailPartEncryptedViewer') {
+            if (part.encrypted) {
+              _this.encrypted = {
+                valid: part.decrypted
+              };
+              if (part.decrypted)
+                _this.encrypted.message = l("This message is encrypted");
+              else
+                _this.encrypted.message = l("This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module.");
+            }
+            if (part.opaqueSigned) {
               _this.signed = {
                 valid: part.valid,
                 certificate: part.certificates[part.certificates.length - 1],
                 message: part.message
               };
             }
-            else if (part.type == 'UIxMailPartEncryptedViewer') {
-              if (part.encrypted) {
-                _this.encrypted = {
-                  valid: part.decrypted
-                };
-                if (part.decrypted)
-                  _this.encrypted.message = l("This message is encrypted");
-                else
-                  _this.encrypted.message = l("This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module.");
-              }
-              if (part.opaqueSigned) {
-                _this.signed = {
-                  valid: part.valid,
-                  certificate: part.certificates[part.certificates.length - 1],
-                  message: part.message
-                };
-              }
-            }
-            var winmail = _.find(part.content, function(mixedPart) {
-              // Ignore empty content -- that could mean a decoding error server-side.
-              return mixedPart.type == 'UIxMailPartTnefViewer' && mixedPart.content.length > 0;
-            });
+          }
+          var winmail = _.find(part.content, function (mixedPart) {
+            // Ignore empty content -- that could mean a decoding error server-side.
+            return mixedPart.type == 'UIxMailPartTnefViewer' && mixedPart.content.length > 0;
+          });
 
-            if (winmail && !_.find(part.content, function(mixedPart) {
-              return mixedPart.type == 'UIxMailPartAlternativeViewer';
-            })) {
-              // If there's no alternate part in the message, show the winmail.dat attachment only.
-              // Otherwise, show all parts.
-              _visit(winmail);
-            }
-            else {
-              _.forEach(part.content, function(mixedPart) {
-                _visit(mixedPart);
-              });
-            }
+          if (winmail && !_.find(part.content, function (mixedPart) {
+            return mixedPart.type == 'UIxMailPartAlternativeViewer';
+          })) {
+            // If there's no alternate part in the message, show the winmail.dat attachment only.
+            // Otherwise, show all parts.
+            _visit(winmail);
           }
           else {
-            if (angular.isUndefined(part.safeContent)) {
-              // Keep a copy of the original content
-              part.safeContent = part.content;
-              _this.$hasUnsafeContent |= (part.safeContent.indexOf(' unsafe-') > -1);
-            }
-            if (part.type == 'UIxMailPartHTMLViewer') {
-              part.html = true;
-              if (_this.$loadUnsafeContent || Message.$displayRemoteInlineImages) {
-                if (angular.isUndefined(part.unsafeContent)) {
-                  part.unsafeContent = document.createElement('div');
-                  part.unsafeContent.innerHTML = part.safeContent;
-                  angular.forEach(['src', 'data', 'classid', 'background', 'style'], function(suffix) {
-                    var elements = part.unsafeContent.querySelectorAll('[unsafe-' + suffix + ']'),
-                        element,
-                        value,
-                        i;
-                    for (i = 0; i < elements.length; i++) {
-                      element = angular.element(elements[i]);
-                      value = element.attr('unsafe-' + suffix);
-                      element.attr(suffix, value);
-                      element.removeAttr('unsafe-' + suffix);
-                    }
-                  });
-                  _this.$hasUnsafeContent = false;
-                }
-                part.content = part.unsafeContent.innerHTML;
+            _.forEach(part.content, function (mixedPart) {
+              _visit(mixedPart);
+            });
+          }
+        }
+        else {
+          if (angular.isUndefined(part.safeContent)) {
+            // Keep a copy of the original content
+            part.safeContent = part.content;
+            _this.$hasUnsafeContent |= (part.safeContent.indexOf(' unsafe-') > -1);
+          }
+          if (part.type == 'UIxMailPartHTMLViewer') {
+            part.html = true;
+            if (_this.$loadUnsafeContent || Message.$displayRemoteInlineImages) {
+              if (angular.isUndefined(part.unsafeContent)) {
+                part.unsafeContent = document.createElement('div');
+                part.unsafeContent.innerHTML = part.safeContent;
+                angular.forEach(['src', 'data', 'classid', 'background', 'style'], function (suffix) {
+                  var elements = part.unsafeContent.querySelectorAll('[unsafe-' + suffix + ']'),
+                    element,
+                    value,
+                    i;
+                  for (i = 0; i < elements.length; i++) {
+                    element = angular.element(elements[i]);
+                    value = element.attr('unsafe-' + suffix);
+                    element.attr(suffix, value);
+                    element.removeAttr('unsafe-' + suffix);
+                  }
+                });
+                _this.$hasUnsafeContent = false;
               }
-              else {
-                part.content = part.safeContent;
-              }
-              parts.push(part);
-            }
-            else if (part.type == 'UIxMailPartICalViewer' ||
-                     part.type == 'UIxMailPartImageViewer' ||
-                     part.type == 'UIxMailPartLinkViewer') {
-
-              if (part.type == 'UIxMailPartImageViewer')
-                part.msgclass = 'msg-attachment-image';
-              else if (part.type == 'UIxMailPartLinkViewer')
-                part.msgclass = 'msg-attachment-link';
-
-              // Trusted content that can be compiled (Angularly-speaking)
-              part.compile = true;
-              parts.push(part);
+              part.content = part.unsafeContent.innerHTML;
             }
             else {
-              part.html = true;
               part.content = part.safeContent;
-              parts.push(part);
             }
+            parts.push(part);
           }
-        };
+          else if (part.type == 'UIxMailPartICalViewer' ||
+            part.type == 'UIxMailPartImageViewer' ||
+            part.type == 'UIxMailPartLinkViewer') {
+
+            if (part.type == 'UIxMailPartImageViewer')
+              part.msgclass = 'msg-attachment-image';
+            else if (part.type == 'UIxMailPartLinkViewer')
+              part.msgclass = 'msg-attachment-link';
+
+            // Trusted content that can be compiled (Angularly-speaking)
+            part.compile = true;
+            parts.push(part);
+          }
+          else {
+            part.html = true;
+            part.content = part.safeContent;
+            parts.push(part);
+          }
+        }
+      };
 
     if (this.$parts)
       // Use the cache
@@ -480,14 +482,14 @@
    * Secondly, fetch the editable message body along with other metadata such as the recipients.
    * @returns the HTML representation of the body
    */
-  Message.prototype.$editableContent = function() {
+  Message.prototype.$editableContent = function () {
     var _this = this;
 
-    return Message.$$resource.fetch(this.$absolutePath(), 'edit').then(function(data) {
+    return Message.$$resource.fetch(this.$absolutePath(), 'edit').then(function (data) {
       angular.extend(_this, data);
-      return Message.$$resource.fetch(_this.$absolutePath({asDraft: true}), 'edit').then(function(data) {
+      return Message.$$resource.fetch(_this.$absolutePath({ asDraft: true }), 'edit').then(function (data) {
         // Try to match a known account identity from the specified "from" address
-        var identity = _.find(_this.$mailbox.$account.identities, function(identity) {
+        var identity = _.find(_this.$mailbox.$account.identities, function (identity) {
           return data.from && data.from.toLowerCase().indexOf(identity.email) !== -1;
         });
         if (identity)
@@ -511,7 +513,7 @@
    * @memberof Message.prototype
    * @returns the a plain text representation of the subject and body
    */
-  Message.prototype.$plainContent = function() {
+  Message.prototype.$plainContent = function () {
     return Message.$$resource.fetch(this.$absolutePath(), 'viewplain');
   };
 
@@ -522,17 +524,17 @@
    * @param {string} tag - the tag name
    * @returns a promise of the HTTP operation
    */
-  Message.prototype.addTag = function(tag) {
+  Message.prototype.addTag = function (tag) {
     var _this = this,
-        _tag = tag.replace(/^_\$/, '$');
-    return this.$mailbox.getLabels().then(function(labels) {
-      var reload = !_.find(labels, function(label) {
+      _tag = tag.replace(/^_\$/, '$');
+    return this.$mailbox.getLabels().then(function (labels) {
+      var reload = !_.find(labels, function (label) {
         return label.imapName == _tag;
       });
-      return _this.$addOrRemoveTag('add', tag).then(function() {
+      return _this.$addOrRemoveTag('add', tag).then(function () {
         if (reload)
           // Update the list of labels for the mailbox
-          _this.$mailbox.getLabels({reload: true});
+          _this.$mailbox.getLabels({ reload: true });
       });
     });
   };
@@ -544,7 +546,7 @@
    * @param {string} tag - the tag name
    * @returns a promise of the HTTP operation
    */
-  Message.prototype.removeTag = function(tag) {
+  Message.prototype.removeTag = function (tag) {
     return this.$addOrRemoveTag('remove', tag);
   };
 
@@ -556,7 +558,7 @@
    * @param {string} tag - the tag name
    * @returns a promise of the HTTP operation
    */
-  Message.prototype.$addOrRemoveTag = function(operation, tag) {
+  Message.prototype.$addOrRemoveTag = function (operation, tag) {
     var data = {
       operation: operation,
       msgUIDs: [this.uid],
@@ -573,19 +575,19 @@
    * @desc Toggle message unseen status
    * @returns a promise of the HTTP operation
    */
-  Message.prototype.toggleRead = function() {
+  Message.prototype.toggleRead = function () {
     var _this = this;
 
     if (this.isread)
-      return Message.$$resource.fetch(this.$absolutePath(), 'markMessageUnread').then(function() {
-        Message.$timeout(function() {
+      return Message.$$resource.fetch(this.$absolutePath(), 'markMessageUnread').then(function () {
+        Message.$timeout(function () {
           _this.isread = false;
           _this.$mailbox.unseenCount++;
         });
       });
     else
-      return Message.$$resource.fetch(this.$absolutePath(), 'markMessageRead').then(function() {
-        Message.$timeout(function() {
+      return Message.$$resource.fetch(this.$absolutePath(), 'markMessageRead').then(function () {
+        Message.$timeout(function () {
           _this.isread = true;
           _this.$mailbox.unseenCount--;
         });
@@ -600,10 +602,10 @@
    * @param {string} action - the the IMIP action to perform
    * @param {object} data - the delegation info
    */
-  Message.prototype.$imipAction = function(path, action, data) {
+  Message.prototype.$imipAction = function (path, action, data) {
     var _this = this;
-    Message.$$resource.post([this.$absolutePath(), path].join('/'), action, data).then(function(data) {
-      Message.$timeout(function() {
+    Message.$$resource.post([this.$absolutePath(), path].join('/'), action, data).then(function (data) {
+      Message.$timeout(function () {
         _this.$reload();
       });
     });
@@ -614,7 +616,7 @@
    * @memberof Message.prototype
    * @desc Send MDN response for current email message
    */
-  Message.prototype.$sendMDN = function() {
+  Message.prototype.$sendMDN = function () {
     this.shouldAskReceipt = 0;
     return Message.$$resource.post(this.$absolutePath(), 'sendMDN');
   };
@@ -624,10 +626,10 @@
    * @memberof Message.prototype
    * @returns true if there's one ore more attached files
    */
-  Message.prototype.hasAttachments = function(content) {
+  Message.prototype.hasAttachments = function (content) {
     var _this = this;
 
-    return !!_.find(content || this.parts.content, function(part) {
+    return !!_.find(content || this.parts.content, function (part) {
       if (angular.isArray(part.content)) {
         return _this.hasAttachments(part.content);
       }
@@ -641,12 +643,12 @@
    * @desc Delete an attachment from a message being composed
    * @param {string} filename - the filename of the attachment to delete
    */
-  Message.prototype.$deleteAttachment = function(filename) {
+  Message.prototype.$deleteAttachment = function (filename) {
     var data = { 'filename': filename };
     var _this = this;
-    return Message.$$resource.fetch(this.$absolutePath({asDraft: true}), 'deleteAttachment', data).then(function() {
-      Message.$timeout(function() {
-        _this.editable.attachmentAttrs = _.filter(_this.editable.attachmentAttrs, function(attachment) {
+    return Message.$$resource.fetch(this.$absolutePath({ asDraft: true }), 'deleteAttachment', data).then(function () {
+      Message.$timeout(function () {
+        _this.editable.attachmentAttrs = _.filter(_this.editable.attachmentAttrs, function (attachment) {
           return attachment.filename != filename;
         });
       });
@@ -659,15 +661,15 @@
    * @desc Add or remove a the \\Flagged flag on the current message.
    * @returns a promise of the HTTP operation
    */
-  Message.prototype.toggleFlag = function() {
+  Message.prototype.toggleFlag = function () {
     var _this = this,
-        action = 'markMessageFlagged';
+      action = 'markMessageFlagged';
 
     if (this.isflagged)
       action = 'markMessageUnflagged';
 
-    return Message.$$resource.post(this.$absolutePath(), action).then(function(data) {
-      Message.$timeout(function() {
+    return Message.$$resource.post(this.$absolutePath(), action).then(function (data) {
+      Message.$timeout(function () {
         _this.isflagged = !_this.isflagged;
       });
     });
@@ -679,9 +681,9 @@
    * @desc Collapse or expand mail thread
    * @returns a promise of the HTTP operation
    */
-  Message.prototype.toggleThread = function() {
+  Message.prototype.toggleThread = function () {
     var _this = this,
-        action = 'markMessageCollapse';
+      action = 'markMessageCollapse';
 
     if (this.collapsed)
       action = 'markMessageUncollapse';
@@ -689,7 +691,7 @@
     this.collapsed = !this.collapsed;
     this.$mailbox.updateVisibleMessages();
 
-    return Message.$$resource.post(this.$absolutePath(), action).catch(function() {
+    return Message.$$resource.post(this.$absolutePath(), action).catch(function () {
       this.collapsed = !this.collapsed;
       _this.$mailbox.updateVisibleMessages();
     });
@@ -701,7 +703,7 @@
    * @returns true if the Message content is still being retrieved from server after a specific delay
    * @see sgMessage_STATUS
    */
-  Message.prototype.$isLoading = function() {
+  Message.prototype.$isLoading = function () {
     return this.$loaded == Message.STATUS.LOADING;
   };
 
@@ -712,7 +714,7 @@
    * @param {object} [options] - set {useCache: true} to use already fetched data
    * @returns a promise of the HTTP operation
    */
-  Message.prototype.$reload = function(options) {
+  Message.prototype.$reload = function (options) {
     var _this = this, futureMessageData;
 
     if (options && options.useCache && this.$futureMessageData) {
@@ -720,8 +722,8 @@
       if (!this.isread) {
         if (Message.$Preferences.defaults.SOGoMailAutoMarkAsReadDelay > -1)
           // Automatically mark message as read
-          _this.$markAsReadPromise = Message.$timeout(function() {
-            Message.$$resource.fetch(_this.$absolutePath(), 'markMessageRead').then(function() {
+          _this.$markAsReadPromise = Message.$timeout(function () {
+            Message.$$resource.fetch(_this.$absolutePath(), 'markMessageRead').then(function () {
               _this.isread = true;
               _this.$mailbox.unseenCount--;
             });
@@ -741,29 +743,29 @@
    * @desc Extend the editable content of the message with the
    * information parsed from the specified "mailto:" link.
    */
-  Message.prototype.$parseMailto = function(mailto) {
+  Message.prototype.$parseMailto = function (mailto) {
     var to, data = {}, match = /^mailto:([^\?]+)/.exec(mailto);
     if (match) {
       // Recipients
-      to = _.map(decodeURIComponent(match[1]).split(','), function(email) {
+      to = _.map(decodeURIComponent(match[1]).split(','), function (email) {
         return '<' + email.trim() + '>';
       });
       data = { to: to };
     }
     // Subject & body
-    _.forEach(['subject', 'body'], function(param) {
+    _.forEach(['subject', 'body'], function (param) {
       var re = new RegExp(param + '=([^&]+)');
-      param = (param == 'body')? 'text' : param;
+      param = (param == 'body') ? 'text' : param;
       match = re.exec(mailto);
       if (match)
         data[param] = decodeURIComponent(match[1]);
     });
     // Other Recipients
-    _.forEach(['cc', 'bcc'], function(param) {
+    _.forEach(['cc', 'bcc'], function (param) {
       var re = new RegExp(param + '=([^&]+)');
       match = re.exec(mailto);
       if (match)
-        data[param] = _.map(decodeURIComponent(match[1]).split(','), function(email) {
+        data[param] = _.map(decodeURIComponent(match[1]).split(','), function (email) {
           return '<' + email.trim() + '>';
         });
     });
@@ -777,7 +779,7 @@
    * @desc Prepare a new Message object as a reply to the sender.
    * @returns a promise of the HTTP operations
    */
-  Message.prototype.$reply = function() {
+  Message.prototype.$reply = function () {
     return this.$newDraft('reply');
   };
 
@@ -787,7 +789,7 @@
    * @desc Prepare a new Message object as a reply to the sender and all recipients.
    * @returns a promise of the HTTP operations
    */
-  Message.prototype.$replyAll = function() {
+  Message.prototype.$replyAll = function () {
     return this.$newDraft('replyall');
   };
 
@@ -797,7 +799,7 @@
    * @desc Prepare a new Message object as a forward.
    * @returns a promise of the HTTP operations
    */
-  Message.prototype.$forward = function() {
+  Message.prototype.$forward = function () {
     return this.$newDraft('forward');
   };
 
@@ -807,7 +809,7 @@
    * @desc Prepare a new Message object as a new draft from a copy of this message.
    * @returns a promise of the HTTP operations
    */
-  Message.prototype.$compose = function() {
+  Message.prototype.$compose = function () {
     return this.$newDraft('compose');
   };
 
@@ -824,17 +826,17 @@
    * @param {string} action - the HTTP action to perform on the message
    * @returns a promise of the HTTP operations
    */
-  Message.prototype.$newDraft = function(action) {
+  Message.prototype.$newDraft = function (action) {
     var _this = this;
 
     // Query server for draft folder and draft UID
-    return Message.$$resource.fetch(this.$absolutePath(), action).then(function(data) {
+    return Message.$$resource.fetch(this.$absolutePath(), action).then(function (data) {
       var mailbox, message;
       Message.$log.debug('New ' + action + ': ' + JSON.stringify(data, undefined, 2));
       mailbox = _this.$mailbox.$account.$getMailboxByPath(data.mailboxPath);
       message = new Message(data.accountId, mailbox, data);
       // Fetch draft initial data
-      return Message.$$resource.fetch(message.$absolutePath({asDraft: true}), 'edit').then(function(data) {
+      return Message.$$resource.fetch(message.$absolutePath({ asDraft: true }), 'edit').then(function (data) {
         Message.$log.debug('New ' + action + ': ' + JSON.stringify(data, undefined, 2) + ' original UID: ' + _this.uid);
         var accountDefaults = Message.$Preferences.defaults.AuxiliaryMailAccounts[_this.$mailbox.$account.id];
         if (accountDefaults.security) {
@@ -858,7 +860,7 @@
         angular.extend(message.editable, data);
 
         // We keep a reference to our original message in order to update the flags
-        message.origin = {message: _this, action: action};
+        message.origin = { message: _this, action: action };
         return message;
       });
     });
@@ -870,13 +872,13 @@
    * @desc Save the message to the server.
    * @returns a promise of the HTTP operation
    */
-  Message.prototype.$save = function() {
+  Message.prototype.$save = function () {
     var _this = this,
-        data = this.$omit();
+      data = this.$omit();
 
     Message.$log.debug('save = ' + JSON.stringify(data, undefined, 2));
 
-    return Message.$$resource.save(this.$absolutePath({asDraft: true}), data).then(function(response) {
+    return Message.$$resource.save(this.$absolutePath({ asDraft: true }), data).then(function (response) {
       Message.$log.debug('save = ' + JSON.stringify(response, undefined, 2));
       _this.$setUID(response.uid);
       _this.$reload(); // fetch a new viewable version of the message
@@ -890,7 +892,7 @@
    * @desc Encode an email address string
    * @returns an RFC 3492  email encoded
    */
-  Message.prototype.punycode = function(element) {
+  Message.prototype.punycode = function (element) {
     var re = /<(.*)>|^([\w\-\.@]+)$/gm;
     var r = re.exec(element);
     var puny = element;
@@ -906,25 +908,31 @@
    * @desc Send the message.
    * @returns a promise of the HTTP operation
    */
-  Message.prototype.$send = function() {
+  Message.prototype.$send = function () {
     var _this = this,
-        data = this.$omit();
+      data = this.$omit();
 
     Message.$log.debug('send = ' + JSON.stringify(data, undefined, 2));
 
     // Punycode
-    data.to.forEach(function (element, i, arr) {
-      arr[i] = _this.punycode(element);
-    });
-    data.bcc.forEach(function (element, i, arr) {
-      arr[i] = _this.punycode(element);
-    });
-    data.cc.forEach(function (element, i, arr) {
-      arr[i] = _this.punycode(element);
-    });
+    if (data.to && data.to.length > 0) {
+      data.to.forEach(function (element, i, arr) {
+        arr[i] = _this.punycode(element);
+      });
+    }
+    if (data.bcc && data.bcc.length > 0) {
+      data.bcc.forEach(function (element, i, arr) {
+        arr[i] = _this.punycode(element);
+      });
+    }
+    if (data.cc && data.cc.length > 0) {
+      data.cc.forEach(function (element, i, arr) {
+        arr[i] = _this.punycode(element);
+      });
+    }
     data.from = _this.punycode(data.from);
 
-    return Message.$$resource.post(this.$absolutePath({asDraft: true}), 'send', data).then(function(response) {
+    return Message.$$resource.post(this.$absolutePath({ asDraft: true }), 'send', data).then(function (response) {
       if (response.status == 'success') {
         if (angular.isDefined(_this.origin)) {
           if (_this.origin.action.startsWith('reply'))
@@ -946,24 +954,24 @@
    * @desc Unwrap a promise.
    * @param {promise} futureMessageData - a promise of some of the Message's data
    */
-  Message.prototype.$unwrap = function(futureMessageData) {
+  Message.prototype.$unwrap = function (futureMessageData) {
     var _this = this;
 
     // Message is not loaded yet
     this.$loaded = Message.STATUS.DELAYED_LOADING;
-    Message.$timeout(function() {
+    Message.$timeout(function () {
       if (_this.$loaded != Message.STATUS.LOADED)
         _this.$loaded = Message.STATUS.LOADING;
     }, Message.STATUS.DELAYED_MS);
 
     // Resolve and expose the promise
-    this.$futureMessageData = futureMessageData.then(function(data) {
+    this.$futureMessageData = futureMessageData.then(function (data) {
       // Calling $timeout will force Angular to refresh the view
       if (!data.isRead) {
         if (Message.$Preferences.defaults.SOGoMailAutoMarkAsReadDelay > -1)
           // Automatically mark message as read
-          _this.$markAsReadPromise = Message.$timeout(function() {
-            Message.$$resource.fetch(_this.$absolutePath(), 'markMessageRead').then(function() {
+          _this.$markAsReadPromise = Message.$timeout(function () {
+            Message.$$resource.fetch(_this.$absolutePath(), 'markMessageRead').then(function () {
               _this.isread = true;
               _this.$mailbox.unseenCount--;
             });
@@ -974,7 +982,7 @@
         _this.isread = true;
         _this.$mailbox.unseenCount--;
       }
-      return Message.$timeout(function() {
+      return Message.$timeout(function () {
         delete _this.$parts;
         _this.$loaded = Message.STATUS.LOADED;
         _this.init(data);
@@ -991,11 +999,11 @@
    * @desc Return a sanitized object used to send to the server.
    * @return an object literal copy of the Message instance
    */
-  Message.prototype.$omit = function(options) {
+  Message.prototype.$omit = function (options) {
     var message = {},
-        privateAttributes = options && options.privateAttributes,
-        source = privateAttributes ? this : this.editable;
-    angular.forEach(source, function(value, key) {
+      privateAttributes = options && options.privateAttributes,
+      source = privateAttributes ? this : this.editable;
+    angular.forEach(source, function (value, key) {
       if (_.includes(['to', 'cc', 'bcc'], key) && !privateAttributes) {
         message[key] = _.map(value, function (addr) {
           return addr.toString();
@@ -1015,7 +1023,7 @@
    * @desc Download the current message as a zip archive
    * @returns a promise of the HTTP operation
    */
-  Message.prototype.downloadArchive = function() {
+  Message.prototype.downloadArchive = function () {
     var data, options;
 
     data = { uids: [this.uid] };
@@ -1030,7 +1038,7 @@
    * @desc Download the current message as a eml file
    * @returns a promise of the HTTP operation
    */
-  Message.prototype.download = function() {
+  Message.prototype.download = function () {
     var options;
 
     options = { filename: this.subject + '.eml' };
@@ -1043,7 +1051,7 @@
    * @desc Download a zip archive of all attachments
    * @returns a promise of the HTTP operation
    */
-  Message.prototype.downloadAttachmentsArchive = function() {
+  Message.prototype.downloadAttachmentsArchive = function () {
     var options;
 
     options = { filename: l('attachments') + "-" + this.uid + ".zip" };
