@@ -721,11 +721,20 @@ static NSArray *infoKeys = nil;
               contentId = [contentId stringByReplacingOccurrencesOfString: @">" withString: @""];
 
               if ([[mime encoding] isEqualToString: @"base64"] && contentId) {
-                lText = [text stringByReplacingOccurrencesOfString: contentId 
-                withString: [NSString stringWithFormat: @"data:%@;base64,%@", 
-                  [[mime contentType] stringValue], 
-                  [NSString stringWithUTF8String: [[mime body] bytes]]]];
-                [self setText: lText];
+                if ([text rangeOfString: contentId].location != NSNotFound) {
+                  lText = [text stringByReplacingOccurrencesOfString: contentId 
+                    withString: [NSString stringWithFormat: @"data:%@;base64,%@", 
+                    [[mime contentType] stringValue], 
+                    [NSString stringWithUTF8String: [[mime body] bytes]]]];
+                  [self setText: lText];
+                  [draft deleteAttachmentWithName: [draftFileAttachement objectForKey:@"filename"]];
+                } else {
+                  // This is an attachment with no CID in message body
+                  if ([draft inReplyTo]) {
+                    // If the image has no CID and the draft is a reply (not forward, the images in attachement should be removed)
+                    [draft deleteAttachmentWithName: [draftFileAttachement objectForKey:@"filename"]];
+                  }
+                }
               } else {
                 [self warnWithFormat: @"Empty content id [1] : %@", contentId];
               }
