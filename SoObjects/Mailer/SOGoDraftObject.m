@@ -1072,7 +1072,7 @@ static NSString    *userAgent      = nil;
   // TODO: Change mailMessageForwarding for reply
   if ([[ud mailMessageForwarding] isEqualToString: @"inline"])
   {
-    [self setText: [sourceMail contentForInlineForward]];
+    [self setText: [sourceMail contentForReply]];
     if ([sourceMail isEncrypted])
       [self _fetchAttachmentsFromEncryptedMail: sourceMail onlyImages: YES];
     else if ([sourceMail isOpaqueSigned])
