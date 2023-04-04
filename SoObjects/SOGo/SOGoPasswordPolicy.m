@@ -58,7 +58,7 @@ static const NSString *POLICY_MIN_LENGTH = @"POLICY_MIN_LENGTH";
     return [NSArray arrayWithObjects: [NSString stringWithFormat:@"(.*[a-z].*){%i}", [count intValue]], 
                                                           [NSString stringWithFormat:@"(.*[A-Z].*){%i}", [count intValue]], 
                                                           [NSString stringWithFormat:@"(.*[0-9].*){%i}", [count intValue]],  
-                                                          [NSString stringWithFormat:@"([%$&*(){}!?\\@#].*){%i,}", [count intValue]], 
+                                                          [NSString stringWithFormat:@"([%%$&*(){}!?\\@#.,:;].*){%i,}", [count intValue]], 
                                                           [NSString stringWithFormat:@".{%i,}", [count intValue]],
                                                           nil];
 }
