@@ -398,6 +398,10 @@
 "From" = "Début";
 "To" = "Fin";
 
+/* dates */
+"DateFrom" = "Début";
+"DateTo" = "Fin";
+
 /* validation errors */
 validate_notitle           = "Le titre n'est pas rempli. Continuer quand-même ?";
 validate_invalid_startdate = "La date de début est invalide !";
