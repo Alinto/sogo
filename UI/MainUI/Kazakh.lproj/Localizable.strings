@@ -76,7 +76,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "Жүйе туралы";
-"AboutBox" = "Developed by Inverse and Alinto, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
+"AboutBox" = "SOGo дегеніміз масштабталулық мен қарапайымдылыққа негізделген топтық жұмыстың толық функциялы сервері. Inverse және Alinto компанияларымен әзірлеген.<br/><br/>\nSOGo AJAX негізіндегі бай веб-интерфейсті қамтамасыз етеді және CalDAV және CardDAV секілді стандартты хаттамаларды пайдалану есебінен өзінің бірнеше клиентіне қолдау көрсетеді.<br/><br/>\nSOGo <a href=\"http://gnu.org/licenses/gpl.html\">лицензиясының GNU GPL</a> 2 немесе одан кейінгі нұсқасымен таралады, SOGo бөліктері 2-нұсқалы GNU LGPL лицензиясымен таралады. Бұл еркін бағдарламалық қамтылым: оны өз қалауыңызша өзгерте, тарата аласыз. Заңмен рұқсат етілетін шектерде ЕШҚАНДАЙ КЕПІЛДІК жоқ.<br/><br/>\nҚолдаудың түрлі нұсқаларымен танысу үшін, <a href=\"http://www.sogo.nu/en/support/community.html\">мына бетке</a> кіріңіз.";
 "Your account was locked due to too many failed attempts." = "Сіздің аккаунтыңыз сәтсіз әрекеттердің тым көп болуына байланысты бұғатталды.";
 "Your account was locked due to an expired password." = "Сіздің аккаунтыңыз парольдің жарамдылық мерзімінің өтуіне байланысты бұғатталды.";
 "Login failed due to unhandled error case" = "Қатенің өңделмеген жағдайына байланысты кіру мүмкін болмады";
@@ -112,17 +112,17 @@
 "Missing type parameter" = "Тип параметрі жоқ";
 
 /* Password Recovery */
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password lost" = "Password lost";
-"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
-"Invalid secret question answer" = "Invalid secret question answer";
-"Next" = "Next";
-"Back" = "Back";
-"Please enter a new password below" = "Please enter a new password below";
-"A link will be sent to %{0}" = "A link will be sent to %{0}";
-"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
-"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
-"Password recovery email in error" = "Password recovery email in error";
-"Password reset" = "Password reset";
-"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";
+"Secondary e-mail" = "Екінші пошта";
+"Answer" = "Жауап";
+"Password lost" = "Құпия сөз жоғалды";
+"No password recovery method has been defined for this user" = "Осы пайдаланушы үшін құпия сөз қайтару тәсілдері белгіленбеген";
+"Invalid secret question answer" = "Құпия сұраққа қате жауап";
+"Next" = "Келесі";
+"Back" = "Артқа";
+"Please enter a new password below" = "Жаңа құпия сөз еңгізіңіз";
+"A link will be sent to %{0}" = "%{0} поштасына сілтеме жіберіледі";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "Құпия сөзді арылту сілтемесі жіберілді, қалпына келтіру поштаңызды қарап сілтемені басыңыз";
+"Invalid configuration for email password recovery" = "Пошта құпия сөзін қалпына келтіру үшін қателі конфигурация";
+"Password recovery email in error" = "Құпия сөз қалпына келтіру поштаңыз қателі";
+"Password reset" = "Құпия сөзді арылту";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Сәлем %{0},\nҚұпия сөзіңізді аустыру арызы түсті!\n\nБұл арыз сізден болмаса осы хабарламаны еске алмаңыз.\n\nӘйтпесе, құпия сөзіңізді өзгерту үшін %{1} сілтемесін басыңыз";

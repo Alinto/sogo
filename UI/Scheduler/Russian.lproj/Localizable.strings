@@ -398,6 +398,10 @@
 "From" = "От";
 "To" = "Кому";
 
+/* dates */
+"DateFrom" = "С";
+"DateTo" = "До";
+
 /* validation errors */
 validate_notitle           = "Нет названия. Продолжить?";
 validate_invalid_startdate = "Неверная дата начала!";
