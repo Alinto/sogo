@@ -398,6 +398,10 @@
 "From" = "From";
 "To" = "To";
 
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "No title is set, continue?";
 validate_invalid_startdate = "Incorrect startdate field!";
