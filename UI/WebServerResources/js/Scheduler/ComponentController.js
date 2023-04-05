@@ -23,6 +23,10 @@
       $mdDialog.hide();
     };
 
+    this.changed = function (d) {
+      console.log(d);
+    };
+
     this.highPriority = function () {
       return (this.component &&
               this.component.priority &&
@@ -217,6 +221,7 @@
       this.showRecurrenceEditor = this.component.$hasCustomRepeat;
       this.showAttendeesEditor = this.component.attendees && this.component.attendees.length;
       this.isFullscreen = false;
+      this.originalModalCancel = $mdDialog.cancel;
 
       if (this.component.type == 'appointment') {
         this.component.initAttendees();
@@ -246,7 +251,43 @@
 
       dayStartTime = parseInt(Preferences.defaults.SOGoDayStartTime);
       dayEndTime = parseInt(Preferences.defaults.SOGoDayEndTime);
+
+      this.originalHash = this.hash(this.component);
+      $mdDialog.cancel = function () {
+        if (vm.originalHash === vm.hash(vm.component)  || confirm(l('You have modified data unsaved. Do you want to close popup and loose data ?'))) {
+          $mdDialog.cancel = vm.originalModalCancel;
+          return vm.originalModalCancel();
+        }
+      };
     };
+
+    this.hash = function (data) {
+      var hash = 0, i, chr, json;
+      json = JSON.stringify({
+        repeat: data.repeat,
+        pid: data.pid,
+        destinationCalendar: data.destinationCalendar,
+        classification: data.classification,
+        categories: data.categories,
+        alarm: data.alarm,
+        summary: data.summary,
+        status: data.status,
+        organizer: data.organizer,
+        location: data.location,
+        isAllDay: data.isAllDay,
+        comment: data.comment,
+        attendees: data.attendees
+      });
+
+      if (json.length === 0) return hash;
+      for (i = 0; i < json.length; i++) {
+        chr = json.charCodeAt(i);
+        hash = ((hash << 5) - hash) + chr;
+        hash |= 0;
+      }
+
+      return hash;
+    }
 
     this.addAttachUrl = function () {
       var i = this.component.addAttachUrl('');
@@ -280,10 +321,10 @@
     };
 
     this.destinationCalendars = function () {
-      if (this.component.isNew)
+      if (this.component && this.component.isNew)
         // New component, return all writable calendars
         return Calendar.$findAll(null, true);
-      else if (this.component.isErasable)
+      else if (this.component && this.component.isErasable)
         // Movable component, return all writable calendars including current one
         return Calendar.$findAll(null, true, this.component.pid);
       else
@@ -494,6 +535,7 @@
             .then(function(data) {
               $rootScope.$emit('calendars:list');
               Preferences.getAlarms();
+              $mdDialog.cancel = vm.originalModalCancel;
               $mdDialog.hide();
             }, function(response) {
               if (response.status == CalendarSettings.ConflictHTTPErrorCode)
@@ -511,6 +553,14 @@
     };
 
     this.cancel = function (form) {
+      if (vm.originalHash === vm.hash(vm.component) || confirm(l('You have modified data unsaved. Do you want to close popup and loose data ?'))) {
+        $mdDialog.cancel = vm.originalModalCancel;
+      } else {
+        return;
+      }
+
+      $mdDialog.hide();
+      
       this.reset(form);
       if (this.component.isNew) {
         // Cancelling the creation of a component

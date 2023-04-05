@@ -45,7 +45,6 @@
     vm.reload = reload;
     vm.cancelSearch = cancelSearch;
     vm.mode = { search: false, multiple: 0 };
-    vm.isComponentOpened = false;
 
 
     this.$onInit = function() {
@@ -162,40 +161,6 @@
       openComponent($event, task, 'task');
     }
 
-    function eventHash(data) {
-      var hash = 0, i, chr, json;
-      json = JSON.stringify({
-        type: data.type,
-        status: data.status,
-        selected: data.selected,
-        repeat: data.repeat,
-        pid: data.pid,
-        destinationCalendar: data.destinationCalendar,
-        delta: data.delta,
-        classification: data.classification,
-        isNew: data.isNew,
-        categories: data.categories,
-        alarm: data.alarm,
-        type: data.type,
-        summary: data.summary,
-        status: data.status,
-        organizer: data.organizer,
-        location: data.location,
-        isAllDay: data.isAllDay,
-        comment: data.comment,
-        attendees: data.attendees
-      });
-
-      if (json.length === 0) return hash;
-      for (i = 0; i < json.length; i++) {
-        chr = json.charCodeAt(i);
-        hash = ((hash << 5) - hash) + chr;
-        hash |= 0;
-      }
-
-      return hash;
-    }
-
     function openComponent($event, component, type) {
       if (component.viewable) {
         var promise = $q.when();
@@ -205,48 +170,11 @@
           component = Calendar.$get(component.pid).$getComponent(component.id, component.occurrenceId);
           promise = component.$futureComponentData;
         }
-        var originalDataHash = eventHash(component);
 
         promise.then(function() {
           // UI/Templates/SchedulerUI/UIxAppointmentViewTemplate.wox or
           // UI/Templates/SchedulerUI/UIxTaskViewTemplate.wox
           var templateUrl = 'UIx' + type.capitalize() + 'ViewTemplate';
-
-          if (vm.isComponentOpened) { // Prevent opening a new modal if there is already one opened (multiple clicks)
-            return;
-          }
-
-          // TODO: Improve Angular implementation
-          var originalCancel = $mdDialog.cancel;
-          var originalDestroy = $mdDialog.destroy;
-          var originalShow = $mdDialog.show;
-          
-
-          $mdDialog.show = function(p) {
-            vm.isComponentOpened = true;
-
-            $mdDialog.cancel = function () {
-              var newDataHash = eventHash(component);
-              vm.isComponentOpened = false;
-
-              if (originalDataHash === newDataHash) {
-                $mdDialog.cancel = originalCancel;
-                return originalCancel();
-              } else if (confirm(l('You have modified data unsaved. Do you want to close popup and loose data ?'))) {
-                $mdDialog.cancel = originalCancel;
-                return originalCancel();
-              }
-            };
-
-            $mdDialog.destroy = function () {
-              vm.isComponentOpened = false;
-              $mdDialog.cancel = originalCancel;
-              $mdDialog.destroy = originalDestroy;
-              return originalDestroy();
-            };
-
-            return originalShow(p);
-          };
           
           $mdDialog.show({
             parent: angular.element(document.body),
@@ -279,36 +207,6 @@
       // UI/Templates/SchedulerUI/UIxAppointmentEditorTemplate.wox or
       // UI/Templates/SchedulerUI/UIxTaskEditorTemplate.wox
       var templateUrl = 'UIx' + type.capitalize() + 'EditorTemplate';
-
-      if (vm.isComponentOpened) { // Prevent opening a new modal if there is already one opened (multiple clicks)
-        return;
-      }
-
-      // TODO: Improve Angular implementation
-      var originalCancel = $mdDialog.cancel;
-      var originalDestroy = $mdDialog.destroy;
-      var originalDataHash = eventHash(component);
-      vm.isComponentOpened = true;
-
-      $mdDialog.cancel = function() {
-        var newDataHash = eventHash(component);
-        vm.isComponentOpened = false;
-
-        if (originalDataHash === newDataHash) {
-          $mdDialog.cancel = originalCancel;
-          return originalCancel();
-        } else if (confirm(l('You have modified data unsaved. Do you want to close popup and loose data ?'))) {
-          $mdDialog.cancel = originalCancel;
-          return originalCancel();
-        }
-      };
-
-      $mdDialog.destroy = function () {
-        vm.isComponentOpened = false;
-        $mdDialog.cancel = originalCancel;
-        $mdDialog.destroy = originalDestroy;
-        return originalDestroy();
-      };
 
       return $mdDialog.show({
         parent: angular.element(document.body),
