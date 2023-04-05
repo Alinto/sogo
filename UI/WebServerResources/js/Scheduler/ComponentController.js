@@ -262,8 +262,8 @@
     };
 
     this.hash = function (data) {
-      var hash = 0, i, chr, json;
-      json = JSON.stringify({
+      var hash = 0, i, chr, edata, json;
+      edata = {
         repeat: data.repeat,
         pid: data.pid,
         destinationCalendar: data.destinationCalendar,
@@ -277,7 +277,12 @@
         isAllDay: data.isAllDay,
         comment: data.comment,
         attendees: data.attendees
-      });
+      };
+      edata.organizer.freebusy = {};
+      for (i = 0; i < edata.attendees.length; i++) {
+        edata.attendees[i].freebusy = {};
+      }
+      json = JSON.stringify(edata);
 
       if (json.length === 0) return hash;
       for (i = 0; i < json.length; i++) {
