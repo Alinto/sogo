@@ -872,7 +872,10 @@ static NSString    *userAgent      = nil;
     {
       currentInfo = [attachments objectAtIndex: count];
       if (!onlyImages
-        || (onlyImages && [[NGMimeBodyPart imageMimeTypes] containsObject: [currentInfo objectForKey: @"mimetype"]])) {
+        || (onlyImages 
+              && [[NGMimeBodyPart imageMimeTypes] containsObject: [currentInfo objectForKey: @"mimetype"]] 
+              && [currentInfo objectForKey: @"bodyId"] 
+              && [[currentInfo objectForKey: @"bodyId"]  length] > 0)) {
         [self saveAttachment: [currentInfo objectForKey: @"body"]
               withMetadata: currentInfo];
       }
