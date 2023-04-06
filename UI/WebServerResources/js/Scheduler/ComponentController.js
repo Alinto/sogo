@@ -278,9 +278,13 @@
         comment: data.comment,
         attendees: data.attendees
       };
-      edata.organizer.freebusy = {};
-      for (i = 0; i < edata.attendees.length; i++) {
-        edata.attendees[i].freebusy = {};
+      if (edata.organizer && edata.organizer.freebusy) {
+        edata.organizer.freebusy = {};
+      }
+      if (edata.attendees) {
+        for (i = 0; i < edata.attendees.length; i++) {
+          edata.attendees[i].freebusy = {};
+        }
       }
       json = JSON.stringify(edata);
 
