@@ -362,7 +362,9 @@
         var $state;
         if (/^application\/json/.test(rejection.config.headers.Accept)) {
           // Handle SSO ticket renewal
-          if (($window.usesCASAuthentication || $window.usesSAML2Authentication) && rejection.status == -1) {
+          if (($window.usesCASAuthentication || $window.usesSAML2Authentication) 
+              && (rejection.status == -1
+              || (rejection.status == 500 && rejection.config && rejection.config.url && rejection.config.url.indexOf("execution=e1s1") > 0))) { // Patch for shibboleth 4.2.1 - Ticket #5615
             return renewTicket($window, $q, $timeout, $injector, rejection);
           }
           else if ($window.usesSAML2Authentication && rejection.status == 401 && !$window.recovered) {
