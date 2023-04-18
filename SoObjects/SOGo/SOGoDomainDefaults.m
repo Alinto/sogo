@@ -438,4 +438,9 @@
   return [self objectForKey: @"SOGoMailJunkSettings"];
 }
 
+- (BOOL) createIdentitiesDisabled
+{
+  return [self boolForKey: @"SOGoCreateIdentitiesDisabled"];
+}
+
 @end

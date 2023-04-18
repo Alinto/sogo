@@ -66,6 +66,20 @@
   return [dd mailCertificateEnabled];
 }
 
+- (BOOL) showCreateIdentity
+{
+  SOGoDomainDefaults *dd;
+
+  dd = [[context activeUser] domainDefaults];
+
+  return ![dd createIdentitiesDisabled];
+}
+
+- (BOOL) hideCreateIdentity
+{
+  return ![self showCreateIdentity];
+}
+
 - (BOOL) _validateFilterId
 {
   NSCharacterSet *digits;

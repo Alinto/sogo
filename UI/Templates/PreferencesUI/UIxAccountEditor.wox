@@ -24,6 +24,7 @@
     <md-dialog-content>
       <md-tabs class="md-flex" md-border-bottom="md-border-bottom" md-dynamic-height="true">
 
+
         <!-- general settings -->
         <md-tab id="accountSettingsView" label:label="Settings">
           <md-content class="md-padding">
@@ -127,11 +128,13 @@
                         <i ng-bind-html="$AccountDialogController.account.getTextSignature(identity)"><!-- signature --></i>
                       </div>
                     </div>
-                    <md-button class="sg-icon-button" type="button"
-                               ng-click="$AccountDialogController.removeIdentity($index)"
-                               ng-show="$AccountDialogController.canRemoveIdentity($index)">
-                      <md-icon>delete</md-icon>
-                    </md-button>
+                    <var:if condition="showCreateIdentity">
+                      <md-button class="sg-icon-button" type="button"
+                                ng-click="$AccountDialogController.removeIdentity($index)"
+                                ng-show="$AccountDialogController.canRemoveIdentity($index)">
+                        <md-icon>delete</md-icon>
+                      </md-button>
+                    </var:if>
                     <md-button class="sg-icon-button"
                                label:aria-label="Default Identity"
                                ng-click="$AccountDialogController.setDefaultIdentity($event, $index)">
@@ -147,27 +150,48 @@
                            ng-disabled="$AccountDialogController.customFromIsReadonly()"
                            ng-model="identity.fullName"/>
                   </md-input-container>
-                  <md-autocomplete
-                      class="md-block" required="required"
-                      md-no-cache="true"
-                      md-search-text="identity.email"
-                      md-items="address in $AccountDialogController.filterEmailAddresses(identity.email)"
-                      md-escape-options="clear"
-                      md-require-match="$AccountDialogController.customFromIsReadonly()"
-                      md-min-length="0"
-                      label:md-floating-label="Email">
-                    <md-item-template>
-                      <span md-highlight-text="identity.email"
-                            md-highlight-flags="gi">{{ address }}</span>
-                    </md-item-template>
-                  </md-autocomplete>
+                  <var:if condition="showCreateIdentity">
+                    <md-autocomplete
+                        class="md-block" required="required"
+                        md-no-cache="true"
+                        md-search-text="identity.email"
+                        md-items="address in $AccountDialogController.filterEmailAddresses(identity.email)"
+                        md-escape-options="clear"
+                        md-require-match="$AccountDialogController.customFromIsReadonly()"
+                        md-min-length="0"
+                        label:md-floating-label="Email">
+                      <md-item-template>
+                        <span md-highlight-text="identity.email"
+                              md-highlight-flags="gi">{{ address }}</span>
+                      </md-item-template>
+                    </md-autocomplete>
+                  </var:if>
+                  <var:if condition="hideCreateIdentity">
+                    <md-input-container class="md-block"
+                                      ng-hide="$AccountDialogController.customFromIsReadonly()">
+                      <label><var:string label:value="Email"/></label>
+                      <input type="text"
+                            autocomplete="off"
+                            ng-model="identity.email"
+                            ng-disabled="true" />
+                    </md-input-container>
+                  </var:if>
                   <md-input-container class="md-block"
                                       ng-hide="$AccountDialogController.customFromIsReadonly()">
+                  <var:if condition="showCreateIdentity">
                     <label><var:string label:value="Reply To Email"/></label>
                     <input type="text"
-                           autocomplete="off"
-                           ng-model="identity.replyTo"
-                           ng-pattern="$AccountDialogController.emailRE"/>
+                          autocomplete="off"
+                          ng-model="identity.replyTo"
+                          ng-pattern="$AccountDialogController.emailRE"/>
+                  </var:if>
+                  <var:if condition="hideCreateIdentity">
+                    <label><var:string label:value="Reply To Email"/></label>
+                    <input type="text"
+                          autocomplete="off"
+                          ng-model="identity.replyTo"
+                          ng-disabled="true" />
+                  </var:if>
                   </md-input-container>
                   <md-input-container
                       class="md-block md-flex"
@@ -187,11 +211,13 @@
                 </md-card-content>
               </md-card>
               <div layout="row" layout-align="end center">
+              <var:if condition="showCreateIdentity">
                 <md-button type="button"
                            ng-click="$AccountDialogController.addIdentity()"
                            label:aria-label="New Identity">
                   <var:string label:value="New Identity"/>
                 </md-button>
+                </var:if>
               </div>
             </div>
 

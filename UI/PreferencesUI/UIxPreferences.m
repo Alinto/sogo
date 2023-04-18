@@ -1344,12 +1344,64 @@ static NSArray *reminderValues = nil;
                         inDictionary: (NSMutableDictionary *) target
 {
   NSArray *identities;
+  SOGoDomainDefaults *dd;
+  NSMutableArray *previousIdentities, *newIdentities;
+  NSMutableDictionary *identity, *newIdentitiesAsDict;
+  int i;
 
   if ([account isKindOfClass: [NSDictionary class]])
     {
+      
       identities = [account objectForKey: @"identities"];
-      if ([self _validateAccountIdentities: identities])
-        [target setObject: identities forKey: @"SOGoMailIdentities"];
+      
+      dd = [[context activeUser] domainDefaults];
+      if ([self _validateAccountIdentities: identities]) {
+        // Disable identity creation for users in preferences
+        if ([dd createIdentitiesDisabled]) {
+          // If create identities is disabled, user can only modify full name and signature
+          previousIdentities = [NSMutableArray arrayWithArray: [[user accountWithName: [account objectForKey: @"name"]] objectForKey: @"identities"]];
+          newIdentities = [NSMutableArray arrayWithArray: identities];
+
+          if ([newIdentities count] <= [previousIdentities count]) {
+            newIdentitiesAsDict = [[NSMutableDictionary alloc] init];
+            for (NSDictionary *identity in identities) {
+              [newIdentitiesAsDict setObject: identity forKey: [identity objectForKey:@"email"]];
+            }
+
+            i = 0;
+            // Remove existing deleted identities
+            for (identity in [user allIdentities]) {
+              // Identity deleted and at least one identity and not the default identity
+              if (![newIdentitiesAsDict objectForKey: [identity objectForKey:@"email"]] 
+                    && [previousIdentities count] > 1
+                    && ![identity boolForKey:@"isDefault"]) {
+                [previousIdentities removeObjectAtIndex: i];
+                i--;
+              }
+              i++;
+            }
+
+            // Update full name, signature and default for existing identities
+            for (identity in previousIdentities) {
+              if ([newIdentitiesAsDict objectForKey: [identity objectForKey:@"email"]]) {
+                  [identity setObject: [[newIdentitiesAsDict objectForKey: [identity objectForKey:@"email"]] objectForKey:@"fullName"] forKey: @"fullName"];
+                  [identity setObject: [[newIdentitiesAsDict objectForKey: [identity objectForKey:@"email"]] objectForKey:@"signature"] forKey: @"signature"];
+                  if ([[newIdentitiesAsDict objectForKey: [identity objectForKey:@"email"]] objectForKey:@"isDefault"]) {
+                    [identity setObject: [NSNumber numberWithBool: YES] forKey: @"isDefault"];
+                  } else {
+                    [identity setObject: [NSNumber numberWithBool: NO] forKey: @"isDefault"];
+                  }
+              }
+            }
+            [newIdentitiesAsDict release];
+          }
+
+          [target setObject: previousIdentities forKey: @"SOGoMailIdentities"];
+        } else {
+            [target setObject: identities forKey: @"SOGoMailIdentities"];
+        }
+      }
+
       if ([[account objectForKey: @"forceDefaultIdentity"] boolValue])
         [target setObject: [NSNumber numberWithBool: YES] forKey: @"SOGoMailForceDefaultIdentity"];
       else if ([target objectForKey: @"SOGoMailForceDefaultIdentity"])

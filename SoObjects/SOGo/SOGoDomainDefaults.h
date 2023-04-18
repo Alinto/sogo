@@ -96,6 +96,8 @@
 
 - (NSDictionary *) mailJunkSettings;
 
+- (BOOL) createIdentitiesDisabled;
+
 @end
 
 #endif /* SOGODOMAINDEFAULTS_H */
