@@ -175,7 +175,13 @@
       var date = newDate? newDate.getDayString() : angular.element($event.currentTarget).attr('date');
       if (newDate)
         _formatDate(newDate);
+
+      if (isToday) {
+        var d = new Date();
+        date = String(d.getFullYear()) + String((d.getMonth() + 1)).padStart(2, '0') + String((d.getDate())).padStart(2, '0');
+      }
       $state.go('calendars.view', { day: date });
+
       // Refresh calendar data if click on today
       if (isToday) {
         $rootScope.$emit('calendars:list');

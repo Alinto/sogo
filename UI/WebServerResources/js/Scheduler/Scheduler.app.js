@@ -1,7 +1,7 @@
 /* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 /* JavaScript for SOGo.SchedulerUI module */
 
-(function() {
+(function () {
   'use strict';
 
   angular.module('SOGo.SchedulerUI', ['ngCookies', 'ui.router', 'angularFileUpload', 'sgCkeditor', 'SOGo.Common', 'SOGo.PreferencesUI', 'SOGo.ContactsUI', 'SOGo.MailerUI', 'as.sortable'])
@@ -33,12 +33,12 @@
         //deepStateRedirect: true,
         views: {
           calendarView: {
-            templateUrl: function($stateParams) {
+            templateUrl: function ($stateParams) {
               // UI/Templates/SchedulerUI/UIxCalDayView.wox or
               // UI/Templates/SchedulerUI/UIxCalWeekView.wox or
               // UI/Templates/SchedulerUI/UIxCalMonthView.wox or
               // UI/Templates/SchedulerUI/UIxCalMulticolumnDayView.wox
-              return $stateParams.view + 'view?day=' + $stateParams.day;
+              return $stateParams.view + 'view?day=' + $stateParams.day + '&currentday=' + String((new Date()).getFullYear()) + String(((new Date()).getMonth() + 1)).padStart(2, '0') + String(((new Date()).getDate())).padStart(2, '0');
             },
             controller: 'CalendarController',
             controllerAs: 'calendar'
@@ -49,22 +49,22 @@
         }
       });
 
-    $urlServiceProvider.rules.when('/calendar/day', function() {
+    $urlServiceProvider.rules.when('/calendar/day', function () {
       // If no date is specified, show today
       var now = new Date();
       return '/calendar/day/' + now.getDayString();
     });
-    $urlServiceProvider.rules.when('/calendar/multicolumnday', function() {
+    $urlServiceProvider.rules.when('/calendar/multicolumnday', function () {
       // If no date is specified, show today
       var now = new Date();
       return '/calendar/multicolumnday/' + now.getDayString();
     });
-    $urlServiceProvider.rules.when('/calendar/week', function() {
+    $urlServiceProvider.rules.when('/calendar/week', function () {
       // If no date is specified, show today's week
       var now = new Date();
       return '/calendar/week/' + now.getDayString();
     });
-    $urlServiceProvider.rules.when('/calendar/month', function() {
+    $urlServiceProvider.rules.when('/calendar/month', function () {
       // If no date is specified, show today's month
       var now = new Date();
       return '/calendar/month/' + now.getDayString();
@@ -90,8 +90,8 @@
   function stateEventsBlocks($stateParams, Component, Calendar) {
     // See CalendarController.js
     return Component.$eventsBlocksForView($stateParams.view, $stateParams.day.asDate())
-      .then(function(views) {
-        _.forEach(views, function(view) {
+      .then(function (views) {
+        _.forEach(views, function (view) {
           if (view.id) {
             // Note: this can't be done in Component service since it would make Component dependent on
             // the Calendar service and create a circular dependency
@@ -108,12 +108,12 @@
   runBlock.$inject = ['$window', '$log', '$transitions', '$location', '$state', 'Preferences'];
   function runBlock($window, $log, $transitions, $location, $state, Preferences) {
     if (!$window.DebugEnabled)
-      $state.defaultErrorHandler(function() {
+      $state.defaultErrorHandler(function () {
         // Don't report any state error
       });
-    $transitions.onError({ to: 'calendars.**' }, function(transition) {
+    $transitions.onError({ to: 'calendars.**' }, function (transition) {
       if (transition.to().name != 'calendars' &&
-          !transition.ignored()) {
+        !transition.ignored()) {
         $log.error('transition error to ' + transition.to().name + ': ' + transition.error().detail);
         $state.go({ state: 'calendars' });
       }
@@ -121,7 +121,7 @@
     if ($location.url().length === 0) {
       // Restore user's last view
       var url = '/calendar/',
-          view = /(.+)view/.exec(Preferences.settings.Calendar.View);
+        view = /(.+)view/.exec(Preferences.settings.Calendar.View);
       if (view)
         url += view[1];
       else
