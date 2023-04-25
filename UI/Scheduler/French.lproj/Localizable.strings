@@ -37,6 +37,8 @@
 "this month" = "ce mois";
 "Previous Month" = "Mois précédent";
 "Next Month" = "Mois suivant";
+/* Week number prefix */
+"W" = "S";
 
 /* Year */
 "this year" = "Cette année";

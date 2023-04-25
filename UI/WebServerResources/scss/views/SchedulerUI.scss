@@ -242,6 +242,27 @@ $quarter_height: 10px;
     //font-weight: $sg-font-light;
   }
 
+  // Header of month week
+  .sg-calendar-tile-week {
+    font-size: $sg-font-size-2;
+    min-height: $sg-font-size-2 + 10px;
+    overflow: hidden;
+    padding: 4px;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    //font-weight: $sg-font-light;
+    position: absolute;
+    width: 100%;
+  }
+  .sg-calendar-tile-week span {
+    padding: 1%;
+    border-radius: 30%;
+    color: $colorGrey50;
+  }
+
+  
+
   // The left column of hours
   .hours {
     display: inline-block;
