@@ -47,7 +47,7 @@
 "Activation Constraints" = "Aktivierungsbedingungen";
 "Enable auto reply on" = "Automatische Abwesenheitsnachricht anschalten am";
 "First day of vacation" = "Erster Urlaubstag";
-"Disable auto reply on" = "Automatische Abwesenheitsnachricht abschalten am";
+"Disable auto reply after" = "Automatische Abwesenheitsnachricht abschalten am";
 "Last day of vacation" = "Letzter Urlaubstag";
 "Enter date" = "Datum eingeben";
 /* Enable auto reply at this time of the day */

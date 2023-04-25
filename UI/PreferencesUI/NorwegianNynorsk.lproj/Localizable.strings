@@ -29,7 +29,7 @@
 "Add default email addresses" = "Legg til standard e-postadresser";
 "Days between responses" = "Dager mellom svar";
 "Do not send responses to mailing lists" = "Ikke send svar til e-postlister";
-"Disable auto reply on" = "Aktivér auto-svar ved fravær";
+"Disable auto reply after" = "Aktivér auto-svar ved fravær";
 "Always send vacation message response" = "Always send vacation message response";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Skriv melding og angi din e-postadresse som du vil aktivera auto-svar på.";

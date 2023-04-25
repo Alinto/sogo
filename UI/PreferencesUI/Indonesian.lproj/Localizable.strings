@@ -45,7 +45,7 @@
 "Days between responses" = "Hari diantara tanggapan";
 "Do not send responses to mailing lists" = "Jangan mengirim tanggapan ke milis";
 "Enable auto reply on" = "Aktifkan balasan otomatis pada";
-"Disable auto reply on" = "Non Aktifkan balasan otomatis pada";
+"Disable auto reply after" = "Non Aktifkan balasan otomatis pada";
 "Always send vacation message response" = "Selalu mengirim tanggapan pesan liburan";
 "The vacation message is sent prior to apply your filters." = "The vacation message is sent prior to apply your filters.";
 "Discard incoming mails during vacation" = "Buang surat masuk saat liburan";

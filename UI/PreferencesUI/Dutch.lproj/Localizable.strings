@@ -47,7 +47,7 @@
 "Activation Constraints" = "Activatiebeperkingen";
 "Enable auto reply on" = "Automatisch beantwoorden inschakelen";
 "First day of vacation" = "Eerste vakantiedag";
-"Disable auto reply on" = "Automatisch bericht bij afwezigheid uitschakelen op";
+"Disable auto reply after" = "Automatisch bericht bij afwezigheid uitschakelen op";
 "Last day of vacation" = "Laatste vakantiedag";
 "Enter date" = "Voer datum in";
 /* Enable auto reply at this time of the day */

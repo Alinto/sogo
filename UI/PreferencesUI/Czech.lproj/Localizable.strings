@@ -46,7 +46,7 @@
 "Do not send responses to mailing lists" = "Neposílat odpovědi do konferencí";
 "Enable auto reply on" = "Zapnout odpovědi v nepřítomnosti";
 "First day of vacation" = "První den nepřítomnosti";
-"Disable auto reply on" = "Automatické odpovědi vypnout dne";
+"Disable auto reply after" = "Automatické odpovědi vypnout dne";
 "Last day of vacation" = "Poslední den nepřítomnosti";
 "Enter date" = "Zadejte datum";
 "Always send vacation message response" = "Vždy posílat zprávu v nepřítomnosti";

@@ -47,7 +47,7 @@
 "Activation Constraints" = "Omejitve aktivacije";
 "Enable auto reply on" = "Omogoči samodejni odgovor na";
 "First day of vacation" = "Prvi dan odsotnosti";
-"Disable auto reply on" = "Onemogoči samodejni odgovor na";
+"Disable auto reply after" = "Onemogoči samodejni odgovor na";
 "Last day of vacation" = "Zadnji dan odsotnosti";
 "Enter date" = "Vnesi datum";
 /* Enable auto reply at this time of the day */

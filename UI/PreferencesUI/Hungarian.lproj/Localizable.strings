@@ -47,7 +47,7 @@
 "Activation Constraints" = "Aktiválás kényszerek";
 "Enable auto reply on" = "Automatikus válasz engedélyezése";
 "First day of vacation" = "Távollét első napja";
-"Disable auto reply on" = "Automatikus válasz tiltása";
+"Disable auto reply after" = "Automatikus válasz tiltása";
 "Last day of vacation" = "Távollét utolsó napja";
 "Enter date" = "Adja meg a dátumot";
 /* Enable auto reply at this time of the day */

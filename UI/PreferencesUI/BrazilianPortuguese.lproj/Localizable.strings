@@ -47,7 +47,7 @@
 "Activation Constraints" = "Restrições de ativação";
 "Enable auto reply on" = "Habilitar resposta automática em";
 "First day of vacation" = "Primeiro dia de férias";
-"Disable auto reply on" = "Desativar resposta automática em";
+"Disable auto reply after" = "Desativar resposta automática em";
 "Last day of vacation" = "Último dia de férias";
 "Enter date" = "Digite a data";
 /* Enable auto reply at this time of the day */

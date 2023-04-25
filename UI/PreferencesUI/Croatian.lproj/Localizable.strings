@@ -45,7 +45,7 @@
 "Days between responses" = "Dani između odgovora";
 "Do not send responses to mailing lists" = "Nemoj slati odgovore na mailing liste";
 "Enable auto reply on" = "Uključi automatski odgovor";
-"Disable auto reply on" = "Isključi automatski odgovor";
+"Disable auto reply after" = "Isključi automatski odgovor";
 "Always send vacation message response" = "Uvijek pošalji automatsku obavijest o odsutnosti";
 "Discard incoming mails during vacation" = "Odbij ulazne poruke tijekom odmora";
 "Please specify your message and your email addresses for which you want to enable auto reply."

@@ -46,7 +46,7 @@
 "Do not send responses to mailing lists" = "Neposielať odpovede e-mailovým skupinám";
 "Enable auto reply on" = "Zapnúť automatickú odpoveď od";
 "First day of vacation" = "Prvý deň neprítomnosti";
-"Disable auto reply on" = "Vypnúť automatickú odpoveď";
+"Disable auto reply after" = "Vypnúť automatickú odpoveď";
 "Last day of vacation" = "Posledný den neprítomnosti";
 "Enter date" = "Zadajte dátum";
 "Always send vacation message response" = "Vždy odošli správu o dovolenke";

@@ -47,7 +47,7 @@
 "Activation Constraints" = "Белсендіруді шектеу";
 "Enable auto reply on" = "Автожауап қосу";
 "First day of vacation" = "Демалыстың бірінші күні";
-"Disable auto reply on" = "Автожауапты өшіру";
+"Disable auto reply after" = "Автожауапты өшіру";
 "Last day of vacation" = "Демалыстың соңғы күні";
 "Enter date" = "Күнді енгізіңіз";
 /* Enable auto reply at this time of the day */

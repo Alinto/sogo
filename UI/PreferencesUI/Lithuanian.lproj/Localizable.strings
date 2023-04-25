@@ -29,7 +29,7 @@
 "Add default email addresses" = "Pridėti numatytajį elektroninį adresą";
 "Days between responses" = "Dienos iki atsakymo";
 "Do not send responses to mailing lists" = "Nesiųsti atsakymo į pašto sąrašus";
-"Disable auto reply on" = "Išjungti automatinį atsakymą";
+"Disable auto reply after" = "Išjungti automatinį atsakymą";
 "Always send vacation message response" = "Visada atsiųsti atsakomąją žinutę";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Prašome nurodyti savo pranešimą ir savo elektroninio pašto adresą, kurį norite įgalinti automatiniam atsakymui.";

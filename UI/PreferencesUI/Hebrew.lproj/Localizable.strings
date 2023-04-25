@@ -45,7 +45,7 @@
 "Days between responses" = "ימים בין תשובות";
 "Do not send responses to mailing lists" = "לא להשיב לרשימות תפוצה";
 "Enable auto reply on" = "אפשר תשובה אוטומתית";
-"Disable auto reply on" = "בטל תשובה אוטומתית";
+"Disable auto reply after" = "בטל תשובה אוטומתית";
 "Always send vacation message response" = "תמיד להשיב בעזרת הודעת חופשה";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "אנא ציינו את הודעתכם וכתובת האימייל שלכם עבורם תרצו לאפשר תשובות אוטומתיות.";
