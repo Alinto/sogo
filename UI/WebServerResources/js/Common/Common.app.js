@@ -1,18 +1,18 @@
 /* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 
-(function() {
+(function () {
   'use strict';
 
   angular.module('SOGo.Common', ['ngAnimate', 'ngMessages', 'ngSanitize', 'ngMaterial', 'mdColors'])
     .value('sgSettings', {
       isPopup: document.body.classList.contains('popup'),
-      baseURL: function() {
+      baseURL: function () {
         return ApplicationBaseURL || null;
       },
-      resourcesURL: function() {
+      resourcesURL: function () {
         return ResourcesURL || null;
       },
-      activeUser: function(param) {
+      activeUser: function (param) {
         var settings = {
           login: UserLogin || null,
           identification: UserIdentification || null,
@@ -35,8 +35,8 @@
         else
           return settings;
       },
-      minimumSearchLength: function() {
-        return angular.isNumber(minimumSearchLength)? minimumSearchLength : 2;
+      minimumSearchLength: function () {
+        return angular.isNumber(minimumSearchLength) ? minimumSearchLength : 2;
       }
     })
 
@@ -115,20 +115,20 @@
       ]
     })
 
-  // md break-points values are hard-coded in angular-material/src/core/util/constant.js
-  // $mdMedia has a built-in support for those values but can also evaluate others.
-  // The following breakpoints match our CSS breakpoints in scss/core/variables.scss
+    // md break-points values are hard-coded in angular-material/src/core/util/constant.js
+    // $mdMedia has a built-in support for those values but can also evaluate others.
+    // The following breakpoints match our CSS breakpoints in scss/core/variables.scss
     .constant('sgConstant', {
-      'xs'    : '(max-width: 599px)'                         ,
-      'gt-xs' : '(min-width: 600px)'                         ,
-      'sm'    : '(min-width: 600px) and (max-width: 959px)'  ,
-      'gt-sm' : '(min-width: 960px)'                         ,
-      'md'    : '(min-width: 960px) and (max-width: 1023px)' ,
-      'gt-md' : '(min-width: 1024px)'                        ,
-      'lg'    : '(min-width: 1024px) and (max-width: 1279px)',
-      'gt-lg' : '(min-width: 1280px)'                        ,
-      'xl'    : '(min-width: 1920px)'                        ,
-      'print' : 'print',
+      'xs': '(max-width: 599px)',
+      'gt-xs': '(min-width: 600px)',
+      'sm': '(min-width: 600px) and (max-width: 959px)',
+      'gt-sm': '(min-width: 960px)',
+      'md': '(min-width: 960px) and (max-width: 1023px)',
+      'gt-md': '(min-width: 1024px)',
+      'lg': '(min-width: 1024px) and (max-width: 1279px)',
+      'gt-lg': '(min-width: 1280px)',
+      'xl': '(min-width: 1920px)',
+      'print': 'print',
       toastPosition: 'bottom right'
     })
 
@@ -294,7 +294,7 @@
     deferred = $q.defer();
     iframe = angular.element('<iframe class="ng-hide" src="' + $window.UserFolderURL + 'recover"></iframe>');
 
-    iframe.on('load', function() {
+    iframe.on('load', function () {
       var $state = $injector.get('$state');
       if (response.config.attempt > 2) {
         // Already attempted 3 times -- reload page
@@ -304,17 +304,17 @@
       }
       else {
         // Once the browser has followed the redirection, send the initial request
-        $timeout(function() {
+        $timeout(function () {
           var $http = $injector.get('$http');
           if (response.config.attempt)
             response.config.attempt++;
           else
             response.config.attempt = 1;
-          $http(response.config).then(function(response) {
+          $http(response.config).then(function (response) {
             deferred.resolve(response);
-          }, function(response) {
+          }, function (response) {
             deferred.reject(response);
-          }).finally(function() {
+          }).finally(function () {
             $timeout(iframe.remove, 1000);
           });
         }, 2000); // Wait before replaying the request
@@ -332,11 +332,11 @@
   AuthInterceptor.$inject = ['$window', '$q', '$timeout', '$injector'];
   function AuthInterceptor($window, $q, $timeout, $injector) {
     return {
-      response: function(response) {
+      response: function (response) {
         // When expecting JSON but receiving HTML, assume session has expired and reload page
         var $state;
         if (response && /^application\/json/.test(response.config.headers.Accept) &&
-            /^[\n\r\t ]*<!DOCTYPE html/.test(response.data)) {
+          /^[\n\r\t ]*<!DOCTYPE html/.test(response.data)) {
           if ($window.usesCASAuthentication || $window.usesSAML2Authentication) {
             return renewTicket($window, $q, $timeout, $injector, response);
           }
@@ -358,13 +358,13 @@
   ErrorInterceptor.$inject = ['$rootScope', '$window', '$q', '$timeout', '$injector'];
   function ErrorInterceptor($rootScope, $window, $q, $timeout, $injector) {
     return {
-      responseError: function(rejection) {
+      responseError: function (rejection) {
         var $state;
         if (/^application\/json/.test(rejection.config.headers.Accept)) {
           // Handle SSO ticket renewal
-          if (($window.usesCASAuthentication || $window.usesSAML2Authentication) 
-              && (rejection.status == -1
-              || (rejection.status == 500 && rejection.config && rejection.config.url && rejection.config.url.indexOf("execution=e1s1") > 0))) { // Patch for shibboleth 4.2.1 - Ticket #5615
+          if (($window.usesCASAuthentication || $window.usesSAML2Authentication)
+            && (rejection.status == -1
+              || (rejection.status == 500 && document.cookie.indexOf("cas-location") !== -1))) { // Patch for shibboleth 4.2.1 - Ticket #5615
             return renewTicket($window, $q, $timeout, $injector, rejection);
           }
           else if ($window.usesSAML2Authentication && rejection.status == 401 && !$window.recovered) {
