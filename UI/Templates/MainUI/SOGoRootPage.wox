@@ -43,24 +43,24 @@
             </var:if>
             <div ng-if="!app.loginState">
               <md-input-container class="md-block">
-                <label class="md-default-theme md-accent md-bg"><var:string label:value="Username"/></label>
-                <md-icon class="material-icons md-default-theme md-accent md-bg">person</md-icon>
-                <input class="md-default-theme md-accent md-bg" autocorrect="off" autocapitalize="off" type="text" ng-model="app.creds.username" ng-required="true" ng-change="app.usernameChanged()" ng-blur="app.retrievePasswordRecoveryEnabled()" />
+                <label><var:string label:value="Username"/></label>
+                <md-icon>person</md-icon>
+                <input autocorrect="off" autocapitalize="off" type="text" ng-model="app.creds.username" ng-required="true" ng-change="app.usernameChanged()" ng-blur="app.retrievePasswordRecoveryEnabled()" />
               </md-input-container>
               <md-input-container class="md-block">
-                <label class="md-default-theme md-accent md-bg"><var:string label:value="Password"/></label>
-                <md-icon class="material-icons md-default-theme md-accent md-bg">email</md-icon>
-                <input class="md-default-theme md-accent md-bg" id="passwordField" type="password" ng-model="app.creds.password" ng-required="true"/>
-                <md-icon class="material-icons md-default-theme md-accent md-bg" id="password-visibility-icon" ng-click="app.changePasswordVisibility()">visibility</md-icon>
+                <label><var:string label:value="Password"/></label>
+                <md-icon>email</md-icon>
+                <input id="passwordField" type="password" ng-model="app.creds.password" ng-required="true"/>
+                <md-icon id="password-visibility-icon" ng-click="app.changePasswordVisibility()">visibility</md-icon>
               </md-input-container>
               
 
               <!-- LANGUAGES SELECT -->
               <div layout="row" layout-align="start end">
-                <md-icon class="material-icons md-default-theme md-accent md-bg">language</md-icon>
-                <md-input-container class="md-default-theme md-accent md-bg md-flex">
-                  <label class="md-default-theme md-accent md-bg"><var:string label:value="choose"/></label>
-                  <md-select md-container-class="md-default-theme md-accent md-bg" ng-model="app.creds.language"
+                <md-icon>language</md-icon>
+                <md-input-container class="md-flex">
+                  <label><var:string label:value="choose"/></label>
+                  <md-select ng-model="app.creds.language"
                             var:placeholder="localizedLanguage"
                             ng-change="app.changeLanguage($event)">
                     <var:foreach list="languages" item="item">
@@ -75,7 +75,7 @@
               <!-- DOMAINS SELECT -->
               <var:if condition="hasLoginDomains">
                 <div layout="row" layout-align="start end">
-                  <md-icon class="material-icons md-default-theme md-accent md-bg">domain</md-icon>
+                  <md-icon>domain</md-icon>
                         <md-input-container class="md-flex">
                           <md-select class="md-flex" ng-model="app.creds.domain" label:placeholder="choose" ng-change="app.retrievePasswordRecoveryEnabled()">
                             <var:foreach list="loginDomains" item="item">
@@ -109,7 +109,7 @@
               <md-button class="md-icon-button"
                          label:aria-label="About"
                          ng-click="app.showAbout()">
-                <md-icon class="material-icons md-default-theme md-accent md-bg">info</md-icon>
+                <md-icon>info</md-icon>
               </md-button>
               <div>
                 <md-button class="md-fab md-accent md-hue-2" type="submit"
@@ -146,7 +146,7 @@
               <div flex="80" flex-sm="50" flex-gt-sm="40">
                 <md-input-container class="md-block">
                   <label><var:string label:value="Verification Code"/></label>
-                  <md-icon class="material-icons md-default-theme md-accent md-bg">lock</md-icon>
+                  <md-icon>lock</md-icon>
                   <input type="text"
                          ng-pattern="app.verificationCodePattern"
                          ng-model="app.creds.verificationCode"
@@ -159,14 +159,14 @@
                              label:aria-label="Cancel"
                              ng-click="app.restoreLogin()"
                              sg-ripple-click="loginContent">
-                    <md-icon class="material-icons md-default-theme md-accent md-bg">arrow_backward</md-icon>
+                    <md-icon>arrow_backward</md-icon>
                   </md-button>
                   <md-button class="md-fab md-accent md-hue-2" type="submit"
                              label:aria-label="Connect"
                              ng-if="app.loginState == 'totpcode'"
                              ng-disabled="loginForm.$invalid"
                              ng-click="app.login()">
-                    <md-icon class="material-icons md-default-theme md-accent md-bg">arrow_forward</md-icon>
+                    <md-icon>arrow_forward</md-icon>
                   </md-button>
                 </div>
               </div>
@@ -180,7 +180,7 @@
                   <var:string label:value="Welcome"/> {{app.cn}}
                 </div>
                 <div class="md-padding" layout="row" layout-align="start center">
-                  <md-icon class="material-icons md-default-theme md-accent md-bg">priority_high</md-icon>
+                  <md-icon>priority_high</md-icon>
                   <div class="md-padding">
                     <var:string label:value="Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application."/>
                   </div>
