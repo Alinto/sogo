@@ -2,7 +2,7 @@
 
 /* Icon's label */
 "Create"      = "Создать";
-"Empty Trash" = "Очистить корзину";
+"Empty Trash" = "Очистить Корзину";
 "Empty Junk Folder" = "Очистить папку нежелательной почты";
 "Delete"      = "Удалить";
 "Expunge"     = "Очистить";
@@ -16,7 +16,7 @@
 "Stop"        = "Стоп";
 "Write"       = "Написать";
 "Search"      = "Поиск";
-"Send" = "Послать";
+"Send" = "Отправить";
 "Contacts" = "Адресная книга";
 "Attach" = "Вложить";
 "Save" = "Сохранить";
@@ -25,20 +25,20 @@
 "Size" = "Размер";
 
 /* Tooltips */
-"Send this message now" = "Послать это сообщение сейчас";
-"Select a recipient from an Address Book" = "Выбрать получателей из адресной книги";
-"Include an attachment" = "Приложить файл";
+"Send this message now" = "Отправить это сообщение сейчас";
+"Select a recipient from an Address Book" = "Выбрать получателя из Адресной книги";
+"Include an attachment" = "Добавить вложение";
 "Save this message" = "Сохранить это сообщение";
 "Get new messages" = "Получить новые сообщения";
-"Create a new message" = "Составить новое сообщение";
+"Create a new message" = "Создать новое сообщение";
 "Go to address book" = "Перейти в адресную книгу";
 "Reply to the message" = "Ответить на сообщение";
-"Reply to sender and all recipients" = "Сосотавить ответ для отправителя и всех получателей";
+"Reply to sender and all recipients" = "Ответить отправителю и всем получателям";
 "Forward selected message" = "Переслать выделенное письмо";
 "Delete selected message or folder" = "Удалить выделенное письмо или папку";
 "Print this message" = "Напечатать это сообщение";
 "Stop the current transfer" = "Остановить текущую операцию";
-"Attachment" = "Вложения";
+"Attachment" = "Вложение";
 "Unread" = "Непрочитанные";
 "Flagged" = "Помеченные флагом";
 "Search multiple mailboxes" = "Поиск в папках";
@@ -56,10 +56,10 @@
 "Read messages"       = "Читать сообщения";
 
 /* Tooltip for fab button */
-"Write a new message" = "Составить новое сообщение";
+"Write a new message" = "Написать новое сообщение";
 
 /* Tooltip for fab button */
-"Write a message in new window" = "Составить сообщение в новом окне";
+"Write a message in new window" = "Написать сообщение в новом окне";
 
 "Share" = "Совместное использование";
 "Account" = "Пользователь";
@@ -89,7 +89,7 @@
 "For user" = "Для пользователя";
 "Any Authenticated User" = "Любой аутентифицированный пользователь";
 "View this folder" = "Просмотреть эту папку";
-"Read mails from this folder" = "Читать письма в папке";
+"Read mails from this folder" = "Читать письма в этой папке";
 "Mark mails read and unread" = "Помечать письма как прочитанные/непрочитанные";
 "Modify the flags of the mails in this folder" = "Помечать флагами сообщения в папке";
 "Insert, copy and move mails into this folder" = "Добавлять, копировать и перемещать сообщения в эту папку";
@@ -97,7 +97,7 @@
 "Add subfolders to this folder" = "Создавать подпапки в этой папке";
 "Remove this folder" = "Удалять эту папку";
 "Erase mails from this folder" = "Удалять сообщения из этой папки";
-"Expunge this folder" = "Сжимать эту папку";
+"Expunge this folder" = "Очищать эту папку";
 "Export This Folder" = "Экспортировать эту папку";
 "Modify the acl of this folder" = "Управлять правами доступа к этой папке";
 "Saved Messages.zip" = "Сохранено Messages.zip";
@@ -124,7 +124,7 @@
 "cc"            = "Копия";
 "bcc"           = "Скрытая копия";
 "Add a recipient" = "Добавить получателя";
-"Edit Draft..." = "Редактировать черновик...";
+"Edit Draft..." = "Редактировать Черновик...";
 "Load Images" = "Загрузить изображения";
 "Return Receipt" = "Уведомление о вручении";
 "Choose which identity to send this message from" = "Выберите, с каким идентификатором отправить это сообщение";
@@ -140,7 +140,7 @@
 "normal" = "Обычный";
 "low" = "Низкий";
 "lowest" = "Самый низкий";
-"This mail is being sent from an unsecure network!" = "Это почта была послана с небезопасной сети!";
+"This mail is being sent from an unsecure network!" = "Это письмо было отправлено из небезопасной сети!";
 "Address Book" = "Адресная книга";
 "Search For" = "Что искать";
 
@@ -159,7 +159,7 @@
 "Date"          = "Дата";
 "View"          = "Просмотр";
 "All"           = "Все";
-"No message"    = "Нет сообщений";
+"No message"    = "Нет сообщения";
 "messages"      = "сообщения";
 "Yesterday"     = "Вчера";
 "first"         = "первая";
@@ -176,7 +176,7 @@
 "Show unread messages only" = "Показывать только непрочитанные сообщения";
 
 /* Filter option in messages list */
-"Show flagged messages only" = "Показывать только отмеченные сообщения";
+"Show flagged messages only" = "Показывать только отмеченные флагом сообщения";
 
 /* Aria label for icon of labels */
 "Filtered by label" = "Отфильтровано по метке";
@@ -197,12 +197,12 @@
 /* Address Popup menu */
 "Add to Address Book..." = "Добавить в адресную книгу...";
 "Successfully created card" = "Успешно создана карточка";
-"Compose Mail To" = "Составить письмо для";
+"Compose Mail To" = "Написать письмо для";
 "Create Filter From Message..." = "Создать фильтр из сообщения...";
 
 /* Image Popup menu */
-"Save Image" = "Сохранить изображение";
-"Save Attachment" = "Сохранить Приложения";
+"Save Image" = "Сохранить Изображение";
+"Save Attachment" = "Сохранить Вложение";
 
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Открыть в новом окне";
@@ -229,7 +229,7 @@
 
 /* Message list popup menu */
 "Open Message In New Window" = "Открыть сообщение в новом окне";
-"Reply to Sender Only" = "Ответить отправителю";
+"Reply to Sender Only" = "Ответить только отправителю";
 "Reply to All" = "Ответить всем";
 "Edit As New..." = "Редактировать как новое...";
 "Move To" = "Переместить в";
@@ -241,10 +241,10 @@
 "View Message Source" = "Просмотр исходного текста";
 
 /* Message view "more" menu: create an event from message */
-"Convert To Event" = "Преобразовать в событие";
+"Convert To Event" = "Преобразовать в Событие";
 
 /* Message view "more" menu: create a task from message */
-"Convert To Task" = "Преобразовать в задание";
+"Convert To Task" = "Преобразовать в Задание";
 
 /* Message view "more" menu: download message as an eml file */
 "Download message" = "Загрузить сообщение";
@@ -286,10 +286,10 @@
 "This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Это сообщение не может быть расшифровано. Убедитесь, что вы загрузили сертификат S/MIME из модуля настройек почты.";
 
 /* OpenSSL certificate error - unknown issuer */
-"certificate verify error" = "Не удалось проверить подпись сообщения";
+"certificate verify error" = "ошибка проверки сертификата";
 
 /* OpenSSL certificate error - digest failure */
-"digest failure" = "Сообщение было изменено";
+"digest failure" = "сообщение было изменено";
 
 /* OpenSSL reading error */
 "Error reading the certificate. Please install a new certificate." = "Ошибка чтения сертификата. Пожалуйста, установите новый сертификат.";
@@ -352,7 +352,7 @@
 = "Почтовый ящик не может быть помещён в корзину. Хотите ли вы удалить его немедленно?";
 
 /* Confirmation message when deleting multiple messages */
-"Are you sure you want to delete the selected messages?" = "Вы уверены, что вы хотите удалить выбранные сообщения?";
+"Are you sure you want to delete the selected messages?" = "Вы уверены, что хотите удалить выбранные сообщения?";
 
 /* Notification on the number of messages successfuly copied */
 "%{0} message(s) copied" = "%{0} сообщений скопировано";
@@ -388,7 +388,7 @@
 "Please specify a subject." = "Пожалуйста, укажите тему.";
 "error_missingsubject" = "Тема сообщения не указана";
 "error_missingrecipients" = "Не указан адрес получателя";
-"Send Anyway" = "Всё равно послать";
+"Send Anyway" = "Всё равно отправить";
 "Error while saving the draft" = "Ошибка при сохранении черновика";
 
 /* Error when emptying trash */
@@ -399,8 +399,8 @@
 
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Ошибка при загрузке файла \"%{0}\":";
-"There is an active file upload. Closing the window will interrupt it." = "Сейчас выполняется загрузка файла. Закрытие окна прервет её.";
-"Message is too big" = "Слишком большое сообщение";
+"There is an active file upload. Closing the window will interrupt it." = "Выполняется загрузка файла. Закрытие окна прервёт её.";
+"Message is too big" = "Сообщение слишком большое";
 
 /* Appears while sending the message */
 "Sending" = "Отправляется";
@@ -408,12 +408,12 @@
 /* Appears when the message is successfuly sent */
 "Sent" = "Отправлено";
 
-"cannot send message: (smtp) all recipients discarded" = "Не удается отправить сообщение: всем получателям, все получатели являются недействительными.";
-"cannot send message (smtp) - recipients discarded" = "Не удается отправить сообщение. Следующие адреса неверны";
-"cannot send message: (smtp) error when connecting" = "Не удается отправить сообщение: ошибка при соединении с сервером SMTP.";
-"cannot sign email without certificate" = "Сообщение не может быть подписано, потому что с учетной записью электронной почты не связан сертификат.";
-"cannot sign message because the certificate can't be read" = "Сообщение не может быть подписано, потому что сертификат, связанный с учетной записью электронной почты, не может быть прочитан.";
-"cannot sign message because the certificate doesn't include the specified sender address" = "Сообщение не может быть подписано, потому что адрес отправителя не включен в сертификат, связанный с учетной записью электронной почты.";
+"cannot send message: (smtp) all recipients discarded" = "Не удается отправить сообщение: (smtp) все получатели недействительны";
+"cannot send message (smtp) - recipients discarded" = "Не удается отправить сообщение (smtp) - получатели недействительны";
+"cannot send message: (smtp) error when connecting" = "Не удается отправить сообщение: (smtp) ошибка при соединении";
+"cannot sign email without certificate" = "Сообщение не может быть подписано, с учетной записью электронной почты не связан сертификат";
+"cannot sign message because the certificate can't be read" = "Сообщение не может быть подписано, сертификат, связанный с учетной записью электронной почты, не может быть прочитан";
+"cannot sign message because the certificate doesn't include the specified sender address" = "Сообщение не может быть подписано, адрес отправителя не включен в сертификат, связанный с учетной записью электронной почты.";
 
 /* Contacts list in mail editor */
 "Email" = "E-mail";
@@ -434,13 +434,13 @@
 "Set as Trash" = "Установить как Корзина";
 
 /* Set the folder as the one holding the Templates */
-"Set as Templates" = "Установить как шаблоны";
+"Set as Templates" = "Установить как Шаблоны";
 
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Установить как Спам";
 
 "Sort" = "Сортировка";
-"Order Received" = "Задание получено";
+"Order Received" = "Порядок получения";
 "Descending Order" = "В убывающем порядке";
 "Back" = "Назад";
 "Copy messages" = "Копировать сообщения";
@@ -459,7 +459,7 @@
 "Folder compacted" = "Папка сжата";
 
 "New draft" = "Новый черновик";
-"Create new draft with this template" = "Создать новый черновик с помощью этого шаблона";
+"Create new draft with this template" = "Создать новый черновик из этого шаблона";
 
 /* Advanced search */
 "Enter Subject" = "Введите Тему";
