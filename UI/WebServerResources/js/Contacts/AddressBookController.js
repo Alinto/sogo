@@ -414,7 +414,8 @@
             recipients.push(card.$shortFormat());
           }
         }
-        else if (selectedFolder.$loadCard(card)) {
+        else {
+          selectedFolder.$loadCard(card);
           promises.push(selectedFolder.$futureHeadersData.then(function() {
             var i = selectedFolder.idsMap[card.id];
             if (angular.isDefined(i)) {
