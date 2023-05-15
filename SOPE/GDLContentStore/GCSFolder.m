@@ -1145,9 +1145,14 @@ andAttribute: (EOAttribute *)_attribute
 			{
         // Update c_startdate for appointments
         if ([theComponent respondsToSelector:@selector(startDate)]) {
+          NSTimeInterval t = [startDate timeIntervalSince1970];
+
           startDate = [theComponent startDate];
           if (startDate) {
-            [quickRow setObject:[NSNumber numberWithInt:[startDate timeIntervalSince1970]] forKey:@"c_startdate"];
+            if (t < (long long)INT_MAX && t > (long long)INT_MIN)
+              [quickRow setObject:[NSNumber numberWithInt: t] forKey:@"c_startdate"];
+            else
+              [quickRow setObject:[NSNumber numberWithInt: 0] forKey:@"c_startdate"];
           }
         }
       
