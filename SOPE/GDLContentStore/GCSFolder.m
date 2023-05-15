@@ -1147,7 +1147,7 @@ andAttribute: (EOAttribute *)_attribute
         if ([theComponent respondsToSelector:@selector(startDate)]) {
           startDate = [theComponent startDate];
           if (startDate) {
-            [quickRow setObject:[NSNumber numberWithUnsignedInt:[startDate timeIntervalSince1970]] forKey:@"c_startdate"];
+            [quickRow setObject:[NSNumber numberWithInt:[startDate timeIntervalSince1970]] forKey:@"c_startdate"];
           }
         }
       
