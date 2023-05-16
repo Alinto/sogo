@@ -3261,6 +3261,10 @@ current version of SOGo from the previous release.
 
 [cols="100a"]
 |=======================================================================
+
+h|5.8.2
+|Changes in Mac OS X Ventura 13.3. For mac Apple's Calendar users, the account must be removed and re-added (https://bugs.sogo.nu/view.php?id=5639#c16901). This can be achived in  `` / `System Settings` / `Internet Accounts`.
+
 h|5.8.1
 |New options `SOGoSMTPMasterUserEnabled`, `SOGoSMTPMasterUserUsername` and `SOGoSMTPMasterUserPassword` has been added. Those parameters replace the `-p` option for sogo-ealarms-notify.
 
