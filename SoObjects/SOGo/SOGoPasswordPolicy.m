@@ -33,6 +33,8 @@ static const NSString *POLICY_MIN_DIGIT = @"POLICY_MIN_DIGIT";
 static const NSString *POLICY_MIN_SPECIAL_SYMBOLS = @"POLICY_MIN_SPECIAL_SYMBOLS";
 static const NSString *POLICY_MIN_LENGTH = @"POLICY_MIN_LENGTH";
 
+static const NSString *SPECIAL_SYMBOL_ALLOWED = @"%$&*(){}!?\\@#.,:;+=";
+
 @implementation SOGoPasswordPolicy
 
 - (id) init
@@ -58,7 +60,7 @@ static const NSString *POLICY_MIN_LENGTH = @"POLICY_MIN_LENGTH";
     return [NSArray arrayWithObjects: [NSString stringWithFormat:@"(.*[a-z].*){%i}", [count intValue]], 
                                                           [NSString stringWithFormat:@"(.*[A-Z].*){%i}", [count intValue]], 
                                                           [NSString stringWithFormat:@"(.*[0-9].*){%i}", [count intValue]],  
-                                                          [NSString stringWithFormat:@"([%%$&*(){}!?\\@#.,:;+=].*){%i,}", [count intValue]], 
+                                                          [NSString stringWithFormat:@"([%%%@].*){%i,}", SPECIAL_SYMBOL_ALLOWED, [count intValue]], 
                                                           [NSString stringWithFormat:@".{%i,}", [count intValue]],
                                                           nil];
 }
@@ -97,13 +99,25 @@ static const NSString *POLICY_MIN_LENGTH = @"POLICY_MIN_LENGTH";
         if ([[self policies] containsObject: label]) {
             NSNumber *value = [policy objectForKey:@"value"];
             if (0 < value) {
-                NSString *newLabel = [[translations objectForKey: label] 
-                                    stringByReplacingOccurrencesOfString: @"%{0}"
-                                    withString: [value stringValue]];
-                [userTranslatedPasswordPolicy addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                newLabel, @"label", 
-                                                [policy objectForKey:@"regex"], @"regex",
-                                                nil]];
+                if (![POLICY_MIN_SPECIAL_SYMBOLS isEqualToString: label]) {
+                  NSString *newLabel = [[translations objectForKey: label] 
+                                          stringByReplacingOccurrencesOfString: @"%{0}"
+                                          withString: [value stringValue]];
+                  [userTranslatedPasswordPolicy addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                  newLabel, @"label", 
+                                                  [policy objectForKey:@"regex"], @"regex",
+                                                  nil]];
+                } else {
+                  NSString *newLabel = [[[[translations objectForKey: label] 
+                                          stringByReplacingOccurrencesOfString: @"%{0}"
+                                          withString: [value stringValue]]
+                                         stringByAppendingString: @" "]
+                                        stringByAppendingString: SPECIAL_SYMBOL_ALLOWED];
+                  [userTranslatedPasswordPolicy addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                  newLabel, @"label", 
+                                                  [policy objectForKey:@"regex"], @"regex",
+                                                  nil]];
+                }
             } else {
                 // Do nothing
             }
