@@ -35,34 +35,58 @@
 
         <div layout="column" ng-hide="::links.calendar.isWebCalendar">
           <div class="sg-md-title"><var:string label:value="Authenticated User Access"/></div>
-          <md-input-container class="md-block">
+          <md-input-container class="md-input-clipboard">
             <label><var:string label:value="CalDAV URL"/></label>
-            <input type="text" ng-model="::links.calendar.urls.calDavURL" ng-readonly="true"/>
+            <input id="user-caldav-url" type="text" ng-model="::links.calendar.urls.calDavURL" ng-readonly="true"/>
+            <md-button aria-label="Copy to clipboard" class="md-icon-button" ng-click="links.clipboard('user-caldav-url')">
+              <md-tooltip><var:string label:value="Clipboard"/></md-tooltip>
+              <md-icon label:aria-label="Copy Icon">content_copy</md-icon>
+            </md-button>
           </md-input-container>
-          <md-input-container class="md-block">
+          <md-input-container class="md-input-clipboard">
             <label><var:string label:value="WebDAV ICS URL"/></label>
-            <input  type="text" ng-model="::links.calendar.urls.webDavICSURL" ng-readonly="true"/>
+            <input  id="user-webdav-ics-url" type="text" ng-model="::links.calendar.urls.webDavICSURL" ng-readonly="true"/>
+            <md-button aria-label="Copy to clipboard" class="md-icon-button" ng-click="links.clipboard('user-webdav-ics-url')">
+              <md-tooltip><var:string label:value="Clipboard"/></md-tooltip>
+              <md-icon label:aria-label="Content_copy">content_copy</md-icon>
+            </md-button>
           </md-input-container>
-          <md-input-container class="md-block">
+          <md-input-container class="md-input-clipboard">
             <label><var:string label:value="WebDAV XML URL"/></label>
-            <input  type="text" ng-model="::links.calendar.urls.webDavXMLURL" ng-readonly="true"/>
+            <input id="user-webdav-xml-url" type="text" ng-model="::links.calendar.urls.webDavXMLURL" ng-readonly="true"/>
+            <md-button aria-label="Copy to clipboard" class="md-icon-button" ng-click="links.clipboard('user-webdav-xml-url')">
+              <md-tooltip><var:string label:value="Clipboard"/></md-tooltip>
+              <md-icon label:aria-label="Content_copy">content_copy</md-icon>
+            </md-button>
           </md-input-container>
         </div>
 
         <var:if condition="isPublicAccessEnabled">
           <div layout="column" ng-hide="::links.calendar.isWebCalendar">
             <div class="sg-md-title"><var:string label:value="Public Access"/></div>
-            <md-input-container class="md-block">
+            <md-input-container class="md-input-clipboard">
               <label><var:string label:value="CalDAV URL"/></label>
-              <input type="text" ng-model="::links.calendar.urls.publicCalDavURL" ng-readonly="true"/>
+              <input id="public-caldav-url" type="text" ng-model="::links.calendar.urls.publicCalDavURL" ng-readonly="true"/>
+              <md-button aria-label="Copy to clipboard" class="md-icon-button" ng-click="links.clipboard('public-caldav-url')">
+                <md-tooltip><var:string label:value="Clipboard"/></md-tooltip>
+                <md-icon label:aria-label="Content_copy">content_copy</md-icon>
+              </md-button>              
             </md-input-container>
-            <md-input-container class="md-block">
+            <md-input-container class="md-input-clipboard">
               <label><var:string label:value="WebDAV ICS URL"/></label>
-              <input type="text" ng-model="::links.calendar.urls.publicWebDavICSURL" ng-readonly="true"/>
+              <input id="public-webdav-ics-url" type="text" ng-model="::links.calendar.urls.publicWebDavICSURL" ng-readonly="true"/>
+              <md-button aria-label="Copy to clipboard" class="md-icon-button" ng-click="links.clipboard('public-webdav-ics-url')">
+                <md-tooltip><var:string label:value="Clipboard"/></md-tooltip>
+                <md-icon label:aria-label="Content_copy">content_copy</md-icon>
+              </md-button>              
             </md-input-container>
-            <md-input-container class="md-block">
+            <md-input-container class="md-input-clipboard">
               <label><var:string label:value="WebDAV XML URL"/></label>
-              <input type="text" ng-model="::links.calendar.urls.publicWebDavXMLURL" ng-readonly="true"/>
+              <input id="public-webdav-xml-url" type="text" ng-model="::links.calendar.urls.publicWebDavXMLURL" ng-readonly="true"/>
+              <md-button aria-label="Copy to clipboard" class="md-icon-button" ng-click="links.clipboard('public-webdav-xml-url')">
+                <md-tooltip><var:string label:value="Clipboard"/></md-tooltip>
+                <md-icon label:aria-label="Content_copy">content_copy</md-icon>
+              </md-button>
             </md-input-container>
           </div>
         </var:if>
