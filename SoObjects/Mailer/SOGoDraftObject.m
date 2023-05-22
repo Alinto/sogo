@@ -918,7 +918,7 @@ static NSString    *userAgent      = nil;
           currentInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                                filename, @"filename",
                                              mimeType, @"mimetype",
-                                             bodyId, @"bodyid", 
+                                             bodyId, @"bodyId", 
                                              nil];
           [self saveAttachment: body
                   withMetadata: currentInfo];
@@ -1898,6 +1898,39 @@ static NSString    *userAgent      = nil;
       newText = [text htmlByExtractingImages: extractedBodyParts];
       if ([extractedBodyParts count])
         [self setText: newText];
+      
+      int i;
+      for (i = 0 ; i < [extractedBodyParts count] ; i++) {
+        NSMutableDictionary *currentInfo;
+        NSString *filename, *mimeType, *bodyId, *encoding;
+        NSData *body;
+        NGMimeBodyPart *extractedBodyPart;
+        NGMimeContentDispositionHeaderField *contentDisposition;
+
+        extractedBodyPart = [extractedBodyParts objectAtIndex:i];
+        encoding = [extractedBodyPart encoding];
+        contentDisposition = [[NGMimeContentDispositionHeaderField alloc] initWithString: [extractedBodyPart headerForKey: @"content-disposition"]];
+        
+        mimeType = [[extractedBodyPart contentType] stringValue];
+        bodyId = [[extractedBodyPart contentId] stringValue];
+        filename = [contentDisposition filename];
+
+        [contentDisposition release];
+
+        currentInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                               filename, @"filename",
+                                             mimeType, @"mimetype",
+                                             bodyId, @"bodyId", 
+                                             nil];
+        // TODO REMOVE data-cke-saved-src ?
+        if (encoding && [encoding rangeOfString:@"base64"].location != NSNotFound)
+          body = [[[extractedBodyParts objectAtIndex:i] body] dataByDecodingBase64];
+        else
+          body = [[extractedBodyParts objectAtIndex:i] body];
+
+        [self saveAttachment: body
+              withMetadata: currentInfo];
+      }
     }
 
   map = [self mimeHeaderMapWithHeaders: _headers
