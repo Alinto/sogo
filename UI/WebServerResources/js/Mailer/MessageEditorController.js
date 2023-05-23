@@ -12,10 +12,10 @@
 
     this.$onInit = function() {
       $scope.isPopup = stateParent.isPopup;
+
       this.account = stateAccount;
       this.autocomplete = {to: {}, cc: {}, bcc: {}};
       this.autosave = null;
-
       this.isFullscreen = false;
       this.hideBcc = (stateMessage.editable.bcc.length === 0);
       this.hideCc = (stateMessage.editable.cc.length === 0);
@@ -217,6 +217,12 @@
         $event.stopPropagation();
         $event.preventDefault();
         return false;
+      }
+      if ($event.keyCode == 186 && $event.key == 'ü') { //Key code for separator ';' but is keycode for ü in german keyboard
+        $event.stopPropagation();
+        $event.preventDefault();
+        let element = $window.document.getElementById($event.target.id);
+        element.value = element.value + 'ü'
       }
     };
 

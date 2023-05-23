@@ -293,9 +293,15 @@
             var vm = this;
             vm.calendar = calendar;
             vm.close = close;
+            vm.clipboard = clipboard
 
             function close() {
               $mdDialog.hide();
+            }
+
+            function clipboard(elem_id) {
+              var linkUrl = document.getElementById(elem_id);
+              navigator.clipboard.writeText(linkUrl.value);
             }
           }
         };

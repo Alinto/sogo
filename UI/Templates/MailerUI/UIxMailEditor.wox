@@ -219,8 +219,7 @@
               </label>
               <input type="text" name="subject"
                      ng-model="editor.message.editable.subject"
-                     ng-keydown="editor.ignoreReturn($event)"
-                     ng-required="true"/>
+                     ng-keydown="editor.ignoreReturn($event)" />
               <div ng-messages="messageForm.subject.$error">
                 <div ng-message="required"><var:string label:value="Please specify a subject."/></div>
               </div>

@@ -1575,7 +1575,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
             {
               if ([filters isEqualToString:@"title_Category_Location"] || [filters isEqualToString:@"entireContent"])
                 {
-                  [baseWhere addObject: [NSString stringWithFormat: @"(c_title isCaseInsensitiveLike: '*%@*' OR c_category isCaseInsensitiveLike: '*%@*' OR c_location isCaseInsensitiveLike: '*%@*')",
+                  [baseWhere addObject: [NSString stringWithFormat: @"(c_title isCaseInsensitiveLike: '*%@*' OR c_category isCaseInsensitiveLike: '*%@*' OR c_location isCaseInsensitiveLike: '*%@*' OR c_content isCaseInsensitiveLike: '*SUMMARY:*%@*')",
+                                                  [title asSafeSQLLikeString],
                                                   [title asSafeSQLLikeString],
                                                   [title asSafeSQLLikeString],
                                                   [title asSafeSQLLikeString]]];
@@ -1697,6 +1698,23 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     }
   else
     ma = [NSMutableArray array];
+
+  if (title && [title length] > 0) {
+    // Case when multiple summary are set in c_content
+    // Need to filter on title
+    int i;
+    NSDictionary *currentItem;
+    for (i = [ma count] - 1; i >= 0; i--) {
+        currentItem = [ma objectAtIndex: i];
+        if (currentItem && [currentItem objectForKey: @"c_title"] 
+            && [[currentItem objectForKey: @"c_title"] length] > 0) {
+          if ([[currentItem objectForKey: @"c_title"] rangeOfString: title options: NSCaseInsensitiveSearch].location == NSNotFound) {
+            [ma removeObjectAtIndex: i];
+          }
+        }
+    }
+
+  }
 
   return ma;
 }
