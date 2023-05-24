@@ -1,45 +1,28 @@
 export default {
-  // setup: 4 user are needed: username, superuser, attendee1, attendee1_delegate
-  // superuser must be a sogo superuser...
-
-  hostname: "localhost",
-  port: "80",
-  username: "myuser",
-  password: "mypass",
-
-  superuser: "super",
-  superuser_password: "pass",
-
-  // 'subscriber_username' and 'attendee1' must be the same user
-  subscriber_username: "otheruser",
-  subscriber_password: "otherpass",
-
-  attendee1: "user@domain.com",
-  attendee1_username: "user",
-  attendee1_password: "pass",
-
-  attendee1_delegate: "user2@domain.com",
-  attendee1_delegate_username: "sogo2",
+  hostname: "127.0.0.1",
+  port: "50001",
+  username: "sogo-tests1",
+  password: "sogo",
+  superuser: "sogo-tests-super",
+  superuser_password: "sogo",
+  subscriber_username: "sogo-tests2",
+  subscriber_password: "sogo",
+  attendee1: "sogo-tests2@example.com",
+  attendee1_username: "sogo-tests2",
+  attendee1_password: "sogo",
+  attendee1_delegate: "sogo-tests3@example.com",
+  attendee1_delegate_username: "sogo-tests3",
   attendee1_delegate_password: "sogo",
-
   resource_no_overbook: "res",
   resource_can_overbook: "res-nolimit",
-
-  // must match attendee1
   white_listed_attendee: {
-    "sogo1": "John Doe <sogo1@example.com>"
+    "sogo-tests1": "John Doe <sogo-tests1@example.com>"
   },
-
-  mailserver: "imaphost",
-
+  mailserver: "127.0.0.1",
   testput_nbrdays: 30,
-
-  sieve_server: "localhost",
+  sieve_server: "127.0.0.1",
   sieve_port: 4190,
-
   sogo_user: "sogo",
-  sogo_tool_path: "/usr/local/sbin/sogo-tool",
-
-  webCalendarURL: "http://inverse.ca/sogo-integration-tests/CanadaHolidays.ics"
+  sogo_tool_path: "/usr/sbin/sogo-tool",
+  webCalendarURL: "http://127.0.0.1/sogo-integration-tests/CanadaHolidays.ics"
 }
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;

@@ -3,7 +3,8 @@
   "description": "This directory holds automated tests for SOGo.",
   "devDependencies": {},
   "scripts": {
-    "test": "jasmine"
+    "test": "jasmine",
+    "test-junit": "./node_modules/jasmine-xml-reporter/bin/jasmine.js --junitreport --output=/tmp/"
   },
   "dependencies": {
     "@babel/core": "^7.16.0",
@@ -15,6 +16,7 @@
     "ical.js": "^1.4.0",
     "jasmine": "^3.10.0",
     "telnet-client": "^1.4.10",
-    "tsdav": "^1.1.5"
+    "tsdav": "^1.1.5",
+    "jasmine-xml-reporter": "^1.2.1"
   }
 }
