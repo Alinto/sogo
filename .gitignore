@@ -46,3 +46,9 @@ UI/WebServerResources/js/vendor/ckeditor/skins/n1theme/*.md
 
 # Transifex
 .tx/config_20230213185112.bak
+
+# Tests
+Tests/node_modules
+Tests/lib/config.js
+Tests/results.xml
+Tests/results
