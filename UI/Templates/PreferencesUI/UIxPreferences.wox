@@ -1189,7 +1189,7 @@
                         ng-true-value="1"
                         ng-false-value="0"
                         ng-change="app.toggleVacationEndDate()">
-                      <var:string label:value="Disable auto reply on" />
+                      <var:string label:value="Disable auto reply after" />
                     </md-checkbox>
                     <md-input-container>
                       <label class="md-no-truncate"><var:string label:value="Last day of vacation"/></label>

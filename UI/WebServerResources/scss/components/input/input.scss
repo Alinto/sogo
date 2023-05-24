@@ -12,6 +12,10 @@ md-input-container {
   &.md-no-flex {
     flex: none !important;
   }
+  &.md-input-clipboard {
+    display: flex;
+    flex-direction: row-reverse;
+  }
   .md-errors-spacer {
     // Temporary fix for https://github.com/angular/material/issues/6214
     min-height: 0 !important;

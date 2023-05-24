@@ -47,7 +47,7 @@
 "Activation Constraints" = "Aktivasyon Kısıtlamaları";
 "Enable auto reply on" = "Otomatik yanıtın etkinleştirme tarihi";
 "First day of vacation" = "Tatilin ilk günü";
-"Disable auto reply on" = "Otomatik yanıt bitiş tarihi";
+"Disable auto reply after" = "Otomatik yanıt bitiş tarihi";
 "Last day of vacation" = "Tatilin son günü";
 "Enter date" = "Tarih girin";
 /* Enable auto reply at this time of the day */

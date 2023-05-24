@@ -234,6 +234,19 @@
   return daysNumbersToDisplay[i];
 }
 
+- (BOOL) isFirstDayOfWeek {
+  return 0 == [currentWeek indexOfObject: currentTableDay];
+}
+
+- (int) currentWeekNumber
+{
+  SOGoUser *user;
+
+  user = [context activeUser];
+  
+  return [user weekNumberForDate: currentTableDay];
+}
+
 - (void) setCurrentWeek: (NSArray *) newCurrentWeek
 {
   ASSIGN (currentWeek, newCurrentWeek);

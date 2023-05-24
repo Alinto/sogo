@@ -46,7 +46,7 @@
 "Do not send responses to mailing lists" = "Ne odgovaraj na poštanske liste";
 "Enable auto reply on" = "Omogući automatski odgovor ";
 "First day of vacation" = "Prvi dan odmora";
-"Disable auto reply on" = "Onemogući automatski odgovor ";
+"Disable auto reply after" = "Onemogući automatski odgovor ";
 "Last day of vacation" = "Poslednji dan odmora";
 "Enter date" = "Unesite datum";
 "Always send vacation message response" = "Uvek pošalji poruku automatskog odgovora za vreme odmora";

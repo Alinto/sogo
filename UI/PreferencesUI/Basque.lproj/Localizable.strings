@@ -26,7 +26,7 @@
 "Add default email addresses" = "Gehitu email helbide lehenetsiak";
 "Days between responses" ="Erantzunen arteko egunak";
 "Do not send responses to mailing lists" = "Ez bidali erantzunak email zerrendatara";
-"Disable auto reply on" = "Ezgaitu erantzun automatikoa";
+"Disable auto reply after" = "Ezgaitu erantzun automatikoa";
 "Always send vacation message response" = "'Oporretan nago' erantzun mezua beti bidali";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Mesedez, zehaztu zure mezua eta zure helbide elektronikoa zeini erantzun automatikoa gaitu nahi diozun.";

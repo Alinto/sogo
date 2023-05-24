@@ -37,6 +37,8 @@
 "this month" = "ce mois";
 "Previous Month" = "Mois précédent";
 "Next Month" = "Mois suivant";
+/* Week number prefix */
+"W" = "S";
 
 /* Year */
 "this year" = "Cette année";
@@ -563,6 +565,7 @@ vtodo_class2 = "(Tâche confidentielle)";
 "CalDAV URL" = "Accès en CalDAV ";
 "WebDAV ICS URL" = "Représentation ICS en WebDAV";
 "WebDAV XML URL" = "Représentation XML en WebDAV";
+"Copy to clipboard" = "Copier dans le presse-papier";
 
 /* Error messages */
 "dayFieldInvalid" = "Veuillez spécifier un chiffre supérieur ou égal à 1 dans le champ Jours.";

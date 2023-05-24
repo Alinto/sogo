@@ -37,6 +37,8 @@
 "this month" = "this month";
 "Previous Month" = "Previous Month";
 "Next Month" = "Next Month";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "this year";
@@ -563,6 +565,7 @@ vtodo_class2 = "(Confidential task)";
 "CalDAV URL" = "CalDAV URL ";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
+"Copy to clipboard" = "Copy to clipboard";
 
 /* Error messages */
 "dayFieldInvalid" = "Please specify a numerical value in the Days field greater or equal to 1.";

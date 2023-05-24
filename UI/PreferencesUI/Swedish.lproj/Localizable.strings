@@ -45,7 +45,7 @@
 "Days between responses" = "Dagar mellan svar";
 "Do not send responses to mailing lists" = "Skicka inte svar till e-postlistor";
 "Enable auto reply on" = "Aktivera auto-svar den";
-"Disable auto reply on" = "Inaktivera auto-svar den";
+"Disable auto reply after" = "Inaktivera auto-svar den";
 "Always send vacation message response" = "Skicka alltid frånvaromeddelande";
 "The vacation message is sent prior to apply your filters." = "Semestermeddelandet skickas innan du tillämpar dina filter.";
 "Discard incoming mails during vacation" = "Släng inkommande e-post under semester";

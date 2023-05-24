@@ -26,7 +26,7 @@
 "Add default email addresses" = "增加預設的電子郵件地址";
 "Days between responses" ="回覆間隔天數";
 "Do not send responses to mailing lists" = "不要寄送回覆給列表的帳號";
-"Disable auto reply on" = "關閉自動回覆功能";
+"Disable auto reply after" = "關閉自動回覆功能";
 "Always send vacation message response" = "開啟休假自動回覆功能";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "請輸入自動回覆的訊息內容及電子郵件帳號。";

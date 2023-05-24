@@ -46,7 +46,7 @@
 "Do not send responses to mailing lists" = "No enviar respostes a llistes de correu";
 "Enable auto reply on" = "Activar resposta automàtica";
 "First day of vacation" = "Primer dia de vacances";
-"Disable auto reply on" = "Desactivar la resposta automàtica en";
+"Disable auto reply after" = "Desactivar la resposta automàtica en";
 "Last day of vacation" = "Últim dia de vacances";
 "Enter date" = "Introduïu la Data";
 "Always send vacation message response" = "Envia sempre resposta de missatge de vacances";

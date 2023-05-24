@@ -918,7 +918,7 @@ static NSString    *userAgent      = nil;
           currentInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                                filename, @"filename",
                                              mimeType, @"mimetype",
-                                             bodyId, @"bodyid", 
+                                             bodyId, @"bodyId", 
                                              nil];
           [self saveAttachment: body
                   withMetadata: currentInfo];
@@ -1898,6 +1898,7 @@ static NSString    *userAgent      = nil;
       newText = [text htmlByExtractingImages: extractedBodyParts];
       if ([extractedBodyParts count])
         [self setText: newText];
+
     }
 
   map = [self mimeHeaderMapWithHeaders: _headers
@@ -1926,6 +1927,51 @@ static NSString    *userAgent      = nil;
                                                    bodyOnly: _bodyOnly];
           //[self debugWithFormat: @"message: %@", message];
         }
+    }
+
+    if (_extractImages)
+    { 
+      int i;
+      for (i = 0 ; i < [extractedBodyParts count] ; i++) {
+        NSMutableDictionary *currentInfo;
+        NSString *filename, *mimeType, *bodyId, *encoding;
+        NSData *body;
+        NGMimeBodyPart *extractedBodyPart;
+        NGMimeContentDispositionHeaderField *contentDisposition;
+
+        extractedBodyPart = [extractedBodyParts objectAtIndex:i];
+        if (extractedBodyPart && [extractedBodyPart headerForKey: @"content-disposition"]) {
+          encoding = [extractedBodyPart encoding];
+          contentDisposition = [[NGMimeContentDispositionHeaderField alloc] initWithString: [extractedBodyPart headerForKey: @"content-disposition"]];
+          
+          if (encoding 
+              && [extractedBodyPart contentType] 
+              && [extractedBodyPart contentId]
+              && [contentDisposition filename]) {
+
+            mimeType = [[extractedBodyPart contentType] stringValue];
+            bodyId = [[extractedBodyPart contentId] stringValue];
+            filename = [contentDisposition filename];
+            currentInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                                  filename, @"filename",
+                                                mimeType, @"mimetype",
+                                                bodyId, @"bodyId", 
+                                                nil];
+
+            if ([[extractedBodyParts objectAtIndex:i] body]) {
+                if (encoding && [encoding rangeOfString:@"base64"].location != NSNotFound)
+                  body = [[[extractedBodyParts objectAtIndex:i] body] dataByDecodingBase64];
+                else
+                  body = [[extractedBodyParts objectAtIndex:i] body];
+
+                [self saveAttachment: body
+                  withMetadata: currentInfo];
+            }
+          }
+          [contentDisposition release];
+        }
+        
+      }
     }
 
   return message;

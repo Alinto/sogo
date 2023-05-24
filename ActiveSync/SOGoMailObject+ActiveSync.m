@@ -410,7 +410,7 @@ struct GlobalObjectId {
 
       charset = [[[self lookupInfoForBodyPart: key] objectForKey: @"parameterList"] objectForKey: @"charset"];
 
-      if (![charset length])
+      if (![charset length] || [charset caseInsensitiveCompare: @"us-ascii"] == NSOrderedSame)
         charset = @"utf-8";
       
       s = [NSString stringWithData: d  usingEncodingNamed: charset];
@@ -708,7 +708,7 @@ struct GlobalObjectId {
           
           charset = [[[self lookupInfoForBodyPart: @""] objectForKey: @"parameterList"] objectForKey: @"charset"];
           
-          if (![charset length])
+          if (![charset length] || [charset caseInsensitiveCompare: @"us-ascii"] == NSOrderedSame)
             charset = @"utf-8";
           
           d = [[self fetchPlainTextParts] objectForKey: @""];

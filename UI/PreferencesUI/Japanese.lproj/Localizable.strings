@@ -45,7 +45,7 @@
 "Days between responses" = "応答の間の日数";
 "Do not send responses to mailing lists" = "メーリングリストに応答を送信しない。";
 "Enable auto reply on" = "自動応答は有効化";
-"Disable auto reply on" = "次の自動応答は無効:";
+"Disable auto reply after" = "次の自動応答は無効:";
 "Always send vacation message response" = "必ず休暇メッセージを送信する";
 "Discard incoming mails during vacation" = "休暇中は受信したメールをゴミ箱に入れる";
 "Please specify your message and your email addresses for which you want to enable auto reply."

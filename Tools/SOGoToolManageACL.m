@@ -366,7 +366,7 @@ typedef enum
   NSString *qs, *path;
 
   if ([theUser isEqualToString: @"ALL"])
-    qs = [NSString stringWithFormat: @"c_uid LIKE '\%'", theUser];
+    qs = [NSString stringWithFormat: @"c_uid LIKE '%%'"];
   else
     qs = [NSString stringWithFormat: @"c_uid = '%@'", theUser];
 

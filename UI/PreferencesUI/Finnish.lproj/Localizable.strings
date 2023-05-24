@@ -45,7 +45,7 @@
 "Days between responses" = "Päivät vastausten välillä";
 "Do not send responses to mailing lists" = "Älä lähetä vastauksia postituslistoille";
 "Enable auto reply on" = "Ota automaattivastaus käyttöön";
-"Disable auto reply on" = "Poista automaattivastaus käytöstä";
+"Disable auto reply after" = "Poista automaattivastaus käytöstä";
 "Always send vacation message response" = "Lähetä lomaviestivastaus aina";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Ole hyvä ja määritä viesti sekä sähköpostiosoitteet joille haluat aktivoida automaattivastauksen.";

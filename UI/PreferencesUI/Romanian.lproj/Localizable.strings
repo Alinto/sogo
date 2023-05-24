@@ -46,7 +46,7 @@
 "Do not send responses to mailing lists" = "Nu răspundeți la mesajele de la liste de discuții";
 "Enable auto reply on" = "Activare răspuns automat pe";
 "First day of vacation" = " Prima zi de vacanță";
-"Disable auto reply on" = "Dezactivare răspuns automat pe";
+"Disable auto reply after" = "Dezactivare răspuns automat pe";
 "Last day of vacation" = "Ultima zi de vacanță";
 "Enter date" = "Introduceți data";
 "Always send vacation message response" = "Întotdeauna trimite un mesaj de concediu";

@@ -45,7 +45,7 @@
 "Days between responses" = "Diwrnodau rhwng ymatebion";
 "Do not send responses to mailing lists" = "Peidio anfon ymatebion i restrau postio";
 "Enable auto reply on" = "Galluogi ateb awtomatig ymlaen";
-"Disable auto reply on" = "Analluogi ateb awtomatig ymlaen";
+"Disable auto reply after" = "Analluogi ateb awtomatig ymlaen";
 "Always send vacation message response" = "Anfon ymateb gwyliau bob amser";
 "Discard incoming mails during vacation" = "Taflu e-byst sy'n dod i mewn yn ystod gwyliau";
 "Please specify your message and your email addresses for which you want to enable auto reply."

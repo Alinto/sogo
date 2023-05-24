@@ -45,7 +45,7 @@
 "Days between responses" = "Dias entre respuestas";
 "Do not send responses to mailing lists" = "No enviar respuestas a las listas de distribución";
 "Enable auto reply on" = "Activar respuesta automática";
-"Disable auto reply on" = "Desactivar respuesta automatica";
+"Disable auto reply after" = "Desactivar respuesta automatica";
 "Always send vacation message response" = "Siempre enviar mensaje de vacaciones";
 "Discard incoming mails during vacation" = "Descartar los correos entrantes durante las vacaciones";
 "Please specify your message and your email addresses for which you want to enable auto reply."

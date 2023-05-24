@@ -47,7 +47,7 @@
 "Activation Constraints" = "Activation Constraints";
 "Enable auto reply on" = "Enable auto reply on";
 "First day of vacation" = "First day of vacation";
-"Disable auto reply on" = "Disable auto reply on";
+"Disable auto reply after" = "Disable auto reply after";
 "Last day of vacation" = "Last day of vacation";
 "Enter date" = "Enter date";
 /* Enable auto reply at this time of the day */
@@ -260,7 +260,7 @@
 "POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
 "POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
 "POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0} special symbols";
 "POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
 
 

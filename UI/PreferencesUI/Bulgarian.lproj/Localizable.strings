@@ -47,7 +47,7 @@
 "Activation Constraints" = "Активационни ограничения";
 "Enable auto reply on" = "Включи автоматичен отговор";
 "First day of vacation" = "Първи ден от отпуска";
-"Disable auto reply on" = "Изключи автоматичен отговор на";
+"Disable auto reply after" = "Изключи автоматичен отговор на";
 "Last day of vacation" = "Последен ден от отпуска";
 "Enter date" = "Въведете дата";
 /* Enable auto reply at this time of the day */

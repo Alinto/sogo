@@ -25,7 +25,7 @@
 "Add default email addresses" = "إضافة عناوين البريد الإلكتروني الافتراضية";
 "Days between responses" ="عدد الأيام بين الردود";
 "Do not send responses to mailing lists" = "لا ترسل ردود الى القوائم البريدية";
-"Disable auto reply on" = "تعطيل الرد التلقائي في";
+"Disable auto reply after" = "تعطيل الرد التلقائي في";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "يرجى تحديد رسالتك وعناوين البريد الإلكتروني التي تريد تمكين الرد التلقائي لها.";
 "Your vacation message must not end with a single dot on a line." = "يجب أن لا تنتهي رسالة العطلة بنقطة واحدة على السطر.";

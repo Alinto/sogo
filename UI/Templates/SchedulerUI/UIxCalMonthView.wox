@@ -89,6 +89,12 @@
                                  var:sg-day="currentTableDay.shortDateString"
                                  var:sg-day-number="currentDayNumber"
                                  var:sg-day-string="currentTableDay.iso8601DateString">
+                                 <!-- Week number -->
+                                 <var:if condition="isFirstDayOfWeek">
+                                    <div class="sg-calendar-tile-week">
+                                      <span class="md-default-theme md-default-theme md-hue-1 md-bg"><var:string label:value="W"/><var:string value="currentWeekNumber"/></span>
+                                    </div>
+                                 </var:if>
                   <div class="sg-calendar-tile-header md-default-theme md-fg md-hue-2">
                     <var:if condition="currentTableDay.isToday">
                       <span class="md-default-theme md-bg md-accent md-hue-2"><var:string value="currentTableDay.dayOfMonth"/></span> <var:string value="dayHeaderMonth"/>

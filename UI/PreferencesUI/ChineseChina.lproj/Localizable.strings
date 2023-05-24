@@ -45,7 +45,7 @@
 "Days between responses" = "回复间隔日数";
 "Do not send responses to mailing lists" = "不要回复到邮件列表";
 "Enable auto reply on" = "启用自动回复功能";
-"Disable auto reply on" = "禁用回复无效";
+"Disable auto reply after" = "禁用回复无效";
 "Always send vacation message response" = "总是发送休假消息回复";
 "Discard incoming mails during vacation" = "丢弃假期收到的邮件";
 "Please specify your message and your email addresses for which you want to enable auto reply."

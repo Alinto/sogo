@@ -46,7 +46,7 @@
 "Do not send responses to mailing lists" = "Nesūtīt automātiskās atbildes adresātu sarakstam";
 "Enable auto reply on" = "Ieslēgt automātisko atbildi";
 "First day of vacation" = "Pirmā atvaļinājuma diena";
-"Disable auto reply on" = "Izslēgt automātisko atbildi";
+"Disable auto reply after" = "Izslēgt automātisko atbildi";
 "Last day of vacation" = "Pēdējā atvaļinājuma diena";
 "Enter date" = "Ievadiet datumu";
 "Always send vacation message response" = "Vienmēr sūtīt atvaļinājuma atbildes ziņojumu";
