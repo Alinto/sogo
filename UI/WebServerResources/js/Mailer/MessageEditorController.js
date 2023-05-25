@@ -305,7 +305,7 @@
         });
         // Remove duplicates
         return _.uniqBy(explodedCards, function(card) {
-          return card.$$fullname + ' ' + card.$$email;
+          return card.$$fullname + ' ' + card.$$email + ' ' + card.containername;
         });
       });
     };
