@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "Buat";
 "Empty Trash" = "Kosongkan sampah";
+"Empty Junk Folder" = "Empty Junk Folder";
 "Delete"      = "Hapus";
 "Expunge"     = "Menghilangkan";
 "Forward"     = "Teruskan";
@@ -73,8 +74,13 @@
 "An error occured while communicating with the mail server" = "erjadi kesalahan saat berkomunikasi dengan mail server";
 
 /* Mailbox actions */
+
 /* Compact Folder success message */
 "Folder compacted" = "Folder Dikompaksi";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Junk folder emptied";
+
 /* Empty Trash success message */
 "Trash emptied" = "Sampah dikosongkan";
 
@@ -82,7 +88,7 @@
 "Access rights to" = "Hak akses ke";
 "For user" = "Untuk pengguna";
 "Any Authenticated User" = "Setiap Pengguna Terotentikasi";
-"List and see this folder" = "Mendaftar dan lihat folder ini";
+"View this folder" = "View this folder";
 "Read mails from this folder" = "Baca Surat dari folder ini";
 "Mark mails read and unread" = "Tandai surat yang dibaca dan belum dibaca";
 "Modify the flags of the mails in this folder" = "Modifikasi bendera dari surat di folder ini.";
@@ -104,7 +110,7 @@
 "To"            = "Kepada";
 "Cc"            = "Cc";
 "Bcc"           = "Bcc";
-"Reply-To"	    = "Balas ke";
+"Reply-To"	= "Balas ke";
 "Add address"   = "Tambah Alamat";
 "Body"          = "Bdan";
 "Open" = "Buka";
@@ -121,6 +127,7 @@
 "Edit Draft..." = "Perbaiki draf";
 "Load Images" = "Memuat gambar";
 "Return Receipt" = "Tanda terima";
+"Choose which identity to send this message from" = "Choose which identity to send this message from";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Pengirim pesan ini meminta diberitahu apabila anda telah membaca pesan ini. Apakah anda ingin memberitahu kepada pengirim?";
 "Return Receipt (displayed) - %@"= "tanda terima (ditampilkan)- %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Ini adalah tanda terima untuk pesan yang anda kirim ke %@\n\nCatatan:  tanda terima ini hanya menyatakan bahwa pesan ditampilkan pada komputer penerima. Tidak ada jaminan bahwa penerima telah membaca atau memahami isi pesan.";
@@ -165,12 +172,22 @@
 "Mark Read"   = "Tandai sudah dibaca";
 "Untitled" = "Belum berjudul";
 
+/* Filter option in messages list */
+"Show unread messages only" = "Show unread messages only";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Show flagged messages only";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Filtered by label";
+
 /* Tree */
 "SentFolderName"   = "Terkirim";
 "TrashFolderName"  = "Sampah";
 "InboxFolderName"  = "Kotak pesan";
 "DraftsFolderName" = "Draf";
 "JunkFolderName" = "Sampah";
+"TemplatesFolderName" = "Templates";
 "SieveFolderName"  = "Filter";
 "Folders"          = "Folder"; /* title line */
 
@@ -229,6 +246,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Mengkonversi ke Tugas";
 
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Download message";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Download message (zip)";
+
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "Undus semua lampiran";
 
@@ -250,6 +273,12 @@
 /* Number of selected messages in list */
 "selected" = "dipilih";
 
+/* Date formatting from one time to another time */
+"to_time" = "to";
+
+/* Date formatting from one day to another day */
+"to_date" = "to";
+
 /* Encrypted message notification */
 "This message is encrypted" = "Pesan ini dienkripsi";
 
@@ -267,6 +296,18 @@
 
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Tidak ada sertifikat yang berkaitan dengan akun ini";
+
+/* Invalid S/MIME signature */
+"Digital signature is not valid" = "Digital signature is not valid";
+
+/* Valid S/MIME signature */
+"Message is signed" = "Message is signed";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Message is signed but the certificate doesn't match the sender email address";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Digital signature is not valid";
 
 "This Folder" = "Folder ini";
 
@@ -303,6 +344,7 @@
 "Operation failed" = "Operasi gagal";
 "Quota" = "Kutipan:";
 "quotasFormat" = "%{0}% digunakan pada %{1} MB";
+"messageQuotasFormat" = "%{0}% of %{1} msgs";
 "Unable to move/delete folder." = "Tidak dapat memindah/hapus folder";
 
 /* Alternative operation when folder cannot be deleted */
@@ -349,6 +391,12 @@
 "Send Anyway" = "Tetap kirim";
 "Error while saving the draft" = "Terjadi kesalahan saat menyimpan draf";
 
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Unable to empty the trash folder.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Unable to empty the junk folder.";
+
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Terjadi kesalahan saat mengunggah file \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Ada file yang sedang di unggah. Menutup jendela akan mengganggu.";
@@ -363,6 +411,9 @@
 "cannot send message: (smtp) all recipients discarded" = "Tidak dapat mengirim pesan: Semua penerima tidak valid.";
 "cannot send message (smtp) - recipients discarded" = "Tidak dapat mengirim pesan. alamat berikut tidak valid.";
 "cannot send message: (smtp) error when connecting" = "Tidak dapat megirim pesan: kesalahan saat menghubungkan ke server SMTP.";
+"cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
+"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
 
 /* Contacts list in mail editor */
 "Email" = "Email";
@@ -381,6 +432,9 @@
 "Set as Drafts" = "Tetapkan sebaga Konsep";
 "Set as Sent" = "tetapkan sebagai terkirim";
 "Set as Trash" = "tetapkan sebagai sampah";
+
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Set as Templates";
 
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Tetapkan sebagai sampah";
@@ -403,6 +457,9 @@
 "Your email has been saved" = "Email anda telah disimpan";
 "Your email has been sent" = "Email anda telah dikirim";
 "Folder compacted" = "Folder Dikompaksi";
+
+"New draft" = "New draft";
+"Create new draft with this template" = "Create new draft with this template";
 
 /* Advanced search */
 "Enter Subject" = "Enter Subject";

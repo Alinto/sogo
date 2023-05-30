@@ -37,6 +37,8 @@
 "this month" = "Bulan ini";
 "Previous Month" = "Bulan sebelumnya";
 "Next Month" = "Bulan selanjnutnya";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "Tahun Ini";
@@ -107,6 +109,7 @@
 "Name of the Calendar" = "Nama kalender";
 "new" = "baru";
 "Print view" = "Tinjauan cetak";
+"Print" = "Print";
 "edit" = "Edit";
 "delete" = "Hapus";
 "proposal" = "Usul";
@@ -147,6 +150,7 @@
 "Display events and tasks colors" = "Tampilkan warna acara dan tugas";
 "Borders" = "Batas";
 "Backgrounds" = "LAtar belakang";
+"Page Format" = "Page Format";
 
 /* Appointments */
 "Appointment viewer" = "Penunjukan pemirsa";
@@ -219,6 +223,11 @@
 "view_next31" = "31 hari selanjutnya";
 "view_thismonth" = "Bulan ini";
 "view_thisyear" = "Tahun ini";
+"view_last7" = "Last 7 days";
+"view_last14" = "Last 14 days";
+"view_last31" = "Last 31 days";
+"view_lastmonth" = "Last Month";
+"view_lastyear" = "Last Year";
 "view_future" = "Semua acara mendatang";
 "view_selectedday" = "hari terpilih";
 "view_not_started" = "Tugas tidak dimulai";
@@ -391,6 +400,10 @@
 "From" = "Dari";
 "To" = "Kepada";
 
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "Tidak ada judul diatur, Lanjutkan?";
 validate_invalid_startdate = "Bidang mulai tanggal salah";
@@ -497,6 +510,8 @@ validate_untilbeforeend    = "berulangnya harus berakhir setelah kejadian pertam
 "and" = "Dan";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "terdapat sebuah konflik waktu dengan satu atau lebih peserta\nApakah Anda ingin tetap menyimpan pengaturan saat ini?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Would you like to remove them and send the invitation to the remaining attendees?";
 
 /* events list */
 "Due" = "Jatuh tempo";
@@ -577,7 +592,7 @@ vtodo_class2 = "(Tugas Rahasia)";
 "Move To" = "Pindahkan ke";
 "Copy To" = "Salin ke";
 "Subscriptions" = "Langganan";
-"Subscribe to a shared folder" = "Berlangganan sebuah folder bersama";
+"Subscribe to a shared calendar" = "Subscribe to a shared calendar";
 "Subscribe to a web calendar..." = "Berlangganan sebuah kalender web...";
 "URL of the Calendar" = "URL kalender";
 "Web Calendar" = "Kalender web";
@@ -614,6 +629,7 @@ vtodo_class2 = "(Tugas Rahasia)";
 "Rename" = "Ganti Nama";
 "Import Calendar" = "Impor kalender";
 "Select an ICS file." = "Pilih file ICS.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Berhasil berlangganan di kalender";
