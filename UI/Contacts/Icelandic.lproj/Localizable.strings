@@ -21,11 +21,15 @@
 "HomePhone" = "Heimasími";
 "Lastname" = "Kenninafn";
 "Location" = "Staðsetning";
+"Add a category" = "Add a category";
 "MobilePhone" = "Farsímanúmer";
 "Name" = "Nafn";
 "OfficePhone" = "Skrifstofusími";
 "Organization" = "Fyrirtæki/Stofnun";
 "Work Phone" = "Vinnusími";
+"Cell" = "Cell";
+"Pager" = "Símboði";
+"Pref" = "Pref";
 "Phone" = "Sími";
 "Phones" = "Símar";
 "Postal" = "Póst tegund";
@@ -35,12 +39,120 @@
 "delete" = "eyða";
 "edit" = "sýsla";
 "invalidemailwarn" = "Tilgreint netfang er ógilt.";
-"invaliddatewarn" = "Tilgreind dagsetning er ógild.";
 "new" = "nýtt";
 "Preferred Phone" = "Helsti sími";
 "Move To" = "Færa í";
 "Copy To" = "Afrita í";
 "Add to" = "Bæta við";
+"To" = "To";
+"Carbon Copy (Cc)" = "Carbon Copy (Cc)";
+"Blind Carbon Copy (Bcc)" = "Blind Carbon Copy (Bcc)";
+
+/* Search scope: name fields */
+"name" = "Name";
+
+/* Search scope: name fields */
+"c_cn" = "Name";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "Secondary email";
+
+/* Search scope: screen name field */
+"nsaimid" = "Screen name";
+
+/* Search scope: mail fields */
+"mail" = "Mail";
+
+/* Search scope: mail fields */
+"c_mail" = "Mail";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Telephone";
+
+/* Search scope: telephone field */
+"homephone" = "Telephone";
+
+/* Search scope: mobile field */
+"mobile" = "Mobile";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Fax";
+
+/* Search scope: pager field */
+"pager" = "Pager";
+
+/* Search scope: categories field */
+"c_categories" = "Categories";
+
+/* Search scope: categories field */
+"vcardcategories" = "Categories";
+
+/* Search scope: title field */
+"title" = "Title";
+
+/* Search scope: organization field */
+"c_o" = "Organization";
+
+/* Search scope: organization field */
+"o" = "Organization";
+
+/* Search scope: department field */
+"ou" = "Department";
+
+/* Search scope: city field */
+"l" = "City";
+
+/* Search scope: country field */
+"c" = "Country";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Home Address";
+
+/* Search scope: state/province field */
+"st" = "State/Province";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Home State/Province";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "Zip/Postal Code";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "Zip/Postal Code";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "Home Country";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Home page";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Web page";
+
+/* Search scope: note field */
+"description" = "Note";
+
+/* Subheader of empty addressbook */
+"No contact" = "No contact";
+
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Start a search to browse this address book";
+
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "contacts";
+
+/* No contact matching search criteria */
+"No matching contact" = "No matching contact";
+
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "matching contacts";
+
+/* Number of selected contacts in list */
+"selected" = "selected";
+
+/* Empty right pane */
+"No contact selected" = "No contact selected";
+
 /* Tooltips */
 "Create a new address book card" = "Búa til nýtt nafnspjald";
 "Create a new list" = "Búa til nýjan lista";
@@ -57,6 +169,7 @@
 "Search in Addressbook" = "Leita í nafnaskrá";
 "New Card" = "Nýtt nafnspjald";
 "New List" = "Nýr listi";
+"Edit" = "Edit";
 "Properties" = "Eiginleikar";
 "Sharing..." = "Samnýting...";
 "Write" = "Skrifa";
@@ -67,26 +180,24 @@
 "Please wait..." = "Augnablik...";
 "No possible subscription" = "Engin áskrift möguleg";
 "Preferred" = "Sjálfgefið";
-"Card for %@" = "Nafnspjald fyrir %@";
 "Display" = "Birtingarnafn";
 "Display Name" = "Birt nafn";
-"Email" = "Tölvupóstfang";
 "Additional Email" = "Auka tölvupóstfang";
 "Phone Number" = "Símanúmer";
 "Prefers to receive messages formatted as" = "Kýs að taka á móti pósti með sniði";
-"Screen Name" = "Skjánafn";
 "Categories" = "Flokkar";
 "First" = "Fornafn";
 "Last" = "Eftirnafn";
 "Nickname" = "Gælunafn";
 "Telephone" = "Sími";
 "Work" = "Vinnusími";
-"Home" = "Heimasími";
 "Mobile" = "Farsími";
 "Pager" = "Símboði";
+
 /* categories */
 "contacts_category_labels" = "Samstarfsmaður, Keppinautur, Viðskiptavinur, Vinur, Fjölskylda, Viðskiptatengsl, Þjónustuaðili, Fjölmiðlar, VIP";
 "New category" = "Nýr flokkur";
+
 /* adresses */
 "Title" = "Titill";
 "Service" = "Þjónusta";
@@ -97,13 +208,12 @@
 "ZIP_Postal Code" = "Póstnúmer";
 "Country" = "Land";
 "Web Page" = "Vefsíða";
-"Work" = "Vinna";
 "Other Infos" = "Aðrar upplýsingar";
 "Note" = "Athugasemd";
 "Timezone" = "Tímabelti";
 "Birthday" = "Afmælisdagur";
 "Birthday (yyyy-mm-dd)" = "Afmælisdagur (yyyy-mm-dd)";
-"Freebusy URL:" = "LaustUpptekið URL";
+"Freebusy URL" = "Freebusy URL";
 "Add as..." = "Bæta við sem...";
 "Recipient" = "Viðtakandi";
 "Carbon Copy" = "Afrit";
@@ -111,23 +221,36 @@
 "New Addressbook..." = "Ný nafnaskrá...";
 "Subscribe to an Addressbook..." = "Gerast áskrifandi að nafnaskrá...";
 "Remove the selected Addressbook" = "Fjarlægja valda nafnaskrá";
+"Subscribe to a shared contact" = "Subscribe to a shared addressbook";
+"Search User" = "Search User";
 "Name of the Address Book" = "Heiti Nafnaskrár";
 "Are you sure you want to delete the selected address book?"
 = "Ertu viss um að þú viljir eyða út nafnaskrá?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "Are you sure you want to delete the addressbook \"%{0}\"?";
 "You cannot remove nor unsubscribe from a public addressbook."
 = "Ekki er hægt að segja upp eða fjarlæga almenna nafnaskrá.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "Ekki er hægt að segja upp eða fjarlæga sína eigin persónulegu nafnaskrá.";
 "Are you sure you want to delete the selected contacts?"
 = "Ertu viss um að það eig að eyða völdum tengiliðum?";
+"Are you sure you want to delete the card of %{0}?" = "Are you sure you want to delete the card of %{0}?";
 "You cannot delete the card of \"%{0}\"."
 = "Ekki er hægt að eyða nafnspjaldi frá \"%{0}\".";
-"Address Book Name" = "Heiti Nafnaskrár";
 "You cannot subscribe to a folder that you own!"
 = "Ekki er hægt að gerast áskrifandi að sínum eigin möppum.";
 "Unable to subscribe to that folder!"
 = "Ekki var hægt að gerast áskrifandi að þeirri möppu.";
-"User rights for" = "Notandanréttindi fyrir";
+
+/* security */
+"Security" = "Security";
+"Uninstall" = "Uninstall";
+"Error reading the card certificate." = "Error reading the card certificate.";
+"No certificate associated to card." = "No certificate associated to card.";
+
+/* acls */
+"Access rights to" = "Access rights to";
+"For user" = "For user";
 "Any Authenticated User" = "Sérhvern innskráðan notanda";
 "Public Access" = "Opinber aðgangur";
 "This person can add cards to this addressbook."
@@ -143,11 +266,15 @@
 "The selected contact has no email address."
 = "Valinn tengiliður hefur ekkert netfang.";
 "Please select a contact." = "Velja þarf tengilið.";
-/* Error messages for move and copy */
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} card(s) copied";
+"%{0} card(s) moved" = "%{0} card(s) moved";
 "SoAccessDeniedException" = "Ekki er hægt að skrifa í þesssa nafnaskrá.";
 "Forbidden" = "Ekki er hægt að skrifa í þesssa nafnaskrá.";
 "Invalid Contact" = "Valinn tengiliður er ekki lengur til.";
 "Unknown Destination Folder" = "Nafnaskráin se nota átti er ekki lengur til.";
+
 /* Lists */
 "List details" = "Ítarleg lýsing á lista:";
 "List name" = "Nafn lista";
@@ -159,11 +286,80 @@
 "Lists can't be moved or copied." = "Lista er ekki hægt að afrita eða flytja.";
 "Export" = "Flytja út";
 "Export Address Book..." = "Flytja út nafnaskrá...";
+"View Raw Source" = "View Raw Source";
+
+/* Import */
 "Import Cards" = "Flytja inn nafnspjöld";
 "Select a vCard or LDIF file." = "Velja vCard eða LDIF skrá.";
 "Upload" = "Hala upp";
+"Uploading" = "Uploading";
 "Done" = "Ljúka";
 "An error occured while importing contacts." = "Villa kom upp meðan verið var að flytja tengiliði inn.";
 "No card was imported." = "Ekkert nafnspjald var flutt inn.";
 "A total of %{0} cards were imported in the addressbook." = "Alls voru %{0} nafnspjöld flutt inn i nafnaskrána.";
 "Reload" = "Endurnýja";
+
+/* Properties window */
+"Address Book Name" = "Heiti Nafnaskrár";
+"Links to this Address Book" = "Links to this Address Book";
+"Authenticated User Access" = "Authenticated User Access";
+"CardDAV URL" = "CardDAV URL";
+"Options" = "Options";
+"Rename" = "Rename";
+"Subscriptions" = "Subscriptions";
+"Global Addressbooks" = "Global Addressbooks";
+"Search" = "Search";
+"Sort" = "Sort";
+"Descending Order" = "Descending Order";
+"Back" = "Back";
+"Select All" = "Select All";
+"Copy contacts" = "Copy contacts";
+"More messages options" = "More messages options";
+"New Contact" = "New Contact";
+"Close" = "Close";
+"More contact options" = "More contact options";
+"Organization Unit" = "Organization Unit";
+"Add Organizational Unit" = "Add Organizational Unit";
+"Type" = "Type";
+"Email Address" = "Email Address";
+"New Email Address" = "New Email Address";
+"New Phone Number" = "New Phone Number";
+"URL" = "URL";
+"New URL" = "New URL";
+"street" = "street";
+"street (continued)" = "street (continued)";
+"Postoffice" = "Postoffice";
+"Region" = "Region";
+"Postal Code" = "Postal Code";
+"New Address" = "New Address";
+"Reset" = "Reset";
+"Description" = "Description";
+"Add Member" = "Add Member";
+"Subscribe" = "Subscribe";
+"Add Birthday" = "Add Birthday";
+"Import" = "Import";
+"More options" = "More options";
+"Role" = "Role";
+"Add Screen Name" = "Add Screen Name";
+"Custom 1" = "Custom 1";
+"Custom 2" = "Custom 2";
+"Custom 3" = "Custom 3";
+"Custom 4" = "Custom 4";
+"Custom Value" = "Custom Value";
+"New Custom Value" = "New Custom Value";
+"Synchronization" = "Synchronization";
+"Synchronize" = "Synchronize";
+"Sucessfully subscribed to address book" = "Successfully subscribed to address book";
+"A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "Search scope";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Toggle item";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

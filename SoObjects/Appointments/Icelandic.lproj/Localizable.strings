@@ -1,3 +1,4 @@
+"Inviting the following persons is prohibited:" = "Inviting the following persons is prohibited:";
 "Personal Calendar" = "Einkadagatal";
 vevent_class0 = "(Almennur viðburður)";
 vevent_class1 = "(Einkaviðburður)";
@@ -6,42 +7,59 @@ vevent_class2 = "(Viðburður er trúnaðarmál)";
 vtodo_class0 = "(Almennt verkefni)";
 vtodo_class1 = "(Einkaverkefni)";
 vtodo_class2 = "(Verkefni er trúnaðarmál)";
+
 /* Receipts */
-"Title:" = "Titill:";
-"Start:" = "Byrjun:";
-"End:" = "Endir:";
-"Receipt: users invited to a meeting" = "Móttakandi: notendur boðnir á fund";
-"You have invited the following attendees(s):" = "Eftirfarandi þáttakanda/þáttakendum hefur verið boðið:";
-"... to attend the following event:" = "... að vera viðstaddir eftirfarandi viðburð:";
-"Receipt: invitation updated" = "Móttakandi: uppfærður boðsmiði";
-"The following attendees(s):" = "Eftirfarandi þáttakandi/Þáttakendur:";
-"... have been notified of the changes to the following event:" = "... hafa fengið upplýsingar um breytingarnar á eftirfarandi viðburði:";
-"Receipt: attendees removed from an event" = "Móttakandi: þáttakendur fjarlægðir af viðburði";
-"You have removed the following attendees(s):" = "Eftirfarandi þáttakandi/þáttakendur hafa verið fjarlægðir:";
-"... from the following event:" = "... af eftirfarandi viðburði:";
+"The event \"%{Summary}\" was created" = "The event \"%{Summary}\" was created";
+"The event \"%{Summary}\" was deleted" = "The event \"%{Summary}\" was deleted";
+"The event \"%{Summary}\" was updated" = "The event \"%{Summary}\" was updated";
+"The task \"%{Summary}\" was created" = "The task \"%{Summary}\" was created";
+"The task \"%{Summary}\" was deleted" = "The task \"%{Summary}\" was deleted";
+"The task \"%{Summary}\" was updated" = "The task \"%{Summary}\" was updated";
+"The following attendees(s) were notified" = "The following attendee(s) were notified";
+"The following attendees(s) were added" = "The following attendee(s) were added";
+"The following attendees(s) were removed" = "The following attendee(s) were removed";
+
 /* IMIP messages */
+"calendar_label" = "Calendar";
 "startDate_label" = "Byrjun";
 "endDate_label" = "Endir";
+"time_label" = "Time";
+"to_label" = "to";
 "due_label" = "Lokadagur:";
 "location_label" = "Staðsetning";
 "summary_label" = "Samantekt:";
 "comment_label" = "Athugasemd:";
+"organizer_label" = "Organizer";
+"attendee_label" = "Attendee";
+
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Boð á viðburð: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(%{SentBy} sendi þetta) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}hefur boðið þér á þennan viðburð: %{Summary}.\n\nByrjun: %{StartDate} at %{StartTime}\nEndir: %{EndDate} at %{EndTime}\nLýsing: %{Description}";
+
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Viðburði aflýst: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}hefur aflýst þessum viðburði: %{Summary}.\n\nByrjun: %{StartDate} kl. %{StartTime}\nEndir: %{EndDate} kl. %{EndTime}\nLýsing: %{Description}";
+
 /* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "The appointment \"%{Summary}\" for the %{OldStartDate} has changed";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
 = "Tímapöntunin \"%{Summary}\" sem var þann %{OldStartDate} kl. %{OldStartTime} hefur breyst.";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
 = "Eftirfarandi atriði hafa breyst varðandi fundinn: \"%{Summary}\"";
 "Please accept or decline those changes."
 = "Þessar breytingar þarf að samþykkja eða hafna.";
+
 /* Reply */
+"Accepted invitation: \"%{Summary}\"" = "Accepted invitation: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "Declined invitation: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Delegated invitation: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "Not yet decided on invitation: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}hefur samþykkt boð þitt á viðburð.";
 "%{Attendee} %{SentByText}has declined your event invitation."
@@ -50,5 +68,15 @@ vtodo_class2 = "(Verkefni er trúnaðarmál)";
 = "%{Attendee} %{SentByText}hefur skipað sem fulltrúa sinn %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}hefur ekki enn tekið ákvörðun varðandi boð þitt.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Reminder: \"%{Summary}\" - %{StartDate}";
+
 /* Resources */
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Hámarksfjöldi samtímabókana (%{NumberOfSimultaneousBookings}) hefur verið náð varðandi aðfangið \"%{Cn} %{SystemEmail}\".";
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Cannot access resource: \"%{Cn} %{SystemEmail}\"";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}.";
+
+/* Participation role */
+"Your participation is required to this event" = "Your participation is required to this event";
+"Your participation is optional to this event" = "Your participation is optional to this event";
+"Your participation is not required to this event" = "Your participation is not required to this event";

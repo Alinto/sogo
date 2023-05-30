@@ -12,6 +12,8 @@ publish_info_text = "Sendandinn vekur athygli þína á hjálögðum viðburði.
 cancel_info_text = "Viðburðinum eða þínu boði í hann var aflýst.";
 request_info_no_attendee = "gerir tillögu um fund fyrir þáttakendurna. Þú færð þetta bréf sem tilkynningu, þú ert ekki á lista sem þáttakandi. ";
 Appointment = "Tímapöntun";
+"Status Update" = "Status Update";
+was = "was";
 
 Organizer = "Skipuleggjandi";
 Time = "Tími";
@@ -32,10 +34,16 @@ reply_info = "Þetta er svar við boði á viðburð sem þú hefur gert.";
 "to" = "til";
 "Untitled" = "ónefnt";
 "Size" = "Stærð";
-"Digital signature is not valid" = "Stafræn undirritun er ógild";
-"Message is signed" = "Póstur er með rafræna undirskrift";
 "Subject" = "Viðfangsefni";
 "From" = "Frá";
 "Date" = "Dagsetning";
 "To" = "Til";
 "Issuer" = "Útgefandi";
+/* Tooltips */
+"View Attachment" = "View Attachment";
+"Save Attachment" = "Save Attachment";
+"CC" = "CC";
+"Cancel" = "Cancel";
+"OK" = "OK";
+"Comment" = "Comment";
+"Description" = "Description";
