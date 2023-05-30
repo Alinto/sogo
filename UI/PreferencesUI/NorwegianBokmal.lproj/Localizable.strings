@@ -47,7 +47,7 @@
 "Activation Constraints" = "Aktiveringsbegrensninger ";
 "Enable auto reply on" = "Aktiver automatisk svar på";
 "First day of vacation" = "Første feriedag";
-"Disable auto reply after" = "Skru av auto-svar";
+"Disable auto reply after" = "Skru av autosvar etter";
 "Last day of vacation" = "Siste feriedag";
 "Enter date" = "Legg til dato";
 /* Enable auto reply at this time of the day */
