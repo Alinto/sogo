@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [5.8.3](https://github.com/Alinto/sogo/compare/SOGo-5.8.2...SOGo-5.9.0) (2023-05-30)
+## [5.8.3](https://github.com/Alinto/sogo/compare/SOGo-5.8.2...SOGo-5.8.3) (2023-05-30)
 
 
 ### Enhancements

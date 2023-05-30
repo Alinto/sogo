@@ -12,6 +12,7 @@
 ActiveSync/ActiveSync.SOGo
 Documentation/*.docbook
 Documentation/*.pdf
+Documentation/*.html
 SoObjects/SOGo/SOGo.framework/
 SoObjects/SOGo/derived_src/
 Tests/*/config.py
