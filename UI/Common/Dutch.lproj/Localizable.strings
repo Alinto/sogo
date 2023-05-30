@@ -106,6 +106,7 @@
 "Personal" = "Persoonlijk";
 "To Do" = "Te doen";
 "Later" = "Later";
+"Forwarded" = "Forwarded";
 "Return Receipt Sent" = "Ontvangstbewijs verzonden";
 "a2_Sunday" = "Zo";
 "a2_Monday" = "Ma";
@@ -221,3 +222,11 @@
 
 /* Hotkey description to move forward in current view */
 "Move forward" = "Ga vooruit";
+
+/* Password Recovery */
+"passwordRecovery_Disabled" = "Disabled";
+"passwordRecovery_SecretQuestion" = "Secret question";
+"passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
+"passwordRecovery_SecretQuestion2" = "What was your first car ?";
+"passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
+"passwordRecovery_SecondaryEmail" = "Secondary E-mail";

@@ -37,6 +37,8 @@
 "this month" = "deze maand";
 "Previous Month" = "Vorige maand";
 "Next Month" = "Volgende maand";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "dit jaar";
@@ -398,6 +400,10 @@
 "From" = "Van";
 "To" = "Tot";
 
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "U heeft geen titel opgegeven. Wilt u doorgaan?";
 validate_invalid_startdate = "Ongeldige begindatum!";
@@ -623,6 +629,7 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "Rename" = "Hernoem";
 "Import Calendar" = "Agenda Importeren";
 "Select an ICS file." = "Selecteer een ICS bestand.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Abonneren op agenda succesvol";
