@@ -37,6 +37,8 @@
 "this month" = "этот месяц";
 "Previous Month" = "Предыдущий месяц";
 "Next Month" = "Следующий месяц";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "этот год";
@@ -210,7 +212,7 @@
 
 /* Appointments (error messages) */
 "Conflicts found!" = "Выявлены конфликты!";
-"Invalid iCal data!" = "Неверные данные iCal !";
+"Invalid iCal data!" = "Неверные данные iCal!";
 "Could not create iCal data!" = "Не могу создать данные в формате iCal!";
 
 /* Searching */
@@ -313,7 +315,7 @@
 "Month(s)" = "месяца(цев)";
 
 /* [Event recurrence editor] Ex: _The_ first Sunday */
-"The" = "  ";
+"The" = "The";
 "Recur on day(s)" = "Повторяется в дни";
 "Year(s)" = "год(года)";
 
@@ -399,8 +401,8 @@
 "To" = "Кому";
 
 /* dates */
-"DateFrom" = "С";
-"DateTo" = "До";
+"DateFrom" = "From";
+"DateTo" = "To";
 
 /* validation errors */
 validate_notitle           = "Нет названия. Продолжить?";
@@ -627,6 +629,7 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "Rename" = "Переименовать";
 "Import Calendar" = "Импортировать календарь";
 "Select an ICS file." = "Выберите iCalendar файл (.ics).";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Успешная подписка на календарь";
