@@ -37,6 +37,8 @@
 "this month" = "questo mese";
 "Previous Month" = "Mese precedente";
 "Next Month" = "Mese successivo";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "quest'anno";
@@ -398,6 +400,10 @@
 "From" = "Da";
 "To" = "A";
 
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "Nessun titolo inserito, continuare?";
 validate_invalid_startdate = "Data iniziale non corretta!";
@@ -623,6 +629,7 @@ vtodo_class2 = "(Attività riservata)";
 "Rename" = "Rinomina";
 "Import Calendar" = "Importa calendario";
 "Select an ICS file." = "Seleziona un file ICS.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Sottoscrizione al calendario effettuata";
