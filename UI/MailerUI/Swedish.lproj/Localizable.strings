@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "Skapa";
 "Empty Trash" = "Töm papperskorgen";
+"Empty Junk Folder" = "Empty Junk Folder";
 "Delete"      = "Ta bort";
 "Expunge"     = "Radera";
 "Forward"     = "Vidarebefordra";
@@ -73,8 +74,13 @@
 "An error occured while communicating with the mail server" = "Ett fel har uppstått vid kommunikation med mailserver";
 
 /* Mailbox actions */
+
 /* Compact Folder success message */
 "Folder compacted" = "Katalogen har komprimerats";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Junk folder emptied";
+
 /* Empty Trash success message */
 "Trash emptied" = "Papperskorgen tömd";
 
@@ -82,7 +88,7 @@
 "Access rights to" = "Tillgångsrättigheter för";
 "For user" = "För användare";
 "Any Authenticated User" = "Alla autentiserade användare";
-"List and see this folder" = "Lista och titta i mappen";
+"View this folder" = "View this folder";
 "Read mails from this folder" = "Läsa meddelanden i mappen";
 "Mark mails read and unread" = "Markera meddelanden som lästa och olästa";
 "Modify the flags of the mails in this folder" = "Ändra märkningen av meddelanden i mappen";
@@ -104,7 +110,7 @@
 "To"            = "Till";
 "Cc"            = "Kopia";
 "Bcc"           = "Dold kopia";
-"Reply-To"	    = "Svar-till";
+"Reply-To"	= "Svar-till";
 "Add address"   = "Lägg till adress";
 "Body"          = "Meddelandetext";
 "Open" = "Öppna";
@@ -121,6 +127,7 @@
 "Edit Draft..." = "Redigera utkast...";
 "Load Images" = "Ladda bilder";
 "Return Receipt" = "Mottagningskvitto";
+"Choose which identity to send this message from" = "Choose which identity to send this message from";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Avsändaren av detta meddelande har begärt att få bli underrättad när du läser detta meddelande. Vill du underrätta avsändaren?";
 "Return Receipt (displayed) - %@"= "Mottagningskvitto (visad) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Detta är ett mottagningskvitto för meddelandet du skickade till %@.\n\nNotera: Detta mottagningskvitto bekräftar bara att meddelandet visades på mottagarens dator. Det finns ingen garanti att mottagaren har läst eller förstått innehållet i meddelandet.";
@@ -165,12 +172,22 @@
 "Mark Read"   = "Märk som läst";
 "Untitled" = "Ämne saknas";
 
+/* Filter option in messages list */
+"Show unread messages only" = "Show unread messages only";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Show flagged messages only";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Filtered by label";
+
 /* Tree */
 "SentFolderName"   = "Skickat";
 "TrashFolderName"  = "Papperskorgen";
 "InboxFolderName"  = "Inkorg";
 "DraftsFolderName" = "Utkast";
 "JunkFolderName" = "Skräppost";
+"TemplatesFolderName" = "Templates";
 "SieveFolderName"  = "Filter";
 "Folders"          = "Mappar"; /* title line */
 
@@ -229,6 +246,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Konvertera till uppgift";
 
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Download message";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Download message (zip)";
+
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "Ladda ner alla bilagor";
 
@@ -250,6 +273,12 @@
 /* Number of selected messages in list */
 "selected" = "markerad";
 
+/* Date formatting from one time to another time */
+"to_time" = "to";
+
+/* Date formatting from one day to another day */
+"to_date" = "to";
+
 /* Encrypted message notification */
 "This message is encrypted" = "Detta meddelande är krypterat";
 
@@ -267,6 +296,18 @@
 
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Inget certifikat associerat med konto";
+
+/* Invalid S/MIME signature */
+"Digital signature is not valid" = "Digital signature is not valid";
+
+/* Valid S/MIME signature */
+"Message is signed" = "Message is signed";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Message is signed but the certificate doesn't match the sender email address";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Digital signature is not valid";
 
 "This Folder" = "Den här mappen";
 
@@ -303,6 +344,7 @@
 "Operation failed" = "Operationen misslyckades";
 "Quota" = "Disktilldelning";
 "quotasFormat" = "%{0}% använt av %{1} MB";
+"messageQuotasFormat" = "%{0}% of %{1} msgs";
 "Unable to move/delete folder." = "Du kan inte flytta eller radera mappen.";
 
 /* Alternative operation when folder cannot be deleted */
@@ -349,6 +391,12 @@
 "Send Anyway" = "Skicka ändå";
 "Error while saving the draft" = "Ett fel inträffade när utkastet skulle sparas";
 
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Unable to empty the trash folder.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Unable to empty the junk folder.";
+
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Följande fel inträffade när filen \"%{0}\" skulle laddas upp: ";
 "There is an active file upload. Closing the window will interrupt it." = "En fil håller på att laddas upp för tillfället. Om du stänger fönstret så kommer uppladdningen att avbrytas.";
@@ -363,6 +411,9 @@
 "cannot send message: (smtp) all recipients discarded" = "Meddelandet kan inte skickas: alla mottagaradresserna är felaktiga.";
 "cannot send message (smtp) - recipients discarded" = "Meddelandet kan inte skickas. Följande mottagaradresser är felaktiga";
 "cannot send message: (smtp) error when connecting" = "Meddelandet kan inte skickas: ett fel uppstod i uppkopplingen mot SMTP servern.";
+"cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
+"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
 
 /* Contacts list in mail editor */
 "Email" = "E-post";
@@ -381,6 +432,9 @@
 "Set as Drafts" = "Välj för Utkast";
 "Set as Sent" = "Välj för Skickade meddelanden";
 "Set as Trash" = "Välj som Papperskorg";
+
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Set as Templates";
 
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Välj för Skräppost";
@@ -403,6 +457,9 @@
 "Your email has been saved" = "Ditt meddelande har sparats";
 "Your email has been sent" = "Ditt meddelande har skickats";
 "Folder compacted" = "Katalogen har komprimerats";
+
+"New draft" = "New draft";
+"Create new draft with this template" = "Create new draft with this template";
 
 /* Advanced search */
 "Enter Subject" = "Ange ämne";

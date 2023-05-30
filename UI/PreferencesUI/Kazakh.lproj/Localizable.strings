@@ -47,7 +47,7 @@
 "Activation Constraints" = "Белсендіруді шектеу";
 "Enable auto reply on" = "Автожауап қосу";
 "First day of vacation" = "Демалыстың бірінші күні";
-"Disable auto reply after" = "Автожауапты өшіру";
+"Disable auto reply after" = "Disable auto reply after";
 "Last day of vacation" = "Демалыстың соңғы күні";
 "Enter date" = "Күнді енгізіңіз";
 /* Enable auto reply at this time of the day */
@@ -68,6 +68,8 @@
 
 /* forward messages */
 "Forward incoming messages" = "Кіріс хаттарды басқаға жіберу";
+"Always forward" = "Always forward";
+"Incoming messages are forwarded prior to apply your filters." = "Incoming messages are forwarded prior to apply your filters.";
 "Keep a copy" = "Көшірме қалдыру";
 "Enter an email" = "Электронды пошта мекенжайын енгізіңіз";
 "Add another email" = "Тағы бір электронды пошта мекенжайын қосу";
@@ -255,6 +257,12 @@
 "Confirmation" = "Жаңа парольді қайталау";
 "Change" = "Өзгерту";
 "Passwords don't match" = "Парольдер сәйкес емес";
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
+"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+
 
 /* Event+task classifications */
 "Default events classification" = "Әдепкі оқиға";
@@ -399,7 +407,7 @@
 "Forward the message to" = "хатты ...қайта бағыттау";
 
 /* Input field label of "forward" mail filter action */
-"Email" = "Email-ге";
+"Email" = "E-mail";
 
 "Send a reject message" = "Бас тарту туралы хат жіберу";
 
@@ -477,8 +485,18 @@
 "Enable two-factor authentication using a TOTP application" = "Қолданба көмегімен екі факторлы аутентификация қосу";
 "You must enter this key into your TOTP application." = "Бірреттік кодтарды (TOTP) пайдалануға негізделген екі факторлы аутентификация қолданбасына осы кілтті енгізуіңіз керек.";
 "If you do not and you log out you will not be able to login again." = "Егер мұны жасамай, жүйеден шығатын болсаңыз, қайтадан кіре алмайсыз.";
+"Enter TOTP verification code :" = "Enter TOTP verification code :";
+"Invalid TOTP verification code" = "Invalid TOTP verification code";
 
 /* External Sieve scripts */
 "An external Sieve script is active" = "Sieve сыртқы скрипті белсенді";
 "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve дегеніміз – электронды поштаны сүзгілеуге қолданылуы мүмкін бағдарламалау тілі. Егер SOGo-ға сүзгілеріңізді, демалыс пен қайта бағыттау баптауларын өңдеуге мүмкіндік берсеңіз, сіздің белсенді скриптіңіз өшірілетін болады.";
 "Let SOGo handle everything" = "SOGo-ға барлығын басқару мүмкіндігін беру";
+
+/* Password Recovery */
+"Password recovery mode" = "Password recovery";
+"Question" = "Question";
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password recovery" = "Password recovery";
+"Password change" = "Password change";

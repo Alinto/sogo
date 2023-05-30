@@ -37,6 +37,8 @@
 "this month" = "ovog meseca";
 "Previous Month" = "Prethodni mesec";
 "Next Month" = "Sledeći mesec";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "ova godina";
@@ -221,6 +223,11 @@
 "view_next31" = "Narednih 31 dan";
 "view_thismonth" = "Ovog meseca";
 "view_thisyear" = "Ove godine";
+"view_last7" = "Last 7 days";
+"view_last14" = "Last 14 days";
+"view_last31" = "Last 31 days";
+"view_lastmonth" = "Last Month";
+"view_lastyear" = "Last Year";
 "view_future" = "Svi budući događaji";
 "view_selectedday" = "Izabrani dan";
 "view_not_started" = "Nema započetih zadataka";
@@ -393,6 +400,10 @@
 "From" = "Od";
 "To" = "Za";
 
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "Nema naslova, nastaviti?";
 validate_invalid_startdate = "Netačno polje datuma početka!";
@@ -499,6 +510,8 @@ validate_untilbeforeend    = "Ponavljanje se mora završiti nakon prvog ponavlja
 "and" = "i";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Konflikt vremena postoji sa jednim ili više učesnika.\nDa li želite da zadržite trenutna podešavanja u svakom slučaju?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Would you like to remove them and send the invitation to the remaining attendees?";
 
 /* events list */
 "Due" = "Rok";
@@ -579,7 +592,7 @@ vtodo_class2 = "(Poverljivi zadatak)";
 "Move To" = "Premesti u";
 "Copy To" = "Kopiraj u";
 "Subscriptions" = "Pretplate";
-"Subscribe to a shared folder" = "Pretplati se na deljeni direktorijum";
+"Subscribe to a shared calendar" = "Subscribe to a shared calendar";
 "Subscribe to a web calendar..." = "Pretplati se na veb kalendar...";
 "URL of the Calendar" = "Link ka kalendaru";
 "Web Calendar" = "Veb kalendar";
@@ -616,6 +629,7 @@ vtodo_class2 = "(Poverljivi zadatak)";
 "Rename" = "Preimenuj";
 "Import Calendar" = "Uvezi kalendar";
 "Select an ICS file." = "Odaberi ICS datoteku.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Uspešno pretplaćen na kalendar";

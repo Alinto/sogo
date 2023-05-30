@@ -37,6 +37,8 @@
 "this month" = "今月";
 "Previous Month" = "前月";
 "Next Month" = "翌月";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "今年";
@@ -107,6 +109,7 @@
 "Name of the Calendar" = "カレンダーの名前";
 "new" = "新規";
 "Print view" = "印刷表示";
+"Print" = "Print";
 "edit" = "編集";
 "delete" = "削除";
 "proposal" = "提案";
@@ -147,6 +150,7 @@
 "Display events and tasks colors" = "イベントとタスクにを色を付けて表示";
 "Borders" = "枠";
 "Backgrounds" = "背景";
+"Page Format" = "Page Format";
 
 /* Appointments */
 "Appointment viewer" = "予定の表示";
@@ -219,6 +223,11 @@
 "view_next31" = "次の31日間";
 "view_thismonth" = "今月";
 "view_thisyear" = "今年";
+"view_last7" = "Last 7 days";
+"view_last14" = "Last 14 days";
+"view_last31" = "Last 31 days";
+"view_lastmonth" = "Last Month";
+"view_lastyear" = "Last Year";
 "view_future" = "すべての今後のイベント";
 "view_selectedday" = "選択した日";
 "view_not_started" = "開始していないタスク";
@@ -391,6 +400,10 @@
 "From" = "From";
 "To" = "To";
 
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "タイトルがありません、続けますか?";
 validate_invalid_startdate = "誤った開始日のフィールドです。";
@@ -437,16 +450,48 @@ validate_untilbeforeend    = "繰り返し日は最初に設定した予定の�
 = "個人用カレンダーの削除や解除はできません。";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "カレンダー\"%{0}\"を本当に削除しますか?";
+"Are you sure you want to delete the selected components?"
+= "Are you sure you want to delete the selected components?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Role";
+
+/* Participant role: participation is required */
 "Participant" = "参加者";
+
+/* Participant role: participation is required */
+"req-participant" = "Participant";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "自由参加者";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Optional Participant";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "非参加者";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Non Participant";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "司会者";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Chair";
+
+/* Participant status: needs action */
 "Needs action" = "行動が必要";
+
+/* Participant status: event accepted */
 "Accepted" = "受諾済み";
+
+/* Participant status: event declined */
 "Declined" = "辞退済み";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "暫定";
+
 "Free" = "空き";
 "Busy" = "予定あり";
 "Maybe busy" = "おそらく予定あり";
@@ -465,6 +510,8 @@ validate_untilbeforeend    = "繰り返し日は最初に設定した予定の�
 "and" = "と";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "時間が競合している参加者が1人以上います。\n現在の設定のままでよろしいですか?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Would you like to remove them and send the invitation to the remaining attendees?";
 
 /* events list */
 "Due" = "期日";
@@ -545,7 +592,7 @@ vtodo_class2 = "(機密のタスク)";
 "Move To" = "移動先";
 "Copy To" = "コピー先";
 "Subscriptions" = "サブスクリプション";
-"Subscribe to a shared folder" = "共有フォルダに登録";
+"Subscribe to a shared calendar" = "Subscribe to a shared calendar";
 "Subscribe to a web calendar..." = "ウェブカレンダーを登録...";
 "URL of the Calendar" = "カレンダーのURL";
 "Web Calendar" = "ウェブカレンダー";
@@ -582,6 +629,7 @@ vtodo_class2 = "(機密のタスク)";
 "Rename" = "名称変更";
 "Import Calendar" = "カレンダーをインポート";
 "Select an ICS file." = "ICSファイルを選択";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "カレンダーに登録されました";

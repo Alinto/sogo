@@ -37,6 +37,8 @@
 "this month" = "este mês";
 "Previous Month" = "Mês Anterior";
 "Next Month" = "Próximo Mês";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "este ano";
@@ -221,6 +223,11 @@
 "view_next31" = "Próximos 31 dias";
 "view_thismonth" = "Este Mês";
 "view_thisyear" = "Esse ano";
+"view_last7" = "Last 7 days";
+"view_last14" = "Last 14 days";
+"view_last31" = "Last 31 days";
+"view_lastmonth" = "Last Month";
+"view_lastyear" = "Last Year";
 "view_future" = "Todos os Eventos Futuros";
 "view_selectedday" = "Dia Selecionado";
 "view_not_started" = "Tarefas não iniciadas";
@@ -393,6 +400,10 @@
 "From" = "De";
 "To" = "Até";
 
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "Nenhum título informado, continue?";
 validate_invalid_startdate = "Campo Data Inicial incorreto!";
@@ -499,6 +510,8 @@ validate_untilbeforeend    = "A recorrência deve terminar após a primeira ocor
 "and" = "e";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Existe um conflito de horários com um ou mais participantes.\nAinda assim, gostaria de manter as configurações atuais?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Would you like to remove them and send the invitation to the remaining attendees?";
 
 /* events list */
 "Due" = "Até";
@@ -616,6 +629,7 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "Rename" = "Renomear";
 "Import Calendar" = "Importar Calendário";
 "Select an ICS file." = "Selecionar um arquivo ICS.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Inscrito com sucesso no calendário";

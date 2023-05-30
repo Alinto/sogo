@@ -40,14 +40,26 @@
 "Auto reply subject" = "Pwnc ymateb awtomatig";
 "You can write ${subject} to insert the original subject" = "Gallwch ysgrifennu ${subject} i fewnosod y pwnc gwreiddiol";
 "Auto reply message" = "Ymateb awtomatig";
-"Email addresses (separated by commas)" = "Cyfeiriadau e-bost (wedi'u gwahanu gyda choma)";
+"Email addresses" = "Email addresses";
 "Add default email addresses" = "Ychwanegu cyfeiriadau e-bost diofyn";
 "Days between responses" = "Diwrnodau rhwng ymatebion";
 "Do not send responses to mailing lists" = "Peidio anfon ymatebion i restrau postio";
+"Activation Constraints" = "Activation Constraints";
 "Enable auto reply on" = "Galluogi ateb awtomatig ymlaen";
-"Disable auto reply after" = "Analluogi ateb awtomatig ymlaen";
+"First day of vacation" = "First day of vacation";
+"Disable auto reply after" = "Disable auto reply after";
+"Last day of vacation" = "Last day of vacation";
+"Enter date" = "Enter date";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Enable auto reply at";
+"Enter time" = "Enter time";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Disable auto reply at";
+"Enable auto reply on these days" = "Enable auto reply on these days";
 "Always send vacation message response" = "Anfon ymateb gwyliau bob amser";
+"The vacation message is sent prior to apply your filters." = "The vacation message is sent prior to apply your filters.";
 "Discard incoming mails during vacation" = "Taflu e-byst sy'n dod i mewn yn ystod gwyliau";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "The vacation message is sent but incoming messages are not delivered to your inbox.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Nodwch eich neges a'r cyfeiriad e-bost yr hoffech alluogi ymateb awtomatig ar ei gyfer.";
 "Your vacation message must not end with a single dot on a line." = "All eich neges gwyliau ddim gorffen gydag un dot ar linell.";
@@ -56,14 +68,19 @@
 
 /* forward messages */
 "Forward incoming messages" = "Negeseuon sy'n dod i mewn i gael eu hanfon ymlaen";
+"Always forward" = "Always forward";
+"Incoming messages are forwarded prior to apply your filters." = "Incoming messages are forwarded prior to apply your filters.";
 "Keep a copy" = "Cadw copi";
+"Enter an email" = "Enter an email";
+"Add another email" = "Add another email";
 "Please specify an address to which you want to forward your messages."
 = "Nodwch gyfeiriad yr hoffech anfon eich negeseuon ymlaen iddo.";
 "You are not allowed to forward your messages to an external email address." = "Chewch chi ddim anfon eich negeseuon ymlaen i gyfeiriad e-bost allanol.";
 "You are not allowed to forward your messages to an internal email address." = "Chewch chi ddim anfon eich negeseuon ymlaen i gyfeiriad e-bost mewnol.";
+"You are not allowed to forward your messages to this domain:" = "You are not allowed to forward your messages to this domain:";
 
 /* d & t */
-"Current Time Zone" = "Cylchfa Amser Bresennol";
+"Time Zone" = "Time Zone";
 "Short Date Format" = "Dyddiad fformat byr";
 "Long Date Format" = "Dyddiad fformat hir";
 "Time Format" = "Fformat amser";
@@ -85,8 +102,10 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
-   
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
+
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
 "longDateFmt_2" = "%A, %d %B, %Y";
@@ -124,6 +143,8 @@
 "Prevent from being invited to appointments" = "Atal rhag cael gwahoddiadau i apwyntiadau";
 "White list for appointment invitations" = "Rhestr wen ar gyfer gwahoddiadau i apwyntiadau";
 "Contacts Names" = "Enwau Cysylltiadau";
+"Duplicate name" = "Duplicate name";
+"Calendar categories must have unique names." = "Calendar categories must have unique names.";
 
 /* Default Calendar */
 "Default calendar" = "Calendr diofyn";
@@ -147,10 +168,18 @@
 /* Mailer */
 "Labels" = "Labeli";
 "Label" = "Label";
+"IMAP Label" = "IMAP Label";
+"Invalid label" = "Don't use space, nor ( ) { } % * \" \\";
+"Duplicate label" = "Duplicate label";
+"IMAP labels must have unique names." = "IMAP labels must have unique names.";
 "New label" = "Label newydd";
 "Show subscribed mailboxes only" = "Dangos blychau derbyn y tanysgrifiwyd iddynt yn unig";
 "Synchronize only default mail folders (EAS)" = "Cysoni ffolderi e-byst diofyn yn unig (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Fetch count of unseen messages for all mailboxes";
 "Sort messages by threads" = "Trefnu negeseuon yn ôl edefynnau";
+"Always open mail composer" = "Always open mail composer";
+"Inside current window" = "Inside current window";
+"In a popup window" = "In a popup window";
 "When sending mail, add unknown recipients to my" = "Wrth anfon e-bost, ychwanegu derbynyddion anhysbys i fy";
 "Address Book" = "Llyfr Cyfeiriadau";
 "Forward messages" = "Anfon negeseuon ymlaen";
@@ -174,12 +203,19 @@
 "displayremoteinlineimages_always" = "Bob amser";
 "Auto save every" = "Cadw'n awtomatig bob";
 "minutes" = "munudau";
+"Automatically mark messages as read" = "Automatically mark messages as read";
+"Immediately on display" = "Immediately on display";
+"After displaying for" = "After displaying for";
+"seconds" = "seconds";
 
 /* Contact */
 "Personal Address Book" = "Llyfr Cyfeiriadau Personol";
 "Collected Address Book" = "Llyfr Cyfeiriadau a Gasglwyd";
+"Contact categories must have unique names." = "Contact categories must have unique names.";
 
 /* IMAP Accounts */
+"Settings" = "Settings";
+"Security" = "Security";
 "Mail Account" = "Cyfrif E-bost";
 "New Mail Account" = "Cyfrif E-bost Newydd";
 "Server Name" = "Enw Gweinydd";
@@ -191,19 +227,42 @@
 "Email" = "E-bost";
 "Reply To Email" = "Ymateb i E-bost";
 "Signature" = "Llofnod";
+"Identities" = "Identities";
+"Always use the default identity when replying to messages" = "Always use the default identity when replying to messages";
+"Default Identity" = "Default Identity";
+"New Identity" = "New Identity";
 "(Click to create)" = "(Cliciwch i greu)";
 "Please enter your signature below" = "Rhowch eich llofnod isod";
 "Please specify a valid sender address." = "Nodwch gyfeiriad e-bost dilys.";
 "Please specify a valid reply-to address." = "Nodwch gyfeiriad e-bost ymateb dilys.";
 "Specify a hostname other than the local host" = "Nodwch enw gwesteiwr heblaw'r gwesteiwr lleol";
 
+"No certificate installed" = "No certificate installed";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "The SSL certificate must use the PKCS#12 (PFX) format.";
+"Uninstall" = "Uninstall";
+"Choose PKCS12 Certificate .." = "Choose PKCS12 Certificate ..";
+"Certificate Import Password" = "Certificate Import Password";
+"Upload" = "Upload";
+"When composing a message" = "When composing a message";
+"Digitally sign the message by default" = "Digitally sign the message by default";
+"Always try to encrypt the message" = "Always try to encrypt the message";
+"An error occurred while importing the certificate. Verify your password." = "An error occurred while importing the certificate. Verify your password.";
+
 /* Additional Parameters */
 "Additional Parameters" = "Paramedrau Ychwanegol";
 
 /* password */
+"Current password" = "Current password";
 "New password" = "Cyfrinair newydd";
 "Confirmation" = "Cadarnhau";
 "Change" = "Newid";
+"Passwords don't match" = "Passwords don't match";
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
+"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+
 
 /* Event+task classifications */
 "Default events classification" = "Dosbarthiad digwyddiadau diofyn";
@@ -216,6 +275,7 @@
 "Calendar Category" = "Categori Calendr";
 "Add Calendar Category" = "Ychwanegu Categori Calendr";
 "New category" = "Categori newydd";
+"Reset to defaults" = "Reset to defaults";
 "Remove Calendar Category" = "Dileu Categori Calendr";
 "Contact Category" = "Categori Cysylltiadau";
 "Add Contact Category" = "Ychwanegu Categori Cysylltiadau";
@@ -288,6 +348,7 @@
 "refreshview_every_20_minutes" = "Bob 20 munud";
 "refreshview_every_30_minutes" = "Bob 30 munud";
 "refreshview_once_per_hour" = "Unwaith bob awr";
+"Enable Desktop Notifications" = "Enable Desktop Notifications";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Pan fydda i'n cael cais am dderbynneb derbyn";
@@ -419,3 +480,23 @@
 /* Limited Animation Mode */
 "animation_LIMITED" = "Cyfyngedig";
 "animation_NONE" = "Dim";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "Enable two-factor authentication using a TOTP application";
+"You must enter this key into your TOTP application." = "You must enter this key into your TOTP application.";
+"If you do not and you log out you will not be able to login again." = "If you do not and you log out you will not be able to login again.";
+"Enter TOTP verification code :" = "Enter TOTP verification code :";
+"Invalid TOTP verification code" = "Invalid TOTP verification code";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "An external Sieve script is active";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled.";
+"Let SOGo handle everything" = "Let SOGo handle everything";
+
+/* Password Recovery */
+"Password recovery mode" = "Password recovery";
+"Question" = "Question";
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password recovery" = "Password recovery";
+"Password change" = "Password change";

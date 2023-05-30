@@ -41,6 +41,8 @@
      = "Bilo tko na internetu moći će pristupiti vašem imeniku \"%{0}\", čak i ako nema račun na ovom sustavu. Je li ova informacija prikladna za javnu objavu na internetu?";
 "Give Access" = "Dopusti pristup";
 "Keep Private" = "Zadrži osobnim";
+"Expand" = "Expand";
+"Reduce" = "Reduce";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -80,6 +82,9 @@
 "Error" = "Pogreška";
 "Success" = "Uspjeh";
 
+/* confirmation dialog box */
+"Confirmation" = "Confirmation";
+
 /* alarms */
 "Reminder" = "Podsjetnik";
 "Start" = "Početak";
@@ -101,6 +106,8 @@
 "Personal" = "Osobno";
 "To Do" = "Učiniti";
 "Later" = "Kasnije";
+"Forwarded" = "Forwarded";
+"Return Receipt Sent" = "Return Receipt Sent";
 "a2_Sunday" = "Ne";
 "a2_Monday" = "Po";
 "a2_Tuesday" = "Ut";
@@ -115,13 +122,20 @@
 "You cannot (un)subscribe to a folder that you own!" = "Ne možete se pretplatiti ni odjaviti od vlastite mape! ";
 
 /* SMIME Certificate field */
+"S/MIME Certificate" = "S/MIME Certificate";
 "Subject Name" = "Naziv subjekta";
 "Issuer" = "Izdavatelj";
+"streetAddress" = "Street";
+"stateOrProvinceName" = "State or Province";
+"localityName" = "Locality";
 "countryName" = "Država";
 "organizationName" = "Organizacija";
 "organizationalUnitName" = "Organizacijska jedinica";
 "commonName" = "Zajednički naziv";
+"surname" = "Surname";
+"givenName" = "Given Name";
 "emailAddress" = "Adresa elektroničke pošte";
+
 
 /* Authentication username */
 "Username" = "Korisničko ime";
@@ -138,8 +152,19 @@
 /* Error message displayed when a file upload exceeds WOMaxUploadSize */
 "File size upload limit reached" = "Privitak je prevelik";
 
+/* Generic server error */
+"An error occured, please try again." = "An error occured, please try again.";
+
+/* Open datepicker */
+"Open Calendar" = "Open Calendar";
+
 /* Toggle visibility (ex: mail account in left navigation menu) */
 "Toggle visibility" = "Uključi/Isključi vidljivost";
+
+"Keyboard Shortcuts" = "Keyboard Shortcuts";
+
+/* Aria label for avatar button to select and unselect an item */
+"Toggle item" = "Toggle item";
 
 /* Toggle multiple items at the same time (hotkeys cheatsheet) */
 "Toggle range of items" = "Uključi/isključi stavke";
@@ -149,6 +174,9 @@
 
 /* Space key */
 "key_space" = "space";
+
+/* Delete key */
+"key_delete" = "delete";
 
 /* Shift and space key */
 "key_shift+space" = "shift + space";
@@ -194,3 +222,11 @@
 
 /* Hotkey description to move forward in current view */
 "Move forward" = "Idi naprijed";
+
+/* Password Recovery */
+"passwordRecovery_Disabled" = "Disabled";
+"passwordRecovery_SecretQuestion" = "Secret question";
+"passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
+"passwordRecovery_SecretQuestion2" = "What was your first car ?";
+"passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
+"passwordRecovery_SecondaryEmail" = "Secondary E-mail";

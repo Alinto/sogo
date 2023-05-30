@@ -37,6 +37,8 @@
 "this month" = "tento mesiac";
 "Previous Month" = "Predchádzajúci mesiac";
 "Next Month" = "Nasledujúci mesiac";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "tento rok";
@@ -221,6 +223,11 @@
 "view_next31" = "Nasledujúcich 31 dní";
 "view_thismonth" = "Tento mesiac";
 "view_thisyear" = "Tento Rok";
+"view_last7" = "Last 7 days";
+"view_last14" = "Last 14 days";
+"view_last31" = "Last 31 days";
+"view_lastmonth" = "Last Month";
+"view_lastyear" = "Last Year";
 "view_future" = "Všetky budúce udalosti";
 "view_selectedday" = "Zvolený deň";
 "view_not_started" = "Nezačaté úlohy";
@@ -393,6 +400,10 @@
 "From" = "Od";
 "To" = "Pre";
 
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "Názov nebol nastavený, pokračovať?";
 validate_invalid_startdate = "Chybný dátum začiatku!";
@@ -499,6 +510,8 @@ validate_untilbeforeend    = "Opakovanie musí skončiť po prvom výskyte.";
 "and" = "a";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Medzi účastníkmi dochádza k časovému konfliktu.\nPonecháte súčasné nastavenie aj napriek tomu?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Would you like to remove them and send the invitation to the remaining attendees?";
 
 /* events list */
 "Due" = "Termín dokončenia";
@@ -579,7 +592,7 @@ vtodo_class2 = "(Dôverná úloha)";
 "Move To" = "Presunúť do";
 "Copy To" = "Kopírovať do";
 "Subscriptions" = "Odoberania";
-"Subscribe to a shared folder" = "Odoberať zdieľaný priečinok";
+"Subscribe to a shared calendar" = "Subscribe to a shared calendar";
 "Subscribe to a web calendar..." = "Odoberať vzdialený kalendár na webe";
 "URL of the Calendar" = "Adresa vzdialeného kalendára na webe";
 "Web Calendar" = "Vzdialený kalendár na webe";
@@ -616,6 +629,7 @@ vtodo_class2 = "(Dôverná úloha)";
 "Rename" = "Premenovať";
 "Import Calendar" = "Importovať kalendár";
 "Select an ICS file." = "Vyberte ICS súbor.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Úspešný odber kalendára";

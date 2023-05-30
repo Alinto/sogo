@@ -41,6 +41,8 @@
      = "Cualquier usuario en Internet tendrá acceso a su libreta de direcciones \"%{0}\", incluso aquellos que no tengan cuenta en este sistema. ¿Está seguro de que la información de la libreta es adecuada para ser publicada en Internet?";
 "Give Access" = "Permitir el acceso";
 "Keep Private" = "Mantener privado";
+"Expand" = "Expand";
+"Reduce" = "Reduce";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -80,6 +82,9 @@
 "Error" = "Error";
 "Success" = "Correcto";
 
+/* confirmation dialog box */
+"Confirmation" = "Confirmation";
+
 /* alarms */
 "Reminder" = "Recordatorio";
 "Start" = "Desde";
@@ -101,6 +106,7 @@
 "Personal" = "Personal";
 "To Do" = "Por hacer";
 "Later" = "Más tarde";
+"Forwarded" = "Forwarded";
 "Return Receipt Sent" = "Acuse de recibo enviado";
 "a2_Sunday" = "Do";
 "a2_Monday" = "Lu";
@@ -119,11 +125,17 @@
 "S/MIME Certificate" = "Certifiicado S/MIME";
 "Subject Name" = "Titular";
 "Issuer" = "Remitente";
+"streetAddress" = "Street";
+"stateOrProvinceName" = "State or Province";
+"localityName" = "Locality";
 "countryName" = "País";
 "organizationName" = "Organización";
 "organizationalUnitName" = "Departamento/ Sección";
 "commonName" = "Dominio";
+"surname" = "Surname";
+"givenName" = "Given Name";
 "emailAddress" = "Dirección de correo electrónico";
+
 
 /* Authentication username */
 "Username" = "Nombre de usuario";
@@ -140,10 +152,19 @@
 /* Error message displayed when a file upload exceeds WOMaxUploadSize */
 "File size upload limit reached" = "Se ha alcanzado el tamaño máximo para subir un archivo";
 
+/* Generic server error */
+"An error occured, please try again." = "An error occured, please try again.";
+
+/* Open datepicker */
+"Open Calendar" = "Open Calendar";
+
 /* Toggle visibility (ex: mail account in left navigation menu) */
 "Toggle visibility" = "Mostrar/Ocultar visibilidad";
 
 "Keyboard Shortcuts" = "Atajos del teclado";
+
+/* Aria label for avatar button to select and unselect an item */
+"Toggle item" = "Toggle item";
 
 /* Toggle multiple items at the same time (hotkeys cheatsheet) */
 "Toggle range of items" = "Mostrar/Ocultar rango de ítems";
@@ -201,3 +222,11 @@
 
 /* Hotkey description to move forward in current view */
 "Move forward" = "Mover hacia adelante";
+
+/* Password Recovery */
+"passwordRecovery_Disabled" = "Disabled";
+"passwordRecovery_SecretQuestion" = "Secret question";
+"passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
+"passwordRecovery_SecretQuestion2" = "What was your first car ?";
+"passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
+"passwordRecovery_SecondaryEmail" = "Secondary E-mail";

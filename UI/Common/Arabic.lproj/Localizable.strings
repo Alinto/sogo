@@ -6,11 +6,12 @@
 "Edit User Rights" = "حرِّر صلاحيات المستخدم";
 "Home" = "الصفحة الرئيسية";
 "Calendar" = "التقويم";
-"Address Book"	= "دفتر العناوين";
+"Address Book"  = "دفتر العناوين";
 "Mail" = "البريد";
 "Preferences" = "التفضيلات";
 "Administration" = "إدارة";
 "Disconnect" = "قطع الاتصال";
+"Toggle Menu" = "Toggle Menu";
 "Right Administration" = "حق الإدارة";
 "Log Console (dev.)" = "سجل وحدة التحكم (برمجة)";
 "User" = "مستخدم";
@@ -30,7 +31,7 @@
 "Sorry, the user rights can not be configured for that object." = "آسف، لا يمكن أن يتم تكوين حقوق المستخدم لذلك الكائن.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "إن أي مستخدم لديه حساب على هذا النظام سيكون قادرا على الوصول إلى صندوق البريد الخاص بك \"٪ {0}\". هل أنت متأكد من أنك تثق بهم؟";
-"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
      = "أي مستخدم لديه حساب على هذا النظام سيكون قادرا على الوصول إلى التقويم الخاص بك \"٪ {0}\". هل أنت متأكد من أنك تثق بهم؟";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
      = "يحتمل أن يكون أي شخص على الإنترنت قادرا على الوصول إلى التقويم الخاص بك \"٪ {0}\"، حتى لو لم يكن لديهم حساب على هذا النظام. هل هذه المعلومات مناسبة لشبكة الانترنت العامة؟";
@@ -40,24 +41,28 @@
      = "يحتمل أن يتمكن أي شخص على الإنترنت من الوصول إلى دفنرالعناوين الخاص بك \"٪ {0}\"، حتى لو لم يكن لديه حساب على هذا النظام. هل هذه المعلومات مناسبة لشبكة الانترنت العامة؟";
 "Give Access" = "منح حق الوصول";
 "Keep Private" = "إبقاءه مخفي";
+"Expand" = "Expand";
+"Reduce" = "Reduce";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
-	= "غير قادر على الاشتراك في هذا المجلد!";
+        = "غير قادر على الاشتراك في هذا المجلد!";
 "You cannot subscribe to a folder that you own!"
-      	= "لا يمكنك الاشتراك في المجلد ملك لك!";
+        = "لا يمكنك الاشتراك في المجلد ملك لك!";
 "Unable to unsubscribe from that folder!"
-	= "غير قادر على إلغاء الاشتراك من هذا المجلد!";
+        = "غير قادر على إلغاء الاشتراك من هذا المجلد!";
 "You cannot unsubscribe from a folder that you own!"
-      	= "لا يمكنك إلغاء الاشتراك من مجلد تمتلكه !";
+        = "لا يمكنك إلغاء الاشتراك من مجلد تمتلكه !";
 "Unable to rename that folder!" = "غير قادر على إعادة تسمية هذا المجلد!";
 "You have already subscribed to that folder!"
-     	= "أنت مشترك بالفعل في هذا المجلد!";
+        = "أنت مشترك بالفعل في هذا المجلد!";
 "The user rights cannot be edited for this object!"
         = "لا يمكن تعديل حقوق المستخدم لهذا الكائن!";
 "A folder by that name already exists." = "مجلد بهذا الاسم موجود بالفعل.";
-"You cannot create a list in a shared address book." 
+"You cannot create a list in a shared address book."
         = "لا يمكنك إنشاء قائمة في دفتر العناوين المشترك.";
 "Warning" = "تحذير";
+"Can't contact server" = "An error occurred while contacting the server. Please try again later.";
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "لا يسمح لك بالوصول إلى هذه الوحدة أو هذا النظام. الرجاء الاتصال بمسؤول النظام.";
 "You don't have the required privileges to perform the operation."
@@ -66,6 +71,26 @@
 "delegate is organizer" = "المفوض هو المنظم. يرجى تحديد مفوض مختلف.";
 "delegate is a participant" = "المفوض هو بالفعل أحد المشاركين.";
 "delegate is a group" = "العنوان المحدد يناظر مجموعة من العناوين. يمكنك فقط أن تفوض شخص معين.";
+
+/* common buttons */
+"OK" = "موافق";
+"Cancel" = "إلغاء";
+"Yes" = "نعم";
+"No" = "لا";
+
+/* generic messages */
+"Error" = "Error";
+"Success" = "Success";
+
+/* confirmation dialog box */
+"Confirmation" = "Confirmation";
+
+/* alarms */
+"Reminder" = "تذكير";
+"Start" = "البداية";
+"Due Date" = "تاريخ الاستحقاق";
+"Location" = "الموقع";
+"Snooze" = "Snooze";
 "Snooze for " = "تأجيل الى";
 "5 minutes" = "5 دقائق";
 "10 minutes" = "10 دقائق";
@@ -73,22 +98,16 @@
 "30 minutes" = "30 دقيقة";
 "45 minutes" = "45 دقيقة";
 "1 hour" = "1 ساعة";
-/* common buttons */
-"OK" = "موافق";
-"Cancel" = "إلغاء";
-"Yes" = "نعم";
-"No" = "لا";
-/* alarms */
-"Reminder" = "تذكير";
-"Start" = "البداية";
-"Due Date" = "تاريخ الاستحقاق";
-"Location" = "الموقع";
-/* Mail labels */
+"1 day" = "1 day";
+
+/* mail labels */
 "Important" = "مهم";
 "Work" = "عمل";
 "Personal" = "شخصي";
 "To Do" = "تفعل";
 "Later" = "لاحقا";
+"Forwarded" = "Forwarded";
+"Return Receipt Sent" = "Return Receipt Sent";
 "a2_Sunday" = "ح";
 "a2_Monday" = "ن";
 "a2_Tuesday" = "ث";
@@ -96,3 +115,118 @@
 "a2_Thursday" = "خ";
 "a2_Friday" = "ج";
 "a2_Saturday" = "س";
+"Access Rights" = "Access Rights";
+"Add User" = "Add User";
+"Loading" = "Loading";
+"No such user." = "No such user.";
+"You cannot (un)subscribe to a folder that you own!" = "You cannot (un)subscribe to a folder that you own!";
+
+/* SMIME Certificate field */
+"S/MIME Certificate" = "S/MIME Certificate";
+"Subject Name" = "Subject Name";
+"Issuer" = "Issuer";
+"streetAddress" = "Street";
+"stateOrProvinceName" = "State or Province";
+"localityName" = "Locality";
+"countryName" = "Country";
+"organizationName" = "Organization";
+"organizationalUnitName" = "Organizational Unit";
+"commonName" = "Common Name";
+"surname" = "Surname";
+"givenName" = "Given Name";
+"emailAddress" = "Email Address";
+
+
+/* Authentication username */
+"Username" = "Username";
+
+/* Authentication password */
+"Password" = "Password";
+
+/* Authentication failed */
+"Wrong username or password." = "Wrong username or password.";
+
+/* Error message displayed bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Enter at least %{minimumSearchLength} characters";
+
+/* Error message displayed when a file upload exceeds WOMaxUploadSize */
+"File size upload limit reached" = "File size upload limit reached";
+
+/* Generic server error */
+"An error occured, please try again." = "An error occured, please try again.";
+
+/* Open datepicker */
+"Open Calendar" = "Open Calendar";
+
+/* Toggle visibility (ex: mail account in left navigation menu) */
+"Toggle visibility" = "Toggle visibility";
+
+"Keyboard Shortcuts" = "Keyboard Shortcuts";
+
+/* Aria label for avatar button to select and unselect an item */
+"Toggle item" = "Toggle item";
+
+/* Toggle multiple items at the same time (hotkeys cheatsheet) */
+"Toggle range of items" = "Toggle range of items";
+
+/* Question mark shows list of hotkeys */
+"Show or hide this help" = "Show or hide this help";
+
+/* Space key */
+"key_space" = "space";
+
+/* Delete key */
+"key_delete" = "delete";
+
+/* Shift and space key */
+"key_shift+space" = "shift + space";
+
+/* Up arrow key */
+"key_up" = "↑";
+
+/* Down arrow key */
+"key_down" = "↓";
+
+/* Left arrow key */
+"key_left" = "←";
+
+/* Right arrow key */
+"key_right" = "→";
+
+/* Shift and up arrow combo keys */
+"key_shift+up" = "shift + ↑";
+
+/* Shift and down arrow combo keys */
+"key_shift+down" = "shift + ↓";
+
+/* Backspace key */
+"key_backspace" = "⌫";
+
+/* Hotkey to start a search */
+"hotkey_search" = "s";
+
+/* Hotkey description to select next list item */
+"View next item" = "View next item";
+
+/* Hotkey description to select previous list item */
+"View previous item" = "View previous item";
+
+/* Hotkey description to add next list item to selection */
+"Add next item to selection" = "Add next item to selection";
+
+/* Hotkey description to add previous list item to selection */
+"Add previous item to selection" = "Add previous item to selection";
+
+/* Hotkey description to move backward in current view */
+"Move backward" = "Move backward";
+
+/* Hotkey description to move forward in current view */
+"Move forward" = "Move forward";
+
+/* Password Recovery */
+"passwordRecovery_Disabled" = "Disabled";
+"passwordRecovery_SecretQuestion" = "Secret question";
+"passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
+"passwordRecovery_SecretQuestion2" = "What was your first car ?";
+"passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
+"passwordRecovery_SecondaryEmail" = "Secondary E-mail";

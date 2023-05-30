@@ -37,6 +37,8 @@
 "this month" = "bu ay";
 "Previous Month" = "Önceki Ay";
 "Next Month" = "Sonraki Ay";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "bu yıl";
@@ -313,7 +315,7 @@
 "Month(s)" = "Ay";
 
 /* [Event recurrence editor] Ex: _The_ first Sunday */
-"The" = " ";
+"The" = "The";
 "Recur on day(s)" = "Gün(ün/lerin)de tekrar et";
 "Year(s)" = "Yıl";
 
@@ -397,6 +399,10 @@
 "Send Appointment Notifications" = "Çalışma Bildirimi Gönder";
 "From" = "Başlangıç";
 "To" = "Bitiş";
+
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
 
 /* validation errors */
 validate_notitle           = "Başlık konulmadı, devam etmek istiyor musunuz?";
@@ -623,6 +629,7 @@ vtodo_class2 = "(Gizli görev)";
 "Rename" = "Yeniden Adlandır";
 "Import Calendar" = "Takvimi İçeri Aktar";
 "Select an ICS file." = "Bir  ICS dosyası seçin.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Takvime başarıyla üye olundu";

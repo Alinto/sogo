@@ -37,6 +37,8 @@
 "this month" = "dieser Monat";
 "Previous Month" = "Vorheriger Monat";
 "Next Month" = "Nächster Monat";
+/* Week number prefix */
+"W" = "KW";
 
 /* Year */
 "this year" = "dieses Jahr";
@@ -397,6 +399,10 @@
 "Send Appointment Notifications" = "Verabredungsbenachrichtigungen senden";
 "From" = "Von";
 "To" = "Bis";
+
+/* dates */
+"DateFrom" = "Von";
+"DateTo" = "Bis";
 
 /* validation errors */
 validate_notitle           = "Sie haben keinen Titel eingegeben. Wollen Sie trotzdem fortfahren?";

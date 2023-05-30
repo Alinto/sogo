@@ -40,13 +40,26 @@
 "Auto reply subject" = "כותרת תשובה אוטומתית";
 "You can write ${subject} to insert the original subject" = "ניתן לכתוב {subject}$ על מנת להזין לתוכן המקורי";
 "Auto reply message" = "הודעת תשובה אוטומתית";
-"Email addresses (separated by commas)" = "כתובת אימייל (מופרדות באמצעות פסיק)";
+"Email addresses" = "Email addresses";
 "Add default email addresses" = "הוסף כתובת אימייל כברירת מחדל";
 "Days between responses" = "ימים בין תשובות";
 "Do not send responses to mailing lists" = "לא להשיב לרשימות תפוצה";
+"Activation Constraints" = "Activation Constraints";
 "Enable auto reply on" = "אפשר תשובה אוטומתית";
-"Disable auto reply after" = "בטל תשובה אוטומתית";
+"First day of vacation" = "First day of vacation";
+"Disable auto reply after" = "Disable auto reply after";
+"Last day of vacation" = "Last day of vacation";
+"Enter date" = "Enter date";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Enable auto reply at";
+"Enter time" = "Enter time";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Disable auto reply at";
+"Enable auto reply on these days" = "Enable auto reply on these days";
 "Always send vacation message response" = "תמיד להשיב בעזרת הודעת חופשה";
+"The vacation message is sent prior to apply your filters." = "The vacation message is sent prior to apply your filters.";
+"Discard incoming mails during vacation" = "Discard incoming mails during vacation";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "The vacation message is sent but incoming messages are not delivered to your inbox.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "אנא ציינו את הודעתכם וכתובת האימייל שלכם עבורם תרצו לאפשר תשובות אוטומתיות.";
 "Your vacation message must not end with a single dot on a line." = "הודעת החופשה אינה יכולה להיסתיים בנקודה אחת בשורה.";
@@ -55,14 +68,19 @@
 
 /* forward messages */
 "Forward incoming messages" = "הפנייה של הודעות נכנסות";
+"Always forward" = "Always forward";
+"Incoming messages are forwarded prior to apply your filters." = "Incoming messages are forwarded prior to apply your filters.";
 "Keep a copy" = "שמירת עותק";
+"Enter an email" = "Enter an email";
+"Add another email" = "Add another email";
 "Please specify an address to which you want to forward your messages."
 = "אנא ציינו כתובת אליה ברצונכם להפנות הודעות.";
 "You are not allowed to forward your messages to an external email address." = "לא ניתן להפנות הודעות לכתובת אימייל חיצונית.";
 "You are not allowed to forward your messages to an internal email address." = "לא ניתן להפנות הודעות לכתובת אימייל פנימית.";
+"You are not allowed to forward your messages to this domain:" = "You are not allowed to forward your messages to this domain:";
 
 /* d & t */
-"Current Time Zone" = "אזור זמן נוכחי";
+"Time Zone" = "Time Zone";
 "Short Date Format" = "פורמט תאריך מקוצר";
 "Long Date Format" = "פורמט תאריך מלא";
 "Time Format" = "פורמט זמן";
@@ -84,8 +102,10 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
-   
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
+
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
 "longDateFmt_2" = "%A, %d %B, %Y";
@@ -123,6 +143,8 @@
 "Prevent from being invited to appointments" = "הימנע מהזמנות לאירועים";
 "White list for appointment invitations" = "אפשר הזמנות לאירועים";
 "Contacts Names" = "שמות אנשי קשר";
+"Duplicate name" = "Duplicate name";
+"Calendar categories must have unique names." = "Calendar categories must have unique names.";
 
 /* Default Calendar */
 "Default calendar" = "לוח שנה ברירת מחדל";
@@ -146,10 +168,18 @@
 /* Mailer */
 "Labels" = "תגיות";
 "Label" = "תגית";
+"IMAP Label" = "IMAP Label";
+"Invalid label" = "Don't use space, nor ( ) { } % * \" \\";
+"Duplicate label" = "Duplicate label";
+"IMAP labels must have unique names." = "IMAP labels must have unique names.";
 "New label" = "תגית חדשה";
 "Show subscribed mailboxes only" = "הצג תיבות דוא\"ל אליהן אני מנוי";
 "Synchronize only default mail folders (EAS)" = "(EAS) Exchange Active Sync לסנכרן תיבות ברירת מחדל מסוג";
+"Fetch count of unseen messages for all mailboxes" = "Fetch count of unseen messages for all mailboxes";
 "Sort messages by threads" = "סידור הודעות לפי אשכולות";
+"Always open mail composer" = "Always open mail composer";
+"Inside current window" = "Inside current window";
+"In a popup window" = "In a popup window";
 "When sending mail, add unknown recipients to my" = "בשליחת מייל, הוסף מקבלים לא מוכרים ל";
 "Address Book" = "רשימת אנשי קשר";
 "Forward messages" = "העבר הודעות";
@@ -173,12 +203,19 @@
 "displayremoteinlineimages_always" = "תמיד";
 "Auto save every" = "שמירה אוטומתית בכל";
 "minutes" = "דקות";
+"Automatically mark messages as read" = "Automatically mark messages as read";
+"Immediately on display" = "Immediately on display";
+"After displaying for" = "After displaying for";
+"seconds" = "seconds";
 
 /* Contact */
 "Personal Address Book" = "רשימת אנשי קשר אישית";
 "Collected Address Book" = "רישמת אנשי קשר מאוסף";
+"Contact categories must have unique names." = "Contact categories must have unique names.";
 
 /* IMAP Accounts */
+"Settings" = "Settings";
+"Security" = "Security";
 "Mail Account" = "חשבון מייל";
 "New Mail Account" = "חשבון מייל חדש";
 "Server Name" = "שם שרת";
@@ -190,19 +227,42 @@
 "Email" = "אימייל";
 "Reply To Email" = "השב לאימייל";
 "Signature" = "חתימה";
+"Identities" = "Identities";
+"Always use the default identity when replying to messages" = "Always use the default identity when replying to messages";
+"Default Identity" = "Default Identity";
+"New Identity" = "New Identity";
 "(Click to create)" = "(לחץ ליצירה)";
 "Please enter your signature below" = "נא להזין את חתימתך מתחת";
 "Please specify a valid sender address." = "נא לציין כתובת שולח תקינה.";
 "Please specify a valid reply-to address." = "נא לציין כתובת לתשובה תקינה.";
 "Specify a hostname other than the local host" = "הגדר שם מארח שונה ממארח מקומי";
 
+"No certificate installed" = "No certificate installed";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "The SSL certificate must use the PKCS#12 (PFX) format.";
+"Uninstall" = "Uninstall";
+"Choose PKCS12 Certificate .." = "Choose PKCS12 Certificate ..";
+"Certificate Import Password" = "Certificate Import Password";
+"Upload" = "Upload";
+"When composing a message" = "When composing a message";
+"Digitally sign the message by default" = "Digitally sign the message by default";
+"Always try to encrypt the message" = "Always try to encrypt the message";
+"An error occurred while importing the certificate. Verify your password." = "An error occurred while importing the certificate. Verify your password.";
+
 /* Additional Parameters */
 "Additional Parameters" = "פרמטרים נוספים";
 
 /* password */
+"Current password" = "Current password";
 "New password" = "סיסמה חדשה";
 "Confirmation" = "אישור";
 "Change" = "שינוי";
+"Passwords don't match" = "Passwords don't match";
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
+"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+
 
 /* Event+task classifications */
 "Default events classification" = "הגדרת אירועים ברירת מחדל";
@@ -215,6 +275,7 @@
 "Calendar Category" = "קטגוריית לוח שנה";
 "Add Calendar Category" = "הוספת קטגוריית לוח שנה";
 "New category" = "קטגוריה חדשה";
+"Reset to defaults" = "Reset to defaults";
 "Remove Calendar Category" = "הסרת קטגוריה מלוח השנה";
 "Contact Category" = "קטגוריית איש קשר";
 "Add Contact Category" = "הוספת קטגוריית איש קשר";
@@ -287,6 +348,7 @@
 "refreshview_every_20_minutes" = "כל 20 דקות";
 "refreshview_every_30_minutes" = "כל 30 דקות";
 "refreshview_once_per_hour" = "פעם בשעה";
+"Enable Desktop Notifications" = "Enable Desktop Notifications";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "כאשר מתקבלת בקשה עבור אישור מסירה";
@@ -418,3 +480,23 @@
 /* Limited Animation Mode */
 "animation_LIMITED" = "מוגבל";
 "animation_NONE" = "ללא";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "Enable two-factor authentication using a TOTP application";
+"You must enter this key into your TOTP application." = "You must enter this key into your TOTP application.";
+"If you do not and you log out you will not be able to login again." = "If you do not and you log out you will not be able to login again.";
+"Enter TOTP verification code :" = "Enter TOTP verification code :";
+"Invalid TOTP verification code" = "Invalid TOTP verification code";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "An external Sieve script is active";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled.";
+"Let SOGo handle everything" = "Let SOGo handle everything";
+
+/* Password Recovery */
+"Password recovery mode" = "Password recovery";
+"Question" = "Question";
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password recovery" = "Password recovery";
+"Password change" = "Password change";

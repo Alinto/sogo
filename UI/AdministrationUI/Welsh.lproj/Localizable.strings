@@ -10,6 +10,7 @@
 /* Modules descriptions */
 "ACLs_description" = "<p>Mae'r modiwl gweinyddu Rhestrau Rheoli Mynediad yn caniatáu newid Rhestrau Rheoli Mynediad Calendrau a Llyfrau Cyfeiriadau pob defnyddiwr.</p><p>Er mwyn newid Rhestrau Rheoli Mynediad ffolder defnyddiwr, teipiwch enw'r defnyddiwr yn y maes chwilio ar ben y ffenestr a chliciwch ddwywaith ar y ffolder berthnasol.</p>";
 "Name or Email" = "Enw neu Gyfeiriad E-bost";
+"ACLs saved" = "ACLs saved";
 /* Rights module: initial search message */
 "Start a search to edit the rights" = "Cychwyn chwiliad i olygu'r hawliau";
 /* Rights module: Empty search result */

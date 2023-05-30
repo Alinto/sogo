@@ -44,11 +44,18 @@
 "Add default email addresses" = "Pridať predvolené e-mailové adresy";
 "Days between responses" = "Dni medzi odpoveďami";
 "Do not send responses to mailing lists" = "Neposielať odpovede e-mailovým skupinám";
+"Activation Constraints" = "Activation Constraints";
 "Enable auto reply on" = "Zapnúť automatickú odpoveď od";
 "First day of vacation" = "Prvý deň neprítomnosti";
-"Disable auto reply after" = "Vypnúť automatickú odpoveď";
+"Disable auto reply after" = "Disable auto reply after";
 "Last day of vacation" = "Posledný den neprítomnosti";
 "Enter date" = "Zadajte dátum";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Enable auto reply at";
+"Enter time" = "Enter time";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Disable auto reply at";
+"Enable auto reply on these days" = "Enable auto reply on these days";
 "Always send vacation message response" = "Vždy odošli správu o dovolenke";
 "The vacation message is sent prior to apply your filters." = "Správa v neprítomnosti je odoslaná ešte pred aplikovaním vašich ostatných filtrov.";
 "Discard incoming mails during vacation" = "Zrušiť príjem pošty počas neprítomnosti";
@@ -61,6 +68,8 @@
 
 /* forward messages */
 "Forward incoming messages" = "Preposielať prichádzajúce správy";
+"Always forward" = "Always forward";
+"Incoming messages are forwarded prior to apply your filters." = "Incoming messages are forwarded prior to apply your filters.";
 "Keep a copy" = "Ponechaj kópiu";
 "Enter an email" = "Zadajte e-mail";
 "Add another email" = "Pridajte ďalší e-mail";
@@ -194,6 +203,10 @@
 "displayremoteinlineimages_always" = "Vždy";
 "Auto save every" = "Automaticky ukladať každých";
 "minutes" = "minút";
+"Automatically mark messages as read" = "Automatically mark messages as read";
+"Immediately on display" = "Immediately on display";
+"After displaying for" = "After displaying for";
+"seconds" = "seconds";
 
 /* Contact */
 "Personal Address Book" = "Osobné kontakty";
@@ -244,6 +257,12 @@
 "Confirmation" = "Potvrdenie";
 "Change" = "Zmeniť";
 "Passwords don't match" = "Heslá nie sú rovnaké";
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
+"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+
 
 /* Event+task classifications */
 "Default events classification" = "Predvolená klasifikácia udalostí";
@@ -466,8 +485,18 @@
 "Enable two-factor authentication using a TOTP application" = "Povoliť 2-fázové overovanie pomocou Google Authenticator";
 "You must enter this key into your TOTP application." = "Tento kľúč musíte zadať do svojej aplikácie Google Authenticator.";
 "If you do not and you log out you will not be able to login again." = "Pokiaľ tak neurobíte a odhlásíte sa, nebudete sa môcť znova prihlásiť.";
+"Enter TOTP verification code :" = "Enter TOTP verification code :";
+"Invalid TOTP verification code" = "Invalid TOTP verification code";
 
 /* External Sieve scripts */
 "An external Sieve script is active" = "Je aktivný externý Sieve skript.";
 "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve je programovací jazyk, ktorý môže býť použitý pre filtrovanie e-mailových správ. Pokiaľ chcete, aby SOGo spravoval Vaše filtre, nastavenie neprítomnosti a preposielanie, Váš aktívny skript bude deaktivovaný.";
 "Let SOGo handle everything" = "Nechať SOGo spravovať všetko";
+
+/* Password Recovery */
+"Password recovery mode" = "Password recovery";
+"Question" = "Question";
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password recovery" = "Password recovery";
+"Password change" = "Password change";

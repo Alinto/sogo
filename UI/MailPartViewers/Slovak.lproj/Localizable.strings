@@ -46,3 +46,4 @@ reply_info = "Toto je odpoveď na vašu pozvánku na udalosť.";
 "Cancel" = "Zrušiť";
 "OK" = "OK";
 "Comment" = "Komentár:";
+"Description" = "Description";

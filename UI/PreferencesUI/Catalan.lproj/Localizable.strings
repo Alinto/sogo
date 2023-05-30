@@ -44,11 +44,18 @@
 "Add default email addresses" = "Afegir adreces de correu per defecte";
 "Days between responses" = "Dies entre respostes";
 "Do not send responses to mailing lists" = "No enviar respostes a llistes de correu";
+"Activation Constraints" = "Activation Constraints";
 "Enable auto reply on" = "Activar resposta automàtica";
 "First day of vacation" = "Primer dia de vacances";
-"Disable auto reply after" = "Desactivar la resposta automàtica en";
+"Disable auto reply after" = "Disable auto reply after";
 "Last day of vacation" = "Últim dia de vacances";
 "Enter date" = "Introduïu la Data";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Enable auto reply at";
+"Enter time" = "Enter time";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Disable auto reply at";
+"Enable auto reply on these days" = "Enable auto reply on these days";
 "Always send vacation message response" = "Envia sempre resposta de missatge de vacances";
 "The vacation message is sent prior to apply your filters." = "El missatge de vacances s'envia abans d'aplicar els teus filtres";
 "Discard incoming mails during vacation" = "Descartar els missatges entrants durant les vacances";
@@ -61,6 +68,8 @@
 
 /* forward messages */
 "Forward incoming messages" = "Redirigir missatges entrants";
+"Always forward" = "Always forward";
+"Incoming messages are forwarded prior to apply your filters." = "Incoming messages are forwarded prior to apply your filters.";
 "Keep a copy" = "Desar-ne una còpia";
 "Enter an email" = "Introdueix una adreça de correu";
 "Add another email" = "Afegeix una altra adreça de correu";
@@ -71,7 +80,7 @@
 "You are not allowed to forward your messages to this domain:" = "No podeu reenviar missatges cap aquest domini:";
 
 /* d & t */
-"Current Time Zone" = "Zona horària actual";
+"Time Zone" = "Time Zone";
 "Short Date Format" = "Format de data curt";
 "Long Date Format" = "Format de data llarg";
 "Time Format" = "Format d'hora";
@@ -194,6 +203,10 @@
 "displayremoteinlineimages_always" = "Sempre";
 "Auto save every" = "Auto desar cada";
 "minutes" = "minuts";
+"Automatically mark messages as read" = "Automatically mark messages as read";
+"Immediately on display" = "Immediately on display";
+"After displaying for" = "After displaying for";
+"seconds" = "seconds";
 
 /* Contact */
 "Personal Address Book" = "Llibreta personal d'adreces";
@@ -215,6 +228,7 @@
 "Reply To Email" = "Respondre a aquesta adreça de correu";
 "Signature" = "Signatura";
 "Identities" = "Identitats";
+"Always use the default identity when replying to messages" = "Always use the default identity when replying to messages";
 "Default Identity" = "Identitat per defecte";
 "New Identity" = "Nova identitat";
 "(Click to create)" = "(Clic per a crear-la)";
@@ -238,9 +252,17 @@
 "Additional Parameters" = "Paràmetres addicionals";
 
 /* password */
+"Current password" = "Current password";
 "New password" = "Contrasenya nova";
 "Confirmation" = "Confirmar contrasenya nova";
 "Change" = "Canviar";
+"Passwords don't match" = "Passwords don't match";
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
+"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+
 
 /* Event+task classifications */
 "Default events classification" = "Classificació per defecte dels esdeveniments";
@@ -326,6 +348,7 @@
 "refreshview_every_20_minutes" = "Cada 20 minuts";
 "refreshview_every_30_minutes" = "Cada 30 minuts";
 "refreshview_once_per_hour" = "Cada hora";
+"Enable Desktop Notifications" = "Enable Desktop Notifications";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Quan reba una sol·licitud de justificant de recepció";
@@ -462,8 +485,18 @@
 "Enable two-factor authentication using a TOTP application" = "Activa l'autenticació en dos passos mitjançant Google Authenticator";
 "You must enter this key into your TOTP application." = "Has d'introduir aquesta clau a l'aplicació Google Authenticator.";
 "If you do not and you log out you will not be able to login again." = "Si no ho fas i surts, no podràs tornar a iniciar la sessió.";
+"Enter TOTP verification code :" = "Enter TOTP verification code :";
+"Invalid TOTP verification code" = "Invalid TOTP verification code";
 
 /* External Sieve scripts */
 "An external Sieve script is active" = "Un script extern de Sieve està actiu";
 "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "El Sieve és un llenguatge de programació que es pot utilitzar per filtrar correu electrònic. Si deixes que SOGo gestioni la configuració dels teus filtres, les vacances i el reenviament, el vostre script actiu es desactivarà.";
 "Let SOGo handle everything" = "Deixa que SOGo s'ocupi de tot";
+
+/* Password Recovery */
+"Password recovery mode" = "Password recovery";
+"Question" = "Question";
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password recovery" = "Password recovery";
+"Password change" = "Password change";

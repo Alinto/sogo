@@ -21,11 +21,15 @@
 "HomePhone" = "رقم المنزل";
 "Lastname" = "الاسم الاخير";
 "Location" = "الموقع";
+"Add a category" = "Add a category";
 "MobilePhone" = "رقم المحمول";
 "Name" = "الاسم";
 "OfficePhone" = "رقم المكتب";
 "Organization" = "الجهة";
 "Work Phone" = "رقم العمل";
+"Cell" = "Cell";
+"Pager" = "النداء";
+"Pref" = "Pref";
 "Phone" = "رقم الهاتف";
 "Phones" = "ارقام هواتف";
 "Postal" = "بريد";
@@ -35,12 +39,120 @@
 "delete" = "مسح";
 "edit" = "تعديل";
 "invalidemailwarn" = "البريد الإلكتروني المحدد غير صالح";
-"invaliddatewarn" = "التاريخ المحدد غير صالح.";
 "new" = "جديد";
 "Preferred Phone" = "رقم الهاتف المفضل";
 "Move To" = "نقل الى";
 "Copy To" = "نسخ الى";
 "Add to" = "إضافة الى";
+"To" = "To";
+"Carbon Copy (Cc)" = "Carbon Copy (Cc)";
+"Blind Carbon Copy (Bcc)" = "Blind Carbon Copy (Bcc)";
+
+/* Search scope: name fields */
+"name" = "Name";
+
+/* Search scope: name fields */
+"c_cn" = "Name";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "Secondary email";
+
+/* Search scope: screen name field */
+"nsaimid" = "Screen name";
+
+/* Search scope: mail fields */
+"mail" = "Mail";
+
+/* Search scope: mail fields */
+"c_mail" = "Mail";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Telephone";
+
+/* Search scope: telephone field */
+"homephone" = "Telephone";
+
+/* Search scope: mobile field */
+"mobile" = "Mobile";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Fax";
+
+/* Search scope: pager field */
+"pager" = "Pager";
+
+/* Search scope: categories field */
+"c_categories" = "Categories";
+
+/* Search scope: categories field */
+"vcardcategories" = "Categories";
+
+/* Search scope: title field */
+"title" = "Title";
+
+/* Search scope: organization field */
+"c_o" = "Organization";
+
+/* Search scope: organization field */
+"o" = "Organization";
+
+/* Search scope: department field */
+"ou" = "Department";
+
+/* Search scope: city field */
+"l" = "City";
+
+/* Search scope: country field */
+"c" = "Country";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Home Address";
+
+/* Search scope: state/province field */
+"st" = "State/Province";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Home State/Province";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "Zip/Postal Code";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "Zip/Postal Code";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "Home Country";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Home page";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Web page";
+
+/* Search scope: note field */
+"description" = "Note";
+
+/* Subheader of empty addressbook */
+"No contact" = "No contact";
+
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Start a search to browse this address book";
+
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "contacts";
+
+/* No contact matching search criteria */
+"No matching contact" = "No matching contact";
+
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "matching contacts";
+
+/* Number of selected contacts in list */
+"selected" = "selected";
+
+/* Empty right pane */
+"No contact selected" = "No contact selected";
+
 /* Tooltips */
 "Create a new address book card" = "إنشاء بطاقة جديدة بدفتر العناوين ";
 "Create a new list" = "إنشاء قائمة جديدة";
@@ -57,6 +169,7 @@
 "Search in Addressbook" = "البحث في دفتر العناوين";
 "New Card" = "بطاقة جديدة";
 "New List" = "قائمة جديدة";
+"Edit" = "Edit";
 "Properties" = "خصائص";
 "Sharing..." = "مشاركة ...";
 "Write" = "كتابة";
@@ -69,31 +182,27 @@
 "Preferred" = "المفضل";
 "Display" = "عرض";
 "Display Name" = "الاسم المعروض";
-"Email" = "البريد الالكتروني";
-"Additional Email:" = "بريد إلكتروني إضافي";
+"Additional Email" = "Additional Email";
 "Phone Number" = "رقم الهاتف";
 "Prefers to receive messages formatted as" = "يفضل تلقي رسائل منسقة على النحو التالي";
-"Screen Name" = "أسم التعريف";
 "Categories" = "الفئات";
 "First" = "الاول";
 "Last" = "الاخير";
 "Nickname" = "الاسم الرمزي";
 "Telephone" = "رقم الهاتف:";
 "Work" = "العمل";
-"Home" = "المنزل";
-"Fax" = "الفاكس";
-"Mobile:" = "المحمول";
+"Mobile" = "Mobile";
 "Pager" = "النداء";
+
 /* categories */
 "contacts_category_labels" = "الزميل، المنافس، العملاء، الصديق، العائلة، شريك تجاري، مقدم خدمة، الصحافة ، كبار الشخصيات";
 "New category" = "فئة جديدة";
+
 /* adresses */
 "Title" = "اللقب";
 "Service" = "الخدمة";
 "Company" = "الشركة";
 "Department" = "الادارة";
-"Organization:" = "الجهة";
-"Address" = "العنوان";
 "City" = "المدينة";
 "State_Province" = "الولاية / الاقليم / المحافظة";
 "ZIP_Postal Code" = "الرمز البريدي";
@@ -112,22 +221,33 @@
 "New Addressbook..." = "دفتر عناوين جديدة ...";
 "Subscribe to an Addressbook..." = "الاشتراك في دفتر العناوين ...";
 "Remove the selected Addressbook" = "إزالة دفتر العناوين المحدد";
+"Subscribe to a shared contact" = "Subscribe to a shared addressbook";
+"Search User" = "Search User";
 "Name of the Address Book" = "اسم دفتر العناوين";
 "Are you sure you want to delete the selected address book?"
 = "هل أنت متأكد أنك تريد حذف دفتر العناوين المحدد؟";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "Are you sure you want to delete the addressbook \"%{0}\"?";
 "You cannot remove nor unsubscribe from a public addressbook."
 = "لا يمكنك إزالة أو إلغاء الاشتراك من دفترالعناوين العامة.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "لا يمكنك إزالة أو إلغاء الاشتراك من دفتر العناوين الشخصية.";
 "Are you sure you want to delete the selected contacts?"
 = "هل أنت متأكد أنك تريد حذف الأسماء المحدد؟";
+"Are you sure you want to delete the card of %{0}?" = "Are you sure you want to delete the card of %{0}?";
 "You cannot delete the card of \"%{0}\"."
 = "لا يمكنك حذف البطاقة من \"%{0}\".";
-"Address Book Name" = "اسم دفتر الكتاب";
 "You cannot subscribe to a folder that you own!"
 = "لا يمكنك الاشتراك في مجلد تمتلكه.";
 "Unable to subscribe to that folder!"
 = "غير قادر على الاشتراك في هذا المجلد.";
+
+/* security */
+"Security" = "Security";
+"Uninstall" = "Uninstall";
+"Error reading the card certificate." = "Error reading the card certificate.";
+"No certificate associated to card." = "No certificate associated to card.";
+
 /* acls */
 "Access rights to" = "صلاحية الدخول الى";
 "For user" = "للمستخدم";
@@ -146,11 +266,15 @@
 "The selected contact has no email address."
 = "الاسم الذي تم اختياره ليس لديه عنوان البريد الإلكتروني.";
 "Please select a contact." = "الرجاء اختيار إحدى جهات الاتصال.";
-/* Error messages for move and copy */
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} card(s) copied";
+"%{0} card(s) moved" = "%{0} card(s) moved";
 "SoAccessDeniedException" = "لا يمكنك الكتابة إلى دفتر العناوين المذكور.";
 "Forbidden" = "لا يمكنك الكتابة إلى دفتر العناوين المذكور.";
 "Invalid Contact" = "الاتصال المحدد لم يعد موجودا.";
 "Unknown Destination Folder" = "دفتر العناوين المحدد المرسل اليه لم يعد موجودا.";
+
 /* Lists */
 "List details" = "تفاصيل القائمة";
 "List name" = "اسم القائمة/";
@@ -163,6 +287,8 @@
 "Export" = "تصدير";
 "Export Address Book..." = "تصدير دفتر العناوين ...";
 "View Raw Source" = "عرض المصدر الخام";
+
+/* Import */
 "Import Cards" = "استيراد بطاقات";
 "Select a vCard or LDIF file." = "حدد شكل vCard أو ملف LDIF.";
 "Upload" = "تحميل الى";
@@ -172,3 +298,68 @@
 "No card was imported." = "لم يتم استيراد أي بطاقة.";
 "A total of %{0} cards were imported in the addressbook." = "قد تم استيراد ما مجموعه%{0} بطاقات في دفتر العناوين.";
 "Reload" = "إعادة التحميل";
+
+/* Properties window */
+"Address Book Name" = "اسم دفتر الكتاب";
+"Links to this Address Book" = "Links to this Address Book";
+"Authenticated User Access" = "Authenticated User Access";
+"CardDAV URL" = "CardDAV URL";
+"Options" = "Options";
+"Rename" = "Rename";
+"Subscriptions" = "Subscriptions";
+"Global Addressbooks" = "Global Addressbooks";
+"Search" = "Search";
+"Sort" = "Sort";
+"Descending Order" = "Descending Order";
+"Back" = "Back";
+"Select All" = "Select All";
+"Copy contacts" = "Copy contacts";
+"More messages options" = "More messages options";
+"New Contact" = "New Contact";
+"Close" = "Close";
+"More contact options" = "More contact options";
+"Organization Unit" = "Organization Unit";
+"Add Organizational Unit" = "Add Organizational Unit";
+"Type" = "Type";
+"Email Address" = "Email Address";
+"New Email Address" = "New Email Address";
+"New Phone Number" = "New Phone Number";
+"URL" = "URL";
+"New URL" = "New URL";
+"street" = "street";
+"street (continued)" = "street (continued)";
+"Postoffice" = "Postoffice";
+"Region" = "Region";
+"Postal Code" = "Postal Code";
+"New Address" = "New Address";
+"Reset" = "Reset";
+"Description" = "Description";
+"Add Member" = "Add Member";
+"Subscribe" = "Subscribe";
+"Add Birthday" = "Add Birthday";
+"Import" = "Import";
+"More options" = "More options";
+"Role" = "Role";
+"Add Screen Name" = "Add Screen Name";
+"Custom 1" = "Custom 1";
+"Custom 2" = "Custom 2";
+"Custom 3" = "Custom 3";
+"Custom 4" = "Custom 4";
+"Custom Value" = "Custom Value";
+"New Custom Value" = "New Custom Value";
+"Synchronization" = "Synchronization";
+"Synchronize" = "Synchronize";
+"Sucessfully subscribed to address book" = "Successfully subscribed to address book";
+"A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "Search scope";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Toggle item";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

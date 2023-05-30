@@ -3,22 +3,27 @@
 /* Icon's label */
 "Create"      = "Búðu til";
 "Empty Trash" = "Tæma rusl";
+"Empty Junk Folder" = "Empty Junk Folder";
 "Delete"      = "Eyða";
 "Expunge"     = "Þurrka út";
 "Forward"     = "Áfram";
 "Get Mail"    = "Ná í póst";
 "Junk"        = "Ruslpóstur";
+"Not junk"    = "Not junk";
 "Reply"       = "Svara";
 "Reply All"   = "Svara öllum";
 "Print"       = "Prenta";
 "Stop"        = "Stöðva";
 "Write"       = "Skrifa";
+"Search"      = "Search";
 "Send" = "Senda";
 "Contacts" = "Tengiliðir";
 "Attach" = "Setja inn";
 "Save" = "Vista";
 "Options" = "Valkostir";
+"Close" = "Close";
 "Size" = "Stærð";
+
 /* Tooltips */
 "Send this message now" = "Senda þennan póst núna";
 "Select a recipient from an Address Book" = "Veldu viðtakanda úr nafnaskránni";
@@ -31,30 +36,59 @@
 "Reply to sender and all recipients" = "Svara sendanda og öllum viðtakendum";
 "Forward selected message" = "Áframsenda völdum pósti";
 "Delete selected message or folder" = "Eyða völdum pósti eða möppu";
-"Mark the selected messages as junk" = "Merkja valinn póst sem ruslpóst";
 "Print this message" = "Prenta þennan póst";
 "Stop the current transfer" = "Stöðva núverandi sendingu";
 "Attachment" = "Viðhengi";
 "Unread" = "Ólesin";
 "Flagged" = "Tilkynnt";
+"Search multiple mailboxes" = "Search multiple mailboxes";
+
 /* Main Frame  */
-"Home"                 = "Heima"; 
+"Home"                 = "Heima";
 "Calendar"             = "Dagatal";
 "Addressbook"          = "Nafnaskrá";
 "Mail"                 = "Póstur";
 "Right Administration" = "Umsjón réttinda";
 "Help" = "Hjálp";
+
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Velkomin(n) í SOGo Póstsendandann. Notaðu möpputréð vinstra megin til að skoða pósthólfin þín!";
 "Read messages"       = "Lesinn póstur";
+
+/* Tooltip for fab button */
 "Write a new message" = "Skrifa nýjan póst";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Write a message in new window";
+
 "Share" = "Samnýta";
 "Account" = "Stillingar";
 "Shared Account" = "Samnýttar stillingar";
+
+/* A mailbox is selected, but no message (only shown on large screens) */
+"No message selected" = "No message selected";
+
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "No mailbox selected";
+
+"An error occured while communicating with the mail server" = "An error occured while communicating with the mail server";
+
+/* Mailbox actions */
+
+/* Compact Folder success message */
+"Folder compacted" = "Folder compacted";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Junk folder emptied";
+
+/* Empty Trash success message */
+"Trash emptied" = "Trash emptied";
+
 /* acls */
-"Default Roles" = "Sjálfgefin hlutverk";
-"User rights for" = "Notandanréttindi fyrir";
-"List and see this folder" = "Sýna og skoða þessa möppu";
+"Access rights to" = "Access rights to";
+"For user" = "For user";
+"Any Authenticated User" = "Any Authenticated User";
+"View this folder" = "View this folder";
 "Read mails from this folder" = "Lesa tölvubréf úr þessari möppu";
 "Mark mails read and unread" = "Merkja póst sem lesinn eða ólesinn";
 "Modify the flags of the mails in this folder" = "Breyta merkjum á tölvupósti í þessari möppu";
@@ -64,10 +98,12 @@
 "Remove this folder" = "Fjarlægja þessa möppu";
 "Erase mails from this folder" = "Eyða bréfum úr þessari möppu";
 "Expunge this folder" = "Afmá allt í þessari möppu";
+"Export This Folder" = "Export This Folder";
 "Modify the acl of this folder" = "Breyta aðgangsstýringum fyrir þessa möppu";
 "Saved Messages.zip" = "vistud_skilabod.zip";
 "Update" = "Uppfæra";
 "Cancel" = "Hætta við";
+
 /* Mail edition */
 "From"          = "Frá";
 "Subject"       = "Viðfangsefni";
@@ -76,21 +112,28 @@
 "Bcc"           = "Falið afrit";
 "Reply-To"	= "Reply-To";
 "Add address"   = "Bæta við viðtakanda";
-"Attachments" = "Viðhengi";
+"Body"          = "Body";
 "Open" = "Opna";
 "Select All" = "Velja allt";
+"Select Message" = "Select Message";
 "Attach Web Page..." = "Hengja vefsðiðu við ...";
-"Attach File(s)..." = "Hengja skrá(r) við...";
+"file" = "file";
+"files" = "files";
+"Save all" = "Save all";
 "to"            = "Til";
 "cc"            = "Afrit";
 "bcc"           = "Falið afrit";
-"Addressbook"   = "Nafnaskrá";
+"Add a recipient" = "Add a recipient";
 "Edit Draft..." = "Sýsla með uppkast...";
 "Load Images" = "Sækja myndir";
 "Return Receipt" = "Staðfesting á lestri";
+"Choose which identity to send this message from" = "Choose which identity to send this message from";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Sendandi þessa bréfs hefur beðið um að fá skilaboð þegar þú lest það. Viltu láta sendandann vita?";
 "Return Receipt (displayed) - %@"= "Return Receipt (displayed) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Þetta er móttökukvittun fyrir tölvupóstihn sem þú sendir til %@.\n\nAth: Þessi móttökukvittun staðfestir aðeins að tölvubréfið hafi verið sýnt á tölvu móttakandans. Það er engin trygging fyrir því að móttakandinn hafi lesið eða skilið innihald tölvubréfsins.";
+"Security" = "Security";
+"Sign" = "Sign";
+"Encrypt" = "Encrypt";
 "Priority" = "Forgangur";
 "highest" = "Hæst";
 "high" = "Hátt";
@@ -98,12 +141,16 @@
 "low" = "Lágt";
 "lowest" = "Lægst";
 "This mail is being sent from an unsecure network!" = "Þessi póstur er sendur frá óöruggu netkerfi!";
+"Address Book" = "Address Book";
+"Search For" = "Search For";
+
 /* Popup "show" */
 "all"     = "öll";
 "read"    = "lesin";
 "unread"  = "ólesin";
 "deleted" = "eytt";
 "flagged" = "tilkynnt";
+
 /* MailListView */
 "Sender" = "Sendandi";
 "Subject or Sender" = "Efni eða viðtakandi";
@@ -112,9 +159,9 @@
 "Date"          = "Dagsetning";
 "View"          = "Skoða";
 "All"           = "Allar";
-"Unread"        = "Ólesin";
 "No message"    = "Engin skilaboð";
 "messages"      = "bréfum";
+"Yesterday"     = "Yesterday";
 "first"         = "Fyrsta";
 "previous"      = "Fyrra";
 "next"          = "Næsta";
@@ -124,22 +171,39 @@
 "Mark Unread" = "Merkja sem ólesið";
 "Mark Read"   = "Merkja sem lesið";
 "Untitled" = "ónefnt";
+
+/* Filter option in messages list */
+"Show unread messages only" = "Show unread messages only";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Show flagged messages only";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Filtered by label";
+
 /* Tree */
 "SentFolderName"   = "Sent";
 "TrashFolderName"  = "Rusl";
 "InboxFolderName"  = "Innhólf";
 "DraftsFolderName" = "Drög";
+"JunkFolderName" = "Junk";
+"TemplatesFolderName" = "Templates";
 "SieveFolderName"  = "Síur";
 "Folders"          = "Möppur"; /* title line */
+
 /* MailMoveToPopUp */
 "MoveTo"        = "Færa &hellip;";
+
 /* Address Popup menu */
 "Add to Address Book..." = "Bæta við nafnaskrá...";
+"Successfully created card" = "Successfully created card";
 "Compose Mail To" = "Skrifa bréf til";
 "Create Filter From Message..." = "Búa til síu eftir bréfi...";
+
 /* Image Popup menu */
 "Save Image" = "Vista mynd";
 "Save Attachment" = "Vista viðhengi";
+
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Opna í nýjum glugga fyrir póst";
 "Copy Folder Location" = "Afrita staðsetningu möppu";
@@ -156,15 +220,17 @@
 "Get Messages for Account" = "Sækja tölvubréf fyrir þetta pósthólf";
 "Properties..." = "Eiginleikar...";
 "Delegation..." = "Skipun fulltrúa...";
+
 /* Use This Folder menu */
 "Sent Messages" = "Send Tölvubréf";
 "Drafts" = "Drög";
 "Deleted Messages" = "Eydd bréf";
+"Junk Messages" = "Junk Messages";
+
 /* Message list popup menu */
 "Open Message In New Window" = "Opna bréf í nýjum glugga";
 "Reply to Sender Only" = "Svara aðeins sendanda";
 "Reply to All" = "Svara öllum";
-"Forward" = "Áfram";
 "Edit As New..." = "Sýsla með sem nýtt væri...";
 "Move To" = "Færa í";
 "Copy To" = "Afrita í";
@@ -173,12 +239,81 @@
 "Save As..." = "Vista sem...";
 "Print Preview" = "Prentskoðun";
 "View Message Source" = "Skoða kóðann í skilaboðunum";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "Convert To Event";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "Convert To Task";
+
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Download message";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Download message (zip)";
+
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Download all attachments";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "attachments";
+
 "Print..." = "Prenta...";
 "Delete Message" = "Eyða pósti";
 "Delete Selected Messages" = "Eyða völdum póstum";
+"Mark the selected messages as junk" = "Merkja valinn póst sem ruslpóst";
+"Mark the selected messages as not junk" = "Mark the selected messages as not junk";
+
+/* Text appended to the recipients list when there are too many recipients */
+"and %{0} more..." = "and %{0} more...";
+
+/* Button label to hide extended list of recipients */
+"Hide" = "Hide";
+
+/* Number of selected messages in list */
+"selected" = "selected";
+
+/* Date formatting from one time to another time */
+"to_time" = "to";
+
+/* Date formatting from one day to another day */
+"to_date" = "to";
+
+/* Encrypted message notification */
+"This message is encrypted" = "This message is encrypted";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Unable to verify message signature";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "The message has been modified";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Error reading the certificate. Please install a new certificate.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "No certificate associated to account.";
+
+/* Invalid S/MIME signature */
+"Digital signature is not valid" = "Digital signature is not valid";
+
+/* Valid S/MIME signature */
+"Message is signed" = "Message is signed";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Message is signed but the certificate doesn't match the sender email address";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Digital signature is not valid";
+
 "This Folder" = "Þessi mappa";
+
 /* Label popup menu */
 "None" = "Engin";
+
 /* Mark popup menu */
 "As Read" = "Sem lesið";
 "Thread As Read" = "Umræðu sem lesna";
@@ -188,6 +323,18 @@
 "As Junk" = "Sem ruslpóst";
 "As Not Junk" = "Ekki sem ruslpóst";
 "Run Junk Mail Controls" = "Keyra ruslpóstsaðgerðir";
+"Search messages in" = "Search messages in";
+"Search" = "Search";
+"Search subfolders" = "Search subfolders";
+"Match any of the following" = "Match any of the following";
+"Match all of the following" = "Match all of the following";
+"contains" = "contains";
+"does not contain" = "does not contain";
+"No matches found" = "No matches found";
+"results found" = "results found";
+"result found" = "result found";
+"Please specify at least one filter" = "Please specify at least one filter";
+
 /* Folder operations */
 "Name" = "Nafn";
 "Enter the new name of your folder"
@@ -197,6 +344,22 @@
 "Operation failed" = "Aðgerðin mistókst";
 "Quota" = "Kvóti:";
 "quotasFormat" = "%{0}% notað af %{1} MB";
+"messageQuotasFormat" = "%{0}% of %{1} msgs";
+"Unable to move/delete folder." = "Unable to move/delete folder.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "The mailbox could not be moved to the trash folder. Would you like to delete it immediately?";
+
+/* Confirmation message when deleting multiple messages */
+"Are you sure you want to delete the selected messages?" = "Are you sure you want to delete the selected messages?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} message(s) copied";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} message(s) moved";
+
 "Please select a message." = "Velja þarf tölvubréf.";
 "Please select a message to print." = "Velja þarf tölvubréf til að prenta.";
 "Please select only one message to print." = "Aðeins má velja eitt tölvubréf til að prenta.";
@@ -216,15 +379,120 @@
 = "Ekki er hægt að færa tölvubréf í sömu möppu og það er í núna.";
 "Copying a message into its own folder is impossible!"
 = "Ekki er hægt að afrita tölvubréf í sömu möppu og það er í núna.";
+
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
 = "Ekki var hægt að færa tölvubréfin í ruslið. Viltu kannski eyða þeim samstundis?";
+
 /* Message editing */
-"error_validationfailed" = "Staðfesting tókst ekki";
+"Please specify a subject." = "Please specify a subject.";
 "error_missingsubject" = "Efni vantar";
 "error_missingrecipients" = "Engir viðtakendur tilgreindir";
-/* Message sending */
+"Send Anyway" = "Send Anyway";
+"Error while saving the draft" = "Error while saving the draft";
+
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Unable to empty the trash folder.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Unable to empty the junk folder.";
+
+/* Error when uploading a file attachment */
+"Error while uploading the file \"%{0}\":" = "Error while uploading the file \"%{0}\":";
+"There is an active file upload. Closing the window will interrupt it." = "There is an active file upload. Closing the window will interrupt it.";
+"Message is too big" = "Message is too big";
+
+/* Appears while sending the message */
+"Sending" = "Sending";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Sent";
+
 "cannot send message: (smtp) all recipients discarded" = "Ekki var hægt að senda tölvubréfið: enginn gildur móttakandi.";
 "cannot send message (smtp) - recipients discarded" = "Ekki var hægt að senda tölvubréfið: Eftirfarandi móttakendur eru ógildir";
 "cannot send message: (smtp) error when connecting" = "Ekki var hægt að senda tölvubréfið: ekki tókst að tengjast SMTP póstþjóni.";
+"cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
+"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
+
+/* Contacts list in mail editor */
 "Email" = "Tölvupóstur";
+"More mail options" = "More mail options";
+"Delegation" = "Delegation";
+"Add User" = "Add User";
+"Add a tag" = "Add a tag";
+"reply" = "reply";
+"Edit" = "Edit";
+"Yes" = "Yes";
+"No" = "No";
+"Location" = "Location";
+"Rename" = "Rename";
+"Compact" = "Compact";
+"Export" = "Export";
+"Set as Drafts" = "Set as Drafts";
+"Set as Sent" = "Set as Sent";
+"Set as Trash" = "Set as Trash";
+
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Set as Templates";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "Set as Junk";
+
+"Sort" = "Sort";
+"Order Received" = "Order Received";
+"Descending Order" = "Descending Order";
+"Back" = "Back";
+"Copy messages" = "Copy messages";
+"More messages options" = "More messages options";
+"Mark as Unread" = "Mark as Unread";
+"Mark as Read" = "Mark as Read";
+"Closing Window ..." = "Closing Window ...";
+"Tried to send too many mails. Please wait." = "Tried to send too many mails. Please wait.";
+"View Mail" = "View Mail";
+"This message contains external images." = "This message contains external images.";
+"Expanded" = "Expanded";
+"Add a Criteria" = "Add a Criteria";
+"More search options" = "More search options";
+"Your email has been saved" = "Your email has been saved";
+"Your email has been sent" = "Your email has been sent";
+"Folder compacted" = "Folder compacted";
+
+"New draft" = "New draft";
+"Create new draft with this template" = "Create new draft with this template";
+
+/* Advanced search */
+"Enter Subject" = "Enter Subject";
+"Enter From" = "Enter From";
+"Enter To" = "Enter To";
+"Enter Cc" = "Enter Cc";
+"Enter Body" = "Enter Body";
+"match" = "match";
+"does not match" = "does not match";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Search scope";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Manage Subscriptions";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Filter";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

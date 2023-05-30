@@ -27,6 +27,9 @@
 "OfficePhone" = "Telepon Kantor";
 "Organization" = "Organisasi";
 "Work Phone" = "Telepon Kerja";
+"Cell" = "Cell";
+"Pager" = "Pager";
+"Pref" = "Pref";
 "Phone" = "Telepon";
 "Phones" = "Telepon";
 "Postal" = "Pos";
@@ -218,7 +221,7 @@
 "New Addressbook..." = "Buku Alamat Baru...";
 "Subscribe to an Addressbook..." = "Berlangganan sebuah Buku Alamat...";
 "Remove the selected Addressbook" = "Hapus buku alamat yang dipilih";
-"Subscribe to a shared folder" = "Berlangganan sebuah folder bersama";
+"Subscribe to a shared contact" = "Subscribe to a shared addressbook";
 "Search User" = "Cari Pengguna";
 "Name of the Address Book" = "Nama Buku Alamat";
 "Are you sure you want to delete the selected address book?"
@@ -347,6 +350,7 @@
 "Synchronization" = "Sinkronisasi";
 "Synchronize" = "Mensinkronisasikan";
 "Sucessfully subscribed to address book" = "Berhasil berlangganan pada Buku Alamat...";
+"A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Batasan pencarian";

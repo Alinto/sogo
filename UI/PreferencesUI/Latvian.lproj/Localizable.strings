@@ -40,15 +40,22 @@
 "Auto reply subject" = "Automātiskā atbilde";
 "You can write ${subject} to insert the original subject" = "Varat rakstīt ${subject} ievietot sākotnējo tēmu";
 "Auto reply message" = "Automātiskās atbildes ziņa";
-"Email addresses (separated by commas)" = "E-pasta adreses (atdalītas ar komatu)";
+"Email addresses" = "Email addresses";
 "Add default email addresses" = "Pievienot noklusējuma e-pasta adreses";
 "Days between responses" = "Dienas starp atbildēm";
 "Do not send responses to mailing lists" = "Nesūtīt automātiskās atbildes adresātu sarakstam";
+"Activation Constraints" = "Activation Constraints";
 "Enable auto reply on" = "Ieslēgt automātisko atbildi";
 "First day of vacation" = "Pirmā atvaļinājuma diena";
-"Disable auto reply after" = "Izslēgt automātisko atbildi";
+"Disable auto reply after" = "Disable auto reply after";
 "Last day of vacation" = "Pēdējā atvaļinājuma diena";
 "Enter date" = "Ievadiet datumu";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Enable auto reply at";
+"Enter time" = "Enter time";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Disable auto reply at";
+"Enable auto reply on these days" = "Enable auto reply on these days";
 "Always send vacation message response" = "Vienmēr sūtīt atvaļinājuma atbildes ziņojumu";
 "The vacation message is sent prior to apply your filters." = "Atvaļinājuma ziņojums tiek nosūtīts pirms filtru lietošanas.";
 "Discard incoming mails during vacation" = "Atmest ienākošo pastu atvaļinājuma laikā";
@@ -61,7 +68,11 @@
 
 /* forward messages */
 "Forward incoming messages" = "Pārsūtīt ienākošos ziņojumus";
+"Always forward" = "Always forward";
+"Incoming messages are forwarded prior to apply your filters." = "Incoming messages are forwarded prior to apply your filters.";
 "Keep a copy" = "Paturēt kopiju";
+"Enter an email" = "Enter an email";
+"Add another email" = "Add another email";
 "Please specify an address to which you want to forward your messages."
 = "Lūdzu, norādiet adresi, uz kuru vēlaties pārsūtīt ziņojumu.";
 "You are not allowed to forward your messages to an external email address." = "Jums nav atļauts pārsūtīt ziņojumus uz ārēju e-pasta adresi.";
@@ -69,7 +80,7 @@
 "You are not allowed to forward your messages to this domain:" = "Jums nav atļauts pārsūtīt ziņojumus uz šo domēnu:";
 
 /* d & t */
-"Current Time Zone" = "Pašreizējā laika josla";
+"Time Zone" = "Time Zone";
 "Short Date Format" = "Īsais datuma formāts";
 "Long Date Format" = "Garais datuma formāts";
 "Time Format" = "Datuma formāts";
@@ -192,6 +203,10 @@
 "displayremoteinlineimages_always" = "Vienmēr";
 "Auto save every" = "Automātiski saglabāt ik pēc";
 "minutes" = "minūtes";
+"Automatically mark messages as read" = "Automatically mark messages as read";
+"Immediately on display" = "Immediately on display";
+"After displaying for" = "After displaying for";
+"seconds" = "seconds";
 
 /* Contact */
 "Personal Address Book" = "Personiskā adrešu grāmata";
@@ -212,6 +227,10 @@
 "Email" = "E-pasts";
 "Reply To Email" = "Atbildēt uz e-pastu";
 "Signature" = "Paraksts";
+"Identities" = "Identities";
+"Always use the default identity when replying to messages" = "Always use the default identity when replying to messages";
+"Default Identity" = "Default Identity";
+"New Identity" = "New Identity";
 "(Click to create)" = "(Noklikšķiniet, lai izveidotu)";
 "Please enter your signature below" = "Lūdzu, ievadiet savu parakstu zem";
 "Please specify a valid sender address." = "Lūdzu, norādiet derīgu sūtītāja adresi.";
@@ -233,9 +252,17 @@
 "Additional Parameters" = "Papildu parametri";
 
 /* password */
+"Current password" = "Current password";
 "New password" = "Jauna parole";
 "Confirmation" = "Apstiprinājums";
 "Change" = "Mainīt";
+"Passwords don't match" = "Passwords don't match";
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
+"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+
 
 /* Event+task classifications */
 "Default events classification" = "Noklusējuma notikumu klasifikācija";
@@ -321,6 +348,7 @@
 "refreshview_every_20_minutes" = "Ik pēc 20 minūtēm";
 "refreshview_every_30_minutes" = "Ik pēc 30 minūtēm";
 "refreshview_once_per_hour" = "Reizi stundā";
+"Enable Desktop Notifications" = "Enable Desktop Notifications";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Kad saņemu pieprasījuma par saņemšanu";
@@ -452,3 +480,23 @@
 /* Limited Animation Mode */
 "animation_LIMITED" = "Ierobežota";
 "animation_NONE" = "Neviens";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "Enable two-factor authentication using a TOTP application";
+"You must enter this key into your TOTP application." = "You must enter this key into your TOTP application.";
+"If you do not and you log out you will not be able to login again." = "If you do not and you log out you will not be able to login again.";
+"Enter TOTP verification code :" = "Enter TOTP verification code :";
+"Invalid TOTP verification code" = "Invalid TOTP verification code";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "An external Sieve script is active";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled.";
+"Let SOGo handle everything" = "Let SOGo handle everything";
+
+/* Password Recovery */
+"Password recovery mode" = "Password recovery";
+"Question" = "Question";
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password recovery" = "Password recovery";
+"Password change" = "Password change";

@@ -10,6 +10,7 @@
 /* Modules descriptions */
 "ACLs_description" = "<p>מודול האדמיניסטראציה ברשימת בקרת גישה מאפשרת שינוי לרשימות בקרת הגישה ללוח השנה ואנשי הקשר לכל משתמש.<p/>\n<p>לעריכת רשימת בקרת הגישה עבור תקייה של משתמש, יש להקליד את שם המשתמש בשדה החיפוש בחלקו העליון של החלון ולהקליק פעמיים על התקייה הרצויה<p/>";
 "Name or Email" = "שם או כתובת אימייל";
+"ACLs saved" = "ACLs saved";
 /* Rights module: initial search message */
 "Start a search to edit the rights" = "חיפוש לעריכת הרשאות";
 /* Rights module: Empty search result */

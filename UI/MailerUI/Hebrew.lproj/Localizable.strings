@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "צור";
 "Empty Trash" = "רוקן פח אשפה";
+"Empty Junk Folder" = "Empty Junk Folder";
 "Delete"      = "מחק";
 "Expunge"     = "טהר";
 "Forward"     = "העבר";
@@ -43,7 +44,7 @@
 "Search multiple mailboxes" = "חפש במספר תיבות דואר";
 
 /* Main Frame  */
-"Home"                 = "בית"; 
+"Home"                 = "בית";
 "Calendar"             = "לוח שנה";
 "Addressbook"          = "אנשי קשר";
 "Mail"                 = "מייל";
@@ -73,8 +74,13 @@
 "An error occured while communicating with the mail server" = "התקבלה שגיאה בהתחברות לשרת. נסו שנית מאוחר יותר.";
 
 /* Mailbox actions */
+
 /* Compact Folder success message */
 "Folder compacted" = "התיקייה נדחסה";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Junk folder emptied";
+
 /* Empty Trash success message */
 "Trash emptied" = "האשפה נמחקה";
 
@@ -82,7 +88,7 @@
 "Access rights to" = "מתן גישה ל";
 "For user" = "למשתמש";
 "Any Authenticated User" = "כל משתמש מורשה";
-"List and see this folder" = "פרוס וצפה בתיקייה";
+"View this folder" = "View this folder";
 "Read mails from this folder" = "קרא מיילים מתיקייה";
 "Mark mails read and unread" = "סמן מיילים כנקראו ולא נקראו";
 "Modify the flags of the mails in this folder" = "שנה את דגלי המיילים בתיקייה";
@@ -104,7 +110,7 @@
 "To"            = "אל";
 "Cc"            = "העתק למכותב";
 "Bcc"           = "העתק חסוי";
-"Reply-To"	    = "השב ל";
+"Reply-To"	= "השב ל";
 "Add address"   = "הוסף כתובת";
 "Body"          = "גוף ההודעה";
 "Open" = "פתח";
@@ -121,9 +127,13 @@
 "Edit Draft..." = "ערוך טיוטה";
 "Load Images" = "טען תמונות";
 "Return Receipt" = "אישור מסירה";
+"Choose which identity to send this message from" = "Choose which identity to send this message from";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "מחבר ההודעה ביקש אישור קריאה. האם ברצונך ליידע אותו?";
 "Return Receipt (displayed) - %@"= "אישור מסירה (מוצג) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "זהו דואר חוזר עבור הודעה ששלחת ל %@.\n\nהערה: הדואר החוזר לידיעה בלבד, אין שום ערבון שההודעה אכן נקרא והובנה על ידי המקבל.";
+"Security" = "Security";
+"Sign" = "Sign";
+"Encrypt" = "Encrypt";
 "Priority" = "דחיפות";
 "highest" = "גבוהה ביותר";
 "high" = "גבוהה";
@@ -162,12 +172,22 @@
 "Mark Read"   = "סמן כנקרא";
 "Untitled" = "ללא כותרת";
 
+/* Filter option in messages list */
+"Show unread messages only" = "Show unread messages only";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Show flagged messages only";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Filtered by label";
+
 /* Tree */
 "SentFolderName"   = "נשלח";
 "TrashFolderName"  = "אשפה";
 "InboxFolderName"  = "תא דואר נכנס";
 "DraftsFolderName" = "טיוטות";
 "JunkFolderName" = "זבל";
+"TemplatesFolderName" = "Templates";
 "SieveFolderName"  = "מסננים";
 "Folders"          = "תיקיות"; /* title line */
 
@@ -176,6 +196,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "הוסף לאנשי הקשר";
+"Successfully created card" = "Successfully created card";
 "Compose Mail To" = "כתוב הודעה ל";
 "Create Filter From Message..." = "צור מסנן מהודעה...";
 
@@ -225,6 +246,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "המר למשימה";
 
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Download message";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Download message (zip)";
+
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "הורד את כל הקבצים המצורפים";
 
@@ -245,6 +272,42 @@
 
 /* Number of selected messages in list */
 "selected" = "מסומנים";
+
+/* Date formatting from one time to another time */
+"to_time" = "to";
+
+/* Date formatting from one day to another day */
+"to_date" = "to";
+
+/* Encrypted message notification */
+"This message is encrypted" = "This message is encrypted";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Unable to verify message signature";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "The message has been modified";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Error reading the certificate. Please install a new certificate.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "No certificate associated to account.";
+
+/* Invalid S/MIME signature */
+"Digital signature is not valid" = "Digital signature is not valid";
+
+/* Valid S/MIME signature */
+"Message is signed" = "Message is signed";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Message is signed but the certificate doesn't match the sender email address";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Digital signature is not valid";
 
 "This Folder" = "התיקייה הזו";
 
@@ -281,6 +344,7 @@
 "Operation failed" = "הפעולה נכשלה";
 "Quota" = "מכסה:";
 "quotasFormat" = "%{0}% משתמש ב {1}% מ\"ב";
+"messageQuotasFormat" = "%{0}% of %{1} msgs";
 "Unable to move/delete folder." = "לא ניתן להזיז/למחוק את התיקיה";
 
 /* Alternative operation when folder cannot be deleted */
@@ -321,10 +385,17 @@
 = "לא ניתן להעביר הודעות אלו לאשפה. האם ברצונך למחוק אותן באופן מיידי?";
 
 /* Message editing */
+"Please specify a subject." = "Please specify a subject.";
 "error_missingsubject" = "אין כותרת להודעה. האם לשלוח אותה בכל זאת?";
 "error_missingrecipients" = "בחר איש קשר אחד לפחות.";
 "Send Anyway" = "שלח בכל זאת";
 "Error while saving the draft" = "שגיאה בעת שמירת הטיוטה";
+
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Unable to empty the trash folder.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Unable to empty the junk folder.";
 
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "שגיאה בעת העלאת הקובץ \"%{0}\".";
@@ -340,6 +411,9 @@
 "cannot send message: (smtp) all recipients discarded" = "לא ניתן לשלוח הודעה, הנמענים לא תקינים.";
 "cannot send message (smtp) - recipients discarded" = "לא ניתן לשלוח הודעה. הכתובות הבאות לא תקינות";
 "cannot send message: (smtp) error when connecting" = "לא ניתן לשלוח הודעה: שגיאה בהתחברות לשרת SMTP.";
+"cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
+"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
 
 /* Contacts list in mail editor */
 "Email" = "אימייל";
@@ -358,6 +432,9 @@
 "Set as Drafts" = "סמן כטיוטה";
 "Set as Sent" = "סמן כנשלח";
 "Set as Trash" = "סמן כאשפה";
+
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Set as Templates";
 
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "סמן כזבל";
@@ -380,6 +457,18 @@
 "Your email has been saved" = "המייל שלך נשמר";
 "Your email has been sent" = "המייל שלך נשלח";
 "Folder compacted" = "התיקייה נדחסה";
+
+"New draft" = "New draft";
+"Create new draft with this template" = "Create new draft with this template";
+
+/* Advanced search */
+"Enter Subject" = "Enter Subject";
+"Enter From" = "Enter From";
+"Enter To" = "Enter To";
+"Enter Cc" = "Enter Cc";
+"Enter Body" = "Enter Body";
+"match" = "match";
+"does not match" = "does not match";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "היקף חיפוש";

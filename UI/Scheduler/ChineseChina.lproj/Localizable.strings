@@ -37,6 +37,8 @@
 "this month" = "当月";
 "Previous Month" = "前月";
 "Next Month" = "下月";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "今年";
@@ -107,6 +109,7 @@
 "Name of the Calendar" = "日程名称";
 "new" = "新建";
 "Print view" = "预览打印";
+"Print" = "Print";
 "edit" = "编辑";
 "delete" = "删除";
 "proposal" = "建议";
@@ -147,6 +150,7 @@
 "Display events and tasks colors" = "显示事件和任务的颜色";
 "Borders" = "边界";
 "Backgrounds" = "背景";
+"Page Format" = "Page Format";
 
 /* Appointments */
 "Appointment viewer" = "查看邀约";
@@ -219,6 +223,11 @@
 "view_next31" = "接下来的31天";
 "view_thismonth" = "本月";
 "view_thisyear" = "今年";
+"view_last7" = "Last 7 days";
+"view_last14" = "Last 14 days";
+"view_last31" = "Last 31 days";
+"view_lastmonth" = "Last Month";
+"view_lastyear" = "Last Year";
 "view_future" = "全部未来事件";
 "view_selectedday" = "选中的日期";
 "view_not_started" = "尚未开始的任务";
@@ -391,6 +400,10 @@
 "From" = "发件人";
 "To" = "收件人";
 
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "没有标题, 是否继续？";
 validate_invalid_startdate = "开始日期不正确";
@@ -437,16 +450,48 @@ validate_untilbeforeend    = "重复设定的时间必须晚于第一次开始�
 = "你不能删除或退订自己的日程。";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "确认删除%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Are you sure you want to delete the selected components?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Role";
+
+/* Participant role: participation is required */
 "Participant" = "参与者";
+
+/* Participant role: participation is required */
+"req-participant" = "Participant";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "可选参与者";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Optional Participant";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "非参与者";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Non Participant";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "席位";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Chair";
+
+/* Participant status: needs action */
 "Needs action" = "需要操作";
+
+/* Participant status: event accepted */
 "Accepted" = "已接受";
+
+/* Participant status: event declined */
 "Declined" = "已拒绝";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "暂定";
+
 "Free" = "空闲";
 "Busy" = "忙碌";
 "Maybe busy" = "可能忙";
@@ -465,6 +510,8 @@ validate_untilbeforeend    = "重复设定的时间必须晚于第一次开始�
 "and" = "和";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "在参加者里有一个事件冲突。\n你要保持现在的设定吗？";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Would you like to remove them and send the invitation to the remaining attendees?";
 
 /* events list */
 "Due" = "到期";
@@ -545,7 +592,7 @@ vtodo_class2 = "(机密任务)";
 "Move To" = "移至";
 "Copy To" = "复制到";
 "Subscriptions" = "订阅";
-"Subscribe to a shared folder" = "订阅共享的资料夹";
+"Subscribe to a shared calendar" = "Subscribe to a shared calendar";
 "Subscribe to a web calendar..." = "订阅到网页日程";
 "URL of the Calendar" = "日历链接";
 "Web Calendar" = "网页日程";
@@ -582,6 +629,7 @@ vtodo_class2 = "(机密任务)";
 "Rename" = "重命名";
 "Import Calendar" = "导入日程";
 "Select an ICS file." = "选择一个ICS文件。";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "已成功订阅日程";

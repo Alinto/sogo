@@ -47,7 +47,7 @@
 "Activation Constraints" = "Aktiválás kényszerek";
 "Enable auto reply on" = "Automatikus válasz engedélyezése";
 "First day of vacation" = "Távollét első napja";
-"Disable auto reply after" = "Automatikus válasz tiltása";
+"Disable auto reply after" = "Disable auto reply after";
 "Last day of vacation" = "Távollét utolsó napja";
 "Enter date" = "Adja meg a dátumot";
 /* Enable auto reply at this time of the day */
@@ -485,8 +485,18 @@
 "Enable two-factor authentication using a TOTP application" = "Kétfaktoros azonosítás engedélyezése TOTP alkalmazás használatával.";
 "You must enter this key into your TOTP application." = "Adja meg ezt a kulcsot a TOTP alkalmazásában.";
 "If you do not and you log out you will not be able to login again." = "Ha nem teszi meg és kijelentkezik, akkor nem lesz képes újra bejelentkezni.";
+"Enter TOTP verification code :" = "Adja meg TOTP ellenőrző kódját:";
+"Invalid TOTP verification code" = "Érvénytelen TOTP ellenőrző kód:";
 
 /* External Sieve scripts */
 "An external Sieve script is active" = "Külső Sieve szkript aktív";
 "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve egy programozási nyelv amely az email üzenetek szűrésére használható. Ha engedélyezi, hogy a SOGo kezelje szűrőit, távollét és továbbítási beállításait, akkor a jelenleg aktív szkript le lesz tiltva.";
 "Let SOGo handle everything" = "A SOGo kezeljen mindent";
+
+/* Password Recovery */
+"Password recovery mode" = "Jelszó helyreállítás";
+"Question" = "Kérdés";
+"Secondary e-mail" = "Másodlagos email cím";
+"Answer" = "Válasz";
+"Password recovery" = "Jelszó helyreállítás";
+"Password change" = "Jelszó módosítás";

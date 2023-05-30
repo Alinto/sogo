@@ -7,58 +7,76 @@ vevent_class2 = "(Evento Confidencial)";
 vtodo_class0 = "(Tarefa Pública)";
 vtodo_class1 = "(Tarefa Privada)";
 vtodo_class2 = "(Tarefa Confidencial)";
+
 /* Receipts */
 "The event \"%{Summary}\" was created" = "O evento \"%{Summary}\" foi criado";
-"The event \"%{Summary}\" was deleted" = "O evento \"%{Summary}\" foi removido";
+"The event \"%{Summary}\" was deleted" = "O evento \"%{Summary}\" foi apagado";
 "The event \"%{Summary}\" was updated" = "O evento \"%{Summary}\" foi atualizado";
-"The following attendees(s) were notified" = "Os seguintes participantes foram notificados:";
-"The following attendees(s) were added" = "Os seguintes participantes foram adicionados:";
-"The following attendees(s) were removed" = "Os seguintes participantes foram removidos:";
+"The task \"%{Summary}\" was created" = "A tarefa \"%{Summary}\" foi criada";
+"The task \"%{Summary}\" was deleted" = "A tarefa \"%{Summary}\" foi apagada";
+"The task \"%{Summary}\" was updated" = "A tarefa \"%{Summary}\" foi atualizada";
+"The following attendees(s) were notified" = "Os seguintes participantes foram notificados";
+"The following attendees(s) were added" = "Os seguintes participantes foram adicionados";
+"The following attendees(s) were removed" = "Os seguintes participantes foram removidos";
+
 /* IMIP messages */
 "calendar_label" = "Calendário:";
 "startDate_label" = "Início:";
 "endDate_label" = "Fim:";
 "time_label" = "Hora";
 "to_label" = "para";
-"due_label" = "Data de Vencimento:";
+"due_label" = "Data de término";
 "location_label" = "Local:";
 "summary_label" = "Resumo:";
 "comment_label" = "Comentário:";
 "organizer_label" = "Organizador";
 "attendee_label" = "Participante";
+
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Convite do Evento: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(enviado por %{SentBy}) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}convidou-o para %{Summary}.\n\nInicio: %{StartDate}\nFim: %{EndDate}\nDescrição: %{Description}";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} convidou-o para %{Summary}.\n\nInício: %{StartDate} as %{StartTime}\nFim: %{EndDate} as %{EndTime}\nDescrição: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}convidou-o para %{Summary}.\n\nInício: %{StartDate}\nFim: %{EndDate}\nDescrição: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} convidou-o para %{Summary}.\n\nInício: %{StartDate} às %{StartTime}\nFim: %{EndDate} às %{EndTime}\nDescrição: %{Description}";
+
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Evento Cancelado: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}cancelou este evento: %{Summary}.\n\nInicio: %{StartDate}\nFim: %{EndDate}\nDescrição: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText} cancelou este evento: %{Summary}.\n\nInício: %{StartDate} às %{StartTime}\nFim: %{EndDate} as %{EndTime}\nDescrição: %{Description}";
+= "%{Organizer} %{SentByText} cancelou este evento: %{Summary}.\n\nInício: %{StartDate} às %{StartTime}\nFim: %{EndDate} às %{EndTime}\nDescrição: %{Description}";
+
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "O compromisso \"%{Summary}\" de %{OldStartDate} mudou";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
-= "O Compromisso \"%{Summary}\" de %{OldStartDate} as %{OldStartTime} mudou";
+= "O Compromisso \"%{Summary}\" de %{OldStartDate} às %{OldStartTime} mudou";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
-= "Os seguintes parâmetros mudaram na reunião \"%{Summary}\" :\n\n";
+= "Os seguintes parâmetros mudaram na reunião \"%{Summary}\":";
 "Please accept or decline those changes."
-= "Por favor, aceitar ou recusar as alterações.";
+= "Por favor aceite ou recuse essas alterações.";
+
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Convite aceite: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Convite recusado: \"%{Summary}\"";
 "Delegated invitation: \"%{Summary}\"" = "Convite delegado: \"%{Summary}\"";
 "Not yet decided on invitation: \"%{Summary}\"" = "Convite ainda não decidido: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
-= "%{Attendee} %{SentByText} aceitou seu convite ao evento.";
+= "%{Attendee} %{SentByText} aceitou o seu convite para o evento.";
 "%{Attendee} %{SentByText}has declined your event invitation."
-= "%{Attendee} %{SentByText} rejeitou seu convite ao evento.";
+= "%{Attendee} %{SentByText} rejeitou o seu convite para o evento.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
 = "%{Attendee} %{SentByText} delegou o convite para %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
-= "%{Attendee} %{SentByText} ainda não decidiu seu convite ao evento.";
+= "%{Attendee} %{SentByText} ainda não decidiu em relação ao seu convite para o evento.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Lembrete: \"%{Summary}\" - %{StartDate}";
+
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Não foi possível aceder ao recurso:  \"%{Cn} %{SystemEmail}\"";
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "O número máximo de reservas simultâneas (%{NumberOfSimultaneousBookings}) acabou para o recurso \"%{Cn} %{SystemEmail}\". O evento em conflito é \"%{EventTitle}\", e inicia em %{StartDate}.";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Foi atingido o número máximo de reservas simultâneas, (%{NumberOfSimultaneousBookings}), para o recurso \"%{Cn} %{SystemEmail}\". O evento em conflito é \"%{EventTitle}\", e inicia em %{StartDate}.";
+
+/* Participation role */
+"Your participation is required to this event" = "A sua participação é obrigatória para este evento";
+"Your participation is optional to this event" = "A sua participação é opcional para este evento";
+"Your participation is not required to this event" = "A sua participação não é necessária para este evento";

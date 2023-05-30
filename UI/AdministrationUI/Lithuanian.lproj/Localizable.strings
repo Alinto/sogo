@@ -10,6 +10,7 @@
 /* Modules descriptions */
 "ACLs_description" = "<p>Prieigos kontrolės sąrašo administravimo modulis leidžia keisti ACLs vartotojų kalendorius ir adresų knygas. </p><p>Norėdami tvarkyti ACL's vartotojų aplankus, paspauskite paieškos langelį lango viršuje, įrašykite vartotojo vardą ir du kartus paspauskite norimą aplanką. <p>";
 "Name or Email" = "Vardas arba el. paštas";
+"ACLs saved" = "ACLs saved";
 /* Rights module: initial search message */
 "Start a search to edit the rights" = "Pradėti paiešką redaguoti savo teisėms";
 /* Rights module: Empty search result */

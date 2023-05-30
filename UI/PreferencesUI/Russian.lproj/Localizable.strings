@@ -47,7 +47,7 @@
 "Activation Constraints" = "Ограничения активации";
 "Enable auto reply on" = "Включить автоответ на";
 "First day of vacation" = "Первый день отпуска";
-"Disable auto reply after" = "Отключить автоответ";
+"Disable auto reply after" = "Отключить автоответ после";
 "Last day of vacation" = "Последний день отпуска";
 "Enter date" = "Введите дату";
 /* Enable auto reply at this time of the day */
@@ -257,6 +257,12 @@
 "Confirmation" = "Повтор нового пароля";
 "Change" = "Изменить";
 "Passwords don't match" = "Пароли не совпадают";
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
+"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+
 
 /* Event+task classifications */
 "Default events classification" = "Событие по умолчанию";
@@ -479,8 +485,18 @@
 "Enable two-factor authentication using a TOTP application" = "Включить двухфакторную аутентификацию с помощью приложения";
 "You must enter this key into your TOTP application." = "Вы должны ввести этот ключ в приложение двухфакторной аутентификации, основанной на использовании одноразовых кодов (TOTP).";
 "If you do not and you log out you will not be able to login again." = "Если вы этого не сделаете и выйдете из системы, вы не сможете войти снова.";
+"Enter TOTP verification code :" = "Enter TOTP verification code :";
+"Invalid TOTP verification code" = "Invalid TOTP verification code";
 
 /* External Sieve scripts */
 "An external Sieve script is active" = "Внешний скрипт Sieve активен";
 "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve - это язык программирования, который может быть использован для фильтрации электронной почты. Если вы позволите SOGo обрабатывать ваши фильтры, настройки отпуска и переадресации, ваш активный скрипт будет отключен.";
 "Let SOGo handle everything" = "Предоставить SOGo возможность управлять всем";
+
+/* Password Recovery */
+"Password recovery mode" = "Password recovery";
+"Question" = "Question";
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password recovery" = "Password recovery";
+"Password change" = "Password change";

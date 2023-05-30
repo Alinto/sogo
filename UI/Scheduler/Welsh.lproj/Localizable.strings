@@ -37,6 +37,8 @@
 "this month" = "mis yma";
 "Previous Month" = "Mis Blaenorol";
 "Next Month" = "Mis Canlynol";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "y flwyddyn hon";
@@ -107,6 +109,7 @@
 "Name of the Calendar" = "Enw'r Calendr";
 "new" = "Newydd";
 "Print view" = "Gwedd argraffu";
+"Print" = "Print";
 "edit" = "Golygu";
 "delete" = "Dileu";
 "proposal" = "Cynnig";
@@ -147,6 +150,7 @@
 "Display events and tasks colors" = "Dangos lliwiau digwyddiadau a thasgau";
 "Borders" = "Ffiniau";
 "Backgrounds" = "Cefndiroedd";
+"Page Format" = "Page Format";
 
 /* Appointments */
 "Appointment viewer" = "Dangosydd Apwyntiadau";
@@ -218,6 +222,12 @@
 "view_next14" = "14 diwrnod nesaf";
 "view_next31" = "31 diwrnod nesaf";
 "view_thismonth" = "Y mis yma";
+"view_thisyear" = "This Year";
+"view_last7" = "Last 7 days";
+"view_last14" = "Last 14 days";
+"view_last31" = "Last 31 days";
+"view_lastmonth" = "Last Month";
+"view_lastyear" = "Last Year";
 "view_future" = "Holl ddigwyddiadau'r dyfodol";
 "view_selectedday" = "Diwrnod a ddewiswyd";
 "view_not_started" = "Heb ddechrau tasgau";
@@ -339,6 +349,7 @@
 "repeat_YEARLY" = "Blynyddol";
 "repeat_CUSTOM" = "Personol...";
 "reminder_NONE" = "Dim atgoffeb";
+"reminder_0" = "At time of event";
 "reminder_5_MINUTES_BEFORE" = "5 munud ymlaen llaw";
 "reminder_10_MINUTES_BEFORE" = "10 munud ymlaen llaw";
 "reminder_15_MINUTES_BEFORE" = "15 munud ymlaen llaw";
@@ -389,6 +400,10 @@
 "From" = "Oddi wrth";
 "To" = "At";
 
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "Dim teitl wedi'i osod, parhau?";
 validate_invalid_startdate = "Maes dyddiad dechrau anghywir!";
@@ -435,16 +450,48 @@ validate_untilbeforeend    = "Chaiff yr ailddigwydd ddim dod i ben cyn yr achlys
 = "Allwch chi ddim dileu na dad-danysgrifio o'ch calendr personol.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Ydych chi'n siŵr eich bod am ddileu'r calendr \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Are you sure you want to delete the selected components?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Role";
+
+/* Participant role: participation is required */
 "Participant" = "Cyfranogwr";
+
+/* Participant role: participation is required */
+"req-participant" = "Participant";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Cyfranogwr Dewisol";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Optional Participant";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Ddim yn Gyfranogwr";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Non Participant";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "Cadeirydd";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Chair";
+
+/* Participant status: needs action */
 "Needs action" = "Angen gweithred";
+
+/* Participant status: event accepted */
 "Accepted" = "Derbyniwyd";
+
+/* Participant status: event declined */
 "Declined" = "Gwrthodwyd";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Ansicr";
+
 "Free" = "Rhydd";
 "Busy" = "Prysur";
 "Maybe busy" = "Prysur o bosib";
@@ -463,6 +510,8 @@ validate_untilbeforeend    = "Chaiff yr ailddigwydd ddim dod i ben cyn yr achlys
 "and" = "a";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Mae gwrthdaro amser yn bodoli gydag un neu fwy o'r mynychwyr\nHoffech chi gadw'r gosodiadau presennol beth bynnag?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Would you like to remove them and send the invitation to the remaining attendees?";
 
 /* events list */
 "Due" = "Disgwyliedig";
@@ -540,8 +589,10 @@ vtodo_class2 = "(Tasg gyhoeddus)";
 "Delete Event" = "Dileu Digwyddiad";
 "Copy event to my calendar" = "Copïo digwyddiad i fy nghalendr i";
 "View Raw Source" = "Gweld Cod Crai";
+"Move To" = "Move To";
+"Copy To" = "Copy To";
 "Subscriptions" = "Tanysgrifiadau";
-"Subscribe to a shared folder" = "Tanysgrifio i ffolder a rennir";
+"Subscribe to a shared calendar" = "Subscribe to a shared calendar";
 "Subscribe to a web calendar..." = "Tanysgrifio i galendr gwe...";
 "URL of the Calendar" = "URL y Calendr";
 "Web Calendar" = "Calendr Gwe";
@@ -571,12 +622,14 @@ vtodo_class2 = "(Tasg gyhoeddus)";
 "More options" = "Rhagor o ddewisiadau";
 "Delete This Occurrence" = "Dileu'r Achlysur Hwn";
 "Delete All Occurrences" = "Dileu Pob Achlysur";
+"Add Recurrence Date" = "Add Recurrence Date";
 "Add From" = "Ychwanegu o";
 "Add Due" = "Ychwanegu Dyddiad Disgwyliedig";
 "Import" = "Mewngludo";
 "Rename" = "Ailenwi";
 "Import Calendar" = "Mewngludo Calendr";
 "Select an ICS file." = "Dewiswch ffeil ICS";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Wedi tanysgrifio'n llwyddiannus i'r calendr";

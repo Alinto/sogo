@@ -1,3 +1,4 @@
+"Inviting the following persons is prohibited:" = "Inviting the following persons is prohibited:";
 "Personal Calendar" = "Personlig kalender";
 vevent_class0 = "(Offentlig hendelse)";
 vevent_class1 = "(Privat hendelse)";
@@ -6,42 +7,59 @@ vevent_class2 = "(Konfidensiell hendelse)";
 vtodo_class0 = "(Offentlig oppgave)";
 vtodo_class1 = "(Privat oppgave)";
 vtodo_class2 = "(Konfidensiell oppgave)";
+
 /* Receipts */
-"Title:" = "Tittel:";
-"Start:" = "Start:";
-"End:" = "Slutt:";
-"Receipt: users invited to a meeting" = "Kvittering: brukere invitert til et møte";
-"You have invited the following attendees(s):" = "Du har invitert følende deltagere:";
-"... to attend the following event:" = "... til å delta i følgende hendelse:";
-"Receipt: invitation updated" = "Kvittering: invitasjon oppdatert";
-"The following attendees(s):" = "Følgende deltager(e):";
-"... have been notified of the changes to the following event:" = "... har blitt informert om endringene i følgende hendelse:";
-"Receipt: attendees removed from an event" = "Kvittering: deltagere fjernet fra en hendelse";
-"You have removed the following attendees(s):" = "Du har tatt bort følgende deltagere:";
-"... from the following event:" = "... fra følgende hendelse:";
+"The event \"%{Summary}\" was created" = "The event \"%{Summary}\" was created";
+"The event \"%{Summary}\" was deleted" = "The event \"%{Summary}\" was deleted";
+"The event \"%{Summary}\" was updated" = "The event \"%{Summary}\" was updated";
+"The task \"%{Summary}\" was created" = "The task \"%{Summary}\" was created";
+"The task \"%{Summary}\" was deleted" = "The task \"%{Summary}\" was deleted";
+"The task \"%{Summary}\" was updated" = "The task \"%{Summary}\" was updated";
+"The following attendees(s) were notified" = "The following attendee(s) were notified";
+"The following attendees(s) were added" = "The following attendee(s) were added";
+"The following attendees(s) were removed" = "The following attendee(s) were removed";
+
 /* IMIP messages */
+"calendar_label" = "Calendar";
 "startDate_label" = "Start";
 "endDate_label" = "End";
+"time_label" = "Time";
+"to_label" = "to";
 "due_label" = "Due Date:";
 "location_label" = "Location";
 "summary_label" = "Summary:";
 "comment_label" = "Comment:";
+"organizer_label" = "Organizer";
+"attendee_label" = "Attendee";
+
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Event Invitation: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(sent by %{SentBy}) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Event Cancelled: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+
 /* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "The appointment \"%{Summary}\" for the %{OldStartDate} has changed";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
 = "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
 = "The following parameters have changed in the \"%{Summary}\" meeting:";
 "Please accept or decline those changes."
 = "Please accept or decline those changes.";
+
 /* Reply */
+"Accepted invitation: \"%{Summary}\"" = "Accepted invitation: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "Declined invitation: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Delegated invitation: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "Not yet decided on invitation: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}has accepted your event invitation.";
 "%{Attendee} %{SentByText}has declined your event invitation."
@@ -50,5 +68,15 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 = "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}has not yet decided upon your event invitation.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Reminder: \"%{Summary}\" - %{StartDate}";
+
 /* Resources */
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\".";
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Cannot access resource: \"%{Cn} %{SystemEmail}\"";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}.";
+
+/* Participation role */
+"Your participation is required to this event" = "Your participation is required to this event";
+"Your participation is optional to this event" = "Your participation is optional to this event";
+"Your participation is not required to this event" = "Your participation is not required to this event";

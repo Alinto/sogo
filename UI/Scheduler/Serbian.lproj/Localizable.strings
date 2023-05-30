@@ -37,6 +37,8 @@
 "this month" = "овог месеца";
 "Previous Month" = "Претходни месец";
 "Next Month" = "Следећи месец";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "ова година";
@@ -398,6 +400,10 @@
 "From" = "Од";
 "To" = "За";
 
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "Нема наслова, наставити?";
 validate_invalid_startdate = "Нетачно поље датума почетка!";
@@ -623,6 +629,7 @@ vtodo_class2 = "(Поверљиви задатак)";
 "Rename" = "Преименуј";
 "Import Calendar" = "Увези календар";
 "Select an ICS file." = "Одабери ICS датотеку.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Успешно претплаћен на календар";

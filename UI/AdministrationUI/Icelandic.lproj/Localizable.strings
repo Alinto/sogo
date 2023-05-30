@@ -9,3 +9,19 @@
 "ACLs_title" = "Users folders ACLs management";
 /* Modules descriptions */
 "ACLs_description" = "<p>The Access Control Lists administration module allows to change the ACLs of each user's Calendars and Address books.</p><p>To modify the ACLs of a user's folder, type the name of the user in the search field at the top of the window and double-click on the desired folder.</p>";
+"Name or Email" = "Name or Email";
+"ACLs saved" = "ACLs saved";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Start a search to edit the rights";
+/* Rights module: Empty search result */
+"No matching user" = "No matching user";
+/* Rights module: no selection */
+"No resource selected" = "No resource selected";
+"Add User" = "Add User";
+"Subscribe User" = "Subscribe User";
+"Rights" = "Rights";
+"Search Users" = "Search Users";
+"users found" = "users found";
+"No resource" = "No resource";
+"Any Authenticated User" = "Any Authenticated User";
+"Public Access" = "Public Access";

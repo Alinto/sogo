@@ -37,6 +37,8 @@
 "this month" = "цей місяць";
 "Previous Month" = "Один місяць назад";
 "Next Month" = "Один місяць вперед";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "цей рік";
@@ -398,6 +400,10 @@
 "From" = "Від";
 "To" = "Кому";
 
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "Не зазначено назву, продовжити?";
 validate_invalid_startdate = "Неправильна дата початку!";
@@ -623,6 +629,7 @@ vtodo_class2 = "(Конфіденційне завдання)";
 "Rename" = "Перейменувати";
 "Import Calendar" = "Імпортувати календар";
 "Select an ICS file." = "Виберіть iCalendar файл (.ics).";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Успішна підписка на календар";

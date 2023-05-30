@@ -221,7 +221,7 @@
 "New Addressbook..." = "Jauna adrešu grāmata...";
 "Subscribe to an Addressbook..." = "Parakstīties uz adrešu grāmatu...";
 "Remove the selected Addressbook" = "Noņemt atlasīto adrešu katalogu";
-"Subscribe to a shared folder" = "Parakstīties uz koplietojamu mapi";
+"Subscribe to a shared contact" = "Subscribe to a shared addressbook";
 "Search User" = "Meklēt lietotāju";
 "Name of the Address Book" = "Adrešu grāmatas nosaukums";
 "Are you sure you want to delete the selected address book?"
@@ -350,6 +350,7 @@
 "Synchronization" = "Sinhronizācija";
 "Synchronize" = "Sinhronizēt";
 "Sucessfully subscribed to address book" = "Sekmīgi abonējis adrešu grāmatu";
+"A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Meklēšanas tvērums";

@@ -37,6 +37,8 @@
 "this month" = "Denne måned";
 "Previous Month" = "Forrige måned";
 "Next Month" = "Næste måned";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "I år";
@@ -397,6 +399,10 @@
 "Send Appointment Notifications" = "Send aftalenotifikationer";
 "From" = "Fra";
 "To" = "Til";
+
+/* dates */
+"DateFrom" = "Fra";
+"DateTo" = "Til";
 
 /* validation errors */
 validate_notitle           = "Ingen titel er indtastet, vil du fortsætte?";

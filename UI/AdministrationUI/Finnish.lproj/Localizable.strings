@@ -10,6 +10,7 @@
 /* Modules descriptions */
 "ACLs_description" = "<p>Access Control Lists hallintamoduli mahdollistaa käyttäjien kalentereiden ja osoitekirjojen muuttamisen.</p><p>Muokataksesi käyttäjähakemiston oikeuksia, kirjoita käyttäjän nimi sivun ylälaidan hakukenttään ja kaksoisnapsauta haluamaasi hakemistoa.</p>";
 "Name or Email" = "Nimi tai sähköposti";
+"ACLs saved" = "ACLs saved";
 /* Rights module: initial search message */
 "Start a search to edit the rights" = "Aloita haku oikeuksien muuttamiseksi";
 /* Rights module: Empty search result */

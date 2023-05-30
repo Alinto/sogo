@@ -37,6 +37,8 @@
 "this month" = "החודש";
 "Previous Month" = "חודש קודם";
 "Next Month" = "חודש הבא";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "השנה";
@@ -63,6 +65,12 @@
 "A total of %{0} events were imported in the calendar." = "סה\"כ {0}% ארועים הובאו ללוח שנה";
 "Compose E-Mail to All Attendees" = "צור אימייל לכל המשתתפים";
 "Compose E-Mail to Undecided Attendees" = "צור אימייל לכל המשתתפים שטרם החליטו";
+
+/* Relative dates */
+"Yesterday" = "Yesterday";
+"Today" = "היום";
+"Tomorrow" = "Tomorrow";
+"Last %@" = "Last %@";
 
 /* Folders */
 "Personal calendar" = "לוח שנה אישי";
@@ -101,6 +109,7 @@
 "Name of the Calendar" = "שם לוח השנה";
 "new" = "חדש";
 "Print view" = "תצוגת הדפסה";
+"Print" = "Print";
 "edit" = "ערוך";
 "delete" = "מחק";
 "proposal" = "הצעה";
@@ -141,6 +150,7 @@
 "Display events and tasks colors" = "הצג צבעי אירועים ומשימות";
 "Borders" = "תחומים";
 "Backgrounds" = "רקעים";
+"Page Format" = "Page Format";
 
 /* Appointments */
 "Appointment viewer" = "צפייה בפגישות";
@@ -212,6 +222,12 @@
 "view_next14" = "בעוד 14 ימים";
 "view_next31" = "בעוד 31 ימים";
 "view_thismonth" = "החודש";
+"view_thisyear" = "This Year";
+"view_last7" = "Last 7 days";
+"view_last14" = "Last 14 days";
+"view_last31" = "Last 31 days";
+"view_lastmonth" = "Last Month";
+"view_lastyear" = "Last Year";
 "view_future" = "כל האירועים העתידיים";
 "view_selectedday" = "יום נבחר";
 "view_not_started" = "משימות טשר טרם התחילו";
@@ -333,6 +349,7 @@
 "repeat_YEARLY" = "כל שנה";
 "repeat_CUSTOM" = "מותאם אישית...";
 "reminder_NONE" = "ללא תזכורת";
+"reminder_0" = "At time of event";
 "reminder_5_MINUTES_BEFORE" = "5 דקות לפני";
 "reminder_10_MINUTES_BEFORE" = "10 דקות לפני";
 "reminder_15_MINUTES_BEFORE" = "15 דקות לפני";
@@ -383,6 +400,10 @@
 "From" = "מאת";
 "To" = "עבור";
 
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "לא נבחרה כותרת, להמשיך ללא?";
 validate_invalid_startdate = "תאריך התחלה שגויה";
@@ -429,16 +450,48 @@ validate_untilbeforeend    = "חזרה חייבת להיגמר לאחר ההתר
 = "לא ניתן להסיר או למחוק הרשמה עבור לוח שנה האישי שלך.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "האם ברצונך למחוק את לוח השנה \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Are you sure you want to delete the selected components?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Role";
+
+/* Participant role: participation is required */
 "Participant" = "משתתף";
+
+/* Participant role: participation is required */
+"req-participant" = "Participant";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "משתתף אופציונלי";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Optional Participant";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "לא משתתף";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Non Participant";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "מושב";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Chair";
+
+/* Participant status: needs action */
 "Needs action" = "דרושה פעולה";
+
+/* Participant status: event accepted */
 "Accepted" = "מאשר";
+
+/* Participant status: event declined */
 "Declined" = "דחיה";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "זמני";
+
 "Free" = "חינם";
 "Busy" = "עסוק";
 "Maybe busy" = "אולי עסוק";
@@ -457,6 +510,8 @@ validate_untilbeforeend    = "חזרה חייבת להיגמר לאחר ההתר
 "and" = "ו";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "קיימת התנגשות זמנים עם משתתף אחד או יותר\nהאם ברצונך לשמור את ההגדרות הנוכחיות בכל זאת?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Would you like to remove them and send the invitation to the remaining attendees?";
 
 /* events list */
 "Due" = "מגיע";
@@ -498,7 +553,7 @@ vtodo_class2 = "(משימה סודית)";
 "Export" = "יצוא";
 
 
-/* Show only the calendar for which the menu is displayed */ 
+/* Show only the calendar for which the menu is displayed */
 "Show Only This Calendar" = "הצג רק את הלוח שנה הזה";
 
 
@@ -534,8 +589,10 @@ vtodo_class2 = "(משימה סודית)";
 "Delete Event" = "מחק אירוע";
 "Copy event to my calendar" = "העתק אירוע ללוח השנה שלי";
 "View Raw Source" = "צפייה בקוד מקור";
+"Move To" = "Move To";
+"Copy To" = "Copy To";
 "Subscriptions" = "מנויים";
-"Subscribe to a shared folder" = "הירשם לתיקייה משותפת";
+"Subscribe to a shared calendar" = "Subscribe to a shared calendar";
 "Subscribe to a web calendar..." = "הירשם ללוח שנה";
 "URL of the Calendar" = "כתובת האתר של לוח השנה";
 "Web Calendar" = "לוח שנה אינטרנטי";
@@ -565,12 +622,14 @@ vtodo_class2 = "(משימה סודית)";
 "More options" = "אפשרויות נוספות";
 "Delete This Occurrence" = "מחק אירוע זה";
 "Delete All Occurrences" = "מחק על האירועים";
+"Add Recurrence Date" = "Add Recurrence Date";
 "Add From" = "הוסף משתמש";
 "Add Due" = "הוסף הגשה";
 "Import" = "יבוא";
 "Rename" = "שנה שם";
 "Import Calendar" = "יצוא לוח שנה";
 "Select an ICS file." = "בחר vCard או קובץ LDIF.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "מנוי לרשימת אנשי קשר נרשם בהצלחה";

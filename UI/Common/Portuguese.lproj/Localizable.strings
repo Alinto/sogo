@@ -17,64 +17,66 @@
 "User" = "Utilizador";
 "Vacation message is enabled" = "Mensagem de ausência está ativa";
 "Help" = "Ajuda";
-"noJavascriptError" = "SOGo requer Javascript para correr. Por favor, certifique-se que a opção está disponível e habilitada nas preferências de seu navegador.";
+"noJavascriptError" = "SOGo requer JavaScript para correr. Por favor, certifique-se que a opção está disponível e habilitada nas preferências do seu navegador.";
 "noJavascriptRetry" = "Repetir";
 "Owner" = "Proprietário";
-"Publish the Free/Busy information" = "Divulgar a informação Livre/Ocupado";
+"Publish the Free/Busy information" = "Publicar a informação Livre/Ocupado";
 "Add..." = "Adicionar...";
 "Remove" = "Remover";
-"Subscribe User" = "Utilizador Inscrito";
+"Subscribe User" = "Subscrever Utilizador";
 "Any Authenticated User" = "Qualquer Utilizador Autenticado";
 "Public Access" = "Acesso Público";
 "Any user not listed above" = "Qualquer utilizador não listado acima";
-"Anybody accessing this resource from the public area" = "Ninguém acedendo a este recurso de uma área pública";
-"Sorry, the user rights can not be configured for that object." = "Desculpe, os accessos do utilizador não podem ser modificados para este objeto.";
+"Anybody accessing this resource from the public area" = "Qualquer um a aceder a este recurso da área pública";
+"Sorry, the user rights can not be configured for that object." = "Desculpe, os direitos do utilizador não podem ser modificados para este objeto.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
-     = "Qualquer utilizador com uma conta neste sistema será capaz de aceder à sua caixa postal \"% {0}\". Tem a certeza que confia em todos?";
+     = "Qualquer utilizador com uma conta neste sistema será capaz de aceder à sua caixa de correio \"% {0}\". Tem a certeza que confia em todos?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
-     = "Qualquer utilizador com uma conta neste sistema poderá aceder seu calendário \"%{0}\". Você tem certeza que confia em todos?";
+     = "Qualquer utilizador com uma conta neste sistema será capaz de aceder ao seu calendário \"%{0}\". Tem a certeza que confia em todos?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Qualquer um na Internet poderá aceder ao seu calendário \"%{0}\". Estas informações podem ser publicadas na Internet?";
+     = "Potencialmente qualquer um na Internet poderá aceder ao seu calendário \"%{0}\", mesmo que não tenham conta neste sistema. Esta informação é adequada para ser publicada na Internet?";
 "Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
-     = "Qualquer utilizador com uma conta neste sistema será capaz de aceder seu catálogo de endereços \"% {0}\". Tem a certeza que confia em todos?";
+     = "Qualquer utilizador com uma conta neste sistema será capaz de aceder ao seu livro de endereços \"% {0}\". Tem a certeza que confia em todos?";
 "Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Qualquer pessoa na Internet será capaz de aceder ao seu catálogo de endereços \"% {0}\", mesmo se não tiver uma conta no sistema. Esta informação pode ser tornar pública na Internet?";
-"Give Access" = "Conceder Acesso";
+     = "Potencialmente qualquer um na Internet será capaz de aceder ao seu livro de endereços \"% {0}\", mesmo que não tenham conta neste sistema. Esta informação é adequada para ser publicada na Internet?";
+"Give Access" = "Permitir Acesso";
 "Keep Private" = "Manter Privado";
+"Expand" = "Expandir";
+"Reduce" = "Reduzir";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
-        = "Não foi possível inscrever-se nesta pasta!";
+        = "Não foi possível subscrever essa pasta!";
 "You cannot subscribe to a folder that you own!"
-        = "Você não se pode inscrever numa pasta que é proprietário!";
+        = "Não pode subscrever uma pasta da qual é proprietário!";
 "Unable to unsubscribe from that folder!"
-        = "Não foi possível anular a subscrição desta pasta!";
+        = "Não foi possível remover a subscrição dessa pasta!";
 "You cannot unsubscribe from a folder that you own!"
-        = "Você não pode anular subscrição de uma pasta que você é proprietário!";
-"Unable to rename that folder!" = "Não foi possível renomear esta pasta!";
+        = "Não pode remover a subscrição de uma pasta da qual é proprietário!";
+"Unable to rename that folder!" = "Não foi possível alterar o nome dessa pasta!";
 "You have already subscribed to that folder!"
-        = "Você já se inscreveu nesta pasta!";
+        = "Já subscreveu essa pasta!";
 "The user rights cannot be edited for this object!"
         = "Os direitos do utilizador não podem ser editados para este objeto!";
-"A folder by that name already exists." = "Este nome já existe.";
+"A folder by that name already exists." = "Uma pasta com esse nome já existe.";
 "You cannot create a list in a shared address book."
-        = "Você não pode criar uma lista num catálogo de endereços público";
+        = "Não pode criar uma lista num livro de endereços partilhado";
 "Warning" = "Aviso";
-"Can't contact server" = "Um erro ocorreu na ligação ao servidor. Por favor, tente mais tarde.";
+"Can't contact server" = "Ocorreu um erro na ligação ao servidor. Por favor, tente mais tarde.";
 "You are not allowed to access this module or this system. Please contact your system administrator."
-= "Você não está autrizado para aceder a este módulo ou este sistema. Por favor, contate seu administrador de sistemas.";
+= "Não está autorizado a aceder a este módulo neste sistema. Por favor contacte o administrador de sistemas.";
 "You don't have the required privileges to perform the operation."
-= "Você não tem os privilégios necessários para realizar esta operação.";
-"noEmailForDelegation" = "Você deve informar o endereço ao qual deseja delegar seu convite.";
-"delegate is organizer" = "O delegado é o organizador. Por favor, especifique um delegado diferente.";
+= "Não tem os privilégios necessários para realizar a operação.";
+"noEmailForDelegation" = "Tem que especificar o endereço para o qual quer delegar o seu convite.";
+"delegate is organizer" = "O delegado é o organizador. Por favor especifique um delegado diferente.";
 "delegate is a participant" = "O delegado já é um participante.";
-"delegate is a group" = "O endereço especificado corresponde a um grupo. Você só pode delegar a uma pessoa única.";
+"delegate is a group" = "O endereço especificado corresponde a um grupo. Só pode delegar a uma pessoa única.";
 
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Cancelar";
 "Yes" = "Sim";
-"No" = "No";
+"No" = "Não";
 
 /* generic messages */
 "Error" = "Erro";
@@ -86,10 +88,10 @@
 /* alarms */
 "Reminder" = "Lembrete";
 "Start" = "Inicio";
-"Due Date" = "Data de vencimento";
+"Due Date" = "Data de término";
 "Location" = "Localização";
-"Snooze" = "Tempo de repetição";
-"Snooze for " = "Uma pausa de";
+"Snooze" = "Suspender";
+"Snooze for " = "Supender por";
 "5 minutes" = "5 minutos";
 "10 minutes" = "10 minutos";
 "15 minutes" = "15 minutos";
@@ -104,6 +106,7 @@
 "Personal" = "Pessoal";
 "To Do" = "A fazer";
 "Later" = "Adiar";
+"Forwarded" = "Reencaminhado";
 "Return Receipt Sent" = "Aviso de receção enviado";
 "a2_Sunday" = "Do";
 "a2_Monday" = "Se";
@@ -114,19 +117,25 @@
 "a2_Saturday" = "Sa";
 "Access Rights" = "Direitos de Acesso";
 "Add User" = "Adicionar Utilizador";
-"Loading" = "Carregando";
-"No such user." = "Este utilizador não existe";
-"You cannot (un)subscribe to a folder that you own!" = "Você não pode (des)aderir a uma pasta que seja sua.";
+"Loading" = "A carregar";
+"No such user." = "Utilizador não existe";
+"You cannot (un)subscribe to a folder that you own!" = "Não pode subscrever, ou remover a subscrição, de uma pasta da qual é proprietário!";
 
 /* SMIME Certificate field */
 "S/MIME Certificate" = "Certificado S/MIME";
 "Subject Name" = "Nome do Sujeito";
-"Issuer" = "Segurador";
+"Issuer" = "Emissor";
+"streetAddress" = "Rua";
+"stateOrProvinceName" = "Estado ou Província";
+"localityName" = "Localidade";
 "countryName" = "País";
 "organizationName" = "Organização";
 "organizationalUnitName" = "Unidade Organizacional";
-"commonName" = "Nome COmum";
+"commonName" = "Nome Comum";
+"surname" = "Apelido";
+"givenName" = "Nome";
 "emailAddress" = "Endereço de Email";
+
 
 /* Authentication username */
 "Username" = "Utilizador";
@@ -135,18 +144,27 @@
 "Password" = "Palavra-passe";
 
 /* Authentication failed */
-"Wrong username or password." = "Nome de utilizador ou palavra-passe incorretos.";
+"Wrong username or password." = "Utilizador ou palavra-passe incorretos.";
 
 /* Error message displayed bellow search field when the search string has less than the required number of characters */
 "Enter at least %{minimumSearchLength} characters" = "Digite no mínimo %{minimumSearchLength} caracteres";
 
 /* Error message displayed when a file upload exceeds WOMaxUploadSize */
-"File size upload limit reached" = "Atingido o tamanho limite permitido para o envio de ficheiros ";
+"File size upload limit reached" = "Atingido o tamanho limite permitido para o envio de ficheiros";
+
+/* Generic server error */
+"An error occured, please try again." = "Ocorreu um erro, por favor tente novamente.";
+
+/* Open datepicker */
+"Open Calendar" = "Abrir calendário";
 
 /* Toggle visibility (ex: mail account in left navigation menu) */
 "Toggle visibility" = "Alternar vista";
 
 "Keyboard Shortcuts" = "Atalhos de teclado";
+
+/* Aria label for avatar button to select and unselect an item */
+"Toggle item" = "Alternar item";
 
 /* Toggle multiple items at the same time (hotkeys cheatsheet) */
 "Toggle range of items" = "Alternar gama de itens";
@@ -204,3 +222,11 @@
 
 /* Hotkey description to move forward in current view */
 "Move forward" = "Avançar";
+
+/* Password Recovery */
+"passwordRecovery_Disabled" = "Desativado";
+"passwordRecovery_SecretQuestion" = "Pergunta secreta";
+"passwordRecovery_SecretQuestion1" = "Qual é o nome do teu primeiro animal de estimação ?";
+"passwordRecovery_SecretQuestion2" = "Qual foi o teu primeiro carro ?";
+"passwordRecovery_SecretQuestion3" = "Qual é o teu filme favorito ?";
+"passwordRecovery_SecondaryEmail" = "Email secundário";

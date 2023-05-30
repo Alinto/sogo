@@ -37,6 +37,8 @@
 "this month" = "denna månad";
 "Previous Month" = "Föregående månad";
 "Next Month" = "Nästa månad";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "detta år";
@@ -107,6 +109,7 @@
 "Name of the Calendar" = "Namn på kalendern";
 "new" = "Ny";
 "Print view" = "Skriv ut";
+"Print" = "Print";
 "edit" = "Ändra";
 "delete" = "Ta bort";
 "proposal" = "Föreslå";
@@ -147,6 +150,7 @@
 "Display events and tasks colors" = "Visa händelse- och uppgiftsfärger";
 "Borders" = "Ramar";
 "Backgrounds" = "Bakgrunder";
+"Page Format" = "Page Format";
 
 /* Appointments */
 "Appointment viewer" = "Mötesvisare";
@@ -219,6 +223,11 @@
 "view_next31" = "Kommande 31 dagar";
 "view_thismonth" = "Denna månad";
 "view_thisyear" = "Detta år";
+"view_last7" = "Last 7 days";
+"view_last14" = "Last 14 days";
+"view_last31" = "Last 31 days";
+"view_lastmonth" = "Last Month";
+"view_lastyear" = "Last Year";
 "view_future" = "Alla framtida händelser";
 "view_selectedday" = "Vald dag";
 "view_not_started" = "Ej påbörjade uppgifter";
@@ -391,6 +400,10 @@
 "From" = "Från";
 "To" = "Till";
 
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "Ingen titel är angiven, fortsätta?";
 validate_invalid_startdate = "Oriktigt startdatum!";
@@ -497,6 +510,8 @@ validate_untilbeforeend    = "Den återkommande händelsen måste sluta efter de
 "and" = "and";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "En tidskonflikt finns för en eller flera deltagare.\nVill du trots detta behålla nuvarande tid?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Would you like to remove them and send the invitation to the remaining attendees?";
 
 /* events list */
 "Due" = "Deadline";
@@ -577,7 +592,7 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 "Move To" = "Flytta till";
 "Copy To" = "Kopiera till";
 "Subscriptions" = "Prenumerationer";
-"Subscribe to a shared folder" = "Prenumerera på en delad mapp";
+"Subscribe to a shared calendar" = "Subscribe to a shared calendar";
 "Subscribe to a web calendar..." = "Prenumrera på en webbkalender...";
 "URL of the Calendar" = "URL till kalendern";
 "Web Calendar" = "Webbkalender";
@@ -614,6 +629,7 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 "Rename" = "Byt namn";
 "Import Calendar" = "Importera kalender";
 "Select an ICS file." = "Välj en ics-fil";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Prenumeration på kalender skapad";

@@ -27,6 +27,9 @@
 "OfficePhone" = "Teléfono de la oficina";
 "Organization" = "Organización";
 "Work Phone" = "Teléfono del trabajo";
+"Cell" = "Cell";
+"Pager" = "Buscapersonas";
+"Pref" = "Pref";
 "Phone" = "Teléfono";
 "Phones" = "Teléfonos";
 "Postal" = "Código Postal";
@@ -218,7 +221,7 @@
 "New Addressbook..." = "Crear libreta de direcciones...";
 "Subscribe to an Addressbook..." = "Suscribirse a una libreta de direcciones...";
 "Remove the selected Addressbook" = "Borrar libreta de direcciones seleccionada";
-"Subscribe to a shared folder" = "Suscribirse a una carpeta compartida";
+"Subscribe to a shared contact" = "Subscribe to a shared addressbook";
 "Search User" = "Buscar usuario";
 "Name of the Address Book" = "Nombre de la libreta de direcciones";
 "Are you sure you want to delete the selected address book?"
@@ -238,6 +241,12 @@
 = "No puede suscribirse a una carpeta que es suya.";
 "Unable to subscribe to that folder!"
 = "No puede suscribirse a esta carpeta.";
+
+/* security */
+"Security" = "Security";
+"Uninstall" = "Uninstall";
+"Error reading the card certificate." = "Error reading the card certificate.";
+"No certificate associated to card." = "No certificate associated to card.";
 
 /* acls */
 "Access rights to" = "Permisos de acceso a";
@@ -341,6 +350,7 @@
 "Synchronization" = "Sincronización";
 "Synchronize" = "Sincronizar";
 "Sucessfully subscribed to address book" = "Se suscribió con éxito a la libreta de direcciones ";
+"A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Alcance para la busqueda";

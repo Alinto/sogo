@@ -21,11 +21,15 @@
 "HomePhone" = "Hjemmetelefon";
 "Lastname" = "Etternavn";
 "Location" = "Sted";
+"Add a category" = "Add a category";
 "MobilePhone" = "Mobiltelefon";
 "Name" = "Navn";
 "OfficePhone" = "Kontortelefon";
 "Organization" = "Organisasjon";
 "Work Phone" = "Jobbtelefon";
+"Cell" = "Cell";
+"Pager" = "Personsøker";
+"Pref" = "Pref";
 "Phone" = "Telefon";
 "Phones" = "Telefoner";
 "Postal" = "Postnummer";
@@ -35,12 +39,120 @@
 "delete" = "slett";
 "edit" = "endre";
 "invalidemailwarn" = "Meldingen er ikke komplett";
-"invaliddatewarn" = "Den spesifiserte datoen er ikke gyldig.";
 "new" = "ny";
 "Preferred Phone" = "Foretrukket telefon";
 "Move To" = "Flytt til";
 "Copy To" = "Kopier til";
 "Add to" = "Legg til";
+"To" = "To";
+"Carbon Copy (Cc)" = "Carbon Copy (Cc)";
+"Blind Carbon Copy (Bcc)" = "Blind Carbon Copy (Bcc)";
+
+/* Search scope: name fields */
+"name" = "Name";
+
+/* Search scope: name fields */
+"c_cn" = "Name";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "Secondary email";
+
+/* Search scope: screen name field */
+"nsaimid" = "Screen name";
+
+/* Search scope: mail fields */
+"mail" = "Mail";
+
+/* Search scope: mail fields */
+"c_mail" = "Mail";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Telephone";
+
+/* Search scope: telephone field */
+"homephone" = "Telephone";
+
+/* Search scope: mobile field */
+"mobile" = "Mobile";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Fax";
+
+/* Search scope: pager field */
+"pager" = "Pager";
+
+/* Search scope: categories field */
+"c_categories" = "Categories";
+
+/* Search scope: categories field */
+"vcardcategories" = "Categories";
+
+/* Search scope: title field */
+"title" = "Title";
+
+/* Search scope: organization field */
+"c_o" = "Organization";
+
+/* Search scope: organization field */
+"o" = "Organization";
+
+/* Search scope: department field */
+"ou" = "Department";
+
+/* Search scope: city field */
+"l" = "City";
+
+/* Search scope: country field */
+"c" = "Country";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Home Address";
+
+/* Search scope: state/province field */
+"st" = "State/Province";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Home State/Province";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "Zip/Postal Code";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "Zip/Postal Code";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "Home Country";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Home page";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Web page";
+
+/* Search scope: note field */
+"description" = "Note";
+
+/* Subheader of empty addressbook */
+"No contact" = "No contact";
+
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Start a search to browse this address book";
+
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "contacts";
+
+/* No contact matching search criteria */
+"No matching contact" = "No matching contact";
+
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "matching contacts";
+
+/* Number of selected contacts in list */
+"selected" = "selected";
+
+/* Empty right pane */
+"No contact selected" = "No contact selected";
+
 /* Tooltips */
 "Create a new address book card" = "Opprett et nytt adressekort";
 "Create a new list" = "Opprett en ny mailingliste";
@@ -57,6 +169,7 @@
 "Search in Addressbook" = "Søk i adressebok";
 "New Card" = "Nytt adressekort";
 "New List" = "Ny mailingliste";
+"Edit" = "Edit";
 "Properties" = "Egenskaper";
 "Sharing..." = "Deling...";
 "Write" = "Skriv";
@@ -67,7 +180,6 @@
 "Please wait..." = "Vennlist vent...";
 "No possible subscription" = "Abonnering er ikke mulig";
 "Preferred" = "Foretrukket";
-"Card for %@" = "Adressekort for %@";
 "Display" = "Vise";
 "Display Name" = "Visningsnamn";
 "Additional Email" = "Ytterlige e-post";
@@ -81,15 +193,16 @@
 "Work" = "Arbeid";
 "Mobile" = "Mobiltelefon";
 "Pager" = "Personsøker";
+
 /* categories */
 "contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
 "New category" = "Ny katagori";
+
 /* adresses */
 "Title" = "Tittel";
 "Service" = "Funksjon";
 "Company" = "Foretak";
 "Department" = "Avdelning";
-"Organization" = "Organisation";
 "City" = "Poststed ";
 "State_Province" = "Landsdel";
 "ZIP_Postal Code" = "Postnummer";
@@ -108,23 +221,36 @@
 "New Addressbook..." = "Ny adressebok...";
 "Subscribe to an Addressbook..." = "Abonnér på en adressebok...";
 "Remove the selected Addressbook" = "Ta bort den markerte adresseboken";
+"Subscribe to a shared contact" = "Subscribe to a shared addressbook";
+"Search User" = "Search User";
 "Name of the Address Book" = "Navn på adressebok";
 "Are you sure you want to delete the selected address book?"
 = "Er du siker på at du vil ta bort den markerte adresseboken?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "Are you sure you want to delete the addressbook \"%{0}\"?";
 "You cannot remove nor unsubscribe from a public addressbook."
 = "Du kan ikke fjerne eller avbryte abonnement på en offentlig adressebok.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "Du kan ikke fjerne eller avbryte abonnement på en personlig adressebok.";
 "Are you sure you want to delete the selected contacts?"
 = "Er du sikker på at du vil slette de markerte kontaktene?";
+"Are you sure you want to delete the card of %{0}?" = "Are you sure you want to delete the card of %{0}?";
 "You cannot delete the card of \"%{0}\"."
 = "Du kan ikke slette adresskortet \"%{0}\".";
-"Address Book Name" = "Navn på adressebok";
 "You cannot subscribe to a folder that you own!"
 = "Du kan ikke abonnere på en mappe som du selv eier.";
 "Unable to subscribe to that folder!"
 = "Du kan ikke abonnere på mappen.";
-"User rights for" = "Brukerrettigheter for";
+
+/* security */
+"Security" = "Security";
+"Uninstall" = "Uninstall";
+"Error reading the card certificate." = "Error reading the card certificate.";
+"No certificate associated to card." = "No certificate associated to card.";
+
+/* acls */
+"Access rights to" = "Access rights to";
+"For user" = "For user";
 "Any Authenticated User" = "Alle autentiserte brukere";
 "Public Access" = "Public Access";
 "This person can add cards to this addressbook."
@@ -140,11 +266,15 @@
 "The selected contact has no email address."
 = "Den markerte kontakten har ingen e-postadresse.";
 "Please select a contact." = "Velg en kontakt.";
-/* Error messages for move and copy */
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} card(s) copied";
+"%{0} card(s) moved" = "%{0} card(s) moved";
 "SoAccessDeniedException" = "Du kan ikke skrive i denne adresseboken.";
 "Forbidden" = "Du kan ikke skrive i denne adresseboken.";
 "Invalid Contact" = "Markert kontakt eksisterer ikke lengre.";
 "Unknown Destination Folder" = "Den markerte adresseboken eksisterer ikke lengre.";
+
 /* Lists */
 "List details" = "Informasjon om mailinglisten";
 "List name" = "Navn på mailingliste";
@@ -156,11 +286,80 @@
 "Lists can't be moved or copied." = "Mailinglister kan ikke flyttes eller kopieres.";
 "Export" = "Eksportere";
 "Export Address Book..." = "Eksportere Adressebok...";
+"View Raw Source" = "View Raw Source";
+
+/* Import */
 "Import Cards" = "Importere adressekort";
 "Select a vCard or LDIF file." = "Velg et vCard eller LDIF fil.";
 "Upload" = "Last opp";
+"Uploading" = "Uploading";
 "Done" = "Ferdig";
 "An error occured while importing contacts." = "En feil oppstod under importen av kontakter.";
 "No card was imported." = "Ingen adressekort ble importert.";
 "A total of %{0} cards were imported in the addressbook." = "Totalt %{0} av adressekortene ble importert til adresseboken.";
 "Reload" = "Last på nytt";
+
+/* Properties window */
+"Address Book Name" = "Navn på adressebok";
+"Links to this Address Book" = "Links to this Address Book";
+"Authenticated User Access" = "Authenticated User Access";
+"CardDAV URL" = "CardDAV URL";
+"Options" = "Options";
+"Rename" = "Rename";
+"Subscriptions" = "Subscriptions";
+"Global Addressbooks" = "Global Addressbooks";
+"Search" = "Search";
+"Sort" = "Sort";
+"Descending Order" = "Descending Order";
+"Back" = "Back";
+"Select All" = "Select All";
+"Copy contacts" = "Copy contacts";
+"More messages options" = "More messages options";
+"New Contact" = "New Contact";
+"Close" = "Close";
+"More contact options" = "More contact options";
+"Organization Unit" = "Organization Unit";
+"Add Organizational Unit" = "Add Organizational Unit";
+"Type" = "Type";
+"Email Address" = "Email Address";
+"New Email Address" = "New Email Address";
+"New Phone Number" = "New Phone Number";
+"URL" = "URL";
+"New URL" = "New URL";
+"street" = "street";
+"street (continued)" = "street (continued)";
+"Postoffice" = "Postoffice";
+"Region" = "Region";
+"Postal Code" = "Postal Code";
+"New Address" = "New Address";
+"Reset" = "Reset";
+"Description" = "Description";
+"Add Member" = "Add Member";
+"Subscribe" = "Subscribe";
+"Add Birthday" = "Add Birthday";
+"Import" = "Import";
+"More options" = "More options";
+"Role" = "Role";
+"Add Screen Name" = "Add Screen Name";
+"Custom 1" = "Custom 1";
+"Custom 2" = "Custom 2";
+"Custom 3" = "Custom 3";
+"Custom 4" = "Custom 4";
+"Custom Value" = "Custom Value";
+"New Custom Value" = "New Custom Value";
+"Synchronization" = "Synchronization";
+"Synchronize" = "Synchronize";
+"Sucessfully subscribed to address book" = "Successfully subscribed to address book";
+"A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "Search scope";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Toggle item";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

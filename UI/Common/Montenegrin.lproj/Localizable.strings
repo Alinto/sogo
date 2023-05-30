@@ -41,6 +41,8 @@
      = "Potencijalno bi svako na internetu mogao da pristupi vašem adresaru \"%{0}\", čak i ako nemaju nalog na ovom sistemu. Da li je ova informacija pogodna za javni internet?";
 "Give Access" = "Dodijeli pristup";
 "Keep Private" = "Zadrži privatnim";
+"Expand" = "Expand";
+"Reduce" = "Reduce";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -104,6 +106,7 @@
 "Personal" = "Lično";
 "To Do" = "Uraditi";
 "Later" = "Kasnije";
+"Forwarded" = "Forwarded";
 "Return Receipt Sent" = "Potvrda o prijemu poslata";
 "a2_Sunday" = "Ne";
 "a2_Monday" = "Po";
@@ -122,11 +125,17 @@
 "S/MIME Certificate" = "S/MIME Sertifikat";
 "Subject Name" = "Ime teme";
 "Issuer" = "Izdavač";
+"streetAddress" = "Street";
+"stateOrProvinceName" = "State or Province";
+"localityName" = "Locality";
 "countryName" = "Zemlja";
 "organizationName" = "Organizacija";
 "organizationalUnitName" = "Organizaciona jedinica";
 "commonName" = "Opšte ime";
+"surname" = "Surname";
+"givenName" = "Given Name";
 "emailAddress" = "Adresa e-pošte";
+
 
 /* Authentication username */
 "Username" = "Korisničko ime";
@@ -213,3 +222,11 @@
 
 /* Hotkey description to move forward in current view */
 "Move forward" = "Pomjeri unaprijed";
+
+/* Password Recovery */
+"passwordRecovery_Disabled" = "Disabled";
+"passwordRecovery_SecretQuestion" = "Secret question";
+"passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
+"passwordRecovery_SecretQuestion2" = "What was your first car ?";
+"passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
+"passwordRecovery_SecondaryEmail" = "Secondary E-mail";

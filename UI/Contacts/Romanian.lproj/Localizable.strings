@@ -221,7 +221,7 @@
 "New Addressbook..." = "Agenda Nouă...";
 "Subscribe to an Addressbook..." = "Abonare la o agendă";
 "Remove the selected Addressbook" = "Elimină agenda selectată";
-"Subscribe to a shared folder" = "Abonare la un folder partajat";
+"Subscribe to a shared contact" = "Subscribe to a shared addressbook";
 "Search User" = "Căutare utilizator";
 "Name of the Address Book" = "Numele agendei";
 "Are you sure you want to delete the selected address book?"
@@ -350,6 +350,7 @@
 "Synchronization" = "Sincronizare";
 "Synchronize" = "Sincronizare";
 "Sucessfully subscribed to address book" = "Te-ai abonat cu succes la agendă.";
+"A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Domeniul de căutare";

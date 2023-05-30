@@ -7,13 +7,18 @@ vevent_class2 = "(Povjerljivi događaj)";
 vtodo_class0 = "(Javni zadatak)";
 vtodo_class1 = "(Osobni zadatak)";
 vtodo_class2 = "(Povjerljivi zadatak)";
+
 /* Receipts */
 "The event \"%{Summary}\" was created" = "Događaj „% {Summary}” je stvoren";
 "The event \"%{Summary}\" was deleted" = "Događaj „% {Summary}” je izbrisan";
 "The event \"%{Summary}\" was updated" = "Događaj „% {Summary}” je ažuriran";
+"The task \"%{Summary}\" was created" = "The task \"%{Summary}\" was created";
+"The task \"%{Summary}\" was deleted" = "The task \"%{Summary}\" was deleted";
+"The task \"%{Summary}\" was updated" = "The task \"%{Summary}\" was updated";
 "The following attendees(s) were notified" = "Sljedeći sudionici su obaviješteni";
 "The following attendees(s) were added" = "Sljedeći sudionici su dodani";
 "The following attendees(s) were removed" = "Sljedeći sudionici su uklonjeni";
+
 /* IMIP messages */
 "calendar_label" = "Kalendar";
 "startDate_label" = "Početak";
@@ -26,17 +31,20 @@ vtodo_class2 = "(Povjerljivi zadatak)";
 "comment_label" = "Komentar";
 "organizer_label" = "Organizator";
 "attendee_label" = "Sudionik";
+
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Pozivnica: „%{Summary}”";
 "(sent by %{SentBy}) " = "(poslao %{SentBy}) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} vas poziva na %{Summary}.\n\nPočetak: %{StartDate}\nKraj: %{EndDate}\nOpis: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} vas poziva na %{Summary}.\n\nPočetak: %{StartDate} at %{StartTime}\nKraj: %{EndDate} at %{EndTime}\nOpis: %{Description}";
+
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Ovaj događaj je otkazan: „%{Summary}”.";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} je otkazao ovaj događaj: %{Summary}.\n\nPočetak: %{StartDate}\nKraj: %{EndDate}\nOpis: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} je otkazao ovaj događaj: %{Summary}.\nPočetak: %{StartDate} at %{StartTime}\nKraj: %{EndDate} at %{EndTime}\nOpis: %{Description}";
+
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "Sastanak „%{Summary}” za %{OldStartDate} je promjenjen";
@@ -46,6 +54,7 @@ vtodo_class2 = "(Povjerljivi zadatak)";
 = "Sljedeći parametri su se promijenili u sastanku „%{Summary}”:";
 "Please accept or decline those changes."
 = "Molim prihvatite ili odbacite ove promjene.";
+
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Prihvaćen poziv: „%{Summary}”";
 "Declined invitation: \"%{Summary}\"" = "Odbijen poziv: „%{Summary}”";
@@ -59,6 +68,15 @@ vtodo_class2 = "(Povjerljivi zadatak)";
 = "%{Attendee} %{SentByText} je prenio poziv na %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText} još nije odlučio o vašem pozivu na događaj.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Reminder: \"%{Summary}\" - %{StartDate}";
+
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Ne mogu pristupiti: „%{Cn} %{SystemEmail}”";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Maksimalni broj istovremenih rezervacija (%{NumberOfSimultaneousBookings}) dosegnut je za „%{Cn} %{SystemEmail}”. Problematični događaj je \"%{EventTitle}\" i počinje %{StartDate}.";
+
+/* Participation role */
+"Your participation is required to this event" = "Your participation is required to this event";
+"Your participation is optional to this event" = "Your participation is optional to this event";
+"Your participation is not required to this event" = "Your participation is not required to this event";

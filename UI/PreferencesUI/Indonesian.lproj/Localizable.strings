@@ -40,12 +40,22 @@
 "Auto reply subject" = "Subjek Balasan Otomatis";
 "You can write ${subject} to insert the original subject" = " anda dapat menulis ${subjek} untuk memasukan subjek asli.";
 "Auto reply message" = "Pesan balasan otomatis";
-"Email addresses (separated by commas)" = "Alamat Email (dipisahkan oleh koma)";
+"Email addresses" = "Email addresses";
 "Add default email addresses" = "Tambah alamat email default";
 "Days between responses" = "Hari diantara tanggapan";
 "Do not send responses to mailing lists" = "Jangan mengirim tanggapan ke milis";
+"Activation Constraints" = "Activation Constraints";
 "Enable auto reply on" = "Aktifkan balasan otomatis pada";
-"Disable auto reply after" = "Non Aktifkan balasan otomatis pada";
+"First day of vacation" = "First day of vacation";
+"Disable auto reply after" = "Disable auto reply after";
+"Last day of vacation" = "Last day of vacation";
+"Enter date" = "Enter date";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Enable auto reply at";
+"Enter time" = "Enter time";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Disable auto reply at";
+"Enable auto reply on these days" = "Enable auto reply on these days";
 "Always send vacation message response" = "Selalu mengirim tanggapan pesan liburan";
 "The vacation message is sent prior to apply your filters." = "The vacation message is sent prior to apply your filters.";
 "Discard incoming mails during vacation" = "Buang surat masuk saat liburan";
@@ -58,14 +68,19 @@
 
 /* forward messages */
 "Forward incoming messages" = "Teruskan pesan yang masuk";
+"Always forward" = "Always forward";
+"Incoming messages are forwarded prior to apply your filters." = "Incoming messages are forwarded prior to apply your filters.";
 "Keep a copy" = "Tetap salin";
+"Enter an email" = "Enter an email";
+"Add another email" = "Add another email";
 "Please specify an address to which you want to forward your messages."
 = "Silahkan tentukan alamat yang ingin anda teruskan pesan anda.";
 "You are not allowed to forward your messages to an external email address." = "Anda tidak diperbolehkan meneruskan pesan ke alamat email eksternal.";
 "You are not allowed to forward your messages to an internal email address." = "Anda tidak diperbolehkan meneruskan pesan ke alamat email internal.";
+"You are not allowed to forward your messages to this domain:" = "You are not allowed to forward your messages to this domain:";
 
 /* d & t */
-"Current Time Zone" = "Zona waktu terkini";
+"Time Zone" = "Time Zone";
 "Short Date Format" = "Sortir format tanggal";
 "Long Date Format" = "Format tanggal lama";
 "Time Format" = "Format Waktu";
@@ -188,10 +203,15 @@
 "displayremoteinlineimages_always" = "Selalu";
 "Auto save every" = "Otomatis simpan setiap";
 "minutes" = "Menit";
+"Automatically mark messages as read" = "Automatically mark messages as read";
+"Immediately on display" = "Immediately on display";
+"After displaying for" = "After displaying for";
+"seconds" = "seconds";
 
 /* Contact */
 "Personal Address Book" = "Buku Alamat Pribadi";
 "Collected Address Book" = "Buku alamat terkumpul";
+"Contact categories must have unique names." = "Contact categories must have unique names.";
 
 /* IMAP Accounts */
 "Settings" = "Pengaturan";
@@ -207,6 +227,10 @@
 "Email" = "Email";
 "Reply To Email" = "Balas ke Email";
 "Signature" = "Tandatangan";
+"Identities" = "Identities";
+"Always use the default identity when replying to messages" = "Always use the default identity when replying to messages";
+"Default Identity" = "Default Identity";
+"New Identity" = "New Identity";
 "(Click to create)" = "(klik untuk membuat)";
 "Please enter your signature below" = "Silahkan masukan tandatangan anda dibawah ini";
 "Please specify a valid sender address." = "Mohon tentukan alamat pengirim yang sah";
@@ -228,9 +252,17 @@
 "Additional Parameters" = "Parameter tambahan";
 
 /* password */
+"Current password" = "Current password";
 "New password" = "Katasandi baru";
 "Confirmation" = "Konfirmasi";
 "Change" = "Ubah";
+"Passwords don't match" = "Passwords don't match";
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
+"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+
 
 /* Event+task classifications */
 "Default events classification" = "Klasifikasi acara default";
@@ -281,6 +313,7 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
 "Japanese" = "日本語";
 "Kazakh" = "Қазақ";
@@ -315,6 +348,7 @@
 "refreshview_every_20_minutes" = "Setiap 20 menit";
 "refreshview_every_30_minutes" = "setiap 30 menit";
 "refreshview_once_per_hour" = "sekali per jam";
+"Enable Desktop Notifications" = "Enable Desktop Notifications";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "ketika saya menerima permintaan tanda terima";
@@ -384,7 +418,7 @@
 "Stop processing filter rules" = "Berhenti memproses ketentuan filter";
 "is under" = "berada dibawah";
 "is over" = "Berada di atas";
-"is" = " ";
+"is" = "is";
 "is not" = "bukan";
 "contains" = "Mengandung";
 "does not contain" = "Tidak mengandung";
@@ -446,3 +480,23 @@
 /* Limited Animation Mode */
 "animation_LIMITED" = "Terbatas";
 "animation_NONE" = "Tidak ada";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "Enable two-factor authentication using a TOTP application";
+"You must enter this key into your TOTP application." = "You must enter this key into your TOTP application.";
+"If you do not and you log out you will not be able to login again." = "If you do not and you log out you will not be able to login again.";
+"Enter TOTP verification code :" = "Enter TOTP verification code :";
+"Invalid TOTP verification code" = "Invalid TOTP verification code";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "An external Sieve script is active";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled.";
+"Let SOGo handle everything" = "Let SOGo handle everything";
+
+/* Password Recovery */
+"Password recovery mode" = "Password recovery";
+"Question" = "Question";
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password recovery" = "Password recovery";
+"Password change" = "Password change";

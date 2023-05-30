@@ -37,6 +37,8 @@
 "this month" = "éste mes";
 "Previous Month" = "Mes anterior";
 "Next Month" = "Próximo mes";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "éste año";
@@ -107,6 +109,7 @@
 "Name of the Calendar" = "Nombre del calendario";
 "new" = "Nuevo";
 "Print view" = "Vista previa";
+"Print" = "Print";
 "edit" = "Modificar";
 "delete" = "Borrar";
 "proposal" = "Propuesta";
@@ -147,6 +150,7 @@
 "Display events and tasks colors" = "Enseña colores de eventos y tareas";
 "Borders" = "Bordes";
 "Backgrounds" = "Fondos";
+"Page Format" = "Page Format";
 
 /* Appointments */
 "Appointment viewer" = "Visor de eventos";
@@ -219,6 +223,11 @@
 "view_next31" = "Próximos 31 días";
 "view_thismonth" = "Este mes";
 "view_thisyear" = "Este año";
+"view_last7" = "Last 7 days";
+"view_last14" = "Last 14 days";
+"view_last31" = "Last 31 days";
+"view_lastmonth" = "Last Month";
+"view_lastyear" = "Last Year";
 "view_future" = "Todos los eventos futuros";
 "view_selectedday" = "Día seleccionado";
 "view_not_started" = "Tareas sin iniciar";
@@ -391,6 +400,10 @@
 "From" = "De";
 "To" = "Para";
 
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "Sin título, ¿continuar?";
 validate_invalid_startdate = "Fecha de inicio incorrecta";
@@ -437,16 +450,48 @@ validate_untilbeforeend    = "La recurrencia debe terminar después de la primer
 = "No se puede quitar ni darse de baja de su calendario personal.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "¿Está seguro/a que desea borrar el calendario \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Are you sure you want to delete the selected components?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Role";
+
+/* Participant role: participation is required */
 "Participant" = "Asistente";
+
+/* Participant role: participation is required */
+"req-participant" = "Participant";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Asistentes opcionales";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Optional Participant";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "No Asistente";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Non Participant";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "Presidente";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Chair";
+
+/* Participant status: needs action */
 "Needs action" = "Requiere intervención";
+
+/* Participant status: event accepted */
 "Accepted" = "Confirmada";
+
+/* Participant status: event declined */
 "Declined" = "Rechazada";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Tentativo";
+
 "Free" = "Libre";
 "Busy" = "Ocupado";
 "Maybe busy" = "Posiblemente ocupado";
@@ -465,6 +510,8 @@ validate_untilbeforeend    = "La recurrencia debe terminar después de la primer
 "and" = "y";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Existe un conflicto de disponibilidad con uno o más asistentes.\n¿Quiere guardar ésta propuesta de todas formas?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Would you like to remove them and send the invitation to the remaining attendees?";
 
 /* events list */
 "Due" = "Vencimiento";
@@ -545,7 +592,7 @@ vtodo_class2 = "(Tarea confidencial)";
 "Move To" = "Mover a";
 "Copy To" = "Copiar a";
 "Subscriptions" = "Suscripciones";
-"Subscribe to a shared folder" = "Darse de alta en una carpeta compartida";
+"Subscribe to a shared calendar" = "Subscribe to a shared calendar";
 "Subscribe to a web calendar..." = "Subscribir a calendario Web...";
 "URL of the Calendar" = "URL del calendario";
 "Web Calendar" = "Calendario Web";
@@ -582,6 +629,7 @@ vtodo_class2 = "(Tarea confidencial)";
 "Rename" = "Renombrar";
 "Import Calendar" = "Importar Calendario";
 "Select an ICS file." = "Seleccionar un fichero iCalendar (.ics).";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Suscripción al calendario Web con éxito";

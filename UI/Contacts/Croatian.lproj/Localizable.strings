@@ -27,6 +27,9 @@
 "OfficePhone" = "Službeni telefon";
 "Organization" = "Organizacija";
 "Work Phone" = "Radni telefon";
+"Cell" = "Cell";
+"Pager" = "Pager";
+"Pref" = "Pref";
 "Phone" = "Telefon";
 "Phones" = "Telefoni";
 "Postal" = "Pošta";
@@ -218,7 +221,7 @@
 "New Addressbook..." = "Novi imenik...";
 "Subscribe to an Addressbook..." = "Pretplati se na imenik...";
 "Remove the selected Addressbook" = "Ukloni odabrani imenik";
-"Subscribe to a shared folder" = "Pretplati se na zajedničku mapu";
+"Subscribe to a shared contact" = "Subscribe to a shared addressbook";
 "Search User" = "Traži korisnika";
 "Name of the Address Book" = "Naziv imenika";
 "Are you sure you want to delete the selected address book?"
@@ -238,6 +241,12 @@
 = "Ne možete se pretplatiti na vlastitu mapu.";
 "Unable to subscribe to that folder!"
 = "Ne možete se pretplatiti na tu mapu! ";
+
+/* security */
+"Security" = "Security";
+"Uninstall" = "Uninstall";
+"Error reading the card certificate." = "Error reading the card certificate.";
+"No certificate associated to card." = "No certificate associated to card.";
 
 /* acls */
 "Access rights to" = "Dopusti pristup";
@@ -341,6 +350,7 @@
 "Synchronization" = "Usklađivanje";
 "Synchronize" = "Uskladi";
 "Sucessfully subscribed to address book" = "Uspješno ste se pretplatili na imenik";
+"A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Opseg pretraživanja";

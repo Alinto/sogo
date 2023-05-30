@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "Креирај";
 "Empty Trash" = "Испразни го ѓубрето";
+"Empty Junk Folder" = "Empty Junk Folder";
 "Delete"      = "Избриши";
 "Expunge"     = "Уништи";
 "Forward"     = "Препрати";
@@ -73,8 +74,13 @@
 "An error occured while communicating with the mail server" = "Се случи грешка при комуникација со серверот за електронска пошта";
 
 /* Mailbox actions */
+
 /* Compact Folder success message */
 "Folder compacted" = "Папката е компактирана";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Junk folder emptied";
+
 /* Empty Trash success message */
 "Trash emptied" = "Кантата за ѓубре е испразнета";
 
@@ -82,7 +88,7 @@
 "Access rights to" = "Пристапни права за";
 "For user" = "За корисник";
 "Any Authenticated User" = "Било кој автентициран корисник";
-"List and see this folder" = "Излистај и погледни ја оваа папка";
+"View this folder" = "View this folder";
 "Read mails from this folder" = "Читај ги пораките од оваа папка";
 "Mark mails read and unread" = "Означи ги пораките како прочитани и непрочитани";
 "Modify the flags of the mails in this folder" = "Промени ги ознаките на пораките во оваа папка";
@@ -104,7 +110,7 @@
 "To"            = "До";
 "Cc"            = "Цц";
 "Bcc"           = "Бцц";
-"Reply-To"	    = "Одговори на";
+"Reply-To"	= "Одговори на";
 "Add address"   = "Додади адреса";
 "Body"          = "Тело";
 "Open" = "Отвори";
@@ -121,6 +127,7 @@
 "Edit Draft..." = "Уреди го драфтот";
 "Load Images" = "Вчитај слики";
 "Return Receipt" = "Препорачано";
+"Choose which identity to send this message from" = "Choose which identity to send this message from";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Испраќачот на оваа порака побара да биде известен кога ќе ја прочитате оваа порака. Дали сакате да го известите испраќачот?";
 "Return Receipt (displayed) - %@"= "Повратен примач (прикажан) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Ова е повратница за пораката која ја испративте на %@.\n\nзабелешка: Оваа повратница само укажува дека пораката била прикажана на екранот на примателот. Нема никаква гаранција дека примачот ја прочитал пораката или пак разбрал содржината на истата.";
@@ -165,12 +172,22 @@
 "Mark Read"   = "Означи прочитана";
 "Untitled" = "Без наслов";
 
+/* Filter option in messages list */
+"Show unread messages only" = "Show unread messages only";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Show flagged messages only";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Filtered by label";
+
 /* Tree */
 "SentFolderName"   = "Испратени";
 "TrashFolderName"  = "Ѓубре";
 "InboxFolderName"  = "Примени";
 "DraftsFolderName" = "Драфтови";
 "JunkFolderName" = "Отпад";
+"TemplatesFolderName" = "Templates";
 "SieveFolderName"  = "Филтри";
 "Folders"          = "Папки"; /* title line */
 
@@ -229,6 +246,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Конвертирај во задача";
 
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Download message";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Download message (zip)";
+
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "Преземи ги сите прилози";
 
@@ -250,6 +273,12 @@
 /* Number of selected messages in list */
 "selected" = "одбрани";
 
+/* Date formatting from one time to another time */
+"to_time" = "to";
+
+/* Date formatting from one day to another day */
+"to_date" = "to";
+
 /* Encrypted message notification */
 "This message is encrypted" = "Оваа порака е шифрирана";
 
@@ -267,6 +296,18 @@
 
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Нема сертификат кој е асоциран со сметката.";
+
+/* Invalid S/MIME signature */
+"Digital signature is not valid" = "Digital signature is not valid";
+
+/* Valid S/MIME signature */
+"Message is signed" = "Message is signed";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Message is signed but the certificate doesn't match the sender email address";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Digital signature is not valid";
 
 "This Folder" = "Оваа папка";
 
@@ -303,6 +344,7 @@
 "Operation failed" = "Неуспешна операција";
 "Quota" = "Квота:";
 "quotasFormat" = "%{0}% used on %{1} MB";
+"messageQuotasFormat" = "%{0}% of %{1} msgs";
 "Unable to move/delete folder." = "Не е можно да ја префрлите/избришете папката.";
 
 /* Alternative operation when folder cannot be deleted */
@@ -349,6 +391,12 @@
 "Send Anyway" = "Испрати во секој случај";
 "Error while saving the draft" = "Грешка при снимањето на привремениот документ";
 
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Unable to empty the trash folder.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Unable to empty the junk folder.";
+
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Грешка при прикажување на фајл \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Во тек е активно прикачување на фајл. Затварањето на прозорецот ќе го прекине прикачувањето.";
@@ -363,6 +411,9 @@
 "cannot send message: (smtp) all recipients discarded" = "Не моѓам да ја пратам пораката: сите приматели се невалидни.";
 "cannot send message (smtp) - recipients discarded" = "Не можам да ја испратам пораката. Следните адреси се невалидни";
 "cannot send message: (smtp) error when connecting" = "Не можам да ја испртам пораката: грешка при поврзувањето со SMPT серверот.";
+"cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
+"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
 
 /* Contacts list in mail editor */
 "Email" = "Електронска порака";
@@ -381,6 +432,9 @@
 "Set as Drafts" = "Постави како драфт";
 "Set as Sent" = "Постави како испратена";
 "Set as Trash" = "Постави како ѓубре";
+
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Set as Templates";
 
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Постави како отпад";
@@ -403,6 +457,9 @@
 "Your email has been saved" = "Вашата порака е снимена";
 "Your email has been sent" = "Вашата порака е испратена";
 "Folder compacted" = "Папката е компактирана";
+
+"New draft" = "New draft";
+"Create new draft with this template" = "Create new draft with this template";
 
 /* Advanced search */
 "Enter Subject" = "Внеси Тема";

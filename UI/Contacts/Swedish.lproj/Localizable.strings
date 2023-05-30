@@ -27,6 +27,9 @@
 "OfficePhone" = "Kontorstelefon";
 "Organization" = "Organisation";
 "Work Phone" = "Arbetstelefon";
+"Cell" = "Cell";
+"Pager" = "Personsökare";
+"Pref" = "Pref";
 "Phone" = "Telefon";
 "Phones" = "Telefoner";
 "Postal" = "Postnummer";
@@ -218,7 +221,7 @@
 "New Addressbook..." = "Ny adressbok...";
 "Subscribe to an Addressbook..." = "Prenumrera på en adressbok...";
 "Remove the selected Addressbook" = "Ta bort markerad adressbok";
-"Subscribe to a shared folder" = "Prenumerera på en delad mapp";
+"Subscribe to a shared contact" = "Subscribe to a shared addressbook";
 "Search User" = "Sök användare";
 "Name of the Address Book" = "Namn på adressbok";
 "Are you sure you want to delete the selected address book?"
@@ -347,6 +350,7 @@
 "Synchronization" = "Synkronisering";
 "Synchronize" = "Synkronisera";
 "Sucessfully subscribed to address book" = "Prenumeration på adressbok skapad";
+"A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Sökomfattning";

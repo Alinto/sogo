@@ -37,6 +37,8 @@
 "this month" = "本月";
 "Previous Month" = "前一月";
 "Next Month" = "後一月";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = " 今年";
@@ -107,6 +109,7 @@
 "Name of the Calendar" = "行事曆名稱";
 "new" = "新增";
 "Print view" = "預覽列印";
+"Print" = "Print";
 "edit" = "編輯";
 "delete" = "删除";
 "proposal" = "建議";
@@ -147,6 +150,7 @@
 "Display events and tasks colors" = "顯示事件和任務的顏色";
 "Borders" = "邊界";
 "Backgrounds" = "背景";
+"Page Format" = "Page Format";
 
 /* Appointments */
 "Appointment viewer" = "議程顯示器";
@@ -219,6 +223,11 @@
 "view_next31" = "31天內";
 "view_thismonth" = "本月";
 "view_thisyear" = "今年";
+"view_last7" = "Last 7 days";
+"view_last14" = "Last 14 days";
+"view_last31" = "Last 31 days";
+"view_lastmonth" = "Last Month";
+"view_lastyear" = "Last Year";
 "view_future" = "所有將來的事件";
 "view_selectedday" = "選擇的日期";
 "view_not_started" = "尚未開始的任務";
@@ -391,6 +400,10 @@
 "From" = "寄件者";
 "To" = "收件者";
 
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "沒有標題,是否繼續?";
 validate_invalid_startdate = "開始日期欄位不正確!";
@@ -497,6 +510,8 @@ validate_untilbeforeend    = "重複的發生必須晚於第一次開始的時�
 "and" = "和";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "出席者中有人在此時段有其他的行程安排。\n是否仍要維持現在的議程安排?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Would you like to remove them and send the invitation to the remaining attendees?";
 
 /* events list */
 "Due" = "到期日/時間";
@@ -577,7 +592,7 @@ vtodo_class2 = "(機密任務)";
 "Move To" = "移動至";
 "Copy To" = "複製至";
 "Subscriptions" = "訂閱";
-"Subscribe to a shared folder" = "訂閱共享的資料夾";
+"Subscribe to a shared calendar" = "Subscribe to a shared calendar";
 "Subscribe to a web calendar..." = "訂閱網路行事曆...";
 "URL of the Calendar" = "行事曆的網址";
 "Web Calendar" = "網路行事曆";
@@ -614,6 +629,7 @@ vtodo_class2 = "(機密任務)";
 "Rename" = "重新命名";
 "Import Calendar" = "匯入行事曆";
 "Select an ICS file." = "選擇一個 ICS 格式檔案。";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "已成功訂閱行事曆";

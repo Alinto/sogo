@@ -10,6 +10,7 @@
 /* Modules descriptions */
 "ACLs_description" = "<p>访问控制列表管理模块可以更改每个用户的日历和地址簿的访问控制权限</p><p>变更用户目录的访问控制权限时，通过在窗口上部的搜索栏里输入用户名，然后双击目录来实现。</p>";
 "Name or Email" = "姓名或电子邮件";
+"ACLs saved" = "ACLs saved";
 /* Rights module: initial search message */
 "Start a search to edit the rights" = "搜索要修改的权限";
 /* Rights module: Empty search result */

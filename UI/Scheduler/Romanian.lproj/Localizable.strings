@@ -37,6 +37,8 @@
 "this month" = "luna curentă";
 "Previous Month" = "Luna Precedentă";
 "Next Month" = "Luna Următoare";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "acul curent";
@@ -221,6 +223,11 @@
 "view_next31" = "Următoarele 31 zile";
 "view_thismonth" = "Luna curentă";
 "view_thisyear" = "Acest an";
+"view_last7" = "Last 7 days";
+"view_last14" = "Last 14 days";
+"view_last31" = "Last 31 days";
+"view_lastmonth" = "Last Month";
+"view_lastyear" = "Last Year";
 "view_future" = "Toate evenimentele viitoare";
 "view_selectedday" = "Ziua Selectată";
 "view_not_started" = "Sarcini neîncepute";
@@ -308,7 +315,7 @@
 "Month(s)" = "Luna(Lunile)";
 
 /* [Event recurrence editor] Ex: _The_ first Sunday */
-"The" = " ";
+"The" = "The";
 "Recur on day(s)" = "Recurență în ziua(zilele)";
 "Year(s)" = "An(i)";
 
@@ -392,6 +399,10 @@
 "Send Appointment Notifications" = "Trimite Notificări de Întâlnire";
 "From" = "De la";
 "To" = "Către";
+
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
 
 /* validation errors */
 validate_notitle           = "Nu este setat Titlul. Continuaţi?";
@@ -499,6 +510,8 @@ validate_untilbeforeend    = "Repetarea trebuie să se încheie după prima apar
 "and" = "și";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Există o suprapunere cu alte întâlniri.\nDorești să păstrezi modificările așa cum sunt?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Would you like to remove them and send the invitation to the remaining attendees?";
 
 /* events list */
 "Due" = "Datorită";
@@ -579,7 +592,7 @@ vtodo_class2 = "(Sarcină confidenţială)";
 "Move To" = "Mută în";
 "Copy To" = "Copiază în";
 "Subscriptions" = "Abonamente";
-"Subscribe to a shared folder" = "Abonează-te la un folder partajat...";
+"Subscribe to a shared calendar" = "Subscribe to a shared calendar";
 "Subscribe to a web calendar..." = "Abonează-te la un calendar web...";
 "URL of the Calendar" = "URL-ul Calendarului";
 "Web Calendar" = "Calendar Web";
@@ -616,6 +629,7 @@ vtodo_class2 = "(Sarcină confidenţială)";
 "Rename" = "Redenumire";
 "Import Calendar" = "Importă Calendar";
 "Select an ICS file." = "Selectează un fișier ICS.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Te-ai abonat la calendar cu succes";

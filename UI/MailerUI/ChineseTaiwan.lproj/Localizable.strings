@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "寫信";
 "Empty Trash" = "清空垃圾筒";
+"Empty Junk Folder" = "Empty Junk Folder";
 "Delete"      = "刪除";
 "Expunge"     = "清除";
 "Forward"     = "轉寄";
@@ -73,8 +74,13 @@
 "An error occured while communicating with the mail server" = "連接郵件伺服器時發生錯誤";
 
 /* Mailbox actions */
+
 /* Compact Folder success message */
 "Folder compacted" = "資料夾已壓縮";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Junk folder emptied";
+
 /* Empty Trash success message */
 "Trash emptied" = "垃圾桶已清空";
 
@@ -82,7 +88,7 @@
 "Access rights to" = "存取權限";
 "For user" = "給使用者";
 "Any Authenticated User" = "任何認證的使用者";
-"List and see this folder" = "列出並檢視這個資料匣";
+"View this folder" = "View this folder";
 "Read mails from this folder" = "讀取這個資料匣的信件";
 "Mark mails read and unread" = "標示信件為已讀/未讀";
 "Modify the flags of the mails in this folder" = "修改這個資料匣信件的標記";
@@ -104,7 +110,7 @@
 "To"            = "收件人";
 "Cc"            = "副本";
 "Bcc"           = "密件副本";
-"Reply-To"	    = "回覆到";
+"Reply-To"	= "回覆到";
 "Add address"   = "增加郵件帳號";
 "Body"          = "信件內容";
 "Open" = "開啟";
@@ -121,6 +127,7 @@
 "Edit Draft..." = "編輯草稿...";
 "Load Images" = "加入圖檔";
 "Return Receipt" = "回覆回條";
+"Choose which identity to send this message from" = "Choose which identity to send this message from";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "寄件者要求讀取回覆。您是否要寄送讀取回覆給寄件者？";
 "Return Receipt (displayed) - %@"= "回覆回條 (顯示) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "這是您寄送給 %@ 的回覆回條。\n\n附註: 回覆回條只代表收件者己收到這封郵件。並不保證收件者己經閱讀或是知道郵件內容。";
@@ -165,12 +172,22 @@
 "Mark Read"   = "標示為已讀";
 "Untitled" = "無主旨";
 
+/* Filter option in messages list */
+"Show unread messages only" = "Show unread messages only";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Show flagged messages only";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Filtered by label";
+
 /* Tree */
 "SentFolderName"   = "寄件備份";
 "TrashFolderName"  = "垃圾桶";
 "InboxFolderName"  = "收件匣";
 "DraftsFolderName" = "草稿匣";
 "JunkFolderName" = "垃圾信件";
+"TemplatesFolderName" = "Templates";
 "SieveFolderName"  = "過濾原則";
 "Folders"          = "信件匣"; /* title line */
 
@@ -229,6 +246,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "轉換成任務";
 
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Download message";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Download message (zip)";
+
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "下載所有附件";
 
@@ -250,6 +273,12 @@
 /* Number of selected messages in list */
 "selected" = "已選";
 
+/* Date formatting from one time to another time */
+"to_time" = "to";
+
+/* Date formatting from one day to another day */
+"to_date" = "to";
+
 /* Encrypted message notification */
 "This message is encrypted" = "已加密的信件";
 
@@ -267,6 +296,18 @@
 
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "沒有與帳號關聯的憑證。";
+
+/* Invalid S/MIME signature */
+"Digital signature is not valid" = "Digital signature is not valid";
+
+/* Valid S/MIME signature */
+"Message is signed" = "Message is signed";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Message is signed but the certificate doesn't match the sender email address";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Digital signature is not valid";
 
 "This Folder" = "該資料匣";
 
@@ -303,6 +344,7 @@
 "Operation failed" = "操作失敗";
 "Quota" = "使用空間";
 "quotasFormat" = "已使用 %{1} MB 的 %{0}%";
+"messageQuotasFormat" = "%{0}% of %{1} msgs";
 "Unable to move/delete folder." = "無法 移動/刪除 資料夾。";
 
 /* Alternative operation when folder cannot be deleted */
@@ -349,6 +391,12 @@
 "Send Anyway" = "仍要寄送";
 "Error while saving the draft" = "儲存草稿時發生錯誤";
 
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Unable to empty the trash folder.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Unable to empty the junk folder.";
+
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "上傳檔案 \"%{0}\" 時發送錯誤：";
 "There is an active file upload. Closing the window will interrupt it." = "檔案上傳中。關閉視窗會造成上傳中斷。";
@@ -363,6 +411,9 @@
 "cannot send message: (smtp) all recipients discarded" = "無法寄送信件: 所有收件者帳號都無效。";
 "cannot send message (smtp) - recipients discarded" = "無法寄送信件。以下的收件者帳號無效";
 "cannot send message: (smtp) error when connecting" = "無法寄送郵件: 連接 SMTP伺服器時發生錯誤。";
+"cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
+"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
 
 /* Contacts list in mail editor */
 "Email" = "電子郵件帳號";
@@ -381,6 +432,9 @@
 "Set as Drafts" = "設為草稿";
 "Set as Sent" = "設為已寄送";
 "Set as Trash" = "設為垃圾桶";
+
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Set as Templates";
 
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "設為垃圾郵件";
@@ -403,6 +457,9 @@
 "Your email has been saved" = "您的電子郵件已儲存";
 "Your email has been sent" = "您的電子郵件已寄送";
 "Folder compacted" = "資料夾已壓縮";
+
+"New draft" = "New draft";
+"Create new draft with this template" = "Create new draft with this template";
 
 /* Advanced search */
 "Enter Subject" = "輸入主旨";

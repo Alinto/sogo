@@ -1,6 +1,19 @@
 /* toolbar */
 "Save and Close" = "Vista og loka";
 "Close" = "Loka";
+"Preferences saved" = "Preferences saved";
+
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Unsaved Changes";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Do you want to save your changes made to the configuration?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Save";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Don't Save";
 
 /* tabs */
 "General" = "Almennt";
@@ -12,32 +25,68 @@
 "Forward" = "Áfram";
 "Password" = "Lykilorð";
 "Categories" = "Flokkar";
+"Appointments invitations" = "Appointments invitations";
 "Name" = "Nafn";
 "Color" = "Litur";
 "Add" = "Bæta við";
 "Delete" = "Eyða";
+
 /* contacts categories */
 "contacts_category_labels" = "Samstarfsmaður, Keppinautur, Viðskiptavinur, Vinur, Fjölskylda, Viðskiptatengsl, Þjónustuaðili, Fjölmiðlar, VIP";
+
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Virkja sjálfvirkt svar í fríi";
-"Auto reply message" ="Skilaboð fyrir sjálfvirkt svar";
-"Email addresses (separated by commas)" ="Netföng (aðgreind með kommu)";
+"Enable custom auto reply subject" = "Enable custom auto reply subject";
+"Auto reply subject" = "Auto reply subject";
+"You can write ${subject} to insert the original subject" = "You can write ${subject} to insert the original subject";
+"Auto reply message" = "Skilaboð fyrir sjálfvirkt svar";
+"Email addresses" = "Email addresses";
 "Add default email addresses" = "Bæta við sjálfgefnu netfangi";
-"Days between responses" ="Dagar milli svara";
+"Days between responses" = "Dagar milli svara";
 "Do not send responses to mailing lists" = "Ekki senda svör til póstlista";
+"Activation Constraints" = "Activation Constraints";
+"Enable auto reply on" = "Enable auto reply on";
+"First day of vacation" = "First day of vacation";
+"Disable auto reply after" = "Disable auto reply after";
+"Last day of vacation" = "Last day of vacation";
+"Enter date" = "Enter date";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Enable auto reply at";
+"Enter time" = "Enter time";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Disable auto reply at";
+"Enable auto reply on these days" = "Enable auto reply on these days";
+"Always send vacation message response" = "Always send vacation message response";
+"The vacation message is sent prior to apply your filters." = "The vacation message is sent prior to apply your filters.";
+"Discard incoming mails during vacation" = "Discard incoming mails during vacation";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "The vacation message is sent but incoming messages are not delivered to your inbox.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Hér þarf að skrá skilaboðin og netfangið til að virkja sjálfvirkt svar.";
+"Your vacation message must not end with a single dot on a line." = "Your vacation message must not end with a single dot on a line.";
+"End date of your auto reply must be in the future."
+= "End date of your auto reply must be in the future.";
+
 /* forward messages */
 "Forward incoming messages" = "Áframsenda skilaboð sem berast";
+"Always forward" = "Always forward";
+"Incoming messages are forwarded prior to apply your filters." = "Incoming messages are forwarded prior to apply your filters.";
 "Keep a copy" = "Halda afriti eftir";
+"Enter an email" = "Enter an email";
+"Add another email" = "Add another email";
 "Please specify an address to which you want to forward your messages."
 = "Hér þarf að skrá netfangið sem ný skilaboð eiga að áframsendast á";
+"You are not allowed to forward your messages to an external email address." = "You are not allowed to forward your messages to an external email address.";
+"You are not allowed to forward your messages to an internal email address." = "You are not allowed to forward your messages to an internal email address.";
+"You are not allowed to forward your messages to this domain:" = "You are not allowed to forward your messages to this domain:";
+
 /* d & t */
-"Current Time Zone" ="Núverandi tímabelti";
-"Short Date Format" ="Stutt dagsetningarform";
-"Long Date Format" ="Löng dagsetning";
-"Time Format" ="Tímasnið";
+"Time Zone" = "Time Zone";
+"Short Date Format" = "Stutt dagsetningarform";
+"Long Date Format" = "Löng dagsetning";
+"Time Format" = "Tímasnið";
 "default" = "Sjálfgefið";
+"Default Module" = "Default Module";
+"Save" = "Save";
 "shortDateFmt_0" = "%d-%b-%y";
 "shortDateFmt_1" = "%d-%m-%y";
 "shortDateFmt_2" = "%d/%m/%y";
@@ -49,54 +98,94 @@
 "shortDateFmt_8" = "%m/%e/%y";
 "shortDateFmt_9" = "%y.%m.%d";
 "shortDateFmt_10" = "%Y.%m.%d";
-"shortDateFmt_11" = "";
-   
+"shortDateFmt_11" = "%y.%m.%d";
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
+
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
 "longDateFmt_2" = "%A, %d %B, %Y";
 "longDateFmt_3" = "%d %B, %Y";
 "longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
 "timeFmt_0" = "%I:%M %p";
 "timeFmt_1" = "%H:%M";
 "timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
+
+/* Timezone autocompletion */
+"No matches found." = "No matches found.";
+
 /* calendar */
-"Week begins on" ="Vikan byrjar á";
-"Day start time" ="Degi lýkur kl.";
-"Day end time" ="Dagur hefst kl.";
+"Week begins on" = "Vikan byrjar á";
+"Day start time" = "Degi lýkur kl.";
+"Day end time" = "Dagur hefst kl.";
 "Day start time must be prior to day end time." = "Tími þegar dagur hefst, þarf að vera fyrir þann tíma sem degi lýkur.";
-"First week of year" ="Fyrsta vika árs";
+"Week days to display" = "Week days to display";
+"Show time as busy outside working hours" = "Show time as busy outside working hours";
+"First week of year" = "Fyrsta vika árs";
 "Enable reminders for Calendar items" = "Virkja áminningar fyrir hluti í dagatali";
-"Play a sound when a reminder comes due"
-= "Spila hljóð við áminningu";
-"Default reminder" ="Sjálfgefin áminning";
+"Play a sound when a reminder comes due" = "Spila hljóð við áminningu";
+"Default reminder" = "Sjálfgefin áminning";
 "firstWeekOfYear_January1" = "Byrjar 1. janúar";
 "firstWeekOfYear_First4DayWeek" = "Fyrstu 4 dagar viku";
 "firstWeekOfYear_FirstFullWeek" = "Fyrsta heila vika";
+"Prevent from being invited to appointments" = "Prevent from being invited to appointments";
+"White list for appointment invitations" = "White list for appointment invitations";
+"Contacts Names" = "Contacts Names";
+"Duplicate name" = "Duplicate name";
+"Calendar categories must have unique names." = "Calendar categories must have unique names.";
+
+/* Default Calendar */
+"Default calendar" = "Default calendar";
+"selectedCalendar" = "Selected calendar";
+"personalCalendar" = "Personal calendar";
+"firstCalendar" = "First enabled calendar";
+"reminder_NONE" = "No reminder";
 "reminder_5_MINUTES_BEFORE" = "5 mínútur";
 "reminder_10_MINUTES_BEFORE" = "10 mínútur";
 "reminder_15_MINUTES_BEFORE" = "15 mínútur";
 "reminder_30_MINUTES_BEFORE" = "30 mínútur";
+"reminder_45_MINUTES_BEFORE" = "45 minutes before";
 "reminder_1_HOUR_BEFORE" = "1 klst.";
 "reminder_2_HOURS_BEFORE" = "2 klst.";
-"reminder_5_HOURS_BEFORE"= "5 klst.";
-"reminder_15_HOURS_BEFORE"= "15 klst.";
+"reminder_5_HOURS_BEFORE" = "5 klst.";
+"reminder_15_HOURS_BEFORE" = "15 klst.";
 "reminder_1_DAY_BEFORE" = "1 dagur";
 "reminder_2_DAYS_BEFORE" = "2 dagar";
+"reminder_1_WEEK_BEFORE" = "1 week before";
+
 /* Mailer */
+"Labels" = "Labels";
 "Label" = "Merki";
+"IMAP Label" = "IMAP Label";
+"Invalid label" = "Don't use space, nor ( ) { } % * \" \\";
+"Duplicate label" = "Duplicate label";
+"IMAP labels must have unique names." = "IMAP labels must have unique names.";
+"New label" = "New label";
 "Show subscribed mailboxes only" = "Sýna aðeins pósthólf sem eru í áskrift";
-"Check for new mail" = "Sækja nýjan póst";
-"refreshview_manually" = "Handvirkt";
-"refreshview_every_minute" = "Hverjar mínútu";
-"refreshview_every_2_minutes" = "Hverjar 2 mínútur";
-"refreshview_every_5_minutes" = "Hverjar 5 mínútur";
-"refreshview_every_10_minutes" = "Hverjar 10 mínútur";
-"refreshview_every_20_minutes" = "Hverjar 20 mínútur";
-"refreshview_every_30_minutes" = "Hverjar 30 mínútur";
-"refreshview_once_per_hour" = "Á klukkustundar fresti";
+"Synchronize only default mail folders (EAS)" = "Synchronize only default mail folders (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Fetch count of unseen messages for all mailboxes";
+"Sort messages by threads" = "Sort messages by threads";
+"Always open mail composer" = "Always open mail composer";
+"Inside current window" = "Inside current window";
+"In a popup window" = "In a popup window";
+"When sending mail, add unknown recipients to my" = "When sending mail, add unknown recipients to my";
+"Address Book" = "Address Book";
 "Forward messages" = "Áframsenda póst";
 "messageforward_inline" = "Innfellt";
 "messageforward_attached" = "Sem viðhengi";
+"When replying to a message" = "When replying to a message";
 "replyplacement_above" = "Byrja mitt svar fyrir ofan tilvitnunina";
 "replyplacement_below" = "Byrja mitt svar fyrir neðan tilvitnunina";
 "And place my signature" = "Og staðsetja undirritunina";
@@ -105,38 +194,106 @@
 "Compose messages in" = "Semja bréf í";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "óbrotinn texti";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Default font size";
+
+"Display remote inline images" = "Display remote inline images";
+"displayremoteinlineimages_never" = "Never";
+"displayremoteinlineimages_always" = "Always";
+"Auto save every" = "Auto save every";
+"minutes" = "minutes";
+"Automatically mark messages as read" = "Automatically mark messages as read";
+"Immediately on display" = "Immediately on display";
+"After displaying for" = "After displaying for";
+"seconds" = "seconds";
+
+/* Contact */
+"Personal Address Book" = "Personal Address Book";
+"Collected Address Book" = "Collected Address Book";
+"Contact categories must have unique names." = "Contact categories must have unique names.";
+
 /* IMAP Accounts */
+"Settings" = "Settings";
+"Security" = "Security";
+"Mail Account" = "Mail Account";
 "New Mail Account" = "Ný uppsetning á pósti";
 "Server Name" = "Nafn netþjóns";
 "Port" = "Gátt";
+"Encryption" = "Encryption";
+"None" = "None";
 "User Name" = "Notandanafn";
 "Full Name" = "Fullt nafn";
 "Email" = "Tölvupóstfang";
+"Reply To Email" = "Reply To Email";
 "Signature" = "Undirritun";
+"Identities" = "Identities";
+"Always use the default identity when replying to messages" = "Always use the default identity when replying to messages";
+"Default Identity" = "Default Identity";
+"New Identity" = "New Identity";
 "(Click to create)" = "(Smella til að búa til)";
 "Please enter your signature below" = "Setja má undirritun hér að neðan";
+"Please specify a valid sender address." = "Please specify a valid sender address.";
+"Please specify a valid reply-to address." = "Please specify a valid reply-to address.";
+"Specify a hostname other than the local host" = "Specify a hostname other than the local host";
+
+"No certificate installed" = "No certificate installed";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "The SSL certificate must use the PKCS#12 (PFX) format.";
+"Uninstall" = "Uninstall";
+"Choose PKCS12 Certificate .." = "Choose PKCS12 Certificate ..";
+"Certificate Import Password" = "Certificate Import Password";
+"Upload" = "Upload";
+"When composing a message" = "When composing a message";
+"Digitally sign the message by default" = "Digitally sign the message by default";
+"Always try to encrypt the message" = "Always try to encrypt the message";
+"An error occurred while importing the certificate. Verify your password." = "An error occurred while importing the certificate. Verify your password.";
+
 /* Additional Parameters */
 "Additional Parameters" = "Fleiri færibreytur";
+
 /* password */
+"Current password" = "Current password";
 "New password" = "Nýtt lykilorð";
 "Confirmation" = "Staðfesting";
 "Change" = "Breyta";
+"Passwords don't match" = "Passwords don't match";
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
+"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+
+
 /* Event+task classifications */
-"Default events classification" ="Default events classification";
-"Default tasks classification" ="Default tasks classification";
+"Default events classification" = "Default events classification";
+"Default tasks classification" = "Default tasks classification";
 "PUBLIC_item" = "Public";
 "CONFIDENTIAL_item" = "Confidential";
 "PRIVATE_item" = "Private";
+
 /* Event+task categories */
+"Calendar Category" = "Calendar Category";
+"Add Calendar Category" = "Add Calendar Category";
+"New category" = "New category";
+"Reset to defaults" = "Reset to defaults";
+"Remove Calendar Category" = "Remove Calendar Category";
+"Contact Category" = "Contact Category";
+"Add Contact Category" = "Add Contact Category";
+"Remove Contact Category" = "Remove Contact Category";
 "category_none" = "Engin";
 "calendar_category_labels" = "Árdagur,Afmælisdagur,Viðskipti,Símtöl,Skjólstæðingar,Samkeppni,Viðskiptavinur,Uppáhald,Eftirfylgni,Gjafir,Helgidagar,Hugmyndir,Fundur,Úrlausnarefni,Ýmislegt,Persónulegt,Verkefni,Almenn Frí,Staða,Birgjar,Ferðalög,Frí";
+
 /* Default module */
 "Calendar" = "Dagatal";
 "Contacts" = "Nafnaskrá";
 "Mail" = "Póstur";
 "Last" = "Síðast notað";
 "Default Module " = "Sjálfgefið viðmót";
-"Language" ="Tungumál";
+"SOGo Version" = "SOGo Version";
+
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "Save preferences and reload page now?";
+"Language" = "Tungumál";
 "choose" = "Velja...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
@@ -145,7 +302,6 @@
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
 "ChineseTaiwan" = "Chinese (Taiwan)";
-"Croatian" = "Hrvatski";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -167,9 +323,9 @@
 "Montenegrin" = "Crnogorski";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
-"BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
 "Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
 "Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
@@ -182,6 +338,18 @@
 "TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
+"Refresh View" = "Refresh View";
+"refreshview_manually" = "Handvirkt";
+"refreshview_every_minute" = "Hverjar mínútu";
+"refreshview_every_2_minutes" = "Hverjar 2 mínútur";
+"refreshview_every_5_minutes" = "Hverjar 5 mínútur";
+"refreshview_every_10_minutes" = "Hverjar 10 mínútur";
+"refreshview_every_20_minutes" = "Hverjar 20 mínútur";
+"refreshview_every_30_minutes" = "Hverjar 30 mínútur";
+"refreshview_once_per_hour" = "Á klukkustundar fresti";
+"Enable Desktop Notifications" = "Enable Desktop Notifications";
+
 /* Return receipts */
 "When I receive a request for a return receipt" = "Þegar ég móttek beiðni um staðfestingu á lestri";
 "Never send a return receipt" = "Aldrei senda staðfestingu á lestri";
@@ -192,18 +360,30 @@
 "Never send" = "Aldrei senda";
 "Always send" = "Senda alltaf";
 "Ask me" = "Spyrja mig";
+
 /* Filters - UIxPreferences */
 "Filters" = "Síur";
 "Active" = "Kveikt";
 "Move Up" = "Færa upp";
 "Move Down" = "Færa niður";
+"Connection error" = "Connection error";
+"Service temporarily unavailable" = "Service temporarily unavailable";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Enable filter";
+
 /* Filters - UIxFilterEditor */
 "Filter name" = "Nafn síu";
+/* Button label */
+"Add a condition" = "Add a condition";
+/* Button label */
+"Add an action" = "Add an action";
 "For incoming messages that" = "Fyrir næstu mótteknu skilaboð skal";
 "match all of the following rules" = "passa við allar eftirfarandi reglur";
 "match any of the following rules" = "passa við einhverja af eftirfarandi reglum";
 "match all messages" = "passa við öll skilaboð";
 "Perform these actions" = "Framkvæma þessar aðgerðir";
+"Untitled Filter" = "Untitled Filter";
 "Subject" = "Viðfangsefni";
 "From" = "Frá";
 "To" = "Til";
@@ -211,12 +391,29 @@
 "To or Cc" = "Til eða afrit";
 "Size (Kb)" = "Stærð (Kb)";
 "Header" = "Haus";
+"Body" = "Body";
 "Flag the message with" = "Merkja skilaboðin með";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Flag";
+
 "Discard the message" = "Henda þessu bréfi";
 "File the message in" = "Geyma bréfið í";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Mailbox";
+
 "Keep the message" = "Halda þessu tölvubréfi";
 "Forward the message to" = "Áframsenda bréfið til";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "Tölvupóstfang";
+
 "Send a reject message" = "Senda skilaboð um höfnun";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Message";
+
 "Send a vacation message" = "Senda skilaboð um leyfi";
 "Stop processing filter rules" = "Stöðva frekari síun";
 "is under" = "er undir";
@@ -229,14 +426,77 @@
 "does not match" = "passar ekki við";
 "matches regex" = "passar við regex";
 "does not match regex" = "passar ekki við regex";
+/* Placeholder for the value field of a condition */
+"Value" = "Value";
 "Seen" = "Skoðað";
 "Deleted" = "Eytt";
 "Answered" = "Svarað";
 "Flagged" = "Tilkynnt";
 "Junk" = "Ruslpóstur";
 "Not Junk" = "Ekki ruslpóstur";
-"Label 1" = "Merki 1";
-"Label 2" = "Merki 2";
-"Label 3" = "Merki 3";
-"Label 4" = "Merki 4";
-"Label 5" = "Merki 5";
+
+/* Password policy */
+"The password was changed successfully." = "The password was changed successfully.";
+"Password must not be empty." = "Password must not be empty.";
+"The passwords do not match. Please try again." = "The passwords do not match. Please try again.";
+"Password change failed" = "Password change failed";
+"Password change failed - Permission denied" = "Password change failed - Permission denied";
+"Password change failed - Insufficient password quality" = "Password change failed - Insufficient password quality";
+"Password change failed - Password is too short" = "Password change failed - Password is too short";
+"Password change failed - Password is too young" = "Password change failed - Password is too young";
+"Password change failed - Password is in history" = "Password change failed - Password is in history";
+"Unhandled policy error: %{0}" = "Unhandled policy error: %{0}";
+"Unhandled error response" = "Unhandled error response";
+"Password change is not supported." = "Password change is not supported.";
+"Unhandled HTTP error code: %{0}" = "Unhandled HTTP error code: %{0}";
+"Cancel" = "Cancel";
+"Invitations" = "Invitations";
+"Edit Filter" = "Edit Filter";
+"Delete Filter" = "Delete Filter";
+"Create Filter" = "Create Filter";
+"Delete Label" = "Delete Label";
+"Create Label" = "Create Label";
+"Accounts" = "Accounts";
+"Edit Account" = "Edit Account";
+"Delete Account" = "Delete Account";
+"Create Account" = "Create Account";
+"Account Name" = "Account Name";
+"SSL" = "SSL";
+"TLS" = "TLS";
+
+/* Avatars */
+"Use Gravatar" = "Use Gravatar";
+"Alternate Avatar" = "Alternate Avatar";
+"none" =  "None";
+"identicon" = "Ident Icon";
+"monsterid" = "Monster";
+"wavatar" = "Wavatar";
+"retro" = "Retro";
+
+/* Animation Level */
+"Animation Level" = "Animation Level";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Normal";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Limited";
+"animation_NONE" = "None";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "Enable two-factor authentication using a TOTP application";
+"You must enter this key into your TOTP application." = "You must enter this key into your TOTP application.";
+"If you do not and you log out you will not be able to login again." = "If you do not and you log out you will not be able to login again.";
+"Enter TOTP verification code :" = "Enter TOTP verification code :";
+"Invalid TOTP verification code" = "Invalid TOTP verification code";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "An external Sieve script is active";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled.";
+"Let SOGo handle everything" = "Let SOGo handle everything";
+
+/* Password Recovery */
+"Password recovery mode" = "Password recovery";
+"Question" = "Question";
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password recovery" = "Password recovery";
+"Password change" = "Password change";
