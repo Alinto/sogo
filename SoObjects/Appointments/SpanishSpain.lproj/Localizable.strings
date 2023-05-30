@@ -1,4 +1,4 @@
-"Inviting the following persons is prohibited:" = "Esta prohibido invitar las siguientes personas:";
+"Inviting the following persons is prohibited:" = "Está prohibido invitar las siguientes personas:";
 "Personal Calendar" = "Calendario personal";
 vevent_class0 = "(Evento público)";
 vevent_class1 = "(Evento privado)";
@@ -7,45 +7,54 @@ vevent_class2 = "(Evento confidencial)";
 vtodo_class0 = "(Tarea pública)";
 vtodo_class1 = "(Tarea privada)";
 vtodo_class2 = "(Tarea confidencial)";
+
 /* Receipts */
 "The event \"%{Summary}\" was created" = "El evento \"%{Summary}\" ha sido creado";
 "The event \"%{Summary}\" was deleted" = "El evento \"%{Summary}\" ha sido borrado";
 "The event \"%{Summary}\" was updated" = "El evento \"%{Summary}\" ha sido actualizado";
-"The following attendees(s) were notified" = "Los invitados siguientes han sido notificado";
-"The following attendees(s) were added" = "Los invitados siguientes han sido añadido";
-"The following attendees(s) were removed" = "Los invitados siguientes han sido quitado";
+"The task \"%{Summary}\" was created" = "La tarea \"%{Summary}\" fue creada";
+"The task \"%{Summary}\" was deleted" = "La tarea \"%{Summary}\" fue borrada";
+"The task \"%{Summary}\" was updated" = "La tarea \"%{Summary}\" fue actualizada";
+"The following attendees(s) were notified" = "Los siguientes invitados han sido notificados";
+"The following attendees(s) were added" = "Los siguientes invitados han sido añadidos";
+"The following attendees(s) were removed" = "Los siguientes invitados fueron eliminados";
+
 /* IMIP messages */
 "calendar_label" = "Calendario";
 "startDate_label" = "Inicio";
 "endDate_label" = "Fin";
 "time_label" = "Fecha";
 "to_label" = "para";
-"due_label" = "Fecha Fin:";
+"due_label" = "Fecha Fin";
 "location_label" = "Localización";
-"summary_label" = "Resumen:";
-"comment_label" = "Comentario:";
+"summary_label" = "Resumen";
+"comment_label" = "Comentario";
 "organizer_label" = "Organizador";
 "attendee_label" = "Asistentes";
+
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Invitación al evento: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(enviado por %{SentBy}) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}le ha invitado a %{Summary}.\n\nInicio: %{StartDate}\nFin: %{EndDate}\nDescripción: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}le ha invitado a %{Summary}.\n\nInicio: %{StartDate} a las %{StartTime}\nFin: %{EndDate} a las %{EndTime}\nDescripción: %{Description}";
+
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Evento Cancelado: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}ha cancelado este evento: %{Summary}.\n\nInicio: %{StartDate}\nFin: %{EndDate}\nDescripción: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} ha cancelado este evento: %{Summary}.\n\nInicio: %{StartDate} a las %{StartTime}\nFin:%{EndDate} a las {EndTime}\nDescripción: %{Description}";
+
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "El evento \"%{Summary}\" del %{OldStartDate} ha cambiado";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
 = "La cita \"%{Summary}\" para el %{OldStartDate} a las %{OldStartTime} ha cambiado";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
-= "Los siguientes parametros han cambiados enla cita \"%{Summary}\":";
+= "Los siguientes parámetros han cambiado en la cita \"%{Summary}\":";
 "Please accept or decline those changes."
-= "Por favor, acepta o rechaza estos cambios.";
+= "Por favor, acepte o rechace estos cambios.";
+
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Invitación aceptada: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Invitación rechazada: \"%{Summary}\"";
@@ -56,9 +65,18 @@ vtodo_class2 = "(Tarea confidencial)";
 "%{Attendee} %{SentByText}has declined your event invitation."
 = "%{Attendee} %{SentByText}ha rechazado su invitación al evento.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
-= "%{Attendee} %{SentByText}has delegado la invitación para %{Delegate}.";
+= "%{Attendee} %{SentByText}ha delegado la invitación para %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
-= "%{Attendee} %{SentByText}no ha tomado tadavia una decision sobre esta cita.";
+= "%{Attendee} %{SentByText}no ha tomado todavía una decisión sobre el evento.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Recordatorio: \"%{Summary}\" - %{StartDate}";
+
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "No se puede acceder al recurso: \"%{Cn} %{SystemEmail}\"";
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Numero maximo de reserva simultánea (%{NumberOfSimultaneousBookings}) alcanzada para el recurso \"%{Cn} %{SystemEmail}\". El evento generando el conflicto es \"%{EventTitle}\", y empeza el %{StartDate}.";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Número máximo de reserva simultánea (%{NumberOfSimultaneousBookings}) alcanzado para el recurso \"%{Cn} %{SystemEmail}\". El conflicto generado es el evento \"%{EventTitle}\", y empieza el %{StartDate}.";
+
+/* Participation role */
+"Your participation is required to this event" = "Su participación es obligatoria en este evento";
+"Your participation is optional to this event" = "Su participación es opcional en este evento";
+"Your participation is not required to this event" = "Su participación no es obligatoria en este evento";

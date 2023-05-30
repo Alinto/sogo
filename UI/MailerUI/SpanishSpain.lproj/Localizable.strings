@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "Crear";
 "Empty Trash" = "Vaciar papelera";
+"Empty Junk Folder" = "Empty Junk Folder";
 "Delete"      = "Borrar";
 "Expunge"     = "Compactar";
 "Forward"     = "Reenviar";
@@ -73,8 +74,13 @@
 "An error occured while communicating with the mail server" = "Ha ocurrido un error mientras se comunicaba con el servidor de correo electrónico";
 
 /* Mailbox actions */
+
 /* Compact Folder success message */
 "Folder compacted" = "Carpeta compactada";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Junk folder emptied";
+
 /* Empty Trash success message */
 "Trash emptied" = "Basura vaciada";
 
@@ -82,7 +88,7 @@
 "Access rights to" = "Derechos de acceso a";
 "For user" = "Para usuario";
 "Any Authenticated User" = "Cualquier usuario autentificado";
-"List and see this folder" = "Listar y ver esta carpeta";
+"View this folder" = "View this folder";
 "Read mails from this folder" = "Leer corrreo de esta carpeta";
 "Mark mails read and unread" = "Marcar correos como leídos y no leídos";
 "Modify the flags of the mails in this folder" = "Modificar los indicadores de los correos en esta carpeta";
@@ -104,7 +110,7 @@
 "To"            = "Para";
 "Cc"            = "Cc";
 "Bcc"           = "CCo";
-"Reply-To"	    = "Responder A";
+"Reply-To"	= "Responder A";
 "Add address"   = "Añadir dirección";
 "Body"          = "Cuerpo";
 "Open" = "Abrir";
@@ -121,6 +127,7 @@
 "Edit Draft..." = "Modificar borrador...";
 "Load Images" = "Cargar Imágenes";
 "Return Receipt" = "Acuse de Recibo";
+"Choose which identity to send this message from" = "Choose which identity to send this message from";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "El remitente de este mensaje ha pedido ser avisado cuando el mensaje ha sido leído. ¿Quiere notificar al remitente?";
 "Return Receipt (displayed) - %@"= "Acuse de Recibo (mostrado) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Este es un Acuse de Recibo del correo enviado a %@.\n\nNota: Este acuse de recibo sólo acredita que el mensaje se mostró en el ordenador del destinatario. No hay garantía de que el destinatario haya leído o comprendido el contenido del mensaje.";
@@ -165,12 +172,22 @@
 "Mark Read"   = "Marcar como leído";
 "Untitled" = "Sin título";
 
+/* Filter option in messages list */
+"Show unread messages only" = "Show unread messages only";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Show flagged messages only";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Filtered by label";
+
 /* Tree */
 "SentFolderName"   = "Enviados";
 "TrashFolderName"  = "Papelera";
 "InboxFolderName"  = "Bandeja de entrada";
 "DraftsFolderName" = "Borradores";
 "JunkFolderName" = "Spam";
+"TemplatesFolderName" = "Templates";
 "SieveFolderName"  = "Filtros";
 "Folders"          = "Carpetas"; /* title line */
 
@@ -179,6 +196,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Añadir a una libreta de direcciones...";
+"Successfully created card" = "Successfully created card";
 "Compose Mail To" = "Crear mensaje para";
 "Create Filter From Message..." = "Create filtro a partir del mensaje...";
 
@@ -228,6 +246,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Convertir como tarea";
 
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Download message";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Download message (zip)";
+
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "Descargar todos los archivos adjuntos";
 
@@ -249,6 +273,12 @@
 /* Number of selected messages in list */
 "selected" = "seleccionado";
 
+/* Date formatting from one time to another time */
+"to_time" = "to";
+
+/* Date formatting from one day to another day */
+"to_date" = "to";
+
 /* Encrypted message notification */
 "This message is encrypted" = "Este mensaje está encriptado";
 
@@ -266,6 +296,18 @@
 
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "El certificado no está asociado a ninguna cuenta.";
+
+/* Invalid S/MIME signature */
+"Digital signature is not valid" = "Digital signature is not valid";
+
+/* Valid S/MIME signature */
+"Message is signed" = "Message is signed";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Message is signed but the certificate doesn't match the sender email address";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Digital signature is not valid";
 
 "This Folder" = "Esta carpeta";
 
@@ -302,6 +344,7 @@
 "Operation failed" = "Operación fallida";
 "Quota" = "Cuota";
 "quotasFormat" = "%{0}% de %{1} MB usados";
+"messageQuotasFormat" = "%{0}% of %{1} msgs";
 "Unable to move/delete folder." = "No se puede mover/borrar la carpeta";
 
 /* Alternative operation when folder cannot be deleted */
@@ -348,6 +391,12 @@
 "Send Anyway" = "Enviar de toda forma";
 "Error while saving the draft" = "Error al guardar el borrador";
 
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Unable to empty the trash folder.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Unable to empty the junk folder.";
+
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Error al cargar el fichero \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Un fichero se esta cargando. Cerrar la ventana cancelara la carga.";
@@ -362,6 +411,9 @@
 "cannot send message: (smtp) all recipients discarded" = "No se puede enviar el mensaje: (smtp) todos los destinatarios han sido descartados";
 "cannot send message (smtp) - recipients discarded" = "No se puede enviar el mensaje: (smtp) destinatarios descartados";
 "cannot send message: (smtp) error when connecting" = "No se puede enviar el mensaje: (smtp) error de conexión";
+"cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
+"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
 
 /* Contacts list in mail editor */
 "Email" = "Correo";
@@ -380,6 +432,9 @@
 "Set as Drafts" = "Marcar como borrador";
 "Set as Sent" = "Marcar como enviado";
 "Set as Trash" = "Marcar como borrado";
+
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Set as Templates";
 
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Marcar como Spam";
@@ -402,6 +457,18 @@
 "Your email has been saved" = "El email ha sido guardado";
 "Your email has been sent" = "El email ha sido enviado";
 "Folder compacted" = "Carpeta compactada";
+
+"New draft" = "New draft";
+"Create new draft with this template" = "Create new draft with this template";
+
+/* Advanced search */
+"Enter Subject" = "Enter Subject";
+"Enter From" = "Enter From";
+"Enter To" = "Enter To";
+"Enter Cc" = "Enter Cc";
+"Enter Body" = "Enter Body";
+"match" = "match";
+"does not match" = "does not match";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Ámbito de búsqueda";
