@@ -40,15 +40,22 @@
 "Auto reply subject" = "Subiect mesaj automat";
 "You can write ${subject} to insert the original subject" = "Puteți scrie ${subject} pentru a insera subiectul original";
 "Auto reply message" = "Continut mesaj automat";
-"Email addresses (separated by commas)" = "Adrese de mail (separate prin virgulă)";
+"Email addresses" = "Email addresses";
 "Add default email addresses" = "Adăugare adresă de mail implicită";
 "Days between responses" = "Numărul de zile dintre răspunsuri";
 "Do not send responses to mailing lists" = "Nu răspundeți la mesajele de la liste de discuții";
+"Activation Constraints" = "Activation Constraints";
 "Enable auto reply on" = "Activare răspuns automat pe";
 "First day of vacation" = " Prima zi de vacanță";
-"Disable auto reply after" = "Dezactivare răspuns automat pe";
+"Disable auto reply after" = "Disable auto reply after";
 "Last day of vacation" = "Ultima zi de vacanță";
 "Enter date" = "Introduceți data";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Enable auto reply at";
+"Enter time" = "Enter time";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Disable auto reply at";
+"Enable auto reply on these days" = "Enable auto reply on these days";
 "Always send vacation message response" = "Întotdeauna trimite un mesaj de concediu";
 "The vacation message is sent prior to apply your filters." = "Mesajul de vacanță este trimis înainte de a aplica filtrele.";
 "Discard incoming mails during vacation" = "Ignoră mesajele primite pe perioada vacanței";
@@ -61,7 +68,11 @@
 
 /* forward messages */
 "Forward incoming messages" = "Retrimitere mesaje primite";
+"Always forward" = "Always forward";
+"Incoming messages are forwarded prior to apply your filters." = "Incoming messages are forwarded prior to apply your filters.";
 "Keep a copy" = "Păstrare a unei copii";
+"Enter an email" = "Enter an email";
+"Add another email" = "Add another email";
 "Please specify an address to which you want to forward your messages."
 = "Specificați o adresă de mail la care doriți retrimiterea mesajelor dumneavoastră.";
 "You are not allowed to forward your messages to an external email address." = "Nu aveți permisiunea de a transmite mesajele către o adresă de e-mail externă.";
@@ -69,7 +80,7 @@
 "You are not allowed to forward your messages to this domain:" = "Nu aveți voie să trimiteți mesajele dvs. către acest domeniu:";
 
 /* d & t */
-"Current Time Zone" = "Fus orar curent";
+"Time Zone" = "Time Zone";
 "Short Date Format" = "Format scurt dată";
 "Long Date Format" = "Format lung dată";
 "Time Format" = "Format timp";
@@ -192,6 +203,10 @@
 "displayremoteinlineimages_always" = "Întotdeauna";
 "Auto save every" = "Salvare automată la fiecare";
 "minutes" = "minute";
+"Automatically mark messages as read" = "Automatically mark messages as read";
+"Immediately on display" = "Immediately on display";
+"After displaying for" = "After displaying for";
+"seconds" = "seconds";
 
 /* Contact */
 "Personal Address Book" = "Agenda Personală";
@@ -212,6 +227,10 @@
 "Email" = "Email";
 "Reply To Email" = "Răspunde la Email";
 "Signature" = "Semnătura";
+"Identities" = "Identities";
+"Always use the default identity when replying to messages" = "Always use the default identity when replying to messages";
+"Default Identity" = "Default Identity";
+"New Identity" = "New Identity";
 "(Click to create)" = "(Click pentru a crea)";
 "Please enter your signature below" = "Introduceți mai jos semnătura";
 "Please specify a valid sender address." = "Introduceţi o adresă expeditor validă.";
@@ -233,9 +252,17 @@
 "Additional Parameters" = "Parametri adiționali";
 
 /* password */
+"Current password" = "Current password";
 "New password" = "Parola nouă";
 "Confirmation" = "Confirmare";
 "Change" = "Schimbare";
+"Passwords don't match" = "Passwords don't match";
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
+"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+
 
 /* Event+task classifications */
 "Default events classification" = "Clasificare implicită a evenimentelor";
@@ -321,6 +348,7 @@
 "refreshview_every_20_minutes" = "Fiecare 20 minute";
 "refreshview_every_30_minutes" = "Fiecare 30 minute";
 "refreshview_once_per_hour" = "O dată pe oră";
+"Enable Desktop Notifications" = "Enable Desktop Notifications";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Atunci când primesc o cerere de confirmare de primire";
@@ -452,3 +480,23 @@
 /* Limited Animation Mode */
 "animation_LIMITED" = "Limitat";
 "animation_NONE" = "Niciuna";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "Enable two-factor authentication using a TOTP application";
+"You must enter this key into your TOTP application." = "You must enter this key into your TOTP application.";
+"If you do not and you log out you will not be able to login again." = "If you do not and you log out you will not be able to login again.";
+"Enter TOTP verification code :" = "Enter TOTP verification code :";
+"Invalid TOTP verification code" = "Invalid TOTP verification code";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "An external Sieve script is active";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled.";
+"Let SOGo handle everything" = "Let SOGo handle everything";
+
+/* Password Recovery */
+"Password recovery mode" = "Password recovery";
+"Question" = "Question";
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password recovery" = "Password recovery";
+"Password change" = "Password change";

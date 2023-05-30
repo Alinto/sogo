@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "Compunere";
 "Empty Trash" = "Curățare coș";
+"Empty Junk Folder" = "Empty Junk Folder";
 "Delete"      = "Ștergere";
 "Expunge"     = "Ștergere definitivă";
 "Forward"     = "Retrimitere";
@@ -73,8 +74,13 @@
 "An error occured while communicating with the mail server" = "A apărut o eroare în timpul comunicaţiei cu serverul de mail";
 
 /* Mailbox actions */
+
 /* Compact Folder success message */
 "Folder compacted" = "Folderul a fost compactat";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Junk folder emptied";
+
 /* Empty Trash success message */
 "Trash emptied" = "Coșul de gunoi a fost golit";
 
@@ -82,7 +88,7 @@
 "Access rights to" = "Drept de acces pentru";
 "For user" = "Pentru utilizatorul";
 "Any Authenticated User" = "Orice utilizator autentificat";
-"List and see this folder" = "Listare și vizualizare folder";
+"View this folder" = "View this folder";
 "Read mails from this folder" = "Citire mesaje din folderul curent";
 "Mark mails read and unread" = "Marcare mesaje citite și necitite";
 "Modify the flags of the mails in this folder" = "Modificare marcaje pentru mesajele din acest folder";
@@ -104,7 +110,7 @@
 "To"            = "Către";
 "Cc"            = "Cc";
 "Bcc"           = "Bcc";
-"Reply-To"	    = "Reply-To";
+"Reply-To"	= "Reply-To";
 "Add address"   = "Adăugare adresă";
 "Body"          = "Conținut";
 "Open" = "Deschidere";
@@ -121,6 +127,7 @@
 "Edit Draft..." = "Editare Draft...";
 "Load Images" = "Încărcare Imagini";
 "Return Receipt" = "Confirmare de primire";
+"Choose which identity to send this message from" = "Choose which identity to send this message from";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Expeditorul acestui mesaj a cerut să fie notificat când citiți acest mesaj. Doriți să notificați expeditorul?";
 "Return Receipt (displayed) - %@"= "Confirmare de primire (afișată) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Aceasta este o Confirmare de Primire pentru mesajul care l-ați trimis către %@.⏎ ⏎ Notă: Această confirmare de primire confirmă doar faptul că mesajul a fost afișat pe calculatorul destinatarului dar nu și faptul că destinatarul l-a citit sau că i-a înțeles conținutul.";
@@ -165,12 +172,22 @@
 "Mark Read"   = "Marcare ca citit";
 "Untitled" = "Fără titlu";
 
+/* Filter option in messages list */
+"Show unread messages only" = "Show unread messages only";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Show flagged messages only";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Filtered by label";
+
 /* Tree */
 "SentFolderName"   = "Trimis";
 "TrashFolderName"  = "Coș de gunoi";
 "InboxFolderName"  = "Inbox";
 "DraftsFolderName" = "Ciorne";
 "JunkFolderName" = "Junk";
+"TemplatesFolderName" = "Templates";
 "SieveFolderName"  = "Filtre";
 "Folders"          = "Foldere"; /* title line */
 
@@ -229,6 +246,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Transformați în Sarcină";
 
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Download message";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Download message (zip)";
+
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "Descarcă toate atașamentele";
 
@@ -250,6 +273,12 @@
 /* Number of selected messages in list */
 "selected" = "selectat";
 
+/* Date formatting from one time to another time */
+"to_time" = "to";
+
+/* Date formatting from one day to another day */
+"to_date" = "to";
+
 /* Encrypted message notification */
 "This message is encrypted" = "Acest mesaj este criptat";
 
@@ -267,6 +296,18 @@
 
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Nici un certificat nu a fost asociat acestui cont.";
+
+/* Invalid S/MIME signature */
+"Digital signature is not valid" = "Digital signature is not valid";
+
+/* Valid S/MIME signature */
+"Message is signed" = "Message is signed";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Message is signed but the certificate doesn't match the sender email address";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Digital signature is not valid";
 
 "This Folder" = "Acest Folder";
 
@@ -303,6 +344,7 @@
 "Operation failed" = "Operaţiune eşuată";
 "Quota" = "Limită:";
 "quotasFormat" = "%{0} folosit din %{1} MB";
+"messageQuotasFormat" = "%{0}% of %{1} msgs";
 "Unable to move/delete folder." = "Nu se poate muta / șterge folder.";
 
 /* Alternative operation when folder cannot be deleted */
@@ -349,6 +391,12 @@
 "Send Anyway" = "Forțare trimitere ";
 "Error while saving the draft" = "Eroare la salvarea draftului";
 
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Unable to empty the trash folder.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Unable to empty the junk folder.";
+
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Eroare la încărcarea fișierului \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Există un fișier care se încărcare. Închiderea ferestrei va întrerupe încărcarea.";
@@ -363,6 +411,9 @@
 "cannot send message: (smtp) all recipients discarded" = "Mesajul nu poate fi trimis: toate adresele destinatar sunt invalide.";
 "cannot send message (smtp) - recipients discarded" = "Mesajul nu poate fi trimis. Următoarea adrese sunt invalide:";
 "cannot send message: (smtp) error when connecting" = "Mesajul nu poate fi trimis: eroare de conectare la serverul SMTP.";
+"cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
+"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
 
 /* Contacts list in mail editor */
 "Email" = "Email";
@@ -381,6 +432,9 @@
 "Set as Drafts" = "Setează ca Ciornă";
 "Set as Sent" = "Setează ca Trimis";
 "Set as Trash" = "Setează ca Coș";
+
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Set as Templates";
 
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Setează ca Junk";
@@ -403,6 +457,9 @@
 "Your email has been saved" = "Emailul dumneavoastră a fost salvat";
 "Your email has been sent" = "Emailul dumneavoastră a fost trimis";
 "Folder compacted" = "Folderul a fost compactat";
+
+"New draft" = "New draft";
+"Create new draft with this template" = "Create new draft with this template";
 
 /* Advanced search */
 "Enter Subject" = "Introduceți Subiect";
