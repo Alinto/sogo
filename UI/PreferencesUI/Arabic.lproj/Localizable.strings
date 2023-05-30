@@ -1,6 +1,19 @@
 /* toolbar */
 "Save and Close" = "حفظ وإغلاق";
 "Close" = "إغلاق";
+"Preferences saved" = "Preferences saved";
+
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Unsaved Changes";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Do you want to save your changes made to the configuration?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Save";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Don't Save";
 
 /* tabs */
 "General" = "عام";
@@ -12,36 +25,68 @@
 "Forward" = "ارسال الى";
 "Password" = "كلمة السر";
 "Categories" = "الفئات";
+"Appointments invitations" = "Appointments invitations";
 "Name" = "اسم";
 "Color" = "اللون";
 "Add" = "إضافة";
 "Delete" = "مسح";
+
 /* contacts categories */
 "contacts_category_labels" = "الزميل، المنافس، العملاء، الصديق، العائلة، شريك تجاري، مقدم خدمة ، الصحافة ،كبار الشخصيات";
+
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "تمكين الرد التلقائي أثناء العطلة";
-"Auto reply message" ="رسالة الرد التلقائي";
-"Email addresses (separated by commas)" ="عناوين البريد الإلكتروني (مفصولة بفواصل)";
+"Enable custom auto reply subject" = "Enable custom auto reply subject";
+"Auto reply subject" = "Auto reply subject";
+"You can write ${subject} to insert the original subject" = "You can write ${subject} to insert the original subject";
+"Auto reply message" = "رسالة الرد التلقائي";
+"Email addresses" = "Email addresses";
 "Add default email addresses" = "إضافة عناوين البريد الإلكتروني الافتراضية";
-"Days between responses" ="عدد الأيام بين الردود";
+"Days between responses" = "عدد الأيام بين الردود";
 "Do not send responses to mailing lists" = "لا ترسل ردود الى القوائم البريدية";
-"Disable auto reply after" = "تعطيل الرد التلقائي في";
+"Activation Constraints" = "Activation Constraints";
+"Enable auto reply on" = "Enable auto reply on";
+"First day of vacation" = "First day of vacation";
+"Disable auto reply after" = "Disable auto reply after";
+"Last day of vacation" = "Last day of vacation";
+"Enter date" = "Enter date";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Enable auto reply at";
+"Enter time" = "Enter time";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Disable auto reply at";
+"Enable auto reply on these days" = "Enable auto reply on these days";
+"Always send vacation message response" = "Always send vacation message response";
+"The vacation message is sent prior to apply your filters." = "The vacation message is sent prior to apply your filters.";
+"Discard incoming mails during vacation" = "Discard incoming mails during vacation";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "The vacation message is sent but incoming messages are not delivered to your inbox.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "يرجى تحديد رسالتك وعناوين البريد الإلكتروني التي تريد تمكين الرد التلقائي لها.";
 "Your vacation message must not end with a single dot on a line." = "يجب أن لا تنتهي رسالة العطلة بنقطة واحدة على السطر.";
 "End date of your auto reply must be in the future."
 = "يجب أن يكون تاريخ نهاية الرد التلقائي الخاص بك في المستقبل.";
+
 /* forward messages */
 "Forward incoming messages" = "أعد توجيه الرسائل القادمة";
+"Always forward" = "Always forward";
+"Incoming messages are forwarded prior to apply your filters." = "Incoming messages are forwarded prior to apply your filters.";
 "Keep a copy" = "احتفظ بنسخة";
+"Enter an email" = "Enter an email";
+"Add another email" = "Add another email";
 "Please specify an address to which you want to forward your messages."
 = "يرجى تحديد العنوان الذي تريد إعادة توجيه رسائلك له.";
+"You are not allowed to forward your messages to an external email address." = "You are not allowed to forward your messages to an external email address.";
+"You are not allowed to forward your messages to an internal email address." = "You are not allowed to forward your messages to an internal email address.";
+"You are not allowed to forward your messages to this domain:" = "You are not allowed to forward your messages to this domain:";
+
 /* d & t */
-"Current Time Zone" ="التوقيت الزمني الحالى";
-"Short Date Format" ="التاريخ بالصيغة المختصرة";
-"Long Date Format" ="التاريخ بالصيغة الكاملة";
-"Time Format" ="تنسيق الوقت";
+"Time Zone" = "Time Zone";
+"Short Date Format" = "التاريخ بالصيغة المختصرة";
+"Long Date Format" = "التاريخ بالصيغة الكاملة";
+"Time Format" = "تنسيق الوقت";
 "default" = "الافتراضي";
+"Default Module" = "Default Module";
+"Save" = "Save";
 "shortDateFmt_0" = "%d-%b-%y";
 "shortDateFmt_1" = "%d-%m-%y";
 "shortDateFmt_2" = "%d/%m/%y";
@@ -57,8 +102,10 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
-   
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
+
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
 "longDateFmt_2" = "%A, %d %B, %Y";
@@ -75,48 +122,66 @@
 "timeFmt_2" = "";
 "timeFmt_3" = "";
 "timeFmt_4" = "";
+
+/* Timezone autocompletion */
+"No matches found." = "No matches found.";
+
 /* calendar */
-"Week begins on" ="بداية الاسبوع";
-"Day start time" ="بداية يوم العمل";
-"Day end time" ="نهاية يوم العمل";
+"Week begins on" = "بداية الاسبوع";
+"Day start time" = "بداية يوم العمل";
+"Day end time" = "نهاية يوم العمل";
 "Day start time must be prior to day end time." = "يجب أن يكون وقت بداية يوم العمل قبل وقت نهاية يوم العمل.";
+"Week days to display" = "Week days to display";
 "Show time as busy outside working hours" = "إظهار الوقت  خارج ساعات العمل على أنه مشغول";
-"First week of year" ="الأسبوع الأول من السنة";
+"First week of year" = "الأسبوع الأول من السنة";
 "Enable reminders for Calendar items" = "تمكين التذكيرات لعناصر التقويم";
-"Play a sound when a reminder comes due"
-= "تشغيل صوت للتذكير بموعد اقترب وقته";
-"Default reminder" ="التذكير الإفتراضي";
+"Play a sound when a reminder comes due" = "تشغيل صوت للتذكير بموعد اقترب وقته";
+"Default reminder" = "التذكير الإفتراضي";
 "firstWeekOfYear_January1" = "يبدأ في 1 يناير";
 "firstWeekOfYear_First4DayWeek" = "أول 4 ايام في الاسبوع";
 "firstWeekOfYear_FirstFullWeek" = "أول اسبوع كامل";
+"Prevent from being invited to appointments" = "Prevent from being invited to appointments";
+"White list for appointment invitations" = "White list for appointment invitations";
+"Contacts Names" = "Contacts Names";
+"Duplicate name" = "Duplicate name";
+"Calendar categories must have unique names." = "Calendar categories must have unique names.";
+
 /* Default Calendar */
-"Default calendar" ="التقويم الإفتراضي";
+"Default calendar" = "التقويم الإفتراضي";
 "selectedCalendar" = "التقويم المحدد";
 "personalCalendar" = "التقويم الشخصي";
 "firstCalendar" = "أول تقويم ممكن";
+"reminder_NONE" = "No reminder";
 "reminder_5_MINUTES_BEFORE" = "5 دقائق";
 "reminder_10_MINUTES_BEFORE" = "10 دقائق";
 "reminder_15_MINUTES_BEFORE" = "15 دقيقة";
 "reminder_30_MINUTES_BEFORE" = "30 دقيقة";
+"reminder_45_MINUTES_BEFORE" = "45 minutes before";
 "reminder_1_HOUR_BEFORE" = "1 ساعة";
 "reminder_2_HOURS_BEFORE" = "2 ساعة";
-"reminder_5_HOURS_BEFORE"= "5 ساعات";
-"reminder_15_HOURS_BEFORE"= "15 ساعات";
+"reminder_5_HOURS_BEFORE" = "5 ساعات";
+"reminder_15_HOURS_BEFORE" = "15 ساعات";
 "reminder_1_DAY_BEFORE" = "1 يوم";
 "reminder_2_DAYS_BEFORE" = "2 يوم";
+"reminder_1_WEEK_BEFORE" = "1 week before";
+
 /* Mailer */
+"Labels" = "Labels";
 "Label" = "ملصق";
+"IMAP Label" = "IMAP Label";
+"Invalid label" = "Don't use space, nor ( ) { } % * \" \\";
+"Duplicate label" = "Duplicate label";
+"IMAP labels must have unique names." = "IMAP labels must have unique names.";
+"New label" = "New label";
 "Show subscribed mailboxes only" = "عرض صناديق البريد المشترك بها فقط";
+"Synchronize only default mail folders (EAS)" = "Synchronize only default mail folders (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Fetch count of unseen messages for all mailboxes";
 "Sort messages by threads" = "رتب الرسائل حسب المواضيع";
-"Check for new mail" = "تحقق من وجود بريد جديد";
-"refreshview_manually" = "يدوي";
-"refreshview_every_minute" = "كل دقيقة";
-"refreshview_every_2_minutes" = "كل 2 دقيقة";
-"refreshview_every_5_minutes" = "كل 5 دقائق";
-"refreshview_every_10_minutes" = "كل 10 دقائق";
-"refreshview_every_20_minutes" = "كل 20 دقيقة";
-"refreshview_every_30_minutes" = "كل 30 دقيقة";
-"refreshview_once_per_hour" = "مرة كل ساعة";
+"Always open mail composer" = "Always open mail composer";
+"Inside current window" = "Inside current window";
+"In a popup window" = "In a popup window";
+"When sending mail, add unknown recipients to my" = "When sending mail, add unknown recipients to my";
+"Address Book" = "Address Book";
 "Forward messages" = "أعد توجيه الرسائل";
 "messageforward_inline" = "مضمنة";
 "messageforward_attached" = "كمرفق";
@@ -129,47 +194,106 @@
 "Compose messages in" = "إنشاء رسائل في";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "نص عادي";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Default font size";
+
 "Display remote inline images" = "اعرِض الصور المضمَّنة عن بُعد";
 "displayremoteinlineimages_never" = "أبدًا";
 "displayremoteinlineimages_always" = "دائمًا";
+"Auto save every" = "Auto save every";
+"minutes" = "minutes";
+"Automatically mark messages as read" = "Automatically mark messages as read";
+"Immediately on display" = "Immediately on display";
+"After displaying for" = "After displaying for";
+"seconds" = "seconds";
+
+/* Contact */
+"Personal Address Book" = "Personal Address Book";
+"Collected Address Book" = "Collected Address Book";
+"Contact categories must have unique names." = "Contact categories must have unique names.";
+
 /* IMAP Accounts */
+"Settings" = "Settings";
+"Security" = "Security";
+"Mail Account" = "Mail Account";
 "New Mail Account" = "حساب بريد إلكتروني جديد";
 "Server Name" = "أسم الخادم";
 "Port" = "مدخل";
 "Encryption" = "التشفير";
 "None" = "بلا";
 "User Name" = "اسم المستخدم";
-"Password" = "كلمة المرور";
 "Full Name" = "الإسم الكامل";
 "Email" = "البريد الإلكتروني";
 "Reply To Email" = "الرد على البريد الإلكتروني";
 "Signature" = "التوقيع";
+"Identities" = "Identities";
+"Always use the default identity when replying to messages" = "Always use the default identity when replying to messages";
+"Default Identity" = "Default Identity";
+"New Identity" = "New Identity";
 "(Click to create)" = "(انقر للصنع)";
 "Please enter your signature below" = "من فضلك ادخل توقيعك أدناه";
 "Please specify a valid sender address." = "من فضلك حدِّد عنوان مرسل صالح.";
 "Please specify a valid reply-to address." = "من فضلك حدِّد عنوان ردٍّ صالح";
+"Specify a hostname other than the local host" = "Specify a hostname other than the local host";
+
+"No certificate installed" = "No certificate installed";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "The SSL certificate must use the PKCS#12 (PFX) format.";
+"Uninstall" = "Uninstall";
+"Choose PKCS12 Certificate .." = "Choose PKCS12 Certificate ..";
+"Certificate Import Password" = "Certificate Import Password";
+"Upload" = "Upload";
+"When composing a message" = "When composing a message";
+"Digitally sign the message by default" = "Digitally sign the message by default";
+"Always try to encrypt the message" = "Always try to encrypt the message";
+"An error occurred while importing the certificate. Verify your password." = "An error occurred while importing the certificate. Verify your password.";
+
 /* Additional Parameters */
 "Additional Parameters" = "معلمات إضافية";
+
 /* password */
+"Current password" = "Current password";
 "New password" = "كلمة مرور جديدة";
 "Confirmation" = "تأكيد";
 "Change" = "لا شيء";
+"Passwords don't match" = "Passwords don't match";
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
+"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+
+
 /* Event+task classifications */
-"Default events classification" ="تصنيف الأحداث الافتراضية";
-"Default tasks classification" ="تصنيف المهام الافتراضية";
+"Default events classification" = "تصنيف الأحداث الافتراضية";
+"Default tasks classification" = "تصنيف المهام الافتراضية";
 "PUBLIC_item" = "علني";
 "CONFIDENTIAL_item" = "سري";
 "PRIVATE_item" = "خاص";
+
 /* Event+task categories */
+"Calendar Category" = "Calendar Category";
+"Add Calendar Category" = "Add Calendar Category";
+"New category" = "New category";
+"Reset to defaults" = "Reset to defaults";
+"Remove Calendar Category" = "Remove Calendar Category";
+"Contact Category" = "Contact Category";
+"Add Contact Category" = "Add Contact Category";
+"Remove Contact Category" = "Remove Contact Category";
 "category_none" = "لا شيء";
 "calendar_category_labels" = "ذكرى، عيد ميلاد، مكالمات عمل، عملاء ، منافس، عملاء، المفضلات، المتابعة، الهدايا، أيام العطل، الأفكار، الاجتماع، قضايا، متنوعات ، شخصية،مشاريع، عطلة عامة، الحالة، الموردين ، السفر، عطلة";
+
 /* Default module */
 "Calendar" = "تقويم";
 "Contacts" = "دفتر العناوين";
 "Mail" = "بريد";
 "Last" = "أخر إستخدام";
 "Default Module " = "وحدة نمطية افتراضية";
-"Language" ="اللغة";
+"SOGo Version" = "SOGo Version";
+
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "Save preferences and reload page now?";
+"Language" = "اللغة";
 "choose" = "اختيار ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
@@ -178,7 +302,6 @@
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
 "ChineseTaiwan" = "Chinese (Taiwan)";
-"Croatian" = "Hrvatski";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -215,6 +338,18 @@
 "TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
+"Refresh View" = "Refresh View";
+"refreshview_manually" = "يدوي";
+"refreshview_every_minute" = "كل دقيقة";
+"refreshview_every_2_minutes" = "كل 2 دقيقة";
+"refreshview_every_5_minutes" = "كل 5 دقائق";
+"refreshview_every_10_minutes" = "كل 10 دقائق";
+"refreshview_every_20_minutes" = "كل 20 دقيقة";
+"refreshview_every_30_minutes" = "كل 30 دقيقة";
+"refreshview_once_per_hour" = "مرة كل ساعة";
+"Enable Desktop Notifications" = "Enable Desktop Notifications";
+
 /* Return receipts */
 "When I receive a request for a return receipt" = "عندما اتلقى طلبا لإرسال ايصال استلام";
 "Never send a return receipt" = "لا ترسل إيصال استلام";
@@ -225,13 +360,24 @@
 "Never send" = "لم يرسل";
 "Always send" = "إرسال دائما";
 "Ask me" = "أسألني";
+
 /* Filters - UIxPreferences */
 "Filters" = "قواعد تصفية";
 "Active" = "نشط";
 "Move Up" = "تحريك لأعلى";
 "Move Down" = "تحريك لأسفل";
+"Connection error" = "Connection error";
+"Service temporarily unavailable" = "Service temporarily unavailable";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Enable filter";
+
 /* Filters - UIxFilterEditor */
 "Filter name" = "أسم قاعدة التصفية";
+/* Button label */
+"Add a condition" = "Add a condition";
+/* Button label */
+"Add an action" = "Add an action";
 "For incoming messages that" = "عن الرسائل الواردة التي";
 "match all of the following rules" = "تطابق كافة القواعد التالية";
 "match any of the following rules" = "تتطابق مع أي من القواعد التالية";
@@ -245,12 +391,29 @@
 "To or Cc" = "إلى أو نسخة";
 "Size (Kb)" = "الحجم (كيلو بايت)";
 "Header" = "قمة";
+"Body" = "Body";
 "Flag the message with" = " وضع إشارة على الرسالة مع";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Flag";
+
 "Discard the message" = "رفض الرسالة";
 "File the message in" = "تقديم الرسالة في";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Mailbox";
+
 "Keep the message" = "الحفاظ على رسالة";
 "Forward the message to" = "إعادة توجيه الرسالة إلى";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "البريد الإلكتروني";
+
 "Send a reject message" = "إرسال رسالة رفض";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Message";
+
 "Send a vacation message" = "إرسال رسالة عطلة";
 "Stop processing filter rules" = "إيقاف معالجة قواعد التصفية";
 "is under" = "هو تحت";
@@ -263,17 +426,16 @@
 "does not match" = "لا يطابق";
 "matches regex" = "يطابق رجإكس";
 "does not match regex" = "لا يطابق رجإكس";
+/* Placeholder for the value field of a condition */
+"Value" = "Value";
 "Seen" = "نظر";
 "Deleted" = "حذف";
 "Answered" = "اجاب";
 "Flagged" = "وضع علامة عليه";
 "Junk" = "غير مرغوب به";
 "Not Junk" = "مرغوب به";
-"Label 1" = "ملصق 1";
-"Label 2" = "ملصق 2";
-"Label 3" = "ملصق 3";
-"Label 4" = "ملصق 4";
-"Label 5" = "ملصق 5";
+
+/* Password policy */
 "The password was changed successfully." = "غُيِّرت كلمة السِّر بنجَاح.";
 "Password must not be empty." = "كلمة السر يجب ان لا تكون فارغة.";
 "The passwords do not match. Please try again." = "كلمات المرور لا تتطابق. يرجى المحاولة مرة أخرى.";
@@ -287,3 +449,54 @@
 "Unhandled error response" = "إستجابة خاطئة غير معروفة";
 "Password change is not supported." = "لا يتم اعتماد تغيير كلمة المرور.";
 "Unhandled HTTP error code: %{0}" = "Unhandled HTTP error code: %{0}";
+"Cancel" = "Cancel";
+"Invitations" = "Invitations";
+"Edit Filter" = "Edit Filter";
+"Delete Filter" = "Delete Filter";
+"Create Filter" = "Create Filter";
+"Delete Label" = "Delete Label";
+"Create Label" = "Create Label";
+"Accounts" = "Accounts";
+"Edit Account" = "Edit Account";
+"Delete Account" = "Delete Account";
+"Create Account" = "Create Account";
+"Account Name" = "Account Name";
+"SSL" = "SSL";
+"TLS" = "TLS";
+
+/* Avatars */
+"Use Gravatar" = "Use Gravatar";
+"Alternate Avatar" = "Alternate Avatar";
+"none" =  "None";
+"identicon" = "Ident Icon";
+"monsterid" = "Monster";
+"wavatar" = "Wavatar";
+"retro" = "Retro";
+
+/* Animation Level */
+"Animation Level" = "Animation Level";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Normal";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Limited";
+"animation_NONE" = "None";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "Enable two-factor authentication using a TOTP application";
+"You must enter this key into your TOTP application." = "You must enter this key into your TOTP application.";
+"If you do not and you log out you will not be able to login again." = "If you do not and you log out you will not be able to login again.";
+"Enter TOTP verification code :" = "Enter TOTP verification code :";
+"Invalid TOTP verification code" = "Invalid TOTP verification code";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "An external Sieve script is active";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled.";
+"Let SOGo handle everything" = "Let SOGo handle everything";
+
+/* Password Recovery */
+"Password recovery mode" = "Password recovery";
+"Question" = "Question";
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password recovery" = "Password recovery";
+"Password change" = "Password change";

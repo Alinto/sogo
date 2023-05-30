@@ -12,6 +12,8 @@ publish_info_text = "المرسل يعلمك بالحدث المرفق.";
 cancel_info_text = "تم إلغاء دعوتك أو الحدث برمته.";
 request_info_no_attendee = "يقترح عقد إجتماع للحضور. تلقيت هذه الرسالة بمثابة إشعار، وليس من المقرر لكم المشاركة.";
 Appointment = "موعد";
+"Status Update" = "Status Update";
+was = "was";
 
 Organizer = "منظم";
 Time = "الساعة";
@@ -32,10 +34,16 @@ reply_info = "هذا هو الرد على دعوة الحدث التي قمت ب
 "to" = "إلى :";
 "Untitled" = "بدون عنوان";
 "Size" = "الحجم";
-"Digital signature is not valid" = "التوقيع الرقمي غير صالح";
-"Message is signed" = "الرسالة موقعة";
 "Subject" = "العنوان";
 "From" = "من";
 "Date" = "التاريخ";
 "To" = "إلى";
 "Issuer" = "المصدر";
+/* Tooltips */
+"View Attachment" = "View Attachment";
+"Save Attachment" = "Save Attachment";
+"CC" = "CC";
+"Cancel" = "Cancel";
+"OK" = "OK";
+"Comment" = "Comment";
+"Description" = "Description";

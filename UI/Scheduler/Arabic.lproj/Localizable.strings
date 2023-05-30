@@ -4,33 +4,45 @@
 "Create a new event" = "إنشاء حدث جديد";
 "Create a new task" = "إنشاء مهمة جديدة";
 "Edit this event or task" = "تحرير هذا الحدث أو المهمة";
+"Print the current calendar view" = "Print the current calendar view";
 "Delete this event or task" = "حذف هذا الحدث أو المهمة";
 "Go to today" = "انتقل إلى اليوم";
 "Switch to day view" = "التبديل إلى طريقة عرض اليوم";
 "Switch to week view" = "التبديل إلى طريقة عرض الأسبوع";
 "Switch to month view" = "التبديل إلى طريقة عرض الشهر";
+"Switch to multi-columns day view" = "Switch to multi-columns day view";
 "Reload all calendars" = "تحديث جميع التقاويم";
+
 /* Tabs */
 "Date" = "تاريخ";
 "Calendars" = "تقاويم";
+"No events for selected criteria" = "No events for selected criteria";
+"No tasks for selected criteria" = "No tasks for selected criteria";
+
 /* Day */
 "DayOfTheMonth" = "يوم من الشهر";
 "dayLabelFormat" = "%m/%d/%Y";
 "today" = "اليوم";
 "Previous Day" = "اليوم السابق";
 "Next Day" = "اليوم اللاحق";
+
 /* Week */
 "Week" = "اسبوع";
 "this week" = "هذا الاسبوع";
 "Week %d" = "أسبوع %d";
 "Previous Week" = "الأسبوع السابق";
 "Next Week" = "الأسبوع القادم";
+
 /* Month */
 "this month" = "هذا الشهر";
 "Previous Month" = "الشهر السابق";
 "Next Month" = "الشهر القادم";
+/* Week number prefix */
+"W" = "W";
+
 /* Year */
 "this year" = "هذه السنة";
+
 /* Menu */
 "Calendar" = "تقويم";
 "Contacts" = "جهة اتصال";
@@ -53,11 +65,20 @@
 "A total of %{0} events were imported in the calendar." = "ما مجموعه%{0} من الأحداث تم استيرادها في التقويم.";
 "Compose E-Mail to All Attendees" = "إنشاء رسالة بريد إلكتروني لجميع الحاضرين";
 "Compose E-Mail to Undecided Attendees" = "إنشاء رسالة بريد إلكتروني الى الحضور الغير مؤكد حضورهم.";
+
+/* Relative dates */
+"Yesterday" = "Yesterday";
+"Today" = "Today";
+"Tomorrow" = "Tomorrow";
+"Last %@" = "Last %@";
+
 /* Folders */
 "Personal calendar" = "تقويم شخصي";
+
 /* Misc */
 "OpenGroupware.org" = "OpenGroupware.org";
 "Forbidden" = "ممنوع";
+
 /* acls */
 "Access rights to" = "صلاحية الدخول الى";
 "For user" = "للمستخدم";
@@ -80,12 +101,15 @@
 = "يمكن لهذا الشخص إنشاء الكائنات في تقويمي.";
 "This person can erase objects from my calendar."
 = "يمكن لهذا الشخص مسح الكائنات في تقويمي.";
+
 /* Button Titles */
 "Subscribe to a Calendar..." = "اشترك في تقويم";
 "Remove the selected Calendar" = "مسح التقويم المحدد";
+"New calendar" = "New calendar";
 "Name of the Calendar" = "اسم التقويم";
 "new" = "جديد";
-"printview" = "معاينة قبل الطباعة";
+"Print view" = "Print view";
+"Print" = "Print";
 "edit" = "تعديل";
 "delete" = "مسح";
 "proposal" = "اقتراح";
@@ -95,8 +119,11 @@
 "Attach" = "إرفاق";
 "Update" = "تحديث";
 "Cancel" = "إلغاء";
+"Reset" = "Reset";
+"Save" = "Save";
 "show_rejected_apts" = "إظهار المواعيد المرفوضة";
 "hide_rejected_apts" = "إخفاء المواعيد المرفوضة";
+
 /* Schedule */
 "Schedule" = "جدول";
 "No appointments found" = "لا يوجد مواعيد";
@@ -109,6 +136,22 @@
 "more attendees" = "مزيد من الحضور";
 "Hide already accepted and rejected appointments" = "إخفاء المواعيد المقبولة والمرفوضة";
 "Show already accepted and rejected appointments" = "إظهار المواعيد المقبولة والمرفوضة";
+
+/* Print view */
+"LIST" = "List";
+"Print Settings" = "Print Settings";
+"Title" = "العنوان";
+"Layout" = "Layout";
+"What to Print" = "What to Print";
+"Options" = "Options";
+"Tasks with no due date" = "Tasks with no due date";
+"Display working hours only" = "Display working hours only";
+"Completed tasks" = "Completed Tasks";
+"Display events and tasks colors" = "Display events and tasks colors";
+"Borders" = "Borders";
+"Backgrounds" = "Backgrounds";
+"Page Format" = "Page Format";
+
 /* Appointments */
 "Appointment viewer" = "عارض المواعيد";
 "Appointment editor" = "محرر المواعيد";
@@ -117,13 +160,12 @@
 "Start" = "البدء";
 "End" = "النهاية";
 "Due Date" = "تاريخ الاستحقاق";
-"Title" = "العنوان";
-"Calendar" = "الحالة";
 "Name" = "الاسم";
 "Email" = "البريد الإلكتروني";
 "Status" = "الحالة";
 "% complete" = "اكتمل %c";
 "Location" = "المكان";
+"Add a category" = "Add a category";
 "Priority" = "الأولوية";
 "Privacy" = "الخصوصية";
 "Cycle" = "الدورة";
@@ -141,19 +183,25 @@
 "Reminder" = "التنبيه";
 "General" = "العام";
 "Reply" = "الرد";
+"Created by" = "Created by";
+"You are invited to participate" = "You are invited to participate";
 "Target" = "الهدف";
 "attributes" = "صفات";
 "attendees" = "حضور";
 "delegated from" = "مفوض من";
+
 /* checkbox title */
 "is private" = "خاص؟";
+
 /* classification */
 "Public" = "عام";
 "Private" = "خاص";
+
 /* text used in overviews and tooltips */
 "empty title" = "عنوان فارغ";
 "private appointment" = "موعد خاص";
 "Change..." = "غيِّر ...";
+
 /* Appointments (participation state) */
 "partStat_NEEDS-ACTION" = "سأؤكد الأمر لاحقًا";
 "partStat_ACCEPTED" = "سأحضُر";
@@ -161,10 +209,12 @@
 "partStat_TENTATIVE" = "قد أحضُر";
 "partStat_DELEGATED" = "أفوِّض";
 "partStat_OTHER" = "أخرى";
+
 /* Appointments (error messages) */
 "Conflicts found!" = "هنالك تعارضات!";
 "Invalid iCal data!" = "بيانات iCal غير صالح!";
 "Could not create iCal data!" = "عاجِز عن إنشاء بيانات iCal!";
+
 /* Searching */
 "view_all" = "الكل";
 "view_today" = "اليوم";
@@ -172,23 +222,35 @@
 "view_next14" = "الأربعة عشر يومًا القادمة";
 "view_next31" = "الواحد وثلاثون يومًا القادمة";
 "view_thismonth" = "هذا الشهر";
+"view_thisyear" = "This Year";
+"view_last7" = "Last 7 days";
+"view_last14" = "Last 14 days";
+"view_last31" = "Last 31 days";
+"view_lastmonth" = "Last Month";
+"view_lastyear" = "Last Year";
 "view_future" = "جميع الأحداث المستقبلية";
 "view_selectedday" = "اليوم المحدد";
+"view_not_started" = "Not started tasks";
+"view_overdue" = "Overdue tasks";
+"view_incomplete" = "Incomplete tasks";
 "View" = "العرض";
-"Title or Description" = "العنوان أو الوصف";
+"Title, category or location" = "Title, category or location";
+"Entire content" = "Entire content";
 "Search" = "ابحث";
 "Search attendees" = "ابحث عن الحضور";
 "Search resources" = "ابحث عن الموارد";
 "Search appointments" = "ابحث عن المواعيد";
 "All day Event" = "حدث طوال اليوم";
 "check for conflicts" = "افحص التعارضات";
-"Browse URL" = "تصفح عنوان الويب";
+"URL" = "URL";
 "newAttendee" = "أضِف أحد الحضور";
+
 /* calendar modes */
 "Overview" = "رؤية عامة";
 "Chart" = "المخطط";
 "List" = "القائمة";
 "Columns" = "الأعمدة";
+
 /* Priorities */
 "prio_0" = "غير محدد";
 "prio_1" = "مرتفعة";
@@ -200,6 +262,7 @@
 "prio_7" = "منخفضة";
 "prio_8" = "منخفضة";
 "prio_9" = "منخفضة";
+
 /* access classes (privacy) */
 "PUBLIC_vevent" = "حدث عام";
 "CONFIDENTIAL_vevent" = "حدث سري";
@@ -207,6 +270,7 @@
 "PUBLIC_vtodo" = "مهمة عامة";
 "CONFIDENTIAL_vtodo" = "مهمة سرية";
 "PRIVATE_vtodo" = "مهمة خاصة";
+
 /* status type */
 "status_" = "غير محدد";
 "status_NOT-SPECIFIED" = "غير محدد";
@@ -216,6 +280,16 @@
 "status_NEEDS-ACTION" = "يحتاجُ إجراءًا";
 "status_IN-PROCESS" = "يتم العمل فيه";
 "status_COMPLETED" = "اكتمل في";
+
+/* Priority level */
+"low" = "low";
+
+/* Priority level */
+"normal" = "normal";
+
+/* Priority level */
+"high" = "high";
+
 /* Cycles */
 "cycle_once" = "دورة واحدة";
 "cycle_daily" = "دورة يومية";
@@ -230,6 +304,7 @@
 "Recurrence pattern" = "نمط التكرار";
 "Range of recurrence" = "نطاق التكرار";
 "Daily" = "يوميًا";
+"Multi-Columns" = "Multi-Columns";
 "Weekly" = "أسبوعيًا";
 "Monthly" = "شهريًّا";
 "Yearly" = "سنويًّا";
@@ -238,20 +313,30 @@
 "Week(s)" = "أسبوع (أسابيع)";
 "On" = "فعِّل";
 "Month(s)" = "شهر (شهور)";
+
+/* [Event recurrence editor] Ex: _The_ first Sunday */
 "The" = "الـ";
 "Recur on day(s)" = "يتكرر في يوم/أيام";
 "Year(s)" = "عام (أعوام)";
+
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
 "cycle_of" = "من";
 "No end date" = "لا يوجد تاريخ نهائي";
 "Create" = "أنشئ";
 "appointment(s)" = "موعد/مواعيد";
 "Repeat until" = "تكرار حتى";
+"End Repeat" = "End Repeat";
+"Never" = "Never";
+"After" = "After";
+"On Date" = "On Date";
+"times" = "times";
 "First" = "الأول";
 "Second" = "الثاني";
 "Third" = "الثالث";
 "Fourth" = "الرابع";
 "Fift" = "الخامس";
 "Last" = "الأخير";
+
 /* Appointment categories */
 "category_none" = "بلا";
 "category_labels" = "السنوية,يوم الميلاد,الأعمال,المكالمات,العملاء,المنافسة,العميل,المفضلات,المتابعة,الهدايا,العطلات،الأفكار,الاجتماع,المشاكل,منوعات,شخصي,المشاريع,العطلة العامة,الحالة,الموردون,السفر,الأجازة";
@@ -264,6 +349,7 @@
 "repeat_YEARLY" = "سنويًّا";
 "repeat_CUSTOM" = "مخصص...";
 "reminder_NONE" = "لا تنبيه";
+"reminder_0" = "At time of event";
 "reminder_5_MINUTES_BEFORE" = "5 دقائق قبل";
 "reminder_10_MINUTES_BEFORE" = "10 دقائق قبل";
 "reminder_15_MINUTES_BEFORE" = "15 دقيقة قبل";
@@ -280,6 +366,7 @@
 "reminder_MINUTES" = "دقائق";
 "reminder_HOURS" = "ساعات";
 "reminder_DAYS" = "أيام";
+"reminder_WEEKS" = "weeks";
 "reminder_BEFORE" = "قبل";
 "reminder_AFTER" = "بعد";
 "reminder_START" = "يبدأ الحدث";
@@ -295,20 +382,44 @@
 "zoom_100" = "100%";
 "zoom_50" = "50%";
 "zoom_25" = "25%";
+
+/* Arial label for reminder units */
+"Reminder units" = "Reminder units";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "Reminder position";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "Reminder relation";
+
 /* transparency */
 "Show Time as Free" = "اعرض الوقت كمتفرغ";
+
+/* email notifications */
+"Send Appointment Notifications" = "Send Appointment Notifications";
+"From" = "From";
+"To" = "To";
+
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "لم يضبط العنوان، استمرار؟";
 validate_invalid_startdate = "حقل تاريخ البدء غير صالح";
 validate_invalid_enddate   = "حقل تاريخ الانتهاء غير صالح";
 validate_endbeforestart    = "تاريخ الانتهاء الذي أدخلته يحدث قبل تاريخ البدء.";
+validate_untilbeforeend    = "The recurrence must end after the first occurrence.";
+
 "Events" = "الأحداث";
 "Tasks" = "المهام";
 "Show completed tasks" = "اعرض المهام المكتملة";
+
 /* tabs */
 "Task" = "المهمة";
 "Event" = "الحدث";
 "Recurrence" = "التكرار";
+
 /* toolbar */
 "New Event" = "حدث جديد";
 "New Task" = "مهمة جديدة";
@@ -319,7 +430,11 @@ validate_endbeforestart    = "تاريخ الانتهاء الذي أدخلته 
 "Week View" = "عرض الاسبوع";
 "Month View" = "عرض الشهر";
 "Reload" = "تحديث";
+
+/* Number of selected components in events or tasks list */
+"selected" = "selected";
 "eventPartStatModificationError" = "حالة المشاركة الخاصة بك لا يمكن تعديلها.";
+
 /* menu */
 "New Event..." = "حدث جديد...";
 "New Task..." = "مهمة جديدة...";
@@ -335,19 +450,53 @@ validate_endbeforestart    = "تاريخ الانتهاء الذي أدخلته 
 = "لا يمكنك حذف أو إلغاء اشتراكك من تقويمك الشخصي.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "هل انت متأكد من حذف التقويم \"%{0}\"؟";
-/* Legend */
+"Are you sure you want to delete the selected components?"
+= "Are you sure you want to delete the selected components?";
+
+/* Participation role */
+"Role" = "Role";
+
+/* Participant role: participation is required */
 "Participant" = "المشارك";
+
+/* Participant role: participation is required */
+"req-participant" = "Participant";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "المشارك الاختياري";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Optional Participant";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "غير مشارك";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Non Participant";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "مقعد";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Chair";
+
+/* Participant status: needs action */
 "Needs action" = "بحاجة إلى إجراء";
+
+/* Participant status: event accepted */
 "Accepted" = "مقبول";
+
+/* Participant status: event declined */
 "Declined" = "مرفوض";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "مؤقت";
+
 "Free" = "متاح";
 "Busy" = "مشغول";
 "Maybe busy" = "ربما يكون مشغولًا";
 "No free-busy information" = "لا معلومات عن حالة التوفر-الانشغال";
+
 /* FreeBusy panel buttons and labels */
 "Suggest time slot" = "اقترح فترة زمنية";
 "Zoom" = "تقريب";
@@ -361,13 +510,18 @@ validate_endbeforestart    = "تاريخ الانتهاء الذي أدخلته 
 "and" = "و";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "هنالك تعارض في الوقت مع أحد الحضور. \nهل تريد الابقاء على الإعدادات الحالية رغم ذلك؟";
-/* apt list */
-"Start" = "البداية";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Would you like to remove them and send the invitation to the remaining attendees?";
+
+/* events list */
+"Due" = "Due";
 "(Private Event)" = "(الحدث الخاص)";
 vevent_class0 = "(الحدث العام)";
 vevent_class1 = "(حدث خاص)";
 vevent_class2 = "(حدث سري)";
-"Category" = "التصنيفات";
+
+/* tasks list */
+"Descending Order" = "Descending Order";
 vtodo_class0 = "(مهمة عامة)";
 vtodo_class1 = "(مهمة خاصة)";
 vtodo_class2 = "(مهمة سرية)";
@@ -377,6 +531,11 @@ vtodo_class2 = "(مهمة سرية)";
 "editRepeatingItem" = "العنصر الذي تُحرره هو عنصر متكرر. هل تريد تحرير جميع التكرارات أم هذا الحدث الواحد فقط؟";
 "button_thisOccurrenceOnly" = "هذا الحدث فقط";
 "button_allOccurrences" = "كل التكرارات";
+"Edit This Occurrence" = "Edit This Occurrence";
+"Edit All Occurrences" = "Edit All Occurrences";
+"Update This Occurrence" = "Update This Occurrence";
+"Update All Occurrences" = "Update All Occurrences";
+
 /* Properties dialog */
 "Color" = "اللون";
 "Include in free-busy" = "ضمن حالة التوفر-الانشغال";
@@ -390,11 +549,23 @@ vtodo_class2 = "(مهمة سرية)";
 "Receive a mail when I modify my calendar" = "تلقي البريد عندما أقوم بتعديل التقويم الخاص بي";
 "Receive a mail when someone else modifies my calendar" = "تلقي البريد عندما يقوم شخص آخر بتعديل التقويم الخاص بي";
 "When I modify my calendar, send a mail to" = "عندما أقوم بتعديل التقويم الخاص بي، أرسل رسالة بريد إلكتروني إلى";
+"Email Address" = "Email Address";
+"Export" = "Export";
+
+
+/* Show only the calendar for which the menu is displayed */
+"Show Only This Calendar" = "Show Only This Calendar";
+
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "Show All Calendars";
+
 "Links to this Calendar" = "روابط لهذا التقويم";
 "Authenticated User Access" = "مصادقة وصول المستخدم";
 "CalDAV URL" = "CalDAV URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
+
 /* Error messages */
 "dayFieldInvalid" = "يرجى تحديد قيمة رقمية في حقل الأيام أكبر من أو يساوي 1.";
 "weekFieldInvalid" = "يرجى تحديد قيمة رقمية في حقل الأسبوع (الأسابيع) أكبر من أو يساوي 1.";
@@ -411,15 +582,81 @@ vtodo_class2 = "(مهمة سرية)";
 "tagWasRemoved" = "إذا حذفت التقويم من المزامنة، ستحتاج إلى تحديث البيانات على هاتفك المحمول.\nهل تريد المتابعة؟";
 "DestinationCalendarError" = "التقويم المصدر والتقويم الهدف متطابقان. من فضلك حاول النسخ إلى تقويم مختلف.";
 "EventCopyError" = "فشل النسخ. من فضلك حاول النسخ من تقويم مختلف.";
+"Please select at least one calendar" = "Please select at least one calendar";
 "Open Task..." = "افتح مهمة...";
 "Mark Completed" = "علم كمكتمل";
 "Delete Task" = "احذف المهمة";
 "Delete Event" = "احذف الحدث";
 "Copy event to my calendar" = "انسخ إلى تقويمي";
 "View Raw Source" = "عرض المصدر الخام";
+"Move To" = "Move To";
+"Copy To" = "Copy To";
+"Subscriptions" = "Subscriptions";
+"Subscribe to a shared calendar" = "Subscribe to a shared calendar";
 "Subscribe to a web calendar..." = "اشترك في تقويم شابكة...";
 "URL of the Calendar" = "عنوان موقع التقويم";
 "Web Calendar" = "تقويم الشابكة";
+"Web Calendars" = "Web Calendars";
 "Reload on login" = "حدث عند تسجيل الدخول";
 "Invalid number." = "عدد غير صحيح.";
 "Please identify yourself to %{0}" = "من فضلك عرف نفسك لـ %{0}";
+"quantity" = "quantity";
+"Current view" = "Current view";
+"Selected events and tasks" = "Selected events and tasks";
+"Custom date range" = "Custom date range";
+"Select starting date" = "Select starting date";
+"Select ending date" = "Select ending date";
+"Delegated to" = "Delegated to";
+"Keep sending me updates" = "Keep sending me updates";
+"OK" = "OK";
+"Confidential" = "Confidential";
+"Enable" = "Enable";
+"Filter" = "Filter";
+"Sort" = "Sort";
+"Back" = "Back";
+"Day" = "Day";
+"Month" = "Month";
+"New Appointment" = "New Appointment";
+"filters" = "filters";
+"Today" = "Today";
+"More options" = "More options";
+"Delete This Occurrence" = "Delete This Occurrence";
+"Delete All Occurrences" = "Delete All Occurrences";
+"Add Recurrence Date" = "Add Recurrence Date";
+"Add From" = "Add From";
+"Add Due" = "Add Due";
+"Import" = "Import";
+"Rename" = "Rename";
+"Import Calendar" = "Import Calendar";
+"Select an ICS file." = "Select an ICS file.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
+
+/* Notification when user subscribes to a calendar */
+"Successfully subscribed to calendar" = "Successfully subscribed to calendar";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "Toggle item";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "Search scope";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";
