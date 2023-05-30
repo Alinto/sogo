@@ -37,6 +37,8 @@
 "this month" = "осы ай";
 "Previous Month" = "Алдыңғы ай";
 "Next Month" = "Келесі ай";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "осы жыл";
@@ -221,6 +223,11 @@
 "view_next31" = "Келесі 31 күн";
 "view_thismonth" = "Осы ай";
 "view_thisyear" = "Осы жыл";
+"view_last7" = "Last 7 days";
+"view_last14" = "Last 14 days";
+"view_last31" = "Last 31 days";
+"view_lastmonth" = "Last Month";
+"view_lastyear" = "Last Year";
 "view_future" = "Барлық болашақ іс-шаралар";
 "view_selectedday" = "Таңдалған күн";
 "view_not_started" = "Басталмаған тапсырмалар";
@@ -308,7 +315,7 @@
 "Month(s)" = "ай";
 
 /* [Event recurrence editor] Ex: _The_ first Sunday */
-"The" = "  ";
+"The" = "The";
 "Recur on day(s)" = "... күндерде қайталанады";
 "Year(s)" = "жыл";
 
@@ -392,6 +399,10 @@
 "Send Appointment Notifications" = "Кездесулер туралы ескерту жіберу";
 "From" = "Кімнен";
 "To" = "Кімге";
+
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
 
 /* validation errors */
 validate_notitle           = "Атауы жоқ. Жалғастырасыз ба?";
@@ -499,6 +510,8 @@ validate_untilbeforeend    = "Қайталау алғашқы көрінгенн
 "and" = "және";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Шақырылғандардың біреуінде немесе бірнешесінде уақыт жағынан қайшылық бар.\nҚайшылыққа қарамастан ағымдағы баптауларды сақтағыңыз келе ме?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Would you like to remove them and send the invitation to the remaining attendees?";
 
 /* events list */
 "Due" = "Мерзім";
@@ -616,6 +629,7 @@ vtodo_class2 = "(Құпия тапсырма)";
 "Rename" = "Қайта атау";
 "Import Calendar" = "Күнтізбені импорттау";
 "Select an ICS file." = "iCalendar файл (.ics) таңдаңыз.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Күнтізбеге сәтті жазылым";

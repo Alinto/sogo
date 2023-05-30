@@ -187,6 +187,7 @@
 "InboxFolderName"  = "Кіріс хаттар";
 "DraftsFolderName" = "Жоба жазбалар";
 "JunkFolderName" = "Спам";
+"TemplatesFolderName" = "Templates";
 "SieveFolderName"  = "Папкалар";
 "Folders"          = "Папкалар"; /* title line */
 
@@ -432,6 +433,9 @@
 "Set as Sent" = "Жіберілген хаттар ретінде орнату";
 "Set as Trash" = "Себет ретінде орнату";
 
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Set as Templates";
+
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Спам ретінде орнату";
 
@@ -452,7 +456,10 @@
 "More search options" = "Көбірек іздеу опциялары";
 "Your email has been saved" = "Хат сақталды";
 "Your email has been sent" = "Хат жөнелтілді";
-"Folder compacted" = "Папка сығымдалды";
+"Folder compacted" = "Папка сығымдалған";
+
+"New draft" = "New draft";
+"Create new draft with this template" = "Create new draft with this template";
 
 /* Advanced search */
 "Enter Subject" = "Тақырып енгізіңіз";
