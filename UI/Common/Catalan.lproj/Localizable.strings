@@ -41,6 +41,8 @@
      = "Qualsevol usuari amb un compte en el sistema tindrà accés a la seua llibreta d'adreces \"%{0}\". Està segur de voler donar accés a qualsevol usuari en el sistema? ";
 "Give Access" = "Donar accés";
 "Keep Private" = "Mantenir en privat";
+"Expand" = "Expand";
+"Reduce" = "Reduce";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -104,6 +106,7 @@
 "Personal" = "Personal";
 "To Do" = "Per fer";
 "Later" = "Més tard";
+"Forwarded" = "Forwarded";
 "Return Receipt Sent" = "Justificant de recepció enviat";
 "a2_Sunday" = "dg";
 "a2_Monday" = "dl";
@@ -122,11 +125,17 @@
 "S/MIME Certificate" = "Certificat S/MIME";
 "Subject Name" = "Nom del subjecte";
 "Issuer" = "Emissor";
+"streetAddress" = "Street";
+"stateOrProvinceName" = "State or Province";
+"localityName" = "Locality";
 "countryName" = "País";
 "organizationName" = "Organització";
 "organizationalUnitName" = "Unitat organitzativa";
 "commonName" = "Nom comú";
+"surname" = "Surname";
+"givenName" = "Given Name";
 "emailAddress" = "Correu electrònic";
+
 
 /* Authentication username */
 "Username" = "Nom d'usuari";
@@ -213,3 +222,11 @@
 
 /* Hotkey description to move forward in current view */
 "Move forward" = "Avançar";
+
+/* Password Recovery */
+"passwordRecovery_Disabled" = "Disabled";
+"passwordRecovery_SecretQuestion" = "Secret question";
+"passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
+"passwordRecovery_SecretQuestion2" = "What was your first car ?";
+"passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
+"passwordRecovery_SecondaryEmail" = "Secondary E-mail";

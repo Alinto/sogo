@@ -221,7 +221,7 @@
 "New Addressbook..." = "Nova llibreta d'adreces";
 "Subscribe to an Addressbook..." = "Subscribiure's a una llibreta...";
 "Remove the selected Addressbook" = "Esborrar la llibreta seleccionada";
-"Subscribe to a shared folder" = "Subscriure's a una carpeta compartida";
+"Subscribe to a shared contact" = "Subscribe to a shared addressbook";
 "Search User" = "Cerca usuari";
 "Name of the Address Book" = "Nom de la llibreta";
 "Are you sure you want to delete the selected address book?"
@@ -350,6 +350,7 @@
 "Synchronization" = "Sincronització";
 "Synchronize" = "Sincronitzar";
 "Sucessfully subscribed to address book" = "S'ha subscrit correctament a la llibreta d'adreces";
+"A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = " Abast de la cerca ";

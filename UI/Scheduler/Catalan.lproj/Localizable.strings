@@ -37,6 +37,8 @@
 "this month" = "Aquest mes";
 "Previous Month" = "Mes anterior";
 "Next Month" = "Mes següent";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "enguany";
@@ -221,6 +223,11 @@
 "view_next31" = "Els pròxims 31 dies";
 "view_thismonth" = "Aquest mes";
 "view_thisyear" = "Aquest any";
+"view_last7" = "Last 7 days";
+"view_last14" = "Last 14 days";
+"view_last31" = "Last 31 days";
+"view_lastmonth" = "Last Month";
+"view_lastyear" = "Last Year";
 "view_future" = "Tots els esdeveniments futurs";
 "view_selectedday" = "Dia seleccionat";
 "view_not_started" = "Tasques no iniciades";
@@ -393,6 +400,10 @@
 "From" = "De";
 "To" = "Per a";
 
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "Sense títol, continuar?";
 validate_invalid_startdate = "Data de començament incorrecta";
@@ -499,6 +510,8 @@ validate_untilbeforeend    = "La recurrència ha de finalitzar després de la pr
 "and" = "i";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Hi ha un conflicte temporal amb un o més assistents.\nTot i així, voleu mantenir la cita?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Would you like to remove them and send the invitation to the remaining attendees?";
 
 /* events list */
 "Due" = "Deguda el";
@@ -579,7 +592,7 @@ vtodo_class2 = "(Tasca confidencial)";
 "Move To" = "Moure a";
 "Copy To" = "Copiar a";
 "Subscriptions" = "Subscripcions";
-"Subscribe to a shared folder" = "Subscriure's a una carpeta compartida";
+"Subscribe to a shared calendar" = "Subscribe to a shared calendar";
 "Subscribe to a web calendar..." = "Subscriure's a un calendari web...";
 "URL of the Calendar" = "URL del calendari";
 "Web Calendar" = "Calendari Web";
@@ -616,6 +629,7 @@ vtodo_class2 = "(Tasca confidencial)";
 "Rename" = "Canviar el nom";
 "Import Calendar" = "Importar calendari";
 "Select an ICS file." = "Seleccionar un fitxer iCalendar .ics";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Subscrit correctament al calendari";
