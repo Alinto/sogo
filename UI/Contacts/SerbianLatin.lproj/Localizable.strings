@@ -221,7 +221,7 @@
 "New Addressbook..." = "Novi adresar...";
 "Subscribe to an Addressbook..." = "Pretplati se na Adresar...";
 "Remove the selected Addressbook" = "Ukloni odabrani adresar";
-"Subscribe to a shared folder" = "Pretplati se na deljeni direktorijum";
+"Subscribe to a shared contact" = "Subscribe to a shared addressbook";
 "Search User" = "Potraži korisnika";
 "Name of the Address Book" = "Ime adresara";
 "Are you sure you want to delete the selected address book?"
@@ -350,6 +350,7 @@
 "Synchronization" = "Sinhronizacija";
 "Synchronize" = "Sinhronizuj";
 "Sucessfully subscribed to address book" = "Uspešno pretplaćen na adresar";
+"A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Pretraži opseg";
