@@ -3,11 +3,13 @@
 /* Icon's label */
 "Create"      = "Sortu";
 "Empty Trash" = "Hustu zakarrontzia";
+"Empty Junk Folder" = "Empty Junk Folder";
 "Delete"      = "Ezabatu";
 "Expunge"     = "Suntsitu";
 "Forward"     = "Birbidali";
 "Get Mail"    = "Eskuratu mezuak";
 "Junk"        = "Zaborra";
+"Not junk"    = "Not junk";
 "Reply"       = "Erantzun";
 "Reply All"   = "Erantzun denei";
 "Print"       = "Inprimatu";
@@ -21,6 +23,7 @@
 "Options" = "Aukerak";
 "Close" = "Itxi";
 "Size" = "Tamaina";
+
 /* Tooltips */
 "Send this message now" = "Bidali mezu hau orain";
 "Select a recipient from an Address Book" = "Aukeratu jasotzailea Helbide-liburu batetik";
@@ -33,32 +36,59 @@
 "Reply to sender and all recipients" = "Erantzun bidaltzaile eta jasotzaile guztiei";
 "Forward selected message" = "Birbidali aukeratutako mezua";
 "Delete selected message or folder" = "Ezabatu aukeratutako mezu edo karpeta";
-"Mark the selected messages as junk" = "Markatu aukeratutako mezua zabor-posta gisa";
 "Print this message" = "Inprimatu mezu hau";
 "Stop the current transfer" = "Gelditu uneko transferentzia";
 "Attachment" = "Eranskina";
 "Unread" = "Irakurri-gabea";
 "Flagged" = "Bandera dauka";
 "Search multiple mailboxes" = "Bilatu postontzi anitzetan";
+
 /* Main Frame  */
-"Home"                 = "Hasiera"; 
+"Home"                 = "Hasiera";
 "Calendar"             = "Egutegia";
 "Addressbook"          = "Helbide liburua";
 "Mail"                 = "Emaila";
 "Right Administration" = "Eskubideen kudeaketa";
 "Help" = "Laguntza";
+
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Ongi etorria SOGo webmail-era. Erabili ezkerreko zuhaitza zure email kontuak arakatzeko ";
 "Read messages"       = "Irakurri mezuak";
+
+/* Tooltip for fab button */
 "Write a new message" = "Idatzi mezu berria";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Write a message in new window";
+
 "Share" = "Partekatu";
 "Account" = "Kontua";
 "Shared Account" = "Partekatutako kontua";
+
+/* A mailbox is selected, but no message (only shown on large screens) */
+"No message selected" = "No message selected";
+
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "No mailbox selected";
+
+"An error occured while communicating with the mail server" = "An error occured while communicating with the mail server";
+
+/* Mailbox actions */
+
+/* Compact Folder success message */
+"Folder compacted" = "Folder compacted";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Junk folder emptied";
+
+/* Empty Trash success message */
+"Trash emptied" = "Trash emptied";
+
 /* acls */
 "Access rights to" = "Atzipen baimenak honi";
 "For user" = "Erabiltzailearentzat";
 "Any Authenticated User" = "Autentifikatutako edozein erabiltzaile";
-"List and see this folder" = "Zerrendatu eta ikuskatu karpeta hau";
+"View this folder" = "View this folder";
 "Read mails from this folder" = "Irakurri karpeta honetako mezuak";
 "Mark mails read and unread" = "Markatu mezuak irakurrita eta irakurri gabeko gisa";
 "Modify the flags of the mails in this folder" = "Karpeta honetako mezuen banderak aldatu.";
@@ -73,17 +103,19 @@
 "Saved Messages.zip" = "Gorde Messages.zip";
 "Update" = "Eguneratu";
 "Cancel" = "Ezeztatu";
+
 /* Mail edition */
 "From"          = "Nork";
 "Subject"       = "Gaia";
 "To"            = "Nori";
 "Cc"            = "Kopia";
 "Bcc"           = "Izkutuko kopia";
-"Reply-To"	    = "Erantzun-honi";
+"Reply-To"	= "Erantzun-honi";
 "Add address"   = "Gehitu helbidea";
 "Body"          = "Gorputza";
 "Open" = "Ireki";
 "Select All" = "Denak aukeratu";
+"Select Message" = "Select Message";
 "Attach Web Page..." = "Erantsi Web Orria ...";
 "file" = "fitxategia";
 "files" = "fitxategiak";
@@ -91,12 +123,17 @@
 "to"            = "Nori";
 "cc"            = "Kopia";
 "bcc"           = "Izkutuko kopia";
+"Add a recipient" = "Add a recipient";
 "Edit Draft..." = "Aldatu zirriborroa...";
 "Load Images" = "Kargatu irudiak";
 "Return Receipt" = "Jasotze agiria";
+"Choose which identity to send this message from" = "Choose which identity to send this message from";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Mezu honen bidaltzaileak mezua irakurtzen duzunean jakinarazia izan nahi du. Jakinarazpena bidali nahi diozu?";
 "Return Receipt (displayed) - %@"= "Jasotze agiria (bistaratua) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Honako hau zuk %@-ri bidalitako mezuaren jasotze-agiria da.\n\nOharra: Jasotze agiri honek mezua jasotzailearen ordenagailuan bistaratu dela bakarrik ziurtatzen du. Ezin da ziurtatu jasotzaileak mezuaren edukia irakurri edota ulertu duenik.";
+"Security" = "Security";
+"Sign" = "Sign";
+"Encrypt" = "Encrypt";
 "Priority" = "Lehentasuna";
 "highest" = "Altuena";
 "high" = "Altua";
@@ -104,14 +141,16 @@
 "low" = "Baxua";
 "lowest" = "Baxuena";
 "This mail is being sent from an unsecure network!" = "Mezu hau sare ez-seguru bat erabiliz hari zara bidaltzen!";
-"Address Book:" = "Helbide Liburua";
+"Address Book" = "Address Book";
 "Search For" = "Bilatu hau";
+
 /* Popup "show" */
 "all"     = "denak";
 "read"    = "irakurria";
 "unread"  = "irakurri-gabea";
 "deleted" = "ezabatua";
 "flagged" = "bandera dauka";
+
 /* MailListView */
 "Sender" = "Bidaltzailea";
 "Subject or Sender" = "Gaia edo Bidaltzailea";
@@ -122,6 +161,7 @@
 "All"           = "Denak";
 "No message"    = "Mezurik ez";
 "messages"      = "mezuak";
+"Yesterday"     = "Yesterday";
 "first"         = "Lehenengoa";
 "previous"      = "Aurrekoa";
 "next"          = "Hurrengoa";
@@ -131,22 +171,39 @@
 "Mark Unread" = "Markatu irakurri-gabeko gisa";
 "Mark Read"   = "Markatu irakurri gisa";
 "Untitled" = "Izenburu gabe";
+
+/* Filter option in messages list */
+"Show unread messages only" = "Show unread messages only";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Show flagged messages only";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Filtered by label";
+
 /* Tree */
 "SentFolderName"   = "Bidalia";
 "TrashFolderName"  = "Zakarrontzia";
 "InboxFolderName"  = "Sarrera";
 "DraftsFolderName" = "Zirriborroak";
+"JunkFolderName" = "Junk";
+"TemplatesFolderName" = "Templates";
 "SieveFolderName"  = "Iragazkiak";
 "Folders"          = "Karpetak"; /* title line */
+
 /* MailMoveToPopUp */
 "MoveTo"        = "Mugitu &hellip;";
+
 /* Address Popup menu */
 "Add to Address Book..." = "Gehitu helbide liburuan...";
+"Successfully created card" = "Successfully created card";
 "Compose Mail To" = "Idatzi mezua honi";
 "Create Filter From Message..." = "Sortu iragazkia mezua erabiliz...";
+
 /* Image Popup menu */
 "Save Image" = "Gorde mezua";
 "Save Attachment" = "Gorde eranskina";
+
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Ireki \"mezu berri\" leihoan";
 "Copy Folder Location" = "Kopiatu karpetaren kokapena";
@@ -163,10 +220,13 @@
 "Get Messages for Account" = "Eskuratu kontu honen mezuak";
 "Properties..." = "Ezaugarriak...";
 "Delegation..." = "Ordezkaritza ...";
+
 /* Use This Folder menu */
 "Sent Messages" = "Bidalitako mezuak";
 "Drafts" = "Zirriborroak";
 "Deleted Messages" = "Ezabatutako mezuak";
+"Junk Messages" = "Junk Messages";
+
 /* Message list popup menu */
 "Open Message In New Window" = "Ireki mezua leiho berrian";
 "Reply to Sender Only" = "Erantzun bidaltzaileari soilik";
@@ -179,12 +239,81 @@
 "Save As..." = "Gorde honela...";
 "Print Preview" = "Inprimatzeko aurrebista";
 "View Message Source" = "Ikusi mezuaren iturburua";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "Convert To Event";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "Convert To Task";
+
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Download message";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Download message (zip)";
+
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Download all attachments";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "attachments";
+
 "Print..." = "Inprimatu...";
 "Delete Message" = "Ezabatu mezua";
 "Delete Selected Messages" = "Ezabatu aukeratutako mezuak";
+"Mark the selected messages as junk" = "Markatu aukeratutako mezua zabor-posta gisa";
+"Mark the selected messages as not junk" = "Mark the selected messages as not junk";
+
+/* Text appended to the recipients list when there are too many recipients */
+"and %{0} more..." = "and %{0} more...";
+
+/* Button label to hide extended list of recipients */
+"Hide" = "Hide";
+
+/* Number of selected messages in list */
+"selected" = "selected";
+
+/* Date formatting from one time to another time */
+"to_time" = "to";
+
+/* Date formatting from one day to another day */
+"to_date" = "to";
+
+/* Encrypted message notification */
+"This message is encrypted" = "This message is encrypted";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Unable to verify message signature";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "The message has been modified";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Error reading the certificate. Please install a new certificate.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "No certificate associated to account.";
+
+/* Invalid S/MIME signature */
+"Digital signature is not valid" = "Digital signature is not valid";
+
+/* Valid S/MIME signature */
+"Message is signed" = "Message is signed";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Message is signed but the certificate doesn't match the sender email address";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Digital signature is not valid";
+
 "This Folder" = "Karpeta hau";
+
 /* Label popup menu */
 "None" = "Bat ere ez";
+
 /* Mark popup menu */
 "As Read" = "Irakurri gisa";
 "Thread As Read" = "Haria irakurri gisa";
@@ -205,15 +334,32 @@
 "results found" = "emaitza topatu dira";
 "result found" = "emaitza topatu da";
 "Please specify at least one filter" = "Mesedez, zehaztu gutxienez iragazki bat";
+
 /* Folder operations */
 "Name" = "Izena";
 "Enter the new name of your folder"
- = "Idatzi zure karpetaren izen berria";
+ ="Idatzi zure karpetaren izen berria";
 "Do you really want to move this folder into the trash ?"
  = "Ziur zaude karpeta hau zakarrontzira mugitu nahi duzula?";
 "Operation failed" = "Eragiketak huts egin du";
 "Quota" = "Kuota";
 "quotasFormat" = "%{0}% erabilia %{1}-n MB ";
+"messageQuotasFormat" = "%{0}% of %{1} msgs";
+"Unable to move/delete folder." = "Unable to move/delete folder.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "The mailbox could not be moved to the trash folder. Would you like to delete it immediately?";
+
+/* Confirmation message when deleting multiple messages */
+"Are you sure you want to delete the selected messages?" = "Are you sure you want to delete the selected messages?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} message(s) copied";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} message(s) moved";
+
 "Please select a message." = "Mesedez, aukeratu mezu bat.";
 "Please select a message to print." = "Mesedez, aukeratu inprimatzeko mezu bat.";
 "Please select only one message to print." = "Mesdez, aukeratu inprimatzekom mezu bakarra.";
@@ -233,19 +379,120 @@
 = "Mezu bat bere karpeta berera ezin da mugitu!";
 "Copying a message into its own folder is impossible!"
 = "Mezu bat ezin da bere karpetara kopiatu!";
+
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
 = "Mezuak ezin izan dira zakarrontzira mugitu. Berehala ezabatu nahi dituzu?";
+
 /* Message editing */
+"Please specify a subject." = "Please specify a subject.";
 "error_missingsubject" = "Mezuak ez dauka gairik. Ziur zaude horrela bidali nahi duzula?";
 "error_missingrecipients" = "Mesedez, zehaztu gutxienez jasotzaile bat.";
 "Send Anyway" = "Bidali hala ere";
 "Error while saving the draft" = "Errorea zirriborroa gordetzerakoan";
+
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Unable to empty the trash folder.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Unable to empty the junk folder.";
+
+/* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Errorea \"%{0}\" fitxategia igotzerakoan:";
 "There is an active file upload. Closing the window will interrupt it." = "Fitxategi igoera aktibo bat dago. Leihoa ixteak etengo du.";
-/* Message sending */
+"Message is too big" = "Message is too big";
+
+/* Appears while sending the message */
+"Sending" = "Sending";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Sent";
+
 "cannot send message: (smtp) all recipients discarded" = "Ezin izan da mezua bidali: jasotzaile guztiak baliogabeak dira.";
 "cannot send message (smtp) - recipients discarded" = "Ezin izan da mezua bidali. Ondorengo jasotzaileak ez dira baliozkoak";
 "cannot send message: (smtp) error when connecting" = "Ezin izan da mezua bidali: errorea SMTP zerbitzarira konektatzean.";
+"cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
+"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
+
 /* Contacts list in mail editor */
 "Email" = "Emaila";
+"More mail options" = "More mail options";
+"Delegation" = "Delegation";
+"Add User" = "Add User";
+"Add a tag" = "Add a tag";
+"reply" = "reply";
+"Edit" = "Edit";
+"Yes" = "Yes";
+"No" = "No";
+"Location" = "Location";
+"Rename" = "Rename";
+"Compact" = "Compact";
+"Export" = "Export";
+"Set as Drafts" = "Set as Drafts";
+"Set as Sent" = "Set as Sent";
+"Set as Trash" = "Set as Trash";
+
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Set as Templates";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "Set as Junk";
+
+"Sort" = "Sort";
+"Order Received" = "Order Received";
+"Descending Order" = "Descending Order";
+"Back" = "Back";
+"Copy messages" = "Copy messages";
+"More messages options" = "More messages options";
+"Mark as Unread" = "Mark as Unread";
+"Mark as Read" = "Mark as Read";
+"Closing Window ..." = "Closing Window ...";
+"Tried to send too many mails. Please wait." = "Tried to send too many mails. Please wait.";
+"View Mail" = "View Mail";
+"This message contains external images." = "This message contains external images.";
+"Expanded" = "Expanded";
+"Add a Criteria" = "Add a Criteria";
+"More search options" = "More search options";
+"Your email has been saved" = "Your email has been saved";
+"Your email has been sent" = "Your email has been sent";
+"Folder compacted" = "Folder compacted";
+
+"New draft" = "New draft";
+"Create new draft with this template" = "Create new draft with this template";
+
+/* Advanced search */
+"Enter Subject" = "Enter Subject";
+"Enter From" = "Enter From";
+"Enter To" = "Enter To";
+"Enter Cc" = "Enter Cc";
+"Enter Body" = "Enter Body";
+"match" = "match";
+"does not match" = "does not match";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Search scope";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Manage Subscriptions";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Filter";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

@@ -1,6 +1,19 @@
 /* toolbar */
 "Save and Close" = "Gorde eta itxi";
 "Close" = "Itxi";
+"Preferences saved" = "Preferences saved";
+
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Unsaved Changes";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Do you want to save your changes made to the configuration?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Save";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Don't Save";
 
 /* tabs */
 "General" = "Orokorra";
@@ -17,35 +30,63 @@
 "Color" = "Kolorea";
 "Add" = "Gehitu";
 "Delete" = "Ezabatu";
+
 /* contacts categories */
 "contacts_category_labels" = "Lankide, Lehiakide, Bezero, Lagun, Familia, Negoziokide, Hornitzaile, Prentsa, VIP";
+
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Gaitu \"oporretan nago\" erantzun automatikoa";
-"Auto reply message" ="Erantzun automatikorako mezua";
-"Email addresses (separated by commas)" ="Email helbideak (koma bidez banatuak)";
+"Enable custom auto reply subject" = "Enable custom auto reply subject";
+"Auto reply subject" = "Auto reply subject";
+"You can write ${subject} to insert the original subject" = "You can write ${subject} to insert the original subject";
+"Auto reply message" = "Erantzun automatikorako mezua";
+"Email addresses" = "Email addresses";
 "Add default email addresses" = "Gehitu email helbide lehenetsiak";
-"Days between responses" ="Erantzunen arteko egunak";
+"Days between responses" = "Erantzunen arteko egunak";
 "Do not send responses to mailing lists" = "Ez bidali erantzunak email zerrendatara";
-"Disable auto reply after" = "Ezgaitu erantzun automatikoa";
+"Activation Constraints" = "Activation Constraints";
+"Enable auto reply on" = "Enable auto reply on";
+"First day of vacation" = "First day of vacation";
+"Disable auto reply after" = "Disable auto reply after";
+"Last day of vacation" = "Last day of vacation";
+"Enter date" = "Enter date";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Enable auto reply at";
+"Enter time" = "Enter time";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Disable auto reply at";
+"Enable auto reply on these days" = "Enable auto reply on these days";
 "Always send vacation message response" = "'Oporretan nago' erantzun mezua beti bidali";
+"The vacation message is sent prior to apply your filters." = "The vacation message is sent prior to apply your filters.";
+"Discard incoming mails during vacation" = "Discard incoming mails during vacation";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "The vacation message is sent but incoming messages are not delivered to your inbox.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Mesedez, zehaztu zure mezua eta zure helbide elektronikoa zeini erantzun automatikoa gaitu nahi diozun.";
 "Your vacation message must not end with a single dot on a line." = "Zure 'oporretan nago' mezua ezin da lerro batean puntu bakarrarekin amaitu.";
 "End date of your auto reply must be in the future."
 = "Erantzun automatikoaren amaiera datak etorkizuenan behar du izan.";
+
 /* forward messages */
 "Forward incoming messages" = "Birbidali sarrera mezuak";
+"Always forward" = "Always forward";
+"Incoming messages are forwarded prior to apply your filters." = "Incoming messages are forwarded prior to apply your filters.";
 "Keep a copy" = "Gorde kopia bat";
+"Enter an email" = "Enter an email";
+"Add another email" = "Add another email";
 "Please specify an address to which you want to forward your messages."
 = "Mesedez, zehaztu zein helbidetara birbidali nahi dituzun mezuak.";
 "You are not allowed to forward your messages to an external email address." = "Ezin dituzu zure mezuak kanpoko email helbide batera birbidali.";
 "You are not allowed to forward your messages to an internal email address." = "Ezin dituzu zure mezuak barneko email helbide batera birbidali.";
+"You are not allowed to forward your messages to this domain:" = "You are not allowed to forward your messages to this domain:";
+
 /* d & t */
-"Current Time Zone" ="Uneko ordu-zona";
-"Short Date Format" ="Data-formatu laburra";
-"Long Date Format" ="Data-formatu luzea";
-"Time Format" ="Ordu-formatua";
+"Time Zone" = "Time Zone";
+"Short Date Format" = "Data-formatu laburra";
+"Long Date Format" = "Data-formatu luzea";
+"Time Format" = "Ordu-formatua";
 "default" = "Lehenetsia";
+"Default Module" = "Default Module";
+"Save" = "Save";
 "shortDateFmt_0" = "%d-%b-%y";
 "shortDateFmt_1" = "%d-%m-%y";
 "shortDateFmt_2" = "%d/%m/%y";
@@ -61,8 +102,10 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
-   
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
+
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
 "longDateFmt_2" = "%A, %d %B, %Y";
@@ -79,24 +122,32 @@
 "timeFmt_2" = "";
 "timeFmt_3" = "";
 "timeFmt_4" = "";
+
+/* Timezone autocompletion */
+"No matches found." = "No matches found.";
+
 /* calendar */
-"Week begins on" ="Astea hasteko eguna";
-"Day start time" ="Egunaren hasiera ordua";
-"Day end time" ="Egunaren amaiera ordua";
+"Week begins on" = "Astea hasteko eguna";
+"Day start time" = "Egunaren hasiera ordua";
+"Day end time" = "Egunaren amaiera ordua";
 "Day start time must be prior to day end time." = "Egunaren hasiera orduak amaiera orduak baino lehenago behar du izan.";
+"Week days to display" = "Week days to display";
 "Show time as busy outside working hours" = "Erakutsi denbora lanpetuta bezala lan orduetatik kanpo";
-"First week of year" ="Urteko lehen astea";
+"First week of year" = "Urteko lehen astea";
 "Enable reminders for Calendar items" = "Gaitu oroigarriak egutegiko elementuetarako";
 "Play a sound when a reminder comes due" = "Soinua jo oroigarri baten ondorioz.";
-"Default reminder" ="Lehenetsitako oroigarria";
+"Default reminder" = "Lehenetsitako oroigarria";
 "firstWeekOfYear_January1" = "Urtarrilak 1eab hasten da";
 "firstWeekOfYear_First4DayWeek" = "Lehenengo 4 eguneko astea";
 "firstWeekOfYear_FirstFullWeek" = "Lehenengo aste osoa";
 "Prevent from being invited to appointments" = "Hitzorduetara gonbidatua izatea eragotzi.";
 "White list for appointment invitations" = "Hitzordu gonbidapenetarako zerrenda-zuria";
 "Contacts Names" = "Kontaktuen izenak";
+"Duplicate name" = "Duplicate name";
+"Calendar categories must have unique names." = "Calendar categories must have unique names.";
+
 /* Default Calendar */
-"Default calendar" ="Lehenetsitako egutegia";
+"Default calendar" = "Lehenetsitako egutegia";
 "selectedCalendar" = "Aukeratutako egutegia";
 "personalCalendar" = "Egutegi pertsonala";
 "firstCalendar" = "Gaitutako lehenengo egutegia";
@@ -113,12 +164,24 @@
 "reminder_1_DAY_BEFORE" = "1 egun lehenago";
 "reminder_2_DAYS_BEFORE" = "2 egun lehenago";
 "reminder_1_WEEK_BEFORE" = "1 aste lehenago";
+
 /* Mailer */
 "Labels" = "Etiketak";
 "Label" = "Etiketa";
+"IMAP Label" = "IMAP Label";
+"Invalid label" = "Don't use space, nor ( ) { } % * \" \\";
+"Duplicate label" = "Duplicate label";
+"IMAP labels must have unique names." = "IMAP labels must have unique names.";
+"New label" = "New label";
 "Show subscribed mailboxes only" = "Erakutsi harpidetutako postontziak bakarrik";
+"Synchronize only default mail folders (EAS)" = "Synchronize only default mail folders (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Fetch count of unseen messages for all mailboxes";
 "Sort messages by threads" = "Antolatu mezuak haritan";
+"Always open mail composer" = "Always open mail composer";
+"Inside current window" = "Inside current window";
+"In a popup window" = "In a popup window";
 "When sending mail, add unknown recipients to my" = "Mezua bidaltzerakoan gehitu jasotzaile ezezagunak nere";
+"Address Book" = "Address Book";
 "Forward messages" = "Mezuak birbidali";
 "messageforward_inline" = "Mezuaren barruan";
 "messageforward_attached" = "Iruzkin bezala";
@@ -131,15 +194,29 @@
 "Compose messages in" = "Sortu mezuak hemen:";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Testu arrunta";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Default font size";
+
 "Display remote inline images" = "Erakutsi mezuaren barneko hurruneko irudiak";
 "displayremoteinlineimages_never" = "Inoiz ez";
 "displayremoteinlineimages_always" = "Beti";
 "Auto save every" = "Automatikoki gorde";
 "minutes" = "minuturo";
+"Automatically mark messages as read" = "Automatically mark messages as read";
+"Immediately on display" = "Immediately on display";
+"After displaying for" = "After displaying for";
+"seconds" = "seconds";
+
 /* Contact */
 "Personal Address Book" = "Helbide liburu pertsonala";
 "Collected Address Book" = "Bildutako helbide liburua";
+"Contact categories must have unique names." = "Contact categories must have unique names.";
+
 /* IMAP Accounts */
+"Settings" = "Settings";
+"Security" = "Security";
+"Mail Account" = "Mail Account";
 "New Mail Account" = "Email kontu berria";
 "Server Name" = "Zerbitzariaren izena";
 "Port" = "Portua";
@@ -150,33 +227,73 @@
 "Email" = "Emaila";
 "Reply To Email" = "Erantzun honi emaila";
 "Signature" = "Sinadura";
+"Identities" = "Identities";
+"Always use the default identity when replying to messages" = "Always use the default identity when replying to messages";
+"Default Identity" = "Default Identity";
+"New Identity" = "New Identity";
 "(Click to create)" = "(Klikatu sortzeko)";
 "Please enter your signature below" = "Mesedez, idatzi zure sinadura azpian";
 "Please specify a valid sender address." = "Mesedez, idatzi baliodun bidaltzaile-helbide bat.";
 "Please specify a valid reply-to address." = "Mesedez, idatzi baliodun erantzun-honi helbide bat.";
+"Specify a hostname other than the local host" = "Specify a hostname other than the local host";
+
+"No certificate installed" = "No certificate installed";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "The SSL certificate must use the PKCS#12 (PFX) format.";
+"Uninstall" = "Uninstall";
+"Choose PKCS12 Certificate .." = "Choose PKCS12 Certificate ..";
+"Certificate Import Password" = "Certificate Import Password";
+"Upload" = "Upload";
+"When composing a message" = "When composing a message";
+"Digitally sign the message by default" = "Digitally sign the message by default";
+"Always try to encrypt the message" = "Always try to encrypt the message";
+"An error occurred while importing the certificate. Verify your password." = "An error occurred while importing the certificate. Verify your password.";
+
 /* Additional Parameters */
 "Additional Parameters" = "Beste parametroak";
+
 /* password */
+"Current password" = "Current password";
 "New password" = "Pasahitz berria";
 "Confirmation" = "Berrespena";
 "Change" = "Aldatu";
+"Passwords don't match" = "Passwords don't match";
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
+"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+
+
 /* Event+task classifications */
-"Default events classification" ="Ekitaldien sailkapen lehenetsia";
-"Default tasks classification" ="Zereginen sailkapen lehenetsia";
+"Default events classification" = "Ekitaldien sailkapen lehenetsia";
+"Default tasks classification" = "Zereginen sailkapen lehenetsia";
 "PUBLIC_item" = "Publikoa";
 "CONFIDENTIAL_item" = "Isilpekoa";
 "PRIVATE_item" = "Pribatua";
+
 /* Event+task categories */
+"Calendar Category" = "Calendar Category";
+"Add Calendar Category" = "Add Calendar Category";
+"New category" = "New category";
+"Reset to defaults" = "Reset to defaults";
+"Remove Calendar Category" = "Remove Calendar Category";
+"Contact Category" = "Contact Category";
+"Add Contact Category" = "Add Contact Category";
+"Remove Contact Category" = "Remove Contact Category";
 "category_none" = "Bat ere ez";
 "calendar_category_labels" = "Urteurrena, Urtebetetzea, Negozio, Deiak, Bezeroak, Lehia, Bezeroa, Gogokoak, Jarraitu, Opariak, Oporrak, Ideiak, Bilera, Aleak, Denetarik, Pertsonala, Proiektuak, Jaieguna, Egoera, Hornitzaileak, Bidaia, Oporrak";
+
 /* Default module */
 "Calendar" = "Egutegia";
 "Contacts" = "Helbide liburua";
 "Mail" = "Emaila";
 "Last" = "Azkenekoz erabilia";
 "Default Module " = "Lehenetsitako modulua";
-"SOGo Version" ="SOGo betsioa";
-"Language" ="Hizkuntza";
+"SOGo Version" = "SOGo betsioa";
+
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "Save preferences and reload page now?";
+"Language" = "Hizkuntza";
 "choose" = "Aukeratu ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
@@ -185,7 +302,6 @@
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
 "ChineseTaiwan" = "Chinese (Taiwan)";
-"Croatian" = "Hrvatski";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -207,9 +323,9 @@
 "Montenegrin" = "Crnogorski";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
-"BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
 "Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
 "Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
@@ -222,7 +338,8 @@
 "TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
-"Refresh View" ="Eguneratu ikuspegia";
+
+"Refresh View" = "Eguneratu ikuspegia";
 "refreshview_manually" = "Eskuz";
 "refreshview_every_minute" = "Minuturo";
 "refreshview_every_2_minutes" = "2 minuturo";
@@ -231,6 +348,8 @@
 "refreshview_every_20_minutes" = "20 minuturo";
 "refreshview_every_30_minutes" = "30 minuturo";
 "refreshview_once_per_hour" = "Orduro";
+"Enable Desktop Notifications" = "Enable Desktop Notifications";
+
 /* Return receipts */
 "When I receive a request for a return receipt" = "Jasotze-agiriaren eskakizun bat jasotzen dudanean";
 "Never send a return receipt" = "Jasotze agiria inoiz ez bidali.";
@@ -241,6 +360,7 @@
 "Never send" = "Inoiz ez bidali";
 "Always send" = "Bidali beti";
 "Ask me" = "Galde nazazu";
+
 /* Filters - UIxPreferences */
 "Filters" = "Iragazkiak";
 "Active" = "Aktibo";
@@ -248,8 +368,16 @@
 "Move Down" = "Mugitu beheruntz";
 "Connection error" = "Konexio errorea";
 "Service temporarily unavailable" = "Zerbitzua aldi baterako ez dago erabligarri";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Enable filter";
+
 /* Filters - UIxFilterEditor */
-"Filter name:" = "Iragazkiaren izena";
+"Filter name" = "Filter name";
+/* Button label */
+"Add a condition" = "Add a condition";
+/* Button label */
+"Add an action" = "Add an action";
 "For incoming messages that" = "Honako hau betetzen duten mezuentzat";
 "match all of the following rules" = "Arau guzti hauek betetzen dituztenak";
 "match any of the following rules" = "Arau hauetako edozein betetzen dituztenak";
@@ -265,11 +393,27 @@
 "Header" = "Goiburua";
 "Body" = "Gorputza";
 "Flag the message with" = "Mezuari honako bandera jarri";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Flag";
+
 "Discard the message" = "Baztertu mezua";
 "File the message in" = "Fitxategiratu mezua";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Mailbox";
+
 "Keep the message" = "Mantendu mezua";
 "Forward the message to" = "Birbidali mezua honi";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "Emaila";
+
 "Send a reject message" = "Bidali ezetsi mezu bat";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Message";
+
 "Send a vacation message" = "Bildai 'oporretan nago' mezu bat.";
 "Stop processing filter rules" = "Iragazki arauen prozesatzea gelditu.";
 "is under" = "azpian dago";
@@ -282,12 +426,15 @@
 "does not match" = "ez dator bat";
 "matches regex" = "regex-ekin bat dator";
 "does not match regex" = "regex-ekin ez dator bat";
+/* Placeholder for the value field of a condition */
+"Value" = "Value";
 "Seen" = "Ikusia";
 "Deleted" = "Ezabatua";
 "Answered" = "Erantzunda";
 "Flagged" = "Bandera dauka";
 "Junk" = "Zaborra";
 "Not Junk" = "Ez da zaborra";
+
 /* Password policy */
 "The password was changed successfully." = "Pasahitza ondo aldatu da.";
 "Password must not be empty." = "Pasahitza ezin da hutsa izan.";
@@ -302,3 +449,54 @@
 "Unhandled error response" = "Landu gabeko errore erantzuna";
 "Password change is not supported." = "Pasahitz aldaketa ez dago onartua.";
 "Unhandled HTTP error code: %{0}" = "Landu gabeko HTTP errore kodea: %{0}";
+"Cancel" = "Cancel";
+"Invitations" = "Invitations";
+"Edit Filter" = "Edit Filter";
+"Delete Filter" = "Delete Filter";
+"Create Filter" = "Create Filter";
+"Delete Label" = "Delete Label";
+"Create Label" = "Create Label";
+"Accounts" = "Accounts";
+"Edit Account" = "Edit Account";
+"Delete Account" = "Delete Account";
+"Create Account" = "Create Account";
+"Account Name" = "Account Name";
+"SSL" = "SSL";
+"TLS" = "TLS";
+
+/* Avatars */
+"Use Gravatar" = "Use Gravatar";
+"Alternate Avatar" = "Alternate Avatar";
+"none" =  "None";
+"identicon" = "Ident Icon";
+"monsterid" = "Monster";
+"wavatar" = "Wavatar";
+"retro" = "Retro";
+
+/* Animation Level */
+"Animation Level" = "Animation Level";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Normal";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Limited";
+"animation_NONE" = "None";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "Enable two-factor authentication using a TOTP application";
+"You must enter this key into your TOTP application." = "You must enter this key into your TOTP application.";
+"If you do not and you log out you will not be able to login again." = "If you do not and you log out you will not be able to login again.";
+"Enter TOTP verification code :" = "Enter TOTP verification code :";
+"Invalid TOTP verification code" = "Invalid TOTP verification code";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "An external Sieve script is active";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled.";
+"Let SOGo handle everything" = "Let SOGo handle everything";
+
+/* Password Recovery */
+"Password recovery mode" = "Password recovery";
+"Question" = "Question";
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password recovery" = "Password recovery";
+"Password change" = "Password change";

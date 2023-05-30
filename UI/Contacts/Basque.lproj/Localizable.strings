@@ -21,11 +21,15 @@
 "HomePhone" = "EtxekoTelefonoa";
 "Lastname" = "Abizena";
 "Location" = "Kokapena";
+"Add a category" = "Add a category";
 "MobilePhone" = "Telefono mugikorra";
 "Name" = "Izena";
 "OfficePhone" = "BulegokoTelefonoa";
 "Organization" = "Erakundea";
 "Work Phone" = "Laneko telefonoa";
+"Cell" = "Cell";
+"Pager" = "Orrikatzailea";
+"Pref" = "Pref";
 "Phone" = "Telefonoa";
 "Phones" = "Telefonoak";
 "Postal" = "Posta";
@@ -40,6 +44,115 @@
 "Move To" = "Mugitu hona";
 "Copy To" = "Kopiatu hona";
 "Add to" = "Gehitu hona";
+"To" = "To";
+"Carbon Copy (Cc)" = "Carbon Copy (Cc)";
+"Blind Carbon Copy (Bcc)" = "Blind Carbon Copy (Bcc)";
+
+/* Search scope: name fields */
+"name" = "Name";
+
+/* Search scope: name fields */
+"c_cn" = "Name";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "Secondary email";
+
+/* Search scope: screen name field */
+"nsaimid" = "Screen name";
+
+/* Search scope: mail fields */
+"mail" = "Mail";
+
+/* Search scope: mail fields */
+"c_mail" = "Mail";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Telephone";
+
+/* Search scope: telephone field */
+"homephone" = "Telephone";
+
+/* Search scope: mobile field */
+"mobile" = "Mobile";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Fax";
+
+/* Search scope: pager field */
+"pager" = "Pager";
+
+/* Search scope: categories field */
+"c_categories" = "Categories";
+
+/* Search scope: categories field */
+"vcardcategories" = "Categories";
+
+/* Search scope: title field */
+"title" = "Title";
+
+/* Search scope: organization field */
+"c_o" = "Organization";
+
+/* Search scope: organization field */
+"o" = "Organization";
+
+/* Search scope: department field */
+"ou" = "Department";
+
+/* Search scope: city field */
+"l" = "City";
+
+/* Search scope: country field */
+"c" = "Country";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Home Address";
+
+/* Search scope: state/province field */
+"st" = "State/Province";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Home State/Province";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "Zip/Postal Code";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "Zip/Postal Code";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "Home Country";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Home page";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Web page";
+
+/* Search scope: note field */
+"description" = "Note";
+
+/* Subheader of empty addressbook */
+"No contact" = "No contact";
+
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Start a search to browse this address book";
+
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "contacts";
+
+/* No contact matching search criteria */
+"No matching contact" = "No matching contact";
+
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "matching contacts";
+
+/* Number of selected contacts in list */
+"selected" = "selected";
+
+/* Empty right pane */
+"No contact selected" = "No contact selected";
+
 /* Tooltips */
 "Create a new address book card" = "Sortu helbide liburu txartel berria";
 "Create a new list" = "Sortu zerrenda berria";
@@ -72,32 +185,29 @@
 "Additional Email" = "Beste emaila";
 "Phone Number" = "Telefono zenbakia";
 "Prefers to receive messages formatted as" = "Nahiago du mezuak honako formatuan jasotzea";
-"Screen Name:" = "Pantailaren izena";
 "Categories" = "Kategoriak";
 "First" = "Lehenengoa";
 "Last" = "Azkena";
 "Nickname" = "Goitizena";
 "Telephone" = "Telefonoa:";
 "Work" = "Lana";
-"Home" = "Etxea";
-"Fax" = "Fax-a";
 "Mobile" = "Mugikorra";
 "Pager" = "Orrikatzailea";
+
 /* categories */
 "contacts_category_labels" = "Lankide, Lehiakide, Bezero, Lagun, Familia, Negoziokidea, Hornitzailea, Prentsa, VIP";
 "New category" = "Kategoria berria";
+
 /* adresses */
 "Title" = "Izenburua";
 "Service" = "Zerbitzua";
-"Company:" = "Enpresa";
-"Department:" = "Saila";
-"Organization" = "Saila";
-"Address:" = "Helbidea";
+"Company" = "Company";
+"Department" = "Department";
 "City" = "Herria";
-"State_Province:" = "Estatua / Probintzia";
-"ZIP_Postal Code:" = "Posta kodea";
+"State_Province" = "State/Province";
+"ZIP_Postal Code" = "ZIP/Postal Code";
 "Country" = "Herrialdea";
-"Web Page:" = "Web orria";
+"Web Page" = "Web Page";
 "Other Infos" = "Bestelako informazioak";
 "Note" = "Ohar";
 "Timezone" = "Ordu-zona";
@@ -111,21 +221,33 @@
 "New Addressbook..." = "Helbideliburu berria";
 "Subscribe to an Addressbook..." = "Harpidetu helbide liburu bat...";
 "Remove the selected Addressbook" = "Ezabatu aukeratutako helbide-liburua";
+"Subscribe to a shared contact" = "Subscribe to a shared addressbook";
+"Search User" = "Search User";
 "Name of the Address Book" = "Helbide-liburuaren izena";
 "Are you sure you want to delete the selected address book?"
 = "Ziur zaude aukeratutako helbide-lburua ezabatu nahi duzula?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "Are you sure you want to delete the addressbook \"%{0}\"?";
 "You cannot remove nor unsubscribe from a public addressbook."
 = "Helbide-liburu publiko bat ezin duzu ezabatu edo harpidetza kendu.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "Ezin duzu ezabatu edo harpidetza kendu zure helbide-liburu pertsonala.";
 "Are you sure you want to delete the selected contacts?"
 = "Ziur zaude aukeratutako kontaktuak ezabatu nahi dituzula?";
+"Are you sure you want to delete the card of %{0}?" = "Are you sure you want to delete the card of %{0}?";
 "You cannot delete the card of \"%{0}\"."
 = "Ezin duzu \"%{0}\"-en txartela ezabatu.";
 "You cannot subscribe to a folder that you own!"
 = "Ezin duzu zure karpeta bat harpidetu.";
 "Unable to subscribe to that folder!"
 = "Ezin da karpeta hori harpidetu.";
+
+/* security */
+"Security" = "Security";
+"Uninstall" = "Uninstall";
+"Error reading the card certificate." = "Error reading the card certificate.";
+"No certificate associated to card." = "No certificate associated to card.";
+
 /* acls */
 "Access rights to" = "Atzipen baimenak honi";
 "For user" = "Erabiltzailearentzat";
@@ -144,11 +266,15 @@
 "The selected contact has no email address."
 = "Aukeratutako kontaktuak ez dauka email helbiderik.";
 "Please select a contact." = "Mesedez, aukeratu kontaktu bat.";
-/* Error messages for move and copy */
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} card(s) copied";
+"%{0} card(s) moved" = "%{0} card(s) moved";
 "SoAccessDeniedException" = "Ezin duzu helbide liburu honetan idatzi.";
 "Forbidden" = "Ezin duzu helbide liburu honetan idatzi.";
 "Invalid Contact" = "Aukeratutako kontaktua jada ez da existitzen.";
 "Unknown Destination Folder" = "Aukeratutako helburu helbide-liburua jada ez da existitzen.";
+
 /* Lists */
 "List details" = "Zerrendaren xehetasunak";
 "List name" = "Zerrendaren izena";
@@ -161,6 +287,8 @@
 "Export" = "Esportatu";
 "Export Address Book..." = "Esportatu helbide liburua...";
 "View Raw Source" = "Ikusi Raw iturburua";
+
+/* Import */
 "Import Cards" = "Inportatu txartelak";
 "Select a vCard or LDIF file." = "Aukeratu vCard edo LDIF fitxategia";
 "Upload" = "Kargatu";
@@ -170,8 +298,68 @@
 "No card was imported." = "Ez da txartelik inportatu.";
 "A total of %{0} cards were imported in the addressbook." = "Guztira %{0} txartel inportatu dira helbide liburuan.";
 "Reload" = "Birkargatu";
+
 /* Properties window */
 "Address Book Name" = "Helbide-Liburuaren izena";
 "Links to this Address Book" = "Helbide liburu honetarako estekak";
 "Authenticated User Access" = "Autentifikatutako erabiltzaileentzako atzipena";
 "CardDAV URL" = "CardDAV URL-a";
+"Options" = "Options";
+"Rename" = "Rename";
+"Subscriptions" = "Subscriptions";
+"Global Addressbooks" = "Global Addressbooks";
+"Search" = "Search";
+"Sort" = "Sort";
+"Descending Order" = "Descending Order";
+"Back" = "Back";
+"Select All" = "Select All";
+"Copy contacts" = "Copy contacts";
+"More messages options" = "More messages options";
+"New Contact" = "New Contact";
+"Close" = "Close";
+"More contact options" = "More contact options";
+"Organization Unit" = "Organization Unit";
+"Add Organizational Unit" = "Add Organizational Unit";
+"Type" = "Type";
+"Email Address" = "Email Address";
+"New Email Address" = "New Email Address";
+"New Phone Number" = "New Phone Number";
+"URL" = "URL";
+"New URL" = "New URL";
+"street" = "street";
+"street (continued)" = "street (continued)";
+"Postoffice" = "Postoffice";
+"Region" = "Region";
+"Postal Code" = "Postal Code";
+"New Address" = "New Address";
+"Reset" = "Reset";
+"Description" = "Description";
+"Add Member" = "Add Member";
+"Subscribe" = "Subscribe";
+"Add Birthday" = "Add Birthday";
+"Import" = "Import";
+"More options" = "More options";
+"Role" = "Role";
+"Add Screen Name" = "Add Screen Name";
+"Custom 1" = "Custom 1";
+"Custom 2" = "Custom 2";
+"Custom 3" = "Custom 3";
+"Custom 4" = "Custom 4";
+"Custom Value" = "Custom Value";
+"New Custom Value" = "New Custom Value";
+"Synchronization" = "Synchronization";
+"Synchronize" = "Synchronize";
+"Sucessfully subscribed to address book" = "Successfully subscribed to address book";
+"A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "Search scope";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Toggle item";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

@@ -10,28 +10,39 @@
 "Switch to day view" = "Eguneko ikuspegia";
 "Switch to week view" = "Aste bateko ikuspegia";
 "Switch to month view" = "Hilabeteko ikuspegia";
+"Switch to multi-columns day view" = "Switch to multi-columns day view";
 "Reload all calendars" = "Birkargatu egutegi guztiak";
+
 /* Tabs */
 "Date" = "Eguna";
 "Calendars" = "Egutegiak";
+"No events for selected criteria" = "No events for selected criteria";
+"No tasks for selected criteria" = "No tasks for selected criteria";
+
 /* Day */
 "DayOfTheMonth" = "Hileko eguna";
 "dayLabelFormat" = "%m/%d/%Y";
 "today" = "Gaur";
 "Previous Day" = "Aurreko eguna";
 "Next Day" = "Hurrengo eguna";
+
 /* Week */
 "Week" = "Astea";
 "this week" = "Aste hau";
 "Week %d" = "%d astea";
 "Previous Week" = "Aurreko astea";
 "Next Week" = "Hurrengo astea";
+
 /* Month */
 "this month" = "Hilabete hau";
 "Previous Month" = "Aurreko hilabetea";
 "Next Month" = "Hurrengo hilabetea";
+/* Week number prefix */
+"W" = "W";
+
 /* Year */
 "this year" = "Urte hau";
+
 /* Menu */
 "Calendar" = "Egutegia";
 "Contacts" = "Kontaktuak";
@@ -54,11 +65,20 @@
 "A total of %{0} events were imported in the calendar." = "Gertakarien %{0}a inportatu da egutegian";
 "Compose E-Mail to All Attendees" = "Sortu mezu bat partaide guztientzat";
 "Compose E-Mail to Undecided Attendees" = "Sortu mezu bat ezbaian dauden partaideei";
+
+/* Relative dates */
+"Yesterday" = "Yesterday";
+"Today" = "Today";
+"Tomorrow" = "Tomorrow";
+"Last %@" = "Last %@";
+
 /* Folders */
 "Personal calendar" = "Norberaren egutegia";
+
 /* Misc */
 "OpenGroupware.org" = "OpenGroupware.org";
 "Forbidden" = "Debekatua";
+
 /* acls */
 "Access rights to" = "Hona sartzeko baimenak";
 "For user" = "Erabiltzailearentzat";
@@ -81,12 +101,15 @@
 = "Pertsona honek nire eguteko gauzak sor ditzake";
 "This person can erase objects from my calendar."
 = "Pertsona honek nire eguteko gauzak ezabatu ditzake";
+
 /* Button Titles */
 "Subscribe to a Calendar..." = "Harpidetu egutegi hau";
 "Remove the selected Calendar" = "Ezabatu egutegi hau";
+"New calendar" = "New calendar";
 "Name of the Calendar" = "Egutegiaren izena";
 "new" = "Berria";
 "Print view" = "Inprimatu ikuspegi hau";
+"Print" = "Print";
 "edit" = "Aldatu";
 "delete" = "Ezabatu";
 "proposal" = "Proposamena egin";
@@ -96,8 +119,11 @@
 "Attach" = "Erantsi";
 "Update" = "Eguneratu";
 "Cancel" = "Ezeztatu";
+"Reset" = "Reset";
+"Save" = "Save";
 "show_rejected_apts" = "Erakutsi atzera botatako hitzorduak";
 "hide_rejected_apts" = "Ezkutatu atzera botatako hitzorduak";
+
 /* Schedule */
 "Schedule" = "Ordutegia";
 "No appointments found" = "Ez da hitzordurik aurkitu";
@@ -110,6 +136,7 @@
 "more attendees" = "Partaide gehiago";
 "Hide already accepted and rejected appointments" = "Ezkutatu jada onartu edo baztertutako hitzorduak";
 "Show already accepted and rejected appointments" = "Erakutsi jada onartu edo baztertutako hitzorduak";
+
 /* Print view */
 "LIST" = "Zerrenda";
 "Print Settings" = "Ezarpenak inprimatu";
@@ -123,6 +150,8 @@
 "Display events and tasks colors" = "Erakutsi gertaera eta ekintzen koloreak";
 "Borders" = "Hertzak";
 "Backgrounds" = "Azpikoa";
+"Page Format" = "Page Format";
+
 /* Appointments */
 "Appointment viewer" = "Kontaktuen ikuskatzailea";
 "Appointment editor" = "Kontaktuen editorea";
@@ -136,6 +165,7 @@
 "Status" = "Egoera";
 "% complete" = "% amaituta";
 "Location" = "Kokapena";
+"Add a category" = "Add a category";
 "Priority" = "Lehentasuna";
 "Privacy" = "Pribatasuna";
 "Cycle" = "Zikloa";
@@ -154,19 +184,24 @@
 "General" = "Orokorra";
 "Reply" = "Errepikatu";
 "Created by" = "Honek sortua";
+"You are invited to participate" = "You are invited to participate";
 "Target" = "Helburua";
 "attributes" = "ezaugarriak";
 "attendees" = "partaideak";
 "delegated from" = "Beste honek zure esku utzia";
+
 /* checkbox title */
 "is private" = "pribatua da";
+
 /* classification */
 "Public" = "Publikoa";
 "Private" = "Pribatua";
+
 /* text used in overviews and tooltips */
 "empty title" = "Izenburu hutsa";
 "private appointment" = "Hitzordu pribatua";
 "Change..." = "Aldatu...";
+
 /* Appointments (participation state) */
 "partStat_NEEDS-ACTION" = "Beranduago berretsiko dut";
 "partStat_ACCEPTED" = "Zain egongo naiz";
@@ -174,10 +209,12 @@
 "partStat_TENTATIVE" = "Joan nintekeen";
 "partStat_DELEGATED" = "Eskuordetu dut";
 "partStat_OTHER" = "Bestelakoak";
+
 /* Appointments (error messages) */
 "Conflicts found!" = "Arazoak daude!";
 "Invalid iCal data!" = "iCal-aren datak ez du balio!";
 "Could not create iCal data!" = "Ezin izan da iCal-aren data sortu!";
+
 /* Searching */
 "view_all" = "Denak";
 "view_today" = "Gaur";
@@ -185,6 +222,12 @@
 "view_next14" = "Hurrengo 14 egunak";
 "view_next31" = "Hurrengo 31 egunak";
 "view_thismonth" = "Hilabete hau";
+"view_thisyear" = "This Year";
+"view_last7" = "Last 7 days";
+"view_last14" = "Last 14 days";
+"view_last31" = "Last 31 days";
+"view_lastmonth" = "Last Month";
+"view_lastyear" = "Last Year";
 "view_future" = "Etorkizuneko gertaera guztiak";
 "view_selectedday" = "Aukeratutako eguna";
 "view_not_started" = "Hasi gabeko ekintzak";
@@ -199,13 +242,15 @@
 "Search appointments" = "Bilatu hitzorduak";
 "All day Event" = "Egun osoko ekitaldia";
 "check for conflicts" = "Aztertu gatazka";
-"Browse URL" = "URLa arakatu";
+"URL" = "URL";
 "newAttendee" = "Gehitu partaidea";
+
 /* calendar modes */
 "Overview" = "Ikuspegi orokorra";
 "Chart" = "Taula";
 "List" = "Zerrenda";
 "Columns" = "Zutabeak";
+
 /* Priorities */
 "prio_0" = "Zehaztu gabe";
 "prio_1" = "Altua";
@@ -217,6 +262,7 @@
 "prio_7" = "Baxua";
 "prio_8" = "Baxua";
 "prio_9" = "Baxua";
+
 /* access classes (privacy) */
 "PUBLIC_vevent" = "Ekitaldi publikoa";
 "CONFIDENTIAL_vevent" = "Isilpekko ekitaldia";
@@ -224,6 +270,7 @@
 "PUBLIC_vtodo" = "Zeregin publikoa";
 "CONFIDENTIAL_vtodo" = "Isilpeko zeregina";
 "PRIVATE_vtodo" = "Zeregin pribatua";
+
 /* status type */
 "status_" = "Zehaztu gabe";
 "status_NOT-SPECIFIED" = "Zehaztu gabe";
@@ -233,6 +280,16 @@
 "status_NEEDS-ACTION" = "Ekintza behar du";
 "status_IN-PROCESS" = "Prozesuan";
 "status_COMPLETED" = "amaituta";
+
+/* Priority level */
+"low" = "low";
+
+/* Priority level */
+"normal" = "normal";
+
+/* Priority level */
+"high" = "high";
+
 /* Cycles */
 "cycle_once" = "Ziklo bat egin";
 "cycle_daily" = "Eguneroko zikloa";
@@ -247,6 +304,7 @@
 "Recurrence pattern" = "Birgertatze-eredua";
 "Range of recurrence" = "Birgertatze tartea";
 "Daily" = "Egunero";
+"Multi-Columns" = "Multi-Columns";
 "Weekly" = "Astero";
 "Monthly" = "Hilabetero";
 "Yearly" = "Urtero";
@@ -255,22 +313,30 @@
 "Week(s)" = "Astea(k)";
 "On" = "noiz";
 "Month(s)" = "Hilabetea(k)";
+
 /* [Event recurrence editor] Ex: _The_ first Sunday */
-"The" = " ";
+"The" = "The";
 "Recur on day(s)" = "Egunean(etan) errepikatu";
 "Year(s)" = "Urtea(k)";
+
 /* [Event recurrence editor] Ex: Every first Sunday _of_ April */
-"cycle_of" = " ";
+"cycle_of" = "of";
 "No end date" = "Amaiaera datarik gabe";
 "Create" = "Sortu";
 "appointment(s)" = "hitzordua(k)";
 "Repeat until" = "Errepikatu honaino";
+"End Repeat" = "End Repeat";
+"Never" = "Never";
+"After" = "After";
+"On Date" = "On Date";
+"times" = "times";
 "First" = "Lehenengoa";
 "Second" = "Bigarrena";
 "Third" = "Hirugarrena";
 "Fourth" = "Laugarrena";
 "Fift" = "Bosgarrena";
 "Last" = "Azkena";
+
 /* Appointment categories */
 "category_none" = "Bat ere ez";
 "category_labels" = "Urteurrena, Urtebetetzea, Negozio, Deiak, Bezeroak, Lehia, Bezeroa, Gogokoak, Jarraitu, Opariak, Oporrak, Ideiak, Bilera, Aleak, Denetarik, Pertsonala, Proiektuak, Jaieguna, Egoera, Hornitzaileak, Bidaia, Oporrak";
@@ -283,6 +349,7 @@
 "repeat_YEARLY" = "Urtero";
 "repeat_CUSTOM" = "Pertsonalizatu...";
 "reminder_NONE" = "Oroigarririk ez";
+"reminder_0" = "At time of event";
 "reminder_5_MINUTES_BEFORE" = "5 minutu lehenago";
 "reminder_10_MINUTES_BEFORE" = "10 minutu lehenago";
 "reminder_15_MINUTES_BEFORE" = "15 minutu lehenago";
@@ -299,6 +366,7 @@
 "reminder_MINUTES" = "minutuak";
 "reminder_HOURS" = "orduak";
 "reminder_DAYS" = "egunak";
+"reminder_WEEKS" = "weeks";
 "reminder_BEFORE" = "lehenago";
 "reminder_AFTER" = "ondoren";
 "reminder_START" = "gertaera hasi da";
@@ -314,22 +382,44 @@
 "zoom_100" = "100%";
 "zoom_50" = "50%";
 "zoom_25" = "25%";
+
+/* Arial label for reminder units */
+"Reminder units" = "Reminder units";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "Reminder position";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "Reminder relation";
+
 /* transparency */
 "Show Time as Free" = "Erakutsi denbora librea";
+
 /* email notifications */
 "Send Appointment Notifications" = "Bidali hitzordu jakinarazpenak";
+"From" = "From";
+"To" = "To";
+
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "Ez du izenbururik, jarraitu?";
 validate_invalid_startdate = "Hasierako dataren eremua gaizki dago!";
 validate_invalid_enddate   = "Amaiaerako dataren eremua gaizki dago!";
 validate_endbeforestart    = "Ipini duzun amaiera-data hasiera-dataren aurretik da.";
+validate_untilbeforeend    = "The recurrence must end after the first occurrence.";
+
 "Events" = "Gertakaria";
 "Tasks" = "Zeregin";
 "Show completed tasks" = "Erakutsi amaitutako zereginak";
+
 /* tabs */
 "Task" = "Zeregin";
 "Event" = "Gertakari";
 "Recurrence" = "Birgertatzea";
+
 /* toolbar */
 "New Event" = "Gertakari berria";
 "New Task" = "Zeregin berria";
@@ -340,7 +430,11 @@ validate_endbeforestart    = "Ipini duzun amaiera-data hasiera-dataren aurretik 
 "Week View" = "Asteko ikuspegia";
 "Month View" = "Hileko ikuspegia";
 "Reload" = "Birkargatu";
+
+/* Number of selected components in events or tasks list */
+"selected" = "selected";
 "eventPartStatModificationError" = "Zure partaidetzaren izaera ezin da aldatu.";
+
 /* menu */
 "New Event..." = "Gertakari berria...";
 "New Task..." = "Zeregin berria...";
@@ -356,19 +450,53 @@ validate_endbeforestart    = "Ipini duzun amaiera-data hasiera-dataren aurretik 
 = "Ezin duzu ezabatu edo harpidetza kendu zure egutegi pertsonala.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Ziru zaude \"%{0}\" egutegia ezabatu nahi duzula?";
-/* Legend */
+"Are you sure you want to delete the selected components?"
+= "Are you sure you want to delete the selected components?";
+
+/* Participation role */
+"Role" = "Role";
+
+/* Participant role: participation is required */
 "Participant" = "Parte-hartzailea";
+
+/* Participant role: participation is required */
+"req-participant" = "Participant";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Hautazko parte-hartzailea";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Optional Participant";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Ez parte-hartzailea";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Non Participant";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "Aulkia";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Chair";
+
+/* Participant status: needs action */
 "Needs action" = "Ekintza behar du";
+
+/* Participant status: event accepted */
 "Accepted" = "Onartua";
+
+/* Participant status: event declined */
 "Declined" = "Ezetsia";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Behin-behineko";
+
 "Free" = "Libre";
 "Busy" = "Lanpetuta";
 "Maybe busy" = "Beharbada lanpetuta";
 "No free-busy information" = "Libre/lanpetu informaziorik ez";
+
 /* FreeBusy panel buttons and labels */
 "Suggest time slot" = "Iradoki denbora hutsunea";
 "Zoom" = "Zoom";
@@ -382,12 +510,18 @@ validate_endbeforestart    = "Ipini duzun amaiera-data hasiera-dataren aurretik 
 "and" = "eta";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Partaide bat edo gehiagorekin denbora gatazka bat dago. \nHala ere uneko ezarpena mantendu nahi duzu?";
-/* apt list */
-"Title" = "Izenburua";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Would you like to remove them and send the invitation to the remaining attendees?";
+
+/* events list */
+"Due" = "Due";
 "(Private Event)" = "(Ekitaldi pribatua)";
 vevent_class0 = "(Ekitaldi publikoa)";
 vevent_class1 = "(Ekitaldi pribatua)";
 vevent_class2 = "(Isilpeko ekitaldia)";
+
+/* tasks list */
+"Descending Order" = "Descending Order";
 vtodo_class0 = "(Zeregin publikoa)";
 vtodo_class1 = "(Zeregin pribatua)";
 vtodo_class2 = "(Isilpeko zeregina)";
@@ -397,6 +531,11 @@ vtodo_class2 = "(Isilpeko zeregina)";
 "editRepeatingItem" = "Aldatzen ari zaren elementua errepikapen elementu bat da. Elementu honen agerraldi guztiak aldatu nahi dituzu edo agerrladi hau bakarrik?";
 "button_thisOccurrenceOnly" = "Agerraldi hau bakarrik";
 "button_allOccurrences" = "Agerraldi guztiak";
+"Edit This Occurrence" = "Edit This Occurrence";
+"Edit All Occurrences" = "Edit All Occurrences";
+"Update This Occurrence" = "Update This Occurrence";
+"Update All Occurrences" = "Update All Occurrences";
+
 /* Properties dialog */
 "Color" = "Kolorea";
 "Include in free-busy" = "libre-lanpetua-n gehitu";
@@ -410,11 +549,23 @@ vtodo_class2 = "(Isilpeko zeregina)";
 "Receive a mail when I modify my calendar" = "Jaso mezua nere egutegia aldatzen dudanean";
 "Receive a mail when someone else modifies my calendar" = "Jaso mezua edonorkl nere egutegia aldatzen duenean";
 "When I modify my calendar, send a mail to" = "Nere egutegia aldatzen dudanean, bidali mezua honi";
+"Email Address" = "Email Address";
+"Export" = "Export";
+
+
+/* Show only the calendar for which the menu is displayed */
+"Show Only This Calendar" = "Show Only This Calendar";
+
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "Show All Calendars";
+
 "Links to this Calendar" = "Egutegi honetarako estekak";
 "Authenticated User Access" = "Autentifikatutako erabiltzaileentzako atzipena";
 "CalDAV URL" = "CalDAV URL-a";
 "WebDAV ICS URL" = "WebDAV ICS URL-a";
 "WebDAV XML URL" = "WebDAV XML URL-a";
+
 /* Error messages */
 "dayFieldInvalid" = "Mesedez, idatz ezazu zenbakizko balio bat, 1 baino handiago edo berdin, eguna eremuan.";
 "weekFieldInvalid" = "Mesedez, idatz ezazu zenbakizko balio bat, 1 baino handiago edo berdin, astea(k) eremuan.";
@@ -438,9 +589,74 @@ vtodo_class2 = "(Isilpeko zeregina)";
 "Delete Event" = "Ezabatu ekitaldia";
 "Copy event to my calendar" = "Kpiatu ekitaldia nere egutegian";
 "View Raw Source" = "Ikusi Raw iturburua";
+"Move To" = "Move To";
+"Copy To" = "Copy To";
+"Subscriptions" = "Subscriptions";
+"Subscribe to a shared calendar" = "Subscribe to a shared calendar";
 "Subscribe to a web calendar..." = "Harpidetu web egutegi bat...";
 "URL of the Calendar" = "Egutegiaren URL-a";
 "Web Calendar" = "Web egutegia";
+"Web Calendars" = "Web Calendars";
 "Reload on login" = "Birkargatu saio hasieran";
 "Invalid number." = "Zenbaki baliogabea.";
 "Please identify yourself to %{0}" = "Mesedez, %{0}-ren aurrean identifikatu zaitez";
+"quantity" = "quantity";
+"Current view" = "Current view";
+"Selected events and tasks" = "Selected events and tasks";
+"Custom date range" = "Custom date range";
+"Select starting date" = "Select starting date";
+"Select ending date" = "Select ending date";
+"Delegated to" = "Delegated to";
+"Keep sending me updates" = "Keep sending me updates";
+"OK" = "OK";
+"Confidential" = "Confidential";
+"Enable" = "Enable";
+"Filter" = "Filter";
+"Sort" = "Sort";
+"Back" = "Back";
+"Day" = "Day";
+"Month" = "Month";
+"New Appointment" = "New Appointment";
+"filters" = "filters";
+"Today" = "Today";
+"More options" = "More options";
+"Delete This Occurrence" = "Delete This Occurrence";
+"Delete All Occurrences" = "Delete All Occurrences";
+"Add Recurrence Date" = "Add Recurrence Date";
+"Add From" = "Add From";
+"Add Due" = "Add Due";
+"Import" = "Import";
+"Rename" = "Rename";
+"Import Calendar" = "Import Calendar";
+"Select an ICS file." = "Select an ICS file.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
+
+/* Notification when user subscribes to a calendar */
+"Successfully subscribed to calendar" = "Successfully subscribed to calendar";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "Toggle item";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "Search scope";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";

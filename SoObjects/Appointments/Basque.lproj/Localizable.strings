@@ -7,32 +7,44 @@ vevent_class2 = "(Isilpeko ekitaldia)";
 vtodo_class0 = "(Zeregin publikoa)";
 vtodo_class1 = "(Zeregin pribatua)";
 vtodo_class2 = "(Isilpeko egitekoa)";
+
 /* Receipts */
 "The event \"%{Summary}\" was created" = "\"%{Summary}\" ekitaldia sortu da";
 "The event \"%{Summary}\" was deleted" = "\"%{Summary}\" ekitaldia ezabatu da";
 "The event \"%{Summary}\" was updated" = "\"%{Summary}\" ekitaldia eguneratu da";
+"The task \"%{Summary}\" was created" = "The task \"%{Summary}\" was created";
+"The task \"%{Summary}\" was deleted" = "The task \"%{Summary}\" was deleted";
+"The task \"%{Summary}\" was updated" = "The task \"%{Summary}\" was updated";
 "The following attendees(s) were notified" = "Ondorengo partaidea(k) jakinarazi d(ir)a";
 "The following attendees(s) were added" = "Ondorengo partaidea(k) gehitu d(ir)a";
 "The following attendees(s) were removed" = "Ondorengo partaidea(k) ezabatu d(ir)a";
+
 /* IMIP messages */
 "calendar_label" = "Egutegia";
 "startDate_label" = "Hasi";
 "endDate_label" = "Amaitu";
+"time_label" = "Time";
+"to_label" = "to";
 "due_label" = "Epemuga:";
 "location_label" = "Kokapena";
 "summary_label" = "Laburpena:";
 "comment_label" = "Iruzkina:";
+"organizer_label" = "Organizer";
+"attendee_label" = "Attendee";
+
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Ekitaldirako gonbidapena: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(%{SentBy}-k bidalia) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}-k gonbidatu zaitu %{Summary}.-ra\n\nHasiera: %{StartDate}\nAmaiera: %{EndDate}\nDeskribapena: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}-k gonbidatu zaitu %{Summary}-ra \n\nHasiera: %{StartDate}-an,  %{StartTime}-tan\nEnd: %{EndDate}-an,  %{EndTime}-tan\nDeskribapena: %{Description}";
+
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Ekitaldia bertan behera utzi da: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} ekitaldi hau bertan behera utzi du: %{Summary}.\n\nHasiera: %{StartDate}\nAmaiera: %{EndDate}\nDEskribapena: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}-k honako ekitaldia bertan behera utzi du: %{Summary}.\n\nHasiera: %{StartDate}-an, %{StartTime}-tan\nAmaiera: %{EndDate}-an %{EndTime}-tan\nDeskribapena: %{Description}";
+
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "%{OldStartDate} eguneko \"%{Summary}\" hitzordua aldatu da";
@@ -42,6 +54,7 @@ vtodo_class2 = "(Isilpeko egitekoa)";
 = " \"%{Summary}\" bilerako ondorengo parametroak aldatu dira:";
 "Please accept or decline those changes."
 = "Mesedez, onartu edo ezetsi ondorengo aldaketak.";
+
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Gonbidapena onartua: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Ezetzitako gonbidapena: \"%{Summary}\"";
@@ -55,6 +68,15 @@ vtodo_class2 = "(Isilpeko egitekoa)";
 = "%{Attendee} %{SentByText}-k zure gonbidapena %{Delegate}-ri delegatu dio.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}-k ez du oraindik zure gonbidapenari buruz erabakirik hartu.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Reminder: \"%{Summary}\" - %{StartDate}";
+
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Ezin da honako baliabidea atzitu: \"%{Cn} %{SystemEmail}\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "\"%{Cn} %{SystemEmail}\" baliabidearentzako gehienezko erreserba kopurura (%{NumberOfSimultaneousBookings}) iritsi gara. Gatazka sortu duen ekitaldia \"%{EventTitle}\" da, eta %{StartDate}-n hasten da.";
+
+/* Participation role */
+"Your participation is required to this event" = "Your participation is required to this event";
+"Your participation is optional to this event" = "Your participation is optional to this event";
+"Your participation is not required to this event" = "Your participation is not required to this event";
