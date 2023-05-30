@@ -12,6 +12,9 @@ vtodo_class2 = "(Povjerljivi zadatak)";
 "The event \"%{Summary}\" was created" = "Događaj \"%{Summary}\" je kreiran";
 "The event \"%{Summary}\" was deleted" = "Događaj \"%{Summary}\" je obrisan";
 "The event \"%{Summary}\" was updated" = "Događaj \"%{Summary}\" je ažuriran";
+"The task \"%{Summary}\" was created" = "The task \"%{Summary}\" was created";
+"The task \"%{Summary}\" was deleted" = "The task \"%{Summary}\" was deleted";
+"The task \"%{Summary}\" was updated" = "The task \"%{Summary}\" was updated";
 "The following attendees(s) were notified" = "Sljedeći polaznik(ci) su obaviješteni";
 "The following attendees(s) were added" = "Sljedeći polaznik(ci) su dodati";
 "The following attendees(s) were removed" = "Sljedeći polaznik(ci) su uklonjeni";
@@ -37,24 +40,34 @@ vtodo_class2 = "(Povjerljivi zadatak)";
 
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Otkazan je događaj: \"%{Summary}\"";
-"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}je otkazao događaj: %{Summary}.\n\nPočetak: %{StartDate}\nZavršetak: %{EndDate}\nOpis: %{Description}";
-"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}je otkazao događaj: %{Summary}.\n\nPočetak: %{StartDate} u %{StartTime}\nZavršetak: %{EndDate} u %{EndTime}\nOpis: %{Description}";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}je otkazao događaj: %{Summary}.\n\nPočetak: %{StartDate}\nZavršetak: %{EndDate}\nOpis: %{Description}";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}je otkazao događaj: %{Summary}.\n\nPočetak: %{StartDate} u %{StartTime}\nZavršetak: %{EndDate} u %{EndTime}\nOpis: %{Description}";
 
 /* Update */
-"The appointment \"%{Summary}\" for the %{OldStartDate} has changed" = "Zakazani sastanak \"%{Summary}\" %{OldStartDate} je izmijenjen";
-"The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed" = "Zakazani sastanak \"%{Summary}\" %{OldStartDate} u %{OldStartTime} je izmijenjen";
-"The following parameters have changed in the \"%{Summary}\" meeting:" = "Sljedeći parametri su izmijenjeni za sastanak \"%{Summary}\":";
-"Please accept or decline those changes." = "Molimo da prihvatite ili otkažete ove izmjene.";
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "Zakazani sastanak \"%{Summary}\" %{OldStartDate} je izmijenjen";
+"The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
+= "Zakazani sastanak \"%{Summary}\" %{OldStartDate} u %{OldStartTime} je izmijenjen";
+"The following parameters have changed in the \"%{Summary}\" meeting:"
+= "Sljedeći parametri su izmijenjeni za sastanak \"%{Summary}\":";
+"Please accept or decline those changes."
+= "Molimo da prihvatite ili otkažete ove izmjene.";
 
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Prihvaćena pozivnica: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Odbijena pozivnica: \"%{Summary}\"";
 "Delegated invitation: \"%{Summary}\"" = "Delegirana pozivnica: \"%{Summary}\"";
 "Not yet decided on invitation: \"%{Summary}\"" = "Nisam još odlučio za pozivnicu: \"%{Summary}\"";
-"%{Attendee} %{SentByText}has accepted your event invitation." = "%{Attendee} %{SentByText}je prihvatio vašu pozivnicu za događaj.";
-"%{Attendee} %{SentByText}has declined your event invitation." = "%{Attendee} %{SentByText}je odbio vašu pozivnicu za događaj.";
-"%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}." = "%{Attendee} %{SentByText}je delegirao pozivnicu %{Delegate}.";
-"%{Attendee} %{SentByText}has not yet decided upon your event invitation." = "%{Attendee} %{SentByText}nije još odlučio u vezi sa vašom pozivnicom za događaj.";
+"%{Attendee} %{SentByText}has accepted your event invitation."
+= "%{Attendee} %{SentByText}je prihvatio vašu pozivnicu za događaj.";
+"%{Attendee} %{SentByText}has declined your event invitation."
+= "%{Attendee} %{SentByText}je odbio vašu pozivnicu za događaj.";
+"%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
+= "%{Attendee} %{SentByText}je delegirao pozivnicu %{Delegate}.";
+"%{Attendee} %{SentByText}has not yet decided upon your event invitation."
+= "%{Attendee} %{SentByText}nije još odlučio u vezi sa vašom pozivnicom za događaj.";
 
 /* Reminder */
 "Reminder: \"%{Summary}\" - %{StartDate}" = "Podsjetnik: \"%{Summary}\" - %{StartDate}";

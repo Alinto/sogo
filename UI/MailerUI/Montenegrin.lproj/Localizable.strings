@@ -187,6 +187,7 @@
 "InboxFolderName"  = "Primljene";
 "DraftsFolderName" = "Nedovršene";
 "JunkFolderName" = "Nepoželjne";
+"TemplatesFolderName" = "Templates";
 "SieveFolderName"  = "Filteri";
 "Folders"          = "Direktorijumi"; /* title line */
 
@@ -432,6 +433,9 @@
 "Set as Sent" = "Postavi kao poslato";
 "Set as Trash" = "Postavi kao kanta";
 
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Set as Templates";
+
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Postavi kao nepoželjno";
 
@@ -453,6 +457,9 @@
 "Your email has been saved" = "Vaše e-pismo je sačuvano";
 "Your email has been sent" = "Vaše e-pismo je poslato";
 "Folder compacted" = "Direktorijum je komprimovan";
+
+"New draft" = "New draft";
+"Create new draft with this template" = "Create new draft with this template";
 
 /* Advanced search */
 "Enter Subject" = "Unesite temu";
