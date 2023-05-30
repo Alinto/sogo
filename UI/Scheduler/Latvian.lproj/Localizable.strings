@@ -37,6 +37,8 @@
 "this month" = "šis mēnesis";
 "Previous Month" = "Iepriekšējais mēnesis";
 "Next Month" = "Nākamais mēnesis";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "šogad";
@@ -221,6 +223,11 @@
 "view_next31" = "Nākamās 31 diena";
 "view_thismonth" = "Šis mēnesis";
 "view_thisyear" = "Šogad";
+"view_last7" = "Last 7 days";
+"view_last14" = "Last 14 days";
+"view_last31" = "Last 31 days";
+"view_lastmonth" = "Last Month";
+"view_lastyear" = "Last Year";
 "view_future" = "Visi nākotnes notikumi";
 "view_selectedday" = "Izvēlētā diena";
 "view_not_started" = "Neuzsāktie uzdevumi";
@@ -393,6 +400,10 @@
 "From" = "No";
 "To" = "Kam";
 
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "Nav nosaukuma, turpināt?";
 validate_invalid_startdate = "Nepareizs sākuma datuma lauks!";
@@ -499,6 +510,8 @@ validate_untilbeforeend    = "Atkārtošanās ir jāpārtrauc pēc pirmā gadīj
 "and" = "un";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Laika konflikts ar vienu vai vairākiem dalībniekiem.\nVai vēlaties saglabāt pašreizējos iestatījumus jebkurā gadījumā?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Would you like to remove them and send the invitation to the remaining attendees?";
 
 /* events list */
 "Due" = "Paredzēts";
@@ -579,7 +592,7 @@ vtodo_class2 = "(Konfidenciāls uzdevums)";
 "Move To" = "Pārvietot uz";
 "Copy To" = "Kopēt uz";
 "Subscriptions" = "Abonementi";
-"Subscribe to a shared folder" = "Parakstīties uz koplietojamu mapi";
+"Subscribe to a shared calendar" = "Subscribe to a shared calendar";
 "Subscribe to a web calendar..." = "Abonēt Web kalendāru...";
 "URL of the Calendar" = "Kalendāra URL";
 "Web Calendar" = "Web kalendārs";
@@ -616,6 +629,7 @@ vtodo_class2 = "(Konfidenciāls uzdevums)";
 "Rename" = "Pārdēvēt";
 "Import Calendar" = "Importēt kalendāru";
 "Select an ICS file." = "Atlasiet ICS failu.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Veiksmīgi abonējis kalendāru";
