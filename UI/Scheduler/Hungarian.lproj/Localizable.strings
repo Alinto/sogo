@@ -37,6 +37,8 @@
 "this month" = "aktuális hónap";
 "Previous Month" = "Előző hónap";
 "Next Month" = "Következő hónap";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "aktuális év";
@@ -398,6 +400,10 @@
 "From" = "Kezdés";
 "To" = "Befejezés";
 
+/* dates */
+"DateFrom" = "Feladó";
+"DateTo" = "Címzett";
+
 /* validation errors */
 validate_notitle           = "A cím nincs megadva, folytatja?";
 validate_invalid_startdate = "Événytelen kezdődátum!";
@@ -623,6 +629,7 @@ vtodo_class2 = "(Bizalmas feladat)";
 "Rename" = "Átnevezés";
 "Import Calendar" = "Naptár importálása";
 "Select an ICS file." = "Válasszon ICS állományt.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "Módosított adatai nem kerültek mentésre. Szeretné bezárni ezt a párbeszédablakot és elveszíteni a módosításokat?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Sikeresen feliratkozott a naptárra";
