@@ -27,6 +27,9 @@
 "OfficePhone" = "Biuro telefonas";
 "Organization" = "Organizacija";
 "Work Phone" = "Darbo telefonas";
+"Cell" = "Cell";
+"Pager" = "Gaviklis:";
+"Pref" = "Pref";
 "Phone" = "Telefonas";
 "Phones" = "Telefonai";
 "Postal" = "Pašto indeksas";
@@ -41,20 +44,115 @@
 "Move To" = "Perkelti į";
 "Copy To" = "Kopijuoti į";
 "Add to" = "Pridėti prie";
+"To" = "To";
+"Carbon Copy (Cc)" = "Carbon Copy (Cc)";
+"Blind Carbon Copy (Bcc)" = "Blind Carbon Copy (Bcc)";
+
+/* Search scope: name fields */
+"name" = "Name";
+
+/* Search scope: name fields */
+"c_cn" = "Name";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "Secondary email";
+
+/* Search scope: screen name field */
+"nsaimid" = "Screen name";
+
+/* Search scope: mail fields */
+"mail" = "Mail";
+
+/* Search scope: mail fields */
+"c_mail" = "Mail";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Telephone";
+
+/* Search scope: telephone field */
+"homephone" = "Telephone";
+
+/* Search scope: mobile field */
+"mobile" = "Mobile";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Fax";
+
+/* Search scope: pager field */
+"pager" = "Pager";
+
+/* Search scope: categories field */
+"c_categories" = "Categories";
+
+/* Search scope: categories field */
+"vcardcategories" = "Categories";
+
+/* Search scope: title field */
+"title" = "Title";
+
+/* Search scope: organization field */
+"c_o" = "Organization";
+
+/* Search scope: organization field */
+"o" = "Organization";
+
+/* Search scope: department field */
+"ou" = "Department";
+
+/* Search scope: city field */
+"l" = "City";
+
+/* Search scope: country field */
+"c" = "Country";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Home Address";
+
+/* Search scope: state/province field */
+"st" = "State/Province";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Home State/Province";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "Zip/Postal Code";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "Zip/Postal Code";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "Home Country";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Home page";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Web page";
+
+/* Search scope: note field */
+"description" = "Note";
+
 /* Subheader of empty addressbook */
 "No contact" = "Nėra kontakto";
+
 /* Subheader of system addressbook */
 "Start a search to browse this address book" = "Pradėti paiešką šioje adresų knygelėje";
+
 /* Number of contacts in addressbook; string is prefixed by number */
 "contacts" = "kontaktai";
+
 /* No contact matching search criteria */
 "No matching contact" = "Nėra atitinkamo kontakto";
+
 /* Number of contacts matching search criteria; string is prefixed by number */
 "matching contacts" = "atitinkantys kontaktai";
+
 /* Number of selected contacts in list */
 "selected" = "pasirinti";
+
 /* Empty right pane */
 "No contact selected" = "Nėra pasirinkto kontakto";
+
 /* Tooltips */
 "Create a new address book card" = "Sukurti naują adresato kortelę";
 "Create a new list" = "Sukurti naują sąrašą";
@@ -95,9 +193,11 @@
 "Work" = "Darbo";
 "Mobile" = "Mobilus:";
 "Pager" = "Gaviklis:";
+
 /* categories */
 "contacts_category_labels" = "Kolega, konkurentas, Klientas, Draugas, Šeima, Verslo partneris, Teikėjas, Spauda, VIP";
 "New category" = "Nauja kategorija";
+
 /* adresses */
 "Title" = "Pavadinimas";
 "Service" = "Paslaugos";
@@ -121,7 +221,7 @@
 "New Addressbook..." = "Nauja adresų knyga...";
 "Subscribe to an Addressbook..." = "Įsirašyti į adresų knygą...";
 "Remove the selected Addressbook" = "Ištrinti pažymętus iš adresų knygos";
-"Subscribe to a shared folder" = "Prenumeruoti aplankas";
+"Subscribe to a shared contact" = "Subscribe to a shared addressbook";
 "Search User" = "Ieškoti vartotojo";
 "Name of the Address Book" = "Adresų knygos pavadinimas";
 "Are you sure you want to delete the selected address book?"
@@ -134,12 +234,20 @@
 = "Jūs negalite pašalinti arba atsisakyti iš jūsų asmeninės adresų knygos.";
 "Are you sure you want to delete the selected contacts?"
 = "Ar tikrai norite ištrinti pasirinktus kontaktus?";
+"Are you sure you want to delete the card of %{0}?" = "Are you sure you want to delete the card of %{0}?";
 "You cannot delete the card of \"%{0}\"."
 = "Jūs negalite trinti kortelės iš \"%{0}\".";
 "You cannot subscribe to a folder that you own!"
 = "Jūs negalite prisijungti prie aplanko kuris jums priklauso.";
 "Unable to subscribe to that folder!"
 = "Nepavyko prisijungti prie šio aplanko.";
+
+/* security */
+"Security" = "Security";
+"Uninstall" = "Uninstall";
+"Error reading the card certificate." = "Error reading the card certificate.";
+"No certificate associated to card." = "No certificate associated to card.";
+
 /* acls */
 "Access rights to" = "Prieigos teisės";
 "For user" = "Vartotojui";
@@ -158,11 +266,15 @@
 "The selected contact has no email address."
 = "Pažymėtame kontakte nėra elektroninio pašto adreso.";
 "Please select a contact." = "Prašome pažymėti kontaktą.";
-/* Error messages for move and copy */
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} card(s) copied";
+"%{0} card(s) moved" = "%{0} card(s) moved";
 "SoAccessDeniedException" = "Jūs negalite įrašyti į šią adresų knygą.";
 "Forbidden" = "Jūs negalite įrašyti į šią adresų knygą.";
 "Invalid Contact" = "Pažymėtas kontaktas neegzistuoja.";
 "Unknown Destination Folder" = "Pasirinkta vieta adresų knygoje neegzistuoja.";
+
 /* Lists */
 "List details" = "Detalus sąrašas";
 "List name" = "Sarašo pavadinimas";
@@ -175,6 +287,8 @@
 "Export" = "Eksportas";
 "Export Address Book..." = "Eksportuoti adresų knygą...";
 "View Raw Source" = "Peržiūrėti atvirus šaltinius";
+
+/* Import */
 "Import Cards" = "Importuoti korteles";
 "Select a vCard or LDIF file." = "Pažymėkite vCard arba LDIF bylas.";
 "Upload" = "Įkelti";
@@ -184,6 +298,7 @@
 "No card was imported." = "Kortelė nebuvo importuota.";
 "A total of %{0} cards were imported in the addressbook." = "Iš viso %{0} kortelės buvo importuotos į adresų knygą.";
 "Reload" = "Perkrauti";
+
 /* Properties window */
 "Address Book Name" = "Adresų knygos pavadinimas";
 "Links to this Address Book" = "Nuoroda į adresų knygą";
@@ -199,10 +314,6 @@
 "Back" = "Atgal";
 "Select All" = "Pažymėti visus";
 "Copy contacts" = "Kopijuoti kontaktus";
-
-/* Notification on the number of messages successfully copied */
-"%{0} cards copied" = "%{0} kortelės nukopijuotos";
-
 "More messages options" = "Daugiau žinučių nustatymų";
 "New Contact" = "Naujas kontaktas";
 "Close" = "Uždarytis";
@@ -216,6 +327,7 @@
 "URL" = "Nuoroda";
 "New URL" = "Nauja nuoroda";
 "street" = "gatvė";
+"street (continued)" = "street (continued)";
 "Postoffice" = "Pašto skyrius";
 "Region" = "Regionas";
 "Postal Code" = "Pašto kodas";
@@ -229,9 +341,25 @@
 "More options" = "Daugiau nustatymų";
 "Role" = "Taisyklė";
 "Add Screen Name" = "Pridėti ekrano vardą";
+"Custom 1" = "Custom 1";
+"Custom 2" = "Custom 2";
+"Custom 3" = "Custom 3";
+"Custom 4" = "Custom 4";
+"Custom Value" = "Custom Value";
+"New Custom Value" = "New Custom Value";
 "Synchronization" = "Sinchronizavimas";
 "Synchronize" = "Sinchronizuoti";
 "Sucessfully subscribed to address book" = "Sėkmingai užsiprenumeravote adresų knygą";
+"A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Paieškos sritis";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Toggle item";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

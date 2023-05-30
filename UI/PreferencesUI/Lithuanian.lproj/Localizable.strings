@@ -3,6 +3,18 @@
 "Close" = "Uždaryti";
 "Preferences saved" = "Nustatymai išsaugoti";
 
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Unsaved Changes";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Do you want to save your changes made to the configuration?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Išsaugoti";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Don't Save";
+
 /* tabs */
 "General" = "Bendras";
 "Calendar Options" = "Bendri nustatymai";
@@ -24,13 +36,30 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Įgalinti automatinį atsakymo pranešimą";
+"Enable custom auto reply subject" = "Enable custom auto reply subject";
+"Auto reply subject" = "Auto reply subject";
+"You can write ${subject} to insert the original subject" = "You can write ${subject} to insert the original subject";
 "Auto reply message" = "Automatinė atsakymo žinutė";
-"Email addresses (separated by commas)" = "Elektroninio adreso (atskirto kableliais)";
+"Email addresses" = "Email addresses";
 "Add default email addresses" = "Pridėti numatytajį elektroninį adresą";
 "Days between responses" = "Dienos iki atsakymo";
 "Do not send responses to mailing lists" = "Nesiųsti atsakymo į pašto sąrašus";
-"Disable auto reply after" = "Išjungti automatinį atsakymą";
+"Activation Constraints" = "Activation Constraints";
+"Enable auto reply on" = "Enable auto reply on";
+"First day of vacation" = "First day of vacation";
+"Disable auto reply after" = "Disable auto reply after";
+"Last day of vacation" = "Last day of vacation";
+"Enter date" = "Enter date";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Enable auto reply at";
+"Enter time" = "Enter time";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Disable auto reply at";
+"Enable auto reply on these days" = "Enable auto reply on these days";
 "Always send vacation message response" = "Visada atsiųsti atsakomąją žinutę";
+"The vacation message is sent prior to apply your filters." = "The vacation message is sent prior to apply your filters.";
+"Discard incoming mails during vacation" = "Discard incoming mails during vacation";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "The vacation message is sent but incoming messages are not delivered to your inbox.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Prašome nurodyti savo pranešimą ir savo elektroninio pašto adresą, kurį norite įgalinti automatiniam atsakymui.";
 "Your vacation message must not end with a single dot on a line." = "Jūsų pranešimas neturi baigtis vienu tašku eilutėje.";
@@ -39,14 +68,19 @@
 
 /* forward messages */
 "Forward incoming messages" = "Persiųsti gaunamus laiškus";
+"Always forward" = "Always forward";
+"Incoming messages are forwarded prior to apply your filters." = "Incoming messages are forwarded prior to apply your filters.";
 "Keep a copy" = "Pasilikti kopiją";
+"Enter an email" = "Enter an email";
+"Add another email" = "Add another email";
 "Please specify an address to which you want to forward your messages."
 = "Prašome nurodyti adresą, kurį norite persiųsti laiškus.";
 "You are not allowed to forward your messages to an external email address." = "Jums neleidžiama persiųsti savo laiškus į įšorinį el. pašto adresą.";
 "You are not allowed to forward your messages to an internal email address." = "Jums neleidžiama persiųsti savo laiškus į vidinį el. pašto adresą.";
+"You are not allowed to forward your messages to this domain:" = "You are not allowed to forward your messages to this domain:";
 
 /* d & t */
-"Current Time Zone" = "Dabartinė Laiko Zona";
+"Time Zone" = "Time Zone";
 "Short Date Format" = "Trumpasis datos formatas";
 "Long Date Format" = "Ilgasis datos formatas";
 "Time Format" = "Laiko formatas";
@@ -67,8 +101,11 @@
 "shortDateFmt_11" = "%Y-%m-%d";
 "shortDateFmt_12" = "%Y/%m/%d";
 "shortDateFmt_13" = "%Y.%m.%d";
-"shortDateFmt_14" = "";
-   
+"shortDateFmt_14" = "%Y.%m.%d";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
+
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
 "longDateFmt_2" = "%A, %d %B, %Y";
@@ -86,11 +123,15 @@
 "timeFmt_3" = "";
 "timeFmt_4" = "";
 
+/* Timezone autocompletion */
+"No matches found." = "No matches found.";
+
 /* calendar */
 "Week begins on" = "Savaitė prasideda nuo";
 "Day start time" = "Diena prasideda nuo";
 "Day end time" = "Diena baigiaisi";
 "Day start time must be prior to day end time." = "Dienos pradžios laikas turi būti prieš dienos pabaigos laiką.";
+"Week days to display" = "Week days to display";
 "Show time as busy outside working hours" = "Rodyti laiką, kai užimtas ne darbo metu.";
 "First week of year" = "Pirma metų savaitė";
 "Enable reminders for Calendar items" = "Įgalinti kelendorinius priminimus";
@@ -102,6 +143,8 @@
 "Prevent from being invited to appointments" = "Neleisti kviesti į susitikimus";
 "White list for appointment invitations" = "Baltas sąrašas paskyrimo kvietimams";
 "Contacts Names" = "Kontaktų vardai";
+"Duplicate name" = "Duplicate name";
+"Calendar categories must have unique names." = "Calendar categories must have unique names.";
 
 /* Default Calendar */
 "Default calendar" = "Numatysasis kalendorius";
@@ -125,8 +168,18 @@
 /* Mailer */
 "Labels" = "Etiketės";
 "Label" = "Etiketė";
+"IMAP Label" = "IMAP Label";
+"Invalid label" = "Don't use space, nor ( ) { } % * \" \\";
+"Duplicate label" = "Duplicate label";
+"IMAP labels must have unique names." = "IMAP labels must have unique names.";
+"New label" = "New label";
 "Show subscribed mailboxes only" = "Rodyti tik pasirašytas pašto dėžutes";
+"Synchronize only default mail folders (EAS)" = "Synchronize only default mail folders (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Fetch count of unseen messages for all mailboxes";
 "Sort messages by threads" = "Rūšiuoti pranešimus pagal temas";
+"Always open mail composer" = "Always open mail composer";
+"Inside current window" = "Inside current window";
+"In a popup window" = "In a popup window";
 "When sending mail, add unknown recipients to my" = "Siunčiant paštą, pridėti nežinomų  gavėjus į mano";
 "Address Book" = "Adresų knyga";
 "Forward messages" = "Persiųsti laiškus";
@@ -141,17 +194,28 @@
 "Compose messages in" = "Kurti pranešimus";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Paprastas tekstas";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Default font size";
+
 "Display remote inline images" = "Rodyti nuotolinius įdėtus vaizdus";
 "displayremoteinlineimages_never" = "Niekada";
 "displayremoteinlineimages_always" = "Visada";
 "Auto save every" = "Automatiškai išsaugoti viską";
 "minutes" = "minutės";
+"Automatically mark messages as read" = "Automatically mark messages as read";
+"Immediately on display" = "Immediately on display";
+"After displaying for" = "After displaying for";
+"seconds" = "seconds";
 
 /* Contact */
 "Personal Address Book" = "Asmeninė adresų knyga";
 "Collected Address Book" = "Surinkta adresų knyga";
+"Contact categories must have unique names." = "Contact categories must have unique names.";
 
 /* IMAP Accounts */
+"Settings" = "Settings";
+"Security" = "Security";
 "Mail Account" = "Pašto paskyra";
 "New Mail Account" = "Nauja pašto paskyra";
 "Server Name" = "Serverio pavadinimas";
@@ -163,18 +227,42 @@
 "Email" = "Elektroninis paštas";
 "Reply To Email" = "Atsakyti į elektroninį laišką";
 "Signature" = "Parašas";
+"Identities" = "Identities";
+"Always use the default identity when replying to messages" = "Always use the default identity when replying to messages";
+"Default Identity" = "Default Identity";
+"New Identity" = "New Identity";
 "(Click to create)" = "(Sukurti)";
 "Please enter your signature below" = "Prašome įvesti Jūsų parašą žemiau";
 "Please specify a valid sender address." = "Prašome nurodyti galiojantį siuntėjo adresą.";
 "Please specify a valid reply-to address." = "Prašome nurodyti galiojantį atsakymo adresą.";
+"Specify a hostname other than the local host" = "Specify a hostname other than the local host";
+
+"No certificate installed" = "No certificate installed";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "The SSL certificate must use the PKCS#12 (PFX) format.";
+"Uninstall" = "Uninstall";
+"Choose PKCS12 Certificate .." = "Choose PKCS12 Certificate ..";
+"Certificate Import Password" = "Certificate Import Password";
+"Upload" = "Upload";
+"When composing a message" = "When composing a message";
+"Digitally sign the message by default" = "Digitally sign the message by default";
+"Always try to encrypt the message" = "Always try to encrypt the message";
+"An error occurred while importing the certificate. Verify your password." = "An error occurred while importing the certificate. Verify your password.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Papildomi parametrai";
 
 /* password */
+"Current password" = "Current password";
 "New password" = "Naujas slaptažodis";
 "Confirmation" = "Patvirtinimas";
 "Change" = "Pakeisti";
+"Passwords don't match" = "Passwords don't match";
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
+"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+
 
 /* Event+task classifications */
 "Default events classification" = "Numatytujų renginių klasifikacija";
@@ -186,6 +274,8 @@
 /* Event+task categories */
 "Calendar Category" = "Kalendoriaus kategorija";
 "Add Calendar Category" = "Pridėti kalendoriaus kategoriją";
+"New category" = "New category";
+"Reset to defaults" = "Reset to defaults";
 "Remove Calendar Category" = "Pašalinti kalendoriaus kategoriją";
 "Contact Category" = "Kontakto kategorija";
 "Add Contact Category" = "Pridėti kontakto kategoriją";
@@ -230,6 +320,7 @@
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Makedonų";
+"Montenegrin" = "Crnogorski";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "Polish" = "Polski";
@@ -247,6 +338,7 @@
 "TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
 "Refresh View" = "Atnaujinti vaizdą";
 "refreshview_manually" = "Rankiniu būdu";
 "refreshview_every_minute" = "Kiekvieną minutę";
@@ -256,6 +348,7 @@
 "refreshview_every_20_minutes" = "Kas 20 minučių";
 "refreshview_every_30_minutes" = "Kas 30 minučių";
 "refreshview_once_per_hour" = "Kartą per valandą";
+"Enable Desktop Notifications" = "Enable Desktop Notifications";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Kai aš gaunu užklausa dėl grąžinimo gavimo";
@@ -275,6 +368,9 @@
 "Move Down" = "Perkelti žemyn";
 "Connection error" = "Sujungimo klaida";
 "Service temporarily unavailable" = "Paslauga laikinai nepasiekiama";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Enable filter";
 
 /* Filters - UIxFilterEditor */
 "Filter name" = "Filtro pavadinimas";
@@ -297,11 +393,27 @@
 "Header" = "Antraštė";
 "Body" = "Turinys";
 "Flag the message with" = "Pažymėti laiška su";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Flag";
+
 "Discard the message" = "Išmesti laišką";
 "File the message in" = "Failas pranešime";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Mailbox";
+
 "Keep the message" = "Laikyti pranešimą";
 "Forward the message to" = "Persiųsti laišką kam";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "Elektroninis paštas";
+
 "Send a reject message" = "Siųsti atmetimo žinutę";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Message";
+
 "Send a vacation message" = "Siųsti atosgoų pranešimą";
 "Stop processing filter rules" = "Sustabdyti filtrų taisyklių procesą";
 "is under" = "Pagal";
@@ -353,9 +465,38 @@
 "TLS" = "TLS";
 
 /* Avatars */
+"Use Gravatar" = "Use Gravatar";
 "Alternate Avatar" = "Alternatyvus avataras";
 "none" =  "Nėra";
 "identicon" = "Identiška piktograma";
 "monsterid" = "Monstras";
 "wavatar" = "Wavatar";
 "retro" = "Retro";
+
+/* Animation Level */
+"Animation Level" = "Animation Level";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Normal";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Limited";
+"animation_NONE" = "None";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "Enable two-factor authentication using a TOTP application";
+"You must enter this key into your TOTP application." = "You must enter this key into your TOTP application.";
+"If you do not and you log out you will not be able to login again." = "If you do not and you log out you will not be able to login again.";
+"Enter TOTP verification code :" = "Enter TOTP verification code :";
+"Invalid TOTP verification code" = "Invalid TOTP verification code";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "An external Sieve script is active";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled.";
+"Let SOGo handle everything" = "Let SOGo handle everything";
+
+/* Password Recovery */
+"Password recovery mode" = "Password recovery";
+"Question" = "Question";
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password recovery" = "Password recovery";
+"Password change" = "Password change";
