@@ -37,6 +37,8 @@
 "this month" = "този месец";
 "Previous Month" = "Предишен месец";
 "Next Month" = "Следващ месец";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "тази година";
@@ -313,7 +315,7 @@
 "Month(s)" = "Месец(и)";
 
 /* [Event recurrence editor] Ex: _The_ first Sunday */
-"The" = " ";
+"The" = "The";
 "Recur on day(s)" = "Повторя на ден(дни)";
 "Year(s)" = "Година(и)";
 
@@ -397,6 +399,10 @@
 "Send Appointment Notifications" = "Изпраща уведомление за ангажимент";
 "From" = "От";
 "To" = "До";
+
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
 
 /* validation errors */
 validate_notitle           = "Без зададено заглавие, продължаване ? ";
@@ -623,6 +629,7 @@ vtodo_class2 = "(Поверителна задача)";
 "Rename" = "Преименуване";
 "Import Calendar" = "Импортиране календар";
 "Select an ICS file." = "Избор на ICS файл.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Успешно сте се абонирали за календара";

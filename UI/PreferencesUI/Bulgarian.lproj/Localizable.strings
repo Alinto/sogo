@@ -47,7 +47,7 @@
 "Activation Constraints" = "Активационни ограничения";
 "Enable auto reply on" = "Включи автоматичен отговор";
 "First day of vacation" = "Първи ден от отпуска";
-"Disable auto reply after" = "Изключи автоматичен отговор на";
+"Disable auto reply after" = "Disable auto reply after";
 "Last day of vacation" = "Последен ден от отпуска";
 "Enter date" = "Въведете дата";
 /* Enable auto reply at this time of the day */
@@ -257,6 +257,12 @@
 "Confirmation" = "Потвърждение";
 "Change" = "Смяна";
 "Passwords don't match" = "Паролите не съвпадат";
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
+"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+
 
 /* Event+task classifications */
 "Default events classification" = "Класификация на събития по подразбиране";
@@ -479,8 +485,18 @@
 "Enable two-factor authentication using a TOTP application" = "Включи двуфакторно удостоверяване чрез TOTP приложение";
 "You must enter this key into your TOTP application." = "Въведете този ключ във вашето TOTP приложение.";
 "If you do not and you log out you will not be able to login again." = "Ако не го направите и излезете, повече няма да можете да влезете отново.";
+"Enter TOTP verification code :" = "Enter TOTP verification code :";
+"Invalid TOTP verification code" = "Invalid TOTP verification code";
 
 /* External Sieve scripts */
 "An external Sieve script is active" = "Външен Sieve скрипт е активен";
 "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve е език за програмиране, който може да се използва за email филтри. Ако искате SOGo да се грижи за филтрите, ваканционни известия и пренасочвания, вашите активни скриптове ще бъдат спрени.";
 "Let SOGo handle everything" = "Оставете SOGo да се грижи за всичко";
+
+/* Password Recovery */
+"Password recovery mode" = "Password recovery";
+"Question" = "Question";
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password recovery" = "Password recovery";
+"Password change" = "Password change";
