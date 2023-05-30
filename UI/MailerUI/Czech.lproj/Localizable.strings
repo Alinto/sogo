@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "Vytvořit";
 "Empty Trash" = "Vyprázdnit koš";
+"Empty Junk Folder" = "Empty Junk Folder";
 "Delete"      = "Smazat";
 "Expunge"     = "Vyškrtnout";
 "Forward"     = "Přeposlat";
@@ -73,8 +74,13 @@
 "An error occured while communicating with the mail server" = "Při komunikaci s poštovním serverem došlo k chybě";
 
 /* Mailbox actions */
+
 /* Compact Folder success message */
 "Folder compacted" = "Údržba složky byla provedena";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Junk folder emptied";
+
 /* Empty Trash success message */
 "Trash emptied" = "Koš vyprázdněn";
 
@@ -82,7 +88,7 @@
 "Access rights to" = "Přístupová práva k";
 "For user" = "Pro uživatele";
 "Any Authenticated User" = "Všichni ověření uživatelé";
-"List and see this folder" = "Prohlížet tuto složku";
+"View this folder" = "View this folder";
 "Read mails from this folder" = "Číst maily v této složce";
 "Mark mails read and unread" = "Označit maily jako přečtené a nepřečtené";
 "Modify the flags of the mails in this folder" = "Upravit mailové štítky v této složce";
@@ -166,12 +172,22 @@
 "Mark Read"   = "Označit jako přečtené";
 "Untitled" = "Bez názvu";
 
+/* Filter option in messages list */
+"Show unread messages only" = "Show unread messages only";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Show flagged messages only";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Filtered by label";
+
 /* Tree */
 "SentFolderName"   = "Odeslaná pošta";
 "TrashFolderName"  = "Koš";
 "InboxFolderName"  = "Doručená pošta";
 "DraftsFolderName" = "Koncepty";
 "JunkFolderName" = "Nevyžádaná pošta";
+"TemplatesFolderName" = "Templates";
 "SieveFolderName"  = "Filtry";
 "Folders"          = "Složky"; /* title line */
 
@@ -281,11 +297,14 @@
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "K účtu není přiřazen certfikát.";
 
-/* Invalid message signature */
+/* Invalid S/MIME signature */
 "Digital signature is not valid" = "Elektronický podpis není validní";
 
-/* Valid message signature */
+/* Valid S/MIME signature */
 "Message is signed" = "Zpráva je podepsána";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Message is signed but the certificate doesn't match the sender email address";
 
 /* Unknown error while validating message signature */
 "Digital signature is not valid" = "Elektronický podpis není validní";
@@ -372,6 +391,12 @@
 "Send Anyway" = "Odeslat";
 "Error while saving the draft" = "Při uložení konceptu došlo k chybě";
 
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Unable to empty the trash folder.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Unable to empty the junk folder.";
+
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Při přenosu souboru \"%{0}\" došlo k chybě:";
 "There is an active file upload. Closing the window will interrupt it." = "Přenáší se soubor. Zavření okna způsobí přerušení přenosu.";
@@ -386,6 +411,9 @@
 "cannot send message: (smtp) all recipients discarded" = "Zprávu nelze odeslat: adresy všech příjemců jsou neplatné.";
 "cannot send message (smtp) - recipients discarded" = "Zprávu nelze odeslat: následující adresy jsou neplatné";
 "cannot send message: (smtp) error when connecting" = "Zprávu nelze odeslat: při spojení se SMTP serverem došlo k chybě.";
+"cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
+"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
 
 /* Contacts list in mail editor */
 "Email" = "E-mail";
@@ -404,6 +432,9 @@
 "Set as Drafts" = "Nastavit jako Koncepty";
 "Set as Sent" = "Nastavit jako Odeslaná pošta";
 "Set as Trash" = "Nastavit jako Koš";
+
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Set as Templates";
 
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Nastavit jako Nevyžádaná pošta";
@@ -426,6 +457,9 @@
 "Your email has been saved" = "Vaše zpráva byla uložena";
 "Your email has been sent" = "Vaše zpráva byla odeslána";
 "Folder compacted" = "Údržba složky byla provedena";
+
+"New draft" = "New draft";
+"Create new draft with this template" = "Create new draft with this template";
 
 /* Advanced search */
 "Enter Subject" = "Zadejte předmět";

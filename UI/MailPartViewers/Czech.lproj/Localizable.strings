@@ -46,3 +46,4 @@ reply_info = "Toto je odpověď na pozvánku k událost, kterou jste vytvořili 
 "Cancel" = "Storno";
 "OK" = "OK";
 "Comment" = "Komentář:";
+"Description" = "Description";
