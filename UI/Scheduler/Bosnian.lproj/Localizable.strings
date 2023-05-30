@@ -37,6 +37,8 @@
 "this month" = "ovaj mjesec";
 "Previous Month" = "Prethodni Mjesec";
 "Next Month" = "Sljedeći Mjesec";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "ova godina";
@@ -221,6 +223,11 @@
 "view_next31" = "Sljedećih 31 dan";
 "view_thismonth" = "Ovaj Mjesec";
 "view_thisyear" = "Ova Godina";
+"view_last7" = "Last 7 days";
+"view_last14" = "Last 14 days";
+"view_last31" = "Last 31 days";
+"view_lastmonth" = "Last Month";
+"view_lastyear" = "Last Year";
 "view_future" = "Svi Budući Eventi";
 "view_selectedday" = "Izabran Dan";
 "view_not_started" = "Nezapočeti zadaci";
@@ -393,6 +400,10 @@
 "From" = "Od";
 "To" = "Za";
 
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "Nema naslova, nastaviti?";
 validate_invalid_startdate = "Neispravno polje početak!";
@@ -499,6 +510,8 @@ validate_untilbeforeend    = "Ponavljanje se mora završiti poslije prvog eventa
 "and" = "i";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Vremesnki konflikt postoji s jednim ili više učesnika.\nŽelite zadržati trenutne postavke?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Would you like to remove them and send the invitation to the remaining attendees?";
 
 /* events list */
 "Due" = "Rok";
@@ -616,6 +629,7 @@ vtodo_class2 = "(Povjerljiv zadatak)";
 "Rename" = "Preimenovati";
 "Import Calendar" = "Uvezite Kalendar";
 "Select an ICS file." = "Izaberite ICS datoteku.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Uspješno ste pretplaćeni na kalendar";
