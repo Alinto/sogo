@@ -47,7 +47,7 @@
 "Activation Constraints" = "Активирање ограничења";
 "Enable auto reply on" = "Омогући аутоматски одговор ";
 "First day of vacation" = "Први дан одмора";
-"Disable auto reply after" = "Онемогући аутоматски одговор ";
+"Disable auto reply after" = "Disable auto reply after";
 "Last day of vacation" = "Последњи дан одмора";
 "Enter date" = "Унесите датум";
 /* Enable auto reply at this time of the day */
@@ -485,6 +485,8 @@
 "Enable two-factor authentication using a TOTP application" = "Омогући двоструку аутентикацију уз помоћ Google Authenticator апликације";
 "You must enter this key into your TOTP application." = "Морате унети овај кључ у вашу Google Authenticator апликацију.";
 "If you do not and you log out you will not be able to login again." = "Уколико то не урадите и изађете из апликације, нећете моћи да се вратите накнадно.";
+"Enter TOTP verification code :" = "Enter TOTP verification code :";
+"Invalid TOTP verification code" = "Invalid TOTP verification code";
 
 /* External Sieve scripts */
 "An external Sieve script is active" = "Екстерна Sieve скрипта је активна";
