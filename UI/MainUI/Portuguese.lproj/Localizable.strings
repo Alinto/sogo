@@ -2,33 +2,33 @@
 
 "title" = "SOGo";
 "Username" = "Utilizador";
-"Password" = "Senha";
+"Password" = "Palavra-passe";
 "Domain" = "Domínio";
-"Remember username" = "Memorizar login";
-"Connect" = "Conectar";
+"Remember username" = "Lembrar utilizador";
+"Connect" = "Ligar";
 
 /* Appears while authentication is in progress */
-"Authenticating" = "Authenticating";
+"Authenticating" = "A autenticar";
 
 /* Appears when authentication succeeds */
-"Welcome" = "Welcome";
+"Welcome" = "Bem vindo";
 
-"Authentication Failed" = "Authentication Failed";
-"Wrong username or password." = "Utilizador ou Senha Inválida.";
-"Retry" = "Retry";
-"Login failed due to unhandled error case:" = "Login failed due to unhandled error case:";
-"cookiesNotEnabled" = "Você não pode logar por a opção cookies está desabilitada. Por favor, habilite os cookies nas configurações de seu navegador e tente novamente.";
-"browserNotCompatible" = "Foi detectado que a atual versão de seu navegador não é suportado neste site. Recomentamos que use o Firefox. Clique no link abaixo para baixar a versão atual deste navegador.";
-"alternativeBrowsers" = "Alternativamente, você pode usar os seguinte navegadores compatíveis";
-"alternativeBrowserSafari" = "Alternativamente, você pode usar o Safari.";
+"Authentication Failed" = "Autenticação falhou";
+"Wrong username or password." = "Utilizador ou palavra-passe errada.";
+"Retry" = "Tente novamente";
+"Login failed due to unhandled error case:" = "Início de sessão falhou devido a um erro não tratado:";
+"cookiesNotEnabled" = "Não pode iniciar sessão porque o seu navegador tem os cookies desativados. Por favor active os cookies nas definições do seu navegador e tente novamente.";
+"browserNotCompatible" = "Foi detetado que a versão atual do seu navegador não é suportada neste site. Recomendamos que use o Firefox. Clique no link abaixo para descarregar a versão mais recente deste navegador.";
+"alternativeBrowsers" = "Alternativamente pode usar os seguinte navegadores compatíveis";
+"alternativeBrowserSafari" = "Alternativamente também pode usar o Safari.";
 
 /* 2FA */
-"Verification Code" = "Verification Code";
-"Enter the 6-digit verification code from your TOTP application." = "Enter the 6-digit verification code from your TOTP application.";
-"You provided an invalid TOTP key." = "You provided an invalid TOTP key.";
-"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application.";
+"Verification Code" = "Código de verificação";
+"Enter the 6-digit verification code from your TOTP application." = "Introduza o código de verificação de 6 dígitos da sua aplicação TOTP.";
+"You provided an invalid TOTP key." = "Introduziu uma chave TOTP inválida.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "A autenticação de dois fatores foi desativada. Vá ao módulo de preferências para restaurar a autenticação de dois fatores e reconfigure a sua aplicação TOTP.";
 
-"Download" = "Download";
+"Download" = "Descarregar";
 "Language" = "Idioma";
 "choose" = "Escolha ...";
 "Arabic" = "العربية";
@@ -76,53 +76,53 @@
 "Welsh" = "Cymraeg";
 
 "About" = "Sobre";
-"AboutBox" = "Developed by Inverse and Alinto, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
+"AboutBox" = "Desenvolvido pela Inverse e pela Alinto, o SOGo é um servidor de groupware com todas as funcionalidades, com foco na escalabilidade e simplicidade.<br/><br/>\nO SOGo fornece um interface Web rico baseado em AJAX e suporta vários clientes nativos através do uso de protocolos normalizados como o CalDAV e o CardDAV.<br/><br/>\nO SOGo é distribuído sobre a licença <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> versão 2 ou posterior e partes são distribuídas sobre a licença GNU LGPL versão 2. Isto é software grátis: pode altera-lo e redistribui-lo. NÃO EXISTE GARANTIA, até onde a lei permite.<br/><br/>\nConsulte <a href=\"http://www.sogo.nu/en/support/community.html\">esta página</a> para várias opções de suporte.";
 "Your account was locked due to too many failed attempts." = "A sua conta foi bloqueada devido a muitas tentativas falhadas.";
-"Your account was locked due to an expired password." = "A sua conta foi bloqueada devido a uma senha expirada.";
-"Login failed due to unhandled error case" = "O Login falhou pelo seguinte erro";
-"Change your Password" = "Altere sua Senha";
-"The password was changed successfully." = "Senha alterada com sucesso.";
-"Your password has expired, please enter a new one below" = "A sua senha expirou, por favor, insira uma nova abaixo";
-"Password must not be empty." = "A Senha não pode estar vazia.";
-"The passwords do not match. Please try again." = "As senhas não coincidem. Por favor, tente novamente.";
-"Password Grace Period" = "Periodo de carência da Senha";
-"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Você tem %{0} logins restantes antes de bloquear a sua conta. Por favor, altere sua senha no menu preferências.";
-"Password about to expire" = "Senha prestes a expirar";
-"Your password is going to expire in %{0} %{1}." = "A sua senha vai expirar em %{0} %{1}.";
+"Your account was locked due to an expired password." = "A sua conta foi bloqueada devido a uma palavra-passe expirada.";
+"Login failed due to unhandled error case" = "O início de sessão falhou pelo seguinte erro não tratado";
+"Change your Password" = "Altere sua palavra-passe";
+"The password was changed successfully." = "Palavra-passe alterada com sucesso.";
+"Your password has expired, please enter a new one below" = "A sua palavra-passe expirou, por favor insira uma nova abaixo";
+"Password must not be empty." = "A palavra-passe não pode ser vazia.";
+"The passwords do not match. Please try again." = "As palavra-passes não coincidem. Por favor tente novamente.";
+"Password Grace Period" = "Período de carência da palavra-passe";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Tem mais %{0} tentativas antes de bloquear a sua conta. Por favor altere a sua palavra-passe no menu preferências.";
+"Password about to expire" = "Palavra-passe prestes a expirar";
+"Your password is going to expire in %{0} %{1}." = "A sua palavra-passe vai expirar em %{0} %{1}.";
 "days" = "dias";
 "hours" = "horas";
 "minutes" = "minutos";
 "seconds" = "segundos";
-"Password change failed" = "Alteração da senha falhou";
-"Password change failed - Permission denied" = "Alteração da senha falhou - Permissão negada";
-"Password change failed - Insufficient password quality" = "Alteração da senha falhou - Senha muito fraca";
-"Password change failed - Password is too short" = "Alteração da senha falhou - Senha muito curta";
-"Password change failed - Password is too young" = "Alteração da senha falhou - Senha usada recentemente";
-"Password change failed - Password is in history" = "Password is too young - Senha está no histórico";
+"Password change failed" = "Alteração da palavra-passe falhou";
+"Password change failed - Permission denied" = "Alteração da palavra-passe falhou - Permissão negada";
+"Password change failed - Insufficient password quality" = "Alteração da palavra-passe falhou - Palavra-passe muito fraca";
+"Password change failed - Password is too short" = "Alteração da palavra-passe falhou - Palavra-passe muito curta";
+"Password change failed - Password is too young" = "Alteração da palavra-passe falhou - Palavra-passe alterada recentemente";
+"Password change failed - Password is in history" = "Alteração da palavra-passe falhou - Palavra-passe está no histórico";
 "Unhandled policy error: %{0}" = "Política de erro não tratada: %{0}";
 "Unhandled error response" = "Erro de resposta não tratado";
-"Password change is not supported." = "Alteração da senha não suportada.";
+"Password change is not supported." = "Alteração da palavra-passe não é suportada.";
 "Unhandled HTTP error code: %{0}" = "Erro HTTP não tratado: %{0}";
-"New password" = "Nova senha";
+"New password" = "Nova palavra-passe";
 "Confirmation" = "Confirmação";
 "Cancel" = "Cancelar";
-"Please wait..." = "Por favor, aguarde...";
-"Close" = "Close";
-"Missing search parameter" = "Missing search parameter";
-"Missing type parameter" = "Missing type parameter";
+"Please wait..." = "Por favor aguarde...";
+"Close" = "Fechar";
+"Missing search parameter" = "Parâmetro de procura em falta";
+"Missing type parameter" = "Tipo de parâmetro em falta";
 
 /* Password Recovery */
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password lost" = "Password lost";
-"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
-"Invalid secret question answer" = "Invalid secret question answer";
-"Next" = "Next";
-"Back" = "Back";
-"Please enter a new password below" = "Please enter a new password below";
-"A link will be sent to %{0}" = "A link will be sent to %{0}";
-"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
-"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
-"Password recovery email in error" = "Password recovery email in error";
-"Password reset" = "Password reset";
-"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";
+"Secondary e-mail" = "E-mail secundário";
+"Answer" = "Resposta";
+"Password lost" = "Palavra-passe perdida";
+"No password recovery method has been defined for this user" = "Não foi definido nenhum método de recuperação da palavra-passe para este utilizador";
+"Invalid secret question answer" = "Resposta à pergunta secreta inválida";
+"Next" = "Seguinte";
+"Back" = "Voltar";
+"Please enter a new password below" = "Por favor introduza uma palavra-passe nova abaixo";
+"A link will be sent to %{0}" = "Será enviado um link para %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "Foi enviado um link para repor a palavra-passe. Por favor consulte o sua caixa de email de recuperação e carregue no link";
+"Invalid configuration for email password recovery" = "Configuração inválida para recuperação de palavra-passe por email";
+"Password recovery email in error" = "Recuperação de palavra-passe por email em erro";
+"Password reset" = "Reposição de palavra-passe";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Olá %{0},\nFoi efetuado um pedido para alterar a sua palavra-passe!\n\nSe não efetuou este pedido por favor ignore este email.\n\Case tenha efetuado o pedido, por favor carregue no link para alterar a sua palavra-passe: %{1}";
