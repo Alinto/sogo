@@ -7,13 +7,18 @@ vevent_class2 = "(אירוע סודי)";
 vtodo_class0 = "(משימה פומבית)";
 vtodo_class1 = "(משימה פרטית)";
 vtodo_class2 = "(משימה סודית)";
+
 /* Receipts */
 "The event \"%{Summary}\" was created" = "האירוע \"{Summary}%\" נוצר";
 "The event \"%{Summary}\" was deleted" = "האירוע \"{Summary}%\" נמחק";
 "The event \"%{Summary}\" was updated" = "האירוע \"{Summary}%\" עודכן";
+"The task \"%{Summary}\" was created" = "The task \"%{Summary}\" was created";
+"The task \"%{Summary}\" was deleted" = "The task \"%{Summary}\" was deleted";
+"The task \"%{Summary}\" was updated" = "The task \"%{Summary}\" was updated";
 "The following attendees(s) were notified" = "המשתתפים הבאים קיבלו התראה";
 "The following attendees(s) were added" = "המשתתפים הבאים הוספו";
 "The following attendees(s) were removed" = "המשתתפים הבאים הוסרו";
+
 /* IMIP messages */
 "calendar_label" = "לוח שנה";
 "startDate_label" = "התחלה";
@@ -26,17 +31,20 @@ vtodo_class2 = "(משימה סודית)";
 "comment_label" = "הערה";
 "organizer_label" = "מארגן";
 "attendee_label" = "משתתפים";
+
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "הזמנה לאירוע: \"{Summary}%\"";
 "(sent by %{SentBy}) " = "(מאת {SentBy}%)";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "{Organizer}% {SentByText}% הוזמנתם ל {Summary}%.\n\nהתחלה: {StartDate}%\nסיום: {EndDate}%\nתאור: {Description}%";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "{Organizer}% {SentByText}% הוזמנתם ל {Summary}%.\n\nהתחלה: {StartDate}% ב {StartTime}%\nסיום: {EndDate}% ב {EndTime}%\nתאור: {Description}%";
+
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "אירוע מבוטל: \"{Summary}%\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "{Organizer}% {SentByText}% ביטלו את האירוע: {Summary}%.\n\nהתחלה: {StartDate}%\nסיום: {EndDate}%\nתאור: {Description}%";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "{Organizer}% {SentByText}% ביטלו את האירוע: {Summary}%.\n\nהתחלה: {StartDate}% ב {StartTime}%\nסיום: {EndDate}% ב {EndTime}%\nתאור: {Description}%";
+
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "הפגישה \"{Summary}%\" עבור {OldStartDate}% שונתה";
@@ -46,6 +54,7 @@ vtodo_class2 = "(משימה סודית)";
 = "הפרמטרים הבאים השתנו בפגישה \"{Summary}%\":";
 "Please accept or decline those changes."
 = "נא לאשר או לבטל את השינויים";
+
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "הזמנה אושרה: \"{Summary}%\"";
 "Declined invitation: \"%{Summary}\"" = "הזמנה נדחתה: \"{Summary}%\"";
@@ -59,6 +68,15 @@ vtodo_class2 = "(משימה סודית)";
 = "{Attendee}% {SentByText}% ההזמנה הואצלה ל {Delegate}%.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "{Attendee}% {SentByText}% טרם הוחלט לגבי הזמנתך.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Reminder: \"%{Summary}\" - %{StartDate}";
+
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "לא ניתן לגשת למשאב: \"{Cn}% {SystemEmail}%\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "כמות מקסימלית של הזמנות בו זמנית ({NumberOfSimultaneousBookings}%) עבור המשאב \"{Cn}% {SystemEmail}%\". קיימת התנגשות באירוע \"{EventTitle}%\", המתחיל ב {StartDate}%.";
+
+/* Participation role */
+"Your participation is required to this event" = "Your participation is required to this event";
+"Your participation is optional to this event" = "Your participation is optional to this event";
+"Your participation is not required to this event" = "Your participation is not required to this event";
