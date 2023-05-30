@@ -27,6 +27,9 @@
 "OfficePhone" = "RhifSwyddfa";
 "Organization" = "Sefydliad";
 "Work Phone" = "Rhif Gwaith";
+"Cell" = "Cell";
+"Pager" = "Peiriant galw";
+"Pref" = "Pref";
 "Phone" = "Ffôn";
 "Phones" = "Ffonau";
 "Postal" = "Post";
@@ -44,6 +47,90 @@
 "To" = "At";
 "Carbon Copy (Cc)" = "Copi Carbon (Cc)";
 "Blind Carbon Copy (Bcc)" = "Copi Carbon Cudd (Bcc)";
+
+/* Search scope: name fields */
+"name" = "Name";
+
+/* Search scope: name fields */
+"c_cn" = "Name";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "Secondary email";
+
+/* Search scope: screen name field */
+"nsaimid" = "Screen name";
+
+/* Search scope: mail fields */
+"mail" = "Mail";
+
+/* Search scope: mail fields */
+"c_mail" = "Mail";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Telephone";
+
+/* Search scope: telephone field */
+"homephone" = "Telephone";
+
+/* Search scope: mobile field */
+"mobile" = "Mobile";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Fax";
+
+/* Search scope: pager field */
+"pager" = "Pager";
+
+/* Search scope: categories field */
+"c_categories" = "Categories";
+
+/* Search scope: categories field */
+"vcardcategories" = "Categories";
+
+/* Search scope: title field */
+"title" = "Title";
+
+/* Search scope: organization field */
+"c_o" = "Organization";
+
+/* Search scope: organization field */
+"o" = "Organization";
+
+/* Search scope: department field */
+"ou" = "Department";
+
+/* Search scope: city field */
+"l" = "City";
+
+/* Search scope: country field */
+"c" = "Country";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Home Address";
+
+/* Search scope: state/province field */
+"st" = "State/Province";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Home State/Province";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "Zip/Postal Code";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "Zip/Postal Code";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "Home Country";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Home page";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Web page";
+
+/* Search scope: note field */
+"description" = "Note";
 
 /* Subheader of empty addressbook */
 "No contact" = "Dim cysylltiadau";
@@ -134,7 +221,7 @@
 "New Addressbook..." = "Llyfr Cyfeiriadau Newydd...";
 "Subscribe to an Addressbook..." = "Tanysgrifio i Lyfr Cyfeiriadau...";
 "Remove the selected Addressbook" = "Dileu'r Llyfr Cyfeiriadau a ddewiswyd";
-"Subscribe to a shared folder" = "Tanysgrifio i ffolder a rennir";
+"Subscribe to a shared contact" = "Subscribe to a shared addressbook";
 "Search User" = "Chwilio Defnyddiwr";
 "Name of the Address Book" = "Enw'r Llyfr Cyfeiriadau";
 "Are you sure you want to delete the selected address book?"
@@ -154,6 +241,12 @@
 = "Allwch chi ddim tanysgrifio i ffolder rydych chi'n berchen arni.";
 "Unable to subscribe to that folder!"
 = "Methu tanysgrifio i'r ffolder yna.";
+
+/* security */
+"Security" = "Security";
+"Uninstall" = "Uninstall";
+"Error reading the card certificate." = "Error reading the card certificate.";
+"No certificate associated to card." = "No certificate associated to card.";
 
 /* acls */
 "Access rights to" = "Hawliau mynediad i";
@@ -234,6 +327,7 @@
 "URL" = "URL";
 "New URL" = "URL Newydd";
 "street" = "stryd";
+"street (continued)" = "street (continued)";
 "Postoffice" = "Swyddfa bost";
 "Region" = "Rhanbarth";
 "Postal Code" = "Cod Post";
@@ -256,6 +350,7 @@
 "Synchronization" = "Cysoni";
 "Synchronize" = "Cysoni";
 "Sucessfully subscribed to address book" = "Wedi tanysgrifio'n llwyddiannus i'r llyfr cyfeiriadau";
+"A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Cwmpas chwilio";
