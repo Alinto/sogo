@@ -37,6 +37,8 @@
 "this month" = "ovaj mjesec";
 "Previous Month" = "Prethodni mjesec";
 "Next Month" = "Sljedeći mjesec";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "ova godina";
@@ -107,6 +109,7 @@
 "Name of the Calendar" = "Ime kalendara";
 "new" = "Novo";
 "Print view" = "Pregled prije ispisa";
+"Print" = "Print";
 "edit" = "Uredi";
 "delete" = "Izbriši";
 "proposal" = "Prijedlog";
@@ -147,6 +150,7 @@
 "Display events and tasks colors" = "Prikaži boje događaja i zadataka";
 "Borders" = "Granice";
 "Backgrounds" = "Pozadine";
+"Page Format" = "Page Format";
 
 /* Appointments */
 "Appointment viewer" = "Preglednik za sastanke";
@@ -218,6 +222,12 @@
 "view_next14" = "Sljedećih 14 dana";
 "view_next31" = "Sljedećih 31 dana";
 "view_thismonth" = "Ovaj mjesec";
+"view_thisyear" = "This Year";
+"view_last7" = "Last 7 days";
+"view_last14" = "Last 14 days";
+"view_last31" = "Last 31 days";
+"view_lastmonth" = "Last Month";
+"view_lastyear" = "Last Year";
 "view_future" = "Svi budući događaji";
 "view_selectedday" = "Odabrani dan";
 "view_not_started" = "Nezapočeti zadaci";
@@ -390,6 +400,10 @@
 "From" = "Od";
 "To" = "Za";
 
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "Nema naslova, nastavak?";
 validate_invalid_startdate = "Neispravno polje početka!";
@@ -436,16 +450,48 @@ validate_untilbeforeend    = "Vraćanje mora prestati nakon prvog pojavljivanja.
 = "Ne možete ukloniti ili odjaviti osobni kalendar.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Jeste li sigurni da želite izbrisati kalendar \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Are you sure you want to delete the selected components?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Role";
+
+/* Participant role: participation is required */
 "Participant" = "Sudionik";
+
+/* Participant role: participation is required */
+"req-participant" = "Participant";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Neobavezno sudionik";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Optional Participant";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Ne sudionik";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Non Participant";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "Stolica";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Chair";
+
+/* Participant status: needs action */
 "Needs action" = "Treba akciju";
+
+/* Participant status: event accepted */
 "Accepted" = "Prihvaćeno";
+
+/* Participant status: event declined */
 "Declined" = "Odbijeno";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Uvjetno";
+
 "Free" = "Slobodno";
 "Busy" = "Zauzeto";
 "Maybe busy" = "Možda zauzeto";
@@ -464,6 +510,8 @@ validate_untilbeforeend    = "Vraćanje mora prestati nakon prvog pojavljivanja.
 "and" = "i";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Vremenski konflikt postoji s jednim ili više sudionika.\nŽelite li svejedno zadržati trenutne postavke ?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Would you like to remove them and send the invitation to the remaining attendees?";
 
 /* events list */
 "Due" = "do";
@@ -541,8 +589,10 @@ vtodo_class2 = "(Povjerljivi zadatak)";
 "Delete Event" = "Izbriši događaj";
 "Copy event to my calendar" = "Kopiraj događaj na moj kalendar";
 "View Raw Source" = "Pogledaj Raw Izvor";
+"Move To" = "Move To";
+"Copy To" = "Copy To";
 "Subscriptions" = "Pretplate";
-"Subscribe to a shared folder" = "Pretplati se na zajedničku mapu";
+"Subscribe to a shared calendar" = "Subscribe to a shared calendar";
 "Subscribe to a web calendar..." = "Pretplati se na web kalendar...";
 "URL of the Calendar" = "URL kalendara";
 "Web Calendar" = "Web kalendar";
@@ -579,6 +629,7 @@ vtodo_class2 = "(Povjerljivi zadatak)";
 "Rename" = "Preimenovati";
 "Import Calendar" = "Uvezi kalendar";
 "Select an ICS file." = "Odaberi ICS datoteku";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Uspješno ste se pretplatili na kalendar";

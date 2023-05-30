@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "Napravi";
 "Empty Trash" = "Isprazni smeće";
+"Empty Junk Folder" = "Empty Junk Folder";
 "Delete"      = "Obriši";
 "Expunge"     = "Uništi";
 "Forward"     = "Proslijedi";
@@ -73,8 +74,13 @@
 "An error occured while communicating with the mail server" = "Pogreška u komunikaciji s poslužiteljem pošte";
 
 /* Mailbox actions */
+
 /* Compact Folder success message */
 "Folder compacted" = "Mapa je sažeta";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Junk folder emptied";
+
 /* Empty Trash success message */
 "Trash emptied" = "Smeće je ispražnjeno";
 
@@ -82,7 +88,7 @@
 "Access rights to" = "Dopusti pristup";
 "For user" = "Za korisnika";
 "Any Authenticated User" = "Svaki ovlašteni korisnik";
-"List and see this folder" = "Provjeri i vidi ovu mapu";
+"View this folder" = "View this folder";
 "Read mails from this folder" = "Čitaj poruke iz ove mape";
 "Mark mails read and unread" = "Označi poruke pročitanim ili nepročitanim";
 "Modify the flags of the mails in this folder" = "Promjeni oznake poruka u ovoj mapi";
@@ -104,7 +110,7 @@
 "To"            = "Za";
 "Cc"            = "CC";
 "Bcc"           = "BCC";
-"Reply-To"	    = "Odgovor ide na";
+"Reply-To"	= "Odgovor ide na";
 "Add address"   = "Dodaj adresu";
 "Body"          = "Sadržaj";
 "Open" = "Otvori";
@@ -121,9 +127,13 @@
 "Edit Draft..." = "Uredi skicu...";
 "Load Images" = "Učitaj slike";
 "Return Receipt" = "Zatraži povratnicu";
+"Choose which identity to send this message from" = "Choose which identity to send this message from";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Pošiljatelj ove poruke želi biti obaviješten kad je pročitate. Želite li ga obavijestiti?";
 "Return Receipt (displayed) - %@"= "Povratnica (prikazana) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Ovo je povratnica za pismo koje ste poslali %@.\n\nNapomena: ova povratnica samo potvrđuje da je poruka prikazana na računalu primatelja. Nema jamstva da je primatelj pročitao ili razumio sadržaj poruke.";
+"Security" = "Security";
+"Sign" = "Sign";
+"Encrypt" = "Encrypt";
 "Priority" = "Prioritet";
 "highest" = "Najviše";
 "high" = "Visoko";
@@ -162,12 +172,22 @@
 "Mark Read"   = "Označi pročitanim";
 "Untitled" = "Neimenovano";
 
+/* Filter option in messages list */
+"Show unread messages only" = "Show unread messages only";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Show flagged messages only";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Filtered by label";
+
 /* Tree */
 "SentFolderName"   = "Poslano";
 "TrashFolderName"  = "Smeće";
 "InboxFolderName"  = "Ulazna pošta";
 "DraftsFolderName" = "Nedovršeno";
 "JunkFolderName" = "Neželjena pošta";
+"TemplatesFolderName" = "Templates";
 "SieveFolderName"  = "Filteri";
 "Folders"          = "Mape"; /* title line */
 
@@ -176,6 +196,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Dodaj u imenik";
+"Successfully created card" = "Successfully created card";
 "Compose Mail To" = "Sastavi poruku prema";
 "Create Filter From Message..." = "Napravi filter iz poruke...";
 
@@ -225,6 +246,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Preinači u zadatak";
 
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Download message";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Download message (zip)";
+
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "Spremi sve privitke";
 
@@ -246,8 +273,17 @@
 /* Number of selected messages in list */
 "selected" = "odabrano";
 
+/* Date formatting from one time to another time */
+"to_time" = "to";
+
+/* Date formatting from one day to another day */
+"to_date" = "to";
+
 /* Encrypted message notification */
 "This message is encrypted" = "Ova je poruka kodirana";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module.";
 
 /* OpenSSL certificate error - unknown issuer */
 "certificate verify error" = "Ne mogu provjeriti potpis poruke";
@@ -260,6 +296,18 @@
 
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Nijedna vjerodajnica nije pridružena vašem računu.";
+
+/* Invalid S/MIME signature */
+"Digital signature is not valid" = "Digital signature is not valid";
+
+/* Valid S/MIME signature */
+"Message is signed" = "Message is signed";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Message is signed but the certificate doesn't match the sender email address";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Digital signature is not valid";
 
 "This Folder" = "Ova mapa";
 
@@ -296,6 +344,7 @@
 "Operation failed" = "Radnja nije uspjela";
 "Quota" = "Kvota:";
 "quotasFormat" = "upotrijebljeno %{0}% od %{1} MB";
+"messageQuotasFormat" = "%{0}% of %{1} msgs";
 "Unable to move/delete folder." = "Nije moguće premjestiti/izbrisati mapu";
 
 /* Alternative operation when folder cannot be deleted */
@@ -342,6 +391,12 @@
 "Send Anyway" = "Pošalji svejedno";
 "Error while saving the draft" = "Pogreška prilikom spremanja skice";
 
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Unable to empty the trash folder.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Unable to empty the junk folder.";
+
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Pogreška prilikom otpremanja datoteke „{0}”:";
 "There is an active file upload. Closing the window will interrupt it." = "U tijeku je otprema datoteka. Zatvaranje prozora će ju prekinuti.";
@@ -356,6 +411,9 @@
 "cannot send message: (smtp) all recipients discarded" = "Poruka se ne može poslati: svi su primatelji nevažeći.";
 "cannot send message (smtp) - recipients discarded" = "Poruka se ne može poslati: sljedeće su adrese neispravne";
 "cannot send message: (smtp) error when connecting" = "Poruka se ne može poslati: pogreška prilikom spajanja na SMTP poslužitelj.";
+"cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
+"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
 
 /* Contacts list in mail editor */
 "Email" = "e-pošta";
@@ -374,6 +432,9 @@
 "Set as Drafts" = "Spremi kao skicu";
 "Set as Sent" = "Označi poslanim";
 "Set as Trash" = "Označi smećem";
+
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Set as Templates";
 
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Označi neželjenom poštom";
@@ -396,6 +457,18 @@
 "Your email has been saved" = "Vaš email je pohranjen";
 "Your email has been sent" = "Vaš email je poslan";
 "Folder compacted" = "Mapa je sažeta";
+
+"New draft" = "New draft";
+"Create new draft with this template" = "Create new draft with this template";
+
+/* Advanced search */
+"Enter Subject" = "Enter Subject";
+"Enter From" = "Enter From";
+"Enter To" = "Enter To";
+"Enter Cc" = "Enter Cc";
+"Enter Body" = "Enter Body";
+"match" = "match";
+"does not match" = "does not match";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Opseg pretraživanja";

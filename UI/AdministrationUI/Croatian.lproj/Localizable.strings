@@ -10,6 +10,7 @@
 /* Modules descriptions */
 "ACLs_description" = "<p>Modul upravljanja popisima kontrole pristupa (ACL-ovima) omogućava promjenu prava pristupa kalendarima i imenicima svakog pojedinog korisnika.</p><p>Kako biste promijenili prava pristupa korisnikovoj mapi, upišite ime korisnika u polje za pretragu pri vrhu prozora te zatim dvaput kliknite na željenu mapu.</p>";
 "Name or Email" = "Ime ili e-adresa";
+"ACLs saved" = "ACLs saved";
 /* Rights module: initial search message */
 "Start a search to edit the rights" = "Započnite pretragu kako biste uređivali prava";
 /* Rights module: Empty search result */
