@@ -37,6 +37,8 @@
 "this month" = "ta mesec";
 "Previous Month" = "Prejšnji mesec";
 "Next Month" = "Naslednji mesec";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "to leto";
@@ -221,6 +223,11 @@
 "view_next31" = "Naslednjih 31 dni";
 "view_thismonth" = "Ta mesec";
 "view_thisyear" = "To leto";
+"view_last7" = "Last 7 days";
+"view_last14" = "Last 14 days";
+"view_last31" = "Last 31 days";
+"view_lastmonth" = "Last Month";
+"view_lastyear" = "Last Year";
 "view_future" = "Vsi prihodnji dogodki";
 "view_selectedday" = "Izbrani dan";
 "view_not_started" = "Nezačeta opravila";
@@ -308,7 +315,7 @@
 "Month(s)" = "Meseci";
 
 /* [Event recurrence editor] Ex: _The_ first Sunday */
-"The" = " ";
+"The" = "The";
 "Recur on day(s)" = "Ponovi po dnevih";
 "Year(s)" = "Leta";
 
@@ -392,6 +399,10 @@
 "Send Appointment Notifications" = "Pošlji obvestilo o sestanku";
 "From" = "Od";
 "To" = "Za";
+
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
 
 /* validation errors */
 validate_notitle           = "Naslov ni vpisan, nadaljujem?";
@@ -499,6 +510,8 @@ validate_untilbeforeend    = "Ponovitev se mora končati po prvi ponovitvi.";
 "and" = "in";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Obstaja časovni konflikt med enim ali več udeleženci.\nŽeliš vseeno obdržati trenutne nastavitve?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Would you like to remove them and send the invitation to the remaining attendees?";
 
 /* events list */
 "Due" = "Zaradi";
@@ -616,6 +629,7 @@ vtodo_class2 = "(Zaupno opravilo)";
 "Rename" = "Preimenuj";
 "Import Calendar" = "Uvoz koledarja";
 "Select an ICS file." = "Izberi ICS datoteko";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Uspešno ste se naročili na koledar";

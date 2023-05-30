@@ -106,6 +106,7 @@
 "Personal" = "Osebno";
 "To Do" = "Opravilo";
 "Later" = "Pozneje";
+"Forwarded" = "Forwarded";
 "Return Receipt Sent" = "Povratnica poslana";
 "a2_Sunday" = "Ne";
 "a2_Monday" = "Po";
@@ -221,3 +222,11 @@
 
 /* Hotkey description to move forward in current view */
 "Move forward" = "Naprej";
+
+/* Password Recovery */
+"passwordRecovery_Disabled" = "Disabled";
+"passwordRecovery_SecretQuestion" = "Secret question";
+"passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
+"passwordRecovery_SecretQuestion2" = "What was your first car ?";
+"passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
+"passwordRecovery_SecondaryEmail" = "Secondary E-mail";
