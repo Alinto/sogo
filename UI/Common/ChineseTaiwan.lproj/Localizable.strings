@@ -41,6 +41,8 @@
      = "任何人都可以存取您的通訊錄 \"%{0}\", 無論他們在這個系統上有沒有帳號。您確定要在網路上公開通訊錄嗎?";
 "Give Access" = "允許存取";
 "Keep Private" = "保持隱私";
+"Expand" = "Expand";
+"Reduce" = "Reduce";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -104,6 +106,7 @@
 "Personal" = "私人";
 "To Do" = "待辦";
 "Later" = "稍後";
+"Forwarded" = "Forwarded";
 "Return Receipt Sent" = "已傳送回條";
 "a2_Sunday" = "星期日";
 "a2_Monday" = "星期一";
@@ -122,11 +125,17 @@
 "S/MIME Certificate" = "S/MIME 憑證";
 "Subject Name" = "憑證主旨名稱";
 "Issuer" = "憑證發行者";
+"streetAddress" = "Street";
+"stateOrProvinceName" = "State or Province";
+"localityName" = "Locality";
 "countryName" = "國家";
 "organizationName" = "組織";
 "organizationalUnitName" = "部門";
 "commonName" = "簽署名稱";
+"surname" = "Surname";
+"givenName" = "Given Name";
 "emailAddress" = "電子郵件地址";
+
 
 /* Authentication username */
 "Username" = "使用者名稱";
@@ -213,3 +222,11 @@
 
 /* Hotkey description to move forward in current view */
 "Move forward" = "往後移動";
+
+/* Password Recovery */
+"passwordRecovery_Disabled" = "Disabled";
+"passwordRecovery_SecretQuestion" = "Secret question";
+"passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
+"passwordRecovery_SecretQuestion2" = "What was your first car ?";
+"passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
+"passwordRecovery_SecondaryEmail" = "Secondary E-mail";

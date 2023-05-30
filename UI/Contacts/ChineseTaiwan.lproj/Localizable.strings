@@ -27,6 +27,9 @@
 "OfficePhone" = "辦公室電話";
 "Organization" = "公司名稱";
 "Work Phone" = "公務電話";
+"Cell" = "Cell";
+"Pager" = "呼叫器";
+"Pref" = "Pref";
 "Phone" = "電話";
 "Phones" = "電話";
 "Postal" = "郵遞區號";
@@ -218,7 +221,7 @@
 "New Addressbook..." = "新增通訊錄...";
 "Subscribe to an Addressbook..." = "訂閱通訊錄...";
 "Remove the selected Addressbook" = "移除所選擇的通訊錄";
-"Subscribe to a shared folder" = "訂閱共享的資料夾";
+"Subscribe to a shared contact" = "Subscribe to a shared addressbook";
 "Search User" = "搜尋用戶";
 "Name of the Address Book" = " 通訊錄名稱";
 "Are you sure you want to delete the selected address book?"
@@ -347,6 +350,7 @@
 "Synchronization" = "同步";
 "Synchronize" = "同步";
 "Sucessfully subscribed to address book" = "已成功訂閱通訊錄";
+"A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "搜尋範圍";
