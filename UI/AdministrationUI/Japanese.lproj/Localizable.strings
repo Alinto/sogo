@@ -10,6 +10,7 @@
 /* Modules descriptions */
 "ACLs_description" = "<p>アクセス制御リストの管理モジュールを使用すると、各ユーザーのカレンダーとアドレス帳のアクセス制御リストを変更できます。</p><p>ユーザーのフォルダのアクセス制御リストを変更するには、ウィンドウの上部の検索欄にユーザーのフォルダのACLを変更するには、ウィンドウの上部にある検索欄にユーザーの名前を入力して、目的のフォルダをダブルクリックしてください。</p>";
 "Name or Email" = "名前またはメール";
+"ACLs saved" = "ACLs saved";
 /* Rights module: initial search message */
 "Start a search to edit the rights" = "権限編集の検索を開始";
 /* Rights module: Empty search result */

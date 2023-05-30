@@ -27,6 +27,9 @@
 "OfficePhone" = "会社の電話番号";
 "Organization" = "組織";
 "Work Phone" = "仕事用の電話番号";
+"Cell" = "Cell";
+"Pager" = "ポケベル";
+"Pref" = "Pref";
 "Phone" = "電話番号";
 "Phones" = "電話番号";
 "Postal" = "郵便";
@@ -218,7 +221,7 @@
 "New Addressbook..." = "新しいアドレス帳...";
 "Subscribe to an Addressbook..." = "アドレス帳に登録";
 "Remove the selected Addressbook" = "選択したアドレス帳を削除";
-"Subscribe to a shared folder" = "共有フォルダに登録";
+"Subscribe to a shared contact" = "Subscribe to a shared addressbook";
 "Search User" = "ユーザーを検索";
 "Name of the Address Book" = "アドレス帳の名前";
 "Are you sure you want to delete the selected address book?"
@@ -238,6 +241,12 @@
 = "所有しているフォルダーへの登録はできません。";
 "Unable to subscribe to that folder!"
 = "フォルダーに登録出来ません。";
+
+/* security */
+"Security" = "Security";
+"Uninstall" = "Uninstall";
+"Error reading the card certificate." = "Error reading the card certificate.";
+"No certificate associated to card." = "No certificate associated to card.";
 
 /* acls */
 "Access rights to" = "アクセス権";
@@ -341,6 +350,7 @@
 "Synchronization" = "同期";
 "Synchronize" = "同期する";
 "Sucessfully subscribed to address book" = "アドレス帳に登録されました";
+"A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "検索範囲";

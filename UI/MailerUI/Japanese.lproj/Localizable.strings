@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "作成";
 "Empty Trash" = "ゴミ箱を空にする";
+"Empty Junk Folder" = "Empty Junk Folder";
 "Delete"      = "削除";
 "Expunge"     = "消す";
 "Forward"     = "転送";
@@ -73,8 +74,13 @@
 "An error occured while communicating with the mail server" = "メールサーバーとの通信中にエラーが発生しました";
 
 /* Mailbox actions */
+
 /* Compact Folder success message */
 "Folder compacted" = "フォルダが圧縮されました";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Junk folder emptied";
+
 /* Empty Trash success message */
 "Trash emptied" = "ゴミ箱が空です";
 
@@ -82,7 +88,7 @@
 "Access rights to" = "アクセス権を";
 "For user" = "ユーザの";
 "Any Authenticated User" = "認証済みのすべてのユーザー";
-"List and see this folder" = "このフォルダの一覧を表示、参照";
+"View this folder" = "View this folder";
 "Read mails from this folder" = "このフォルダからメールを読む";
 "Mark mails read and unread" = "メールを既読または未読状態にする";
 "Modify the flags of the mails in this folder" = "このフォルダにメールのフラグを変更";
@@ -104,7 +110,7 @@
 "To"            = "受信者";
 "Cc"            = "Cc";
 "Bcc"           = "Bcc";
-"Reply-To"	    = "返信先";
+"Reply-To"	= "返信先";
 "Add address"   = "アドレスを追加";
 "Body"          = "本文";
 "Open" = "開く";
@@ -121,9 +127,13 @@
 "Edit Draft..." = "下書きを編集...";
 "Load Images" = "画像を読み込む";
 "Return Receipt" = "受信を返す";
+"Choose which identity to send this message from" = "Choose which identity to send this message from";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "メッセージの送信者は、開封確認をリクエストしています。開封確認のメッセージを送信しますか?";
 "Return Receipt (displayed) - %@"= "受信を返す（表示中） - ％@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "あなたが %@ に送信したメールの受領確認です。\n\n注意: この受領確認はメッセージが宛先の方がコンピューターで表示されたことを知らせるだけです。宛先の方がメッセージの内容を読んだ、または理解したと保証するものではありません。";
+"Security" = "Security";
+"Sign" = "Sign";
+"Encrypt" = "Encrypt";
 "Priority" = "優先順位";
 "highest" = "最高";
 "high" = "高";
@@ -162,12 +172,22 @@
 "Mark Read"   = "既読マークを付ける";
 "Untitled" = "無題";
 
+/* Filter option in messages list */
+"Show unread messages only" = "Show unread messages only";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Show flagged messages only";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Filtered by label";
+
 /* Tree */
 "SentFolderName"   = "送信済み";
 "TrashFolderName"  = "ゴミ箱";
 "InboxFolderName"  = "受信トレイ";
 "DraftsFolderName" = "下書き";
 "JunkFolderName" = "迷惑メール";
+"TemplatesFolderName" = "Templates";
 "SieveFolderName"  = "フィルター";
 "Folders"          = "フォルダ"; /* title line */
 
@@ -176,6 +196,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "アドレス帳に追加...";
+"Successfully created card" = "Successfully created card";
 "Compose Mail To" = "メール作成";
 "Create Filter From Message..." = "メッセージからフィルタを作成...";
 
@@ -225,6 +246,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "タスクに変更";
 
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Download message";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Download message (zip)";
+
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "全ての添付ファイルをダウンロード";
 
@@ -246,8 +273,17 @@
 /* Number of selected messages in list */
 "selected" = "選択されたメッセージ";
 
+/* Date formatting from one time to another time */
+"to_time" = "to";
+
+/* Date formatting from one day to another day */
+"to_date" = "to";
+
 /* Encrypted message notification */
 "This message is encrypted" = "このメッセージは暗号化されています。";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module.";
 
 /* OpenSSL certificate error - unknown issuer */
 "certificate verify error" = "メッセージの署名を確認することができませんでした。";
@@ -260,6 +296,18 @@
 
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "アカウントに証明書が関連付けされていません。";
+
+/* Invalid S/MIME signature */
+"Digital signature is not valid" = "Digital signature is not valid";
+
+/* Valid S/MIME signature */
+"Message is signed" = "Message is signed";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Message is signed but the certificate doesn't match the sender email address";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Digital signature is not valid";
 
 "This Folder" = "このフォルダ";
 
@@ -296,6 +344,7 @@
 "Operation failed" = "操作に失敗しました";
 "Quota" = "クォータ：";
 "quotasFormat" = "%{0}% used on %{1} MB";
+"messageQuotasFormat" = "%{0}% of %{1} msgs";
 "Unable to move/delete folder." = "フォルダを移動または削除できません。";
 
 /* Alternative operation when folder cannot be deleted */
@@ -342,6 +391,12 @@
 "Send Anyway" = "送信する";
 "Error while saving the draft" = "下書きを保存中にエラーが発生しました";
 
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Unable to empty the trash folder.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Unable to empty the junk folder.";
+
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "\"%{0}\"というファイルのアップロード中にエラーが発生しました:";
 "There is an active file upload. Closing the window will interrupt it." = "ファイルをアップロード中です。ウィンドウを閉じると中断します。";
@@ -356,6 +411,9 @@
 "cannot send message: (smtp) all recipients discarded" = "メッセージを送信できません。無効な宛先です。";
 "cannot send message (smtp) - recipients discarded" = "メッセージを送信できません。次のアドレスは無効です。";
 "cannot send message: (smtp) error when connecting" = "メッセージを送信できません。SMTPサーバーへの接続時にエラーが発生しました。";
+"cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
+"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
 
 /* Contacts list in mail editor */
 "Email" = "メール";
@@ -374,6 +432,9 @@
 "Set as Drafts" = "下書き";
 "Set as Sent" = "送信済み";
 "Set as Trash" = "ゴミ箱";
+
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Set as Templates";
 
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "迷惑メール";
@@ -396,6 +457,18 @@
 "Your email has been saved" = "メールが保存されました";
 "Your email has been sent" = "メールが送信されました";
 "Folder compacted" = "フォルダが圧縮されました";
+
+"New draft" = "New draft";
+"Create new draft with this template" = "Create new draft with this template";
+
+/* Advanced search */
+"Enter Subject" = "Enter Subject";
+"Enter From" = "Enter From";
+"Enter To" = "Enter To";
+"Enter Cc" = "Enter Cc";
+"Enter Body" = "Enter Body";
+"match" = "match";
+"does not match" = "does not match";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "検索範囲";

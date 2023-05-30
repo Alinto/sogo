@@ -7,13 +7,18 @@ vevent_class2 = "(機密イベント)";
 vtodo_class0 = "(公開タスク)";
 vtodo_class1 = "(非公開タスク)";
 vtodo_class2 = "(機密タスク)";
+
 /* Receipts */
 "The event \"%{Summary}\" was created" = "イベント\"%{Summary}\"を作成しました";
 "The event \"%{Summary}\" was deleted" = "イベント\"%{Summary}\"を削除しました";
 "The event \"%{Summary}\" was updated" = "イベント\"%{Summary}\"を更新しました";
+"The task \"%{Summary}\" was created" = "The task \"%{Summary}\" was created";
+"The task \"%{Summary}\" was deleted" = "The task \"%{Summary}\" was deleted";
+"The task \"%{Summary}\" was updated" = "The task \"%{Summary}\" was updated";
 "The following attendees(s) were notified" = "以下の参加者に通知しました";
 "The following attendees(s) were added" = "以下の参加者を追加しました";
 "The following attendees(s) were removed" = "以下の参加者を削除しました";
+
 /* IMIP messages */
 "calendar_label" = "カレンダー";
 "startDate_label" = "開始";
@@ -26,17 +31,20 @@ vtodo_class2 = "(機密タスク)";
 "comment_label" = "コメント";
 "organizer_label" = "オーガナイザー";
 "attendee_label" = "出席者";
+
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "イベントに招待: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(%{SentBy}が送信) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}が%{Summary}にあなたを招待しました。\n\n開始: %{StartDate}\n終了: %{EndDate}\n説明: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}が%{Summary}にあなたを招待しました。\n\n開始: %{StartDate} %{StartTime}\n終了: %{EndDate} %{EndTime}\n説明: %{Description}";
+
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "イベントがキャンセルされました: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}がイベントをキャンセルしました: %{Summary}.\n\n開始: %{StartDate}\n終了: %{EndDate}\n説明: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}がイベントをキャンセルしました: %{Summary}.\n\n開始: %{StartDate} %{StartTime}\n終了: %{EndDate} %{EndTime}\n説明: %{Description}";
+
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "%{OldStartDate}の予約\"%{Summary}\"に変更がありました";
@@ -46,6 +54,7 @@ vtodo_class2 = "(機密タスク)";
 = "ミーティング\"%{Summary}\"の予定に以下の変更がありました:";
 "Please accept or decline those changes."
 = "これらの変更を承認または辞退してください。";
+
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "承諾された招待: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "辞退された招待: \"%{Summary}\"";
@@ -59,6 +68,15 @@ vtodo_class2 = "(機密タスク)";
 = "%{Attendee} %{SentByText}は、あなたの招待を%{Delegate}に委任しました。";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}は、あなたの招待の回答を決めていません。";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Reminder: \"%{Summary}\" - %{StartDate}";
+
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "リソースにアクセスできません: \"%{Cn} %{SystemEmail}\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "同時の予約の最大数(%{NumberOfSimultaneousBookings})がリソース\"%{Cn} %{SystemEmail}\"の最大数に達しました。競合しているイベントは%{StartDate}から開始の\"%{EventTitle}\"です。";
+
+/* Participation role */
+"Your participation is required to this event" = "Your participation is required to this event";
+"Your participation is optional to this event" = "Your participation is optional to this event";
+"Your participation is not required to this event" = "Your participation is not required to this event";
