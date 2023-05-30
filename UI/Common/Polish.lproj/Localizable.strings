@@ -106,6 +106,7 @@
 "Personal" = "Osobiste";
 "To Do" = "Do zrobienia";
 "Later" = "Później";
+"Forwarded" = "Forwarded";
 "Return Receipt Sent" = "Potwierdzenie wysłane";
 "a2_Sunday" = "Ni";
 "a2_Monday" = "Pn";
@@ -221,3 +222,11 @@
 
 /* Hotkey description to move forward in current view */
 "Move forward" = "Idź naprzód";
+
+/* Password Recovery */
+"passwordRecovery_Disabled" = "Disabled";
+"passwordRecovery_SecretQuestion" = "Secret question";
+"passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
+"passwordRecovery_SecretQuestion2" = "What was your first car ?";
+"passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
+"passwordRecovery_SecondaryEmail" = "Secondary E-mail";

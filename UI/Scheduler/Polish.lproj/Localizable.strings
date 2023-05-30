@@ -37,6 +37,8 @@
 "this month" = "ten miesiąc";
 "Previous Month" = "Poprzedni miesiąc";
 "Next Month" = "Następny miesiąc";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "ten rok";
@@ -313,12 +315,12 @@
 "Month(s)" = "Miesiące(cy)";
 
 /* [Event recurrence editor] Ex: _The_ first Sunday */
-"The" = " ";
+"The" = "The";
 "Recur on day(s)" = "Powtarzaj w dni";
 "Year(s)" = "Lat(a)";
 
 /* [Event recurrence editor] Ex: Every first Sunday _of_ April */
-"cycle_of" = " ";
+"cycle_of" = "of";
 "No end date" = "Bez daty końcowej";
 "Create" = "Utwórz";
 "appointment(s)" = "spotkanie(a)";
@@ -397,6 +399,10 @@
 "Send Appointment Notifications" = "Wyślij powiadomienia o spotkaniu";
 "From" = "Od";
 "To" = "Do";
+
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
 
 /* validation errors */
 validate_notitle           = "Nie podano tytułu, kontynuować?";
@@ -623,6 +629,7 @@ vtodo_class2 = "(Zadanie poufne)";
 "Rename" = "Zmień nazwę";
 "Import Calendar" = "Importuj kalendarz";
 "Select an ICS file." = "Wybierz plik ICS.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Subskrypcja kalendarza zakończona powodzeniem";
