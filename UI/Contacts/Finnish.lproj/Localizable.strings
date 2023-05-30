@@ -27,6 +27,9 @@
 "OfficePhone" = "Toimistopuhelin";
 "Organization" = "Organisaatio";
 "Work Phone" = "Työpuhelin";
+"Cell" = "Cell";
+"Pager" = "Hakulaite";
+"Pref" = "Pref";
 "Phone" = "Puhelin";
 "Phones" = "Puhelimet";
 "Postal" = "Postiosoite";
@@ -41,6 +44,93 @@
 "Move To" = "Siirrä";
 "Copy To" = "Kopioi";
 "Add to" = "Lisää";
+"To" = "To";
+"Carbon Copy (Cc)" = "Carbon Copy (Cc)";
+"Blind Carbon Copy (Bcc)" = "Blind Carbon Copy (Bcc)";
+
+/* Search scope: name fields */
+"name" = "Name";
+
+/* Search scope: name fields */
+"c_cn" = "Name";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "Secondary email";
+
+/* Search scope: screen name field */
+"nsaimid" = "Screen name";
+
+/* Search scope: mail fields */
+"mail" = "Mail";
+
+/* Search scope: mail fields */
+"c_mail" = "Mail";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Telephone";
+
+/* Search scope: telephone field */
+"homephone" = "Telephone";
+
+/* Search scope: mobile field */
+"mobile" = "Mobile";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Fax";
+
+/* Search scope: pager field */
+"pager" = "Pager";
+
+/* Search scope: categories field */
+"c_categories" = "Categories";
+
+/* Search scope: categories field */
+"vcardcategories" = "Categories";
+
+/* Search scope: title field */
+"title" = "Title";
+
+/* Search scope: organization field */
+"c_o" = "Organization";
+
+/* Search scope: organization field */
+"o" = "Organization";
+
+/* Search scope: department field */
+"ou" = "Department";
+
+/* Search scope: city field */
+"l" = "City";
+
+/* Search scope: country field */
+"c" = "Country";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Home Address";
+
+/* Search scope: state/province field */
+"st" = "State/Province";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Home State/Province";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "Zip/Postal Code";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "Zip/Postal Code";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "Home Country";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Home page";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Web page";
+
+/* Search scope: note field */
+"description" = "Note";
 
 /* Subheader of empty addressbook */
 "No contact" = "Ei yhteystietoa";
@@ -131,7 +221,7 @@
 "New Addressbook..." = "Uusi osoitekirja...";
 "Subscribe to an Addressbook..." = "Tilaa osoitekirja...";
 "Remove the selected Addressbook" = "Poista valittu osoitekirja";
-"Subscribe to a shared folder" = "Tilaa jaettu hakemisto";
+"Subscribe to a shared contact" = "Subscribe to a shared addressbook";
 "Search User" = "Etsi käyttäjää";
 "Name of the Address Book" = "Osoitekirjan nimi";
 "Are you sure you want to delete the selected address book?"
@@ -151,6 +241,12 @@
 = "Et voi tilata omistamaasi kansiota.";
 "Unable to subscribe to that folder!"
 = "Kansioon kirjautuminen ei onnistu.";
+
+/* security */
+"Security" = "Security";
+"Uninstall" = "Uninstall";
+"Error reading the card certificate." = "Error reading the card certificate.";
+"No certificate associated to card." = "No certificate associated to card.";
 
 /* acls */
 "Access rights to" = "Pääsyoikeudet";
@@ -231,6 +327,7 @@
 "URL" = "URL";
 "New URL" = "Uusi URL";
 "street" = "katuosoite";
+"street (continued)" = "street (continued)";
 "Postoffice" = "Postitoimisto";
 "Region" = "Alue";
 "Postal Code" = "Postinumero";
@@ -244,9 +341,16 @@
 "More options" = "Lisää valintoja";
 "Role" = "Rooli";
 "Add Screen Name" = "Lisää näyttönimi";
+"Custom 1" = "Custom 1";
+"Custom 2" = "Custom 2";
+"Custom 3" = "Custom 3";
+"Custom 4" = "Custom 4";
+"Custom Value" = "Custom Value";
+"New Custom Value" = "New Custom Value";
 "Synchronization" = "Synkronointi";
 "Synchronize" = "Synkronoi";
 "Sucessfully subscribed to address book" = "Osoitekirjan tilaus onnistui";
+"A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Hakualue";

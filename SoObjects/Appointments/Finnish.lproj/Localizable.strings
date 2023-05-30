@@ -7,32 +7,44 @@ vevent_class2 = "(Luottamuksellinen tapahtuma)";
 vtodo_class0 = "(Julkinen tehtävä)";
 vtodo_class1 = "(Yksityinen tehtävä)";
 vtodo_class2 = "(Luottamuksellinen tehtävä)";
+
 /* Receipts */
 "The event \"%{Summary}\" was created" = "Tapahtuma \"%{Summary}\" luotiin";
 "The event \"%{Summary}\" was deleted" = "Tapahtuma \"%{Summary}\" poistettiin";
 "The event \"%{Summary}\" was updated" = "Tapahtuma \"%{Summary}\" päivitettiin";
+"The task \"%{Summary}\" was created" = "The task \"%{Summary}\" was created";
+"The task \"%{Summary}\" was deleted" = "The task \"%{Summary}\" was deleted";
+"The task \"%{Summary}\" was updated" = "The task \"%{Summary}\" was updated";
 "The following attendees(s) were notified" = "Seuraava(t) osallistuja(t) on informoitu";
 "The following attendees(s) were added" = "Seuraava(t) osalllistuja(t) on lisätty";
 "The following attendees(s) were removed" = "Seuraava(t) osalllistuja(t) poistettiin";
+
 /* IMIP messages */
 "calendar_label" = "Kalenteri";
 "startDate_label" = "Alkaa";
 "endDate_label" = "Päättyy";
+"time_label" = "Time";
+"to_label" = "to";
 "due_label" = "Määräpäivä:";
 "location_label" = "Sijainti";
 "summary_label" = "Yhteenveto:";
 "comment_label" = "Kommentti:";
+"organizer_label" = "Organizer";
+"attendee_label" = "Attendee";
+
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Tapahtumakutsu: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(lähettäjä %{SentBy}) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}on kutsunut sinut %{Summary}n.⏎ ⏎ Alkaa: %{StartDate}⏎ Loppuu: %{EndDate}⏎ Kuvaus: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}on kutsunut sinut %{Summary}n.⏎ ⏎ Alkaa: %{StartDate} klo %{StartTime}⏎ Loppuu: %{EndDate} klo %{EndTime}⏎ Kuvaus: %{Description}";
+
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Tapahtuma peruttu: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}on perunut tapahtuman: %{Summary}.⏎ ⏎ Alkaa: %{StartDate}⏎ Loppuu: %{EndDate}⏎ Kuvaus: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}on peruuttanut tapahtuman: %{Summary}.⏎ ⏎ Alkaa: %{StartDate}klot %{StartTime}⏎ Loppuu: %{EndDate} klo %{EndTime}⏎ Kuvaus: %{Description}";
+
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "Tapaaminen \"%{Summary}\" %{OldStartDate} on muuttunut";
@@ -42,6 +54,7 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 = "Seuraavat tiedot ovat muuttuneet tapaamisessa \"%{Summary}\":";
 "Please accept or decline those changes."
 = "Ole hyvä ja hyväksy tai hylkää muutokset.";
+
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Hyväksytty kutsu: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Hylätty kutsu: \"%{Summary}\"";
@@ -55,6 +68,15 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 = "%{Attendee} %{SentByText} on  lähettänyt kutsusi edelleen osoitteeseen %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText} ei vielä ole tehnyt päätöstä tapahtumakutsustasi.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Reminder: \"%{Summary}\" - %{StartDate}";
+
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Ei pääsyä resurssiin: \"%{Cn} %{SystemEmail}\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Maksimimäärä yhtäaikaisia varauksia\n(%{NumberOfSimultaneousBookings}) saavutettu resurssille \"%{Cn} %{SystemEmail}\". Ristiriitainen tapahtuma: \"%{EventTitle}\" alkaa %{StartDate}.";
+
+/* Participation role */
+"Your participation is required to this event" = "Your participation is required to this event";
+"Your participation is optional to this event" = "Your participation is optional to this event";
+"Your participation is not required to this event" = "Your participation is not required to this event";

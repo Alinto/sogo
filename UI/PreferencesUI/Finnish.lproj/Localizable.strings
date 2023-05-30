@@ -40,13 +40,26 @@
 "Auto reply subject" = "Automaattivastauksen otsikko";
 "You can write ${subject} to insert the original subject" = "Voit kirjoittaa ${subject} sisällyttääksesi alkuperäisen otsikon";
 "Auto reply message" = "Automaattivastaus";
-"Email addresses (separated by commas)" = "Sähköpostiosoitteet (eroteltuna pilkuin)";
+"Email addresses" = "Email addresses";
 "Add default email addresses" = "Syötä oletussähköpostiosoite";
 "Days between responses" = "Päivät vastausten välillä";
 "Do not send responses to mailing lists" = "Älä lähetä vastauksia postituslistoille";
+"Activation Constraints" = "Activation Constraints";
 "Enable auto reply on" = "Ota automaattivastaus käyttöön";
-"Disable auto reply after" = "Poista automaattivastaus käytöstä";
+"First day of vacation" = "First day of vacation";
+"Disable auto reply after" = "Disable auto reply after";
+"Last day of vacation" = "Last day of vacation";
+"Enter date" = "Enter date";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Enable auto reply at";
+"Enter time" = "Enter time";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Disable auto reply at";
+"Enable auto reply on these days" = "Enable auto reply on these days";
 "Always send vacation message response" = "Lähetä lomaviestivastaus aina";
+"The vacation message is sent prior to apply your filters." = "The vacation message is sent prior to apply your filters.";
+"Discard incoming mails during vacation" = "Discard incoming mails during vacation";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "The vacation message is sent but incoming messages are not delivered to your inbox.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Ole hyvä ja määritä viesti sekä sähköpostiosoitteet joille haluat aktivoida automaattivastauksen.";
 "Your vacation message must not end with a single dot on a line." = "Lomaviestisi ei saa päättyä yksittäiseen pisteeseen viimeisellä rivillä.";
@@ -55,14 +68,19 @@
 
 /* forward messages */
 "Forward incoming messages" = "Edelleenlähetä saapuvat viestit";
+"Always forward" = "Always forward";
+"Incoming messages are forwarded prior to apply your filters." = "Incoming messages are forwarded prior to apply your filters.";
 "Keep a copy" = "Pidä kopio";
+"Enter an email" = "Enter an email";
+"Add another email" = "Add another email";
 "Please specify an address to which you want to forward your messages."
 = "Ole hyvä ja määritä sähköpostiosoite johon haluat edelleenlähettää viestisi.";
 "You are not allowed to forward your messages to an external email address." = "Sinulla ei ole lupaa välittää viestejä ulkoiseen sähköpostiosoitteeseen.";
 "You are not allowed to forward your messages to an internal email address." = "Sinulla ei ole lupaa välittää viestejä sisäiseen sähköpostiosoitteeseen.";
+"You are not allowed to forward your messages to this domain:" = "You are not allowed to forward your messages to this domain:";
 
 /* d & t */
-"Current Time Zone" = "Nykyinen aikavyöhyke";
+"Time Zone" = "Time Zone";
 "Short Date Format" = "Lyhyt päivämäärän esitysmuoto";
 "Long Date Format" = "Pitkä päivämäärän esitysmuoto";
 "Time Format" = "Ajan esitysmuoto";
@@ -84,8 +102,10 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
-   
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
+
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
 "longDateFmt_2" = "%A, %d %B, %Y";
@@ -123,6 +143,8 @@
 "Prevent from being invited to appointments" = "Estä tapaamiskutsut";
 "White list for appointment invitations" = "Valkoinen lista tapaamiskutsuille";
 "Contacts Names" = "Yhteystietojen Nimet";
+"Duplicate name" = "Duplicate name";
+"Calendar categories must have unique names." = "Calendar categories must have unique names.";
 
 /* Default Calendar */
 "Default calendar" = "Oletuskalenteri";
@@ -146,10 +168,18 @@
 /* Mailer */
 "Labels" = "Otsikot";
 "Label" = "Otsikoi";
+"IMAP Label" = "IMAP Label";
+"Invalid label" = "Don't use space, nor ( ) { } % * \" \\";
+"Duplicate label" = "Duplicate label";
+"IMAP labels must have unique names." = "IMAP labels must have unique names.";
 "New label" = "Uusi otsikko";
 "Show subscribed mailboxes only" = "Näytä vain tilatut sähköpostikansiot";
 "Synchronize only default mail folders (EAS)" = "Synkronoi vain oletus sähköpostikansiot (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Fetch count of unseen messages for all mailboxes";
 "Sort messages by threads" = "Järjestä viestit ketjuiksi";
+"Always open mail composer" = "Always open mail composer";
+"Inside current window" = "Inside current window";
+"In a popup window" = "In a popup window";
 "When sending mail, add unknown recipients to my" = "Postia lähettäessä lisää tuntemattomat vastaanottajat";
 "Address Book" = "Osoitekirja";
 "Forward messages" = "Edelleenlähetä viestit";
@@ -173,12 +203,19 @@
 "displayremoteinlineimages_always" = "Aina";
 "Auto save every" = "Tallenna automaattisesti";
 "minutes" = "minuutin välein";
+"Automatically mark messages as read" = "Automatically mark messages as read";
+"Immediately on display" = "Immediately on display";
+"After displaying for" = "After displaying for";
+"seconds" = "seconds";
 
 /* Contact */
 "Personal Address Book" = "Henkilökohtainen osoitekirja";
 "Collected Address Book" = "Keratty osoitekirja";
+"Contact categories must have unique names." = "Contact categories must have unique names.";
 
 /* IMAP Accounts */
+"Settings" = "Settings";
+"Security" = "Security";
 "Mail Account" = "Sähköpostitili";
 "New Mail Account" = "Uusi sähköpostitili";
 "Server Name" = "Palvelinnimi";
@@ -190,19 +227,42 @@
 "Email" = "Sähköposti";
 "Reply To Email" = "Vastaa sähköpostiin";
 "Signature" = "Allekirjoitus";
+"Identities" = "Identities";
+"Always use the default identity when replying to messages" = "Always use the default identity when replying to messages";
+"Default Identity" = "Default Identity";
+"New Identity" = "New Identity";
 "(Click to create)" = "(Napsauta luodaksesi)";
 "Please enter your signature below" = "Ole hyvä ja syötä allekirjoituksesi alle";
 "Please specify a valid sender address." = "Ole hyvä ja syötä kelvollinen lähettäjäosoite";
 "Please specify a valid reply-to address." = "Ole hyvä ja syötä kelvollinen vastausosoite";
 "Specify a hostname other than the local host" = "Määritä muu kuin paikallinen palvelinosoite";
 
+"No certificate installed" = "No certificate installed";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "The SSL certificate must use the PKCS#12 (PFX) format.";
+"Uninstall" = "Uninstall";
+"Choose PKCS12 Certificate .." = "Choose PKCS12 Certificate ..";
+"Certificate Import Password" = "Certificate Import Password";
+"Upload" = "Upload";
+"When composing a message" = "When composing a message";
+"Digitally sign the message by default" = "Digitally sign the message by default";
+"Always try to encrypt the message" = "Always try to encrypt the message";
+"An error occurred while importing the certificate. Verify your password." = "An error occurred while importing the certificate. Verify your password.";
+
 /* Additional Parameters */
 "Additional Parameters" = "Lisäparametrit";
 
 /* password */
+"Current password" = "Current password";
 "New password" = "Uusi salasana";
 "Confirmation" = "Vahvistus";
 "Change" = "Vaihda";
+"Passwords don't match" = "Passwords don't match";
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
+"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+
 
 /* Event+task classifications */
 "Default events classification" = "Oletus tapahtumaluokittelu";
@@ -215,6 +275,7 @@
 "Calendar Category" = "Kalenteriryhmä";
 "Add Calendar Category" = "Lisää kalenteriryhmä";
 "New category" = "Uusi kategoria";
+"Reset to defaults" = "Reset to defaults";
 "Remove Calendar Category" = "Poista kalenteriryhmä";
 "Contact Category" = "Yhteystietoryhmä";
 "Add Contact Category" = "Lisää yhteystietoryhmä";
@@ -287,6 +348,7 @@
 "refreshview_every_20_minutes" = "20 minuutin välein";
 "refreshview_every_30_minutes" = "Puolen tunnin välein";
 "refreshview_once_per_hour" = "Kerran tunnissa";
+"Enable Desktop Notifications" = "Enable Desktop Notifications";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Kun saan kuittauspyynnön";
@@ -410,3 +472,31 @@
 "monsterid" = "Hirviö";
 "wavatar" = "Wavatar";
 "retro" = "Retro";
+
+/* Animation Level */
+"Animation Level" = "Animation Level";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Normal";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Limited";
+"animation_NONE" = "None";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "Enable two-factor authentication using a TOTP application";
+"You must enter this key into your TOTP application." = "You must enter this key into your TOTP application.";
+"If you do not and you log out you will not be able to login again." = "If you do not and you log out you will not be able to login again.";
+"Enter TOTP verification code :" = "Enter TOTP verification code :";
+"Invalid TOTP verification code" = "Invalid TOTP verification code";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "An external Sieve script is active";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled.";
+"Let SOGo handle everything" = "Let SOGo handle everything";
+
+/* Password Recovery */
+"Password recovery mode" = "Password recovery";
+"Question" = "Question";
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password recovery" = "Password recovery";
+"Password change" = "Password change";
