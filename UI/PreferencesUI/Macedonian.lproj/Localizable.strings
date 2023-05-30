@@ -40,14 +40,26 @@
 "Auto reply subject" = "Тема за автоматски одговор";
 "You can write ${subject} to insert the original subject" = "Можете да напишете ${subject} за да ја уфрлите оригиналната тема";
 "Auto reply message" = "Порака за автоматски одговор";
-"Email addresses (separated by commas)" = "Електронски адреси (раздвоени со запирки)";
+"Email addresses" = "Email addresses";
 "Add default email addresses" = "Додади ја основната адреса за електронска пошта";
 "Days between responses" = "Денови помеѓу одговорите";
 "Do not send responses to mailing lists" = "Не испраќај одговори кон мејлинг листи";
+"Activation Constraints" = "Activation Constraints";
 "Enable auto reply on" = "Овозможи го автоматскиот одговор";
-"Disable auto reply after" = "Исклучи го автоматскиот одговор";
+"First day of vacation" = "First day of vacation";
+"Disable auto reply after" = "Disable auto reply after";
+"Last day of vacation" = "Last day of vacation";
+"Enter date" = "Enter date";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Enable auto reply at";
+"Enter time" = "Enter time";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Disable auto reply at";
+"Enable auto reply on these days" = "Enable auto reply on these days";
 "Always send vacation message response" = "Секогаш испрати порака кога си на одмор";
+"The vacation message is sent prior to apply your filters." = "The vacation message is sent prior to apply your filters.";
 "Discard incoming mails during vacation" = "Не ги земај во предвид мејловите кои ќе дојдат за време на одморот";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "The vacation message is sent but incoming messages are not delivered to your inbox.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Креирајте ја вашата порака и електронска адреса за која сакате да го овозможите автоматското одговарање.";
 "Your vacation message must not end with a single dot on a line." = "Вашата порака кога сте отсатен не смее да заврши со една точка во линијата.";
@@ -56,14 +68,19 @@
 
 /* forward messages */
 "Forward incoming messages" = "Препрати ги пораките кои доаѓаат";
+"Always forward" = "Always forward";
+"Incoming messages are forwarded prior to apply your filters." = "Incoming messages are forwarded prior to apply your filters.";
 "Keep a copy" = "Задржи копија";
+"Enter an email" = "Enter an email";
+"Add another email" = "Add another email";
 "Please specify an address to which you want to forward your messages."
 = "Определете ја електронската адреса на која сакате да ги препраќате пораките.";
 "You are not allowed to forward your messages to an external email address." = "Не ви е дозволено да ја проследите пораката кон надворешна електронска адреса.";
 "You are not allowed to forward your messages to an internal email address." = "Не ви е дозволено да ја проследите пораката кон интерна електронска адреса.";
+"You are not allowed to forward your messages to this domain:" = "You are not allowed to forward your messages to this domain:";
 
 /* d & t */
-"Current Time Zone" = "Тековна временска зона";
+"Time Zone" = "Time Zone";
 "Short Date Format" = "Краток формат за датум";
 "Long Date Format" = "Долг формат за даум";
 "Time Format" = "Формат за време";
@@ -85,7 +102,9 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
 
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
@@ -156,6 +175,7 @@
 "New label" = "Нова лабела";
 "Show subscribed mailboxes only" = "Прикажи ги само претплатените поштенски сандачиња";
 "Synchronize only default mail folders (EAS)" = "Синхронизирај ги само основните папки за пошта (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Fetch count of unseen messages for all mailboxes";
 "Sort messages by threads" = "Сортирај ги пораките според конверзацијата";
 "Always open mail composer" = "Секогаш отвори го прозорецот за креирање на пошта";
 "Inside current window" = "Во рамките на тековниот прозорец";
@@ -183,10 +203,15 @@
 "displayremoteinlineimages_always" = "Секогаш";
 "Auto save every" = "Автоматски сними секој(и)";
 "minutes" = "минути";
+"Automatically mark messages as read" = "Automatically mark messages as read";
+"Immediately on display" = "Immediately on display";
+"After displaying for" = "After displaying for";
+"seconds" = "seconds";
 
 /* Contact */
 "Personal Address Book" = "Лична адресна книга";
 "Collected Address Book" = "Собрана адресна книга";
+"Contact categories must have unique names." = "Contact categories must have unique names.";
 
 /* IMAP Accounts */
 "Settings" = "Нагодувања";
@@ -202,6 +227,10 @@
 "Email" = "Електронска пошта";
 "Reply To Email" = "Одговори на поракта";
 "Signature" = "Потпис";
+"Identities" = "Identities";
+"Always use the default identity when replying to messages" = "Always use the default identity when replying to messages";
+"Default Identity" = "Default Identity";
+"New Identity" = "New Identity";
 "(Click to create)" = "(Кликни да се креира)";
 "Please enter your signature below" = "Внесете го долу вашиот потпис";
 "Please specify a valid sender address." = "Обезбедете валидна адреса на испраќачот.";
@@ -217,14 +246,23 @@
 "When composing a message" = "Кога ја пишуваш пораката";
 "Digitally sign the message by default" = "Дигитално потпишија пораката како основно нагодување";
 "Always try to encrypt the message" = "Обиди се секогаш да ја шифрираш пораката";
+"An error occurred while importing the certificate. Verify your password." = "An error occurred while importing the certificate. Verify your password.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Дополнителни параметри";
 
 /* password */
+"Current password" = "Current password";
 "New password" = "Нова лозинка";
 "Confirmation" = "Потврда";
 "Change" = "Промена";
+"Passwords don't match" = "Passwords don't match";
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
+"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+
 
 /* Event+task classifications */
 "Default events classification" = "Стандардна класификација на настани";
@@ -237,6 +275,7 @@
 "Calendar Category" = "Категорија на календарот";
 "Add Calendar Category" = "Додади категорија во календарот";
 "New category" = "Нова категорија";
+"Reset to defaults" = "Reset to defaults";
 "Remove Calendar Category" = "Отстрани категорија од календарот";
 "Contact Category" = "Категорија на контакти";
 "Add Contact Category" = "Додади категорија на контакти";
@@ -309,6 +348,7 @@
 "refreshview_every_20_minutes" = "Секои 20 минути";
 "refreshview_every_30_minutes" = "Секои 30 минути";
 "refreshview_once_per_hour" = "На секој час";
+"Enable Desktop Notifications" = "Enable Desktop Notifications";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Кога ќе добијам потврда за прием";
@@ -440,3 +480,23 @@
 /* Limited Animation Mode */
 "animation_LIMITED" = "Ограничено";
 "animation_NONE" = "Никакво";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "Enable two-factor authentication using a TOTP application";
+"You must enter this key into your TOTP application." = "You must enter this key into your TOTP application.";
+"If you do not and you log out you will not be able to login again." = "If you do not and you log out you will not be able to login again.";
+"Enter TOTP verification code :" = "Enter TOTP verification code :";
+"Invalid TOTP verification code" = "Invalid TOTP verification code";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "An external Sieve script is active";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled.";
+"Let SOGo handle everything" = "Let SOGo handle everything";
+
+/* Password Recovery */
+"Password recovery mode" = "Password recovery";
+"Question" = "Question";
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password recovery" = "Password recovery";
+"Password change" = "Password change";

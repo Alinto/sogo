@@ -27,6 +27,9 @@
 "OfficePhone" = "Службен телефон";
 "Organization" = "Организација";
 "Work Phone" = "Телефон на работа";
+"Cell" = "Cell";
+"Pager" = "Пејџер";
+"Pref" = "Pref";
 "Phone" = "Телефон";
 "Phones" = "Телефони";
 "Postal" = "Поштенски број";
@@ -218,7 +221,7 @@
 "New Addressbook..." = "Нов адресар";
 "Subscribe to an Addressbook..." = "Прептлати се на адресарот...";
 "Remove the selected Addressbook" = "Избриши го избраниот адресар";
-"Subscribe to a shared folder" = "Претплати се на делената папка.";
+"Subscribe to a shared contact" = "Subscribe to a shared addressbook";
 "Search User" = "Пребарај корисник";
 "Name of the Address Book" = "Име на адресарот";
 "Are you sure you want to delete the selected address book?"
@@ -347,6 +350,7 @@
 "Synchronization" = "Синхронизација";
 "Synchronize" = "Синхронизирај";
 "Sucessfully subscribed to address book" = "Успешно се претплативте на адресната книга";
+"A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Предмет на пребарување";

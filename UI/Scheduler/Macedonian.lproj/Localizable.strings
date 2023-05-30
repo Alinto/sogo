@@ -37,6 +37,8 @@
 "this month" = "овој месец";
 "Previous Month" = "Претходниот месец";
 "Next Month" = "Следниот месец";
+/* Week number prefix */
+"W" = "W";
 
 /* Year */
 "this year" = "оваа година";
@@ -107,6 +109,7 @@
 "Name of the Calendar" = "Име на календарот";
 "new" = "Нов";
 "Print view" = "Преглед пред печатење";
+"Print" = "Print";
 "edit" = "Уреди";
 "delete" = "Избриши";
 "proposal" = "Предлог";
@@ -147,6 +150,7 @@
 "Display events and tasks colors" = "Прикажи ги настаните и боите на задачите";
 "Borders" = "Ивици";
 "Backgrounds" = "Позадини";
+"Page Format" = "Page Format";
 
 /* Appointments */
 "Appointment viewer" = "Преглед на состаноци";
@@ -219,6 +223,11 @@
 "view_next31" = "Следните 31 дена";
 "view_thismonth" = "Овој месец";
 "view_thisyear" = "Оваа година";
+"view_last7" = "Last 7 days";
+"view_last14" = "Last 14 days";
+"view_last31" = "Last 31 days";
+"view_lastmonth" = "Last Month";
+"view_lastyear" = "Last Year";
 "view_future" = "Сите идни настани";
 "view_selectedday" = "Одбраниот ден";
 "view_not_started" = "Незапочнати задачи";
@@ -391,6 +400,10 @@
 "From" = "Од";
 "To" = "До";
 
+/* dates */
+"DateFrom" = "From";
+"DateTo" = "To";
+
 /* validation errors */
 validate_notitle           = "Нема наслов, да продолжам?";
 validate_invalid_startdate = "Некоректно поле за почетен датум!";
@@ -497,6 +510,8 @@ validate_untilbeforeend    = "Повторувањето мора да завр�
 "and" = "и";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Постои конфликт со временските слотови со еден или повеќе учесници.\nДали сакате и покрај тоа да ги сочувате тековните поставки?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Would you like to remove them and send the invitation to the remaining attendees?";
 
 /* events list */
 "Due" = "Не подоцна од";
@@ -577,7 +592,7 @@ vtodo_class2 = "(Доверлива задача)";
 "Move To" = "Префрли во";
 "Copy To" = "Ископирај во";
 "Subscriptions" = "Претплати";
-"Subscribe to a shared folder" = "Претплати се на споделената папка";
+"Subscribe to a shared calendar" = "Subscribe to a shared calendar";
 "Subscribe to a web calendar..." = "Претплатете се на веб календар...";
 "URL of the Calendar" = "URL на календарот";
 "Web Calendar" = "Веб календар";
@@ -614,6 +629,7 @@ vtodo_class2 = "(Доверлива задача)";
 "Rename" = "Преименувај";
 "Import Calendar" = "Увези календарот";
 "Select an ICS file." = "Одбери ICS датотека.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Успешно сте претплатени на календарот";

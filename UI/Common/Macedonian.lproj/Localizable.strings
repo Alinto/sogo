@@ -41,6 +41,8 @@
      = "Потенцијално било кој  на интеернет ќе може да го достапи адресарот \"%{0}\", дури и ако нема сметка на системот. Дали оваа информација е погодна за јавен интернет?";
 "Give Access" = "Дади пристап";
 "Keep Private" = "Сочувај го приватно";
+"Expand" = "Expand";
+"Reduce" = "Reduce";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -104,6 +106,7 @@
 "Personal" = "Лично";
 "To Do" = "Да се направи";
 "Later" = "Подоцна";
+"Forwarded" = "Forwarded";
 "Return Receipt Sent" = "Потврда за прием е испратена";
 "a2_Sunday" = "Нед";
 "a2_Monday" = "Пон";
@@ -122,11 +125,17 @@
 "S/MIME Certificate" = "S/MIME сертификат";
 "Subject Name" = "Име на субјектот";
 "Issuer" = "Издавач";
+"streetAddress" = "Street";
+"stateOrProvinceName" = "State or Province";
+"localityName" = "Locality";
 "countryName" = "Држава";
 "organizationName" = "Организација";
 "organizationalUnitName" = "Организациона единица";
 "commonName" = "Општо име";
+"surname" = "Surname";
+"givenName" = "Given Name";
 "emailAddress" = "Електронска адреса";
+
 
 /* Authentication username */
 "Username" = "Корисничко име";
@@ -213,3 +222,11 @@
 
 /* Hotkey description to move forward in current view */
 "Move forward" = "Оди напред";
+
+/* Password Recovery */
+"passwordRecovery_Disabled" = "Disabled";
+"passwordRecovery_SecretQuestion" = "Secret question";
+"passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
+"passwordRecovery_SecretQuestion2" = "What was your first car ?";
+"passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
+"passwordRecovery_SecondaryEmail" = "Secondary E-mail";
