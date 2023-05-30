@@ -40,14 +40,26 @@
 "Auto reply subject" = "自动回复主题";
 "You can write ${subject} to insert the original subject" = "你可以插入${subject}到原主题？";
 "Auto reply message" = "自动回复消息";
-"Email addresses (separated by commas)" = "邮件地址(用逗号分隔)";
+"Email addresses" = "Email addresses";
 "Add default email addresses" = "增加默认邮件地址";
 "Days between responses" = "回复间隔日数";
 "Do not send responses to mailing lists" = "不要回复到邮件列表";
+"Activation Constraints" = "Activation Constraints";
 "Enable auto reply on" = "启用自动回复功能";
-"Disable auto reply after" = "禁用回复无效";
+"First day of vacation" = "First day of vacation";
+"Disable auto reply after" = "Disable auto reply after";
+"Last day of vacation" = "Last day of vacation";
+"Enter date" = "Enter date";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Enable auto reply at";
+"Enter time" = "Enter time";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Disable auto reply at";
+"Enable auto reply on these days" = "Enable auto reply on these days";
 "Always send vacation message response" = "总是发送休假消息回复";
+"The vacation message is sent prior to apply your filters." = "The vacation message is sent prior to apply your filters.";
 "Discard incoming mails during vacation" = "丢弃假期收到的邮件";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "The vacation message is sent but incoming messages are not delivered to your inbox.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "请指定要自动回复的邮件内容和邮件地址。";
 "Your vacation message must not end with a single dot on a line." = "假期消息行不能以一个.结束。";
@@ -56,14 +68,19 @@
 
 /* forward messages */
 "Forward incoming messages" = "转发收到的邮件";
+"Always forward" = "Always forward";
+"Incoming messages are forwarded prior to apply your filters." = "Incoming messages are forwarded prior to apply your filters.";
 "Keep a copy" = "保留副本";
+"Enter an email" = "Enter an email";
+"Add another email" = "Add another email";
 "Please specify an address to which you want to forward your messages."
 = "请指定要转发的邮件地址。";
 "You are not allowed to forward your messages to an external email address." = "你未获准将消息转发至外部电子邮件地址。";
 "You are not allowed to forward your messages to an internal email address." = "你未获准将消息转发至内部电子邮件地址。";
+"You are not allowed to forward your messages to this domain:" = "You are not allowed to forward your messages to this domain:";
 
 /* d & t */
-"Current Time Zone" = "当前时区";
+"Time Zone" = "Time Zone";
 "Short Date Format" = "短日期格式";
 "Long Date Format" = "长日期格式";
 "Time Format" = "时间格式";
@@ -85,7 +102,9 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
 
 "longDateFmt_0" = "%Y年%B%d日 %A";
 "longDateFmt_1" = "%Y年%B%d日";
@@ -124,6 +143,8 @@
 "Prevent from being invited to appointments" = "防止被邀请";
 "White list for appointment invitations" = "行程白名单";
 "Contacts Names" = "联系人姓名";
+"Duplicate name" = "Duplicate name";
+"Calendar categories must have unique names." = "Calendar categories must have unique names.";
 
 /* Default Calendar */
 "Default calendar" = "默认日程";
@@ -154,6 +175,7 @@
 "New label" = "新标签";
 "Show subscribed mailboxes only" = "仅显示订阅的邮箱";
 "Synchronize only default mail folders (EAS)" = "仅同步系统默认邮箱文件夹";
+"Fetch count of unseen messages for all mailboxes" = "Fetch count of unseen messages for all mailboxes";
 "Sort messages by threads" = "邮件按线索排序";
 "Always open mail composer" = "总是打开邮件编辑器";
 "Inside current window" = "在当前窗口内";
@@ -181,10 +203,15 @@
 "displayremoteinlineimages_always" = "一直";
 "Auto save every" = "自动保存";
 "minutes" = "分钟";
+"Automatically mark messages as read" = "Automatically mark messages as read";
+"Immediately on display" = "Immediately on display";
+"After displaying for" = "After displaying for";
+"seconds" = "seconds";
 
 /* Contact */
 "Personal Address Book" = "个人地址簿";
 "Collected Address Book" = "收集的地址簿";
+"Contact categories must have unique names." = "Contact categories must have unique names.";
 
 /* IMAP Accounts */
 "Settings" = "设定";
@@ -200,6 +227,10 @@
 "Email" = "邮件";
 "Reply To Email" = "回复邮件";
 "Signature" = "签名";
+"Identities" = "Identities";
+"Always use the default identity when replying to messages" = "Always use the default identity when replying to messages";
+"Default Identity" = "Default Identity";
+"New Identity" = "New Identity";
 "(Click to create)" = "(点击生成)";
 "Please enter your signature below" = "请在下面输入签名";
 "Please specify a valid sender address." = " 请指定有效的发件人地址。";
@@ -215,14 +246,23 @@
 "When composing a message" = "撰写邮件时";
 "Digitally sign the message by default" = "默认对消息进行数字签名";
 "Always try to encrypt the message" = "总是尝试加密消息";
+"An error occurred while importing the certificate. Verify your password." = "An error occurred while importing the certificate. Verify your password.";
 
 /* Additional Parameters */
 "Additional Parameters" = "附加设置";
 
 /* password */
+"Current password" = "Current password";
 "New password" = "新密码";
 "Confirmation" = "确认";
 "Change" = "修改";
+"Passwords don't match" = "Passwords don't match";
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
+"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+
 
 /* Event+task classifications */
 "Default events classification" = "默认事项分类";
@@ -235,6 +275,7 @@
 "Calendar Category" = "日程类别";
 "Add Calendar Category" = "增加日程类别";
 "New category" = "新类别";
+"Reset to defaults" = "Reset to defaults";
 "Remove Calendar Category" = "移除日程类别";
 "Contact Category" = "联系人类别";
 "Add Contact Category" = "增加联系人分类";
@@ -307,6 +348,7 @@
 "refreshview_every_20_minutes" = "每20分钟";
 "refreshview_every_30_minutes" = "每30分钟";
 "refreshview_once_per_hour" = "每小时1次";
+"Enable Desktop Notifications" = "Enable Desktop Notifications";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "当我收到回执请求时";
@@ -438,3 +480,23 @@
 /* Limited Animation Mode */
 "animation_LIMITED" = "受限";
 "animation_NONE" = "无";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "Enable two-factor authentication using a TOTP application";
+"You must enter this key into your TOTP application." = "You must enter this key into your TOTP application.";
+"If you do not and you log out you will not be able to login again." = "If you do not and you log out you will not be able to login again.";
+"Enter TOTP verification code :" = "Enter TOTP verification code :";
+"Invalid TOTP verification code" = "Invalid TOTP verification code";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "An external Sieve script is active";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled.";
+"Let SOGo handle everything" = "Let SOGo handle everything";
+
+/* Password Recovery */
+"Password recovery mode" = "Password recovery";
+"Question" = "Question";
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password recovery" = "Password recovery";
+"Password change" = "Password change";

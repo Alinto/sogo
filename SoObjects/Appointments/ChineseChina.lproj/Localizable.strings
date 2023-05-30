@@ -7,13 +7,18 @@ vevent_class2 = "(机密事件)";
 vtodo_class0 = "(公开任务)";
 vtodo_class1 = "(私人任务)";
 vtodo_class2 = "(机密任务)";
+
 /* Receipts */
 "The event \"%{Summary}\" was created" = "事件\"%{Summary}\"已创建";
 "The event \"%{Summary}\" was deleted" = "事件\"%{Summary}\"已删除";
 "The event \"%{Summary}\" was updated" = "事件\"%{Summary}\"已更新";
+"The task \"%{Summary}\" was created" = "The task \"%{Summary}\" was created";
+"The task \"%{Summary}\" was deleted" = "The task \"%{Summary}\" was deleted";
+"The task \"%{Summary}\" was updated" = "The task \"%{Summary}\" was updated";
 "The following attendees(s) were notified" = "已通知下列出席者";
 "The following attendees(s) were added" = "已增加下列出席者";
 "The following attendees(s) were removed" = "已删除下列出席者";
+
 /* IMIP messages */
 "calendar_label" = "日程";
 "startDate_label" = "开始";
@@ -26,17 +31,20 @@ vtodo_class2 = "(机密任务)";
 "comment_label" = "备注";
 "organizer_label" = "组织者";
 "attendee_label" = "参与者";
+
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "邀请事件: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(来自 %{SentBy}) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} 邀请你到 %{Summary}.\n\n开始: %{StartDate}\n结束: %{EndDate}\n说明: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} 邀请你去 %{Summary}。\n\n开始: %{StartDate} 的 %{StartTime}\n结束: %{EndDate} 的 %{EndTime}\n说明: %{Description}";
+
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "事件已取消: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} 取消了安排: %{Summary}.\n\n开始: %{StartDate}\n结束: %{EndDate}\n说明: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} 取消了事件: %{Summary}。\n\n开始: %{StartDate} 的 %{StartTime}\n结束: %{EndDate} 的 %{EndTime}\n说明: %{Description}";
+
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "安排 \"%{Summary}\"  的开始时间 %{OldStartDate} 已更新";
@@ -46,6 +54,7 @@ vtodo_class2 = "(机密任务)";
 = "会议 \"%{Summary}\" 的下面参数已被修改:";
 "Please accept or decline those changes."
 = "请接受或拒绝这些更改。";
+
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "接受的邀请: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "拒绝的邀请: \"%{Summary}\"";
@@ -59,6 +68,15 @@ vtodo_class2 = "(机密任务)";
 = "%{Attendee} %{SentByText} 已把邀请委派给 %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText} 尚未决定接受事件邀请。";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Reminder: \"%{Summary}\" - %{StartDate}";
+
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "无法获取资源: \"%{Cn} %{SystemEmail}\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "\"%{Cn} %{SystemEmail}\" 的同一时间的预定数达到上限 (%{NumberOfSimultaneousBookings})。 冲突事件为 \"%{EventTitle}\", 开始于 %{StartDate}。";
+
+/* Participation role */
+"Your participation is required to this event" = "Your participation is required to this event";
+"Your participation is optional to this event" = "Your participation is optional to this event";
+"Your participation is not required to this event" = "Your participation is not required to this event";

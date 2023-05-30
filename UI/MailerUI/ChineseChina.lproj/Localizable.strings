@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "新建";
 "Empty Trash" = "清空回收站";
+"Empty Junk Folder" = "Empty Junk Folder";
 "Delete"      = "删除";
 "Expunge"     = "清空";
 "Forward"     = "转发";
@@ -73,8 +74,13 @@
 "An error occured while communicating with the mail server" = "连接服务器发生错误";
 
 /* Mailbox actions */
+
 /* Compact Folder success message */
 "Folder compacted" = "文件夹已压缩";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Junk folder emptied";
+
 /* Empty Trash success message */
 "Trash emptied" = "回收站已清空";
 
@@ -82,7 +88,7 @@
 "Access rights to" = "访问权限到";
 "For user" = "给用户";
 "Any Authenticated User" = "任何认证的用户";
-"List and see this folder" = "列出并查看该目录";
+"View this folder" = "View this folder";
 "Read mails from this folder" = "读取该目录邮件";
 "Mark mails read and unread" = "邮件标记为已读或未读";
 "Modify the flags of the mails in this folder" = "修改该目录里的邮件标记";
@@ -104,7 +110,7 @@
 "To"            = "收件人";
 "Cc"            = "抄送";
 "Bcc"           = "密送";
-"Reply-To"	    = "回复到";
+"Reply-To"	= "回复到";
 "Add address"   = "新增地址";
 "Body"          = "正文";
 "Open" = "打开";
@@ -121,6 +127,7 @@
 "Edit Draft..." = "编辑草稿...";
 "Load Images" = "加载图片";
 "Return Receipt" = "回复回执";
+"Choose which identity to send this message from" = "Choose which identity to send this message from";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "此消息的发件人要求当你阅读该消息时得到通知。你是否希望通知发件人？";
 "Return Receipt (displayed) - %@"= "回复回执(已标示)- %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "这是你发送邮件给 %@ 的回执。\n\n附注: 回执只通知邮件已收到， 并不保证收件人已经阅读内容。 ";
@@ -165,12 +172,22 @@
 "Mark Read"   = "标记为已读";
 "Untitled" = "无主题";
 
+/* Filter option in messages list */
+"Show unread messages only" = "Show unread messages only";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Show flagged messages only";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Filtered by label";
+
 /* Tree */
 "SentFolderName"   = "已发送";
 "TrashFolderName"  = "回收站";
 "InboxFolderName"  = "收件箱";
 "DraftsFolderName" = "草稿箱";
 "JunkFolderName" = "垃圾邮件";
+"TemplatesFolderName" = "Templates";
 "SieveFolderName"  = "过滤器";
 "Folders"          = "目录"; /* title line */
 
@@ -179,6 +196,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "添加到通讯录...";
+"Successfully created card" = "Successfully created card";
 "Compose Mail To" = "撰写邮件";
 "Create Filter From Message..." = "新增规则...";
 
@@ -228,6 +246,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "转换成任务";
 
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Download message";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Download message (zip)";
+
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "下载所有的附件";
 
@@ -249,6 +273,12 @@
 /* Number of selected messages in list */
 "selected" = "已选";
 
+/* Date formatting from one time to another time */
+"to_time" = "to";
+
+/* Date formatting from one day to another day */
+"to_date" = "to";
+
 /* Encrypted message notification */
 "This message is encrypted" = "此消息已加密";
 
@@ -266,6 +296,18 @@
 
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "没有与帐户关联的证书。";
+
+/* Invalid S/MIME signature */
+"Digital signature is not valid" = "Digital signature is not valid";
+
+/* Valid S/MIME signature */
+"Message is signed" = "Message is signed";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Message is signed but the certificate doesn't match the sender email address";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Digital signature is not valid";
 
 "This Folder" = "该目录";
 
@@ -302,6 +344,7 @@
 "Operation failed" = "操作失败";
 "Quota" = "使用空间";
 "quotasFormat" = "%{1} MB中已用 %{0}%";
+"messageQuotasFormat" = "%{0}% of %{1} msgs";
 "Unable to move/delete folder." = "无法移动/删除目录。";
 
 /* Alternative operation when folder cannot be deleted */
@@ -348,6 +391,12 @@
 "Send Anyway" = "一直发送";
 "Error while saving the draft" = "保存草稿時发生错误";
 
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Unable to empty the trash folder.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Unable to empty the junk folder.";
+
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "上传文件\"%{0}\"出错";
 "There is an active file upload. Closing the window will interrupt it." = "关闭窗口将中断当前文件上传";
@@ -362,6 +411,9 @@
 "cannot send message: (smtp) all recipients discarded" = "无法发送： 所有收件人都无效。";
 "cannot send message (smtp) - recipients discarded" = "无法发送，下列帐号无法发送";
 "cannot send message: (smtp) error when connecting" = "无法发送： SMTP服务器接续失败。";
+"cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
+"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
 
 /* Contacts list in mail editor */
 "Email" = "邮件帐号";
@@ -380,6 +432,9 @@
 "Set as Drafts" = "设为草稿";
 "Set as Sent" = "设为已发送";
 "Set as Trash" = "设为放入回收站";
+
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Set as Templates";
 
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "设为垃圾邮件";
@@ -402,6 +457,18 @@
 "Your email has been saved" = "您的电子邮件已保存";
 "Your email has been sent" = "您的电子邮件已发送";
 "Folder compacted" = "文件夹已压缩";
+
+"New draft" = "New draft";
+"Create new draft with this template" = "Create new draft with this template";
+
+/* Advanced search */
+"Enter Subject" = "Enter Subject";
+"Enter From" = "Enter From";
+"Enter To" = "Enter To";
+"Enter Cc" = "Enter Cc";
+"Enter Body" = "Enter Body";
+"match" = "match";
+"does not match" = "does not match";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "搜索范围";
