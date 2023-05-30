@@ -41,6 +41,8 @@
      = "Potentiellt vem som helst på internet kommer att kunna visa din adressbok \"%{0}\", även om de inte har ett konto på det här systemet. Är den här informationen lämplig för hela internet?";
 "Give Access" = "Ge tillgång";
 "Keep Private" = "Behåll privat";
+"Expand" = "Expand";
+"Reduce" = "Reduce";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -104,6 +106,7 @@
 "Personal" = "Personligt";
 "To Do" = "Att göra";
 "Later" = "Senare";
+"Forwarded" = "Forwarded";
 "Return Receipt Sent" = "Returkvitto skickat";
 "a2_Sunday" = "Sö";
 "a2_Monday" = "Må";
@@ -122,11 +125,17 @@
 "S/MIME Certificate" = "S/MIME-certifikat";
 "Subject Name" = "Användare";
 "Issuer" = "Utfärdare";
+"streetAddress" = "Street";
+"stateOrProvinceName" = "State or Province";
+"localityName" = "Locality";
 "countryName" = "Land";
 "organizationName" = "Organisation";
 "organizationalUnitName" = "organisationsenhet";
 "commonName" = "Enkelt namn";
+"surname" = "Surname";
+"givenName" = "Given Name";
 "emailAddress" = "E-postadress";
+
 
 /* Authentication username */
 "Username" = "Användarnamn";
@@ -213,3 +222,11 @@
 
 /* Hotkey description to move forward in current view */
 "Move forward" = "Flytta framåt";
+
+/* Password Recovery */
+"passwordRecovery_Disabled" = "Disabled";
+"passwordRecovery_SecretQuestion" = "Secret question";
+"passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
+"passwordRecovery_SecretQuestion2" = "What was your first car ?";
+"passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
+"passwordRecovery_SecondaryEmail" = "Secondary E-mail";
