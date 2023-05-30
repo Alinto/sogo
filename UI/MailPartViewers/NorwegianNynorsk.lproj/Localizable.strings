@@ -12,6 +12,8 @@ publish_info_text = "Avsenderen informerer deg om vedlagte arrangement.";
 cancel_info_text = "Din invitasjon eller hele arrangementet er avlyst.";
 request_info_no_attendee = "forslår et møte til deltakerene. Du har fått meldingen for informasjon, men er ikke palnlagt som en deltaker.";
 Appointment = "Møte";
+"Status Update" = "Status Update";
+was = "was";
 
 Organizer = "Arrangør";
 Time = "Tid";
@@ -32,10 +34,16 @@ reply_info = "Du har fått et svar angående en begivenhet invitert av deg.";
 "to" = "til";
 "Untitled" = "Ingen emne";
 "Size" = "Størrelse";
-"Digital signature is not valid" = "Digital signatur er ikke gyldig";
-"Message is signed" = "Meldingen er signert";
 "Subject" = "Emne";
 "From" = "Fra";
 "Date" = "Dato";
 "To" = "Til";
 "Issuer" = "Utført av";
+/* Tooltips */
+"View Attachment" = "View Attachment";
+"Save Attachment" = "Save Attachment";
+"CC" = "CC";
+"Cancel" = "Cancel";
+"OK" = "OK";
+"Comment" = "Comment";
+"Description" = "Description";

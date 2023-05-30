@@ -6,7 +6,7 @@
 "Edit User Rights" = "Endre brukerrettigheter";
 "Home" = "Hjem";
 "Calendar" = "Kalender";
-"Address Book"	= "Adressebok";
+"Address Book"  = "Adressebok";
 "Mail" = "E-post";
 "Preferences" = "Innstillinger";
 "Administration" = "Administrasjon";
@@ -31,7 +31,7 @@
 "Sorry, the user rights can not be configured for that object." = "Beklager, brukerrettighetene kan ikke konfigureres for objektet.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Enhver bruker med systemkonto her vil kunne se din innboks \"%{0}\". Er du trygg på at du kan stole på alle sammen?";
-"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
      = "Enhver bruker med systemkonto her vil kunne se din kalender \"%{0}\". Er du trygg på at du kan stole på alle sammen?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
      = "Alle på internett kan potensielt få tilgang til din kalender \"%{0}\", selv om de ikke har en systemkonto her. Ønsker du at denne informasjonen skal være åpen for det offentlige internettet?";
@@ -41,22 +41,25 @@
      = "Alle på internett kan potensielt få tilgang til din kalender \"%{0}\", selv om de ikke har en systemkonto her. Ønsker du at denne informasjonen skal være åpen for det offentlige internettet?";
 "Give Access" = "Gi tilgang";
 "Keep Private" = "Behold privat";
+"Expand" = "Expand";
+"Reduce" = "Reduce";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
-	= "Du kan ikke abonnere på den mappen!";
+        = "Du kan ikke abonnere på den mappen!";
 "You cannot subscribe to a folder that you own!"
-      	= "Du kan ikke abonnere på en mappe som du selv eier!";
+        = "Du kan ikke abonnere på en mappe som du selv eier!";
 "Unable to unsubscribe from that folder!"
-	= "Du kan ikke avslutte abonnement på mappen!";
+        = "Du kan ikke avslutte abonnement på mappen!";
 "You cannot unsubscribe from a folder that you own!"
-      	= "Du kan ikke avslutte abonnement på en mappe som du selv eier!";
+        = "Du kan ikke avslutte abonnement på en mappe som du selv eier!";
 "Unable to rename that folder!" = "Du kan ikke bytte navn på mappen!";
 "You have already subscribed to that folder!"
-     	= "Du abonnerer allerede på mappen!";
+        = "Du abonnerer allerede på mappen!";
 "The user rights cannot be edited for this object!"
         = "Brukerrettighetene kan ikke endres på objektet!";
 "A folder by that name already exists." = "En mappe med det navnet finnes fra før.";
-"You cannot create a list in a shared address book." 
+"You cannot create a list in a shared address book."
         = "Du kan ikke opprette en liste i en delt adressebok.";
 "Warning" = "Advarsel";
 "Can't contact server" = "An error occurred while contacting the server. Please try again later.";
@@ -68,6 +71,26 @@
 "delegate is organizer" = "Personen du delegerer til er arrangør. Vennligst deleger til en annen person.";
 "delegate is a participant" = "The delegate is already a participant.";
 "delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
+
+/* common buttons */
+"OK" = "OK";
+"Cancel" = "Avbryt";
+"Yes" = "Ja";
+"No" = "Nei";
+
+/* generic messages */
+"Error" = "Error";
+"Success" = "Success";
+
+/* confirmation dialog box */
+"Confirmation" = "Confirmation";
+
+/* alarms */
+"Reminder" = "Påminnelse";
+"Start" = "Start";
+"Due Date" = "Forfallsdato";
+"Location" = "Lokasjon";
+"Snooze" = "Snooze";
 "Snooze for " = "Utsett i";
 "5 minutes" = "5 minutter";
 "10 minutes" = "10 minutter";
@@ -76,22 +99,15 @@
 "45 minutes" = "5 minutter";
 "1 hour" = "1 time";
 "1 day" = "1 day";
-/* common buttons */
-"OK" = "OK";
-"Cancel" = "Avbryt";
-"Yes" = "Ja";
-"No" = "Nei";
-/* alarms */
-"Reminder" = "Påminnelse";
-"Start" = "Start";
-"Due Date" = "Forfallsdato";
-"Location" = "Lokasjon";
+
 /* mail labels */
 "Important" = "Viktig";
 "Work" = "Arbeid";
 "Personal" = "Personlig";
 "To Do" = "Gjøremål";
 "Later" = "Senere";
+"Forwarded" = "Forwarded";
+"Return Receipt Sent" = "Return Receipt Sent";
 "a2_Sunday" = "Sø";
 "a2_Monday" = "Ma";
 "a2_Tuesday" = "Ti";
@@ -105,5 +121,112 @@
 "No such user." = "No such user.";
 "You cannot (un)subscribe to a folder that you own!" = "You cannot (un)subscribe to a folder that you own!";
 
-/* Error message display bellow search field when the search string has less than the required number of characters */
+/* SMIME Certificate field */
+"S/MIME Certificate" = "S/MIME Certificate";
+"Subject Name" = "Subject Name";
+"Issuer" = "Issuer";
+"streetAddress" = "Street";
+"stateOrProvinceName" = "State or Province";
+"localityName" = "Locality";
+"countryName" = "Country";
+"organizationName" = "Organization";
+"organizationalUnitName" = "Organizational Unit";
+"commonName" = "Common Name";
+"surname" = "Surname";
+"givenName" = "Given Name";
+"emailAddress" = "Email Address";
+
+
+/* Authentication username */
+"Username" = "Username";
+
+/* Authentication password */
+"Password" = "Password";
+
+/* Authentication failed */
+"Wrong username or password." = "Wrong username or password.";
+
+/* Error message displayed bellow search field when the search string has less than the required number of characters */
 "Enter at least %{minimumSearchLength} characters" = "Enter at least %{minimumSearchLength} characters";
+
+/* Error message displayed when a file upload exceeds WOMaxUploadSize */
+"File size upload limit reached" = "File size upload limit reached";
+
+/* Generic server error */
+"An error occured, please try again." = "An error occured, please try again.";
+
+/* Open datepicker */
+"Open Calendar" = "Open Calendar";
+
+/* Toggle visibility (ex: mail account in left navigation menu) */
+"Toggle visibility" = "Toggle visibility";
+
+"Keyboard Shortcuts" = "Keyboard Shortcuts";
+
+/* Aria label for avatar button to select and unselect an item */
+"Toggle item" = "Toggle item";
+
+/* Toggle multiple items at the same time (hotkeys cheatsheet) */
+"Toggle range of items" = "Toggle range of items";
+
+/* Question mark shows list of hotkeys */
+"Show or hide this help" = "Show or hide this help";
+
+/* Space key */
+"key_space" = "space";
+
+/* Delete key */
+"key_delete" = "delete";
+
+/* Shift and space key */
+"key_shift+space" = "shift + space";
+
+/* Up arrow key */
+"key_up" = "↑";
+
+/* Down arrow key */
+"key_down" = "↓";
+
+/* Left arrow key */
+"key_left" = "←";
+
+/* Right arrow key */
+"key_right" = "→";
+
+/* Shift and up arrow combo keys */
+"key_shift+up" = "shift + ↑";
+
+/* Shift and down arrow combo keys */
+"key_shift+down" = "shift + ↓";
+
+/* Backspace key */
+"key_backspace" = "⌫";
+
+/* Hotkey to start a search */
+"hotkey_search" = "s";
+
+/* Hotkey description to select next list item */
+"View next item" = "View next item";
+
+/* Hotkey description to select previous list item */
+"View previous item" = "View previous item";
+
+/* Hotkey description to add next list item to selection */
+"Add next item to selection" = "Add next item to selection";
+
+/* Hotkey description to add previous list item to selection */
+"Add previous item to selection" = "Add previous item to selection";
+
+/* Hotkey description to move backward in current view */
+"Move backward" = "Move backward";
+
+/* Hotkey description to move forward in current view */
+"Move forward" = "Move forward";
+
+/* Password Recovery */
+"passwordRecovery_Disabled" = "Disabled";
+"passwordRecovery_SecretQuestion" = "Secret question";
+"passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
+"passwordRecovery_SecretQuestion2" = "What was your first car ?";
+"passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
+"passwordRecovery_SecondaryEmail" = "Secondary E-mail";

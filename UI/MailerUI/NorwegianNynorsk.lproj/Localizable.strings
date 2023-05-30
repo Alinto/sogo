@@ -3,6 +3,7 @@
 /* Icon's label */
 "Create"      = "Opprett";
 "Empty Trash" = "Tøm papirkurven";
+"Empty Junk Folder" = "Empty Junk Folder";
 "Delete"      = "Slett";
 "Expunge"     = "Slett";
 "Forward"     = "Videresend";
@@ -43,7 +44,7 @@
 "Search multiple mailboxes" = "Search multiple mailboxes";
 
 /* Main Frame  */
-"Home"                 = "Hjem"; 
+"Home"                 = "Hjem";
 "Calendar"             = "Kalender";
 "Addressbook"          = "Adressebok";
 "Mail"                 = "E-post";
@@ -53,7 +54,13 @@
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Velkommen til SOGo Mailer. Bruk mappeviseren på venstre side for å bla i gjennom dine e-postkontoer!";
 "Read messages"       = "Les meldinger";
+
+/* Tooltip for fab button */
 "Write a new message" = "Skriv en ny melding";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Write a message in new window";
+
 "Share" = "Del";
 "Account" = "Konto";
 "Shared Account" = "Delt konto";
@@ -64,11 +71,24 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "No mailbox selected";
 
+"An error occured while communicating with the mail server" = "An error occured while communicating with the mail server";
+
+/* Mailbox actions */
+
+/* Compact Folder success message */
+"Folder compacted" = "Folder compacted";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Junk folder emptied";
+
+/* Empty Trash success message */
+"Trash emptied" = "Trash emptied";
+
 /* acls */
 "Access rights to" = "Access rights to";
 "For user" = "For user";
 "Any Authenticated User" = "Alle autentiserte brukere";
-"List and see this folder" = "List og se i mappen";
+"View this folder" = "View this folder";
 "Read mails from this folder" = "Les meldinger fra denne mappen";
 "Mark mails read and unread" = "Markere meldinger som leste og uleste";
 "Modify the flags of the mails in this folder" = "Endre flagg til meldingene i denne mappen";
@@ -90,11 +110,12 @@
 "To"            = "Til";
 "Cc"            = "Kopi";
 "Bcc"           = "Blindkopi";
-"Reply-To"	    = "Svar-til";
+"Reply-To"	= "Svar-til";
 "Add address"   = "Legg til adresse";
 "Body"          = "Body";
 "Open" = "Åpne";
 "Select All" = "Velg alle";
+"Select Message" = "Select Message";
 "Attach Web Page..." = "Legg til url...";
 "file" = "file";
 "files" = "files";
@@ -106,9 +127,13 @@
 "Edit Draft..." = "Rediger utkast...";
 "Load Images" = "Last ned bilder";
 "Return Receipt" = "Returkvittering";
+"Choose which identity to send this message from" = "Choose which identity to send this message from";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "The sender of this message has asked to be notified when you read this message. Do you wish to notify the sender?";
 "Return Receipt (displayed) - %@"= "Returkvittering (vist) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Dette er en returkvittering på e-posten som du sendte til %@.\n\nMerk: Denne returkvitteringen forteller bare at meldingen ble vist hos mottaker. Det er ingen garanti at mottaker har lest eller forstått innholdet i e-postmeldingen.";
+"Security" = "Security";
+"Sign" = "Sign";
+"Encrypt" = "Encrypt";
 "Priority" = "Prioritet";
 "highest" = "Høyest";
 "high" = "Høy";
@@ -147,12 +172,22 @@
 "Mark Read"   = "Merk som lest";
 "Untitled" = "Uten emne";
 
+/* Filter option in messages list */
+"Show unread messages only" = "Show unread messages only";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Show flagged messages only";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Filtered by label";
+
 /* Tree */
 "SentFolderName"   = "Sendt";
 "TrashFolderName"  = "Søppel";
 "InboxFolderName"  = "Innboks";
 "DraftsFolderName" = "Kladder";
 "JunkFolderName" = "Junk";
+"TemplatesFolderName" = "Templates";
 "SieveFolderName"  = "Filter";
 "Folders"          = "Mapper"; /* title line */
 
@@ -161,6 +196,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Legg til adressebok...";
+"Successfully created card" = "Successfully created card";
 "Compose Mail To" = "Skriv e-postmelding til";
 "Create Filter From Message..." = "Opprett filter fra en melding...";
 
@@ -210,6 +246,18 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Convert To Task";
 
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Download message";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Download message (zip)";
+
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Download all attachments";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "attachments";
+
 "Print..." = "Skriv ut...";
 "Delete Message" = "Slett melding";
 "Delete Selected Messages" = "Slett markerte meldinger";
@@ -224,6 +272,42 @@
 
 /* Number of selected messages in list */
 "selected" = "selected";
+
+/* Date formatting from one time to another time */
+"to_time" = "to";
+
+/* Date formatting from one day to another day */
+"to_date" = "to";
+
+/* Encrypted message notification */
+"This message is encrypted" = "This message is encrypted";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Unable to verify message signature";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "The message has been modified";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Error reading the certificate. Please install a new certificate.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "No certificate associated to account.";
+
+/* Invalid S/MIME signature */
+"Digital signature is not valid" = "Digital signature is not valid";
+
+/* Valid S/MIME signature */
+"Message is signed" = "Message is signed";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Message is signed but the certificate doesn't match the sender email address";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Digital signature is not valid";
 
 "This Folder" = "Denne mappen";
 
@@ -260,9 +344,21 @@
 "Operation failed" = "Operasjonen misslykkes";
 "Quota" = "Disktildeling";
 "quotasFormat" = "%{0}% brukt av %{1} MB";
+"messageQuotasFormat" = "%{0}% of %{1} msgs";
+"Unable to move/delete folder." = "Unable to move/delete folder.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "The mailbox could not be moved to the trash folder. Would you like to delete it immediately?";
 
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Are you sure you want to delete the selected messages?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} message(s) copied";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} message(s) moved";
 
 "Please select a message." = "Marker en melding.";
 "Please select a message to print." = "Marker en melding som skal skrives ut.";
@@ -289,19 +385,35 @@
 = "Meldingene kunne ikke flyttes til søppelmappen. Vil du slette dem umiddelbart?";
 
 /* Message editing */
+"Please specify a subject." = "Please specify a subject.";
 "error_missingsubject" = "Emnefelt mangler";
 "error_missingrecipients" = "Ingen mottagere er angitt";
 "Send Anyway" = "Send Anyway";
 "Error while saving the draft" = "Error while saving the draft";
 
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Unable to empty the trash folder.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Unable to empty the junk folder.";
+
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Error while uploading the file \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "There is an active file upload. Closing the window will interrupt it.";
+"Message is too big" = "Message is too big";
 
-/* Message sending */
+/* Appears while sending the message */
+"Sending" = "Sending";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Sent";
+
 "cannot send message: (smtp) all recipients discarded" = "Cannot send message: all recipients are invalid.";
 "cannot send message (smtp) - recipients discarded" = "Cannot send message. The following addresses are invalid";
 "cannot send message: (smtp) error when connecting" = "Cannot send message: error when connecting to the SMTP server.";
+"cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
+"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
 
 /* Contacts list in mail editor */
 "Email" = "E-post";
@@ -321,15 +433,20 @@
 "Set as Sent" = "Set as Sent";
 "Set as Trash" = "Set as Trash";
 
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Set as Templates";
+
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Set as Junk";
 
 "Sort" = "Sort";
+"Order Received" = "Order Received";
 "Descending Order" = "Descending Order";
 "Back" = "Back";
 "Copy messages" = "Copy messages";
 "More messages options" = "More messages options";
 "Mark as Unread" = "Mark as Unread";
+"Mark as Read" = "Mark as Read";
 "Closing Window ..." = "Closing Window ...";
 "Tried to send too many mails. Please wait." = "Tried to send too many mails. Please wait.";
 "View Mail" = "View Mail";
@@ -340,3 +457,42 @@
 "Your email has been saved" = "Your email has been saved";
 "Your email has been sent" = "Your email has been sent";
 "Folder compacted" = "Folder compacted";
+
+"New draft" = "New draft";
+"Create new draft with this template" = "Create new draft with this template";
+
+/* Advanced search */
+"Enter Subject" = "Enter Subject";
+"Enter From" = "Enter From";
+"Enter To" = "Enter To";
+"Enter Cc" = "Enter Cc";
+"Enter Body" = "Enter Body";
+"match" = "match";
+"does not match" = "does not match";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Search scope";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Manage Subscriptions";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Filter";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

@@ -9,3 +9,19 @@
 "ACLs_title" = "Håntering av adgangsrettigheter for brukermapper";
 /* Modules descriptions */
 "ACLs_description" = "<p>Administrasjonsmodulen for adgangsrettigheter muliggjør endring av adgangsrettigheter for brukerens kalendre og adressebøker.</p><p>For å endre adgangsrettigheter på en brukermappe, skriv brukernavnet i søkefeltet oppe i vinduet og dobbelklikk på ønskede mappe.</p>";
+"Name or Email" = "Name or Email";
+"ACLs saved" = "ACLs saved";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Start a search to edit the rights";
+/* Rights module: Empty search result */
+"No matching user" = "No matching user";
+/* Rights module: no selection */
+"No resource selected" = "No resource selected";
+"Add User" = "Add User";
+"Subscribe User" = "Subscribe User";
+"Rights" = "Rights";
+"Search Users" = "Search Users";
+"users found" = "users found";
+"No resource" = "No resource";
+"Any Authenticated User" = "Any Authenticated User";
+"Public Access" = "Public Access";
