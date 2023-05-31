@@ -74,6 +74,8 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailFinnishReply.wo \
 	SOGoMailFrenchForward.wo \
 	SOGoMailFrenchReply.wo \
+	SOGoMailGalicianForward.wo \
+	SOGoMailGalicianReply.wo \
 	SOGoMailCroatianForward.wo \
 	SOGoMailCroatianReply.wo \
 	SOGoMailGermanForward.wo \

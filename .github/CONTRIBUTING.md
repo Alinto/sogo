@@ -35,7 +35,7 @@ translated. Start by duplicating the English templates:
 * [SoObjects/Mailer/SOGoMailEnglishForward.wo/SOGoMailEnglishForward.html](https://raw.githubusercontent.com/inverse-inc/sogo/master/SoObjects/Mailer/SOGoMailEnglishForward.wo/SOGoMailEnglishForward.html)
 * [SoObjects/Mailer/SOGoMailEnglishReply.wo/SOGoMailEnglishReply.html](https://raw.githubusercontent.com/inverse-inc/sogo/master/SoObjects/Mailer/SOGoMailEnglishReply.wo/SOGoMailEnglishReply.html)
 
-The third type is the locale file formatted as a **plist**. Duplicate the English locale:
+The third type is the locale file formatted as a **plist**. Duplicate the English locale. Beware that words with other characters than [a-zA-Z] (accents, non-latin...) must be between double quotes ("). You can look at other files as arabic or french to have an example:
 
 * [UI/MainUI/English.lproj/Locale](https://raw.githubusercontent.com/inverse-inc/sogo/master/UI/MainUI/English.lproj/Locale)
 

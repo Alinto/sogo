@@ -81,6 +81,9 @@
 @interface SOGoMailFrenchReply : SOGoMailReply
 @end
 
+@interface SOGoMailGalicianReply : SOGoMailReply
+@end
+
 @interface SOGoMailGermanReply : SOGoMailReply
 @end
 

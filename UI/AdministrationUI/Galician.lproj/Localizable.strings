@@ -1,0 +1,27 @@
+/* this file is in UTF-8 format! */
+
+"Help" = "Axuda";
+"Close" = "Pechar";
+"Modules" = "Módulos";
+/* Modules short names */
+"ACLs" = "ACL";
+/* Modules titles */
+"ACLs_title" = "Administración de ACL de cartafoles de usuarios";
+/* Modules descriptions */
+"ACLs_description" = "<p>O módulo de administración de listas de control de acceso permite cambiar as ACL dos calendarios e cadernos de direccións de cada usuario.</p><p>Para modificar as ACL do cartafol dun usuario, escriba o nome do usuario no campo de procura na parte superior da xanela e faga dobre clic no cartafol desexado.</p>";
+"Name or Email" = "Nome ou Correo electrónico";
+"ACLs saved" = "ACL gardadas";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Iniciar unha procura para editar os dereitos";
+/* Rights module: Empty search result */
+"No matching user" = "Non hai usuarios coincidentes";
+/* Rights module: no selection */
+"No resource selected" = "Non hai ningún recurso seleccionado";
+"Add User" = "Agregar usuario";
+"Subscribe User" = "Subscribir Usuario";
+"Rights" = "Dereitos";
+"Search Users" = "Buscar usuarios";
+"users found" = "Usuarios atopados";
+"No resource" = "Sen recurso";
+"Any Authenticated User" = "Calquera usuario autenticado";
+"Public Access" = "Acceso público";

@@ -46,6 +46,7 @@ SOGo and its associated components are available in various languages. The follo
 * [nl] Dutch - Roel van Os
 * [fi] Finnish - Kari Salmu
 * [fr] French - [Alinto](https://www.alinto.com)
+* [gl] Galician - Simon Lang
 * [de] German - Alexander Greiner-Baer
 * [he] Hebrew - Raz Aidlitz
 * [hu] Hungarian - Sándor Kuti

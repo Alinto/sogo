@@ -107,6 +107,12 @@
 @interface SOGoFolderFrenchRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
+@interface SOGoFolderGalicianAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderGalicianRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
 @interface SOGoFolderGermanAdditionAdvisory : SOGoFolderAdditionAdvisory
 @end
 

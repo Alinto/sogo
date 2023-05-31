@@ -1,0 +1,128 @@
+/* this file is in UTF-8 format! */
+
+"title" = "SOGo";
+"Username" = "Usuario";
+"Password" = "Contrasinal";
+"Domain" = "Dominio";
+"Remember username" = "Lembrar usuario";
+"Connect" = "Conectar";
+
+/* Appears while authentication is in progress */
+"Authenticating" = "Autenticando";
+
+/* Appears when authentication succeeds */
+"Welcome" = "Benvido";
+
+"Authentication Failed" = "Fallo de autenticación";
+"Wrong username or password." = "Nome de usuario ou contrasinal incorrectos.";
+"Retry" = "Reintentar";
+"Login failed due to unhandled error case:" = "Fallou o inicio de sesión debido a un caso de erro non controlado:";
+"cookiesNotEnabled" = "Non se pode conectar dado que o seu navegador non acepta cookies. Por favor, habilite as cookies na configuración do seu navegador e probe de novo.";
+"browserNotCompatible" = "Detectamos que este sistema non soporta a súa versión do navegador. Recomendamos usar Firefox. Faga clic na seguinte ligazón para descargar a versión máis recente deste navegador.";
+"alternativeBrowsers" = "Como alternativa, tamén pode usar un dos seguintes navegadores compatibles: ";
+"alternativeBrowserSafari" = "Como alternativa, pode usar Safari.";
+
+/* 2FA */
+"Verification Code" = "Código de verificación";
+"Enter the 6-digit verification code from your TOTP application." = "Introduce o código de verificación de 6 díxitos da túa aplicación TOTP.";
+"You provided an invalid TOTP key." = "Forneceches unha clave TOTP non válida.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Desactivouse a autenticación de dous factores. Visita o módulo de Preferencias para restaurar a autenticación de dous factores e reconfigura a túa aplicación TOTP.";
+
+"Download" = "Descarga";
+"Language" = "Idioma";
+"choose" = "Elixa ...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Bosnian" = "Bosanski";
+"Bulgarian" = "Български";
+"Catalan" = "Català";
+"ChineseChina" = "简体中文";
+"ChineseTaiwan" = "正體中文";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"German" = "Deutsch";
+"Hebrew" = "עברית";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
+"Italian" = "Italiano";
+"Japanese" = "日本語";
+"Kazakh" = " Қазақ";
+"Latvian" = "Latviešu";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"Montenegrin" = "Crnogorski";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
+"Russian" = "Русский";
+"Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"About" = "Acerca de";
+"AboutBox" = "Desenvolvido por Inverse, SOGo é un servidor groupware (software colaborativo) enfocado na escalabilidade e simplicidade.<br/><br/>\nSOGo proporciona unha interface web baseada en AJAX e admite múltiples clientes nativos mediante o uso de protocolos estándar como CalDAV e CardDAV.<br/><br/>\nSOGo esta distribuído baixo a licenza <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> versión 2 ou posterior e partes baixo a licenza GNU LGPL versión 2. Isto é un software libre: está autorizado o cambio e a redistribución do mesmo. Non hai garantías, dentro do límite da lei.<br/><br/>\nVexa <a href=\"http://www.sogo.nu/en/support/community.html\">esta páxina</a> para as diferentes opcións de soporte.";
+"Your account was locked due to too many failed attempts." = "A súa conta foi bloqueada debido a un número excesivo de erros de conexión.";
+"Your account was locked due to an expired password." = "A súa conta foi bloqueada debido a un contrasinal caducado.";
+"Login failed due to unhandled error case" = "Conexión errada debido a un erro descoñecido";
+"Change your Password" = "Cambie o seu contrasinal";
+"The password was changed successfully." = "O contrasinal cambiouse correctamente.";
+"Your password has expired, please enter a new one below" = "O seu contrasinal caducou, por favor, introduza un novo abaixo";
+"Password must not be empty." = "O contrasinal non pode estar baleiro.";
+"The passwords do not match. Please try again." = "O contrasinal non é igual. Por favor, ténteo de novo.";
+"Password Grace Period" = "Período de graza de contrasinal";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Quédanlle %{0} intentos de conexión antes de que a súa conta sexa bloqueada. Por favor, cambie o seu contrasinal no diálogo de preferencias.";
+"Password about to expire" = "Contrasinal a piques de caducar";
+"Your password is going to expire in %{0} %{1}." = "O seu contrasinal caducará en %{0} %{1}.";
+"days" = "días";
+"hours" = "horas";
+"minutes" = "minutos";
+"seconds" = "segundos";
+"Password change failed" = "Cambio de contrasinal errado";
+"Password change failed - Permission denied" = "Cambio de contrasinal errado - Permiso denegado";
+"Password change failed - Insufficient password quality" = "Cambio de contrasinal errado - Calidade do contrasinal insuficiente";
+"Password change failed - Password is too short" = "Cambio de contrasinal errado - Contrasinal demasiado curto";
+"Password change failed - Password is too young" = "Cambio de contrasinal errado - Contrasinal demasiado recente";
+"Password change failed - Password is in history" = "Cambio de contrasinal errado - Contrasinal existe no histórico de contrasinais";
+"Unhandled policy error: %{0}" = "erro de política desatendido: %{0}";
+"Unhandled error response" = "erro de resposta desatendido";
+"Password change is not supported." = "Cambio de contrasinal non soportado.";
+"Unhandled HTTP error code: %{0}" = "Código de Erro HTTP desatendido: %{0}";
+"New password" = "Novo contrasinal";
+"Confirmation" = "Confirmación";
+"Cancel" = "Cancelar";
+"Please wait..." = "Por favor, agarde...";
+"Close" = "Pechar";
+"Missing search parameter" = "Falta o Criterio de busca";
+"Missing type parameter" = "Falta o Criterio de busca";
+
+/* Password Recovery */
+"Secondary e-mail" = " Correo electrónico secundario";
+"Answer" = " Resposta";
+"Password lost" = " Contrasinal perdido";
+"No password recovery method has been defined for this user" = " Non se definiu ningún método de recuperación de contrasinal para este usuario";
+"Invalid secret question answer" = " Resposta a pregunta secreta non válida";
+"Next" = " Seguinte";
+"Back" = " Atrás";
+"Please enter a new password below" = " Por favor, introduza un novo contrasinal a continuación";
+"A link will be sent to %{0}" = " Enviarase unha ligazón a %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = " Enviouse unha ligazón de restablecemento de contrasinal, verifique a súa caixa de correos de correo electrónico de recuperación e faga clic na ligazón";
+"Invalid configuration for email password recovery" = " Configuración non válida para a recuperación de contrasinal de correo electrónico";
+"Password recovery email in error" = " Correo electrónico de recuperación de contrasinal por erro";
+"Password reset" = " Restablecemento de contrasinal";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = " Ola %{0},\nHoubo unha solicitude para cambiar o teu contrasinal!\n\nSe non realizou esta solicitude, ignore este correo electrónico.\n\nPola contra, faga clic nesta ligazón para cambiar o seu contrasinal: %{1}";

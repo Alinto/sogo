@@ -618,6 +618,7 @@ for SOGo. Possible values are:
 * `English`
 * `Finnish`
 * `French`
+* `Galician`
 * `German`
 * `Hungarian`
 * `Icelandic`
@@ -711,7 +712,7 @@ of 1 day by default.
 |Parameter used to configure which languages are available from SOGo's
 Web interface. Available languages are specified as an array of string.
 
-The default value is: `( "Arabic", "Basque", "Catalan", "Czech", "Dutch", "Danish", "Welsh", "English", "SpanishSpain", "SpanishArgentina", "Finnish", "French", "German", "Icelandic", "Italian", "Hungarian", "BrazilianPortuguese", "NorwegianBokmal", "NorwegianNynorsk", "Polish", "Russian", "Slovak", "Ukrainian", "Swedish" )`
+The default value is: `( "Arabic", "Basque", "Catalan", "Czech", "Dutch", "Danish", "Welsh", "English", "SpanishSpain", "SpanishArgentina", "Finnish", "French", "Galician", "German", "Icelandic", "Italian", "Hungarian", "BrazilianPortuguese", "NorwegianBokmal", "NorwegianNynorsk", "Polish", "Russian", "Slovak", "Ukrainian", "Swedish" )`
 
 |D |SOGoHideSystemEMail
 |Parameter used to control if SOGo should hide or not the system email

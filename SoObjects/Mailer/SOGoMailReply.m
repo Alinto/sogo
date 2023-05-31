@@ -129,6 +129,9 @@
 @implementation SOGoMailFrenchReply
 @end
 
+@implementation SOGoMailGalicianReply
+@end
+
 @implementation SOGoMailGermanReply
 @end
 

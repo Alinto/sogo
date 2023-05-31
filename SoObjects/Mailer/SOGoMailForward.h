@@ -82,6 +82,9 @@
 @interface SOGoMailFrenchForward : SOGoMailForward
 @end
 
+@interface SOGoMailGalicianForward : SOGoMailForward
+@end
+
 @interface SOGoMailGermanForward : SOGoMailForward
 @end
 

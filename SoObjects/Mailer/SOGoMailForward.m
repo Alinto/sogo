@@ -330,6 +330,9 @@
 @implementation SOGoMailFrenchForward
 @end
 
+@implementation SOGoMailGalicianForward
+@end
+
 @implementation SOGoMailGermanForward
 @end
 

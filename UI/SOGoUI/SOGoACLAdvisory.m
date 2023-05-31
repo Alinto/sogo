@@ -316,6 +316,15 @@
 @implementation SOGoACLFrenchRemovalAdvisory
 @end
 
+@implementation SOGoACLGalicianAdditionAdvisory
+@end
+
+@implementation SOGoACLGalicianModificationAdvisory
+@end
+
+@implementation SOGoACLGalicianRemovalAdvisory
+@end
+
 @implementation SOGoACLGermanAdditionAdvisory
 @end
 

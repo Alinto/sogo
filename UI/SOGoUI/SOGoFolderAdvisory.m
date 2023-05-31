@@ -280,6 +280,12 @@
 @implementation SOGoFolderFrenchRemovalAdvisory
 @end
 
+@implementation SOGoFolderGalicianAdditionAdvisory
+@end
+
+@implementation SOGoFolderGalicianRemovalAdvisory
+@end
+
 @implementation SOGoFolderGermanAdditionAdvisory
 @end
 
