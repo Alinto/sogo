@@ -131,7 +131,7 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
           curl_easy_setopt(curl, CURLOPT_URL, [location UTF8String]);
           curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
           curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
-          curl_easy_setopt(curl, CURLOPT_TIMEOUT, 20L);
+          curl_easy_setopt(curl, CURLOPT_TIMEOUT, 60L);
           curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 
           authInfos = [self _loadAuthData];
