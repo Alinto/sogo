@@ -1001,4 +1001,15 @@ static int cssEscapingCount;
   return result;
 }
 
+- (NSString *) cleanInvalidHTMLTags {
+  // Clean HTML invalid tags as reported in https://bugs.sogo.nu/view.php?id=5755
+  NSString *s;
+  
+  s = [NSString stringWithString: self];
+  s = [s stringByReplacingOccurrencesOfString:@"<!-->" withString:@""];
+  s = [s stringByReplacingOccurrencesOfString:@"<!--<!" withString:@"<!--"];
+
+  return s;
+}
+
 @end

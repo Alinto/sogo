@@ -92,6 +92,9 @@
 - (NSString *) encryptWithKey: (NSString *) theKey;
 - (NSString *) decryptWithKey: (NSString *) theKey;
 
+/* HTML */
+- (NSString *) cleanInvalidHTMLTags;
+
 @end
 
 #endif /* NSSTRING_URL_H */

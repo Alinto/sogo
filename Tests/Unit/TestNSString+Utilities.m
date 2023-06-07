@@ -110,5 +110,11 @@
   testEquals([[NSString stringWithString:@"foobar <img onmouseover=foo bar"] stringWithoutHTMLInjection: NO], @"foobar <img onmouseo***=foo bar");
 }
 
+- (void) test_stringCleanInvalidHTMLTags
+{
+  testEquals([[NSString stringWithString:@"<div>Test<!--></div>"] cleanInvalidHTMLTags], @"<div>Test</div>");
+  testEquals([[NSString stringWithString:@"<div><!--[if !mso]><span>Test</span><!--<![endif]--></div>"] cleanInvalidHTMLTags], @"<div><!--[if !mso]><span>Test</span><!--[endif]--></div>");
+}
+
 
 @end

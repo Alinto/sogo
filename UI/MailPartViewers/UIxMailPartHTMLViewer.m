@@ -845,7 +845,7 @@ _xmlCharsetForCharset (NSString *charset)
       if (!s)
         s = [[NSString alloc] initWithData: preparsedContent  encoding: NSISOLatin1StringEncoding];
 
-      preparsedContent = [[s safeString] dataUsingEncoding: NSUTF8StringEncoding];
+      preparsedContent = [[[s cleanInvalidHTMLTags] safeString] dataUsingEncoding: NSUTF8StringEncoding];
       RELEASE(s);
     }
 
