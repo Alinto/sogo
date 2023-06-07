@@ -22,6 +22,7 @@
       });
       this.expandedAllDays = CalendarController.expandedAllDays;
       this.views = stateEventsBlocks;
+      this.previousDate = null;
 
       _registerHotkeys(hotkeys);
 
@@ -161,6 +162,14 @@
         // Remove previous views
         for (j = vm.views.length; j >= i; j--)
           vm.views.splice(j, 1);
+
+        // Refresh view
+        var d = new Date();
+        var date = String(d.getFullYear()) + String((d.getMonth() + 1)).padStart(2, '0') + String((d.getDate())).padStart(2, '0');
+        if (vm.previousDate !== date) {
+          $state.go('calendars.view', { day: date });
+          vm.previousDate = date;
+        }
       });
     }
 
