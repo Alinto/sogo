@@ -1,6 +1,6 @@
 /* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 
-(function() {
+(function () {
   /* jshint loopfunc: true */
   'use strict';
 
@@ -8,21 +8,20 @@
    * @ngInject
    */
   CalendarController.$inject = ['$scope', '$rootScope', '$state', '$stateParams', '$mdDialog', 'sgHotkeys', 'Calendar', 'Component', 'Preferences', 'stateEventsBlocks'];
-  function CalendarController($scope, $rootScope, $state, $stateParams, $mdDialog ,sgHotkeys, Calendar, Component, Preferences, stateEventsBlocks) {
-    var vm = this, deregisterCalendarsList, hotkeys = [];
+  function CalendarController($scope, $rootScope, $state, $stateParams, $mdDialog, sgHotkeys, Calendar, Component, Preferences, stateEventsBlocks) {
+    var vm = this, deregisterCalendarsList, hotkeys = [], cdate = new Date(), currentCalendarDate = String(cdate.getFullYear()) + String((cdate.getMonth() + 1)).padStart(2, '0') + String((cdate.getDate())).padStart(2, '0');
 
-    this.$onInit = function() {
+    this.$onInit = function () {
       // Make the toolbar state of all-day events persistent
       if (angular.isUndefined(CalendarController.expandedAllDays))
         CalendarController.expandedAllDays = false;
 
       this.selectedDate = $stateParams.day.asDate();
-      this.selectableDays = _.map(Preferences.defaults.SOGoCalendarWeekdays, function(day) {
+      this.selectableDays = _.map(Preferences.defaults.SOGoCalendarWeekdays, function (day) {
         return _.indexOf(['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'], day);
       });
       this.expandedAllDays = CalendarController.expandedAllDays;
       this.views = stateEventsBlocks;
-      this.previousDate = null;
 
       _registerHotkeys(hotkeys);
 
@@ -32,11 +31,11 @@
       deregisterCalendarsList = $rootScope.$on('calendars:list', _updateView);
 
       // NOTE: $onDestroy won't work with ui-router (tested with v1.0.20).
-      $scope.$on('$destroy', function() {
+      $scope.$on('$destroy', function () {
         // Destroy event listener when the controller is being deactivated
         deregisterCalendarsList();
         // Deregister hotkeys
-        _.forEach(hotkeys, function(key) {
+        _.forEach(hotkeys, function (key) {
           sgHotkeys.deregisterHotkey(key);
         });
       });
@@ -87,7 +86,7 @@
       }));
 
       // Register the hotkeys
-      _.forEach(keys, function(key) {
+      _.forEach(keys, function (key) {
         sgHotkeys.registerHotkey(key);
       });
     }
@@ -138,15 +137,15 @@
     function _updateView() {
       // The list of calendars has changed; update the views
       // See stateEventsBlocks in Scheduler.app.js
-      Component.$eventsBlocksForView($stateParams.view, $stateParams.day.asDate()).then(function(data) {
+      Component.$eventsBlocksForView($stateParams.view, $stateParams.day.asDate()).then(function (data) {
         var i, j, view;
         for (i = 0; i < data.length; i++) {
           view = data[i];
           if (vm.views[i]) {
-            _.forEach(view.allDayBlocks, function(blocks, day) {
+            _.forEach(view.allDayBlocks, function (blocks, day) {
               vm.views[i].allDayBlocks[day] = blocks;
             });
-            _.forEach(view.blocks, function(blocks, day) {
+            _.forEach(view.blocks, function (blocks, day) {
               vm.views[i].blocks[day] = blocks;
             });
           }
@@ -166,22 +165,22 @@
         // Refresh view
         var d = new Date();
         var date = String(d.getFullYear()) + String((d.getMonth() + 1)).padStart(2, '0') + String((d.getDate())).padStart(2, '0');
-        if (vm.previousDate !== date) {
+        if (currentCalendarDate !== date) {
           $state.go('calendars.view', { day: date });
-          vm.previousDate = date;
+          currentCalendarDate = date;
         }
       });
     }
 
     // Expand or collapse all-day events
-    this.toggleAllDays = function() {
+    this.toggleAllDays = function () {
       CalendarController.expandedAllDays = !CalendarController.expandedAllDays;
       this.expandedAllDays = CalendarController.expandedAllDays;
     };
 
     // Change calendar's date
-    this.changeDate = function($event, newDate, isToday = false) {
-      var date = newDate? newDate.getDayString() : angular.element($event.currentTarget).attr('date');
+    this.changeDate = function ($event, newDate, isToday = false) {
+      var date = newDate ? newDate.getDayString() : angular.element($event.currentTarget).attr('date');
       if (newDate)
         _formatDate(newDate);
 
@@ -199,11 +198,11 @@
     };
 
     // Change calendar's view
-    this.changeView = function($event, view) {
+    this.changeView = function ($event, view) {
       $state.go('calendars.view', { view: view });
     };
 
-    this.printView = function(centerIsClose, componentType) {
+    this.printView = function (centerIsClose, componentType) {
       $mdDialog.show({
         parent: angular.element(document.body),
         clickOutsideToClose: true,
@@ -213,14 +212,14 @@
         controllerAs: '$PrintDialogController',
         locals: {
           calendarView: $stateParams.view,
-          visibleList: centerIsClose? undefined : componentType
+          visibleList: centerIsClose ? undefined : componentType
         }
       });
 
     };
 
     // Check if the week day should be visible/selectable
-    this.isSelectableDay = function(date) {
+    this.isSelectableDay = function (date) {
       return _.includes(vm.selectableDays, date.getDay());
     };
   }
@@ -238,7 +237,7 @@
       multicolumnday: 'landscape'
     };
 
-    this.$onInit = function() {
+    this.$onInit = function () {
       // Default values
       this.pageSize = 'letter';
       this.workingHoursOnly = true;
@@ -247,17 +246,17 @@
       this.visibleList = visibleList;
 
       angular.element(document.body).addClass(this.orientation);
-      $scope.$watch(function() { return vm.pageSize; }, angular.bind(this, function(newSize, oldSize) {
+      $scope.$watch(function () { return vm.pageSize; }, angular.bind(this, function (newSize, oldSize) {
         angular.element(document.body).removeClass(oldSize);
         angular.element(document.body).addClass(newSize);
       }));
     };
 
-    this.$onDestroy = function() {
+    this.$onDestroy = function () {
       angular.element(document.body).removeClass(['portrait', 'landscape', 'letter', 'legal', 'a4']);
     };
 
-    this.print = function($event) {
+    this.print = function ($event) {
       $window.print();
       $event.stopPropagation();
       return false;
@@ -269,6 +268,6 @@
   }
 
   angular
-    .module('SOGo.SchedulerUI')  
+    .module('SOGo.SchedulerUI')
     .controller('CalendarController', CalendarController);
 })();
