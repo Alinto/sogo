@@ -30,6 +30,7 @@
       this.$alwaysShowDetailedRecipients = (!stateMessage.to || stateMessage.to.length < 5) && (!stateMessage.cc || stateMessage.cc.length < 5);
       this.$showDetailedRecipients = this.$alwaysShowDetailedRecipients;
       this.showRawSource = false;
+      this.mailInDeletion = -1;
 
       _registerHotkeys(hotkeys);
 
@@ -153,7 +154,8 @@
         keys.push(sgHotkeys.createHotkey({
           key: hotkey,
           callback: _unlessInDialog(function($event) {
-            if (vm.mailbox.selectedCount() === 0)
+            if (vm.mailbox.selectedCount() === 0 
+                  && vm.message.uid !== vm.mailInDeletion) //prevent calling function if it was alredy made for this mail
               vm.deleteMessage();
             $event.preventDefault();
           }),
@@ -335,6 +337,7 @@
       if (Mailbox.$virtualMode) {
         mailbox = Mailbox.selectedFolder; // the VirtualMailbox instance
       }
+      vm.mailInDeletion = message.uid;
 
       function _success(index) {
         var nextIndex = index;
