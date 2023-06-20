@@ -1348,6 +1348,7 @@ static NSArray *reminderValues = nil;
   NSMutableArray *previousIdentities, *newIdentities;
   NSMutableDictionary *identity, *newIdentitiesAsDict;
   int i;
+  BOOL isDefault;
 
   if ([account isKindOfClass: [NSDictionary class]])
     {
@@ -1372,9 +1373,15 @@ static NSArray *reminderValues = nil;
             // Remove existing deleted identities
             for (identity in [user allIdentities]) {
               // Identity deleted and at least one identity and not the default identity
+              if ([identity objectForKey:@"isDefault"]) {
+                isDefault = [[identity objectForKey:@"isDefault"] boolValue];
+              } else {
+                isDefault = NO;
+              }
+              
               if (![newIdentitiesAsDict objectForKey: [identity objectForKey:@"email"]] 
                     && [previousIdentities count] > 1
-                    && ![identity boolForKey:@"isDefault"]) {
+                    && !isDefault) {
                 [previousIdentities removeObjectAtIndex: i];
                 i--;
               }

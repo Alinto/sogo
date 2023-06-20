@@ -833,6 +833,7 @@
             {
               // This additional identity should not appear in the identity manager of the Preferences
               [identity setObject: [NSNumber numberWithBool: YES] forKey: @"isReadOnly"];
+              [identity setObject: [NSNumber numberWithBool: NO] forKey: @"isDefault"];
             }
           [identities addObject: identity];
         }
