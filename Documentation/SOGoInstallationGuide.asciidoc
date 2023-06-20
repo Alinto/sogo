@@ -162,10 +162,10 @@ Operating System Requirements
 
 The following operating systems are currently supported by SOGo:
 
-* Red Hat Enterprise Linux (RHEL) Server 7 and 8
-* Community ENTerprise Operating System (CentOS) 7 and 8
+* Red Hat Enterprise Linux (RHEL) Server 7, 8 and 9
+* Community ENTerprise Operating System (CentOS) 7, 8 and 9
 * Debian GNU/Linux 7.0 (Wheezy), 8.0 (Jessie), 9.0 (Stretch) and 10.0 (Buster)
-* Ubuntu 14.04 (Trusty), 16.04 (Xenial), 18.04 (Bionic) and 20.04 (Focal)
+* Ubuntu 14.04 (Trusty), 16.04 (Xenial), 18.04 (Bionic), 20.04 (Focal) and 22.04 (Jammy)
 
 Make sure the required components are started automatically at boot time
 and that they are running before proceeding with the SOGo configuration.
@@ -227,7 +227,7 @@ Some of the softwares on which SOGo depends are available from the repository
 "Extra Packages for Enterprise Linux" (EPEL). To add EPEL to your packages
 sources, install the following package:
 
-On RHEL/CentOS 7,
+On RHEL/CentOS 7
 ----
 rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 ----
@@ -237,12 +237,17 @@ For RHEL/CentOS 8
 yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 ----
 
+For RHEL/CentOS 9
+----
+dnf install -y epel-release && dnf update -y
+dnf install -y yum-utils && dnf config-manager --set-enabled crb
+----
+
 SOGo relies on the GNUstep and ytnef packages provided by Alinto and must not use the
 packages from EPEL. Adjust the repository definition to exclude those packages:
 
 ----
-sed -i '/enabled=1/a \
-  exclude=gnustep* ytnef*' /etc/yum.repos.d/epel.repo
+sed -i '/enabled=1/a exclude=gnustep* ytnef*' /etc/yum.repos.d/epel.repo
 ----
 
 For more information on EPEL, visit http://fedoraproject.org/wiki/EPEL/.
