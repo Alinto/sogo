@@ -2,8 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [5.8.3](https://github.com/Alinto/sogo/compare/SOGo-5.8.2...SOGo-5.8.3) (2023-05-30)
 
+### [5.8.4](https://github.com/Alinto/sogo/compare/SOGo-5.8.3...SOGo-5.8.4) (2023-06-20)
+
+### Bug Fixes
+
+* **preferences:** Fix NSException issue when SOGoCreateIdentitiesDisabled is set ([ef958f6](https://github.com/Alinto/sogo/commit/ef958f6aaaa606eaa7c06c1edd3a93667b869d3b))
+
+### Enhancements
+
+* **packaging:** Add RHEL9 support
+
+## [5.8.3](https://github.com/Alinto/sogo/compare/SOGo-5.8.2...SOGo-5.8.3) (2023-05-30)
 
 ### Enhancements
 
