@@ -45,6 +45,7 @@
 "Days between responses" = "Days between responses";
 "Do not send responses to mailing lists" = "Do not send responses to mailing lists";
 "Activation Constraints" = "Activation Constraints";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences";
 "Enable auto reply on" = "Enable auto reply on";
 "First day of vacation" = "First day of vacation";
 "Disable auto reply after" = "Disable auto reply after";

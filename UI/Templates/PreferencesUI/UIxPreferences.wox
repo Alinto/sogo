@@ -1160,8 +1160,11 @@
 
                 <var:if condition="isVacationPeriodEnabled">
                 <h4 class="md-title"><var:string label:value="Activation Constraints"/></h4>
-
+                <div layout="row" class="sub-information" layout-wrap="layout-wrap">
+                  <var:string label:value="Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences"/>
+                </div>
                 <div layout="row" layout-wrap="layout-wrap">
+                  
                   <div class="md-block" flex="50" flex-xs="100">
                     <md-checkbox
                         ng-model="app.preferences.defaults.Vacation.startDateEnabled"

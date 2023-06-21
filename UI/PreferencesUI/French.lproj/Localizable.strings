@@ -45,6 +45,7 @@
 "Days between responses" = "Nombre de jours entre les réponses d'absence";
 "Do not send responses to mailing lists" = "Ne pas envoyer les réponses aux listes de diffusion";
 "Activation Constraints" = "Conditions d'activation";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Personnalisez les plages des jours et des heures indépendamment. Vous pouvez également les combiner avec des jours de la semaine spécifiques pour affiner votre filtre";
 "Enable auto reply on" = "Débuter la réponse automatique le";
 "First day of vacation" = "Premier jour d'absence";
 "Disable auto reply after" = "Désactiver la réponse automatique après le";
