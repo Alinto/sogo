@@ -1070,98 +1070,90 @@ static inline void _feedBlockWithDayBasedData (NSMutableDictionary *block, unsig
            withEvent: (NSArray *) event
           withNumber: (NSNumber *) number
 {
-  int currentDayStart, startSecs, endsSecs, currentStart, eventStart,
-  eventEnd, computedEventEnd, offset, recurrenceTime, swap;
+  int offset, recurrenceTime;
+  long long startSecs, endsSecs, swap, currentDayStart, currentStart, eventStart,
+  eventEnd, computedEventEnd;
   NSMutableArray *currentDay;
   NSMutableDictionary *eventBlock;
   NSString *userState;
 
   eventStart = [[event objectAtIndex: eventStartDateIndex] intValue];
-  if (eventStart < 0)
-    [self errorWithFormat: @"event '%@' has negative start: %d (skipped)",
-     [event objectAtIndex: eventNameIndex], eventStart];
+  eventEnd = [[event objectAtIndex: eventEndDateIndex] intValue];
+
+  if ((eventEnd < eventStart && eventEnd > 0)
+      || (eventStart > 0 && eventEnd < 0)
+      || (eventStart > eventEnd && eventStart < 0 && eventEnd < 0))
+  {
+    swap = eventStart;
+    eventStart = eventEnd;
+    eventEnd = swap;
+    [self warnWithFormat: @"event '%@' has end < start: %d < %d",
+          [event objectAtIndex: eventNameIndex], eventEnd, eventStart];
+  }
+
+  startSecs = (long long) [startDate timeIntervalSince1970];
+  endsSecs = (long long) [endDate timeIntervalSince1970];
+
+  if ([[event objectAtIndex: eventIsCycleIndex] boolValue])
+    recurrenceTime = [[event objectAtIndex: eventRecurrenceIdIndex] unsignedIntValue];
+  else
+    recurrenceTime = 0;
+
+  currentStart = eventStart;
+  if (currentStart < startSecs)
+  {
+    currentStart = startSecs;
+    offset = 0;
+  }
+  else
+    offset = ((currentStart - startSecs) / dayLength);
+  if (offset >= [blocks count])
+    [self errorWithFormat: @"event '%@' has a computed offset that"
+      @" overflows the amount of blocks (skipped)",
+      [event objectAtIndex: eventNameIndex]];
   else
   {
-    eventEnd = [[event objectAtIndex: eventEndDateIndex] intValue];
-    if (eventEnd < 0)
-      [self errorWithFormat: @"event '%@' has negative end: %d (skipped)",
-       [event objectAtIndex: eventNameIndex], eventEnd];
-    else
+    currentDay = [blocks objectAtIndex: offset];
+    currentDayStart = startSecs + dayLength * offset;
+
+    if (eventEnd > endsSecs)
+      eventEnd = endsSecs;
+
+    if (eventEnd < startSecs)
+      // The event doesn't end in the covered period.
+      // This special case occurs with a DST change.
+      return;
+
+    userState = _userStateInEvent(event);
+    while (currentDayStart + dayLength < eventEnd)
     {
-      if (eventEnd < eventStart)
-      {
-        swap = eventStart;
-        eventStart = eventEnd;
-        eventEnd = swap;
-        [self warnWithFormat: @"event '%@' has end < start: %d < %d",
-              [event objectAtIndex: eventNameIndex], eventEnd, eventStart];
-      }
-
-      startSecs = (unsigned int) [startDate timeIntervalSince1970];
-      endsSecs = (unsigned int) [endDate timeIntervalSince1970];
-
-      if ([[event objectAtIndex: eventIsCycleIndex] boolValue])
-        recurrenceTime = [[event objectAtIndex: eventRecurrenceIdIndex] unsignedIntValue];
-      else
-        recurrenceTime = 0;
-
-      currentStart = eventStart;
-      if (currentStart < startSecs)
-      {
-        currentStart = startSecs;
-        offset = 0;
-      }
-      else
-        offset = ((currentStart - startSecs) / dayLength);
-      if (offset >= [blocks count])
-        [self errorWithFormat: @"event '%@' has a computed offset that"
-         @" overflows the amount of blocks (skipped)",
-         [event objectAtIndex: eventNameIndex]];
-      else
-      {
-        currentDay = [blocks objectAtIndex: offset];
-        currentDayStart = startSecs + dayLength * offset;
-
-        if (eventEnd > endsSecs)
-          eventEnd = endsSecs;
-
-        if (eventEnd < startSecs)
-          // The event doesn't end in the covered period.
-          // This special case occurs with a DST change.
-          return;
-
-        userState = _userStateInEvent(event);
-        while (currentDayStart + dayLength < eventEnd)
-        {
-          eventBlock = [self _eventBlockWithStart: currentStart
-                                              end: currentDayStart + dayLength - 1
-                                           number: number
-                                            onDay: currentDayStart
-                                   recurrenceTime: recurrenceTime
-                                        userState: userState];
-          [currentDay addObject: eventBlock];
-          currentDayStart += dayLength;
-          currentStart = currentDayStart;
-          offset++;
-          currentDay = [blocks objectAtIndex: offset];
-        }
-
-        computedEventEnd = eventEnd;
-
-        // We add 5 mins to the end date of an event if the end date
-        // is equal or smaller than the event's start date.
-        if (eventEnd <= currentStart)
-          computedEventEnd = currentStart + (5*60);
-
-        eventBlock = [self _eventBlockWithStart: currentStart
-                                            end: computedEventEnd
-                                         number: number
-                                          onDay: currentDayStart
-                                 recurrenceTime: recurrenceTime
-                                      userState: userState];
-        [currentDay addObject: eventBlock];
-      }
+      eventBlock = [self _eventBlockWithStart: currentStart
+                                          end: currentDayStart + dayLength - 1
+                                        number: number
+                                        onDay: currentDayStart
+                                recurrenceTime: recurrenceTime
+                                    userState: userState];
+      [currentDay addObject: eventBlock];
+      currentDayStart += dayLength;
+      currentStart = currentDayStart;
+      offset++;
+      currentDay = [blocks objectAtIndex: offset];
     }
+
+    computedEventEnd = eventEnd;
+
+    // We add 5 mins to the end date of an event if the end date
+    // is equal or smaller than the event's start date.
+    if (eventEnd <= currentStart)
+      computedEventEnd = currentStart + (5*60);
+
+    eventBlock = [self _eventBlockWithStart: currentStart
+                                        end: computedEventEnd
+                                      number: number
+                                      onDay: currentDayStart
+                              recurrenceTime: recurrenceTime
+                                  userState: userState];
+    [currentDay addObject: eventBlock];
   }
 }
 

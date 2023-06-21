@@ -664,18 +664,23 @@ static Class iCalEventK = nil;
                              cycle: (BOOL) _isCycle
 {
   NSString *format;
-  unsigned int start, end;
+  long long start, end;
 
-  start = (unsigned int) [_startDate timeIntervalSince1970];
-  end = (unsigned int) [_endDate timeIntervalSince1970];
+  start = (long long) [_startDate timeIntervalSince1970];
+  end = (long long) [_endDate timeIntervalSince1970];
 
   // vTODOs don't necessarily have start/end dates
-  if (_isCycle)
-    format = (@"(c_startdate = NULL OR c_startdate <= %u)"
-              @" AND (c_cycleenddate = NULL OR c_cycleenddate >= %u)");
-  else
-    format = (@"(c_startdate = NULL OR c_startdate <= %u)"
-              @" AND (c_enddate = NULL OR c_enddate >= %u)");
+  if (start < 0 && end < 0) {
+    format = (@"(c_startdate = NULL OR c_startdate <= %lld)"
+              @" AND (c_cycleenddate = NULL OR c_cycleenddate >= %lld)");
+  } else {
+    if (_isCycle)
+      format = (@"(c_startdate = NULL OR c_startdate <= %lld)"
+                @" AND (c_cycleenddate = NULL OR c_cycleenddate >= %lld)");
+    else
+      format = (@"(c_startdate = NULL OR c_startdate <= %lld)"
+                @" AND (c_enddate = NULL OR c_enddate >= %lld )");
+  }
 
   return [NSString stringWithFormat: format, end, start];
 }
