@@ -1807,4 +1807,12 @@ static NSArray *reminderValues = nil;
   return ![[SOGoSystemDefaults sharedSystemDefaults] isEasUIDisabled];
 }
 
+- (BOOL) showCreateIdentity
+{
+  SOGoDomainDefaults *dd;
+  dd = [[context activeUser] domainDefaults];
+
+  return ![dd createIdentitiesDisabled];
+}
+
 @end

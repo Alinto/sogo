@@ -817,7 +817,7 @@ specified as an array of dictionaries.
 |JWT secret according to RFC-7519. Default value is `SOGo`.
 
 |D |SOGoCreateIdentitiesDisabled
-|Disable identity creation for users in preferences. If `YES`, users won't be able to add new identities and will allow to change only full name, signature and default identity. Default value is `NO`.
+|Disable identity creation for users in preferences. If `YES`, users won't be able to add new identities and will allow to change only full name, signature and default identity. Default value is `NO`. Note : If this settings is set to `YES`, it will not be possible to crete auxiliary mail accounts.
 
 
 

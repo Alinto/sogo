@@ -949,13 +949,15 @@
           </md-list>
 
           <var:if condition="mailAuxiliaryUserAccountsEnabled">
-            <div layout="row" layout-align="end center">
-              <md-button type="button"
-                         ng-click="app.addMailAccount($event, preferencesForm)"
-                         label:aria-label="Create Account">
-                <var:string label:value="New Mail Account"/>
-              </md-button>
-            </div>
+            <var:if condition="showCreateIdentity">
+              <div layout="row" layout-align="end center">
+                <md-button type="button"
+                          ng-click="app.addMailAccount($event, preferencesForm)"
+                          label:aria-label="Create Account">
+                  <var:string label:value="New Mail Account"/>
+                </md-button>
+              </div>
+            </var:if>
           </var:if>
 
         </md-tab>
