@@ -12,16 +12,16 @@ There are multiple ways you can contribute to the project
 
 ## Source Code
 
-You can browse the lastest version of the source code online from Inverse's github repository:
+You can browse the lastest version of the source code online from Alinto's github repository:
 
 * [https://github.com/Alinto/sogo](https://github.com/Alinto/sogo)
 
-To compile SOGo, you first need to obtain the source code of both SOGo and SOPE. The source code of SOPE and SOGo can be obtained from Inverse's github repositories:
+To compile SOGo, you first need to obtain the source code of both SOGo and SOPE. The source code of SOPE and SOGo can be obtained from Alinto's github repositories:
 
 * [https://github.com/Alinto/sope/archive/master.zip](https://github.com/Alinto/sope/archive/master.zip)
 * [https://github.com/Alinto/sogo/archive/master.zip](https://github.com/Alinto/sogo/archive/master.zip)
 
-The source code of the SOGo Connector extension for Thunderbird 78+ can be obtained from Inverse's github repository:
+The source code of the SOGo Connector extension for Thunderbird 78+ can be obtained from Alinto's github repository:
 
 * [https://github.com/Alinto/sogo-connector](https://github.com/Alinto/sogo-connector)
 
