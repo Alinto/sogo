@@ -20,12 +20,18 @@
                  label:aria-label="Previous Week"
                  var:date="prevWeekQueryParameters.day"
                  ng-click="calendar.changeDate($event)"
-                 md-no-ink="md-no-ink"><md-icon>chevron_left</md-icon></md-button>
+                 md-no-ink="md-no-ink">
+         <md-tooltip md-direction="bottom"><var:string label:value="Previous Week"/></md-tooltip>
+         <md-icon>chevron_left</md-icon>
+      </md-button>
       <md-button class="md-icon-button"
                  label:aria-label="Next Week"
                  var:date="nextWeekQueryParameters.day"
                  ng-click="calendar.changeDate($event)"
-                 md-no-ink="md-no-ink"><md-icon>chevron_right</md-icon></md-button>
+                 md-no-ink="md-no-ink">
+         <md-tooltip md-direction="bottom"><var:string label:value="Next Week"/></md-tooltip>
+         <md-icon>chevron_right</md-icon>
+      </md-button>
       <md-datepicker md-hide-icons="triangle"
                      md-open-on-focus="md-open-on-focus"
                      ng-model="calendar.selectedDate"
@@ -42,24 +48,40 @@
                  var:date="todayQueryParameters.day"
                  ng-click="calendar.changeDate($event, null, true)"
                  md-no-ink="md-no-ink">
-        <var:string label:value="Today"/>
+         <md-tooltip md-direction="bottom"><var:string label:value="Go to today"/></md-tooltip>
+         <var:string label:value="Today"/>
       </md-button>
       <a class="md-icon-button md-button"
          label:aria-label="Day"
-         ng-click="calendar.changeView($event, 'day')"><md-icon>view_day</md-icon></a>
+         ng-disabled="true"
+         ng-click="calendar.changeView($event, 'day')">
+         <md-tooltip md-direction="bottom"><var:string label:value="Switch to day view"/></md-tooltip>
+         <md-icon>view_day</md-icon>
+      </a>
       <a class="md-icon-button md-button"
          label:aria-label="Week"
-         ng-disabled="true"
-         ng-click="calendar.changeView($event, 'week')"><md-icon>view_week</md-icon></a>
+         ng-click="calendar.changeView($event, 'week')">
+         <md-tooltip md-direction="bottom"><var:string label:value="Switch to week view"/></md-tooltip>
+         <md-icon>view_week</md-icon>
+      </a>
       <a class="md-icon-button md-button"
          label:aria-label="Month"
-         ng-click="calendar.changeView($event, 'month')"><md-icon>view_module</md-icon></a>
+         ng-click="calendar.changeView($event, 'month')">
+         <md-tooltip md-direction="bottom"><var:string label:value="Switch to month view"/></md-tooltip>
+         <md-icon>view_module</md-icon>
+      </a>
       <a class="md-icon-button md-button"
          label:aria-label="Multicolumn Day View"
-         ng-click="calendar.changeView($event, 'multicolumnday')"><md-icon>view_array</md-icon></a>
+         ng-click="calendar.changeView($event, 'multicolumnday')">
+         <md-tooltip md-direction="bottom"><var:string label:value="Switch to multi-columns day view"/></md-tooltip>
+         <md-icon>view_array</md-icon>
+      </a>
       <md-button class="md-icon-button md-primary md-hue-1 hide show-gt-xs"
                  label:aria-label="Print"
-                 ng-click="calendar.printView(centerIsClose, list.componentType)"><md-icon>print</md-icon></md-button>
+                 ng-click="calendar.printView(centerIsClose, list.componentType)">
+         <md-tooltip md-direction="bottom"><var:string label:value="Print the current calendar view"/></md-tooltip>
+         <md-icon>print</md-icon>
+      </md-button>
     </md-card-actions>
     <var:component
         className="UIxCalDayTable"

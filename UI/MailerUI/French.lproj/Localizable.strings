@@ -445,6 +445,8 @@
 "Back" = "Retour";
 "Copy messages" = "Copier les messages";
 "More messages options" = "Options messages avancées";
+"Flag" = "Marquer";
+"Unflag" = "Démarquer";
 "Mark as Unread" = "Marquer comme non-lu";
 "Mark as Read" = "Marquer comme lu";
 "Closing Window ..." = "Fermer la fenêtre...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "Votre courriel a été sauvegardé";
 "Your email has been sent" = "Votre courriel a été envoyé";
 "Folder compacted" = "Dossier compressé";
+
+"More Options" = "Plus d'Options";
 
 "New draft" = "Nouveau message";
 "Create new draft with this template" = "Créer un nouveau message à partir de ce modèle";

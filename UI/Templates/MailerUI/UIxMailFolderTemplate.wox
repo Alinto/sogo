@@ -76,6 +76,7 @@
         <md-menu>
           <md-button class="sg-icon-button" label:aria-label="Filter"
                      ng-click="$mdMenu.open()">
+            <md-tooltip md-direction="bottom"><var:string label:value="Filter"/></md-tooltip>
             <md-icon>filter_list</md-icon>
           </md-button>
           <md-menu-content width="4">
@@ -110,8 +111,8 @@
           </md-menu-content>
         </md-menu>
         <md-menu>
-          <md-button class="sg-icon-button" label:aria-label="Sort"
-                     ng-click="$mdMenu.open()">
+          <md-button class="sg-icon-button" label:aria-label="Sort" ng-click="$mdMenu.open()">
+            <md-tooltip md-direction="bottom"><var:string label:value="Sort"/></md-tooltip>
             <md-icon>sort</md-icon>
           </md-button>
           <md-menu-content>
@@ -135,7 +136,7 @@
                 <md-icon label:aria-label="Size">{{ mailbox.sortedBy('size') ? 'check' : null }}</md-icon> <var:string label:value="Size"/>
               </md-button>
             </md-menu-item>
-	    <md-menu-item>
+	          <md-menu-item>
               <md-button ng-click="mailbox.sort('arrival')">
                 <md-icon label:aria-label="Order Received">{{ mailbox.sortedBy('arrival') ? 'check' : null }}</md-icon> <var:string label:value="Order Received"/>
               </md-button>
@@ -152,6 +153,7 @@
           </md-menu-content>
         </md-menu>
         <md-button class="sg-icon-button" label:aria-label="Get Mail" ng-click="mailbox.refresh()" >
+          <md-tooltip md-direction="bottom"><var:string label:value="Refresh"/></md-tooltip>
           <md-icon>refresh</md-icon>
         </md-button>
       </div>

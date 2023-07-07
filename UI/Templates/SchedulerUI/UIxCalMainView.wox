@@ -162,8 +162,8 @@
               </md-button>
               <div class="md-flex"><!-- spacer --></div>
               <md-menu>
-                <md-button class="sg-icon-button" label:aria-label="Filter"
-                           ng-click="$mdMenu.open()">
+                <md-button class="sg-icon-button" label:aria-label="Filter" ng-click="$mdMenu.open()">
+                  <md-tooltip md-direction="bottom"><var:string label:value="Filter"/></md-tooltip>
                   <md-icon>filter_list</md-icon>
                 </md-button>
                 <md-menu-content width="4">
@@ -263,8 +263,8 @@
                 </md-menu-content>
               </md-menu>
               <md-menu>
-                <md-button class="sg-icon-button" label:aria-label="Sort"
-                           ng-click="$mdMenu.open()">
+                <md-button class="sg-icon-button" label:aria-label="Sort" ng-click="$mdMenu.open()">
+                  <md-tooltip md-direction="bottom"><var:string label:value="Sort"/></md-tooltip>
                   <md-icon>sort</md-icon>
                 </md-button>
                 <md-menu-content width="4">
@@ -333,6 +333,7 @@
                 </md-menu-content>
               </md-menu>
               <md-button class="sg-icon-button" ng-click="list.reload()">
+                <md-tooltip md-direction="bottom"><var:string label:value="Refresh"/></md-tooltip>
                 <md-icon>refresh</md-icon>
               </md-button>
             </div>
