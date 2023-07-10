@@ -62,7 +62,7 @@
           </md-autocomplete>
           <md-button class="sg-icon-button"
                      ng-click="editor.send()"
-                     ng-disabled="!(editor.message.editable.to.length > 0 || editor.message.editable.cc.length > 0 || editor.message.editable.bcc.length > 0) || editor.uploader.isUploading || messageForm.$invalid || messageForm.$submitted"
+                     ng-disabled="!(editor.message.editable.to.length > 0 || editor.message.editable.cc.length > 0 || editor.message.editable.bcc.length > 0) || editor.sendState == 'sending' || editor.uploader.isUploading || messageForm.$invalid || messageForm.$submitted"
                      sg-ripple-click="mailEditor">
             <md-icon>send</md-icon>
           </md-button>
