@@ -26,6 +26,7 @@
 @class NSArray;
 @class NSMutableDictionary;
 @class NSString;
+@class NSNumber;
 
 @interface SOGoUserSettings : SOGoDefaultsSource
 
@@ -35,6 +36,8 @@
 - (NSArray *) subscribedAddressBooks;
 - (NSString *) userPrivateSalt;
 - (NSString *) userPublicSalt;
+- (void)enableForceResetPassword;
+- (void)disableForceResetPassword;
 
 @end
 

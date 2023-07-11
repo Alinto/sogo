@@ -206,7 +206,9 @@
           this.passwords.newPasswordConfirmation && this.passwords.newPasswordConfirmation.length &&
           this.passwords.newPassword == this.passwords.newPasswordConfirmation &&
           ((this.isInPasswordRecoveryMode()) || 
-          (!this.loginState && this.passwords.oldPassword && this.passwords.oldPassword.length > 0))) 
+          (!this.loginState && this.passwords.oldPassword && this.passwords.oldPassword.length > 0) || 
+          ('passwordchange' == this.loginState && this.passwords.oldPassword && this.passwords.oldPassword.length > 0)
+          )) 
         return true;
 
       return false;

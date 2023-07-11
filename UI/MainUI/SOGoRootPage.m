@@ -254,6 +254,7 @@ static const NSString *kJwtKey = @"jwt";
 
       loggedInUser = [SOGoUser userWithLogin: username];
       ud = [loggedInUser userDefaults];
+      us = [loggedInUser userSettings];
 
 #if defined(MFA_CONFIG)
       if ([ud totpEnabled])
@@ -309,7 +310,6 @@ static const NSString *kJwtKey = @"jwt";
             } //  if ([verificationCode length] == 6 && [verificationCode unsignedIntValue] > 0)
           else
             {
-              us = [loggedInUser userSettings];
               if ([us dictionaryForKey: @"General"] && ![[us dictionaryForKey: @"General"] objectForKey: @"PrivateSalt"])
                 {
                   // Since v5.3.0, a new salt is used for TOTP. If it's missing, disable TOTP and alert the user.
@@ -331,39 +331,43 @@ static const NSString *kJwtKey = @"jwt";
             }
         }
 #endif
+      
+      if ([us objectForKey: @"ForceResetPassword"]) {
+        response = [self _responseWithLDAPPolicyError: PolicyPasswordExpired];
+      } else {
+        [self _checkAutoReloadWebCalendars: loggedInUser];
 
-      [self _checkAutoReloadWebCalendars: loggedInUser];
+        [json setObject: [loggedInUser cn]
+                forKey: @"cn"];
+        [json setObject: [NSNumber numberWithInt: expire]
+                forKey: @"expire"];
+        [json setObject: [NSNumber numberWithInt: grace]
+                forKey: @"grace"];
 
-      [json setObject: [loggedInUser cn]
-               forKey: @"cn"];
-      [json setObject: [NSNumber numberWithInt: expire]
-               forKey: @"expire"];
-      [json setObject: [NSNumber numberWithInt: grace]
-               forKey: @"grace"];
+        response = [self responseWithStatus: 200
+                      andJSONRepresentation: json];
 
-      response = [self responseWithStatus: 200
-                    andJSONRepresentation: json];
+        authCookie = [auth cookieWithUsername: username
+                                  andPassword: password
+                                    inContext: context];
+        [response addCookie: authCookie];
 
-      authCookie = [auth cookieWithUsername: username
-                                andPassword: password
-                                  inContext: context];
-      [response addCookie: authCookie];
+        // We prepare the XSRF protection cookie
+        creds = [auth parseCredentials: [authCookie value]];
+        xsrfCookie = [WOCookie cookieWithName: @"XSRF-TOKEN"
+                                        value: [[SOGoSession valueForSessionKey: [creds lastObject]] asSHA1String]];
+        [xsrfCookie setPath: [NSString stringWithFormat: @"/%@/", [[context request] applicationName]]];
+        [response addCookie: xsrfCookie];
 
-      // We prepare the XSRF protection cookie
-      creds = [auth parseCredentials: [authCookie value]];
-      xsrfCookie = [WOCookie cookieWithName: @"XSRF-TOKEN"
-                                      value: [[SOGoSession valueForSessionKey: [creds lastObject]] asSHA1String]];
-      [xsrfCookie setPath: [NSString stringWithFormat: @"/%@/", [[context request] applicationName]]];
-      [response addCookie: xsrfCookie];
-
-      supportedLanguages = [[SOGoSystemDefaults sharedSystemDefaults]
-                             supportedLanguages];
-      [context setActiveUser: loggedInUser];
-      if (language && [supportedLanguages containsObject: language])
-	{
-	  [ud setLanguage: language];
-	  [ud synchronize];
-	}
+        supportedLanguages = [[SOGoSystemDefaults sharedSystemDefaults]
+                              supportedLanguages];
+        [context setActiveUser: loggedInUser];
+        if (language && [supportedLanguages containsObject: language])
+        {
+          [ud setLanguage: language];
+          [ud synchronize];
+        }
+      }
     }
   else
     {
@@ -691,6 +695,8 @@ static const NSString *kJwtKey = @"jwt";
   WOResponse *response;
   WORequest *request;
   BOOL passwordRecovery;
+  SOGoUserSettings *us;
+  SOGoUser *loggedInUser;
 
   request = [context request];
   message = [[request contentAsString] objectFromJSONString];
@@ -771,6 +777,15 @@ static const NSString *kJwtKey = @"jwt";
                   [username rangeOfString: @"@"].location == NSNotFound)
                 username = [NSString stringWithFormat: @"%@@%@", username, domain];
             }
+
+          loggedInUser = [SOGoUser userWithLogin: username];
+          
+          if (loggedInUser) {
+            us = [loggedInUser userSettings];
+            if (us && [us objectForKey: @"ForceResetPassword"]) {
+              [us disableForceResetPassword];
+            }
+          }
 
           response = [self responseWith204];
           if (!passwordRecovery) {

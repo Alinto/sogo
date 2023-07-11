@@ -116,4 +116,19 @@ static Class SOGoUserProfileKlass = Nil;
   return salt;
 }
 
+- (void) enableForceResetPassword
+{
+  [self setObject: [NSNumber numberWithInt:1]  forKey: @"ForceResetPassword"];
+  [self synchronize];
+}
+
+- (void) disableForceResetPassword
+{
+  if ([self objectForKey: @"ForceResetPassword"]) {
+    [self removeObjectForKey: @"ForceResetPassword"];
+    [self synchronize];
+  }
+}
+
+
 @end
