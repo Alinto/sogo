@@ -191,11 +191,13 @@
       iCalCalendar *iCalendarToSave;
       iCalPerson *attendee;
       SOGoUser *user;
+      WORequest *rq;
 
       iCalendarToSave = nil;
       user = [SOGoUser userWithLogin: theUID];
       attendeeObject = [self _lookupEvent: [newEvent uid] forUID: theUID];
       attendee = [newEvent userAsAttendee: user];
+      rq = [context request];
 
       // If the atttende's role is NON-PARTICIPANT, we write nothing to its calendar
       if ([[attendee role] caseInsensitiveCompare: @"NON-PARTICIPANT"] == NSOrderedSame)
@@ -217,8 +219,9 @@
 
           return;
         }
-
-      if ([newEvent recurrenceId])
+      
+      
+      if ([newEvent recurrenceId] && ![rq isICal4] && ![rq isICal])
         {
           // We must add an occurence to a non-existing event.
           if ([attendeeObject isNew])

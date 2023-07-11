@@ -124,8 +124,10 @@
   if(!IS_EQUAL([_from created], [_to created], isEqualToDate:))
     [updatedProperties addObject:@"created"];
   if(!IS_EQUAL([_from lastModified], [_to lastModified], isEqualToDate:))
-    [updatedProperties addObject:@"lastModified"];
-  if(![_from durationAsTimeInterval] == [_to durationAsTimeInterval])
+    [updatedProperties addObject:@"timeStampAsDate"];
+  if(!IS_EQUAL([_from timeStampAsDate], [_to timeStampAsDate], isEqualToDate:))
+    [updatedProperties addObject:@"timeStampAsDate"];
+  if([_from durationAsTimeInterval] != [_to durationAsTimeInterval])
     [updatedProperties addObject:@"duration"];
   if(!IS_EQUAL([_from summary], [_to summary], isEqualToString:))
     [updatedProperties addObject:@"summary"];
@@ -145,6 +147,8 @@
     [updatedProperties addObject:@"organizer"];
   if(!IS_EQUAL([_from recurrenceRules], [_to recurrenceRules], isEqual:))
     [updatedProperties addObject:@"rrule"];
+  if(!IS_EQUAL([_from recurrenceId], [_to recurrenceId], isEqualToDate:))
+    [updatedProperties addObject:@"rid"];
   if(!IS_EQUAL([_from exceptionRules], [_to exceptionRules], isEqual:))
     [updatedProperties addObject:@"exrule"];
   if(!IS_EQUAL([_from exceptionDates], [_to exceptionDates], isEqual:))
