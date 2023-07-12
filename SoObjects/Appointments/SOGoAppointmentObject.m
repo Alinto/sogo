@@ -963,13 +963,15 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   NSArray *addedAttendees, *deletedAttendees, *updatedAttendees;
   iCalEventChanges *changes;
   NSException *ex;
+  WORequest *rq;
 
   addedAttendees = nil;
   deletedAttendees = nil;
   updatedAttendees = nil;
+  rq = [context request];
 
   changes = [newEvent getChangesRelativeToEvent: oldEvent];
-  if ([changes sequenceShouldBeIncreased])
+  if ([changes sequenceShouldBeIncreased] || [rq isICal4] || [rq isICal])
     {
       // Set new attendees status to "needs action" and recompute changes when
       // the list of attendees has changed. The list might have changed since
