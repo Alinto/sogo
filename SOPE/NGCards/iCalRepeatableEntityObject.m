@@ -122,37 +122,44 @@
   NSEnumerator *dateList;
   NSCalendarDate *rDate;
   NSString *dateString;
+  NSTimeZone *rdateTimezone;
   int offset;
   unsigned i;
 
   if (theTimeZone)
-    {
-      dates = [NSMutableArray array];
-      dateList = [[self childrenWithTag: @"rdate"] objectEnumerator];
+  {
+    dates = [NSMutableArray array];
+    dateList = [[self childrenWithTag: @"rdate"] objectEnumerator];
 
-      while ((dateString = [dateList nextObject]))
-	{
-          rDates = [(iCalDateTime*) dateString dateTimes];
-          for (i = 0; i < [rDates count]; i++)
+    while ((dateString = [dateList nextObject]))
+	  {
+      
+      rDates = [(iCalDateTime*) dateString dateTimes];
+      for (i = 0; i < [rDates count]; i++)
 	    {
 	      rDate = [rDates objectAtIndex: i];
 
-              // Example: timezone is -0400, date is 2012-05-24 (00:00:00 +0000),
-              //                      and changes to 2012-05-24 04:00:00 +0000
-              if ([theTimeZone isKindOfClass: [iCalTimeZone class]])
-                {
-                    rDate = [(iCalTimeZone *) theTimeZone computedDateForDate: rDate];
-                }
-              else
-                {
-                  offset = [(NSTimeZone *) theTimeZone secondsFromGMTForDate: rDate];
-                  rDate = (NSCalendarDate *) [rDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
-                                                               seconds:-offset];
-                }
+
+        if ((rdateTimezone =[rDate timeZone]))
+        {
+          //The property rdate can have the timezone, https://www.kanzaki.com/docs/ical/rdate.html
+          //In that case, dont force the
+        }
+        // Example: timezone is -0400, date is 2012-05-24 (00:00:00 +0000),
+        //                      and changes to 2012-05-24 04:00:00 +0000
+        else if ([theTimeZone isKindOfClass: [iCalTimeZone class]])
+        {
+          rDate = [(iCalTimeZone *) theTimeZone computedDateForDate: rDate];
+        }
+        else
+        {
+          offset = [(NSTimeZone *) theTimeZone secondsFromGMTForDate: rDate];
+          rDate = (NSCalendarDate *) [rDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:-offset];
+        }
 	      [(NSMutableArray *) dates addObject: rDate];
-            }
-	}
-    }
+      }
+	  }
+  }
   else
     dates = [self recurrenceDates];
 
@@ -351,33 +358,32 @@
   unsigned i;
 
   if (theTimeZone)
-    {
-      dates = [NSMutableArray array];
-      dateList = [[self childrenWithTag: @"exdate"] objectEnumerator];
+  {
+    dates = [NSMutableArray array];
+    dateList = [[self childrenWithTag: @"exdate"] objectEnumerator];
       
-      while ((dateString = [dateList nextObject]))
-	{
-          exDates = [(iCalDateTime*) dateString dateTimes];
-          for (i = 0; i < [exDates count]; i++)
+    while ((dateString = [dateList nextObject]))
+	  {
+      exDates = [(iCalDateTime*) dateString dateTimes];
+      for (i = 0; i < [exDates count]; i++)
 	    {
 	      exDate = [exDates objectAtIndex: i];
 
-              // Example: timezone is -0400, date is 2012-05-24 (00:00:00 +0000),
-              //                      and changes to 2012-05-24 04:00:00 +0000
-              if ([theTimeZone isKindOfClass: [iCalTimeZone class]])
-                {
-                    exDate = [(iCalTimeZone *) theTimeZone computedDateForDate: exDate];
-                }
-              else
-                {
-                  offset = [(NSTimeZone *) theTimeZone secondsFromGMTForDate: exDate];
-                  exDate = (NSCalendarDate *) [exDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
-                                                               seconds:-offset];
-                }
+        // Example: timezone is -0400, date is 2012-05-24 (00:00:00 +0000),
+        //                      and changes to 2012-05-24 04:00:00 +0000
+        if ([theTimeZone isKindOfClass: [iCalTimeZone class]])
+        {
+          exDate = [(iCalTimeZone *) theTimeZone computedDateForDate: exDate];
+        }
+        else
+        {
+          offset = [(NSTimeZone *) theTimeZone secondsFromGMTForDate: exDate];
+          exDate = (NSCalendarDate *) [exDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:-offset];
+        }
 	      [(NSMutableArray *) dates addObject: exDate];
-   	    }
-	}
-    }
+   	  }
+	  }
+  }
   else
     dates = [self exceptionDates];
 

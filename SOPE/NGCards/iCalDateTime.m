@@ -85,13 +85,12 @@
 
   tzId = [self value: 0 ofAttribute: @"tzid"];
   if ([tzId length])
-    {
-      calendar
-	= (iCalCalendar *) [self searchParentOfClass: [iCalCalendar class]];
+  {
+      calendar = (iCalCalendar *) [self searchParentOfClass: [iCalCalendar class]];
       timeZone = [calendar timeZoneWithId: tzId];
       //if (!timeZone)
       //[self logWithFormat: @"timezone '%@' not found in calendar", tzId];
-    }
+  }
 
   return timeZone;
 }
@@ -169,37 +168,37 @@
   count = [subValues count];
   dates = [NSMutableArray arrayWithCapacity: count];
   for (i = 0; i < count; i++)
-    {
-      date = [subValues objectAtIndex: i];
-      iTZ = [self timeZone];
+  {
+    date = [subValues objectAtIndex: i];
+    iTZ = [self timeZone];
 
-      if (iTZ)
-	dateTime = [iTZ dateForDateTimeString: date];
-      else
-	{
-	  initialDate = [date asCalendarDate];
-	  if (initialDate)
-	    dateTime = initialDate;
-	  /*
-	    {
-	      if ([date hasSuffix: @"Z"] || [date hasSuffix: @"z"])
-		dateTime = initialDate;
-	      else
-		{
-		  // same TODO as above
-		  tz = [NSTimeZone defaultTimeZone];
-		  dateTime = [initialDate addYear: 0 month: 0 day: 0
-					     hour: 0 minute: 0
-					   second: -[tz secondsFromGMTForDate: initialDate]];
-		}
-	    }
-	  */
-	  else
-	    dateTime = nil;
-	}
-      if (dateTime)
-	[dates addObject: dateTime];
-    }
+    if (iTZ)
+	    dateTime = [iTZ dateForDateTimeString: date];
+    else
+	  {
+	    initialDate = [date asCalendarDate];
+	    if (initialDate)
+	      dateTime = initialDate;
+      /*
+        {
+          if ([date hasSuffix: @"Z"] || [date hasSuffix: @"z"])
+      dateTime = initialDate;
+          else
+      {
+        // same TODO as above
+        tz = [NSTimeZone defaultTimeZone];
+        dateTime = [initialDate addYear: 0 month: 0 day: 0
+                hour: 0 minute: 0
+              second: -[tz secondsFromGMTForDate: initialDate]];
+      }
+        }
+      */
+	    else
+	      dateTime = nil;
+	  }
+    if (dateTime)
+	    [dates addObject: dateTime];
+  }
   
   return dates;
 }

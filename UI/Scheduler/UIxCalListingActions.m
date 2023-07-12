@@ -892,7 +892,8 @@ static inline NSString* _userStateInEvent (NSArray *event)
   NSMutableArray *fields, *dayEvents, *newEvent, *allDayEvents;
   NSMutableDictionary *allEvents, *monthData, *monthEvents, *dayData;
   NSString *sort, *ascending, *day, *weekDay, *month, *userState;
-  unsigned int interval, count, max;
+  unsigned int count, max;
+  long long interval;
   SEL sortSelector;
 
   [self _setupContext];
