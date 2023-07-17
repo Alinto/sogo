@@ -2840,6 +2840,21 @@ The _cronjob_ should look like this:
 0 0 * * * sogo /usr/sbin/sogo-tool update-autoreply -p /etc/sogo/sieve.creds
 ----
 
+_Password_ — Force user password change at login
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following commands force user to change his password at login :
+
+----
+/usr/sbin/sogo-tool user-preferences set settings [USER] ForceResetPassword 1
+----
+
+Disable :
+
+----
+/usr/sbin/sogo-tool user-preferences unset settings [USER] ForceResetPassword
+----
+
 Managing User Accounts
 ----------------------
 
