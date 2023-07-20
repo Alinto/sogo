@@ -7,8 +7,8 @@
   /**
    * @ngInject
    */
-  PreferencesController.$inject = ['$q', '$window', '$state', '$mdMedia', '$mdSidenav', '$mdDialog', '$mdToast', 'sgSettings', 'sgFocus', 'Dialog', 'User', 'Account', 'Preferences', 'Authentication'];
-  function PreferencesController($q, $window, $state, $mdMedia, $mdSidenav, $mdDialog, $mdToast, sgSettings, focus, Dialog, User, Account, Preferences, Authentication) {
+  PreferencesController.$inject = ['$q', '$window', '$state', '$mdMedia', '$mdSidenav', '$mdDialog', '$mdToast', 'sgSettings', 'sgFocus', 'Dialog', 'User', 'Account', 'Preferences', 'Authentication', 'AddressBook'];
+  function PreferencesController($q, $window, $state, $mdMedia, $mdSidenav, $mdDialog, $mdToast, sgSettings, focus, Dialog, User, Account, Preferences, Authentication, AddressBook) {
     var vm = this, mailboxes = [], today = new Date().beginOfDay();
 
     this.$onInit = function() {
@@ -17,6 +17,7 @@
       this.timeZonesList = $window.timeZonesList;
       this.timeZonesSearchText = '';
       this.addressesSearchText = '';
+      this.autocompleteForward = {};
       this.mailLabelKeyRE = new RegExp(/^(?!^_\$)[^(){} %*\"\\\\]*?$/);
       this.emailSeparatorKeys = Preferences.defaults.emailSeparatorKeys;
       if (Preferences.defaults.SOGoMailAutoMarkAsReadMode == 'delay')
@@ -615,6 +616,107 @@
         }
       }
     };
+
+    this.contactFilter = function ($query) {
+      return AddressBook.$filterAll($query, [], {priority: 'gcs'}).then(function(cards) {
+        // Divide the matching cards by email addresses so the user can select
+        // the recipient address of her choice
+        var explodedCards = [];
+        _.forEach(_.invokeMap(cards, 'explode'), function(manyCards) {
+          _.forEach(manyCards, function(card) {
+            explodedCards.push(card);
+          });
+        });
+        // Remove duplicates
+        return _.uniqBy(explodedCards, function(card) {
+          return card.$$fullname + ' ' + card.$$email + ' ' + card.containername;
+        });
+      });
+    };
+
+    this.ignoreReturn = function ($event) {
+      if ($event.keyCode == 13) {
+        $event.stopPropagation();
+        $event.preventDefault();
+        return false;
+      }
+      if ($event.keyCode == 186 && $event.key == 'ü') { //Key code for separator ';' but is keycode for ü in german keyboard
+        $event.stopPropagation();
+        $event.preventDefault();
+        let element = $window.document.getElementById($event.target.id);
+        element.value = element.value + 'ü'
+      }
+    };
+
+    this.addRecipient = function (contact) {
+      var recipients, recipient, list, i, address;
+
+      recipients = this.preferences.defaults.Forward.forwardAddress;
+
+      if (angular.isString(contact)) {
+        // Examples that are handled:
+        //   Smith, John <john@smith.com>
+        //   <john@appleseed.com>;<foo@bar.com>
+        //   foo@bar.com abc@xyz.com
+        address = '';
+        for (i = 0; i < contact.length; i++) {
+          if ((contact.charCodeAt(i) ==  9 ||   // tab
+               contact.charCodeAt(i) == 32 ||   // space
+               contact.charCodeAt(i) == 44 ||   // ,
+               contact.charCodeAt(i) == 59) &&  // ;
+              address.isValidEmail() &&
+              recipients.indexOf(address) < 0) {
+            recipients.push(address);
+            address = '';
+          }
+          else {
+            address += contact.charAt(i);
+          }
+        }
+        if (address && recipients.indexOf(address) < 0)
+          recipients.push(address);
+
+        return null;
+      }
+
+      if (contact.$isList({expandable: true})) {
+        // If the list's members were already fetch, use them
+        if (angular.isDefined(contact.refs) && contact.refs.length) {
+          _.forEach(contact.refs, function(ref) {
+            if (ref.email.length && recipients.indexOf(ref.$shortFormat()) < 0)
+              recipients.push(ref.$shortFormat());
+          });
+        }
+        else {
+          list = Card.$find(contact.container, contact.c_name);
+          list.$id().then(function(listId) {
+            _.forEach(list.refs, function(ref) {
+              if (ref.email.length && recipients.indexOf(ref.$shortFormat()) < 0)
+                recipients.push(ref.$shortFormat());
+            });
+          });
+        }
+      }
+      else if (contact.$isGroup({expandable: true})) {
+        recipient = {
+          toString: function () { return contact.$shortFormat(); },
+          isExpandable: true,
+          members: []
+        };
+        contact.$members().then(function (members) {
+          recipient.members = members;
+        });
+      }
+      else {
+        recipient = contact.$shortFormat();
+      }
+
+      if (recipient)
+        return recipient;
+      else
+        return null;
+    };
+
   }
 
   angular

@@ -1100,7 +1100,7 @@
                           md-autofocus="true"
                           md-autoselect="true"
                           label:placeholder="Enter an email"
-                          label:secondary-placeholder="Add another email">>
+                          label:secondary-placeholder="Add another email">
                         <md-item-template>
                           <div class="sg-tile-content">
                             <div class="sg-md-subhead">
@@ -1301,13 +1301,35 @@
                         id="forwardAddress"
                         name="forwardAddress"
                         ng-model="app.preferences.defaults.Forward.forwardAddress"
+                        md-transform-chip="app.addRecipient($chip)"
                         ng-required="app.preferences.defaults.Forward.enabled == 1"
                         md-separator-keys="app.emailSeparatorKeys"
                         md-add-on-blur="true"
-                        md-autocomplete-snap="width"
-                        label:placeholder="Enter an email"
-                        label:secondary-placeholder="Add another email">
+                        md-autocomplete-snap="width">
                       <!-- forward addresses -->
+                      <md-autocomplete
+                          ng-keydown="app.ignoreReturn($event)"
+                          md-menu-class="md-2-line"
+                          md-search-text="app.autocompleteForward.searchText"
+                          md-selected-item="app.autocompleteForward.selected"
+                          md-items="user in app.contactFilter(app.autocompleteForward.searchText)"
+                          md-item-text="app.addRecipient(user)"
+                          var:md-min-length="minimumSearchLength"
+                          md-delay="150"
+                          md-no-cache="true"
+                          label:placeholder="Enter an email"
+                          label:secondary-placeholder="Add another email">
+                        <md-item-template>
+                          <div class="sg-tile-content">
+                            <div class="sg-md-subhead">
+                              <div md-highlight-text="app.autocompleteForward.searchText"
+                                  md-highlight-flags="gi">{{ user.$shortFormat(app.autocompleteForward.searchText) }}</div>
+                            </div>
+                            <div class="sg-md-body"
+                                md-colors="::{color: 'default-background-500'}">{{ user.containername }}</div>
+                          </div>
+                        </md-item-template>
+                      </md-autocomplete>
                     </md-chips>
                 </md-input-container>
 
