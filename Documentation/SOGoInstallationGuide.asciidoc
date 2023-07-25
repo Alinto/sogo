@@ -1263,9 +1263,9 @@ mapping = {
 
 |===
 2+h|Name
-|First |givenName
+|First |givenname
 |Last |sn
-|DisplayName |displayName _or_ cn _or_ givenName + sn
+|DisplayName |displayname _or_ cn _or_ givenname + sn
 |Nickname |mozillanickname
 
 2+h|Internet
@@ -1274,7 +1274,7 @@ mapping = {
 |ScreenName |nsaimid
 
 2+h|Phones
-|Work |telephoneNumber
+|Work |telephonenumber
 |Home |homephone
 |Mobile |mobile
 |Fax |facsimiletelephonenumber
@@ -1295,7 +1295,7 @@ mapping = {
 |Address |street + mozillaworkstreet2
 |City |l
 |State/Province |st
-|Zip/Postal code |postalCode
+|Zip/Postal code |postalcode
 |Country |c
 |Web page |mozillaworkurl
 
