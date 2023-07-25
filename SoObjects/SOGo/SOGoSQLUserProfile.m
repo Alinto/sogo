@@ -239,4 +239,33 @@ static EOAttribute *textColumn = nil;
   return rc;
 }
 
+- (unsigned long long) getCDefaultsSize {
+  unsigned long long r;
+  NSString *sql;
+  NSException *ex;
+  GCSChannelManager *cm;
+  EOAdaptorChannel *channel;
+  EOAdaptorContext *context;
+  NSArray *attrs;
+  NSDictionary *infos;
+
+  r = 65535;
+
+  cm = [GCSChannelManager defaultChannelManager];
+  channel = [cm acquireOpenChannelForURL: tableURL];
+  sql = [NSString stringWithFormat: @"select character_octet_length as CHARACTER_MAXIMUM_LENGTH from information_schema.columns where table_name = '%@' AND column_name = 'c_defaults'", [tableURL gcsTableName]];
+  ex = [channel evaluateExpressionX: sql];
+  if (!ex) {
+    attrs = [channel describeResults: NO];
+    infos = [channel fetchAttributes: attrs withZone: NULL];
+    [cm releaseChannel: channel  immediately: YES];
+    if (infos && [infos objectForKey:@"CHARACTER_MAXIMUM_LENGTH"]) {
+      r = [[infos objectForKey:@"CHARACTER_MAXIMUM_LENGTH"] longLongValue];
+    }
+    
+  }
+
+  return r;
+}
+
 @end

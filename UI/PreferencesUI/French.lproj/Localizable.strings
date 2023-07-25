@@ -248,6 +248,7 @@
 "Digitally sign the message by default" = "Toujours signer le message";
 "Always try to encrypt the message" = "Toujours tenter de crypter le message";
 "An error occurred while importing the certificate. Verify your password." = "Une erreur est survenue lors de l'importation du certificat. Veuillez vérifier votre mot de passe.";
+"Data too big. Please contact technical support." = "Données trop longues. Contactez votre support technique.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Paramètres supplémentaires";

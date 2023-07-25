@@ -145,7 +145,8 @@
           defaults: this.preferences.defaults,
           account: account,
           accountId: index,
-          mailCustomFromEnabled: $window.mailCustomFromEnabled
+          mailCustomFromEnabled: $window.mailCustomFromEnabled,
+          maxSize: this.preferences.defaults.CDefaultsSize
         }
       }).then(function() {
         // Automatically expand the new mail account
@@ -173,7 +174,8 @@
           defaults: this.preferences.defaults,
           account: account,
           accountId: index,
-          mailCustomFromEnabled: $window.mailCustomFromEnabled
+          mailCustomFromEnabled: $window.mailCustomFromEnabled,
+          maxSize: this.preferences.defaults.CDefaultsSize
         }
       }).then(function() {
         vm.preferences.defaults.AuxiliaryMailAccounts[index] = account.$omit();

@@ -7,22 +7,21 @@
   /**
    * @ngInject
    */
-  AccountDialogController.$inject = ['$timeout', '$window', '$mdDialog', 'FileUploader', 'Dialog', 'sgSettings', 'defaults', 'account', 'accountId', 'mailCustomFromEnabled'];
-  function AccountDialogController($timeout, $window, $mdDialog, FileUploader, Dialog, Settings, defaults, account, accountId, mailCustomFromEnabled) {
+  AccountDialogController.$inject = ['$timeout', '$window', '$mdDialog', 'FileUploader', 'Dialog', 'sgSettings', 'defaults', 'account', 'accountId', 'mailCustomFromEnabled', 'maxSize'];
+  function AccountDialogController($timeout, $window, $mdDialog, FileUploader, Dialog, Settings, defaults, account, accountId, mailCustomFromEnabled, maxSize) {
     var vm = this, usesSSO = $window.usesCASAuthentication || $window.usesSAML2Authentication;
 
     this.defaultPort = 143;
     this.defaults = defaults;
     this.account = account;
+    this.maxSize = maxSize;
     this.accountId = accountId;
     this.hostnameRE = usesSSO && accountId > 0 ? /^(?!(127\.0\.0\.1|localhost(?:\.localdomain)?)$)/ : /./;
     this.emailRE = String.emailRE;
     this.addressesSearchText = '';
     this.ckConfig = {
       'autoGrow_minHeight': 70,
-      'toolbar': [['Bold', 'Italic', '-', 'Link',
-                   'Font','FontSize','-','TextColor',
-                   'BGColor', 'Source']],
+      removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Find,Replace,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,CopyFormatting,RemoveFormat,NumberedList,BulletedList,Outdent,Indent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,Language,Unlink,Anchor,Flash,Table,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Styles,Format,Maximize,ShowBlocks,About,Strike,Subscript,Superscript,Underline,Image,Emojipanel,Emoji,',
       language: defaults.ckLocaleCode
     };
 
@@ -155,7 +154,14 @@
     };
 
     this.save = function () {
-      $mdDialog.hide();
+      // Check if the size of the content os not too big. Otherwise it will fail while storing in database.
+      // This usually happens when using image signature 
+      var data = JSON.stringify(this.account);
+      if (data.length > this.maxSize) {
+        Dialog.alert(l('Error'), l('Data too big. Please contact technical support.'));
+      } else {
+        $mdDialog.hide();
+      }
     };
   }
 

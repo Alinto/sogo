@@ -1743,6 +1743,9 @@ static NSArray *reminderValues = nil;
           else
             results = (id <WOActionResults>) [self responseWithStatus: 503
                          andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Service temporarily unavailable", @"message", nil]];
+        } else {
+          results = (id <WOActionResults>) [self responseWithStatus: 500
+                         andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Error during the validation", @"message", nil]];
         }
     }
 

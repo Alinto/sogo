@@ -22,6 +22,7 @@ endif
 MainUI_RESOURCE_FILES += 	\
 	product.plist		\
 	SOGoProfile.sql \
+	SOGoProfile-mysql.sql \
 	SOGoProfile-oracle.sql \
 	OCSFolderInfo.sql \
 	OCSFolderInfo-oracle.sql \

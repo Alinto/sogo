@@ -248,6 +248,7 @@
 "Digitally sign the message by default" = "Digitally sign the message by default";
 "Always try to encrypt the message" = "Always try to encrypt the message";
 "An error occurred while importing the certificate. Verify your password." = "An error occurred while importing the certificate. Verify your password.";
+"Data too big. Please contact technical support." = "Data too big. Please contact technical support.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Additional Parameters";

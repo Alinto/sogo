@@ -86,6 +86,8 @@ NSString *SOGoPasswordRecoverySecondaryEmail = @"SecondaryEmail";
       [ud setObject: @"text" forKey: @"SOGoMailComposeMessageType"];
     }
 
+  [ud setObject: [NSNumber numberWithUnsignedLongLong: [up getCDefaultsSize]] forKey: @"CDefaultsSize"]; // Add c_defaults field size
+  
   return ud;
 }
 

@@ -31,6 +31,7 @@
   NSString *fieldName;
 }
 
+- (unsigned long long)getCDefaultsSize;
 
 @end
 
