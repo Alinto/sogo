@@ -27,6 +27,7 @@
 @class NSDictionary;
 @class NSString;
 @class NGVList;
+@class NSNull;
 
 @interface SOGoContactLDIFEntry : SOGoObject <SOGoContactObject>
 {

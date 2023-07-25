@@ -162,7 +162,7 @@
 
 - (BOOL) hasPhoto
 {
-  return ([ldifEntry objectForKey: @"photo"] != nil);
+  return ([ldifEntry objectForKey: @"photo"] != nil && [ldifEntry objectForKey: @"photo"] != [NSNull null]);
 }
 
 - (NSString *) davEntityTag
