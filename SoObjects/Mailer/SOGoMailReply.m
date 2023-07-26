@@ -22,6 +22,8 @@
 #import <NGExtensions/NSString+misc.h>
 #import <NGImap4/NGImap4Envelope.h>
 
+#import <SOGo/SOGoUserDefaults.h>
+
 
 #import "SOGoMailObject+Draft.h"
 #import "SOGoMailReply.h"
@@ -83,6 +85,12 @@
     }
 
   return s;
+}
+
+- (BOOL)isSignatureEnabled {
+  SOGoUserDefaults *ud;
+  ud = [[context activeUser] userDefaults];
+  return [ud mailUseSignatureOnReply];
 }
 
 @end

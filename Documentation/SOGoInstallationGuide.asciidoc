@@ -2515,6 +2515,21 @@ Possible values are:
 
 Defaults to `below`.
 
+|U |SOGoMailUseSignatureOnNew
+|Add signature to new message
+
+Defaults to `YES`.
+
+|U |SOGoMailUseSignatureOnReply
+|Add signature to reply
+
+Defaults to `YES`.
+
+|U |SOGoMailUseSignatureOnForward
+|Add signature to forward
+
+Defaults to `YES`.
+
 |U |SOGoMailComposeMessageType
 |The message composition format. Possible values are:
 

@@ -707,6 +707,36 @@ NSString *SOGoPasswordRecoverySecondaryEmail = @"SecondaryEmail";
   return signaturePlacement;
 }
 
+- (BOOL) mailUseSignatureOnNew
+{
+  return [self boolForKey: @"SOGoMailUseSignatureOnNew"];
+}
+
+- (void) setMailUseSignatureOnNew: (BOOL) newValue
+{
+  [self setBool: newValue  forKey: @"SOGoMailUseSignatureOnNew"];
+}
+
+- (BOOL) mailUseSignatureOnReply
+{
+  return [self boolForKey: @"SOGoMailUseSignatureOnReply"];
+}
+
+- (void) setMailUseSignatureOnReply: (BOOL) newValue
+{
+  [self setBool: newValue  forKey: @"SOGoMailUseSignatureOnReply"];
+}
+
+- (BOOL) mailUseSignatureOnForward
+{
+  return [self boolForKey: @"SOGoMailUseSignatureOnForward"];
+}
+
+- (void) setMailUseSignatureOnForward: (BOOL) newValue
+{
+  [self setBool: newValue  forKey: @"SOGoMailUseSignatureOnForward"];
+}
+
 - (void) setAllowUserReceipt: (BOOL) allow
 {
   [self setBool: allow forKey: @"SOGoMailReceiptAllow"];

@@ -1072,19 +1072,16 @@ static NSString    *userAgent      = nil;
 
 
   ud = [[context activeUser] userDefaults];
-  // TODO: Change mailMessageForwarding for reply
-  if ([[ud mailMessageForwarding] isEqualToString: @"inline"])
-  {
-    [self setText: [sourceMail contentForReply]];
-    if ([sourceMail isEncrypted])
-      [self _fetchAttachmentsFromEncryptedMail: sourceMail onlyImages: YES];
-    else if ([sourceMail isOpaqueSigned])
-      [self _fetchAttachmentsFromOpaqueSignedMail: sourceMail onlyImages: YES];
-    else
-      [self _fetchAttachmentsFromMail: sourceMail onlyImages: YES];
-  }
 
-    [self save];
+  [self setText: [sourceMail contentForReply]];
+  if ([sourceMail isEncrypted])
+    [self _fetchAttachmentsFromEncryptedMail: sourceMail onlyImages: YES];
+  else if ([sourceMail isOpaqueSigned])
+    [self _fetchAttachmentsFromOpaqueSignedMail: sourceMail onlyImages: YES];
+  else
+    [self _fetchAttachmentsFromMail: sourceMail onlyImages: YES];
+
+  [self save];
 
   [self storeInfo];
 }
@@ -1135,7 +1132,7 @@ static NSString    *userAgent      = nil;
       // TODO: use subject for filename?
       // error = [newDraft saveAttachment:content withName:@"forward.eml"];
       signature = [[self mailAccountFolder] signature];
-      if ([signature length])
+      if ([signature length] && [ud mailUseSignatureOnForward])
         {
           nl = (isHTML ? @"<br />" : @"\n");
           space = (isHTML ? @"&nbsp;" : @" ");

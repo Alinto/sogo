@@ -753,7 +753,7 @@
 
           // Add signature
           signature = [identity objectForKey: @"signature"];
-          if ([signature length])
+          if ([signature length]  && [ud mailUseSignatureOnForward])
             {
               nl = (htmlComposition? @"<br />" : @"\n");
               space = (htmlComposition ? @"&nbsp;" : @" ");

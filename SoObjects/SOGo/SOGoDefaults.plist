@@ -109,6 +109,9 @@
     SOGoMailMessageForwarding = "inline";
     SOGoMailReplyPlacement = "below";
     SOGoMailSignaturePlacement = "below";
+    SOGoMailUseSignatureOnNew = YES;
+    SOGoMailUseSignatureOnReply = YES;
+    SOGoMailUseSignatureOnForward = YES;
     SOGoRefreshViewIntervals = ( 1, 2, 5, 10, 20, 30, 60 );
     SOGoMailListViewColumnsOrder = ( "Thread", "Flagged", "Attachment", "Subject",
                                      "From", "Unread", "Date", "Priority",

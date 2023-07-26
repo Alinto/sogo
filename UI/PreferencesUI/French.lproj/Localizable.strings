@@ -195,6 +195,9 @@
 "Compose messages in" = "Composer les messages en";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Texte";
+"Insert signature on new message" = "Insérer la signature sur un nouveau message";
+"Insert signature on reply" = "Insérer la signature sur une réponse";
+"Insert signature on forward" = "Insérer la signature sur un transfert";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Taille de la police par défaut";

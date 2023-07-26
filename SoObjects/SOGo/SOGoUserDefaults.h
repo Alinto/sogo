@@ -175,6 +175,13 @@ extern NSString *SOGoPasswordRecoverySecondaryEmail;
 - (void) setMailSignaturePlacement: (NSString *) newValue;
 - (NSString *) mailSignaturePlacement;
 
+- (BOOL)mailUseSignatureOnNew;
+- (void)setMailUseSignatureOnNew:(BOOL)newValue;
+- (BOOL)mailUseSignatureOnReply;
+- (void)setMailUseSignatureOnReply:(BOOL)newValue;
+- (BOOL)mailUseSignatureOnForward;
+- (void)setMailUseSignatureOnForward:(BOOL)newValue;
+
 - (void) setAllowUserReceipt: (BOOL) allow;
 - (BOOL) allowUserReceipt;
 - (void) setUserReceiptNonRecipientAction: (NSString *) action;

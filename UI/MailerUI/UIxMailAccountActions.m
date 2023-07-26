@@ -155,9 +155,9 @@
     {
       [headers setObject: [self _emailFromIdentity: identity] forKey: @"from"];
       signature = [identity objectForKey: @"signature"];
-      if ([signature length])
+      ud = [[context activeUser] userDefaults];
+      if ([signature length] && [ud mailUseSignatureOnNew])
         {
-          ud = [[context activeUser] userDefaults];
           [newDraftMessage setIsHTML: [[ud mailComposeMessageType] isEqualToString: @"html"]];
           isHTML = [newDraftMessage isHTML];
           nl = (isHTML? @"<br />" : @"\n");

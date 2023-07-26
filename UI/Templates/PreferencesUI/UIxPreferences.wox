@@ -803,6 +803,30 @@
               </md-input-container>
             </div>
 
+            <div layout="row" layout-xs="column">
+              <md-checkbox
+                  ng-model="app.preferences.defaults.SOGoMailUseSignatureOnNew"
+                  ng-true-value="1"
+                  ng-false-value="0"
+                  label:aria-label="Insert signature on new message">
+                <var:string label:value="Insert signature on new message"/>
+              </md-checkbox>
+              <md-checkbox
+                  ng-model="app.preferences.defaults.SOGoMailUseSignatureOnReply"
+                  ng-true-value="1"
+                  ng-false-value="0"
+                  label:aria-label="Insert signature on reply">
+                <var:string label:value="Insert signature on reply"/>
+              </md-checkbox>
+              <md-checkbox
+                  ng-model="app.preferences.defaults.SOGoMailUseSignatureOnForward"
+                  ng-true-value="1"
+                  ng-false-value="0"
+                  label:aria-label="Insert signature on forward">
+                <var:string label:value="Insert signature on forward"/>
+              </md-checkbox>
+            </div>
+
             <div layout="row">
               <md-input-container class="md-block" flex="50">
                 <label><var:string label:value="Compose messages in"/></label>

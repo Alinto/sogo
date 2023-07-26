@@ -402,38 +402,44 @@
         nlNb = 2;
       else
         nlNb = 1;
+      
+      if ((vm.isNew() && Preferences.defaults.SOGoMailUseSignatureOnNew === 1)
+        || (!vm.isNew() && Preferences.defaults.SOGoMailUseSignatureOnForward === 1 && vm.message && vm.message.origin && vm.message.origin.action && vm.message.origin.action === 'forward')
+        || (!vm.isNew() && Preferences.defaults.SOGoMailUseSignatureOnReply === 1 && vm.message && vm.message.origin && vm.message.origin.action && vm.message.origin.action === 'reply')
+        ) {
+        if (identity && identity.signature)
+          signature = nl.repeat(nlNb) + '--' + space + nl + identity.signature;
+        else
+          signature = '';
 
-      if (identity && identity.signature)
-        signature = nl.repeat(nlNb) + '--' + space + nl + identity.signature;
-      else
-        signature = '';
+        previousIdentity = _.find(this.identities, function (currentIdentity, index) {
 
-      previousIdentity = _.find(this.identities, function (currentIdentity, index) {
-        if (currentIdentity.signature) {
-          var currentSignature = new RegExp('(' + reNl + '){' + nlNb + '}--' + space + reNl +
-                                            currentIdentity.signature.replace(/[-\[\]{}()*+?.,\\^$|#\s]/g, '\\$&'));
-          if (vm.message.editable.text.search(currentSignature) >= 0) {
-            vm.message.editable.text = vm.message.editable.text.replace(currentSignature, signature);
-            return true;
+          if (currentIdentity.signature) {
+            var currentSignature = new RegExp('(' + reNl + '){' + nlNb + '}--' + space + reNl +
+              currentIdentity.signature.replace(/[-\[\]{}()*+?.,\\^$|#\s]/g, '\\$&'));
+            if (vm.message.editable.text.search(currentSignature) >= 0) {
+              vm.message.editable.text = vm.message.editable.text.replace(currentSignature, signature);
+              return true;
+            }
           }
-        }
-        return false;
-      });
-
-      if (!previousIdentity && signature.length > 0) {
-        // Must place signature at proper place
-        if (!this.isNew() && this.replyPlacement == 'above' && this.signaturePlacement == 'above') {
-          var quotedMessageIndex = this.message.editable.text.search(new RegExp(reNl + '.+?:( ?' + reNl + '){' + nlNb + '}(> |<blockquote type="cite")'));
-          if (quotedMessageIndex >= 0) {
-            this.message.editable.text =
-              this.message.editable.text.slice(0, quotedMessageIndex) +
-              signature +
-              this.message.editable.text.slice(quotedMessageIndex);
+          return false;
+        });
+        
+        if (!previousIdentity && signature.length > 0) {
+          // Must place signature at proper place
+          if (!this.isNew() && this.replyPlacement == 'above' && this.signaturePlacement == 'above') {
+            var quotedMessageIndex = this.message.editable.text.search(new RegExp(reNl + '.+?:( ?' + reNl + '){' + nlNb + '}(> |<blockquote type="cite")'));
+            if (quotedMessageIndex >= 0) {
+              this.message.editable.text =
+                this.message.editable.text.slice(0, quotedMessageIndex) +
+                signature +
+                this.message.editable.text.slice(quotedMessageIndex);
+            } else {
+              this.message.editable.text = signature + this.message.editable.text;
+            }
           } else {
-            this.message.editable.text = signature + this.message.editable.text;
+            this.message.editable.text += signature;
           }
-        } else {
-          this.message.editable.text += signature;
         }
       }
     };

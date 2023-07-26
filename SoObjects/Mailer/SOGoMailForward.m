@@ -234,6 +234,12 @@
   return [sourceMail contentForEditing];
 }
 
+- (BOOL)isSignatureEnabled {
+  SOGoUserDefaults *ud;
+  ud = [[context activeUser] userDefaults];
+  return [ud mailUseSignatureOnForward];
+}
+
 - (NSString *) signature
 {
   BOOL fromSentMailbox;
@@ -275,7 +281,7 @@
   if (identity)
     {
       signature = [identity objectForKey: @"signature"];
-      if ([signature length])
+      if ([signature length] && [self isSignatureEnabled])
         {
           nl = (htmlComposition ? @"<br />" : @"\n");
           space = (htmlComposition ? @"&nbsp;" : @" ");

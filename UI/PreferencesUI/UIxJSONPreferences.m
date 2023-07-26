@@ -343,8 +343,18 @@ static SoProduct *preferencesProduct = nil;
   if (![[defaults source] objectForKey: @"SOGoMailReplyPlacement"])
     [[defaults source] setObject: [defaults mailReplyPlacement] forKey: @"SOGoMailReplyPlacement"];
 
-  if (![[defaults source] objectForKey: @"SOGoMailSignaturePlacement"])
-    [[defaults source] setObject: [defaults mailSignaturePlacement] forKey: @"SOGoMailSignaturePlacement"];
+  if (![[defaults source] objectForKey: @"SOGoMailUseSignatureOnNew"])
+    [[defaults source] setObject: [NSNumber numberWithBool: [defaults mailUseSignatureOnNew]] forKey: @"SOGoMailUseSignatureOnNew"];
+  
+  if (![[defaults source] objectForKey: @"SOGoMailUseSignatureOnReply"])
+    [[defaults source] setObject: [NSNumber numberWithBool: [defaults mailUseSignatureOnReply]] forKey: @"SOGoMailUseSignatureOnReply"];
+  
+  if (![[defaults source] objectForKey: @"SOGoMailUseSignatureOnForward"])
+    [[defaults source] setObject: [NSNumber numberWithBool: [defaults mailUseSignatureOnForward]] forKey: @"SOGoMailUseSignatureOnForward"];
+  
+  if (![[defaults source] objectForKey: @"SOGoMailAddOutgoingAddresses"])
+    [[defaults source] setObject: [NSNumber numberWithBool: [defaults mailAddOutgoingAddresses]] forKey: @"SOGoMailAddOutgoingAddresses"];
+
 
   if (![[defaults source] objectForKey: @"SOGoMailComposeMessageType"])
     [[defaults source] setObject: [defaults mailComposeMessageType] forKey: @"SOGoMailComposeMessageType"];
