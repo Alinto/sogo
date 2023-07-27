@@ -659,9 +659,19 @@ static const NSString *kJwtKey = @"jwt";
   return [self labelForKey: [self language]];
 }
 
+NSComparisonResult languageSort(id el1, id el2, void *context)
+{
+    NSString *t1, *t2;
+
+    t1 = [context labelForKey: el1];
+    t2 = [context labelForKey: el2];
+
+    return [t1 compare: t2 options: NSCaseInsensitiveSearch];
+}
+
 - (NSArray *) languages
 {
-  return [[SOGoSystemDefaults sharedSystemDefaults] supportedLanguages];
+  return [[[SOGoSystemDefaults sharedSystemDefaults] supportedLanguages] sortedArrayUsingFunction: languageSort context: self];
 }
 
 - (NSString *) languageText
