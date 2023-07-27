@@ -72,6 +72,7 @@ static BOOL hasCheckedTables;
 static BOOL debugRequests;
 static BOOL useRelativeURLs;
 static BOOL trustProxyAuthentication;
+static const NSTimeInterval kMemoryCheckTimerInS = 5.0f;
 
 #ifdef GNUSTEP_BASE_LIBRARY
 static BOOL debugLeaks;
@@ -138,8 +139,9 @@ static BOOL debugLeaks;
 
   /* load products */
   [[SOGoProductLoader productLoader] loadAllProducts: YES];
-  if (vMemSizeLimit > 0)
+  if (vMemSizeLimit > 0) {
     [self logWithFormat: @"All products loaded - current memory usage at %d MB", [[NSProcessInfo processInfo] virtualMemorySize]/1048576];
+  }
 }
 
 - (id) init
@@ -152,6 +154,12 @@ static BOOL debugLeaks;
       rm = [[WEResourceManager alloc] init];
       [self setResourceManager:rm];
       [rm release];
+
+      timerCheckMemoryLimit = [NSTimer scheduledTimerWithTimeInterval: kMemoryCheckTimerInS
+                                     target: self
+                                   selector: @selector(checkIfDaemonHasToBeShutdown)
+                                   userInfo: nil
+                                    repeats:YES];
     }
 
   return self;
@@ -477,14 +485,24 @@ static BOOL debugLeaks;
   if (vMemSizeLimit > 0)
     {
       vmem = [[NSProcessInfo processInfo] virtualMemorySize]/1048576;
-
       if (vmem > vMemSizeLimit)
         {
-          [self logWithFormat:
-                  @"terminating app, vMem size limit (%d MB) has been reached"
-                @" (currently %d MB)",
-                vMemSizeLimit, vmem];
-          [self terminate];
+          if (![self isTerminating]) {
+            if (timerCheckMemoryLimit) {
+              [timerCheckMemoryLimit invalidate];
+            }
+
+            [self logWithFormat:
+                    @"terminating app, vMem size limit (%d MB) has been reached"
+                  @" (currently %d MB)",
+                  vMemSizeLimit, vmem];
+            [self terminate];
+          } else {
+            [self logWithFormat:
+                    @"vMem size limit (%d MB) has been reached"
+                  @" (currently %d MB) but process is already terminating",
+                  vMemSizeLimit, vmem];
+          }
         }
     }
 }
@@ -591,18 +609,6 @@ static BOOL debugLeaks;
             timeDelta];
       [resp setHeader: [NSString stringWithFormat: @"%f", timeDelta]
                forKey: @"SOGo-Request-Duration"];
-    }
-
-  if (![self isTerminating])
-    {
-      if (!runLoopModes)
-        runLoopModes = [[NSArray alloc] initWithObjects: NSDefaultRunLoopMode, nil];
-  
-      // TODO: a bit complicated? (-perform:afterDelay: doesn't work?)
-      [[NSRunLoop currentRunLoop] performSelector:
-                                    @selector (checkIfDaemonHasToBeShutdown)
-                                  target: self argument: nil
-                                  order:1 modes:runLoopModes];
     }
 
   return resp;

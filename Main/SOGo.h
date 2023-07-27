@@ -32,6 +32,7 @@
 @interface SOGo : SoApplication
 {
   SOGoCache *cache;
+  NSTimer *timerCheckMemoryLimit;
 }
 
 - (NSDictionary *) currentLocaleConsideringLanguages:(NSArray *)_langs;
