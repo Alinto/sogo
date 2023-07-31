@@ -411,16 +411,24 @@
           signature = nl.repeat(nlNb) + '--' + space + nl + identity.signature;
         else
           signature = '';
-
+        
         previousIdentity = _.find(this.identities, function (currentIdentity, index) {
 
           if (currentIdentity.signature) {
-            var currentSignature = new RegExp('(' + reNl + '){' + nlNb + '}--' + space + reNl +
-              currentIdentity.signature.replace(/[-\[\]{}()*+?.,\\^$|#\s]/g, '\\$&'));
-            if (vm.message.editable.text.search(currentSignature) >= 0) {
-              vm.message.editable.text = vm.message.editable.text.replace(currentSignature, signature);
+            try {
+              var currentSignature = new RegExp('(' + reNl + '){' + nlNb + '}--' + space + reNl +
+                currentIdentity.signature.replace(/[-\[\]{}()*+?.,\\^$|#\s]/g, '\\$&'));
+              if (vm.message.editable.text.search(currentSignature) >= 0) {
+                vm.message.editable.text = vm.message.editable.text.replace(currentSignature, signature);
+                return true;
+              }
+            } catch (error) {
+              // An error can occur (regex too long) when the signature is too big (using images)
+              // In this case, just add the signature at the end (#5695)
+              vm.message.editable.text += signature;
               return true;
             }
+            
           }
           return false;
         });
