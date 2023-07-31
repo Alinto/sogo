@@ -36,7 +36,7 @@
 - (BOOL)isMacOSXCalendarApp;
 - (BOOL)isIPhoneAddressBookApp;
 - (BOOL) isAndroid;
-- (BOOL)isMacOSXFromVenturaCalendarApp,
+- (BOOL)isMacOSXFromVenturaCalendarApp;
 
 @end
 
