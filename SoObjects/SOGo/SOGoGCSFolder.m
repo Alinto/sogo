@@ -150,7 +150,7 @@ static NSArray *childRecordFields = nil;
   if ([pathElements count] > 1)
     ocsName = [pathElements objectAtIndex: 1];
   else
-    ocsName = [[context request] isMacOSXVenturaCalendarApp] ? @"Personal" : @"personal";
+    ocsName = [[context request] isMacOSXFromVenturaCalendarApp] ? @"Personal" : @"personal";
 
   path = [NSString stringWithFormat: @"/Users/%@/%@/%@",
 		   login, [pathElements objectAtIndex: 0], ocsName];
@@ -404,7 +404,7 @@ static NSArray *childRecordFields = nil;
   // FIXME: Improve MacOSX Ventura support 
   // Check if the problem will be fixed by Apple or if this fix should be kept in the future
   // Ticket #5639
-  if ([[context request] isMacOSXVenturaCalendarApp]) {
+  if ([[context request] isMacOSXFromVenturaCalendarApp]) {
     _path = [_path stringByReplacingOccurrencesOfString:@"/PERSONAL" withString:@"/personal"];
   }
   
@@ -441,7 +441,7 @@ static NSArray *childRecordFields = nil;
   // FIXME: Improve MacOSX Ventura support 
   // Check if the problem will be fixed by Apple or if this fix should be kept in the future
   // Ticket #5639
-  if ([[context request] isMacOSXVenturaCalendarApp]) {
+  if ([[context request] isMacOSXFromVenturaCalendarApp]) {
     _path = [_path stringByReplacingOccurrencesOfString:@"PERSONAL" withString:@"personal"];
   }
 
@@ -474,7 +474,7 @@ static NSArray *childRecordFields = nil;
   // FIXME: Improve MacOSX Ventura support 
   // Check if the problem will be fixed by Apple or if this fix should be kept in the future
   // Ticket #5639
-  if ([[context request] isMacOSXVenturaCalendarApp]) {
+  if ([[context request] isMacOSXFromVenturaCalendarApp]) {
     realNameInContainer = [realNameInContainer stringByReplacingOccurrencesOfString:@"PERSONAL" withString:@"personal"];
   }
 

@@ -144,7 +144,7 @@ static SoSecurityManager *sm = nil;
 
 - (NSString *) defaultFolderName
 {
-  return [[context request] isMacOSXVenturaCalendarApp] ? @"PERSONAL" : @"Personal";
+  return [[context request] isMacOSXFromVenturaCalendarApp] ? @"PERSONAL" : @"Personal";
 }
 
 - (NSString *) collectedFolderName
@@ -173,7 +173,7 @@ static SoSecurityManager *sm = nil;
   {
     if (folderType == SOGoPersonalFolder)
     {
-      folderName = [[context request] isMacOSXVenturaCalendarApp] ? @"PERSONAL" : @"personal";
+      folderName = [[context request] isMacOSXFromVenturaCalendarApp] ? @"PERSONAL" : @"personal";
       folder = [subFolderClass objectWithName: folderName inContainer: self];
       [folder setDisplayName: [self defaultFolderName]];
       [folder setOCSPath: [NSString stringWithFormat: @"%@/%@", OCSPath, folderName]];
@@ -224,7 +224,7 @@ static SoSecurityManager *sm = nil;
       // FIXME: Improve MacOSX Ventura support 
       // Check if the problem will be fixed by Apple or if this fix should be kept in the future
       // Ticket #5639
-      if ([[context request] isMacOSXVenturaCalendarApp]) {
+      if ([[context request] isMacOSXFromVenturaCalendarApp]) {
         if ([key isEqualToString:@"personal"]) {
           key = @"PERSONAL";
         }
