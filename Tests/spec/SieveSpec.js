@@ -9,6 +9,7 @@ let prefs, webdav, utility, manageSieve, user
 describe('Sieve', function() {
 
   async function _getSogoSieveScript() {
+    await manageSieve.authenticate(true)
     const scripts = await manageSieve.listScripts()
 
     expect(Object.keys(scripts))
@@ -59,7 +60,6 @@ describe('Sieve', function() {
 
   beforeEach(async function() {
     await _killFilters()
-    await manageSieve.authenticate(true)
   })
 
   afterAll(async function() {

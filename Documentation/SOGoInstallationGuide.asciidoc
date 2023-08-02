@@ -164,7 +164,7 @@ The following operating systems are currently supported by SOGo:
 
 * Red Hat Enterprise Linux (RHEL) Server 7, 8 and 9
 * Community ENTerprise Operating System (CentOS) 7, 8 and 9
-* Debian GNU/Linux 7.0 (Wheezy), 8.0 (Jessie), 9.0 (Stretch) and 10.0 (Buster)
+* Debian GNU/Linux 7.0 (Wheezy), 8.0 (Jessie), 9.0 (Stretch), 10 (Buster), 11 (Bullseye) and 12 (Bookworm)
 * Ubuntu 14.04 (Trusty), 16.04 (Xenial), 18.04 (Bionic), 20.04 (Focal) and 22.04 (Jammy)
 
 Make sure the required components are started automatically at boot time

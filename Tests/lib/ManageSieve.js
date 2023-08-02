@@ -45,6 +45,7 @@ class ManageSieve {
     base64 = buff.toString('base64')
     response = await this.connection.send(`AUTHENTICATE "PLAIN" {${base64.length}+}\r\n${base64}`, { waitfor: /\b(OK|NO)/ })
     // console.debug(`ManageSieve.authenticate => ${response}`)
+    // console.log(`AUTHENTICATE "PLAIN" {${base64.length}+}\r\n${base64}`)
     parsedResponse = this.parseResponse(response)
     if (!Object.keys(parsedResponse).includes('OK')) {
       throw new Error(`Authentication failed: ${parsedResponse['NO']}`)
