@@ -1129,12 +1129,13 @@ static NSArray *reminderValues = nil;
            userCanChangePassword];
 }
 
+
 //
 // Used by wox template
 //
 - (NSArray *) languages
 {
-  return [[SOGoSystemDefaults sharedSystemDefaults] supportedLanguages];
+  return [[[SOGoSystemDefaults sharedSystemDefaults] supportedLanguages] sortedArrayUsingFunction: languageSort context: self];
 }
 
 //

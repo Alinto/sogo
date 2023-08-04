@@ -78,6 +78,8 @@ static const NSString *kDisableSharingCalendar = @"Calendar";
 - (NSString *) pageTitle;
 - (NSString *) helpURL;
 
+NSComparisonResult languageSort(id el1, id el2, void *context);
+
 - (NSArray *) supportedLanguages;
 - (NSString *) loginSuffix;
 

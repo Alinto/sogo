@@ -467,6 +467,16 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return [self stringForKey: @"SOGoHelpURL"];
 }
 
+NSComparisonResult languageSort(id el1, id el2, void *context)
+{
+    NSString *t1, *t2;
+
+    t1 = [context labelForKey: el1];
+    t2 = [context labelForKey: el2];
+
+    return [t1 compare: t2 options: NSCaseInsensitiveSearch];
+}
+
 - (NSArray *) supportedLanguages
 {
   static NSArray *supportedLanguages = nil;
