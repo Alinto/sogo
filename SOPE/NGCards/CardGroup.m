@@ -159,28 +159,28 @@ static NGCardsSaxHandler *sax = nil;
   CardElement *newChild;
 
   if (aChild)
-    {
-      childTag = [aChild tag];
-      newChild = nil;
-      mappedClass = [self classForTag: [childTag uppercaseString]];
-      if (mappedClass)
-	{
-	  if (![aChild isKindOfClass: mappedClass])
+  {
+    childTag = [aChild tag];
+    newChild = nil;
+    mappedClass = [self classForTag: [childTag uppercaseString]];
+    if (mappedClass)
+	  {
+	    if (![aChild isKindOfClass: mappedClass])
 	    {
 	      //NSLog (@"warning: new child to entity '%@': '%@' converted to '%@'",
 	      //	     tag, childTag, NSStringFromClass(mappedClass));
 	      newChild = [aChild elementWithClass: mappedClass];
 	    }
-	}
+	  }
       //   else
       //     NSLog (@"warning: no mapped class for tag '%@'",
       //            childTag);
 
-      if (!newChild)
-	newChild = aChild;
-      [children addObject: newChild];
-      [newChild setParent: self];
-    }
+    if (!newChild)
+	    newChild = aChild;
+    [children addObject: newChild];
+    [newChild setParent: self];
+  }
 }
 
 - (CardElement *) uniqueChildWithTag: (NSString *) aTag

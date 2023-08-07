@@ -408,24 +408,23 @@
 
   doesOccur = [self isRecurrent];
   if (doesOccur)
-    {
-      // Retrieve the range of the first event
-      firstRange = [self firstOccurenceRange]; // returns GMT dates
+  {
+    // Retrieve the range of the first event
+    firstRange = [self firstOccurenceRange]; // returns GMT dates
 
-      // Set the range to check with respect to the event timezone (extracted from the start date)
-      firstStartDate = (iCalDateTime *)[self uniqueChildWithTag: @"dtstart"];
-      timeZone = [(iCalDateTime *)firstStartDate timeZone];
-      if (timeZone)
-          startDate = [(iCalTimeZone *)timeZone computedDateForDate: theOccurenceDate];
-      else
-	  startDate = theOccurenceDate;
-      endDate = [startDate addTimeInterval: [self occurenceInterval]];
-      checkRange = [NGCalendarDateRange calendarDateRangeWithStartDate: startDate
+    // Set the range to check with respect to the event timezone (extracted from the start date)
+    firstStartDate = (iCalDateTime *)[self uniqueChildWithTag: @"dtstart"];
+    timeZone = [(iCalDateTime *)firstStartDate timeZone];
+    if (timeZone)
+      startDate = [(iCalTimeZone *)timeZone computedDateForDate: theOccurenceDate];
+    else
+	    startDate = theOccurenceDate;
+    endDate = [startDate addTimeInterval: [self occurenceInterval]];
+    checkRange = [NGCalendarDateRange calendarDateRangeWithStartDate: startDate
 							       endDate: endDate];
 
-      // Calculate the occurrences for the given date
-      ranges =
-        [NSMutableArray arrayWithArray:
+    // Calculate the occurrences for the given date
+    ranges = [NSMutableArray arrayWithArray:
                           [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: checkRange
                                                              firstInstanceCalendarDateRange: firstRange
                                                                             recurrenceRules: [self recurrenceRulesWithTimeZone: timeZone]
@@ -433,18 +432,17 @@
                                                                             recurrenceDates: [self recurrenceDatesWithTimeZone: timeZone]
                                                                              exceptionDates: [self exceptionDatesWithTimeZone: timeZone]]];
 
-      // Add the master occurrence when dealing with RDATES.
-      // However, the master event must not be flagged with X-MOZ-FAKED-MASTER.
-      if ([self hasRecurrenceDates] &&
-          ![[[self uniqueChildWithTag: @"x-moz-faked-master"]
-                  flattenedValuesForKey: @""] isEqualToString: @"1"] &&
-          [checkRange doesIntersectWithDateRange: firstRange])
-        {
-          [ranges insertObject: firstRange atIndex: 0];
-        }
-
-      doesOccur = [ranges dateRangeArrayContainsDate: startDate];
+    // Add the master occurrence when dealing with RDATES.
+    // However, the master event must not be flagged with X-MOZ-FAKED-MASTER.
+    if ([self hasRecurrenceDates] &&
+          ![[[self uniqueChildWithTag: @"x-moz-faked-master"] flattenedValuesForKey: @""] isEqualToString: @"1"] &&
+            [checkRange doesIntersectWithDateRange: firstRange])
+    {
+      [ranges insertObject: firstRange atIndex: 0];
     }
+
+    doesOccur = [ranges dateRangeArrayContainsDate: startDate];
+  }
 
   return doesOccur;
 }

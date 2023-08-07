@@ -391,28 +391,28 @@
 	       inContext: localContext
 	       acquire: acquire];
   if (!obj)
-    {
-      if ([lookupName isEqualToString: @"master"])
-	obj = [self occurence: [self component: NO secure: NO]];
-      else if ([lookupName hasPrefix: @"occurence"])
-	{
-	  recID = [lookupName substringFromIndex: 9];
-	  occurence = [self lookupOccurrence: recID];
-	  if (occurence)
-            isNewOccurence = NO;
-          else
+  {
+    if ([lookupName isEqualToString: @"master"])
+	    obj = [self occurence: [self component: NO secure: NO]];
+    else if ([lookupName hasPrefix: @"occurence"])
+	  {
+	    recID = [lookupName substringFromIndex: 9];
+	    occurence = [self lookupOccurrence: recID];
+	    if (occurence)
+        isNewOccurence = NO;
+      else
 	    {
 	      occurence = [self newOccurenceWithID: recID];
 	      isNewOccurence = YES;
 	    }
-	  if (occurence)
+	    if (occurence)
 	    {
 	      obj = [self occurence: occurence];
 	      if (isNewOccurence)
-		[obj setIsNew: isNewOccurence];
+		      [obj setIsNew: isNewOccurence];
 	    }
-	}
-    }
+	  }
+  }
 
   return obj;
 }
@@ -470,36 +470,33 @@
     calendar = &fullCalendar;
 
   if (!*calendar)
-    {
-      if (secure)
-	iCalString = [self secureContentAsString];
-      else
-	iCalString = content;
+  {
+    if (secure)
+	    iCalString = [self secureContentAsString];
+    else
+	    iCalString = content;
 
-      if ([iCalString length] > 0)
-	{
-	  ASSIGN (*calendar, [iCalCalendar parseSingleFromSource: iCalString]);
-	  if (!secure)
-	    originalCalendar = [*calendar copy];
-	}
-      else
-	{
-	  if (create)
-	    {
-	      ASSIGN (*calendar, [iCalCalendar groupWithTag: @"vcalendar"]);
-	      [*calendar setVersion: @"2.0"];
-              prodID = [NSString stringWithFormat:
-                                   @"-//Inverse inc./SOGo %@//EN",
-                                 SOGoVersion];
-              [*calendar setProdID: prodID];
-	      tag = [[self componentTag] uppercaseString];
-	      newComponent = [[*calendar classForTag: tag]
-			       groupWithTag: tag];
-	      [newComponent setUid: [self globallyUniqueObjectId]];
-	      [*calendar addChild: newComponent];
-	    }
-	}
+    if ([iCalString length] > 0)
+    {
+      ASSIGN (*calendar, [iCalCalendar parseSingleFromSource: iCalString]);
+      if (!secure)
+        originalCalendar = [*calendar copy];
     }
+    else
+    {
+      if (create)
+      {
+        ASSIGN (*calendar, [iCalCalendar groupWithTag: @"vcalendar"]);
+        [*calendar setVersion: @"2.0"];
+        prodID = [NSString stringWithFormat:@"-//Inverse inc./SOGo %@//EN", SOGoVersion];
+        [*calendar setProdID: prodID];
+        tag = [[self componentTag] uppercaseString];
+        newComponent = [[*calendar classForTag: tag] groupWithTag: tag];
+        [newComponent setUid: [self globallyUniqueObjectId]];
+        [*calendar addChild: newComponent];
+      }
+    }
+  }
 
   returnedCopy = [*calendar mutableCopy];
   [returnedCopy autorelease];

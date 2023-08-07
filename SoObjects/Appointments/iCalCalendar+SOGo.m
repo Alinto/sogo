@@ -39,6 +39,7 @@
   id occurrence;
   iCalRepeatableEntityObject *component;
   NSUInteger count, max, seconds, recSeconds;
+  NSCalendarDate* recId;
 
   occurrence = nil;
 
@@ -50,26 +51,27 @@
   component = [components objectAtIndex: 0];
 
   if ([component isRecurrent] || [component recurrenceId])
-    {
-      // Skip the master event if required
-      count = ([component recurrenceId] ? 0 : 1);
-      while (!occurrence && count < max)
-	{
-	  component = [components objectAtIndex: count];
-          recSeconds = [[component recurrenceId] timeIntervalSince1970];
-	  if (recSeconds == seconds)
-	    occurrence = component;
-	  else
-	    count++;
-	}
-    }
+  {
+    // Skip the master event if required
+    recId = [component recurrenceId];
+    count = (recID ? 0 : 1);
+    while (!occurrence && count < max)
+	  {
+	    component = [components objectAtIndex: count];
+      recSeconds = [recId timeIntervalSince1970];
+	    if (recSeconds == seconds)
+	      occurrence = component;
+	    else
+	      count++;
+	  }
+  }
   else
-    {
-      /* The "master" event could be that occurrence. */
-      recSeconds = [[component recurrenceId] timeIntervalSince1970];
-      if (recSeconds == seconds)
-        occurrence = component;
-    }
+  {
+    /* The "master" event could be that occurrence. */
+    recSeconds = [[component recurrenceId] timeIntervalSince1970];
+    if (recSeconds == seconds)
+      occurrence = component;
+  }
 
   return occurrence;
 }

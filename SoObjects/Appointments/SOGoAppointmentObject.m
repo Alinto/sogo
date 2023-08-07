@@ -105,21 +105,21 @@
   interval = [[master endDate]
                timeIntervalSinceDate: firstDate];
   if ([newOccurence isAllDay])
-    {
-      nbrDays = ((float) abs (interval) / 86400);
-      [newOccurence setAllDayWithStartDate: date
+  {
+    nbrDays = ((float) abs (interval) / 86400);
+    [newOccurence setAllDayWithStartDate: date
                                   duration: nbrDays];
-    }
+  }
   else
-    {
-      [newOccurence setStartDate: date];
-      [newOccurence setEndDate: [date addYear: 0
-                                        month: 0
-                                          day: 0
-                                         hour: 0
-                                       minute: 0
-                                       second: interval]];
-    }
+  {
+    [newOccurence setStartDate: date];
+    [newOccurence setEndDate: [date addYear: 0
+                                      month: 0
+                                        day: 0
+                                       hour: 0
+                                     minute: 0
+                                     second: interval]];
+  }
   
   return newOccurence;
 }
