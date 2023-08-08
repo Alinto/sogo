@@ -2216,8 +2216,10 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       // we receive an external invitation (IMIP/ITIP) and we accept it
       // from a CUA - it gets added to a specific CalDAV calendar using a PUT
       //
-      else if ([event userIsAttendee: ownerUser] && [self _shouldScheduleEvent: [event userAsAttendee: ownerUser]])
-        {
+      else if ([event userIsAttendee: ownerUser] 
+                && [self _shouldScheduleEvent: [event userAsAttendee: ownerUser]]
+                && iCalPersonPartStatNeedsAction != [[event userAsAttendee: ownerUser] participationStatus])
+        { 
           [self sendResponseToOrganizer: event
                                    from: ownerUser];
         }
