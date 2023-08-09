@@ -3847,4 +3847,82 @@ static NSComparisonResult _comparePermissions (id perm1, id perm2, void *context
     } // if ([event hasRecurrenceRules]) ...
 }
 
+- (NSArray *) _calendarProxiedUsersWithWriteAccess: (BOOL) write
+{
+  NSMutableDictionary *proxiedUsers;
+  NSArray *references, *elements;
+  NSString *currentLogin;
+  NSNumber *yesNumber;
+  SOGoAppointmentFolders *parentFolder;
+  SOGoUserSettings *us;
+  int count, max;
+
+  yesNumber = [NSNumber numberWithBool: YES];
+
+  us = [[SOGoUser userWithLogin: owner] userSettings];
+  references = [us subscribedCalendars];
+  max = [references count];
+  proxiedUsers = [NSMutableDictionary dictionaryWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      elements = [[references objectAtIndex: count]
+                    componentsSeparatedByString: @":"];
+      if ([elements count])
+        {
+          currentLogin = [elements objectAtIndex: 0];
+          if (![proxiedUsers objectForKey: currentLogin])
+            {
+              parentFolder = [[container lookupName: currentLogin
+                                          inContext: context
+                                            acquire: NO]
+                               lookupName: @"Calendar"
+                                inContext: context acquire: NO];
+              if ([parentFolder hasProxyCalendarsWithWriteAccess: write
+                                                forUserWithLogin: owner])
+                [proxiedUsers setObject: yesNumber forKey: currentLogin];
+            }
+        }
+    }
+
+  return [proxiedUsers allKeys];
+}
+
+- (NSMutableArray *) _davCalendarProxyForWrite: (BOOL) write
+{
+  NSMutableArray *proxyFor;
+  NSArray *proxiedUsers, *tag;
+  NSString *appName, *proxiedUser;
+  int count, max;
+
+  appName = [[context request] applicationName];
+
+  proxiedUsers = [self _calendarProxiedUsersWithWriteAccess: write];
+  max = [proxiedUsers count];
+  proxyFor = [NSMutableArray arrayWithCapacity: max];
+  if (max)
+    {
+      for (count = 0; count < max; count++)
+        {
+          proxiedUser = [proxiedUsers objectAtIndex: count];
+          tag = [NSArray arrayWithObjects: @"href", XMLNS_WEBDAV, @"D",
+                         [NSString stringWithFormat: @"/%@/dav/%@/",
+                                   appName, proxiedUser],
+                     nil];
+          [proxyFor addObject: tag];
+        }
+    }
+
+  return proxyFor;
+}
+
+- (NSArray *) davCalendarProxyWriteFor
+{
+  return [self _davCalendarProxyForWrite: YES];
+}
+
+- (NSArray *) davCalendarProxyReadFor
+{
+  return [self _davCalendarProxyForWrite: NO];
+}
+
 @end /* SOGoAppointmentFolder */
