@@ -40,18 +40,16 @@
       folderName = [[_key substringFromIndex: 6] fromCSSIdentifier];
       fullFolderName = [NSString stringWithFormat: @"%@/%@",
                                  [self traversalFromMailAccount], folderName];
-      if ([fullFolderName
-                    isEqualToString: [mailAccount sentFolderNameInContext: _ctx]])
+      if ([fullFolderName isEqualToString: [mailAccount sentFolderNameInContext: _ctx]])
         className = @"SOGoSentFolder";
-      else if ([fullFolderName isEqualToString:
-                                 [mailAccount draftsFolderNameInContext: _ctx]])
+      else if ([fullFolderName isEqualToString: [mailAccount draftsFolderNameInContext: _ctx]])
         className = @"SOGoDraftsFolder";
-      else if ([fullFolderName isEqualToString:
-                                 [mailAccount trashFolderNameInContext: _ctx]])
+      else if ([fullFolderName isEqualToString: [mailAccount trashFolderNameInContext: _ctx]])
         className = @"SOGoTrashFolder";
-      else if ([fullFolderName isEqualToString:
-                                 [mailAccount junkFolderNameInContext: _ctx]])
+      else if ([fullFolderName isEqualToString: [mailAccount junkFolderNameInContext: _ctx]])
         className = @"SOGoJunkFolder";
+      else if ([fullFolderName isEqualToString: [mailAccount templatesFolderNameInContext: _ctx]])
+        className = @"SOGoTemplatesFolder";
       /*       else if ([folderName isEqualToString:
                [mailAccount sieveFolderNameInContext: _ctx]])
                obj = [self lookupFiltersFolder: _key inContext: _ctx]; */

@@ -1011,33 +1011,27 @@ static NSString *inboxFolderName = @"INBOX";
   [[[self imap4Connection] client] namespace];
 
   if ([_key hasPrefix: @"folder"])
-    {
-      folderName = [[_key substringFromIndex: 6] fromCSSIdentifier];
+  {
+    folderName = [[_key substringFromIndex: 6] fromCSSIdentifier];
 
-      namespaces = [NSMutableArray array];
-      [self _appendNamespaces: namespaces];
-      if ([namespaces containsObject: folderName])
-        klazz = [SOGoMailNamespace class];
-      else if ([folderName
-		 isEqualToString: [self draftsFolderNameInContext: _ctx]])
-	klazz = [SOGoDraftsFolder class];
-      else if ([folderName
-                 isEqualToString: [self sentFolderNameInContext: _ctx]])
-	klazz = [SOGoSentFolder class];
-      else if ([folderName
-		 isEqualToString: [self trashFolderNameInContext: _ctx]])
-	klazz = [SOGoTrashFolder class];
-      else if ([folderName
-		 isEqualToString: [self junkFolderNameInContext: _ctx]])
-	klazz = [SOGoJunkFolder class];
-      else if ([folderName
-		 isEqualToString: [self templatesFolderNameInContext: _ctx]])
-	klazz = [SOGoTemplatesFolder class];
-      else
-	klazz = [SOGoMailFolder class];
-
-      obj = [klazz objectWithName: _key inContainer: self];
-    }
+    namespaces = [NSMutableArray array];
+    [self _appendNamespaces: namespaces];
+    if ([namespaces containsObject: folderName])
+      klazz = [SOGoMailNamespace class];
+    else if ([folderName isEqualToString: [self draftsFolderNameInContext: _ctx]])
+	    klazz = [SOGoDraftsFolder class];
+    else if ([folderName isEqualToString: [self sentFolderNameInContext: _ctx]])
+	    klazz = [SOGoSentFolder class];
+    else if ([folderName isEqualToString: [self trashFolderNameInContext: _ctx]])
+	    klazz = [SOGoTrashFolder class];
+    else if ([folderName isEqualToString: [self junkFolderNameInContext: _ctx]])
+	    klazz = [SOGoJunkFolder class];
+    else if ([folderName isEqualToString: [self templatesFolderNameInContext: _ctx]])
+	    klazz = [SOGoTemplatesFolder class];
+    else
+	    klazz = [SOGoMailFolder class];
+    obj = [klazz objectWithName: _key inContainer: self];
+  }
   else
     obj = [super lookupName: _key inContext: _ctx acquire: NO];
 
@@ -1222,9 +1216,8 @@ static NSString *inboxFolderName = @"INBOX";
 {
   if (!templatesFolder)
     {
-      templatesFolder
-	= [self folderWithTraversal: [self templatesFolderNameInContext: _ctx]
-                       andClassName: @"SOGoTemplatesFolder"];
+      templatesFolder = [self folderWithTraversal: [self templatesFolderNameInContext: _ctx]
+                                    andClassName: @"SOGoTemplatesFolder"];
       [templatesFolder retain];
     }
 
