@@ -1149,51 +1149,40 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSDictionary *
 
   obj = [super lookupName: _key inContext: _ctx acquire: NO];
   if (!obj)
+  {
+    if ([_key hasPrefix: @"folder"])
     {
-      if ([_key hasPrefix: @"folder"])
-        {
-          mailAccount = [self mailAccountFolder];
-          folderName = [[_key substringFromIndex: 6] fromCSSIdentifier];
-          fullFolderName = [NSString stringWithFormat: @"%@/%@",
-                                     [self traversalFromMailAccount], folderName];
-          if ([fullFolderName
-                     isEqualToString:
-                       [mailAccount draftsFolderNameInContext: _ctx]])
-            className = @"SOGoDraftsFolder";
-          else if ([fullFolderName
-                    isEqualToString:
-                  [mailAccount sentFolderNameInContext: _ctx]])
-            className = @"SOGoSentFolder";
-          else if ([fullFolderName
-                     isEqualToString:
-                       [mailAccount trashFolderNameInContext: _ctx]])
-            className = @"SOGoTrashFolder";
-          else if ([fullFolderName
-                     isEqualToString:
-                       [mailAccount junkFolderNameInContext: _ctx]])
-            className = @"SOGoJunkFolder";
-          else if ([fullFolderName
-                     isEqualToString:
-                       [mailAccount templatesFolderNameInContext: _ctx]])
-            className = @"SOGoTemplatesFolder";
-          /*       else if ([folderName isEqualToString:
-                   [mailAccount sieveFolderNameInContext: _ctx]])
-                   obj = [self lookupFiltersFolder: _key inContext: _ctx]; */
-          else
-            className = @"SOGoMailFolder";
+      mailAccount = [self mailAccountFolder];
+      folderName = [[_key substringFromIndex: 6] fromCSSIdentifier];
+      fullFolderName = [NSString stringWithFormat: @"%@/%@",
+                                  [self traversalFromMailAccount], folderName];
+      if ([fullFolderName isEqualToString: [mailAccount draftsFolderNameInContext: _ctx]])
+        className = @"SOGoDraftsFolder";
+      else if ([fullFolderName isEqualToString: [mailAccount sentFolderNameInContext: _ctx]])
+        className = @"SOGoSentFolder";
+      else if ([fullFolderName isEqualToString: [mailAccount trashFolderNameInContext: _ctx]])
+        className = @"SOGoTrashFolder";
+      else if ([fullFolderName isEqualToString: [mailAccount junkFolderNameInContext: _ctx]])
+        className = @"SOGoJunkFolder";
+      else if ([fullFolderName isEqualToString: [mailAccount templatesFolderNameInContext: _ctx]])
+        className = @"SOGoTemplatesFolder";
+      /*       else if ([folderName isEqualToString:
+                [mailAccount sieveFolderNameInContext: _ctx]])
+                obj = [self lookupFiltersFolder: _key inContext: _ctx]; */
+      else
+        className = @"SOGoMailFolder";
 
-          obj = [NSClassFromString (className) objectWithName: _key
-                                                  inContainer: self];
-        }
-      else if (isdigit ([_key characterAtIndex: 0])
-               && [self exists])
-        {
-          obj = [SOGoMailObject objectWithName: _key inContainer: self];
-          if ([_key hasSuffix: @".eml"])
-            _key = [_key substringToIndex: [_key length] - 4];
-          [obj setCoreInfos: [prefetchedInfos objectForKey: _key]];
-        }
+      obj = [NSClassFromString (className) objectWithName: _key
+                                              inContainer: self];
     }
+    else if (isdigit ([_key characterAtIndex: 0]) && [self exists])
+    {
+      obj = [SOGoMailObject objectWithName: _key inContainer: self];
+      if ([_key hasSuffix: @".eml"])
+        _key = [_key substringToIndex: [_key length] - 4];
+      [obj setCoreInfos: [prefetchedInfos objectForKey: _key]];
+    }
+  }
 
   if (!obj && _acquire)
     obj = [NSException exceptionWithHTTPStatus: 404 /* Not Found */];
