@@ -850,7 +850,7 @@
   attachUrls = [self attachUrls];
   if ([attachUrls count]) [data setObject: attachUrls forKey: @"attachUrls"];
 
-  if (!isAllDay)
+  if (!isAllDay && eventStartDate && eventStartDate)
     {
       [data setObject: [dateFormatter formattedTime: eventStartDate] forKey: @"localizedStartTime"];
       [data setObject: [dateFormatter formattedTime: eventEndDate] forKey: @"localizedEndTime"];
