@@ -2311,201 +2311,208 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
               recurrenceId = [oldEvent recurrenceId];
             }
         }
-      
-      // We check if the PUT call is actually an PART-STATE change
-      // from one of the attendees - here's the logic :
-      //
-      // if owner == organizer
-      //
-      //    if [context activeUser] == organizer
-      //      [send the invitation update]
-      //    else
-      //      [react on SENT-BY as someone else is acting for the organizer]
-      //
-      //
-      int newCount = [[newEvent attendees] count], oldCount = [[oldEvent attendees] count];
-      if (newCount > 0 || oldCount > 0)
+
+      // We check of the sequences are alright. We don't accept attendees
+      // This can happen when a user add on old ics after accepting a most recent one
+      if ([[newEvent sequence] intValue] >= [[oldEvent sequence] intValue]) {
+        // We check if the PUT call is actually an PART-STATE change
+        // from one of the attendees - here's the logic :
+        //
+        // if owner == organizer
+        //
+        //    if [context activeUser] == organizer
+        //      [send the invitation update]
+        //    else
+        //      [react on SENT-BY as someone else is acting for the organizer]
+        //
+        //
+        int newCount = [[newEvent attendees] count], oldCount = [[oldEvent attendees] count];
+        if (newCount > 0 || oldCount > 0)
+          {
+            BOOL userIsOrganizer;
+
+            // newEvent might be nil here, if we're deleting a RECURRENCE-ID with attendees
+            // If that's the case, we use the oldEvent to obtain the organizer
+            if (newEvent)
+              {
+                ownerIsOrganizer = [newEvent userIsOrganizer: ownerUser];
+                userIsOrganizer = [newEvent userIsOrganizer: [context activeUser]];
+              }
+            else
+              {
+                ownerIsOrganizer = [oldEvent userIsOrganizer: ownerUser];
+                userIsOrganizer = [oldEvent userIsOrganizer: [context activeUser]];
+              }
+
+      // We handle the situation where the SOGo Integrator extension isn't installed or
+      // if the SENT-BY isn't set. That can happen if Bob invites Alice by creating the event
+      // in Annie's calendar. Annie should be the organizer, and Bob the SENT-BY. But most
+      // broken CalDAV client that aren't identity-aware will create the event in Annie's calendar
+      // and set Bob as the organizer. We fix this for them.  See #3368 for details.
+            //
+            // We also handle the case where Bob invites Alice and Bob has full access to Alice's calendar
+            // After inviting ALice, Bob opens the event in Alice's calendar and accept/declines the event.
+            //
+      if (!userIsOrganizer &&
+                !ownerIsOrganizer &&
+          [[context activeUser] hasEmail: [[newEvent organizer] rfc822Email]])
         {
-          BOOL userIsOrganizer;
-
-          // newEvent might be nil here, if we're deleting a RECURRENCE-ID with attendees
-          // If that's the case, we use the oldEvent to obtain the organizer
-          if (newEvent)
-            {
-              ownerIsOrganizer = [newEvent userIsOrganizer: ownerUser];
-              userIsOrganizer = [newEvent userIsOrganizer: [context activeUser]];
-            }
-          else
-            {
-              ownerIsOrganizer = [oldEvent userIsOrganizer: ownerUser];
-              userIsOrganizer = [oldEvent userIsOrganizer: [context activeUser]];
-            }
-
-	  // We handle the situation where the SOGo Integrator extension isn't installed or
-	  // if the SENT-BY isn't set. That can happen if Bob invites Alice by creating the event
-	  // in Annie's calendar. Annie should be the organizer, and Bob the SENT-BY. But most
-	  // broken CalDAV client that aren't identity-aware will create the event in Annie's calendar
-	  // and set Bob as the organizer. We fix this for them.  See #3368 for details.
-          //
-          // We also handle the case where Bob invites Alice and Bob has full access to Alice's calendar
-          // After inviting ALice, Bob opens the event in Alice's calendar and accept/declines the event.
-          //
-	  if (!userIsOrganizer &&
-              !ownerIsOrganizer &&
-	      [[context activeUser] hasEmail: [[newEvent organizer] rfc822Email]])
-	    {
-	      [[newEvent organizer] setCn: [ownerUser cn]];
-	      [[newEvent organizer] setEmail: [[ownerUser allEmails] objectAtIndex: 0]];
-	      [[newEvent organizer] setSentBy: [NSString stringWithFormat: @"\"MAILTO:%@\"", [[[context activeUser] allEmails] objectAtIndex: 0]]];
-	      ownerIsOrganizer = YES;
-	    }
-
-          // With Thunderbird 10, if you create a recurring event with an exception
-          // occurence, and invite someone, the PUT will have the organizer in the
-          // recurrence-id and not in the master event. We must fix this, otherwise
-          // SOGo will break.
-          if (!recurrenceId && ![[[[[newEvent parent] events] objectAtIndex: 0] organizer] uidInContext: context])
-            [[[[newEvent parent] events] objectAtIndex: 0] setOrganizer: [newEvent organizer]];
-
-          if (ownerIsOrganizer)
-            {
-	      // We check ACLs of the 'organizer' - in case someone forges the SENT-BY
-	      NSString *uid;
-
-	      uid = [[oldEvent organizer] uidInContext: context];
-
-	      if (uid && [[[context activeUser] login] caseInsensitiveCompare: uid] != NSOrderedSame)
-		{
-		  SOGoAppointmentObject *organizerObject;
-
-		  organizerObject = [self _lookupEvent: [oldEvent uid] forUID: uid];
-		  roles = [[context activeUser] rolesForObject: organizerObject
-						     inContext: context];
-
-		  if (![roles containsObject: @"ComponentModifier"] && ![[context activeUser] isSuperUser])
-		    {
-		      return [self exceptionWithHTTPStatus: 409
-                                                    reason: @"Not allowed to perform this action. Wrong SENT-BY being used regarding access rights on organizer's calendar."];
-		    }
-		}
-
-              // A RECCURENCE-ID was removed
-              if (!newEvent && oldEvent)
-                [self prepareDeleteOccurence: oldEvent];
-              // The master event was changed, A RECCURENCE-ID was added or modified
-              else if ((ex = [self _handleUpdatedEvent: newEvent  fromOldEvent: oldEvent  force: YES]))
-                return ex;
-            } // if (ownerIsOrganizer) ..
-          //
-          // else => attendee is responding
-          //
-          //   if [context activeUser] == attendee
-          //       [we change the PART-STATE]
-          //   else
-          //      [react on SENT-BY as someone else is acting for the attendee]
-          else
-            {
-              iCalPerson *attendee, *delegate;
-              NSString *delegateEmail;
-
-              attendee = [oldEvent userAsAttendee: [SOGoUser userWithLogin: owner]];
-
-              if (!attendee)
-                attendee = [newEvent userAsAttendee: [SOGoUser userWithLogin: owner]];
-              else
-                {
-                  // We must do an extra check here since Bob could have invited Alice
-                  // using alice@example.com but she would have accepted with ATTENDEE set
-                  // to sexy@example.com. That would duplicate the ATTENDEE and set the
-                  // participation status to ACCEPTED for sexy@example.com but leave it
-                  // to NEEDS-ACTION to alice@example. This can happen in Mozilla Thunderbird/Lightning
-                  // when a user with multiple identities accepts an event invitation to one
-                  // of its identity (which is different than the email address associated with
-                  // the mail account) prior doing a calendar refresh.
-                  NSMutableArray *attendees;
-                  iCalPerson *participant;
-
-                  attendees = [NSMutableArray arrayWithArray: [newEvent attendeesWithoutUser: [SOGoUser userWithLogin: owner]]];
-
-                  participant = [newEvent participantForUser: [SOGoUser userWithLogin: owner]
-                                                    attendee: attendee];
-                  [attendee setPartStat: [participant partStat]];
-                  [attendee setDelegatedFrom: [participant delegatedFrom]];
-                  [attendee setDelegatedTo: [participant delegatedTo]];
-                  [attendees addObject: attendee];
-                  [newEvent setAttendees: attendees];
-                }
-              
-              // We first check of the sequences are alright. We don't accept attendees
-              // accepting "old" invitations. If that's the case, we return a 409
-              if ([[newEvent sequence] intValue] < [[oldEvent sequence] intValue])
-                return [self exceptionWithHTTPStatus: 409
-                                              reason: @"sequences don't match"];
-              
-              // Remove the RSVP attribute, as an action from the attendee
-              // was actually performed, and this confuses iCal (bug #1850)
-              [[attendee attributes] removeObjectForKey: @"RSVP"];
-              
-              delegate = nil;
-              delegateEmail = [attendee delegatedTo];
-              
-              if ([delegateEmail length])
-                {
-                  if ([[delegateEmail lowercaseString] hasPrefix: @"mailto:"])
-                    delegateEmail = [delegateEmail substringFromIndex: 7];
-                  if ([delegateEmail length])
-                    delegate = [newEvent findAttendeeWithEmail: delegateEmail];
-                }
-              
-              changes = [iCalEventChanges changesFromEvent: oldEvent  toEvent: newEvent];
-              
-              // The current user deletes the occurence; let the organizer know that
-              // the user has declined this occurence.
-              if ([[changes updatedProperties] containsObject: @"exdate"])
-                {
-                  [self changeParticipationStatus: @"DECLINED"
-                                     withDelegate: nil // FIXME (specify delegate?)
-                                            alarm: nil
-                                  forRecurrenceId: [self _addedExDate: oldEvent  newEvent: newEvent]];
-                }
-              else if (attendee)
-                {
-                  [self changeParticipationStatus: [attendee partStat]
-                                     withDelegate: delegate
-                                            alarm: nil
-                                  forRecurrenceId: recurrenceId];
-                }
-              // All attendees and the organizer field were removed. Apple iCal does
-              // that when we remove the last attendee of an event.
-              //
-              // We must update previous's attendees' calendars to actually
-              // remove the event in each of them.
-              else
-                {
-                  [self _handleRemovedUsers: [changes deletedAttendees]
-                           withRecurrenceId: recurrenceId];
-                }
-            }  
-        } // if ([[newEvent attendees] count] || [[oldEvent attendees] count])
-      else
-        {
-          changes = [iCalEventChanges changesFromEvent: oldEvent  toEvent: newEvent];
-          if ([changes hasMajorChanges])
-            [self sendReceiptEmailForObject: newEvent
-                             addedAttendees: nil
-                           deletedAttendees: nil
-                           updatedAttendees: nil
-                                  operation: EventUpdated];
+          [[newEvent organizer] setCn: [ownerUser cn]];
+          [[newEvent organizer] setEmail: [[ownerUser allEmails] objectAtIndex: 0]];
+          [[newEvent organizer] setSentBy: [NSString stringWithFormat: @"\"MAILTO:%@\"", [[[context activeUser] allEmails] objectAtIndex: 0]]];
+          ownerIsOrganizer = YES;
         }
-    }  // else of if (isNew) ...
+
+            // With Thunderbird 10, if you create a recurring event with an exception
+            // occurence, and invite someone, the PUT will have the organizer in the
+            // recurrence-id and not in the master event. We must fix this, otherwise
+            // SOGo will break.
+            if (!recurrenceId && ![[[[[newEvent parent] events] objectAtIndex: 0] organizer] uidInContext: context])
+              [[[[newEvent parent] events] objectAtIndex: 0] setOrganizer: [newEvent organizer]];
+
+            if (ownerIsOrganizer)
+              {
+          // We check ACLs of the 'organizer' - in case someone forges the SENT-BY
+          NSString *uid;
+
+          uid = [[oldEvent organizer] uidInContext: context];
+
+          if (uid && [[[context activeUser] login] caseInsensitiveCompare: uid] != NSOrderedSame)
+      {
+        SOGoAppointmentObject *organizerObject;
+
+        organizerObject = [self _lookupEvent: [oldEvent uid] forUID: uid];
+        roles = [[context activeUser] rolesForObject: organizerObject
+                  inContext: context];
+
+        if (![roles containsObject: @"ComponentModifier"] && ![[context activeUser] isSuperUser])
+          {
+            return [self exceptionWithHTTPStatus: 409
+                                                      reason: @"Not allowed to perform this action. Wrong SENT-BY being used regarding access rights on organizer's calendar."];
+          }
+      }
+
+                // A RECCURENCE-ID was removed
+                if (!newEvent && oldEvent)
+                  [self prepareDeleteOccurence: oldEvent];
+                // The master event was changed, A RECCURENCE-ID was added or modified
+                else if ((ex = [self _handleUpdatedEvent: newEvent  fromOldEvent: oldEvent  force: YES]))
+                  return ex;
+              } // if (ownerIsOrganizer) ..
+            //
+            // else => attendee is responding
+            //
+            //   if [context activeUser] == attendee
+            //       [we change the PART-STATE]
+            //   else
+            //      [react on SENT-BY as someone else is acting for the attendee]
+            else
+              {
+                iCalPerson *attendee, *delegate;
+                NSString *delegateEmail;
+
+                attendee = [oldEvent userAsAttendee: [SOGoUser userWithLogin: owner]];
+
+                if (!attendee)
+                  attendee = [newEvent userAsAttendee: [SOGoUser userWithLogin: owner]];
+                else
+                  {
+                    // We must do an extra check here since Bob could have invited Alice
+                    // using alice@example.com but she would have accepted with ATTENDEE set
+                    // to sexy@example.com. That would duplicate the ATTENDEE and set the
+                    // participation status to ACCEPTED for sexy@example.com but leave it
+                    // to NEEDS-ACTION to alice@example. This can happen in Mozilla Thunderbird/Lightning
+                    // when a user with multiple identities accepts an event invitation to one
+                    // of its identity (which is different than the email address associated with
+                    // the mail account) prior doing a calendar refresh.
+                    NSMutableArray *attendees;
+                    iCalPerson *participant;
+
+                    attendees = [NSMutableArray arrayWithArray: [newEvent attendeesWithoutUser: [SOGoUser userWithLogin: owner]]];
+
+                    participant = [newEvent participantForUser: [SOGoUser userWithLogin: owner]
+                                                      attendee: attendee];
+                    [attendee setPartStat: [participant partStat]];
+                    [attendee setDelegatedFrom: [participant delegatedFrom]];
+                    [attendee setDelegatedTo: [participant delegatedTo]];
+                    [attendees addObject: attendee];
+                    [newEvent setAttendees: attendees];
+                  }
+                
+                // We first check of the sequences are alright. We don't accept attendees
+                // accepting "old" invitations. If that's the case, we return a 409
+                if ([[newEvent sequence] intValue] < [[oldEvent sequence] intValue])
+                  return [self exceptionWithHTTPStatus: 409
+                                                reason: @"sequences don't match"];
+                
+                // Remove the RSVP attribute, as an action from the attendee
+                // was actually performed, and this confuses iCal (bug #1850)
+                [[attendee attributes] removeObjectForKey: @"RSVP"];
+                
+                delegate = nil;
+                delegateEmail = [attendee delegatedTo];
+                
+                if ([delegateEmail length])
+                  {
+                    if ([[delegateEmail lowercaseString] hasPrefix: @"mailto:"])
+                      delegateEmail = [delegateEmail substringFromIndex: 7];
+                    if ([delegateEmail length])
+                      delegate = [newEvent findAttendeeWithEmail: delegateEmail];
+                  }
+                
+                changes = [iCalEventChanges changesFromEvent: oldEvent  toEvent: newEvent];
+                
+                // The current user deletes the occurence; let the organizer know that
+                // the user has declined this occurence.
+                if ([[changes updatedProperties] containsObject: @"exdate"])
+                  {
+                    [self changeParticipationStatus: @"DECLINED"
+                                      withDelegate: nil // FIXME (specify delegate?)
+                                              alarm: nil
+                                    forRecurrenceId: [self _addedExDate: oldEvent  newEvent: newEvent]];
+                  }
+                else if (attendee)
+                  {
+                    [self changeParticipationStatus: [attendee partStat]
+                                      withDelegate: delegate
+                                              alarm: nil
+                                    forRecurrenceId: recurrenceId];
+                  }
+                // All attendees and the organizer field were removed. Apple iCal does
+                // that when we remove the last attendee of an event.
+                //
+                // We must update previous's attendees' calendars to actually
+                // remove the event in each of them.
+                else
+                  {
+                    [self _handleRemovedUsers: [changes deletedAttendees]
+                            withRecurrenceId: recurrenceId];
+                  }
+              }  
+          } // if ([[newEvent attendees] count] || [[oldEvent attendees] count])
+        else
+          {
+            changes = [iCalEventChanges changesFromEvent: oldEvent  toEvent: newEvent];
+            if ([changes hasMajorChanges])
+              [self sendReceiptEmailForObject: newEvent
+                              addedAttendees: nil
+                            deletedAttendees: nil
+                            updatedAttendees: nil
+                                    operation: EventUpdated];
+          }
+      }  // else of if (isNew) ...
+        
+    unsigned int baseVersion;
+    // We must NOT invoke [super PUTAction:] here as it'll resave
+    // the content string and we could have etag mismatches.
+    baseVersion = (isNew ? 0 : version);
+        
+    ex = [self saveComponent: calendar
+                baseVersion: baseVersion];
+      }
+       
       
-  unsigned int baseVersion;
-  // We must NOT invoke [super PUTAction:] here as it'll resave
-  // the content string and we could have etag mismatches.
-  baseVersion = (isNew ? 0 : version);
       
-  ex = [self saveComponent: calendar
-               baseVersion: baseVersion];
       
   return ex;
 }
@@ -2611,6 +2618,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       ex = [self matchesRequestConditionInContext: context];
       if (ex)
         return ex;
+
+
     }
 
   if (mustUpdate)
