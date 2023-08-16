@@ -53,12 +53,11 @@
   if ([component isRecurrent] || [component recurrenceId])
   {
     // Skip the master event if required
-    recId = [component recurrenceId];
-    count = (recID ? 0 : 1);
+    count = ([component recurrenceId] ? 0 : 1);
     while (!occurrence && count < max)
 	  {
 	    component = [components objectAtIndex: count];
-      recSeconds = [recId timeIntervalSince1970];
+      recSeconds = [[component recurrenceId] timeIntervalSince1970];
 	    if (recSeconds == seconds)
 	      occurrence = component;
 	    else
