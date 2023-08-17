@@ -232,7 +232,7 @@ describe('CardDAV extensions', function() {
     expect(emails)
       .withContext(`Returned vCard has email of ${config.attendee1_username} (${config.attendee1})`)
       .toContain(config.attendee1)
-  })
+  }, 10000) // increase timeout for this long test
 
   // CARDDAV:addressbook-multiget Report
   // https://datatracker.ietf.org/doc/html/rfc6352#section-8.7

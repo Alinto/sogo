@@ -229,5 +229,5 @@ describe('Apple iCal', function() {
       .toBe(0)
 
     await webdav_su.deleteObject(otherResource)
-  })
+  }, 10000) // increase timeout for this long test
 })
