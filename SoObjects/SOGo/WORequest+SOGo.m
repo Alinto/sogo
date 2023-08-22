@@ -242,7 +242,7 @@
   return ([[cc userAgent] rangeOfString: @"Android"].location != NSNotFound);
 }
 
-- (BOOL) isMacOSXFromVenturaCalendarApp
+- (BOOL) isMacOSXCalendar
 {
   WEClientCapabilities *cc;
   BOOL b;
@@ -252,7 +252,7 @@
   b = (
         (
           nil != [cc userAgent] 
-          && ([[cc userAgent] rangeOfString: @"macOS/13"].location != NSNotFound || [[cc userAgent] rangeOfString: @"macOS/14"].location != NSNotFound)
+          && [[cc userAgent] rangeOfString: @"macOS"].location != NSNotFound
           && [[cc userAgent] rangeOfString: @"dataaccessd"].location != NSNotFound
         )
        );

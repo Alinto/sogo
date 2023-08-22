@@ -33,10 +33,10 @@
 - (BOOL) isICal;
 - (BOOL) isICal4;
 - (BOOL) isMacOSXAddressBookApp;
-- (BOOL)isMacOSXCalendarApp;
-- (BOOL)isIPhoneAddressBookApp;
+- (BOOL) isMacOSXCalendarApp;
+- (BOOL) isIPhoneAddressBookApp;
 - (BOOL) isAndroid;
-- (BOOL)isMacOSXFromVenturaCalendarApp;
+- (BOOL) isMacOSXCalendar;
 
 @end
 

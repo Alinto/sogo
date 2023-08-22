@@ -2551,7 +2551,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
      resourcetype. Anything else will prevent the iPhone from querying the
      collection. */
   request = [context request];
-  if (!([request isIPhone] || [request isICal4]))
+  if (!([request isIPhone] || [request isICal4] || [request isMacOSXCalendar]))
     {
       gdRT = (NSArray *) [self groupDavResourceType];
       gdVEventCol = [NSArray arrayWithObjects: [gdRT objectAtIndex: 0],
@@ -2609,13 +2609,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 - (NSException *) setDavDescription: (NSString *) description
 {
   if (description) {
-    // FIXME: Improve MacOSX Ventura support 
-    // Check if the problem will be fixed by Apple or if this fix should be kept in the future
-    // Ticket #5639
-    if ([[context request] isMacOSXFromVenturaCalendarApp]) {
-      description = [description stringByReplacingOccurrencesOfString:@"/PERSONAL" withString:@"/personal"];
-    }
-    
     [self setFolderPropertyValue: description
                       inCategory: @"DavDescription"];
   }

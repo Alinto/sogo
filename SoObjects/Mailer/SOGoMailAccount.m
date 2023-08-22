@@ -136,12 +136,6 @@ static NSString *inboxFolderName = @"INBOX";
   namespaceDict = [client namespace];
 
   namespace = [namespaceDict objectForKey: @"personal"];
-  // FIXME: Improve MacOSX Ventura support 
-  // Check if the problem will be fixed by Apple or if this fix should be kept in the future
-  // Ticket #5639
-  if ([[context request] isMacOSXFromVenturaCalendarApp]) {
-    namespace = [namespaceDict objectForKey: @"PERSONAL"];
-  }
   if (namespace)
     [self _appendNamespace: namespace toFolders: folders];
 

@@ -144,7 +144,7 @@ static SoSecurityManager *sm = nil;
 
 - (NSString *) defaultFolderName
 {
-  return [[context request] isMacOSXFromVenturaCalendarApp] ? @"PERSONAL" : @"Personal";
+  return @"Personal";
 }
 
 - (NSString *) collectedFolderName
@@ -173,7 +173,7 @@ static SoSecurityManager *sm = nil;
   {
     if (folderType == SOGoPersonalFolder)
     {
-      folderName = [[context request] isMacOSXFromVenturaCalendarApp] ? @"PERSONAL" : @"personal";
+      folderName = @"personal";
       folder = [subFolderClass objectWithName: folderName inContainer: self];
       [folder setDisplayName: [self defaultFolderName]];
       [folder setOCSPath: [NSString stringWithFormat: @"%@/%@", OCSPath, folderName]];
@@ -221,15 +221,7 @@ static SoSecurityManager *sm = nil;
     while ((row = [fc fetchAttributes: attrs withZone: NULL]))
     {
       key = [row objectForKey: @"c_path4"];
-      // FIXME: Improve MacOSX Ventura support 
-      // Check if the problem will be fixed by Apple or if this fix should be kept in the future
-      // Ticket #5639
-      if ([[context request] isMacOSXFromVenturaCalendarApp]) {
-        if ([key isEqualToString:@"personal"]) {
-          key = @"PERSONAL";
-        }
-      }
-      
+            
       if ([key isKindOfClass: [NSString class]])
       {
         folder = [subFolderClass objectWithName: key inContainer: self];
@@ -241,7 +233,7 @@ static SoSecurityManager *sm = nil;
     }
     if (folderType == SOGoPersonalFolder)
     {
-      if (![subFolders objectForKey: @"personal"] || ![subFolders objectForKey: @"Personal"]  || ![subFolders objectForKey: @"PERSONAL"])
+      if (![subFolders objectForKey: @"personal"])
         [self createSpecialFolder: SOGoPersonalFolder];
     }
     else if (folderType == SOGoCollectedFolder)
