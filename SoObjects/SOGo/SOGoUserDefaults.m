@@ -989,6 +989,16 @@ NSString *SOGoPasswordRecoverySecondaryEmail = @"SecondaryEmail";
   return [self dictionaryForKey: @"Forward"];
 }
 
+- (void) setNotificationOptions: (NSDictionary *) newValue
+{
+  [self setObject: newValue forKey: @"Notification"];
+}
+
+- (NSDictionary *) notificationOptions
+{
+  return [self dictionaryForKey: @"Notification"];
+}
+
 - (void) setContactsCategories: (NSArray *) newValues
 {
   [self setObject: newValues forKey: @"SOGoContactsCategories"];

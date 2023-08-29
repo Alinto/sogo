@@ -16,6 +16,7 @@
   <script type="text/javascript">
     var mailCustomFromEnabled = <var:string value="mailCustomFromEnabled" const:escapeHTML="NO"/>;
     var forwardEnabled = <var:string value="forwardEnabled" const:escapeHTML="NO"/>;
+    var notificationEnabled = <var:string value="notificationEnabled" const:escapeHTML="NO"/>;
     var vacationEnabled = <var:string value="isVacationEnabled" const:escapeHTML="NO"/>;
     var timeZonesList = <var:string value="timeZonesList" const:escapeHTML="NO"/>;
     var defaultEmailAddresses = <var:string value="defaultEmailAddresses" const:escapeHTML="NO"/>;
@@ -1325,7 +1326,7 @@
                         id="forwardAddress"
                         name="forwardAddress"
                         ng-model="app.preferences.defaults.Forward.forwardAddress"
-                        md-transform-chip="app.addRecipient($chip)"
+                        md-transform-chip="app.addRecipient($chip, 'forward')"
                         ng-required="app.preferences.defaults.Forward.enabled == 1"
                         md-separator-keys="app.emailSeparatorKeys"
                         md-add-on-blur="true"
@@ -1334,10 +1335,9 @@
                       <md-autocomplete
                           ng-keydown="app.ignoreReturn($event)"
                           md-menu-class="md-2-line"
-                          md-search-text="app.autocompleteForward.searchText"
-                          md-selected-item="app.autocompleteForward.selected"
-                          md-items="user in app.contactFilter(app.autocompleteForward.searchText)"
-                          md-item-text="app.addRecipient(user)"
+                          md-search-text="app.autocomplete.forward.searchText"
+                          md-selected-item="app.autocomplete.forward.selected"
+                          md-items="user in app.contactFilter(app.autocomplete.forward.searchText)"
                           var:md-min-length="minimumSearchLength"
                           md-delay="150"
                           md-no-cache="true"
@@ -1346,8 +1346,8 @@
                         <md-item-template>
                           <div class="sg-tile-content">
                             <div class="sg-md-subhead">
-                              <div md-highlight-text="app.autocompleteForward.searchText"
-                                  md-highlight-flags="gi">{{ user.$shortFormat(app.autocompleteForward.searchText) }}</div>
+                              <div md-highlight-text="app.autocomplete.forward.searchText"
+                                  md-highlight-flags="gi">{{ user.$shortFormat(app.autocomplete.forward.searchText) }}</div>
                             </div>
                             <div class="sg-md-body"
                                 md-colors="::{color: 'default-background-500'}">{{ user.containername }}</div>
@@ -1376,6 +1376,67 @@
                   </md-checkbox>
                 </div>
 
+              </div>
+            </div>
+          </md-tab>
+        </var:if>
+        <!-- END OF MAIL > FORWARD -->
+
+        <!-- MAIL > NOTIFICATIONS -->
+        <var:if condition="isNotificationEnabled">
+          <md-tab id="mailNotificationTab" aria-controls="mailNotificationTab-content" label:label="Notification">
+            <md-content class="md-padding"
+                        ng-include="'hasActiveExternalSieveScripts.html'"
+                        ng-show="app.preferences.defaults.hasActiveExternalSieveScripts">
+              <!-- external Sieve script detected -->
+            </md-content>
+            <div role="tabpanel" aria-labelledby="mailNotificationView"
+                 id="mailNotificationView-content" class="md-padding">
+
+              <md-checkbox
+                  ng-model="app.preferences.defaults.Notification.enabled"
+                  ng-true-value="1"
+                  ng-false-value="0">
+                <var:string label:value="Notify incoming messsages"/>
+              </md-checkbox>
+
+              <div flex-offset="5" ng-show="app.preferences.defaults.Notification.enabled == 1">
+                <md-input-container class="md-block md-flex">
+                  <label><var:string label:value="Email addresses"/></label>
+                    <md-chips
+                        id="notificationAddress"
+                        name="notificationAddress"
+                        ng-model="app.preferences.defaults.Notification.notificationAddress"
+                        md-transform-chip="app.addRecipient($chip, 'notification')"
+                        ng-required="app.preferences.defaults.Notification.enabled == 1"
+                        md-separator-keys="app.emailSeparatorKeys"
+                        md-add-on-blur="true"
+                        md-autocomplete-snap="width">
+                      <!-- notifications addresses -->
+                      <md-autocomplete
+                          ng-keydown="app.ignoreReturn($event)"
+                          md-menu-class="md-2-line"
+                          md-search-text="app.autocomplete.notification.searchText"
+                          md-selected-item="app.autocomplete.notification.selected"
+                          md-items="user in app.contactFilter(app.autocomplete.notification.searchText)"
+                          var:md-min-length="minimumSearchLength"
+                          md-delay="150"
+                          md-no-cache="true"
+                          label:placeholder="Enter an email"
+                          label:secondary-placeholder="Add another email">
+                        <md-item-template>
+                          <div class="sg-tile-content">
+                            <div class="sg-md-subhead">
+                              <div md-highlight-text="app.autocomplete.notification.searchText"
+                                  md-highlight-flags="gi">{{ user.$shortFormat(app.autocomplete.notification.searchText) }}</div>
+                            </div>
+                            <div class="sg-md-body"
+                                md-colors="::{color: 'default-background-500'}">{{ user.containername }}</div>
+                          </div>
+                        </md-item-template>
+                      </md-autocomplete>
+                    </md-chips>
+                </md-input-container>
               </div>
             </div>
           </md-tab>

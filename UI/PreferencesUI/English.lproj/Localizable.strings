@@ -80,6 +80,9 @@
 "You are not allowed to forward your messages to an internal email address." = "You are not allowed to forward your messages to an internal email address.";
 "You are not allowed to forward your messages to this domain:" = "You are not allowed to forward your messages to this domain:";
 
+/* notification */
+"Notify incoming messsages" = "Notify incoming messsages";
+
 /* d & t */
 "Time Zone" = "Time Zone";
 "Short Date Format" = "Short Date Format";
@@ -411,6 +414,7 @@
 
 "Keep the message" = "Keep the message";
 "Forward the message to" = "Forward the message to";
+"Notify the message to" = "Notify the message to";
 
 /* Input field label of "forward" mail filter action */
 "Email" = "Email";

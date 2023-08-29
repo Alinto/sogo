@@ -206,7 +206,7 @@ static NSString *sieveScriptName = @"sogo";
                                @"imapflags", @"removeflag",
                                @"imapflags", @"flag",
                                @"vacation", @"vacation",
-                               @"notify", @"notify",
+                               @"notify", @"enotify",
                                @"fileinto", @"fileinto",
                                @"reject", @"reject",
                                @"regex", @"regex",
@@ -543,6 +543,12 @@ static NSString *sieveScriptName = @"sogo";
               else if ([method isEqualToString: @"redirect"])
                 sieveAction = [NSString stringWithFormat: @"%@ %@",
                                         method, [argument asSieveQuotedString]];
+              else if ([method isEqualToString: @"notify"])
+              {
+                argument = [NSString stringWithFormat: @"mailto:%@", argument];
+                sieveAction = [NSString stringWithFormat: @"%@ %@",
+                                        method, [argument asSieveQuotedString]];     
+              }                                   
               else if ([method isEqualToString: @"reject"])
                 sieveAction = [NSString stringWithFormat: @"%@ %@",
                                 method, [argument asSieveQuotedString]];
@@ -863,7 +869,7 @@ static NSString *sieveScriptName = @"sogo";
 
   error = nil;
   dd = [user domainDefaults];
-  if (!([dd sieveScriptsEnabled] || [dd vacationEnabled] || [dd forwardEnabled]))
+  if (!([dd sieveScriptsEnabled] || [dd vacationEnabled] || [dd forwardEnabled] || [dd notificationEnabled]))
     return error;
 
   req = [NSMutableArray arrayWithCapacity: 15];
@@ -1204,6 +1210,40 @@ static NSString *sieveScriptName = @"sogo";
             [script insertString: @"keep;\r\n"  atIndex: 0];
           else
             [script appendString: @"keep;\r\n"];
+        }
+    }
+
+  // We handle mail notification
+  values = [ud notificationOptions];
+
+  if (values && [[values objectForKey: @"enabled"] boolValue])
+    {
+      // BOOL alwaysSend;
+      NSString *notify;
+      id addresses;
+      int i;
+
+      // alwaysSend = [[values objectForKey: @"alwaysSend"] boolValue];
+      b = YES;
+
+      [req addObjectUniquely: @"enotify"];
+
+      addresses = [values objectForKey: @"notificationAddress"];
+      if ([addresses isKindOfClass: [NSString class]])
+        addresses = [addresses componentsSeparatedByString: @","];
+
+      for (i = 0; i < [addresses count]; i++)
+        {
+          v = [addresses objectAtIndex: i];
+          if (v && [v length] > 0)
+            {
+              notify = [NSString stringWithFormat: @"notify \"mailto:%@\";\r\n", v];
+
+              // if (alwaysSend)
+              //   [script insertString: notify  atIndex: 0];
+              // else
+              [script appendString: notify];
+            }
         }
     }
 

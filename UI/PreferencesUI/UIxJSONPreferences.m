@@ -395,9 +395,14 @@ static SoProduct *preferencesProduct = nil;
     }
 
   if ([domainDefaults forwardEnabled] && ![defaults forwardOptions])
-    {
-      [defaults setForwardOptions: [NSDictionary new]];
-    }
+  {
+    [defaults setForwardOptions: [NSDictionary new]];
+  }
+
+  if ([domainDefaults notificationEnabled] && ![defaults notificationOptions])
+  {
+    [defaults setNotificationOptions: [NSDictionary new]];
+  }
 
   if ([[defaults source] dirty])
     [defaults synchronize];

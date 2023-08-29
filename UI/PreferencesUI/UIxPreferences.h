@@ -42,7 +42,7 @@
   // Sieve filtering
   NSArray *daysOfWeek, *daysBetweenResponsesList;
   NSArray *sieveFilters;
-  NSMutableDictionary *vacationOptions, *forwardOptions;
+  NSMutableDictionary *vacationOptions, *forwardOptions, *notificationOptions;
 
   BOOL mailCustomFromEnabled;
   BOOL forwardEnabled;

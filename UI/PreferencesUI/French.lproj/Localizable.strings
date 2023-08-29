@@ -68,7 +68,7 @@
 = "La date de fin de la réponse automatique doit être dans le futur.";
 
 /* forward messages */
-"Forward incoming messages" = "Transférer les messages entrant";
+"Forward incoming messages" = "Transférer les messages entrants";
 "Always forward" = "Toujours transférer";
 "Incoming messages are forwarded prior to apply your filters." = "Le courrier entrant est transféré d'appliquer vos filtres.";
 "Keep a copy" = "Garder une copie";
@@ -79,6 +79,9 @@
 "You are not allowed to forward your messages to an external email address." = "Il est interdit de renvoyer vos messages vers une adresse externe.";
 "You are not allowed to forward your messages to an internal email address." = "Il est interdit de renvoyer vos messages vers une adresse interne.";
 "You are not allowed to forward your messages to this domain:" = "Vous ne pouvez pas transférer vos messages à ce domaine :";
+
+/* notify messages */
+"Notify incoming messsages" = "Notifier les messages entrants";
 
 /* d & t */
 "Time Zone" = "Fuseau horaire";
@@ -411,6 +414,7 @@
 
 "Keep the message" = "Conserver le message";
 "Forward the message to" = "Faire suivre le message à";
+"Notify the message to" = "Notifier le message à";
 
 /* Input field label of "forward" mail filter action */
 "Email" = "Email";

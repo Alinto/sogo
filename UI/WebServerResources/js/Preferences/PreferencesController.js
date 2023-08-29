@@ -17,7 +17,7 @@
       this.timeZonesList = $window.timeZonesList;
       this.timeZonesSearchText = '';
       this.addressesSearchText = '';
-      this.autocompleteForward = {};
+      this.autocomplete = {forward: [], notification: []};
       this.mailLabelKeyRE = new RegExp(/^(?!^_\$)[^(){} %*\"\\\\]*?$/);
       this.emailSeparatorKeys = Preferences.defaults.emailSeparatorKeys;
       if (Preferences.defaults.SOGoMailAutoMarkAsReadMode == 'delay')
@@ -415,6 +415,20 @@
         }
       }
 
+      // We check if we're allowed or not to notify based on the domain defaults
+      if (this.preferences.defaults.Notification && this.preferences.defaults.Notification.enabled &&
+        this.preferences.defaults.Notification.notificationAddress) {
+      addresses = this.preferences.defaults.Notification.notificationAddress;
+      try {
+        for (i = 0; i < addresses.length; i++) {
+          validateForwardAddress(addresses[i]);
+        }
+      } catch (err) {
+        Dialog.alert(l('Error'), err);
+        sendForm = false;
+      }
+    }
+
       // IMAP labels must be unique
       if (this.preferences.defaults.SOGoMailLabelsColorsKeys.length !=
           this.preferences.defaults.SOGoMailLabelsColorsValues.length ||
@@ -650,10 +664,10 @@
       }
     };
 
-    this.addRecipient = function (contact) {
+    this.addRecipient = function (contact, element) {
       var recipients, recipient, list, i, address;
 
-      recipients = this.preferences.defaults.Forward.forwardAddress;
+      recipients = this.autocomplete[element];
 
       if (angular.isString(contact)) {
         // Examples that are handled:
@@ -678,7 +692,7 @@
         if (address && recipients.indexOf(address) < 0)
           recipients.push(address);
 
-        return null;
+        return address;
       }
 
       if (contact.$isList({expandable: true})) {
@@ -712,7 +726,7 @@
       else {
         recipient = contact.$shortFormat();
       }
-
+      
       if (recipient)
         return recipient;
       else

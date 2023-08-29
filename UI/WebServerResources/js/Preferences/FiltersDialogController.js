@@ -12,6 +12,7 @@
     var vm = this,
         sieveCapabilities = $window.sieveCapabilities,
         forwardEnabled = $window.forwardEnabled,
+        notificationEnabled = $window.notificationEnabled,
         vacationEnabled = $window.vacationEnabled;
 
     this.filter = filter;
@@ -40,6 +41,9 @@
     if (forwardEnabled)
       this.methodLabels.redirect = l("Forward the message to");
 
+    if (notificationEnabled)
+      this.methodLabels.notify = l("Notify the message to");
+
     //if (vacationEnabled)
     //  this.methodLabels.vacation = l("Send a vacation message");
 
@@ -59,6 +63,7 @@
       "keep",
       "discard",
       "redirect",
+      "notify",
       "reject"
     ];
     this.methods = _.intersection(this.methods, _.keys(this.methodLabels));
@@ -105,6 +110,15 @@
       if (this.filter.actions) {
         try {
           _.forEach(_.filter(this.filter.actions, { 'method': 'redirect' }), function (action) {
+            validateForwardAddress(action.argument);
+          });
+        } catch (err) {
+          //Dialog.alert(l('Error'), err);
+          this.invalid = err.message;
+          return false;
+        }
+        try {
+          _.forEach(_.filter(this.filter.actions, { 'method': 'notify' }), function (action) {
             validateForwardAddress(action.argument);
           });
         } catch (err) {

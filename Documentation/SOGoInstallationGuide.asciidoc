@@ -2285,6 +2285,13 @@ SOGoForwardConstraintsDomains = ("gmail.com", "googlemail.com");
 will allow users to forward emails to only `gmail.com` and `googlemail.com` domains.
 When empty or undefined, no constraints are imposed.
 
+|D |SOGoNotificationEnabled
+|Parameter used to activate the edition from the preferences window of
+notifications for emails. Requires Sieve script support on the IMAP
+host.
+
+Defaults to `NO` when unset.
+
 |D |SOGoSieveScriptsEnabled
 |Parameter used to activate the edition from the preferences windows of
 server-side mail filters. Requires Sieve script support on the IMAP

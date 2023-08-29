@@ -136,11 +136,18 @@ static NSArray *reminderValues = nil;
             vacationOptions = [NSMutableDictionary new];
 	}
 
-      if ([dd forwardEnabled])
+  if ([dd forwardEnabled])
 	{
 	  forwardOptions = [[userDefaults forwardOptions] mutableCopy];
 	  if (!forwardOptions)
             forwardOptions = [NSMutableDictionary new];
+	}
+
+  if ([dd notificationEnabled])
+	{
+	  notificationOptions = [[userDefaults notificationOptions] mutableCopy];
+	  if (!notificationOptions)
+            notificationOptions = [NSMutableDictionary new];
 	}
 
       mailCustomFromEnabled = [dd mailCustomFromEnabled];
@@ -160,6 +167,7 @@ static NSArray *reminderValues = nil;
   [sieveFilters release];
   [vacationOptions release];
   [forwardOptions release];
+  [notificationOptions release];
   [daysOfWeek release];
   [addressBooksIDWithDisplayName release];
   [client release];
@@ -989,6 +997,15 @@ static NSArray *reminderValues = nil;
   return [domains jsonRepresentation];
 }
 
+/* mail notifications */
+//
+// Used by templates
+//
+- (BOOL) isNotificationEnabled
+{
+  return [[user domainDefaults] notificationEnabled];
+}
+
 //
 // Used by templates
 //
@@ -1727,7 +1744,8 @@ static NSArray *reminderValues = nil;
           dd = [[context activeUser] domainDefaults];
 
           // We check if the Sieve server is available *ONLY* if at least one of the option is enabled
-          if (!([dd sieveScriptsEnabled] || [dd vacationEnabled] || [dd forwardEnabled]) || [self _isSieveServerAvailable])
+          if (([dd sieveScriptsEnabled] || [dd vacationEnabled] || [dd forwardEnabled] || [dd notificationEnabled]) 
+                  || [self _isSieveServerAvailable])
             {
               BOOL forceActivation = ![[v objectForKey: @"hasActiveExternalSieveScripts"] boolValue];
 

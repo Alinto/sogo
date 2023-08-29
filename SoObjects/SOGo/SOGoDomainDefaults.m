@@ -225,6 +225,11 @@
   return [self stringArrayForKey: @"SOGoForwardConstraintsDomains"];
 }
 
+- (BOOL) notificationEnabled
+{
+  return [self boolForKey: @"SOGoNotificationEnabled"];
+}
+
 - (BOOL) vacationEnabled
 {
   return [self boolForKey: @"SOGoVacationEnabled"];

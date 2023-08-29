@@ -130,6 +130,12 @@
               <input type="text" ng-model="action.argument" required="required"/>
             </md-input-container>
 
+            <!-- NOTIFY MESSAGE TO -->
+            <md-input-container class="md-block" flex="50" ng-if="action.method == 'notify'" >
+              <label><var:string label:value="Email"/></label>
+              <input type="text" ng-model="action.argument" required="required"/>
+            </md-input-container>
+
             <!-- DISCARD -->
             <!-- nada -->
 

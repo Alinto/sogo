@@ -222,6 +222,9 @@ extern NSString *SOGoPasswordRecoverySecondaryEmail;
 - (void) setForwardOptions: (NSDictionary *) newValue;
 - (NSDictionary *) forwardOptions;
 
+- (void) setNotificationOptions: (NSDictionary *) newValue;
+- (NSDictionary *) notificationOptions;
+
 - (void) setMailLabelsColors: (NSDictionary *) newValues;
 - (NSDictionary *) mailLabelsColors;
 

@@ -150,6 +150,13 @@
           data.Forward.forwardAddress = [];
       }
 
+      if (data.Notification) {
+        if (angular.isString(data.Notification.notificationAddress))
+          data.Notification.notificationAddress = data.Notification.notificationAddress.split(/, */);
+        else if (!angular.isArray(data.Notification.notificationAddress))
+          data.Notification.notificationAddress = [];
+      }
+
       // Split calendar categories colors keys and values
       if (angular.isUndefined(data.SOGoCalendarCategories))
         data.SOGoCalendarCategories = [];
@@ -864,6 +871,9 @@
 
     if (preferences.defaults.Forward && preferences.defaults.Forward.forwardAddress)
       preferences.defaults.Forward.forwardAddress = _.compact(preferences.defaults.Forward.forwardAddress);
+
+      if (preferences.defaults.Notification && preferences.defaults.Notification.notificationAddress)
+      preferences.defaults.Notification.notificationAddress = _.compact(preferences.defaults.Notification.notificationAddress);
 
     // Merge back calendar categories colors keys and values
     preferences.defaults.SOGoCalendarCategoriesColors = {};

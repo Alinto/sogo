@@ -53,6 +53,7 @@
 - (BOOL) forwardEnabled;
 - (int) forwardConstraints;
 - (NSArray *) forwardConstraintsDomains;
+- (BOOL) notificationEnabled;
 - (BOOL) vacationEnabled;
 - (BOOL) vacationPeriodEnabled;
 - (NSString *) vacationDefaultSubject;
