@@ -1437,11 +1437,20 @@
                       </md-autocomplete>
                     </md-chips>
                 </md-input-container>
+
+                <md-input-container class="md-block md-flex md-input-has-placeholder">
+                  <label><var:string label:value="Notification Message Sent"/></label>
+                  <textarea name="notificationMessage"
+                            id="notificationMessage"
+                            ng-model="app.preferences.defaults.Notification.notificationMessage"
+                            ng-required="app.preferences.defaults.Notification.enabled == 1">
+                  </textarea>
+                </md-input-container>
               </div>
             </div>
           </md-tab>
         </var:if>
-        <!-- END OF MAIL > FORWARD -->
+        <!-- END OF MAIL > NOTIFICATIONS -->
 
       </md-tabs>
     </var:if>

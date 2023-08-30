@@ -82,6 +82,8 @@
 
 /* notify messages */
 "Notify incoming messsages" = "Notifier les messages entrants";
+"Notification Message Sent" = "Message de notification envoyé";
+"Notification Message" = "Nouveau message reçu sur %{0}";
 
 /* d & t */
 "Time Zone" = "Fuseau horaire";

@@ -1220,6 +1220,7 @@ static NSString *sieveScriptName = @"sogo";
     {
       // BOOL alwaysSend;
       NSString *notify;
+      NSString *message;
       id addresses;
       int i;
 
@@ -1232,12 +1233,14 @@ static NSString *sieveScriptName = @"sogo";
       if ([addresses isKindOfClass: [NSString class]])
         addresses = [addresses componentsSeparatedByString: @","];
 
+      message = [values objectForKey: @"notificationMessage"];
+
       for (i = 0; i < [addresses count]; i++)
         {
           v = [addresses objectAtIndex: i];
           if (v && [v length] > 0)
             {
-              notify = [NSString stringWithFormat: @"notify \"mailto:%@\";\r\n", v];
+              notify = [NSString stringWithFormat: @"notify :message \"%@\"\r\n       \"mailto:%@\";\r\n", message, v];
 
               // if (alwaysSend)
               //   [script insertString: notify  atIndex: 0];
