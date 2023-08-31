@@ -1220,7 +1220,7 @@ static NSString *sieveScriptName = @"sogo";
     {
       // BOOL alwaysSend;
       NSString *notify;
-      NSString *message;
+      NSString *message, *notificationTranslated;
       id addresses;
       int i;
 
@@ -1228,19 +1228,23 @@ static NSString *sieveScriptName = @"sogo";
       b = YES;
 
       [req addObjectUniquely: @"enotify"];
+      [req addObjectUniquely: @"variables"];
 
       addresses = [values objectForKey: @"notificationAddress"];
       if ([addresses isKindOfClass: [NSString class]])
         addresses = [addresses componentsSeparatedByString: @","];
 
       message = [values objectForKey: @"notificationMessage"];
+      notificationTranslated = [values objectForKey: @"notificationTranslated"];
 
       for (i = 0; i < [addresses count]; i++)
         {
           v = [addresses objectAtIndex: i];
           if (v && [v length] > 0)
             {
-              notify = [NSString stringWithFormat: @"notify :message \"%@\"\r\n       \"mailto:%@\";\r\n", message, v];
+              notify = @"if header :matches \"subject\" \"*\" {\r\n  set \"subject\" \"${1}\";\r\n}\r\n";
+              notify = [notify stringByAppendingFormat: @"set :encodeurl \"body_param\" \"%@\";\r\n", message];
+              notify = [notify stringByAppendingFormat: @"notify :message \"%@: ${subject}\" \"mailto:%@\";\r\n", notificationTranslated, v];
 
               // if (alwaysSend)
               //   [script insertString: notify  atIndex: 0];
