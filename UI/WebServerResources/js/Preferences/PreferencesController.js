@@ -20,9 +20,11 @@
       this.autocomplete = {forward: [], notification: []};
       this.mailLabelKeyRE = new RegExp(/^(?!^_\$)[^(){} %*\"\\\\]*?$/);
       this.emailSeparatorKeys = Preferences.defaults.emailSeparatorKeys;
-      if (!Preferences.defaults.Notification.notificationMessage)
-        this.preferences.defaults.Notification.notificationMessage = l('Notification Message', $window.defaultEmailAddresses);
-      this.preferences.defaults.Notification.notificationTranslated = l('Notification');
+      if(this.preferences.defaults.Notification) {
+        if (this.preferences.defaults.Notification.notificationMessage)
+          this.preferences.defaults.Notification.notificationMessage = l('Notification Message', $window.defaultEmailAddresses);
+        this.preferences.defaults.Notification.notificationTranslated = l('Notification');
+      }
       if (Preferences.defaults.SOGoMailAutoMarkAsReadMode == 'delay')
         this.mailAutoMarkAsReadDelay = Math.max(1, this.preferences.defaults.SOGoMailAutoMarkAsReadDelay);
       else
