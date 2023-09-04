@@ -3308,6 +3308,8 @@ current version of SOGo from the previous release.
 h|5.9.0
 |Run the shell script `sql-update-5.8.4_to_5.9.0.sh` (if you are using MySQL). This will change the `c_defaults` to `MEDIUMTEXT`.
 
+For mac Apple's Calendar users who re-create their calendar in 5.8.2, the account must be removed and re-added (https://bugs.sogo.nu/view.php?id=5639#c16901). This can be achived in  `` / `System Settings` / `Internet Accounts`.
+
 h|5.8.2
 |Changes in Mac OS X Ventura 13.3. For mac Apple's Calendar users, the account must be removed and re-added (https://bugs.sogo.nu/view.php?id=5639#c16901). This can be achived in  `` / `System Settings` / `Internet Accounts`.
 
