@@ -260,4 +260,9 @@
   return b;
 }
 
+- (BOOL) isThunderbird
+{
+  return ([[self headerForKey:@"user-agent"] rangeOfString: @"Thunderbird"].location != NSNotFound);
+}
+
 @end

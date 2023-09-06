@@ -709,7 +709,7 @@ static NSArray *childRecordFields = nil;
 {
   NSArray *records, *names;
   NSString *sqlFilter, *compFilter;
-  EOQualifier *aclQualifier, *componentQualifier, *qualifier;
+  EOQualifier *aclQualifier, *componentQualifier, *qualifier, *vlistExclusionQualifier;
 
   sqlFilter = [self aclSQLListingFilter];
   if (sqlFilter)
@@ -738,8 +738,18 @@ static NSArray *childRecordFields = nil;
       else
         qualifier = aclQualifier;
 
+      // For Thunderbird, disable contact list
+      if ([[context request] isThunderbird]) {
+        vlistExclusionQualifier = [EOQualifier qualifierWithQualifierFormat: @"c_component != 'vlist'"];
+        qualifier = [[[EOAndQualifier alloc] initWithQualifiers:
+                                                    vlistExclusionQualifier,
+                                                    qualifier,
+                                                    nil] autorelease];
+      }
+
       records = [[self ocsFolder] fetchFields: childRecordFields
                             matchingQualifier: qualifier];
+      
       if (![records isNotNull])
         {
           [self errorWithFormat: @"(%s): fetch failed!", __PRETTY_FUNCTION__];
@@ -1176,8 +1186,18 @@ static NSArray *childRecordFields = nil;
 {
   GCSFolder *folder;
   EOFetchSpecification *fetchSpec;
+  EOQualifier *vlistExclusionQualifier;
 
   folder = [self ocsFolder];
+
+  // For Thunderbird, disable contact list
+  if ([[context request] isThunderbird]) {
+    vlistExclusionQualifier = [EOQualifier qualifierWithQualifierFormat: @"c_component != 'vlist'"];
+    qualifier = [[[EOAndQualifier alloc] initWithQualifiers:
+                                                vlistExclusionQualifier,
+                                                qualifier,
+                                                nil] autorelease];
+  }
 
   if (qualifier)
     fetchSpec = [EOFetchSpecification
