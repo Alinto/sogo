@@ -40,8 +40,7 @@
 
 @implementation iCalYearlyRecurrenceCalculator
 
-- (NSArray *)
- recurrenceRangesWithinCalendarDateRange: (NGCalendarDateRange *) _r
+- (NSArray *) recurrenceRangesWithinCalendarDateRange: (NGCalendarDateRange *) _r
 {
   NSMutableArray *ranges;
   NSArray *byMonth;
@@ -185,9 +184,22 @@
                       rStart = [referenceDate dateByAddingYears: 0
                                                          months: monthDiff
                                                            days: 0];
+
+
+                      //Due to the bug with dateByAddingYears, we have to take off one day (see line 133)
+                      rStart = [NSCalendarDate dateWithYear: [rStart yearOfCommonEra]
+                                        month: [rStart monthOfYear]
+                                          day: 0
+                                        hour: [rStart hourOfDay]
+                                      minute: [rStart minuteOfHour]
+                                      second: 0
+                                    timeZone: [rStart timeZone]];
+                      
                       rEnd = [rStart dateByAddingYears: 0
                                                 months: 0
                                                   days: [rStart numberOfDaysInMonth]];
+                      
+                      
                       rangeForMonth = [NGCalendarDateRange calendarDateRangeWithStartDate: rStart
                                                                                   endDate: rEnd];
                       rangesInMonth = [monthlyCalc recurrenceRangesWithinCalendarDateRange: rangeForMonth];

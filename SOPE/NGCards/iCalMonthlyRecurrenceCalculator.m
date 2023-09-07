@@ -180,8 +180,7 @@ static inline unsigned iCalDoWForNSDoW (int dow)
    * There's no GUI to defined such conditions, so there's no
    * problem for now.
    */
-- (NSArray *)
- recurrenceRangesWithinCalendarDateRange: (NGCalendarDateRange *) _r
+- (NSArray *) recurrenceRangesWithinCalendarDateRange: (NGCalendarDateRange *) _r
 {
   // TODO: check whether this is OK for multiday-events!
   NSMutableArray *ranges;
@@ -240,31 +239,31 @@ static inline unsigned iCalDoWForNSDoW (int dow)
     }
   
   if (byMonth && [byMonth count] > 0)
-     {
-       int i;
-       for (i = 0; i < 12; i++)
- 	byMonthList[i] = [byMonth containsObject: [NSString stringWithFormat: @"%i", i + 1]];
-     }
+  {
+    int i;
+    for (i = 0; i < 12; i++)
+ 	    byMonthList[i] = [byMonth containsObject: [NSString stringWithFormat: @"%i", i + 1]];
+  }  
 
   /* precalculate month days */
 
   if (byMonthDay)
-    {
-      NGMonthDaySet_fillWithByMonthDay (&byPositiveMonthDaySet, &byNegativeMonthDaySet, byMonthDay);
-    }
+  {
+    NGMonthDaySet_fillWithByMonthDay (&byPositiveMonthDaySet, &byNegativeMonthDaySet, byMonthDay);
+  }
   
   if (repeatCount > 0)
-    {
-      numberOfMonthsInRange  = [eventStartDate monthsBetweenDate: rEnd] + 1;
-    }
+  {
+    numberOfMonthsInRange  = [eventStartDate monthsBetweenDate: rEnd] + 1;
+  }
   else
-    {
-      diff = [eventStartDate monthsBetweenDate: rStart];
-      if ((diff != 0) && [rStart compare: eventStartDate] == NSOrderedAscending)
-	diff = -diff;
+  {
+    diff = [eventStartDate monthsBetweenDate: rStart];
+    if ((diff != 0) && [rStart compare: eventStartDate] == NSOrderedAscending)
+      diff = -diff;
 
-      numberOfMonthsInRange  = [rStart monthsBetweenDate: rEnd] + 1;
-    }
+    numberOfMonthsInRange  = [rStart monthsBetweenDate: rEnd] + 1;
+  }
 
   ranges = [NSMutableArray arrayWithCapacity: numberOfMonthsInRange];
   
@@ -292,172 +291,167 @@ static inline unsigned iCalDoWForNSDoW (int dow)
       monthIdxInRecurrence = diff + monthIdxInRange;
     
       if (monthIdxInRecurrence < 0)
-	continue;
+	      continue;
     
       /* first check whether we are in the interval */
 
       if ((monthIdxInRecurrence % interval) != 0)
-	continue;
+	      continue;
 
-      cursor = [referenceDate dateByAddingYears: 0
-					 months: monthIdxInRecurrence
-					   days: 0];
+      cursor = [referenceDate dateByAddingYears: 0 months: monthIdxInRecurrence days: 0];
       [cursor setTimeZone: timeZone];
       numDaysInMonth = [cursor numberOfDaysInMonth];
       
       /* check whether we match the BYMONTH constraint */
-    
       if (!byMonthList[[cursor monthOfYear] - 1])
-	continue;
+	      continue;
     
       /* check whether we match the BYMONTHDAY and BYDAY constraints */
-    
       didByFill = NO;
 
       if (byMonthDay)
-	{
-	  // Initialize the monthDays array with the positive days positions
-	  NGMonthDaySet_copyOrUnion (&monthDays, &byPositiveMonthDaySet, !didByFill);
+      {
+        // Initialize the monthDays array with the positive days positions
+        NGMonthDaySet_copyOrUnion (&monthDays, &byPositiveMonthDaySet, !didByFill);
 
-	  // Add to the array the days matching the negative days positions
-	  int i;
-	  for (i = 1; i <= 31; i++)
-	    if (byNegativeMonthDaySet[i])
-	      monthDays[numDaysInMonth - i + 1] = YES;
-	  didByFill = YES;
-	}
+        // Add to the array the days matching the negative days positions
+        int i;
+        for (i = 1; i <= 31; i++)
+          if (byNegativeMonthDaySet[i])
+            monthDays[numDaysInMonth - i + 1] = YES;
+        didByFill = YES;
+      }
     
       if (byDayMask)
-	{
-          if (!didByFill)
-            NGMonthDaySet_clear (&monthDays);
+      {
+        if (!didByFill)
+          NGMonthDaySet_clear (&monthDays);
 
-          if (bySetPos)
-            {
-              NSUInteger monthDay;
-              NSInteger currentPos;
-              iCalWeekDay currentWeekDay;
+        if (bySetPos)
+          {
+            NSUInteger monthDay;
+            NSInteger currentPos;
+            iCalWeekDay currentWeekDay;
 
-              currentWeekDay = [[cursor firstDayOfMonth] dayOfWeek];
-              currentPos = 1;
-              for (monthDay = 0; monthDay <= numDaysInMonth; monthDay++)
-                {
-                  if ([byDayMask occursOnDay: currentWeekDay])
-                    {
-                      if ([bySetPos containsObject:
-                                      [NSString stringWithFormat: @"%d", (int)currentPos]])
-                        monthDays[monthDay+1] = YES;
-                      currentPos++;
-                    }
-                  currentWeekDay = (currentWeekDay + 1) % 7;
-                }
+            currentWeekDay = [[cursor firstDayOfMonth] dayOfWeek];
+            currentPos = 1;
+            for (monthDay = 0; monthDay <= numDaysInMonth; monthDay++)
+              {
+                if ([byDayMask occursOnDay: currentWeekDay])
+                  {
+                    if ([bySetPos containsObject:
+                                    [NSString stringWithFormat: @"%d", (int)currentPos]])
+                      monthDays[monthDay+1] = YES;
+                    currentPos++;
+                  }
+                currentWeekDay = (currentWeekDay + 1) % 7;
+              }
 
-              currentWeekDay = [[cursor lastDayOfMonth] dayOfWeek];
-              currentPos = -1;
-              for (monthDay = numDaysInMonth; monthDay > 0; monthDay--)
-                {
-                  if ([byDayMask occursOnDay: currentWeekDay])
-                    {
-                      if ([bySetPos containsObject:
-                                      [NSString stringWithFormat: @"%d", (int)currentPos]])
-                        monthDays[monthDay] = YES;
-                      currentPos--;
-                    }
-                  if (currentWeekDay > 0)
-                    currentWeekDay--;
-                  else
-                    currentWeekDay = 6;
-                }
-            }
-          else
-            {
-              unsigned int firstDoWInMonth, currentWeekDay;
-              unsigned int weekDaysCount[7], currentWeekDaysCount[7];
-              int i, positiveOrder, negativeOrder;
+            currentWeekDay = [[cursor lastDayOfMonth] dayOfWeek];
+            currentPos = -1;
+            for (monthDay = numDaysInMonth; monthDay > 0; monthDay--)
+              {
+                if ([byDayMask occursOnDay: currentWeekDay])
+                  {
+                    if ([bySetPos containsObject:
+                                    [NSString stringWithFormat: @"%d", (int)currentPos]])
+                      monthDays[monthDay] = YES;
+                    currentPos--;
+                  }
+                if (currentWeekDay > 0)
+                  currentWeekDay--;
+                else
+                  currentWeekDay = 6;
+              }
+          }
+        else
+          {
+            unsigned int firstDoWInMonth, currentWeekDay;
+            unsigned int weekDaysCount[7], currentWeekDaysCount[7];
+            int i, positiveOrder, negativeOrder;
 
-              firstDoWInMonth = [[cursor firstDayOfMonth] dayOfWeek];
+            firstDoWInMonth = [[cursor firstDayOfMonth] dayOfWeek];
 
-              // Fill weekDaysCount to handle negative positions
-              currentWeekDay = firstDoWInMonth;
-              memset(weekDaysCount, 0, 7 * sizeof(unsigned int));
-              for (i = 1; i <= numDaysInMonth; i++)
-                {
-                  weekDaysCount[currentWeekDay]++;
-                  currentWeekDay = (currentWeekDay + 1) % 7;
-                }
+            // Fill weekDaysCount to handle negative positions
+            currentWeekDay = firstDoWInMonth;
+            memset(weekDaysCount, 0, 7 * sizeof(unsigned int));
+            for (i = 1; i <= numDaysInMonth; i++)
+              {
+                weekDaysCount[currentWeekDay]++;
+                currentWeekDay = (currentWeekDay + 1) % 7;
+              }
 
-              currentWeekDay = firstDoWInMonth;
-              memset(currentWeekDaysCount, 0, 7 * sizeof(unsigned int));
-              for (i = 1; i <= numDaysInMonth; i++)
-                {
-                  if (!didByFill || monthDays[i])
-                    {
-                      positiveOrder = currentWeekDaysCount[currentWeekDay] + 1;
-                      negativeOrder = currentWeekDaysCount[currentWeekDay] - weekDaysCount[currentWeekDay];
-                      monthDays[i] = (([byDayMask occursOnDay: (iCalWeekDay)currentWeekDay
-                                                  withWeekNumber: positiveOrder]) ||
-                                      ([byDayMask occursOnDay: (iCalWeekDay)currentWeekDay
-                                                  withWeekNumber: negativeOrder]));
-                    }
-                  currentWeekDaysCount[currentWeekDay]++;
-                  currentWeekDay = (currentWeekDay + 1) % 7;
-                }
-            }
-          didByFill = YES;
-	}
+            currentWeekDay = firstDoWInMonth;
+            memset(currentWeekDaysCount, 0, 7 * sizeof(unsigned int));
+            for (i = 1; i <= numDaysInMonth; i++)
+              {
+                if (!didByFill || monthDays[i])
+                  {
+                    positiveOrder = currentWeekDaysCount[currentWeekDay] + 1;
+                    negativeOrder = currentWeekDaysCount[currentWeekDay] - weekDaysCount[currentWeekDay];
+                    monthDays[i] = (([byDayMask occursOnDay: (iCalWeekDay)currentWeekDay
+                                                withWeekNumber: positiveOrder]) ||
+                                    ([byDayMask occursOnDay: (iCalWeekDay)currentWeekDay
+                                                withWeekNumber: negativeOrder]));
+                  }
+                currentWeekDaysCount[currentWeekDay]++;
+                currentWeekDay = (currentWeekDay + 1) % 7;
+              }
+          }
+        didByFill = YES;
+      }
     
       if (didByFill)
-	{
-	  if (diff + monthIdxInRange == 0)
-	    {
-	      // When dealing with the month of the first occurence, remove days
-	      // that occur before the first occurrence.
-              memset (monthDays, NO, sizeof (BOOL) * eventDayOfMonth);
-	      // The first occurrence must always be included.
-	      monthDays[eventDayOfMonth] = YES;
-	    }
-	}
+      {
+        if (diff + monthIdxInRange == 0)
+          {
+            // When dealing with the month of the first occurence, remove days
+            // that occur before the first occurrence.
+                  memset (monthDays, NO, sizeof (BOOL) * eventDayOfMonth);
+            // The first occurrence must always be included.
+            monthDays[eventDayOfMonth] = YES;
+          }
+      }
       else
-	{
-	  // No rules applied, take the dayOfMonth of the startDate
-	  NGMonthDaySet_clear (&monthDays);
-	  monthDays[eventDayOfMonth] = YES;
-	}
+      {
+        // No rules applied, take the dayOfMonth of the startDate
+        NGMonthDaySet_clear (&monthDays);
+        monthDays[eventDayOfMonth] = YES;
+      }
     
       /* 
-	 Next step is to create NSCalendarDate instances from our 'monthDays'
-	 set. We walk over each day of the 'monthDays' set. If its flag isn't
-	 set, we continue.
-	 If its set, we add the date to the instance.
-       
-	 The 'cursor' is the *startdate* of the event (not necessarily a
-	 component of the sequence!) plus the currently processed month.
-	 Eg: 
-         startdate: 2007-01-30
-	 cursor[1]: 2007-01-30
-	 cursor[2]: 2007-02-28 <== Note: we have February!
+      Next step is to create NSCalendarDate instances from our 'monthDays'
+      set. We walk over each day of the 'monthDays' set. If its flag isn't
+      set, we continue.
+      If its set, we add the date to the instance.
+          
+      The 'cursor' is the *startdate* of the event (not necessarily a
+      component of the sequence!) plus the currently processed month.
+      Eg: 
+            startdate: 2007-01-30
+      cursor[1]: 2007-01-30
+      cursor[2]: 2007-02-28 <== Note: we have February!
       */
-    
       for (dom = 1, doCont = YES; dom <= numDaysInMonth && doCont; dom++)
-	{
-	  NSCalendarDate *start;
-      
-	  if (!monthDays[dom])
-	    continue;
+      {
+        NSCalendarDate *start;
+          
+        if (!monthDays[dom])
+          continue;
 
-	  start = [cursor dateByAddingYears: 0 months: 0 days: (dom - 1)];
-	  doCont = [self _addInstanceWithStartDate: start
-					 limitDate: until
-					limitRange: _r
-					   toArray: ranges];
-	  //NSLog(@"*** MONTHLY [%i/%i] adding %@%@ (count = %i)", dom, numDaysInMonth, start, (doCont?@"":@" .. NOT!"), count);
-	  if (repeatCount > 0)
-	    {
-	      count++;
-	      //NSLog(@"MONTHLY count = %i/%i", count, repeatCount);
-	      doCont = (count < repeatCount);
-	    }
-	}
+        start = [cursor dateByAddingYears: 0 months: 0 days: (dom - 1)];
+        doCont = [self _addInstanceWithStartDate: start
+                                       limitDate: until
+                                      limitRange: _r
+                                         toArray: ranges];
+        //NSLog(@"*** MONTHLY [%i/%i] adding %@%@ (count = %i)", dom, numDaysInMonth, start, (doCont?@"":@" .. NOT!"), count);
+        if (repeatCount > 0)
+          {
+            count++;
+            //NSLog(@"MONTHLY count = %i/%i", count, repeatCount);
+            doCont = (count < repeatCount);
+          }
+      }
       if (!doCont) break; /* reached some limit */
     }
   return ranges;

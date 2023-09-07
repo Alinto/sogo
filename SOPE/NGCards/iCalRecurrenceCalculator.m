@@ -110,7 +110,7 @@ static Class yearlyCalcClass  = Nil;
 
 /* complex calculation convenience */
 
-+ (void)    _fillRanges: (NSMutableArray *) ranges
++ (void)  _fillRanges: (NSMutableArray *) ranges
               fromRules: (NSArray *) rrules
 	    withinRange: (NGCalendarDateRange *) limits
        startingWithDate: (NGCalendarDateRange *) first
@@ -121,17 +121,14 @@ static Class yearlyCalcClass  = Nil;
 
   rules = [rrules objectEnumerator];
   while ((currentRule = [rules nextObject]))
-    {
-      if ([currentRule isKindOfClass: NSStringClass])
-	currentRule =
-	  [iCalRecurrenceRule
-	    recurrenceRuleWithICalRepresentation: (NSString *) currentRule];
+  {
+    if ([currentRule isKindOfClass: NSStringClass])
+	    currentRule = [iCalRecurrenceRule recurrenceRuleWithICalRepresentation: (NSString *) currentRule];
 
-      calc = [self recurrenceCalculatorForRecurrenceRule: currentRule
-		   withFirstInstanceCalendarDateRange: first];
-      [ranges addObjectsFromArray:
-		[calc recurrenceRangesWithinCalendarDateRange: limits]];
-    }
+    calc = [self recurrenceCalculatorForRecurrenceRule: currentRule
+		                withFirstInstanceCalendarDateRange: first];
+    [ranges addObjectsFromArray: [calc recurrenceRangesWithinCalendarDateRange: limits]];
+  }
 }
 
 + (void)    _fillRanges: (NSMutableArray *) ranges
@@ -249,8 +246,7 @@ static Class yearlyCalcClass  = Nil;
   }
 }
 
-+ (NSArray *)
- recurrenceRangesWithinCalendarDateRange: (NGCalendarDateRange *) _r
++ (NSArray *) recurrenceRangesWithinCalendarDateRange: (NGCalendarDateRange *) _r
 	  firstInstanceCalendarDateRange: (NGCalendarDateRange *) _fir
 			 recurrenceRules: (NSArray *) _rRules
 			  exceptionRules: (NSArray *) _exRules
