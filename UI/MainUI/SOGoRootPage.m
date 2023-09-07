@@ -494,9 +494,8 @@ static const NSString *kJwtKey = @"jwt";
     }
   else
     {
-      newLocation
-        = [SOGoCASSession CASURLWithAction: @"login"
-                             andParameters: [self _casRedirectKeys]];
+      newLocation = [SOGoCASSession CASURLWithAction: @"login"
+                                       andParameters: [self _casRedirectKeys]];
       casLocationCookie = [self _authLocationCookie: NO
                                            withName: @"cas-location"];
     }

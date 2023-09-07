@@ -54,6 +54,10 @@
 
 #import "SOGoCache.h"
 
+#ifdef HAVE_OPENSSL
+#include <openssl/sha.h>
+#endif
+
 /* Those used to be ivars but were converted to static globals to work around
    a bug in GCC that prevent SOGo from using libmemcached > 0.37:
 
@@ -599,9 +603,32 @@ static memcached_st *handle = NULL;
               forKey: theLogin];
 }
 
+
 //
 // CAS session support
 //
+
+- (NSString *) sha512HashTicket: (NSString* ) ticket
+{
+  int i;
+  NSMutableString *hashedTicket;
+
+#if defined(HAVE_OPENSSL)
+  unsigned char hash[SHA512_DIGEST_LENGTH] = {};
+  const unsigned char *data = (const unsigned char *) [ticket UTF8String];
+  SHA512(data, strlen((char *)data), hash);
+  
+  hashedTicket = [NSMutableString stringWithCapacity:SHA512_DIGEST_LENGTH * 2];
+  for( i = 0; i < SHA512_DIGEST_LENGTH; i++) {
+    [hashedTicket appendFormat:@"%02x", hash[i]];
+  }
+#endif
+  if(!hashedTicket)
+    return ticket;
+  return [NSString stringWithString:hashedTicket];
+}
+
+
 - (NSString *) CASTicketFromIdentifier: (NSString *) identifier
 {
   return [self valueForKey: [NSString stringWithFormat: @"cas-id:%@",
@@ -610,8 +637,9 @@ static memcached_st *handle = NULL;
 
 - (NSString *) CASSessionWithTicket: (NSString *) ticket
 {
+  //Ticket can be more than 255 char so we hashed it to avoid memcached key limit
   return [self valueForKey: [NSString stringWithFormat: @"cas-ticket:%@",
-                                        ticket]];
+                                        [self sha512HashTicket: ticket]]];
 }
 
 - (void) setCASSession: (NSString *) casSession
@@ -621,14 +649,14 @@ static memcached_st *handle = NULL;
   [self setValue: ticket
           forKey: [NSString stringWithFormat: @"cas-id:%@", identifier]];
   [self setValue: casSession
-          forKey: [NSString stringWithFormat: @"cas-ticket:%@", ticket]];
+          forKey: [NSString stringWithFormat: @"cas-ticket:%@", [self sha512HashTicket: ticket]]];
 }
 
 - (NSString *) CASPGTIdFromPGTIOU: (NSString *) pgtIou
 {
   NSString *casPgtId, *key;
 
-  key = [NSString stringWithFormat: @"cas-pgtiou:%@", pgtIou];
+  key = [NSString stringWithFormat: @"cas-pgtiou:%@", [self sha512HashTicket: pgtIou]];
   casPgtId = [self valueForKey: key];
   /* we directly remove the value as it can only be used once anyway */
   if (casPgtId)
@@ -641,7 +669,7 @@ static memcached_st *handle = NULL;
            forPGTIOU: (NSString *) pgtIou
 {
   [self setValue: pgtId
-          forKey: [NSString stringWithFormat: @"cas-pgtiou:%@", pgtIou]];
+          forKey: [NSString stringWithFormat: @"cas-pgtiou:%@", [self sha512HashTicket: pgtIou]]];
 }
 
 - (void) removeCASSessionWithTicket: (NSString *) ticket
@@ -649,7 +677,7 @@ static memcached_st *handle = NULL;
   NSString *key, *session;
   if ((session = [self CASSessionWithTicket: ticket]))
     {
-      key = [NSString stringWithFormat: @"cas-ticket:%@", ticket];
+      key = [NSString stringWithFormat: @"cas-ticket:%@", [self sha512HashTicket: ticket]];
       [self removeValueForKey: key];
       [self debugWithFormat: @"Removed CAS session: %@", session];
     }

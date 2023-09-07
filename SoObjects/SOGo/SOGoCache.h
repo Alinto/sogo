@@ -106,6 +106,7 @@
 //
 // CAS support
 //
+- (NSString *) sha512HashTicket: (NSString* ) ticket;
 - (NSString *) CASTicketFromIdentifier: (NSString *) identifier;
 - (NSString *) CASSessionWithTicket: (NSString *) ticket;
 - (void) setCASSession: (NSString *) casSession
