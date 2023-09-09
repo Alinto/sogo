@@ -400,8 +400,7 @@
 
   application = [WOApplication application];
   request = [[application context] request];
-  pgtURL = [NSString stringWithFormat: @"https://%@/%@/casProxy",
-                     [soURL host], [request applicationName]];
+  pgtURL = [NSString stringWithFormat: @"%@casProxy", [soURL absoluteString]];
 
   return pgtURL;
 }
