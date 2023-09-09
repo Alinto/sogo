@@ -33,9 +33,11 @@ import sys
 config = { "cas-addr": "127.0.0.1",
            "memcached-addrs": ["127.0.0.1:11211"] }
 
+
+
 class CASProxyValidator:
     def run(self):
-        if os.environ.has_key("GATEWAY_INTERFACE"):
+        if "GATEWAY_INTERFACE" in os.environ:
             self._runAsCGI()
         else:
             self._runAsCmd()
@@ -43,19 +45,19 @@ class CASProxyValidator:
     def _runAsCGI(self):
         if self._cgiChecks():
             form = cgi.FieldStorage()
-	    if form.list == []:
-		message = "Empty parameters : assuming cert. validation"
-		self._printCGIError(message, 200)
-		return
-            if form.has_key("pgtId") and form.has_key("pgtIou"):
-                pgtIou = form.getfirst("pgtIou")
-                pgtId = form.getfirst("pgtId")
-                self._registerPGTIdAndIou(pgtIou, pgtId)
-                message = "'%s' set to '%s'" \
-                          % ("cas-pgtiou:%s" % pgtIou, pgtId)
-                self._printCGIError(message, 200)
-            else:
-                self._printCGIError("Missing parameter.")
+        if form.list == []:
+            message = "Empty parameters : assuming cert. validation"
+            self._printCGIError(message, 200)
+            return
+        if form.has_key("pgtId") and form.has_key("pgtIou"):
+            pgtIou = form.getfirst("pgtIou")
+            pgtId = form.getfirst("pgtId")
+            self._registerPGTIdAndIou(pgtIou, pgtId)
+            message = "'%s' set to '%s'" \
+                        % ("cas-pgtiou:%s" % pgtIou, pgtId)
+            self._printCGIError(message, 200)
+        else:
+            self._printCGIError("Missing parameter.")
 
     def _cgiChecks(self):
         rc = False
@@ -71,17 +73,14 @@ class CASProxyValidator:
         return rc
 
     def _printCGIError(self, message, code = 403):
-        print("Status: %d\n"
-              "Content-Type: text/plain; charset=utf-8\n\n%s"
-              % (code, message))
+        print("Status: %d\nContent-Type: text/plain; charset=utf-8\n\n%s" % (code, message))
 
     def _runAsCmd(self):
         if len(sys.argv) == 3:
             self._registerPGTIdAndIou(sys.argv[1], sys.argv[2])
-            print "set '%s' to '%s'" \
-                  % ("cas-pgtiou:%s" % sys.argv[1], sys.argv[2])
+            print("set '%s' to '%s'" % ("cas-pgtiou:%s" % sys.argv[1], sys.argv[2]))
         else:
-            raise Exception, "Missing or too many parameters."
+            raise Exception("Missing or too many parameters.")
 
     def _registerPGTIdAndIou(self, pgtIou, pgtId):
         mc = memcache.Client(config["memcached-addrs"])
