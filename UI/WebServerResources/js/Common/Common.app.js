@@ -343,7 +343,11 @@
           else {
             $state = $injector.get('$state');
             angular.element($window).off('beforeunload');
-            $window.location.href = $window.ApplicationBaseURL + $state.href($state.current);
+            if ($state.href($state.current)) {
+              $window.location.href = $window.ApplicationBaseURL + $state.href($state.current);
+            } else {
+              $window.location.href = $window.ApplicationBaseURL;
+            }
             return $q.reject();
           }
         }
