@@ -1149,10 +1149,12 @@ andAttribute: (EOAttribute *)_attribute
           startDate = [theComponent startDate];
           t = [startDate timeIntervalSince1970];
           if (startDate) {
-            if (t < (long long)INT_MAX && t > (long long)INT_MIN)
+            if (t < (long long)INT_MAX && t > (long long)INT_MIN) {
               [quickRow setObject:[NSNumber numberWithInt: t] forKey:@"c_startdate"];
-            else
+            } else {
+              [self errorWithFormat:@"Unexpected value. Invalid start date for timestamp %f", t];
               [quickRow setObject:[NSNumber numberWithInt: 0] forKey:@"c_startdate"];
+            }
           }
         }
       
