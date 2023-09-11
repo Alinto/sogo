@@ -1410,10 +1410,14 @@ static NSArray *reminderValues = nil;
             for (identity in previousIdentities) {
               if ([newIdentitiesAsDict objectForKey: [identity objectForKey:@"email"]]) {
                   [identity setObject: [[newIdentitiesAsDict objectForKey: [identity objectForKey:@"email"]] objectForKey:@"fullName"] forKey: @"fullName"];
-                  if ([identity objectForKey:@"signature"]) {
+                  if (newIdentitiesAsDict 
+                      && [newIdentitiesAsDict objectForKey: [identity objectForKey:@"email"]] 
+                      && [[newIdentitiesAsDict objectForKey: [identity objectForKey:@"email"]] objectForKey:@"signature"]) {
                     [identity setObject: [[newIdentitiesAsDict objectForKey: [identity objectForKey:@"email"]] objectForKey:@"signature"] forKey: @"signature"];
                   }
-                  if ([[newIdentitiesAsDict objectForKey: [identity objectForKey:@"email"]] objectForKey:@"isDefault"]) {
+                  if (newIdentitiesAsDict 
+                      && [newIdentitiesAsDict objectForKey: [identity objectForKey:@"email"]] 
+                      && [[newIdentitiesAsDict objectForKey: [identity objectForKey:@"email"]] objectForKey:@"isDefault"]) {
                     [identity setObject: [NSNumber numberWithBool: YES] forKey: @"isDefault"];
                   } else {
                     [identity setObject: [NSNumber numberWithBool: NO] forKey: @"isDefault"];
