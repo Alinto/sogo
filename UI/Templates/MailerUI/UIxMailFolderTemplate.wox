@@ -201,6 +201,7 @@
           <md-icon>select_all</md-icon>
         </md-button>
         <md-button class="sg-icon-button" ng-click="mailbox.confirmDeleteSelectedMessages($event)">
+          <md-tooltip md-direction="bottom"><var:string label:value="Delete selected message or folder"/></md-tooltip>
           <md-icon>delete</md-icon>
         </md-button>
         <md-button class="sg-icon-button" ng-click="mailbox.markOrUnMarkMessagesAsJunk()">
