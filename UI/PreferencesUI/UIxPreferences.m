@@ -1748,7 +1748,7 @@ static NSArray *reminderValues = nil;
           dd = [[context activeUser] domainDefaults];
 
           // We check if the Sieve server is available *ONLY* if at least one of the option is enabled
-          if (([dd sieveScriptsEnabled] || [dd vacationEnabled] || [dd forwardEnabled] || [dd notificationEnabled]) 
+          if (!([dd sieveScriptsEnabled] || [dd vacationEnabled] || [dd forwardEnabled] || [dd notificationEnabled]) 
                   || [self _isSieveServerAvailable])
             {
               BOOL forceActivation = ![[v objectForKey: @"hasActiveExternalSieveScripts"] boolValue];
