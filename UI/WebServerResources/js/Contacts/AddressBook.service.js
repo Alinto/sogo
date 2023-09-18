@@ -746,7 +746,7 @@
 
   /**
    * @function downloadProvisioningProfile
-   * @memberof Calendar.prototype
+   * @memberof AddressBook.prototype
    * @desc Download provisioning profile for Apple's devices
    * @returns a promise of the HTTP operation
    */
