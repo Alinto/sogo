@@ -36,6 +36,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserSettings.h>
+#import <SOGo/SOGoMobileProvision.h>
 
 #import <SOGoUI/SOGoAptFormatter.h>
 
@@ -655,6 +656,31 @@
   r = [self redirectToLocation: loc];
   [uri release];
   return r;
+}
+
+- (WOResponse *) mobileconfigAction
+{
+  SOGoAppointmentFolders *folders;
+  NSString *davURL, *plistContent, *disposition;
+  WOResponse *response;
+
+  folders = [self clientObject];
+  davURL = [[folders container] davURLAsString];
+  plistContent = [SOGoMobileProvision plistForCalendarsWithContext: context andPath: davURL];
+ 
+  if (nil != plistContent) {
+    response = [self responseWithStatus: 200
+                            andString: plistContent];
+    [response setHeader: @"application/x-plist; charset=utf-8" 
+                forKey: @"content-type"];
+    disposition = [NSString stringWithString: @"attachment; filename=\"calendar.mobileconfig\""];
+    [response setHeader: disposition forKey: @"Content-Disposition"];
+  } else {
+    response = [self responseWithStatus: 500
+                            andString: @"Error while generating profile"];
+  }
+
+  return response;
 }
 
 @end /* UIxCalView */

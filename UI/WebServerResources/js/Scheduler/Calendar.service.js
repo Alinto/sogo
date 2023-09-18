@@ -577,6 +577,23 @@
   };
 
   /**
+   * @function downloadProvisioningProfile
+   * @memberof Calendar.prototype
+   * @desc Download provisioning profile for Apple's devices
+   * @returns a promise of the HTTP operation
+   */
+  Calendar.prototype.downloadProvisioningProfile = function () {
+    var options;
+
+    options = {
+      type: 'application/octet-stream',
+      filename: 'calendar.mobileconfig'
+    }
+
+    return Calendar.$$resource.open('', 'mobileconfig', null, options);
+  };
+
+  /**
    * @function $setActivation
    * @memberof Calendar.prototype
    * @desc Either activate or deactivate the calendar.

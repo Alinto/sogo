@@ -93,7 +93,9 @@ SOGo_HEADER_FILES = \
 	\
 	JWT.h	\
 	\
-	NGMimeBodyPart+SOGo.h
+	NGMimeBodyPart+SOGo.h \
+	\
+	SOGoMobileProvision.h
 
 all::
 	@touch SOGoBuild.m
@@ -180,7 +182,9 @@ SOGo_OBJC_FILES = \
 	\
 	JWT.m	\
 	\
-	NGMimeBodyPart+SOGo.m
+	NGMimeBodyPart+SOGo.m \
+	\
+	SOGoMobileProvision.m
 
 SOGo_C_FILES += lmhash.c aes.c crypt_blowfish.c pkcs5_pbkdf2.c
 

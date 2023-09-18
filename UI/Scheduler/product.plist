@@ -137,6 +137,11 @@
           protectedBy = "View";
           pageName    = "UIxReminderEditor";
         };
+        mobileconfig = {
+          protectedBy = "Access Contents Information";
+          actionClass = "UIxCalView";
+          actionName  = "mobileconfig";
+        };
       };
     };
 

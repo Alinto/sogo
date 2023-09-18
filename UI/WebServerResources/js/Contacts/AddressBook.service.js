@@ -745,6 +745,23 @@
   };
 
   /**
+   * @function downloadProvisioningProfile
+   * @memberof Calendar.prototype
+   * @desc Download provisioning profile for Apple's devices
+   * @returns a promise of the HTTP operation
+   */
+  AddressBook.prototype.downloadProvisioningProfile = function () {
+    var options;
+
+    options = {
+      type: 'application/octet-stream',
+      filename: 'addressbook.mobileconfig'
+    }
+
+    return AddressBook.$$resource.open('', 'mobileconfig', null, options);
+  };
+
+  /**
    * @function $unwrap
    * @memberof AddressBook.prototype
    * @desc Unwrap a promise and instanciate new Card objects using received data.

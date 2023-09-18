@@ -193,6 +193,7 @@
 "Work" = "Work";
 "Mobile" = "Mobile";
 "Pager" = "Pager";
+"Download configuration profile" = "Download configuration profile";
 
 /* categories */
 "contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
