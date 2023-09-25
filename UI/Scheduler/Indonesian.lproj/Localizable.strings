@@ -565,6 +565,7 @@ vtodo_class2 = "(Tugas Rahasia)";
 "CalDAV URL" = "CalDAV URL ";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
+"Copy to clipboard" = "Copy to clipboard";
 
 /* Error messages */
 "dayFieldInvalid" = "Silahkan tetapkan sebuah nilai nomor dalam bidang hari yang lebih besar atau sepadan dengan 1.";

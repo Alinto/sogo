@@ -445,6 +445,8 @@
 "Back" = "Kembali";
 "Copy messages" = "Salin Pesan";
 "More messages options" = "Pilihan pesan lainya";
+"Flag" = "Bendera";
+"Unflag" = "Unflag";
 "Mark as Unread" = "Tandai sebagai belum dibaca";
 "Mark as Read" = "Tandai sebagai sudah dibaca";
 "Closing Window ..." = "Menutup Jendela...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "Email anda telah disimpan";
 "Your email has been sent" = "Email anda telah dikirim";
 "Folder compacted" = "Folder Dikompaksi";
+
+"More Options" = "More Options";
 
 "New draft" = "New draft";
 "Create new draft with this template" = "Create new draft with this template";
