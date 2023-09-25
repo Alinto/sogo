@@ -24,6 +24,7 @@
 "Vacation" = "Gwyliau";
 "Forward" = "Anfon ymlaen";
 "Password" = "Cyfrinair";
+"Notification" = "Notification";
 "Categories" = "Categorïau";
 "Appointments invitations" = "Gwahoddiadau apwyntiadau";
 "Name" = "Enw";
@@ -45,6 +46,7 @@
 "Days between responses" = "Diwrnodau rhwng ymatebion";
 "Do not send responses to mailing lists" = "Peidio anfon ymatebion i restrau postio";
 "Activation Constraints" = "Activation Constraints";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences";
 "Enable auto reply on" = "Galluogi ateb awtomatig ymlaen";
 "First day of vacation" = "First day of vacation";
 "Disable auto reply after" = "Disable auto reply after";
@@ -78,6 +80,11 @@
 "You are not allowed to forward your messages to an external email address." = "Chewch chi ddim anfon eich negeseuon ymlaen i gyfeiriad e-bost allanol.";
 "You are not allowed to forward your messages to an internal email address." = "Chewch chi ddim anfon eich negeseuon ymlaen i gyfeiriad e-bost mewnol.";
 "You are not allowed to forward your messages to this domain:" = "You are not allowed to forward your messages to this domain:";
+
+/* notification */
+"Notify incoming messsages" = "Notify incoming messsages";
+"Notification Message Sent" = "Notification message sent";
+"Notification Message" = "Notification of new message on %{0}";
 
 /* d & t */
 "Time Zone" = "Time Zone";
@@ -194,6 +201,9 @@
 "Compose messages in" = "Cyfansoddi negeseuon mewn";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Testun plaen";
+"Insert signature on new message" = "Insert signature on new message";
+"Insert signature on reply" = "Insert signature on reply";
+"Insert signature on forward" = "Insert signature on forward";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Maint ffont diofyn";
@@ -247,6 +257,7 @@
 "Digitally sign the message by default" = "Digitally sign the message by default";
 "Always try to encrypt the message" = "Always try to encrypt the message";
 "An error occurred while importing the certificate. Verify your password." = "An error occurred while importing the certificate. Verify your password.";
+"Data too big. Please contact technical support." = "Data too big. Please contact technical support.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Paramedrau Ychwanegol";
@@ -260,7 +271,7 @@
 "POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
 "POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
 "POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0} special symbols";
 "POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
 
 
@@ -309,6 +320,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
+"Galician" = "Galician";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -405,6 +417,7 @@
 
 "Keep the message" = "Cadw'r neges";
 "Forward the message to" = "Anfon y neges ymlaen i";
+"Notify the message to" = "Notify the message to";
 
 /* Input field label of "forward" mail filter action */
 "Email" = "E-bost";

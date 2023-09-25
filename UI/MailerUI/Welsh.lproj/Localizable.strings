@@ -445,6 +445,8 @@
 "Back" = "Yn ôl";
 "Copy messages" = "Copïo negeseuon";
 "More messages options" = "Rhagor o ddewisiadau negeseuon";
+"Flag" = "Fflag";
+"Unflag" = "Unflag";
 "Mark as Unread" = "Marcio ei fod heb ei ddarllen";
 "Mark as Read" = "Marcio ei fod wedi'i ddarllen";
 "Closing Window ..." = "Yn Cau'r Ffenest ...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "Cafodd eich e-bost ei gadw";
 "Your email has been sent" = "Cafodd eich e-bost ei anfon";
 "Folder compacted" = "Ffolder wedi'i chywasgu";
+
+"More Options" = "More Options";
 
 "New draft" = "New draft";
 "Create new draft with this template" = "Create new draft with this template";
