@@ -445,6 +445,8 @@
 "Back" = "Terug";
 "Copy messages" = "Kopieer berichten";
 "More messages options" = "Meer berichtopties";
+"Flag" = "Met vlag";
+"Unflag" = "Unflag";
 "Mark as Unread" = "Als ongelezen markeren";
 "Mark as Read" = "Markeren als gelezen";
 "Closing Window ..." = "Venster sluiten ...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "Uw email is opgeslagen";
 "Your email has been sent" = "Uw email is verzonden";
 "Folder compacted" = "Map gecomprimeerd";
+
+"More Options" = "More Options";
 
 "New draft" = "Nieuw concept";
 "Create new draft with this template" = "Maak een nieuw concept met dit sjabloon";

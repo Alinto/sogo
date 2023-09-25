@@ -565,6 +565,7 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "CalDAV URL" = "CalDAV-URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
+"Copy to clipboard" = "Copy to clipboard";
 
 /* Error messages */
 "dayFieldInvalid" = "Vul een numerieke waarde in het veld Dagen in groter dan of gelijk aan 1.";
