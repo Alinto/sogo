@@ -445,6 +445,8 @@
 "Back" = "Vissza";
 "Copy messages" = "Üzenetek másolása";
 "More messages options" = "További üzenet tulajdonságok";
+"Flag" = "Csillag hozzáadása";
+"Unflag" = "Kijelölést megszüntet";
 "Mark as Unread" = "Megelölés olvasatlanként";
 "Mark as Read" = "Megjelölés olvasottként";
 "Closing Window ..." = "Ablak bezárása ...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "Üzenete mentésre került";
 "Your email has been sent" = "Üzenete elküldve";
 "Folder compacted" = "Mappa tömörítve";
+
+"More Options" = "További tulajdonságok";
 
 "New draft" = "Új piszkozat";
 "Create new draft with this template" = "Új piszkozat létrehozása ezzel a sablonnal";

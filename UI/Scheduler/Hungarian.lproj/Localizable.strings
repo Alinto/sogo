@@ -38,7 +38,7 @@
 "Previous Month" = "Előző hónap";
 "Next Month" = "Következő hónap";
 /* Week number prefix */
-"W" = "W";
+"W" = "H";
 
 /* Year */
 "this year" = "aktuális év";
@@ -565,6 +565,7 @@ vtodo_class2 = "(Bizalmas feladat)";
 "CalDAV URL" = "CalDAV URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
+"Copy to clipboard" = "Másolás a vágólapra";
 
 /* Error messages */
 "dayFieldInvalid" = "Kérem adjon meg egy számértéket a Napok mezőben, amely egyenlő vagy nagyobb, mint 1.";

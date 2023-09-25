@@ -24,6 +24,7 @@
 "Vacation" = "Távollét";
 "Forward" = "Továbbítás";
 "Password" = "Jelszó";
+"Notification" = "Értesítés";
 "Categories" = "Kategóriák";
 "Appointments invitations" = "Találkozó meghívók";
 "Name" = "Név";
@@ -45,9 +46,10 @@
 "Days between responses" = "Válaszok között eltelt napok száma";
 "Do not send responses to mailing lists" = "Levelező listákra válasz mellőzése";
 "Activation Constraints" = "Aktiválás kényszerek";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Testreszabhatja a napok és órák tartományait önállóan, és opcionálisan kombinálhatja őket bizonyos hétköznapokkal, hogy a távollét szűrőket az Ön preferenciáihoz igazítsa.";
 "Enable auto reply on" = "Automatikus válasz engedélyezése";
 "First day of vacation" = "Távollét első napja";
-"Disable auto reply after" = "Disable auto reply after";
+"Disable auto reply after" = "Automatikus válasz tiltása ettől az időponttól";
 "Last day of vacation" = "Távollét utolsó napja";
 "Enter date" = "Adja meg a dátumot";
 /* Enable auto reply at this time of the day */
@@ -78,6 +80,11 @@
 "You are not allowed to forward your messages to an external email address." = "Ön számára nem endélyezett az üzenetek továbbítása külső email címre.";
 "You are not allowed to forward your messages to an internal email address." = "Ön számára nem endélyezett az üzenetek továbbítása belső email címre.";
 "You are not allowed to forward your messages to this domain:" = "Ön számára nem engedélyezett az üzenetek továbbítása ebbe a tartományba:";
+
+/* notification */
+"Notify incoming messsages" = "Értesítés bejövő üzenetekről";
+"Notification Message Sent" = "Értesítő üzenet elküldve";
+"Notification Message" = "Értesítés új üzenetekről %{0}";
 
 /* d & t */
 "Time Zone" = "Időzóna";
@@ -194,6 +201,9 @@
 "Compose messages in" = "Üzenet formátuma";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Egyszerű szöveg";
+"Insert signature on new message" = "Aláírás beszúrása új levél esetén";
+"Insert signature on reply" = "Aláírás beszúrása válasz esetén";
+"Insert signature on forward" = "Aláírás beszúrása továbbítás esetén";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Alapértelmezett betűméret";
@@ -247,6 +257,7 @@
 "Digitally sign the message by default" = "Alapértelmezés szerint digitálisan aláírja az üzenetet";
 "Always try to encrypt the message" = "Mindig titkosítani próbálja az üzenetet";
 "An error occurred while importing the certificate. Verify your password." = "Hiba történt a tanúsítvány importálása során. Ellenőrizze a jelszót.";
+"Data too big. Please contact technical support." = "Túl nagy adat. Kérjük vegye fel a kapcsolatot a technikai támogatóval.";
 
 /* Additional Parameters */
 "Additional Parameters" = "További beállítások";
@@ -309,6 +320,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
+"Galician" = "Galíciai";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -405,6 +417,7 @@
 
 "Keep the message" = "Üzenet megtartása";
 "Forward the message to" = "Üzenet továbbítása erre a címre";
+"Notify the message to" = "Értesítés az üzenetről erre a címre";
 
 /* Input field label of "forward" mail filter action */
 "Email" = "Email cím";
