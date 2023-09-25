@@ -565,6 +565,7 @@ vtodo_class2 = "(Sarcină confidenţială)";
 "CalDAV URL" = "URL CalDAV";
 "WebDAV ICS URL" = "URL WebDAV ICS";
 "WebDAV XML URL" = "URL WebDAV XML";
+"Copy to clipboard" = "Copy to clipboard";
 
 /* Error messages */
 "dayFieldInvalid" = "În câmpul Zile trebuie o valoare numerică mai mare sau egală cu 1.";

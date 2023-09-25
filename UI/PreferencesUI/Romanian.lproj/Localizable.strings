@@ -24,6 +24,7 @@
 "Vacation" = "Vacanță";
 "Forward" = "Retrimitere";
 "Password" = "Parola";
+"Notification" = "Notification";
 "Categories" = "Categorii";
 "Appointments invitations" = "Invitațiile întâlnirii";
 "Name" = "Nume";
@@ -45,6 +46,7 @@
 "Days between responses" = "Numărul de zile dintre răspunsuri";
 "Do not send responses to mailing lists" = "Nu răspundeți la mesajele de la liste de discuții";
 "Activation Constraints" = "Activation Constraints";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences";
 "Enable auto reply on" = "Activare răspuns automat pe";
 "First day of vacation" = " Prima zi de vacanță";
 "Disable auto reply after" = "Disable auto reply after";
@@ -78,6 +80,11 @@
 "You are not allowed to forward your messages to an external email address." = "Nu aveți permisiunea de a transmite mesajele către o adresă de e-mail externă.";
 "You are not allowed to forward your messages to an internal email address." = "Nu aveți permisiunea de a transmite mesajele către o adresă de e-mail internă.";
 "You are not allowed to forward your messages to this domain:" = "Nu aveți voie să trimiteți mesajele dvs. către acest domeniu:";
+
+/* notification */
+"Notify incoming messsages" = "Notify incoming messsages";
+"Notification Message Sent" = "Notification message sent";
+"Notification Message" = "Notification of new message on %{0}";
 
 /* d & t */
 "Time Zone" = "Time Zone";
@@ -194,6 +201,9 @@
 "Compose messages in" = "Compunere mesaj în";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Text";
+"Insert signature on new message" = "Insert signature on new message";
+"Insert signature on reply" = "Insert signature on reply";
+"Insert signature on forward" = "Insert signature on forward";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Marime font implicită";
@@ -247,6 +257,7 @@
 "Digitally sign the message by default" = "Semnează digital mesajul în mod implicit";
 "Always try to encrypt the message" = "Întotdeauna încearcă criptarea mesajului";
 "An error occurred while importing the certificate. Verify your password." = " A apărut o eroare la importul certificatului. Verificați parola.";
+"Data too big. Please contact technical support." = "Data too big. Please contact technical support.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Parametri adiționali";
@@ -260,7 +271,7 @@
 "POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
 "POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
 "POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0} special symbols";
 "POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
 
 
@@ -309,6 +320,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
+"Galician" = "Galician";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -405,6 +417,7 @@
 
 "Keep the message" = "Păstrează mesajul";
 "Forward the message to" = "Redirecționează mesajul la";
+"Notify the message to" = "Notify the message to";
 
 /* Input field label of "forward" mail filter action */
 "Email" = "Email";

@@ -445,6 +445,8 @@
 "Back" = "Înapoi";
 "Copy messages" = "Copiere mesaje";
 "More messages options" = "Mai multe opțiuni";
+"Flag" = "Marcaj";
+"Unflag" = "Unflag";
 "Mark as Unread" = "Marcare ca Necitit";
 "Mark as Read" = "Marcare ca citit";
 "Closing Window ..." = "Închid Fereastra ...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "Emailul dumneavoastră a fost salvat";
 "Your email has been sent" = "Emailul dumneavoastră a fost trimis";
 "Folder compacted" = "Folderul a fost compactat";
+
+"More Options" = "More Options";
 
 "New draft" = "New draft";
 "Create new draft with this template" = "Create new draft with this template";
