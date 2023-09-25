@@ -24,6 +24,7 @@
 "Vacation" = "Atvaļinājums";
 "Forward" = "Pārsūtīt";
 "Password" = "Parole";
+"Notification" = "Notification";
 "Categories" = "Kategorijas";
 "Appointments invitations" = "Tikšanās uzaicinājums";
 "Name" = "Nosaukums";
@@ -45,6 +46,7 @@
 "Days between responses" = "Dienas starp atbildēm";
 "Do not send responses to mailing lists" = "Nesūtīt automātiskās atbildes adresātu sarakstam";
 "Activation Constraints" = "Activation Constraints";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences";
 "Enable auto reply on" = "Ieslēgt automātisko atbildi";
 "First day of vacation" = "Pirmā atvaļinājuma diena";
 "Disable auto reply after" = "Disable auto reply after";
@@ -78,6 +80,11 @@
 "You are not allowed to forward your messages to an external email address." = "Jums nav atļauts pārsūtīt ziņojumus uz ārēju e-pasta adresi.";
 "You are not allowed to forward your messages to an internal email address." = "Jums nav atļauts nosūtīt savus ziņojumus iekšējai e-pasta adresei.";
 "You are not allowed to forward your messages to this domain:" = "Jums nav atļauts pārsūtīt ziņojumus uz šo domēnu:";
+
+/* notification */
+"Notify incoming messsages" = "Notify incoming messsages";
+"Notification Message Sent" = "Notification message sent";
+"Notification Message" = "Notification of new message on %{0}";
 
 /* d & t */
 "Time Zone" = "Time Zone";
@@ -194,6 +201,9 @@
 "Compose messages in" = "Rakstīt ziņojumus";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Vienkāršs teksts";
+"Insert signature on new message" = "Insert signature on new message";
+"Insert signature on reply" = "Insert signature on reply";
+"Insert signature on forward" = "Insert signature on forward";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Noklusējuma fonta lielums";
@@ -247,6 +257,7 @@
 "Digitally sign the message by default" = "Ziņojuma parakstīšana ar ciparparakstu pēc noklusējuma";
 "Always try to encrypt the message" = "Vienmēr mēģiniet šifrēt ziņojumu";
 "An error occurred while importing the certificate. Verify your password." = "Importējot sertifikātu, radās kļūda. Pārbaudiet paroli.";
+"Data too big. Please contact technical support." = "Data too big. Please contact technical support.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Papildu parametri";
@@ -260,7 +271,7 @@
 "POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
 "POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
 "POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0} special symbols";
 "POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
 
 
@@ -309,6 +320,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
+"Galician" = "Galician";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -405,6 +417,7 @@
 
 "Keep the message" = "Saglabāt ziņojumu";
 "Forward the message to" = "Pārsūtīt ziņu";
+"Notify the message to" = "Notify the message to";
 
 /* Input field label of "forward" mail filter action */
 "Email" = "E-pasts";

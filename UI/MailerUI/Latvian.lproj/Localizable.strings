@@ -445,6 +445,8 @@
 "Back" = "Atpakaļ";
 "Copy messages" = "Kopēt ziņojumus";
 "More messages options" = "Vairāk ziņojumu opcijas";
+"Flag" = "Karogs";
+"Unflag" = "Unflag";
 "Mark as Unread" = "Atzīmēt kā nelasītu";
 "Mark as Read" = "Atzīmēt kā lasītu";
 "Closing Window ..." = "... loga aizvēršana";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "Jūsu e-pasts ir saglabāts";
 "Your email has been sent" = "Jūsu e-pasts ir nosūtīts";
 "Folder compacted" = "Mape saspiesta";
+
+"More Options" = "More Options";
 
 "New draft" = "New draft";
 "Create new draft with this template" = "Create new draft with this template";
