@@ -445,6 +445,8 @@
 "Back" = "Назад";
 "Copy messages" = "Копирај поруке";
 "More messages options" = "Више опција порука";
+"Flag" = "Заставица";
+"Unflag" = "Unflag";
 "Mark as Unread" = "Означи као непрочитано";
 "Mark as Read" = "Означи као прочитано";
 "Closing Window ..." = "Затварам прозор...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "Ваше еписмо је сачувано";
 "Your email has been sent" = "Ваше еписмо је послато";
 "Folder compacted" = "Директоријум је сабијен";
+
+"More Options" = "More Options";
 
 "New draft" = "Нови нацрт";
 "Create new draft with this template" = "Креирај нови нацрт са овим шаблоном";

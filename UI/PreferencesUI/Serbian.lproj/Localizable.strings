@@ -24,6 +24,7 @@
 "Vacation" = "Одмор";
 "Forward" = "Проследи";
 "Password" = "Лозинка";
+"Notification" = "Notification";
 "Categories" = "Категорије";
 "Appointments invitations" = "Позивнице за састанке";
 "Name" = "Име";
@@ -45,6 +46,7 @@
 "Days between responses" = "Дани између одговора";
 "Do not send responses to mailing lists" = "Не одговарај на поштанске листе";
 "Activation Constraints" = "Активирање ограничења";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences";
 "Enable auto reply on" = "Омогући аутоматски одговор ";
 "First day of vacation" = "Први дан одмора";
 "Disable auto reply after" = "Disable auto reply after";
@@ -78,6 +80,11 @@
 "You are not allowed to forward your messages to an external email address." = "Није вам дозвољено да прослеђујете ваше поруке на спољну адресу епоште.";
 "You are not allowed to forward your messages to an internal email address." = "Није вам дозвољено да прослеђујете ваше поруке на интерну адресу епоште.";
 "You are not allowed to forward your messages to this domain:" = "Није вам дозвољено да проследите ваше поруке на овај домен.";
+
+/* notification */
+"Notify incoming messsages" = "Notify incoming messsages";
+"Notification Message Sent" = "Notification message sent";
+"Notification Message" = "Notification of new message on %{0}";
 
 /* d & t */
 "Time Zone" = "Временска зона";
@@ -194,6 +201,9 @@
 "Compose messages in" = "Састави поруку као";
 "composemessagestype_html" = "ХТМЛ";
 "composemessagestype_text" = "Обичан текст";
+"Insert signature on new message" = "Insert signature on new message";
+"Insert signature on reply" = "Insert signature on reply";
+"Insert signature on forward" = "Insert signature on forward";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Подразуевана величина фонта";
@@ -247,6 +257,7 @@
 "Digitally sign the message by default" = "Подразумевано потпиши дигитално поруку ";
 "Always try to encrypt the message" = "Увек покушај да енкриптујеш поруку";
 "An error occurred while importing the certificate. Verify your password." = "Догодила се грешка приликом увоза сертификата. Верификујте Вашу лозинку.";
+"Data too big. Please contact technical support." = "Data too big. Please contact technical support.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Додатни параметри";
@@ -260,7 +271,7 @@
 "POLICY_MIN_LOWERCASE_LETTER" = "Минимум %{0} малих слова";
 "POLICY_MIN_UPPERCASE_LETTER" = "Минимум %{0} великих слова";
 "POLICY_MIN_DIGIT" = "Минимум %{0} бројева";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Минимум %{0} специјалних карактера";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0} special symbols";
 "POLICY_MIN_LENGTH" = "Минимална дужина је %{0} карактера";
 
 
@@ -309,6 +320,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
+"Galician" = "Galician";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -405,6 +417,7 @@
 
 "Keep the message" = "Сачувај поруку";
 "Forward the message to" = "Проследи поруку";
+"Notify the message to" = "Notify the message to";
 
 /* Input field label of "forward" mail filter action */
 "Email" = "Епошта";
