@@ -445,6 +445,8 @@
 "Back" = "Назад";
 "Copy messages" = "Копиране съобщения";
 "More messages options" = "Още опции за съобщения";
+"Flag" = "Флаг";
+"Unflag" = "Unflag";
 "Mark as Unread" = "Маркиране като непрочетено";
 "Mark as Read" = "Маркирай като прочетено";
 "Closing Window ..." = "Затваряне на прозореца ...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "Вашият Имейл е запаметен";
 "Your email has been sent" = "Вашият Имейл е изпратен";
 "Folder compacted" = "Папката компресирана";
+
+"More Options" = "More Options";
 
 "New draft" = "Нова чернова";
 "Create new draft with this template" = "Създай нова чернова с този шаблон";
