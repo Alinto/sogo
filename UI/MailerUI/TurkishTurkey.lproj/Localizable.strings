@@ -445,6 +445,8 @@
 "Back" = "Geri";
 "Copy messages" = "İletileri kopyala";
 "More messages options" = "Diğer ileti seçenekleri";
+"Flag" = "Yıldız";
+"Unflag" = "Unflag";
 "Mark as Unread" = "Okunmamış olarak İşaretle";
 "Mark as Read" = "Okunmuş olarak İşaretle";
 "Closing Window ..." = "Pencere Kapatılıyor ...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "İletiniz kaydedildi";
 "Your email has been sent" = "İletiniz gönderildi";
 "Folder compacted" = "Klasör sıkıştırıldı";
+
+"More Options" = "More Options";
 
 "New draft" = "Yeni taslak";
 "Create new draft with this template" = "Bu şablonla yeni taslak oluştur";

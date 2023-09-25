@@ -24,6 +24,7 @@
 "Vacation" = "Tatil";
 "Forward" = "İlet";
 "Password" = "Şifre";
+"Notification" = "Notification";
 "Categories" = "Kategoriler";
 "Appointments invitations" = "Randevu davetleri";
 "Name" = "Tam İsim";
@@ -45,6 +46,7 @@
 "Days between responses" = "Yanıt gün sayısı";
 "Do not send responses to mailing lists" = "E-posta listelerine yanıt gönderme";
 "Activation Constraints" = "Aktivasyon Kısıtlamaları";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences";
 "Enable auto reply on" = "Otomatik yanıtın etkinleştirme tarihi";
 "First day of vacation" = "Tatilin ilk günü";
 "Disable auto reply after" = "Disable auto reply after";
@@ -78,6 +80,11 @@
 "You are not allowed to forward your messages to an external email address." = "E-postalarınızı sistem dışındaki bir adrese iletmezsiniz.";
 "You are not allowed to forward your messages to an internal email address." = "E-postalarınızı sistemdeki bir başka adrese iletmezsiniz.";
 "You are not allowed to forward your messages to this domain:" = "İletilerinizi bu alana yönlendirme izniniz yok:";
+
+/* notification */
+"Notify incoming messsages" = "Notify incoming messsages";
+"Notification Message Sent" = "Notification message sent";
+"Notification Message" = "Notification of new message on %{0}";
 
 /* d & t */
 "Time Zone" = "Zaman Dilimi";
@@ -194,6 +201,9 @@
 "Compose messages in" = "İleti formatı";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Düz metin";
+"Insert signature on new message" = "Insert signature on new message";
+"Insert signature on reply" = "Insert signature on reply";
+"Insert signature on forward" = "Insert signature on forward";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Varsayılan yazı büyüklüğü";
@@ -247,6 +257,7 @@
 "Digitally sign the message by default" = "İletiyi öntanımlı olarak sayısal olarak imzala";
 "Always try to encrypt the message" = "Her zaman iletiyi şifrelemeyi dene";
 "An error occurred while importing the certificate. Verify your password." = "Sertifika içe aktarılırken bir hata oluştu. Şifrenizi doğrulayın.";
+"Data too big. Please contact technical support." = "Data too big. Please contact technical support.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Diğer Özellikler";
@@ -260,7 +271,7 @@
 "POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
 "POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
 "POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0} special symbols";
 "POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
 
 
@@ -309,6 +320,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
+"Galician" = "Galician";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -405,6 +417,7 @@
 
 "Keep the message" = "İletiyi sakla";
 "Forward the message to" = "E-posta şu adrese ilet";
+"Notify the message to" = "Notify the message to";
 
 /* Input field label of "forward" mail filter action */
 "Email" = "E-posta";
