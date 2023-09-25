@@ -445,6 +445,8 @@
 "Back" = "Enrere";
 "Copy messages" = "Copiar els missatges";
 "More messages options" = "Més opcions de missatges";
+"Flag" = "Afegir estrella";
+"Unflag" = "Unflag";
 "Mark as Unread" = "Marca com a no llegit";
 "Mark as Read" = "Marca com a llegit";
 "Closing Window ..." = "Tancant la finestra ...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "El teu email s'ha guardat";
 "Your email has been sent" = "El teu email s'ha enviat";
 "Folder compacted" = "carpeta compactada";
+
+"More Options" = "More Options";
 
 "New draft" = "New draft";
 "Create new draft with this template" = "Create new draft with this template";
