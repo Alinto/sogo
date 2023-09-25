@@ -24,6 +24,7 @@
 "Vacation" = "Ferie";
 "Forward" = "Videresend";
 "Password" = "Adgangskode";
+"Notification" = "Notifikation";
 "Categories" = "Kategorier";
 "Appointments invitations" = "Invitationer til aftaler";
 "Name" = "Navn";
@@ -45,6 +46,7 @@
 "Days between responses" = "Dage imellem svar";
 "Do not send responses to mailing lists" = "Send ikke svar til postlister";
 "Activation Constraints" = "Aktiveringsbegrænsninger";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Tilpas dag- og timeintervaller uafhængigt og kombiner dem eventuelt med specifikke ugedage for at skræddersy dine feriefiltre til dine præferencer";
 "Enable auto reply on" = "Aktiver autosvar til";
 "First day of vacation" = "Første feriedag";
 "Disable auto reply after" = "Deaktiver autosvar efter";
@@ -78,6 +80,11 @@
 "You are not allowed to forward your messages to an external email address." = "Du må ikke videresende dine beskeder til en ekstern e-mailadresse.";
 "You are not allowed to forward your messages to an internal email address." = "Du må ikke videresende dine beskeder til en intern e-mailadresse.";
 "You are not allowed to forward your messages to this domain:" = "Du må ikke videresende dine beskeder til dette domæne:";
+
+/* notification */
+"Notify incoming messsages" = "Giv besked om indgående beskeder";
+"Notification Message Sent" = "Besked sendt";
+"Notification Message" = "Notifikation om ny besked på %{0}";
 
 /* d & t */
 "Time Zone" = "Tidszone";
@@ -194,6 +201,9 @@
 "Compose messages in" = "Skriv beskeder i";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Almindelig tekst";
+"Insert signature on new message" = "Indsæt signatur på ny besked";
+"Insert signature on reply" = "Indsæt signatur på svar";
+"Insert signature on forward" = "Indsæt signatur på videresend";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Standard skriftstørrelse";
@@ -247,6 +257,7 @@
 "Digitally sign the message by default" = "Underskriv beskeden digitalt som standard";
 "Always try to encrypt the message" = "Forsøg altid at kryptere beskeden";
 "An error occurred while importing the certificate. Verify your password." = "Der opstod en fejl under import af certifikatet. Bekræft din adgangskode";
+"Data too big. Please contact technical support." = "Datastørrelsen overskrider grænsen. Venligst kontakt med teknisk support.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Yderligere parametre";
@@ -260,7 +271,7 @@
 "POLICY_MIN_LOWERCASE_LETTER" = "Minimum på %{0} små bogstaver";
 "POLICY_MIN_UPPERCASE_LETTER" = "Minimum på %{0} store bogstaver";
 "POLICY_MIN_DIGIT" = "Minimum på %{0} ciffer";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum på %{0} specielle symboler";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Mindst %{0} specielle tegn";
 "POLICY_MIN_LENGTH" = "Minimumlængde på %{0} tegn";
 
 
@@ -309,6 +320,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
+"Galician" = "Galicisk";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -405,6 +417,7 @@
 
 "Keep the message" = "Behold beskeden";
 "Forward the message to" = "Videresend beskeden til";
+"Notify the message to" = "Giv beskeden til";
 
 /* Input field label of "forward" mail filter action */
 "Email" = "E-mail";

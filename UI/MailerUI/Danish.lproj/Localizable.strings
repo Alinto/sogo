@@ -445,6 +445,8 @@
 "Back" = "Tilbage";
 "Copy messages" = "Kopier beskeder";
 "More messages options" = "Flere beskedindstillinger";
+"Flag" = "Markér";
+"Unflag" = "Fjern flag";
 "Mark as Unread" = "Markér som ulæst";
 "Mark as Read" = "Markér som læst";
 "Closing Window ..." = "Lukker vindue ...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "Din e-mail er gemt";
 "Your email has been sent" = "Din e-mail er sendt";
 "Folder compacted" = "Mappe komprimeret";
+
+"More Options" = "Flere indstillinger";
 
 "New draft" = "Ny kladde";
 "Create new draft with this template" = "Lav ny kladde med denne skabelon";

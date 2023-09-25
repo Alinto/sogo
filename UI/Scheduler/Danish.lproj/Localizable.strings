@@ -565,6 +565,7 @@ vtodo_class2 = "(Hemmelig opgave)";
 "CalDAV URL" = "CalDAV URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
+"Copy to clipboard" = "Kopier til udklipsholder";
 
 /* Error messages */
 "dayFieldInvalid" = "Angiv venligst en numerisk værdi i feltet Dag(e) skal være større end eller lig med 1.";
