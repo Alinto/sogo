@@ -445,6 +445,8 @@
 "Back" = "Takaisin";
 "Copy messages" = "Kopioi viestit";
 "More messages options" = "Lisää viestiasetuksia";
+"Flag" = "Merkitse";
+"Unflag" = "Unflag";
 "Mark as Unread" = "Merkitse lukemattomaksi";
 "Mark as Read" = "Merkitse luetuksi";
 "Closing Window ..." = "Ikkuna sulkeutuu...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "Sähköpostiviestisi on tallennettu";
 "Your email has been sent" = "Sähköpostiviestisi on lähetetty";
 "Folder compacted" = "Kansio tiivistetty";
+
+"More Options" = "More Options";
 
 "New draft" = "New draft";
 "Create new draft with this template" = "Create new draft with this template";

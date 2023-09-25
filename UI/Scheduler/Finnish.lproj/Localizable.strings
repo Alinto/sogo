@@ -565,6 +565,7 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 "CalDAV URL" = "CalDAV URL ";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
+"Copy to clipboard" = "Copy to clipboard";
 
 /* Error messages */
 "dayFieldInvalid" = "Ole hyvä ja syötä Päivä -kenttään luku joka on suurempi tai yhtäsuuri kuin 1. ";
