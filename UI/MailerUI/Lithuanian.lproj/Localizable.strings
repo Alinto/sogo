@@ -3,12 +3,12 @@
 /* Icon's label */
 "Create"      = "Kurti";
 "Empty Trash" = "Ištuštinti šiukšliadėžę";
-"Empty Junk Folder" = "Empty Junk Folder";
+"Empty Junk Folder" = "Išvalyti šlamšto aplanką";
 "Delete"      = "Ištrinti";
 "Expunge"     = "Išbraukti";
 "Forward"     = "Persiūsti";
 "Get Mail"    = "Gauti";
-"Junk"        = "Šiukšlės";
+"Junk"        = "Šlamštas";
 "Not junk"    = "Ne šlamštas";
 "Reply"       = "Atsakyti";
 "Reply All"   = "Atsakyti visiems";
@@ -16,7 +16,7 @@
 "Stop"        = "Stop";
 "Write"       = "Rašyti";
 "Search"      = "Paieška";
-"Send" = "Siūsti";
+"Send" = "Siųsti";
 "Contacts" = "Kontaktai";
 "Attach" = "Prisegti";
 "Save" = "Išsaugoti";
@@ -33,7 +33,7 @@
 "Create a new message" = "Sukurti naują pranešimą";
 "Go to address book" = "Eiti į adresų knygą";
 "Reply to the message" = "Atsakyti į šį pranešimą";
-"Reply to sender and all recipients" = "Atsakyti siuntįjui ir visiems gavėjams";
+"Reply to sender and all recipients" = "Atsakyti siuntėjui ir visiems gavėjams";
 "Forward selected message" = "Persiūsti pažymėtą pranešimą";
 "Delete selected message or folder" = "Ištrinti pažymėtą pranešimą arba katalogą";
 "Print this message" = "Spausdinti šį pranešimą";
@@ -59,7 +59,7 @@
 "Write a new message" = "Rašyti naują pranešimą";
 
 /* Tooltip for fab button */
-"Write a message in new window" = "Write a message in new window";
+"Write a message in new window" = "Rašyti pranešimą naujame lange";
 
 "Share" = "Bendrinti";
 "Account" = "Paskyra";
@@ -71,7 +71,7 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Nėra pasirinkta pašto dėžutė";
 
-"An error occured while communicating with the mail server" = "An error occured while communicating with the mail server";
+"An error occured while communicating with the mail server" = "Bendraujant su pašto serveriu įvyko klaida";
 
 /* Mailbox actions */
 
@@ -79,7 +79,7 @@
 "Folder compacted" = "Aplankas suspaustas";
 
 /* Empty Junk Folder success message */
-"Junk folder emptied" = "Junk folder emptied";
+"Junk folder emptied" = "Šlamšto aplankas ištuštintas";
 
 /* Empty Trash success message */
 "Trash emptied" = "Šiukšliadėžė ištuštinti";
@@ -88,18 +88,18 @@
 "Access rights to" = "Prieigos teisės";
 "For user" = "Vartotojui";
 "Any Authenticated User" = "Visiems autorizuotiems vartotojams";
-"View this folder" = "View this folder";
-"Read mails from this folder" = "Skaityti laiškus iš šio aplanko";
-"Mark mails read and unread" = "Pažymėti skaitytus  ir neskaitytus laiškus";
-"Modify the flags of the mails in this folder" = "Koreguoti pažymėtas laiškus šiame aplanke";
-"Insert, copy and move mails into this folder" = "Įtraukti, kopijuoti ir perkelti laiškus į šį aplanką";
+"View this folder" = "Peržiūrėti aplanką";
+"Read mails from this folder" = "Skaityti aplanko laiškus";
+"Mark mails read and unread" = "Žymėti skaitytus ir neskaitytus laiškus";
+"Modify the flags of the mails in this folder" = "Koreguoti pažymėtus laiškus šiame aplanke";
+"Insert, copy and move mails into this folder" = "Kopijuoti ir perkelti laiškus į šį aplanką";
 "Post mails" = "Rašyti laiškus";
-"Add subfolders to this folder" = "Įdėti pakatalogį į šį aplanką";
+"Add subfolders to this folder" = "Įdėti poaplankį";
 "Remove this folder" = "Ištrinti šį aplanką";
-"Erase mails from this folder" = "Ištrinti pranešimus iš šio aplanko";
+"Erase mails from this folder" = "Trinti pranešimus";
 "Expunge this folder" = "Išbraukti šį aplanką";
-"Export This Folder" = "Eksportuoti šį katalogą";
-"Modify the acl of this folder" = "Keisti acl šiame aplanke";
+"Export This Folder" = "Eksportuoti šį aplanką";
+"Modify the acl of this folder" = "Keisti teises šiame aplanke";
 "Saved Messages.zip" = "Išsaugota Pranešimas.zip";
 "Update" = "Atnaujinti";
 "Cancel" = "Atšaukti";
@@ -115,7 +115,7 @@
 "Body"          = "Turinys";
 "Open" = "Atidaryti";
 "Select All" = "Pažymėti visus";
-"Select Message" = "Select Message";
+"Select Message" = "Pažymėti pranešimą";
 "Attach Web Page..." = "Prisegti tinklapio adresą...";
 "file" = "byla";
 "files" = "bylos";
@@ -127,13 +127,13 @@
 "Edit Draft..." = "Tvarkyti juodraštį...";
 "Load Images" = "Krauti atvaizdus";
 "Return Receipt" = "Grąžinti gavėjui";
-"Choose which identity to send this message from" = "Choose which identity to send this message from";
+"Choose which identity to send this message from" = "Pasirinkite, iš kurios tapatybės norite siųsti šį pranešimą";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Šio pranešimo siuntėjas paprašė, kad būtų pranešta, kai jūs skaitysite šį pranešimą. Ar norite pranešti siuntėjui?";
 "Return Receipt (displayed) - %@"= "Grąžinti siuntėjui (parodyta) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Tai yra išsiųsto laiško patvirtinimas, kad laišką išsiuntėre %@\n\nPastaba: Šis patvirtinimo laiškas įrodo, jog pranešimas buvo rodomas gavėjo kompiuteryje. Nėra garantijų, kad gavėjas perskaitė ar suprato laiško turinį.";
-"Security" = "Security";
-"Sign" = "Sign";
-"Encrypt" = "Encrypt";
+"Security" = "Saugumas";
+"Sign" = "Pasirašyti";
+"Encrypt" = "Šifruoti";
 "Priority" = "Prioritetas";
 "highest" = "Aukščiausias";
 "high" = "Aukštas";
@@ -162,7 +162,7 @@
 "No message"    = "Nėra pranešimų";
 "messages"      = "pranešimai";
 "Yesterday"     = "Vakar";
-"first"         = "PIrmas";
+"first"         = "Pirmas";
 "previous"      = "Ankstesnis";
 "next"          = "Sekantis";
 "last"          = "Paskutinis";
@@ -173,13 +173,13 @@
 "Untitled" = "Be pavadinimo";
 
 /* Filter option in messages list */
-"Show unread messages only" = "Show unread messages only";
+"Show unread messages only" = "Rodyti tik neskaitytus pranešimus";
 
 /* Filter option in messages list */
-"Show flagged messages only" = "Show flagged messages only";
+"Show flagged messages only" = "Rodyti tik pažymėtus pranešimus";
 
 /* Aria label for icon of labels */
-"Filtered by label" = "Filtered by label";
+"Filtered by label" = "Filtruojama pagal etiketę";
 
 /* Tree */
 "SentFolderName"   = "Siūsti";
@@ -187,7 +187,7 @@
 "InboxFolderName"  = "Gauta";
 "DraftsFolderName" = "Juodraščiai";
 "JunkFolderName" = "Šiukšlės";
-"TemplatesFolderName" = "Templates";
+"TemplatesFolderName" = "Šablonai";
 "SieveFolderName"  = "Filtrai";
 "Folders"          = "Aplankai"; /* title line */
 
@@ -196,7 +196,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Pridėti į adresų knygą...";
-"Successfully created card" = "Successfully created card";
+"Successfully created card" = "Kortelė sėkmingai sukurta";
 "Compose Mail To" = "Sukurti pranešimą";
 "Create Filter From Message..." = "Sukurti filtrą šiam pranešimui...";
 
@@ -213,13 +213,13 @@
 "Compact This Folder" = "Suglausti šį aplanką";
 "Search Messages..." = "Ieškoti pranešimo...";
 "Sharing..." = "Bendrinti...";
-"New Subfolder..." = "Naujas pakatalogis...";
+"New Subfolder..." = "Naujas poaplankis...";
 "Rename Folder..." = "Pervadinti aplanką...";
 "Delete Folder" = "Ištrinti aplanką";
 "Use This Folder For" = "Naudoti šį aplanką";
 "Get Messages for Account" = "Gauti pranešimus paskyrai";
 "Properties..." = "Įpatybės...";
-"Delegation..." = "Pavedimai...";
+"Delegation..." = "Pavadavimai...";
 
 /* Use This Folder menu */
 "Sent Messages" = "Siūsti pranešimus";
@@ -247,16 +247,16 @@
 "Convert To Task" = "Konvertuoti į užduotį";
 
 /* Message view "more" menu: download message as an eml file */
-"Download message" = "Download message";
+"Download message" = "Parsisiųsti žinutę";
 
 /* Message view "more" menu: download message as a zip archive */
-"Download message (zip)" = "Download message (zip)";
+"Download message (zip)" = "Parsisiųsti žinutę (zip)";
 
 /* Message view "more" menu: download all attachments as a zip archive */
-"Download all attachments" = "Download all attachments";
+"Download all attachments" = "Atsisiųsti visus priedus";
 
 /* Filename prefix when downloading all attachments as a zip archive */
-"attachments" = "attachments";
+"attachments" = "priedai";
 
 "Print..." = "Spausdinti...";
 "Delete Message" = "Ištrinti pranešimą";
@@ -280,34 +280,34 @@
 "to_date" = "to";
 
 /* Encrypted message notification */
-"This message is encrypted" = "This message is encrypted";
+"This message is encrypted" = "Šis pranešimas yra užšifruotas";
 
 /* Encrypted message but no certificate */
-"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module.";
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Šio pranešimo negalima iššifruoti. Įsitikinkite, kad įkėlėte S/MIME sertifikatą iš pašto nuostatų modulio.";
 
 /* OpenSSL certificate error - unknown issuer */
-"certificate verify error" = "Unable to verify message signature";
+"certificate verify error" = "Nepavyko patvirtinti pranešimo parašo";
 
 /* OpenSSL certificate error - digest failure */
-"digest failure" = "The message has been modified";
+"digest failure" = "Pranešimas buvo pakeistas";
 
 /* OpenSSL reading error */
-"Error reading the certificate. Please install a new certificate." = "Error reading the certificate. Please install a new certificate.";
+"Error reading the certificate. Please install a new certificate." = "Klaida skaitant sertifikatą. Įdiekite naują sertifikatą.";
 
 /* Trying to access a non-existent certificate */
-"No certificate associated to account." = "No certificate associated to account.";
+"No certificate associated to account." = "Nėra sertifikato susieto su paskyra.";
 
 /* Invalid S/MIME signature */
-"Digital signature is not valid" = "Digital signature is not valid";
+"Digital signature is not valid" = "Skaitmeninis parašas negalioja";
 
 /* Valid S/MIME signature */
-"Message is signed" = "Message is signed";
+"Message is signed" = "Pranešimas pasirašytas";
 
 /* Valid S/MIME signature but common name not found */
-"Message is signed but the certificate doesn't match the sender email address" = "Message is signed but the certificate doesn't match the sender email address";
+"Message is signed but the certificate doesn't match the sender email address" = "Pranešimas pasirašytas, bet sertifikatas neatitinka siuntėjo el. pašto adreso";
 
 /* Unknown error while validating message signature */
-"Digital signature is not valid" = "Digital signature is not valid";
+"Digital signature is not valid" = "Skaitmeninis parašas negalioja";
 
 "This Folder" = "Šis aplankas";
 
@@ -316,7 +316,7 @@
 
 /* Mark popup menu */
 "As Read" = "Kaip perskaitytą";
-"Thread As Read" = "Siūlyti kaip perskaitytą";
+"Thread As Read" = "Giją kaip perskaitytą";
 "As Read By Date..." = "Skaityti pagal datą...";
 "All Read" = "Visi perskaityti";
 "Flag" = "Vėliava";
@@ -327,7 +327,7 @@
 "Search" = "Paieška";
 "Search subfolders" = "Ieškoti aplankų";
 "Match any of the following" = "Atitinka bet kurį iš šių";
-"Match all of the following" = "Atitinka visi iš šių";
+"Match all of the following" = "Atitinka visus šiuos";
 "contains" = "yra";
 "does not contain" = "nėra";
 "No matches found" = "Nerasta atitikmenų";
@@ -340,38 +340,38 @@
 "Enter the new name of your folder"
  ="Įveskite naujo aplanko pavadinimą";
 "Do you really want to move this folder into the trash ?"
- = "Ar Jūs tikrai norite perkelti šį aplanką į šiuklyną?";
+ = "Ar tikrai norite perkelti šį aplanką į šiukšliadėžę?";
 "Operation failed" = "Veiksmas nepavyko";
 "Quota" = "Kvota:";
 "quotasFormat" = "%{0}% panaudota  %{1} MB";
-"messageQuotasFormat" = "%{0}% of %{1} msgs";
-"Unable to move/delete folder." = "Unable to move/delete folder.";
+"messageQuotasFormat" = "%{0}% iš %{1} msgs";
+"Unable to move/delete folder." = "Nepavyko perkelti/ištrinti aplanko";
 
 /* Alternative operation when folder cannot be deleted */
 "The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
-= "The mailbox could not be moved to the trash folder. Would you like to delete it immediately?";
+= "Pašto dėžutės negalima perkelti į šiukšliadėžės aplanką. Ar norėtumėte ją nedelsiant ištrinti?";
 
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Ar tikrai norite ištrinti pasirinktus pranešimus?";
 
 /* Notification on the number of messages successfuly copied */
-"%{0} message(s) copied" = "%{0} message(s) copied";
+"%{0} message(s) copied" = "nukopijuota %{0}  pranešimas(-ai) ";
 
 /* Notification on the number of messages successfuly movied */
-"%{0} message(s) moved" = "%{0} message(s) moved";
+"%{0} message(s) moved" = "perkelta %{0} pranešimas(-ai)";
 
 "Please select a message." = "Prašome pasirinkti žinutę.";
-"Please select a message to print." = "Prašome pasirinkti žinutę norint atspausdinti.";
+"Please select a message to print." = "Prašome pasirinkti norimą atspausdinti žinutę";
 "Please select only one message to print." = "Prašome pasirinkti tik vieną žinutę atspausdinimui.";
-"The message you have selected doesn't exist anymore." = "Žinutę, kurią Jūs pasirinkote nebeegzistuoja.";
+"The message you have selected doesn't exist anymore." = "Žinutė, kurią pasirinkote nebeegzistuoja.";
 "The folder with name \"%{0}\" could not be created."
-= "Aplankas, kurio pavadinimas \"%{0}\" negali būti sukuriamas.";
+= "Aplankas, kurio pavadinimas \"%{0}\" negali būti sukurtas.";
 "This folder could not be renamed to \"%{0}\"."
-= "Šis aplankas negali būti pervardintas į \"Į{0}\".";
+= "Šis aplankas negali būti pervardintas į \"%{0}\".";
 "The folder could not be deleted."
 = "Aplankas negali būti ištrintas.";
 "The trash could not be emptied."
-= "Šiukšlės negali būti išvalytos.";
+= "Šiukšliadėžė negali būti išvalyta.";
 "The folder functionality could not be changed."
 = "Aplanko funkcionalumas negali būti pakeistas.";
 "You need to choose a non-virtual folder!" = "Jums reikia pasirinkti ne virtualų aplanką!";
@@ -382,43 +382,43 @@
 
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
-= "Žinutės negali būti perkeltos į šiukšlyno aplanką. Ar Jūs norėtumėte juos pilnai ištrinti dabar?";
+= "Žinutės negali būti perkeltos į šiukšliadėžės aplanką. Ar norėtumėte jas galutinai ištrinti?";
 
 /* Message editing */
-"Please specify a subject." = "Please specify a subject.";
-"error_missingsubject" = "Žinutė neturi temos. Ar tikrai norite siųsti ją?";
+"Please specify a subject." = "Nurodykite temą.";
+"error_missingsubject" = "Žinutė neturi temos. Ar tikrai norite ją siųsti?";
 "error_missingrecipients" = "Prašome nurodyti bent vieną gavėją.";
 "Send Anyway" = "Vistiek siųsti.";
 "Error while saving the draft" = "Išsaugant juodraštį įvyko klaida";
 
 /* Error when emptying trash */
-"Unable to empty the trash folder." = "Unable to empty the trash folder.";
+"Unable to empty the trash folder." = "Nepavyko ištuštinti šiukšliadėžės aplanko.";
 
 /* Error when emptying junk folder */
-"Unable to empty the junk folder." = "Unable to empty the junk folder.";
+"Unable to empty the junk folder." = "Nepavyko ištuštinti šlamšto aplanko.";
 
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Įkeliant \"{0}\" failą įvyko klaida:";
 "There is an active file upload. Closing the window will interrupt it." = "Dabar vykdomas įkėlimas. Jei uždarysite langą, įkėlimas bus nutraukas.";
-"Message is too big" = "Message is too big";
+"Message is too big" = "Žinutė per didelė";
 
 /* Appears while sending the message */
-"Sending" = "Sending";
+"Sending" = "Siunčiama";
 
 /* Appears when the message is successfuly sent */
-"Sent" = "Sent";
+"Sent" = "Išsiųsta";
 
 "cannot send message: (smtp) all recipients discarded" = "Negalima siųsti žinutės: visi gavėjai yra neteisingi.";
 "cannot send message (smtp) - recipients discarded" = "Negalima išsiųsti žinutės. Įvestas adresas yra neteisingas";
-"cannot send message: (smtp) error when connecting" = "Negalima išsiųsti žinutes: klaida kai jungiamės prie SMTP serverio.";
-"cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
-"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
-"cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
+"cannot send message: (smtp) error when connecting" = "Negalima išsiųsti žinutes: klaida besijungiant prie SMTP serverio.";
+"cannot sign email without certificate" = "Laiško negalima pasirašyti, nes su pašto paskyra nesusietas joks sertifikatas.";
+"cannot sign message because the certificate can't be read" = "Laiško negalima pasirašyti, nes negalima nuskaityti su pašto paskyra susieto sertifikato.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "Laiško negalima pasirašyti, nes siuntėjo adresas neįtrauktas į sertifikatą, susietą su pašto paskyra.";
 
 /* Contacts list in mail editor */
 "Email" = "Elektroninis paštas";
 "More mail options" = "Daugiau elektroninio pašto nustatymų";
-"Delegation" = "Pavedimai";
+"Delegation" = "Pavadavimai";
 "Add User" = "Pridėti vartotoją";
 "Add a tag" = "Pridėti žymą";
 "reply" = "atsakyti";
@@ -430,54 +430,58 @@
 "Compact" = "Suspausti";
 "Export" = "Exportuoti";
 "Set as Drafts" = "Nustatyti kaip juodraščius";
-"Set as Sent" = "Nustatyti kaip išsiūstus";
+"Set as Sent" = "Nustatyti kaip išsiųstus";
 "Set as Trash" = "Nustatyti kaip šiukšliadėžę";
 
 /* Set the folder as the one holding the Templates */
-"Set as Templates" = "Set as Templates";
+"Set as Templates" = "Nustatyti kaip šabloną";
 
 /* Set the folder as the one holding Junk mails */
-"Set as Junk" = "Nustatyti kaip šiukšlę";
+"Set as Junk" = "Nustatyti kaip šlamšto aplanką";
 
 "Sort" = "Rūšiuoti";
-"Order Received" = "Order Received";
+"Order Received" = "Užsakymas Gautas";
 "Descending Order" = "Mažėjančia tvarka";
 "Back" = "Atgal";
 "Copy messages" = "Kopijuoti pranešimus";
 "More messages options" = "Daugiau žinučių nustatymų";
+"Flag" = "Vėliava";
+"Unflag" = "Nuimti vėliavą";
 "Mark as Unread" = "Pažymėti kaip neskaitytą";
-"Mark as Read" = "Mark as Read";
-"Closing Window ..." = "Uždaryti langą ...";
-"Tried to send too many mails. Please wait." = "Bandoma siųsti per daug laiškų. Prašau palaukti.";
+"Mark as Read" = "Pažymėti kaip skaitytą";
+"Closing Window ..." = "Uždaromas langas ...";
+"Tried to send too many mails. Please wait." = "Bandoma siųsti per daug laiškų. Prašome palaukti.";
 "View Mail" = "Peržiūrėti laišką";
-"This message contains external images." = "Šis pranešimas yra su išorės vaizdais.";
+"This message contains external images." = "Šis pranešimas yra su išoriniais vaizdais.";
 "Expanded" = "Išplėstas";
 "Add a Criteria" = "Pridėti kriterijų";
 "More search options" = "Daugiau paieškos nustatymų";
 "Your email has been saved" = "Jūsų žinutė buvo išsaugota";
-"Your email has been sent" = "Jūsų žinutė buvo išsiūsta";
+"Your email has been sent" = "Jūsų žinutė buvo išsiųsta";
 "Folder compacted" = "Aplankas suspaustas";
 
-"New draft" = "New draft";
-"Create new draft with this template" = "Create new draft with this template";
+"More Options" = "Daugiau nustatymų";
+
+"New draft" = "Naujas juodraštis";
+"Create new draft with this template" = "Sukurkite naują juodraštį naudodami šį šabloną";
 
 /* Advanced search */
-"Enter Subject" = "Enter Subject";
-"Enter From" = "Enter From";
-"Enter To" = "Enter To";
-"Enter Cc" = "Enter Cc";
-"Enter Body" = "Enter Body";
-"match" = "match";
-"does not match" = "does not match";
+"Enter Subject" = "Įveskite temą";
+"Enter From" = "Įveskite Nuo";
+"Enter To" = "Įveskite Kam";
+"Enter Cc" = "Įveskite Kopija";
+"Enter Body" = "Įveskite Turinį";
+"match" = "atitinka";
+"does not match" = "neatitinka";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Paieškos sritis";
 
 /* Subscriptions Dialog */
-"Manage Subscriptions" = "Manage Subscriptions";
+"Manage Subscriptions" = "Tvarkyti prenumeratas";
 
 /* Label of filter input field in subscriptions dialog */
-"Filter" = "Filter";
+"Filter" = "Filtras";
 
 /* Hotkey to write a new message */
 "hotkey_compose" = "w";

@@ -7,18 +7,18 @@
 "Home" = "Namai";
 "Calendar" = "Kalendorius";
 "Address Book"  = "Adresų knyga";
-"Mail" = "paštas";
+"Mail" = "Paštas";
 "Preferences" = "Nustatymai";
 "Administration" = "Administracija";
 "Disconnect" = "Atsijungti";
 "Toggle Menu" = "Perjungti meniu";
-"Right Administration" = "Teisinė administracija";
+"Right Administration" = "Teisių valdymas";
 "Log Console (dev.)" = "Log konsolė (dev.)";
 "User" = "Vartotojas";
 "Vacation message is enabled" = "Atostogų žinutė įgalinta";
 "Help" = "Pagalba";
 "noJavascriptError" = "SOGo paleisti reikalingas JavaScript'as. Prašome įsitikinti, kad ši galimybė yra prieinama ir aktyvi per naršyklės nuostatas.";
-"noJavascriptRetry" = "Bandykit dar kartą";
+"noJavascriptRetry" = "Bandykite dar kartą";
 "Owner" = "Savininkas";
 "Publish the Free/Busy information" = "Publikuoti užimtumo informaciją";
 "Add..." = "Pridėti...";
@@ -30,19 +30,22 @@
 "Anybody accessing this resource from the public area" = "Kas nors jungiansi prie šio šaltinio iš viešos erdvės";
 "Sorry, the user rights can not be configured for that object." = "Atsiprašome, vartotojo teisės negali būti konfiguruojamos šiam objektui.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
-     = "Bet koks vartotojas su paskyra šioje systemoje galės prieiti prie Jūsų elektroninės pašto dėžutės \"%{0}\". Ar Jūs tikrai jais pasitikite?";
+     = "Bet kuris vartotojas turintis paskyrą šioje sistemoje galės prieiti prie Jūsų elektroninės pašto dėžutės \"%{0}\". Ar Jūs tikrai jais pasitikite?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
-     = "Bet koks vartotojas su paskyra šioje systemoje galės prieiti prie Jūsų kalendoriaus \"%{0}\". Ar Jūs tikrai jais pasitikite?";
+     = "Bet kuris vartotojas turintis paskyrą šioje sistemoje galės prieiti prie Jūsų kalendoriaus \"%{0}\". Ar Jūs tikrai jais pasitikite?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
      = "Potencialiai visi internete galės prieiti prie Jūsų kalendoriaus \"%{0}\", net jei jie ir neturi paskyros šioje sistemoje. Ar ši informacija tinka viešai prieigai?";
 "Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
-     = "Visi vartotojai su paskyromis šioje sistemoje galės prieiti prie adresų knygos \"%{0}\". Ar Jūs tikrai jais pasitikite?";
+     = "Visi vartotojai turintys paskyras šioje sistemoje galės prieiti prie adresų knygos \"%{0}\". Ar Jūs tikrai jais pasitikite?";
 "Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
      = "Potencialiai visi internete galės prieiti prie Jūsų adresų knygos \"%{0}\", net jei jie ir neturi paskyros šioje sistemoje. Ar ši informacija tinka viešai prieigai?";
 "Give Access" = "Suteikti prieigą";
 "Keep Private" = "Išlaikyti privatų";
-"Expand" = "Expand";
-"Reduce" = "Reduce";
+"Expand" = "Išskleisti";
+"Reduce" = "Suspausti";
+
+/* tooltip */
+"Refresh" = "Atnaujinti";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -60,13 +63,13 @@
         = "Vartotojo teisės negali būti keičiamos šiam objektui!";
 "A folder by that name already exists." = "Aplankas tokiu pavadinimu jau egzistuoja.";
 "You cannot create a list in a shared address book."
-        = "Jūs negalite sukurti sąrašo pasidalinameme adresų knygoje.";
+        = "Jūs negalite sukurti sąrašo pasidalintoje adresų knygoje.";
 "Warning" = "Įspėjimas";
 "Can't contact server" = "Įvyko klaida, kai buvo bandoma susisiekti su serveriu. Prašome bandyti dar kartą.";
 "You are not allowed to access this module or this system. Please contact your system administrator."
-= "Jūms negalima prieiti prie šio modulio ar šios sistemos. Prašome susitiekti su Jūsų sistemos administratoriumi.";
+= "Jums negalima prieiti prie šio modulio ar šios sistemos. Prašome susisiekti su Jūsų sistemos administratoriumi.";
 "You don't have the required privileges to perform the operation."
-= "Jūs neturite reikalingų privilėgijų atlikti šiaim veiksmui.";
+= "Jūs neturite reikalingų teisių atlikti šiam veiksmui.";
 "noEmailForDelegation" = "Jūs turite nurodyti adresą, kurį norite perduoti Jūsų kvietime.";
 "delegate is organizer" = "Atstovas yra kelionių organizatorius. Prašome nurodyti kitą ";
 "delegate is a participant" = "Atstovas jau yra dalyvis.";
@@ -79,26 +82,26 @@
 "No" = "Ne";
 
 /* generic messages */
-"Error" = "Error";
-"Success" = "Success";
+"Error" = "Klaida";
+"Success" = "Sėkmingai";
 
 /* confirmation dialog box */
-"Confirmation" = "Confirmation";
+"Confirmation" = "Patvirtinimas";
 
 /* alarms */
 "Reminder" = "Priminimas";
 "Start" = "Pradėti";
 "Due Date" = "Terminas";
 "Location" = "Vietovė";
-"Snooze" = "Snooze";
+"Snooze" = "Nusnausti";
 "Snooze for " = "Nusnausti";
 "5 minutes" = "5 minutes";
 "10 minutes" = "10 minučių";
 "15 minutes" = "15 minučių";
 "30 minutes" = "30 minučių";
 "45 minutes" = "45 minutes";
-"1 hour" = "1 valanda";
-"1 day" = "1 diena";
+"1 hour" = "1 valandą";
+"1 day" = "1 dieną";
 
 /* mail labels */
 "Important" = "Svarbu";
@@ -106,8 +109,8 @@
 "Personal" = "Asmeninis";
 "To Do" = "Padaryti";
 "Later" = "Vėliau";
-"Forwarded" = "Forwarded";
-"Return Receipt Sent" = "Return Receipt Sent";
+"Forwarded" = "Persiųstas";
+"Return Receipt Sent" = "Išsiuntimo patvirtinimas išsiųstas";
 "a2_Sunday" = "S";
 "a2_Monday" = "P";
 "a2_Tuesday" = "A";
@@ -119,7 +122,7 @@
 "Add User" = "Pridėti vartotoją";
 "Loading" = "Įkrovimas";
 "No such user." = "Tokio vartotojo nėra.";
-"You cannot (un)subscribe to a folder that you own!" = "Jūs negalite (atsisakyti) užsiregistruoti šio aplanką, nes jis jums priklauso!";
+"You cannot (un)subscribe to a folder that you own!" = "Jūs negalite (atsisakyti) užsiregistruoti šio aplanko, nes jis jums priklauso!";
 
 /* SMIME Certificate field */
 "S/MIME Certificate" = "S/MIME Certificate";
@@ -134,43 +137,43 @@
 "commonName" = "Common Name";
 "surname" = "Surname";
 "givenName" = "Given Name";
-"emailAddress" = "Email Address";
+"emailAddress" = "Pašto adresas";
 
 
 /* Authentication username */
-"Username" = "Username";
+"Username" = "Vartotojas";
 
 /* Authentication password */
-"Password" = "Password";
+"Password" = "Slaptažodis";
 
 /* Authentication failed */
-"Wrong username or password." = "Wrong username or password.";
+"Wrong username or password." = "Blogas vartotojo vardas arba slaptažodis.";
 
 /* Error message displayed bellow search field when the search string has less than the required number of characters */
 "Enter at least %{minimumSearchLength} characters" = "Įveskite bent %{minimumSearchLength} simbolius";
 
 /* Error message displayed when a file upload exceeds WOMaxUploadSize */
-"File size upload limit reached" = "File size upload limit reached";
+"File size upload limit reached" = "Pasiektas failo dydžio įkėlimo limitas";
 
 /* Generic server error */
-"An error occured, please try again." = "An error occured, please try again.";
+"An error occured, please try again." = "Įvyko klaida, bandykite dar kartą.";
 
 /* Open datepicker */
-"Open Calendar" = "Open Calendar";
+"Open Calendar" = "Atidaryti kalendorių";
 
 /* Toggle visibility (ex: mail account in left navigation menu) */
-"Toggle visibility" = "Toggle visibility";
+"Toggle visibility" = "Perjungti matomumą";
 
-"Keyboard Shortcuts" = "Keyboard Shortcuts";
+"Keyboard Shortcuts" = "Klaviatūros nuorodos";
 
 /* Aria label for avatar button to select and unselect an item */
-"Toggle item" = "Toggle item";
+"Toggle item" = "Perjungti elementą";
 
 /* Toggle multiple items at the same time (hotkeys cheatsheet) */
 "Toggle range of items" = "Toggle range of items";
 
 /* Question mark shows list of hotkeys */
-"Show or hide this help" = "Show or hide this help";
+"Show or hide this help" = "Rodyti arba slėpti šią pagalbą";
 
 /* Space key */
 "key_space" = "space";
@@ -206,27 +209,27 @@
 "hotkey_search" = "s";
 
 /* Hotkey description to select next list item */
-"View next item" = "View next item";
+"View next item" = "Žiūrėti kitą elementą";
 
 /* Hotkey description to select previous list item */
-"View previous item" = "View previous item";
+"View previous item" = "Žiūrėti ankstesnį elementą";
 
 /* Hotkey description to add next list item to selection */
-"Add next item to selection" = "Add next item to selection";
+"Add next item to selection" = "Pridėti kitą elementą prie pasirinkimo";
 
 /* Hotkey description to add previous list item to selection */
-"Add previous item to selection" = "Add previous item to selection";
+"Add previous item to selection" = "Pridėti ankstesnį elementą prie pasirinkimo";
 
 /* Hotkey description to move backward in current view */
-"Move backward" = "Move backward";
+"Move backward" = "Judėti atgal";
 
 /* Hotkey description to move forward in current view */
-"Move forward" = "Move forward";
+"Move forward" = "Judėti pirmyn";
 
 /* Password Recovery */
-"passwordRecovery_Disabled" = "Disabled";
-"passwordRecovery_SecretQuestion" = "Secret question";
-"passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
-"passwordRecovery_SecretQuestion2" = "What was your first car ?";
-"passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
-"passwordRecovery_SecondaryEmail" = "Secondary E-mail";
+"passwordRecovery_Disabled" = "Išjungti";
+"passwordRecovery_SecretQuestion" = "Slaptas klausimas";
+"passwordRecovery_SecretQuestion1" = "Koks Jūsų pirmojo augintinio vardas?";
+"passwordRecovery_SecretQuestion2" = "Koks buvo Jūsų pirmasis automobilis?";
+"passwordRecovery_SecretQuestion3" = "Koks Jūsų mėgstamiausias filmas?";
+"passwordRecovery_SecondaryEmail" = "Antras elektroninis paštas";

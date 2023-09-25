@@ -8,27 +8,27 @@
 "Connect" = "Prisijungti";
 
 /* Appears while authentication is in progress */
-"Authenticating" = "Authenticating";
+"Authenticating" = "Autentifikuojama";
 
 /* Appears when authentication succeeds */
-"Welcome" = "Welcome";
+"Welcome" = "Sveiki";
 
 "Authentication Failed" = "Autentifikavimas nepavyko";
 "Wrong username or password." = "Blogas vartotojo vardas arba slaptažodis.";
-"Retry" = "Retry";
-"Login failed due to unhandled error case:" = "Login failed due to unhandled error case:";
-"cookiesNotEnabled" = "Jūs negalite prisijungti, todėl kad Jūsų naršyklės slapukai išjungti. Prašome įjungti slapukus savo naršyklės parametruose ir pabandyti dar kartą.";
-"browserNotCompatible" = "Aptikome, kad Jūsų naršyklės versija šiuo metu nėra palaikoma šioje svetainėje. Mūsų rekomendacija naudoti Firefox. Paspauskite ant nuorodos žemiau, norėdami atsisiųsti naujausią versiją šios naršyklės.";
+"Retry" = "Pabandyti iš naujo";
+"Login failed due to unhandled error case:" = "Prisijungimas nepavyko dėl nenagrinėtos klaidos:";
+"cookiesNotEnabled" = "Jūs negalite prisijungti, nes naršyklės slapukai išjungti. Prašome įjungti slapukus savo naršyklės parametruose ir pabandyti dar kartą.";
+"browserNotCompatible" = "Aptikome, kad Jūsų naršyklės versija nėra palaikoma šioje svetainėje. Mūsų rekomendacija naudoti Firefox. Paspauskite ant nuorodos žemiau, norėdami atsisiųsti naujausią šios naršyklės versiją.";
 "alternativeBrowsers" = "Taip pat galite naudoti šias suderinamas naršykles";
 "alternativeBrowserSafari" = "Taip pat galite naudoti Safari.";
 
 /* 2FA */
-"Verification Code" = "Verification Code";
-"Enter the 6-digit verification code from your TOTP application." = "Enter the 6-digit verification code from your TOTP application.";
-"You provided an invalid TOTP key." = "You provided an invalid TOTP key.";
-"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application.";
+"Verification Code" = "Patvirtinimo kodas";
+"Enter the 6-digit verification code from your TOTP application." = "Įveskite 6 skaitmenų patvirtinimo kodą iš jūsų antrojo faktoriaus programos.";
+"You provided an invalid TOTP key." = "Jūs nurodėte neteisingą patvirtinimo kodą.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Dviejų veiksnių autentifikavimas buvo išjungtas. Apsilankykite nuostatų modulyje, kad atkurtumėte dviejų veiksnių autentifikavimą ir iš naujo sukonfigūruotumėte antrojo faktoriaus programą.";
 
-"Download" = "Parsiūsti";
+"Download" = "Parsiųsti";
 "Language" = "Kalba";
 "choose" = "Pasirinkti: ...";
 "Arabic" = "العربية";
@@ -45,6 +45,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
+"Galician" = "Galician";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -78,22 +79,22 @@
 "About" = "Apie";
 "AboutBox" = "Developed by Inverse and Alinto, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
 "Your account was locked due to too many failed attempts." = "Jūsų paskyra užblokuota dėl daugelio klaidingų prisijungimų.";
-"Your account was locked due to an expired password." = "Jūsų paskyra užblokuota dėl pasibaigusio slaptažodžio.";
+"Your account was locked due to an expired password." = "Jūsų paskyra užblokuota nes baigėsi slaptažodžio galiojimo laikas.";
 "Login failed due to unhandled error case" = "Prisijungti nepavyko dėl neaiškios klaidos";
 "Change your Password" = "Pakeisti slaptažodį";
 "The password was changed successfully." = "Slaptažodis sėkmingai pakeistas.";
-"Your password has expired, please enter a new one below" = "Jūsų slaptažodžio galiojimo laikas baigėsi, prašome žemiau įvesti naują";
-"Password must not be empty." = "Slaptažodis ne turi būti tuščias.";
-"The passwords do not match. Please try again." = "Neatitinka slaptažodis. Prašome pabandyti dar kartą.";
+"Your password has expired, please enter a new one below" = "Jūsų slaptažodžio galiojimo laikas baigėsi, žemiau prašome įvesti naują slaptažodį";
+"Password must not be empty." = "Slaptažodis negali būti tuščias.";
+"The passwords do not match. Please try again." = "Slaptažodžiai nesutampa. Prašome pabandyti dar kartą.";
 "Password Grace Period" = "Slaptažodžio galiojimo laikas";
-"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Jums liko %{0} prisijungimo iki Jūsų paskyros užblokavimo. Prašome pasikeisti Jūsų slaptažodį pirminiame lange.";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Jums liko %{0} prisijungimų iki Jūsų paskyros užblokavimo. Prašome pasikeisti Jūsų slaptažodį nustatymuose.";
 "Password about to expire" = "Slaptažodžio galiojimas baigiasi";
 "Your password is going to expire in %{0} %{1}." = "Jūsų slaptažodžio galiojimas baigsis už %{0} %{1}.";
 "days" = "dienos";
 "hours" = "valandos";
 "minutes" = "minutės";
 "seconds" = "sekundės";
-"Password change failed" = "Slaptažodžio keitimo klaida";
+"Password change failed" = "Slaptažodžio keitimo klaida. Patikrinkite dabartinį slaptažodį";
 "Password change failed - Permission denied" = "Slaptažodžio keitimo klaida - Neturite leidimo";
 "Password change failed - Insufficient password quality" = "Slaptažoždio keitimo klaida - Nepakankama slaptažodžio kokybė.";
 "Password change failed - Password is too short" = "Slaptažodžio keitimo klaida - Slaptažodis yra per trumpas";
@@ -112,17 +113,17 @@
 "Missing type parameter" = "Trūksta rūšes parametrų";
 
 /* Password Recovery */
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password lost" = "Password lost";
-"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
-"Invalid secret question answer" = "Invalid secret question answer";
-"Next" = "Next";
-"Back" = "Back";
-"Please enter a new password below" = "Please enter a new password below";
-"A link will be sent to %{0}" = "A link will be sent to %{0}";
-"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
-"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
-"Password recovery email in error" = "Password recovery email in error";
-"Password reset" = "Password reset";
-"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";
+"Secondary e-mail" = "Antrinis el. paštas";
+"Answer" = "Atsakymas";
+"Password lost" = "Pamestas slaptažodis";
+"No password recovery method has been defined for this user" = "Šiam vartotojui nebuvo nustatytas joks slaptažodžio atkūrimo metodas";
+"Invalid secret question answer" = "Neteisingas slapto klausimo atsakymas";
+"Next" = "Sekantis";
+"Back" = "Atgal";
+"Please enter a new password below" = "Prašome įveskite naują slaptažodį";
+"A link will be sent to %{0}" = "Nuoroda bus išsiųsta %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "Slaptažodžio nustatymo iš naujo nuoroda buvo išsiųsta, patikrinkite savo atkūrimo el. pašto dėžutę ir spustelėkite nuorodą";
+"Invalid configuration for email password recovery" = "Netinkama el. pašto slaptažodžio atkūrimo konfigūracija";
+"Password recovery email in error" = "Slaptažodžio atkūrimo el. paštu klaida";
+"Password reset" = "Slaptažodžio nustatymas iš naujo";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Sveiki %{0},\nBuvo inicijuotas prašymas pakeisti slaptažodį!\nIgnoruokite šį el. laišką jeigu nepateikėte šios užklausos.\n\nKitu atveju spustelėkite šią nuorodą, kad pakeistumėte slaptažodį: %{1}";

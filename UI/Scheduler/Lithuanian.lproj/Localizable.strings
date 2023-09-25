@@ -7,10 +7,10 @@
 "Print the current calendar view" = "Atspausdinti esamo kalendoriaus vaizdą";
 "Delete this event or task" = "Ištrinti šį įvykį ar užduotį";
 "Go to today" = "Pereiti į šiandieną";
-"Switch to day view" = "Pakeisti dienos vaizdą";
-"Switch to week view" = "Pakeisti savaitės vaizdą";
-"Switch to month view" = "Pakeisti į mėnesio vaizdą";
-"Switch to multi-columns day view" = "Perjungti į multi-kolonų dienos vaizdą";
+"Switch to day view" = "Rodyti dienos valandinį";
+"Switch to week view" = "Rodyti savaitės kalendorių";
+"Switch to month view" = "Rodyti mėnesio kalendorių";
+"Switch to multi-columns day view" = "Rodyti asmeninį valandinį";
 "Reload all calendars" = "Atnaujinti visus kalendorius";
 
 /* Tabs */
@@ -23,7 +23,7 @@
 "DayOfTheMonth" = "Mėnesio diena";
 "dayLabelFormat" = "%m/%d/%Y";
 "today" = "Šiandiena";
-"Previous Day" = "Vakar diena";
+"Previous Day" = "Praėjusi diena";
 "Next Day" = "Kita diena";
 
 /* Week */
@@ -162,7 +162,7 @@
 "Due Date" = "Terminas";
 "Name" = "Vardas";
 "Email" = "Elektroninis paštas";
-"Status" = "Statusas";
+"Status" = "Būsena";
 "% complete" = "% užbaigta";
 "Location" = "Vietovė";
 "Add a category" = "Pridėti kategoriją";
@@ -218,16 +218,16 @@
 /* Searching */
 "view_all" = "Visi";
 "view_today" = "Šiandiena";
-"view_next7" = "Sekančios 7 dienos";
-"view_next14" = "Sekančios 14 dienos";
-"view_next31" = "Sekančios 31 dienos";
+"view_next7" = "Ateinančios 7 dienos";
+"view_next14" = "Ateinančios 14 dienų";
+"view_next31" = "Ateinančios 31 diena";
 "view_thismonth" = "Šis mėnuo";
-"view_thisyear" = "This Year";
-"view_last7" = "Last 7 days";
-"view_last14" = "Last 14 days";
-"view_last31" = "Last 31 days";
-"view_lastmonth" = "Last Month";
-"view_lastyear" = "Last Year";
+"view_thisyear" = "Šie metai";
+"view_last7" = "Praeitos 7 dienos";
+"view_last14" = "Praeitos 14 dienų";
+"view_last31" = "Praeitos 31 dienų";
+"view_lastmonth" = "Praeitas mėnuo";
+"view_lastyear" = "Praeiti metai";
 "view_future" = "Visi ateities įvykiai";
 "view_selectedday" = "Pasirinkta diena";
 "view_not_started" = "Nepradėtos užduotys";
@@ -546,7 +546,7 @@ vtodo_class2 = "(Konfidenciali užduotis)";
 "Show alarms" = "Rodyti perspėjimus";
 "Show tasks" = "Rodyti užduotis";
 "Notifications" = "Pranešimai";
-"Receive a mail when I modify my calendar" = "Gauti laiška, kai aš modifikuosiu savo kalendorių";
+"Receive a mail when I modify my calendar" = "Gauti laišką, kai aš modifikuosiu savo kalendorių";
 "Receive a mail when someone else modifies my calendar" = "Gauti laišką, kai kažkas kitas modifikuoja mano kalendorių";
 "When I modify my calendar, send a mail to" = "Kai aš redaguosiu savo kalendorių, laišką siųsti ";
 "Email Address" = "Elektroninio pašto adresas";
@@ -565,6 +565,7 @@ vtodo_class2 = "(Konfidenciali užduotis)";
 "CalDAV URL" = "CalDAV nuoroda:";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
+"Copy to clipboard" = "Kopijuoti į iškarpinę";
 
 /* Error messages */
 "dayFieldInvalid" = "Prašome nurodyti skaitinę dienos vertę didesnę arba lygią 1, dienos laukelyje.";
@@ -592,8 +593,8 @@ vtodo_class2 = "(Konfidenciali užduotis)";
 "Move To" = "Move To";
 "Copy To" = "Copy To";
 "Subscriptions" = "Prenumeratos";
-"Subscribe to a shared calendar" = "Subscribe to a shared calendar";
-"Subscribe to a web calendar..." = "Prenumeruoti žiniatinklio kalendorių...";
+"Subscribe to a shared calendar" = "Prisijungti prie bendro kalendoriaus";
+"Subscribe to a web calendar..." = "Prisijungti prie žiniatinklio kalendoriaus";
 "URL of the Calendar" = "Kalendoriaus URL";
 "Web Calendar" = "Žiniatinklio kalendorius";
 "Web Calendars" = "Žiniatinklio kalendoriai";
@@ -623,7 +624,7 @@ vtodo_class2 = "(Konfidenciali užduotis)";
 "Delete This Occurrence" = "Ištrinti šį įvykį";
 "Delete All Occurrences" = "Ištrinti visus įvykius";
 "Add Recurrence Date" = "Add Recurrence Date";
-"Add From" = "Priedėti nuo";
+"Add From" = "Pridėti nuo";
 "Add Due" = "Pridėti dėl";
 "Import" = "Importuoti";
 "Rename" = "Pervadinti";

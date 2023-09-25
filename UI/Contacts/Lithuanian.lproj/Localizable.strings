@@ -49,13 +49,13 @@
 "Blind Carbon Copy (Bcc)" = "Blind Carbon Copy (Bcc)";
 
 /* Search scope: name fields */
-"name" = "Name";
+"name" = "Vardas";
 
 /* Search scope: name fields */
-"c_cn" = "Name";
+"c_cn" = "Vardas";
 
 /* Search scope: secondary email field */
-"mozillanickname" = "Secondary email";
+"mozillanickname" = "Antras el. paštas";
 
 /* Search scope: screen name field */
 "nsaimid" = "Screen name";

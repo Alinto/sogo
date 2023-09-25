@@ -12,9 +12,9 @@ vtodo_class2 = "(Konfidenciali užduotis)";
 "The event \"%{Summary}\" was created" = "Įvykis \"%{summary}\" buvo sukurtas";
 "The event \"%{Summary}\" was deleted" = "Įvykis \"%{Summary}\" buvo ištrintas";
 "The event \"%{Summary}\" was updated" = "Įvykis \"%{Summary}\" buvo atnaujintas";
-"The task \"%{Summary}\" was created" = "The task \"%{Summary}\" was created";
-"The task \"%{Summary}\" was deleted" = "The task \"%{Summary}\" was deleted";
-"The task \"%{Summary}\" was updated" = "The task \"%{Summary}\" was updated";
+"The task \"%{Summary}\" was created" = "Įvykis \\"%{summary}\\" buvo sukurtas";
+"The task \"%{Summary}\" was deleted" = "Įvykis \\"%{Summary}\\" buvo ištrintas";
+"The task \"%{Summary}\" was updated" = "Įvykis \\"%{Summary}\\" buvo atnaujintas";
 "The following attendees(s) were notified" = "Šiems dalyviui(iams) buvo pranešta";
 "The following attendees(s) were added" = "Šie dalyvis(iai) buvo pridėti";
 "The following attendees(s) were removed" = "Šie dalyvis(iai) buvo pašalinti";
@@ -23,14 +23,14 @@ vtodo_class2 = "(Konfidenciali užduotis)";
 "calendar_label" = "Kalendorius";
 "startDate_label" = "Pradėti";
 "endDate_label" = "Pabaiga";
-"time_label" = "Time";
-"to_label" = "to";
+"time_label" = "Laikas";
+"to_label" = "iki";
 "due_label" = "Terminas";
 "location_label" = "Vietovė";
 "summary_label" = "Santrauka";
 "comment_label" = "Komentaras:";
-"organizer_label" = "Organizer";
-"attendee_label" = "Attendee";
+"organizer_label" = "Organizatorius";
+"attendee_label" = "Dalyvis";
 
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Įvykio pakvietimas: \"%{Summary}\"";
@@ -39,7 +39,7 @@ vtodo_class2 = "(Konfidenciali užduotis)";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} pakvietė Jus į %{Summary}.\n\nPradžia: %{StartDate} nuo %{StartTime}\nPabaiga: %{EndDate} nuo %{EndTime}\nAprašymas: %{Description}";
 
 /* Deletion */
-"Event Cancelled: \"%{Summary}\"" = "Įvykis vadinasi: \"%{Summary}\"";
+"Event Cancelled: \"%{Summary}\"" = "Įvykis atšauktas: \\"%{Summary}\\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} atšaukė šį įvykį: %{Summary}.\n\nPradžia: %{StartDate}\nPabaiga: %{EndDate}\nAprašymas: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
@@ -56,12 +56,12 @@ vtodo_class2 = "(Konfidenciali užduotis)";
 = "Prašome priimti ar atmesti pakeitimus.";
 
 /* Reply */
-"Accepted invitation: \"%{Summary}\"" = "Priimti pakvietima: \"%{Summary}\"";
+"Accepted invitation: \"%{Summary}\"" = "Priimti pakvietimą: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Atmesti pakvietimą: \"%{Summary}\"";
 "Delegated invitation: \"%{Summary}\"" = "Deleguoti pakvietimą: \"%{Summary}\"";
 "Not yet decided on invitation: \"%{Summary}\"" = "Dar neapsisprendęs dėl pakvietimo: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
-= "%{Attendee} %{SentByText} priėmė Kūsų įvykio pakvietimą.";
+= "%{Attendee} %{SentByText} priėmė Jūsų įvykio pakvietimą.";
 "%{Attendee} %{SentByText}has declined your event invitation."
 = "%{Attendee} %{SentByText} atmetė Jūsų įvykio pakvietimą.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
@@ -70,13 +70,13 @@ vtodo_class2 = "(Konfidenciali užduotis)";
 = "%{Attendee} %{SentByText} neapsisprendė dėl Jūsų įvykio pakvietimo.";
 
 /* Reminder */
-"Reminder: \"%{Summary}\" - %{StartDate}" = "Reminder: \"%{Summary}\" - %{StartDate}";
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Priminimas: \"%{Summary}\" - %{StartDate}";
 
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Negalime prieiti prie išteklių: \"%{Cn} %{SystemEmail}\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Didžiausias užsakymų vienu metu skaičius (%{NumberOfSimultaneousBookings}) pasiekė ribą \"%{Cn} %{SystemEmail}\". Įvykio konfliktas yra \"%{EventTitle}\", ir prasideda nuo %{StartDate}.";
 
 /* Participation role */
-"Your participation is required to this event" = "Your participation is required to this event";
-"Your participation is optional to this event" = "Your participation is optional to this event";
-"Your participation is not required to this event" = "Your participation is not required to this event";
+"Your participation is required to this event" = "Jūsų dalyvavimas šiame renginyje būtinas";
+"Your participation is optional to this event" = "Jūsų dalyvavimas šiame renginyje neprivalomas";
+"Your participation is not required to this event" = "Jūsų dalyvavimas šiame renginyje nebūtinas";
