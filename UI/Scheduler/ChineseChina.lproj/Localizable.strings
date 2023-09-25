@@ -565,6 +565,7 @@ vtodo_class2 = "(机密任务)";
 "CalDAV URL" = "CalDAV链接";
 "WebDAV ICS URL" = "WebDAV ICS 链接";
 "WebDAV XML URL" = "WebDAV XML 链接";
+"Copy to clipboard" = "Copy to clipboard";
 
 /* Error messages */
 "dayFieldInvalid" = "请在日期中输入1或者大于1的数字。";

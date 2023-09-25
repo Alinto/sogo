@@ -445,6 +445,8 @@
 "Back" = "返回";
 "Copy messages" = "复制信息";
 "More messages options" = "更多信息选项";
+"Flag" = "标记";
+"Unflag" = "Unflag";
 "Mark as Unread" = "标记为未读";
 "Mark as Read" = "标记为已读";
 "Closing Window ..." = "关闭窗口中...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "您的电子邮件已保存";
 "Your email has been sent" = "您的电子邮件已发送";
 "Folder compacted" = "文件夹已压缩";
+
+"More Options" = "More Options";
 
 "New draft" = "New draft";
 "Create new draft with this template" = "Create new draft with this template";
