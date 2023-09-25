@@ -24,6 +24,7 @@
 "Vacation" = "Відпустка";
 "Forward" = "Перенаправлення";
 "Password" = "Пароль";
+"Notification" = "Сповіщення";
 "Categories" = "Категорії";
 "Appointments invitations" = "Запрошення";
 "Name" = "Назва";
@@ -45,9 +46,10 @@
 "Days between responses" = "Днів між відповідями";
 "Do not send responses to mailing lists" = "Не надсилати автоматичні відповіді на адреси розсилок";
 "Activation Constraints" = "Обмеження активації";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Налаштуйте діапазони днів і годин незалежно та, за бажанням, поєднайте їх із певними днями тижня, щоб адаптувати фільтри для відпустки відповідно до ваших уподобань";
 "Enable auto reply on" = "Включити автовідповідь на";
 "First day of vacation" = "Перший день відпустки";
-"Disable auto reply after" = "Disable auto reply after";
+"Disable auto reply after" = "Вимкнути автоматичну відповідь після";
 "Last day of vacation" = "Останній день відпустки";
 "Enter date" = "Введіть дату";
 /* Enable auto reply at this time of the day */
@@ -78,6 +80,11 @@
 "You are not allowed to forward your messages to an external email address." = "Ви не можете пересилати свої повідомлення на зовнішню адресу електронної пошти.";
 "You are not allowed to forward your messages to an internal email address." = "Ви не можете пересилати свої повідомлення на внутрішні адреси електронної пошти.";
 "You are not allowed to forward your messages to this domain:" = "Ви не можете пересилати свої повідомлення на вказаний домен:";
+
+/* notification */
+"Notify incoming messsages" = "Сповіщати про вхідні повідомлення";
+"Notification Message Sent" = "Сповіщення надіслано";
+"Notification Message" = "Сповіщення про нове повідомлення на %{0}";
 
 /* d & t */
 "Time Zone" = "Часовий пояс";
@@ -194,6 +201,9 @@
 "Compose messages in" = "Створювати повідомлення в форматі";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Звичайний текст";
+"Insert signature on new message" = "Вставляти підпис у нове повідомлення";
+"Insert signature on reply" = "Вставляти підпис у відповідь";
+"Insert signature on forward" = "Вставляти підпис при переадресації";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Розмір шрифта за замовчуванням";
@@ -247,6 +257,7 @@
 "Digitally sign the message by default" = "Підписувати цифровим підписом повідомлення за замовчуванням";
 "Always try to encrypt the message" = "Завжди намагатися зашифрувати повідомлення";
 "An error occurred while importing the certificate. Verify your password." = "Помилка імпортування сертифіката. Перевірте ваш пароль.";
+"Data too big. Please contact technical support." = "Занадто багато даних. Зверніться до служби технічної підтримки.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Додаткові параметри";
@@ -257,11 +268,11 @@
 "Confirmation" = "Повтор нового пароля";
 "Change" = "Змінити";
 "Passwords don't match" = "Паролі не збігаються";
-"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
-"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
-"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
-"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+"POLICY_MIN_LOWERCASE_LETTER" = "Мінімум %{0} малих літер";
+"POLICY_MIN_UPPERCASE_LETTER" = "Мінімум %{0} великих літер";
+"POLICY_MIN_DIGIT" = "Мінімум %{0} цифр";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Мінімум %{0} спеціальних символів";
+"POLICY_MIN_LENGTH" = "Мінімальна довжина %{0} символів";
 
 
 /* Event+task classifications */
@@ -309,6 +320,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
+"Galician" = "Галісійська";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -405,6 +417,7 @@
 
 "Keep the message" = "Зберегти повідомлення";
 "Forward the message to" = "Пененаправити повідомлення на";
+"Notify the message to" = "Сповістити";
 
 /* Input field label of "forward" mail filter action */
 "Email" = "E-Mail";
@@ -485,8 +498,8 @@
 "Enable two-factor authentication using a TOTP application" = "Ввімкнути двухфакторную аутентифікацію за допомогою додатку";
 "You must enter this key into your TOTP application." = "Ви повинні ввести цей ключ в додаток двофакторної аутентифікації, заснованої на використанні одноразових кодів (TOTP).";
 "If you do not and you log out you will not be able to login again." = "Якщо ви цього не зробите і вийдете з системи, ви не зможете увійти знову.";
-"Enter TOTP verification code :" = "Enter TOTP verification code :";
-"Invalid TOTP verification code" = "Invalid TOTP verification code";
+"Enter TOTP verification code :" = "Введіть код підтвердження TOTP:";
+"Invalid TOTP verification code" = "Невірний код верифікації TOTP";
 
 /* External Sieve scripts */
 "An external Sieve script is active" = "Зовнішній скрипт Sieve активний";
@@ -494,9 +507,9 @@
 "Let SOGo handle everything" = "Надати SOGo можливість управляти всім";
 
 /* Password Recovery */
-"Password recovery mode" = "Password recovery";
-"Question" = "Question";
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password recovery" = "Password recovery";
-"Password change" = "Password change";
+"Password recovery mode" = "Відновлення пароля";
+"Question" = "Питання";
+"Secondary e-mail" = "Додаткова електронна пошта";
+"Answer" = "Відповідь";
+"Password recovery" = "Відновлення пароля";
+"Password change" = "Зміна пароля";

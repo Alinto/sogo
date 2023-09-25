@@ -44,6 +44,9 @@
 "Expand" = "Розгорнути";
 "Reduce" = "Зменшити";
 
+/* tooltip */
+"Refresh" = "Оновити";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
         = "Неможливо підписатись на цю теку!";
@@ -106,7 +109,7 @@
 "Personal" = "Особисте";
 "To Do" = "До виконання";
 "Later" = "Відсунуте";
-"Forwarded" = "Forwarded";
+"Forwarded" = "Переслано";
 "Return Receipt Sent" = "Повідомлення про вручення відправлено";
 "a2_Sunday" = "Нд";
 "a2_Monday" = "Пн";
@@ -224,9 +227,9 @@
 "Move forward" = "Перемістити вперед";
 
 /* Password Recovery */
-"passwordRecovery_Disabled" = "Disabled";
-"passwordRecovery_SecretQuestion" = "Secret question";
-"passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
-"passwordRecovery_SecretQuestion2" = "What was your first car ?";
-"passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
-"passwordRecovery_SecondaryEmail" = "Secondary E-mail";
+"passwordRecovery_Disabled" = "Вимкнено";
+"passwordRecovery_SecretQuestion" = "Секретне запитання";
+"passwordRecovery_SecretQuestion1" = "Як звуть вашу першу тваринку?";
+"passwordRecovery_SecretQuestion2" = "Яким був ваш перший автомобіль?";
+"passwordRecovery_SecretQuestion3" = "Який ваш улюблений фільм?";
+"passwordRecovery_SecondaryEmail" = "Додаткова електронна пошта";

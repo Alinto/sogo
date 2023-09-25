@@ -38,7 +38,7 @@
 "Previous Month" = "Один місяць назад";
 "Next Month" = "Один місяць вперед";
 /* Week number prefix */
-"W" = "W";
+"W" = "Т";
 
 /* Year */
 "this year" = "цей рік";
@@ -401,8 +401,8 @@
 "To" = "Кому";
 
 /* dates */
-"DateFrom" = "From";
-"DateTo" = "To";
+"DateFrom" = "Від";
+"DateTo" = "До";
 
 /* validation errors */
 validate_notitle           = "Не зазначено назву, продовжити?";
@@ -565,6 +565,7 @@ vtodo_class2 = "(Конфіденційне завдання)";
 "CalDAV URL" = "CalDAV URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
+"Copy to clipboard" = "Скопіювати до буфера обміну";
 
 /* Error messages */
 "dayFieldInvalid" = "Будь ласка, зазначте числове значення в полі дні, що більше або рівно 1.";
@@ -629,7 +630,7 @@ vtodo_class2 = "(Конфіденційне завдання)";
 "Rename" = "Перейменувати";
 "Import Calendar" = "Імпортувати календар";
 "Select an ICS file." = "Виберіть iCalendar файл (.ics).";
-"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "Ви не зберегли змінені дані. Ви хочете закрити спливаюче вікно і втратити дані?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Успішна підписка на календар";

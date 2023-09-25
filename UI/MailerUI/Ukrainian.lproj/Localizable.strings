@@ -164,7 +164,7 @@
 "Yesterday"     = "Вчора";
 "first"         = "перша";
 "previous"      = "попередня";
-"next"          = "наступна";
+"next"          = "Наступна";
 "last"          = "остання";
 "msgnumber_to"  = "до";
 "msgnumber_of"  = "з";
@@ -445,6 +445,8 @@
 "Back" = "Назад";
 "Copy messages" = "Копіювати повідомлення";
 "More messages options" = "Більше опцій повідомлень";
+"Flag" = "Додати зірочку";
+"Unflag" = "Зняти позначку";
 "Mark as Unread" = "Позначити як непрочитане";
 "Mark as Read" = "Позначити як прочитане";
 "Closing Window ..." = "Закривається вікно...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "Лист збережено";
 "Your email has been sent" = "Листа надіслано";
 "Folder compacted" = "Папка стиснута";
+
+"More Options" = "Більше варіантів";
 
 "New draft" = "Нова чернетка";
 "Create new draft with this template" = "Створити нову чернетку за допомогою цього шаблону";

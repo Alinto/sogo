@@ -45,6 +45,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
+"Galician" = "Галісійська";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -76,7 +77,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "Про систему";
-"AboutBox" = "Developed by Inverse and Alinto, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
+"AboutBox" = "Розроблений компаніями Inverse та Alinto, SOGo - це повнофункціональний сервер групової роботи з акцентом на масштабованість та простоту.<br/><br/>\nSOGo надає потужний веб-інтерфейс на основі AJAX і підтримує кілька нативних клієнтів завдяки використанню стандартних протоколів, таких як CalDAV і CardDAV.<br/><br/>\nSOGo поширюється на умовах <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> версії 2 або новішої, а окремі частини - на умовах GNU LGPL версії 2. Це вільне програмне забезпечення: ви можете вільно змінювати і поширювати його. ГАРАНТІЇ НЕ НАДАЮТЬСЯ, у межах, дозволених законодавством.<br/><br/>\nДив. <a href=\"http://www.sogo.nu/en/support/community.html\">цю сторінку</a> для ознайомлення з різними варіантами підтримки.";
 "Your account was locked due to too many failed attempts." = "Ваш обліковий запис заблоковано через велику кількість невдалих спроб авторизації.";
 "Your account was locked due to an expired password." = "Ваш обліковий запис заблоковано, оскільки закінчився термін дії пароля.";
 "Login failed due to unhandled error case" = "Невдала спроба авторизація через невизначену помилку";
@@ -112,17 +113,17 @@
 "Missing type parameter" = "Відсутній параметр типу";
 
 /* Password Recovery */
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password lost" = "Password lost";
-"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
-"Invalid secret question answer" = "Invalid secret question answer";
-"Next" = "Next";
-"Back" = "Back";
-"Please enter a new password below" = "Please enter a new password below";
-"A link will be sent to %{0}" = "A link will be sent to %{0}";
-"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
-"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
-"Password recovery email in error" = "Password recovery email in error";
-"Password reset" = "Password reset";
-"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";
+"Secondary e-mail" = "Додаткова електронна пошта";
+"Answer" = "Відповідь";
+"Password lost" = "Пароль втрачено";
+"No password recovery method has been defined for this user" = "Для цього користувача не визначено метод відновлення пароля";
+"Invalid secret question answer" = "Неправильна відповідь на секретне запитання";
+"Next" = "Далі";
+"Back" = "Назад";
+"Please enter a new password below" = "Будь ласка, введіть новий пароль нижче";
+"A link will be sent to %{0}" = "Посилання буде надіслано на %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "Посилання для відновлення паролю було надіслано, будь ласка, перевірте свою поштову скриньку та перейдіть за посиланням";
+"Invalid configuration for email password recovery" = "Неправильна конфігурація для відновлення пароля електронної пошти";
+"Password recovery email in error" = "Помилка в електронній пошті для відновлення пароля";
+"Password reset" = "Відновлення пароля";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Вітаємо, %{0},\nНадійшов запит на зміну вашого пароля!\n\nЯкщо ви не робили цього запиту, то, будь ласка, проігноруйте цей лист.\n\nВ іншому випадку, будь ласка, перейдіть за цим посиланням, щоб змінити пароль: %{1}";
