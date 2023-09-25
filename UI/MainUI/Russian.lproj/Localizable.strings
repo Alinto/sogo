@@ -17,8 +17,8 @@
 "Wrong username or password." = "Неправильный логин или пароль.";
 "Retry" = "Повторить";
 "Login failed due to unhandled error case:" = "Войти не удалось из-за необработанного случая ошибки:";
-"cookiesNotEnabled" = "Вы не можете войти в систему, так как в Вашем броузере (программа для просмотра страниц в интернете) выключены cookies. Пожалуйста разрешите нашему сайту использовать cookies в настройках Вашего броузера.";
-"browserNotCompatible" = "Мы определили что Ваша программа просмотра интернет-страниц (browser) не поддерживает используемую на нашем сайте технологию. Мы рекомендуем использовать одину из совместимых программ (в порядке лучшей совместимости): Firefox, Internet Explorer, Safari, Chrome. Скачать свежий Firefox можно тут:";
+"cookiesNotEnabled" = "Вы не можете войти в систему, так как в Вашем браузере выключены cookies. Пожалуйста разрешите нашему сайту использовать cookies в настройках Вашего браузера.";
+"browserNotCompatible" = "Мы определили, что версия Вашего браузера не поддерживается на нашем сайте. Мы рекомендуем использовать Firefox. Нажмите на ссылку ниже, чтобы загрузить свежую версию браузера.";
 "alternativeBrowsers" = "В качестве альтернативы можно использовать следующие программы:";
 "alternativeBrowserSafari" = "Также можно использовать Safari.";
 
@@ -45,6 +45,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
+"Galician" = "Галисийский";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -76,7 +77,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "О системе";
-"AboutBox" = "Developed by Inverse and Alinto, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
+"AboutBox" = "Разработанный компаниями Inverse и Alinto, SOGo представляет собой полнофункциональный сервер группового ПО, ориентированный на масштабируемость и простоту.<br/><br/>\nSOGo предоставляет мощный Web-интерфейс на базе AJAX и поддерживает множество собственных клиентов за счет использования стандартных протоколов, таких как CalDAV и CardDAV.<br/><br/>\nSOGo распространяется по лицензии <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> версии 2 или более поздней, а отдельные части - по лицензии GNU LGPL версии 2. Это свободное программное обеспечение: вы можете свободно изменять и распространять его. ГАРАНТИИ НЕ ПРЕДОСТАВЛЯЮТСЯ, в пределах, разрешенных законодательством.<br/><br/>\nРазличные варианты поддержки см. на <a href=\"http://www.sogo.nu/en/support/community.html\">этой странице</a>.";
 "Your account was locked due to too many failed attempts." = "Ваш аккаунт был заблокирован из-за слишком большого числа неудачных попыток.";
 "Your account was locked due to an expired password." = "Ваш аккаунт был заблокирован в связи с истечение срока действия пароля.";
 "Login failed due to unhandled error case" = "Войти не удалось из-за необработанного случая ошибки";
@@ -95,12 +96,12 @@
 "seconds" = "секунд";
 "Password change failed" = "Ошибка изменения пароля";
 "Password change failed - Permission denied" = "Ошибка изменения пароля - Доступ запрещен";
-"Password change failed - Insufficient password quality" = "Ошибка изменения пароля - пароль не достаточно сложный";
-"Password change failed - Password is too short" = "Ошибка изменения пароля - пароль слишком короткий";
+"Password change failed - Insufficient password quality" = "Ошибка изменения пароля - Пароль не достаточно сложный";
+"Password change failed - Password is too short" = "Ошибка изменения пароля - Пароль слишком короткий";
 "Password change failed - Password is too young" = "Ошибка изменения пароля - пароль слишком молод";
-"Password change failed - Password is in history" = "Ошибка изменения пароля - пароль уже есть в истории";
+"Password change failed - Password is in history" = "Ошибка изменения пароля - Пароль уже есть в истории";
 "Unhandled policy error: %{0}" = "Необработанные ошибки политики:% {0}";
-"Unhandled error response" = "Unhandled error response";
+"Unhandled error response" = "Необработанный ответ об ошибке";
 "Password change is not supported." = "Смена пароля не поддерживается.";
 "Unhandled HTTP error code: %{0}" = "Необработанные ошибки HTTP-код:% {0}";
 "New password" = "Новый пароль";
@@ -112,17 +113,17 @@
 "Missing type parameter" = "Отсутствует параметр типа";
 
 /* Password Recovery */
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password lost" = "Password lost";
-"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
-"Invalid secret question answer" = "Invalid secret question answer";
-"Next" = "Next";
-"Back" = "Back";
-"Please enter a new password below" = "Please enter a new password below";
-"A link will be sent to %{0}" = "A link will be sent to %{0}";
-"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
-"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
-"Password recovery email in error" = "Password recovery email in error";
-"Password reset" = "Password reset";
-"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";
+"Secondary e-mail" = "Дополнительный адрес электронной почты";
+"Answer" = "Ответ";
+"Password lost" = "Пароль утерян";
+"No password recovery method has been defined for this user" = "Для пользователя не определен способ восстановления пароля";
+"Invalid secret question answer" = "Неправильный ответ на секретный вопрос";
+"Next" = "Далее";
+"Back" = "Назад";
+"Please enter a new password below" = "Пожалуйста, введите новый пароль ниже";
+"A link will be sent to %{0}" = "Ссылка будет отправлена на %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "Вам была выслана ссылка на восстановление пароля, проверьте свой почтовый ящик и перейдите по ссылке";
+"Invalid configuration for email password recovery" = "Неправильная настройка электронной почты для восстановления пароля";
+"Password recovery email in error" = "Ошибка в электронной почте для восстановления пароля";
+"Password reset" = "Пароль сброшен";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Здравствуйте %{0},\nПоступил запрос на изменение вашего пароля!\n\nЕсли вы не делали этого запроса, то, пожалуйста, проигнорируйте это письмо.\n\nЕсли вы запрашивали изменение пароля - то перейдите по этой ссылке: %{1}";

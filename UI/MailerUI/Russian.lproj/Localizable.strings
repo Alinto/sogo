@@ -445,6 +445,8 @@
 "Back" = "Назад";
 "Copy messages" = "Копировать сообщения";
 "More messages options" = "Больше опций сообщений";
+"Flag" = "Флаг";
+"Unflag" = "Снять отметку";
 "Mark as Unread" = "Пометить как непрочитанное";
 "Mark as Read" = "Пометить как прочитанное";
 "Closing Window ..." = "Закрывается окно...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "Письмо сохранено";
 "Your email has been sent" = "Письмо отправлено";
 "Folder compacted" = "Папка сжата";
+
+"More Options" = "Дополнительные параметры";
 
 "New draft" = "Новый черновик";
 "Create new draft with this template" = "Создать новый черновик из этого шаблона";

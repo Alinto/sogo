@@ -44,6 +44,9 @@
 "Expand" = "Развернуть";
 "Reduce" = "Уменьшить";
 
+/* tooltip */
+"Refresh" = "Обновить";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
         = "Невозможно подписаться на эту папку!";
@@ -106,7 +109,7 @@
 "Personal" = "Личное";
 "To Do" = "К исполнению";
 "Later" = "Позже";
-"Forwarded" = "Forwarded";
+"Forwarded" = "Перенаправлено";
 "Return Receipt Sent" = "Уведомление о вручении отправлено";
 "a2_Sunday" = "Вс";
 "a2_Monday" = "Пн";
@@ -224,9 +227,9 @@
 "Move forward" = "Передвинуть вперед";
 
 /* Password Recovery */
-"passwordRecovery_Disabled" = "Disabled";
-"passwordRecovery_SecretQuestion" = "Secret question";
-"passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
-"passwordRecovery_SecretQuestion2" = "What was your first car ?";
-"passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
-"passwordRecovery_SecondaryEmail" = "Secondary E-mail";
+"passwordRecovery_Disabled" = "Отключено";
+"passwordRecovery_SecretQuestion" = "Секретный вопрос";
+"passwordRecovery_SecretQuestion1" = "Как звали ваше первое домашнее животное?";
+"passwordRecovery_SecretQuestion2" = "Какой была ваша первая машина?";
+"passwordRecovery_SecretQuestion3" = "Какой ваш любимый фильм?";
+"passwordRecovery_SecondaryEmail" = "Дополнительный адрес электронной почты";

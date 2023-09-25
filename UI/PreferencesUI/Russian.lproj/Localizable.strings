@@ -24,6 +24,7 @@
 "Vacation" = "Отпуск";
 "Forward" = "Пересылка";
 "Password" = "Пароль";
+"Notification" = "Уведомление";
 "Categories" = "Категории";
 "Appointments invitations" = "Приглашения";
 "Name" = "Имя";
@@ -45,6 +46,7 @@
 "Days between responses" = "Дней между ответами";
 "Do not send responses to mailing lists" = "Не отправлять ответы на почтовые списки рассылки";
 "Activation Constraints" = "Ограничения активации";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Настраивайте диапазоны дней и часов самостоятельно, а также комбинируйте их с конкретными днями недели, чтобы настроить фильтры отпуска в соответствии с вашими предпочтениями";
 "Enable auto reply on" = "Включить автоответ на";
 "First day of vacation" = "Первый день отпуска";
 "Disable auto reply after" = "Отключить автоответ после";
@@ -78,6 +80,11 @@
 "You are not allowed to forward your messages to an external email address." = "Вы не можете пересылать свои сообщения на внешний адрес электронной почты.";
 "You are not allowed to forward your messages to an internal email address." = "Вы не можете пересылать свои сообщения на внутренний адрес электронной почты.";
 "You are not allowed to forward your messages to this domain:" = "Вы не можете пересылать свои сообщения на указанный домен:";
+
+/* notification */
+"Notify incoming messsages" = "Уведомлять о входящих сообщениях";
+"Notification Message Sent" = "Уведомление отправлено";
+"Notification Message" = "Уведомление о новом сообщении на %{0}";
 
 /* d & t */
 "Time Zone" = "Часовой пояс";
@@ -194,6 +201,9 @@
 "Compose messages in" = "Составлять сообщения как";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Простой текст";
+"Insert signature on new message" = "Вставить подпись в новое сообщение";
+"Insert signature on reply" = "Вставить подпись в ответе";
+"Insert signature on forward" = "Вставить подпись при пересылке";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Размер шрифта по умолчанию";
@@ -247,6 +257,7 @@
 "Digitally sign the message by default" = "Подписывать цифровой подписью сообщения по умолчанию";
 "Always try to encrypt the message" = "Всегда пытаться зашифровать сообщение";
 "An error occurred while importing the certificate. Verify your password." = "Ошибка при импорте сертификата. Проверьте ваш пароль.";
+"Data too big. Please contact technical support." = "Данных слишком много. Обратитесь в службу технической поддержки.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Дополнительные параметры";
@@ -257,11 +268,11 @@
 "Confirmation" = "Повтор нового пароля";
 "Change" = "Изменить";
 "Passwords don't match" = "Пароли не совпадают";
-"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
-"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
-"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
-"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+"POLICY_MIN_LOWERCASE_LETTER" = "Минимум %{0} строчных букв";
+"POLICY_MIN_UPPERCASE_LETTER" = "Минимум %{0} заглавных букв";
+"POLICY_MIN_DIGIT" = "Минимум %{0} цифр";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Минимум %{0} специальных символов";
+"POLICY_MIN_LENGTH" = "Минимальная длина %{0} символов";
 
 
 /* Event+task classifications */
@@ -309,6 +320,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
+"Galician" = "Галисийский";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -405,6 +417,7 @@
 
 "Keep the message" = "Оставить сообщение";
 "Forward the message to" = "Перенаправить сообщение на";
+"Notify the message to" = "Уведомить";
 
 /* Input field label of "forward" mail filter action */
 "Email" = "E-mail";
@@ -485,8 +498,8 @@
 "Enable two-factor authentication using a TOTP application" = "Включить двухфакторную аутентификацию с помощью приложения";
 "You must enter this key into your TOTP application." = "Вы должны ввести этот ключ в приложение двухфакторной аутентификации, основанной на использовании одноразовых кодов (TOTP).";
 "If you do not and you log out you will not be able to login again." = "Если вы этого не сделаете и выйдете из системы, вы не сможете войти снова.";
-"Enter TOTP verification code :" = "Enter TOTP verification code :";
-"Invalid TOTP verification code" = "Invalid TOTP verification code";
+"Enter TOTP verification code :" = "Введите код проверки TOTP:";
+"Invalid TOTP verification code" = "Неверный код проверки TOTP";
 
 /* External Sieve scripts */
 "An external Sieve script is active" = "Внешний скрипт Sieve активен";
@@ -494,9 +507,9 @@
 "Let SOGo handle everything" = "Предоставить SOGo возможность управлять всем";
 
 /* Password Recovery */
-"Password recovery mode" = "Password recovery";
-"Question" = "Question";
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password recovery" = "Password recovery";
-"Password change" = "Password change";
+"Password recovery mode" = "Восстановление пароля";
+"Question" = "Вопрос";
+"Secondary e-mail" = "Дополнительный адрес электронной почты";
+"Answer" = "Ответ";
+"Password recovery" = "Восстановление пароля";
+"Password change" = "Изменение пароля";

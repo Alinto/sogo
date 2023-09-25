@@ -38,7 +38,7 @@
 "Previous Month" = "Предыдущий месяц";
 "Next Month" = "Следующий месяц";
 /* Week number prefix */
-"W" = "W";
+"W" = "Н";
 
 /* Year */
 "this year" = "этот год";
@@ -315,7 +315,7 @@
 "Month(s)" = "месяца(цев)";
 
 /* [Event recurrence editor] Ex: _The_ first Sunday */
-"The" = "The";
+"The" = "Это";
 "Recur on day(s)" = "Повторяется в дни";
 "Year(s)" = "год(года)";
 
@@ -401,8 +401,8 @@
 "To" = "Кому";
 
 /* dates */
-"DateFrom" = "From";
-"DateTo" = "To";
+"DateFrom" = "От";
+"DateTo" = "Кому";
 
 /* validation errors */
 validate_notitle           = "Нет названия. Продолжить?";
@@ -565,6 +565,7 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "CalDAV URL" = "CalDAV URL ";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
+"Copy to clipboard" = "Скопировать в буфер обмена";
 
 /* Error messages */
 "dayFieldInvalid" = "Пожалуйста, укажите число больше нуля в поле дней.";
@@ -629,7 +630,7 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "Rename" = "Переименовать";
 "Import Calendar" = "Импортировать календарь";
 "Select an ICS file." = "Выберите iCalendar файл (.ics).";
-"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "У вас не сохранены измененные данные. Вы хотите закрыть всплывающее окно и потерять данные?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Успешная подписка на календарь";
