@@ -445,6 +445,8 @@
 "Back" = "Back";
 "Copy messages" = "Copy messages";
 "More messages options" = "More messages options";
+"Flag" = "علم";
+"Unflag" = "Unflag";
 "Mark as Unread" = "Mark as Unread";
 "Mark as Read" = "Mark as Read";
 "Closing Window ..." = "Closing Window ...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "Your email has been saved";
 "Your email has been sent" = "Your email has been sent";
 "Folder compacted" = "Folder compacted";
+
+"More Options" = "More Options";
 
 "New draft" = "New draft";
 "Create new draft with this template" = "Create new draft with this template";
