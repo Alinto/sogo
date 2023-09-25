@@ -565,6 +565,7 @@ vtodo_class2 = "(Povjerljivi zadatak)";
 "CalDAV URL" = "CalDAV URL ";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
+"Copy to clipboard" = "Copy to clipboard";
 
 /* Error messages */
 "dayFieldInvalid" = "Navedi numeričku vrijednost  u polju za dane veću ili jednako 1.";
