@@ -565,6 +565,7 @@ vtodo_class2 = "(Tarea confidencial)";
 "CalDAV URL" = "URL CalDAV";
 "WebDAV ICS URL" = "URL ICS WebDAV";
 "WebDAV XML URL" = "URL XML WebDAV";
+"Copy to clipboard" = "Copy to clipboard";
 
 /* Error messages */
 "dayFieldInvalid" = "Por favor, especificar un valor numérico en el campo día mayor o igual a 1.";
