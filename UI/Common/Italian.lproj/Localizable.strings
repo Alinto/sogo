@@ -44,6 +44,9 @@
 "Expand" = "Espandi";
 "Reduce" = "Riduci";
 
+/* tooltip */
+"Refresh" = "Refresh";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
         = "Impossibile iscriversi a quella cartella!";

@@ -445,6 +445,8 @@
 "Back" = "Indietro";
 "Copy messages" = "Copia messaggi";
 "More messages options" = "Altre opzioni messaggi";
+"Flag" = "Contrassegna";
+"Unflag" = "Unflag";
 "Mark as Unread" = "Contrassegna come da leggere";
 "Mark as Read" = "Contrassegna come letto";
 "Closing Window ..." = "Chiusura finestra...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "La tua email è stata salvata";
 "Your email has been sent" = "La tua email è stata inviata";
 "Folder compacted" = "Cartella ridotta";
+
+"More Options" = "More Options";
 
 "New draft" = "Nuova bozza";
 "Create new draft with this template" = "Crea una nuova bozza da questo template";

@@ -565,6 +565,7 @@ vtodo_class2 = "(Attività riservata)";
 "CalDAV URL" = "CalDAV URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
+"Copy to clipboard" = "Copy to clipboard";
 
 /* Error messages */
 "dayFieldInvalid" = "Prego specificare nel campo Giorni un valore numerico maggiore o uguale a 1.";
