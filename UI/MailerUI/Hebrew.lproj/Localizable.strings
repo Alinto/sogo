@@ -445,6 +445,8 @@
 "Back" = "חזרה";
 "Copy messages" = "העתק הודעות";
 "More messages options" = "אפשרויות מייל נוספות";
+"Flag" = "סמן";
+"Unflag" = "Unflag";
 "Mark as Unread" = "סמן כלא נקרא";
 "Mark as Read" = "סמן כנקרא";
 "Closing Window ..." = "סוגר חלון...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "המייל שלך נשמר";
 "Your email has been sent" = "המייל שלך נשלח";
 "Folder compacted" = "התיקייה נדחסה";
+
+"More Options" = "More Options";
 
 "New draft" = "New draft";
 "Create new draft with this template" = "Create new draft with this template";
