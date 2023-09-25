@@ -565,6 +565,7 @@ vtodo_class2 = "(Dôverná úloha)";
 "CalDAV URL" = "CalDAV url";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
+"Copy to clipboard" = "Copy to clipboard";
 
 /* Error messages */
 "dayFieldInvalid" = "V políčku Dni zadajte číselnú hodnotu väčšiu alebo rovnú 1.";
