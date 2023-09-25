@@ -262,7 +262,9 @@
 
 - (BOOL) isThunderbird
 {
-  return ([[self headerForKey:@"user-agent"] rangeOfString: @"Thunderbird"].location != NSNotFound);
+  BOOL ret;
+  ret = ([[self headerForKey:@"user-agent"] rangeOfString: @"Thunderbird"].location != NSNotFound);
+  return ret;
 }
 
 @end
