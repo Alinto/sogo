@@ -445,6 +445,8 @@
 "Back" = "Tilbake";
 "Copy messages" = "Kopier meldinger";
 "More messages options" = "Flere meldingsalternativer";
+"Flag" = "Legg til flagg";
+"Unflag" = "Fjern flagget";
 "Mark as Unread" = "Marker som ulest";
 "Mark as Read" = "Merk som Lest";
 "Closing Window ..." = "Lukker vindu ...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "Eposten din har blitt lagret";
 "Your email has been sent" = "Eposten din har blitt sendt";
 "Folder compacted" = "Mappe komprimert";
+
+"More Options" = "Flere alternativer";
 
 "New draft" = "Nytt utkast";
 "Create new draft with this template" = "Lag nytt utkast med denne malen ";
