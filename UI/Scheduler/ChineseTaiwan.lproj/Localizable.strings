@@ -565,6 +565,7 @@ vtodo_class2 = "(機密任務)";
 "CalDAV URL" = "CalDAV 網址";
 "WebDAV ICS URL" = "WebDAV ICS 網址";
 "WebDAV XML URL" = "WebDAV XML 網址";
+"Copy to clipboard" = "Copy to clipboard";
 
 /* Error messages */
 "dayFieldInvalid" = "請在日數欄位輸入大於等於 1 的數字。";

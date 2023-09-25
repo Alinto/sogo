@@ -445,6 +445,8 @@
 "Back" = "返回";
 "Copy messages" = "複製信件";
 "More messages options" = "更多信件選項";
+"Flag" = "標示";
+"Unflag" = "Unflag";
 "Mark as Unread" = "標記為未讀";
 "Mark as Read" = "標記為已讀";
 "Closing Window ..." = "關閉視窗中...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "您的電子郵件已儲存";
 "Your email has been sent" = "您的電子郵件已寄送";
 "Folder compacted" = "資料夾已壓縮";
+
+"More Options" = "More Options";
 
 "New draft" = "New draft";
 "Create new draft with this template" = "Create new draft with this template";
