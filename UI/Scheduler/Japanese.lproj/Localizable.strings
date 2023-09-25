@@ -1,11 +1,11 @@
 /* this file is in UTF-8 format! */
 
 /* Tooltips */
-"Create a new event" = "新しいイベントを作成";
+"Create a new event" = "新しい予定を作成";
 "Create a new task" = "新しいタスクを作成";
-"Edit this event or task" = "イベントまたはタスクを編集";
+"Edit this event or task" = "予定またはタスクを編集";
 "Print the current calendar view" = "現在のカレンダーの表示を印刷";
-"Delete this event or task" = "イベントまたはタスクを削除";
+"Delete this event or task" = "予定またはタスクを削除";
 "Go to today" = "今日の日付に移動";
 "Switch to day view" = "日表示に切り替え";
 "Switch to week view" = "週表示に切り替え";
@@ -16,12 +16,12 @@
 /* Tabs */
 "Date" = "日付";
 "Calendars" = "カレンダー";
-"No events for selected criteria" = "指定した条件のイベントはありません";
+"No events for selected criteria" = "指定した条件の予定はありません";
 "No tasks for selected criteria" = "指定した条件のタスクはありません";
 
 /* Day */
 "DayOfTheMonth" = "日";
-"dayLabelFormat" = "%Y年%m月%d日";
+"dayLabelFormat" = "%Y 年 %m 月 %d 日";
 "today" = "今日";
 "Previous Day" = "前日";
 "Next Day" = "翌日";
@@ -29,7 +29,7 @@
 /* Week */
 "Week" = "週";
 "this week" = "今週";
-"Week %d" = "第%d週";
+"Week %d" = "第 %d 週";
 "Previous Week" = "前週";
 "Next Week" = "翌週";
 
@@ -48,17 +48,17 @@
 "Contacts" = "連絡先";
 "New Calendar..." = "新しいカレンダー...";
 "Delete Calendar" = "カレンダーを削除...";
-"Unsubscribe Calendar" = "カレンダーを解除";
+"Unsubscribe Calendar" = "カレンダーを購読解除";
 "Sharing..." = "共有...";
 "Export Calendar..." = "カレンダーをエクスポート...";
-"Import Events..." = "イベントをインポート...";
-"Import Events" = "イベントをインポート";
-"Select an iCalendar file (.ics)." = "iCalendarファイル(.ics)を選択";
+"Import Events..." = "予定をインポート...";
+"Import Events" = "予定をインポート";
+"Select an iCalendar file (.ics)." = "iCalendar ファイル (.ics) を選択";
 "Upload" = "アップロード";
 "Uploading" = "アップロード中";
 "Publish Calendar..." = "カレンダーを公開...";
 "Reload Remote Calendars" = "リモートカレンダーを再読み込み";
-"Properties" = "特性";
+"Properties" = "プロパティ";
 "Done" = "完了";
 "An error occurred while importing calendar." = "カレンダーのインポート中にエラーが発生しました。";
 "No event was imported." = "インポートしたイベントはありません。";
@@ -565,6 +565,7 @@ vtodo_class2 = "(機密のタスク)";
 "CalDAV URL" = "CalDAV URL ";
 "WebDAV ICS URL" = "WebDAV ICSのURL";
 "WebDAV XML URL" = "WebDAV XMLのURL";
+"Copy to clipboard" = "Copy to clipboard";
 
 /* Error messages */
 "dayFieldInvalid" = "日付のフィールドには1以上の数値を指定してください。";

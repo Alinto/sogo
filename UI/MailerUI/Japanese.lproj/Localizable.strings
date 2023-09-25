@@ -3,7 +3,7 @@
 /* Icon's label */
 "Create"      = "作成";
 "Empty Trash" = "ゴミ箱を空にする";
-"Empty Junk Folder" = "Empty Junk Folder";
+"Empty Junk Folder" = "ジャンクフォルダーを空にする";
 "Delete"      = "削除";
 "Expunge"     = "消す";
 "Forward"     = "転送";
@@ -79,7 +79,7 @@
 "Folder compacted" = "フォルダが圧縮されました";
 
 /* Empty Junk Folder success message */
-"Junk folder emptied" = "Junk folder emptied";
+"Junk folder emptied" = "ジャンクフォルダを空にしました";
 
 /* Empty Trash success message */
 "Trash emptied" = "ゴミ箱が空です";
@@ -88,7 +88,7 @@
 "Access rights to" = "アクセス権を";
 "For user" = "ユーザの";
 "Any Authenticated User" = "認証済みのすべてのユーザー";
-"View this folder" = "View this folder";
+"View this folder" = "フォルダ表示";
 "Read mails from this folder" = "このフォルダからメールを読む";
 "Mark mails read and unread" = "メールを既読または未読状態にする";
 "Modify the flags of the mails in this folder" = "このフォルダにメールのフラグを変更";
@@ -131,9 +131,9 @@
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "メッセージの送信者は、開封確認をリクエストしています。開封確認のメッセージを送信しますか?";
 "Return Receipt (displayed) - %@"= "受信を返す（表示中） - ％@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "あなたが %@ に送信したメールの受領確認です。\n\n注意: この受領確認はメッセージが宛先の方がコンピューターで表示されたことを知らせるだけです。宛先の方がメッセージの内容を読んだ、または理解したと保証するものではありません。";
-"Security" = "Security";
-"Sign" = "Sign";
-"Encrypt" = "Encrypt";
+"Security" = "セキュリティ";
+"Sign" = "署名する";
+"Encrypt" = "暗号化";
 "Priority" = "優先順位";
 "highest" = "最高";
 "high" = "高";
@@ -187,7 +187,7 @@
 "InboxFolderName"  = "受信トレイ";
 "DraftsFolderName" = "下書き";
 "JunkFolderName" = "迷惑メール";
-"TemplatesFolderName" = "Templates";
+"TemplatesFolderName" = "テンプレート";
 "SieveFolderName"  = "フィルター";
 "Folders"          = "フォルダ"; /* title line */
 
@@ -241,13 +241,13 @@
 "View Message Source" = "メッセージのソースを表示";
 
 /* Message view "more" menu: create an event from message */
-"Convert To Event" = "イベントに変更";
+"Convert To Event" = "予定に変換";
 
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "タスクに変更";
 
 /* Message view "more" menu: download message as an eml file */
-"Download message" = "Download message";
+"Download message" = "メッセージをダウンロード";
 
 /* Message view "more" menu: download message as a zip archive */
 "Download message (zip)" = "Download message (zip)";
@@ -274,10 +274,10 @@
 "selected" = "選択されたメッセージ";
 
 /* Date formatting from one time to another time */
-"to_time" = "to";
+"to_time" = "宛先";
 
 /* Date formatting from one day to another day */
-"to_date" = "to";
+"to_date" = "宛先";
 
 /* Encrypted message notification */
 "This message is encrypted" = "このメッセージは暗号化されています。";
@@ -301,7 +301,7 @@
 "Digital signature is not valid" = "Digital signature is not valid";
 
 /* Valid S/MIME signature */
-"Message is signed" = "Message is signed";
+"Message is signed" = "このメッセージが署名された";
 
 /* Valid S/MIME signature but common name not found */
 "Message is signed but the certificate doesn't match the sender email address" = "Message is signed but the certificate doesn't match the sender email address";
@@ -392,7 +392,7 @@
 "Error while saving the draft" = "下書きを保存中にエラーが発生しました";
 
 /* Error when emptying trash */
-"Unable to empty the trash folder." = "Unable to empty the trash folder.";
+"Unable to empty the trash folder." = "ゴミ箱フォルダーを空にできません";
 
 /* Error when emptying junk folder */
 "Unable to empty the junk folder." = "Unable to empty the junk folder.";
@@ -445,6 +445,8 @@
 "Back" = "戻る";
 "Copy messages" = "メッセージをコピー";
 "More messages options" = "他のメッセージオプション";
+"Flag" = "フラグ";
+"Unflag" = "Unflag";
 "Mark as Unread" = "未読状態に戻す";
 "Mark as Read" = "既読状態にする";
 "Closing Window ..." = "ウィンドウを閉じる";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "メールが保存されました";
 "Your email has been sent" = "メールが送信されました";
 "Folder compacted" = "フォルダが圧縮されました";
+
+"More Options" = "More Options";
 
 "New draft" = "New draft";
 "Create new draft with this template" = "Create new draft with this template";
