@@ -445,6 +445,8 @@
 "Back" = "Кері қарай";
 "Copy messages" = "Хаттарды көшіру";
 "More messages options" = "Көбірек хат опциялары";
+"Flag" = "Жалау";
+"Unflag" = "Unflag";
 "Mark as Unread" = "Оқылмаған деп белгілеу";
 "Mark as Read" = "Оқылған деп белгілеу";
 "Closing Window ..." = "... терезесі жабылады";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "Хат сақталды";
 "Your email has been sent" = "Хат жөнелтілді";
 "Folder compacted" = "Папка сығымдалған";
+
+"More Options" = "More Options";
 
 "New draft" = "New draft";
 "Create new draft with this template" = "Create new draft with this template";
