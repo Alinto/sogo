@@ -445,6 +445,8 @@
 "Back" = "Zpět";
 "Copy messages" = "Kopírovat zprávy";
 "More messages options" = "Další možnosti zpráv";
+"Flag" = "Oštítkovat";
+"Unflag" = "Unflag";
 "Mark as Unread" = "Označit jako nepřečtené";
 "Mark as Read" = "Označit jako přečtené";
 "Closing Window ..." = "Zavření okna ...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "Vaše zpráva byla uložena";
 "Your email has been sent" = "Vaše zpráva byla odeslána";
 "Folder compacted" = "Údržba složky byla provedena";
+
+"More Options" = "More Options";
 
 "New draft" = "New draft";
 "Create new draft with this template" = "Create new draft with this template";
