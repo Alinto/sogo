@@ -445,6 +445,8 @@
 "Back" = "Backa";
 "Copy messages" = "Kopiera meddelanden";
 "More messages options" = "Fler meddelandealternativ";
+"Flag" = "Lägg till märke";
+"Unflag" = "Unflag";
 "Mark as Unread" = "Markera som oläst";
 "Mark as Read" = "Markera som läst";
 "Closing Window ..." = "Stäng fönstret...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "Ditt meddelande har sparats";
 "Your email has been sent" = "Ditt meddelande har skickats";
 "Folder compacted" = "Katalogen har komprimerats";
+
+"More Options" = "More Options";
 
 "New draft" = "New draft";
 "Create new draft with this template" = "Create new draft with this template";

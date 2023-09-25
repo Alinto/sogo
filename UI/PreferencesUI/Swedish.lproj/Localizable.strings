@@ -24,6 +24,7 @@
 "Vacation" = "Frånvaro";
 "Forward" = "Vidarebefordring";
 "Password" = "Lösenord";
+"Notification" = "Notification";
 "Categories" = "Kategorier";
 "Appointments invitations" = "Mötesinbjudningar";
 "Name" = "Namn";
@@ -45,6 +46,7 @@
 "Days between responses" = "Dagar mellan svar";
 "Do not send responses to mailing lists" = "Skicka inte svar till e-postlistor";
 "Activation Constraints" = "Activation Constraints";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences";
 "Enable auto reply on" = "Aktivera auto-svar den";
 "First day of vacation" = "First day of vacation";
 "Disable auto reply after" = "Disable auto reply after";
@@ -78,6 +80,11 @@
 "You are not allowed to forward your messages to an external email address." = "Du får inte vidarebefordra dina meddelanden till en extern e-postadress.";
 "You are not allowed to forward your messages to an internal email address." = "Du får inte vidarebefordra dina meddelanden till en intern e-postadress.";
 "You are not allowed to forward your messages to this domain:" = "You are not allowed to forward your messages to this domain:";
+
+/* notification */
+"Notify incoming messsages" = "Notify incoming messsages";
+"Notification Message Sent" = "Notification message sent";
+"Notification Message" = "Notification of new message on %{0}";
 
 /* d & t */
 "Time Zone" = "Time Zone";
@@ -194,6 +201,9 @@
 "Compose messages in" = "Skriv meddelanden i";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Oformaterad text";
+"Insert signature on new message" = "Insert signature on new message";
+"Insert signature on reply" = "Insert signature on reply";
+"Insert signature on forward" = "Insert signature on forward";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Standardteckenstorlek";
@@ -247,6 +257,7 @@
 "Digitally sign the message by default" = "Digitalt signera meddelande som standard";
 "Always try to encrypt the message" = "Försök alltid kryptera meddelande";
 "An error occurred while importing the certificate. Verify your password." = "Ett fel uppstod vid import av certifikatet. Verifiera ditt lösenord.";
+"Data too big. Please contact technical support." = "Data too big. Please contact technical support.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Övriga parametrar";
@@ -260,7 +271,7 @@
 "POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
 "POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
 "POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0} special symbols";
 "POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
 
 
@@ -309,6 +320,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
+"Galician" = "Galician";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -405,6 +417,7 @@
 
 "Keep the message" = "Behåll meddelandet";
 "Forward the message to" = "Vidarebefordra meddelandet till";
+"Notify the message to" = "Notify the message to";
 
 /* Input field label of "forward" mail filter action */
 "Email" = "E-postadress";
