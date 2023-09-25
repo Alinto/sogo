@@ -24,6 +24,7 @@
 "Vacation" = "Férias";
 "Forward" = "Reencaminhar";
 "Password" = "Palavra-passe";
+"Notification" = "Notification";
 "Categories" = "Categorias";
 "Appointments invitations" = "Convites de Compromissos";
 "Name" = "Nome";
@@ -45,6 +46,7 @@
 "Days between responses" = "Dias entre respostas";
 "Do not send responses to mailing lists" = "Não enviar respostas para listas de e-mails";
 "Activation Constraints" = "Restrições de ativação ";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Configure intervalos de dias e horas de forma independente e opcionalmente combine-os com dias específicos da semana para adaptar os seus filtros de ausência às suas preferências";
 "Enable auto reply on" = "Ativar resposta automática a";
 "First day of vacation" = "Primeiro dia de férias";
 "Disable auto reply after" = "Desativar resposta automática a partir de";
@@ -78,6 +80,11 @@
 "You are not allowed to forward your messages to an external email address." = "Não é permitido reencaminhar as suas mensagens para um email externo.";
 "You are not allowed to forward your messages to an internal email address." = "Não é permitido reencaminhar as suas mensagens para um email interno.";
 "You are not allowed to forward your messages to this domain:" = "Não é permitido reencaminhar as suas mensagens para este domínio:";
+
+/* notification */
+"Notify incoming messsages" = "Notify incoming messsages";
+"Notification Message Sent" = "Notification message sent";
+"Notification Message" = "Notification of new message on %{0}";
 
 /* d & t */
 "Time Zone" = "Fuso horário";
@@ -194,6 +201,9 @@
 "Compose messages in" = "Escrever as mensagens em";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Texto normal";
+"Insert signature on new message" = "Insert signature on new message";
+"Insert signature on reply" = "Insert signature on reply";
+"Insert signature on forward" = "Insert signature on forward";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Tamanho da letra por defeito";
@@ -247,6 +257,7 @@
 "Digitally sign the message by default" = "Assinar digitalmente a mensagem por defeito";
 "Always try to encrypt the message" = "Tentar encriptar sempre a mensagem";
 "An error occurred while importing the certificate. Verify your password." = "Ocorreu um erro ao importar o certificado. Verifique a palavra-passe.";
+"Data too big. Please contact technical support." = "Dados demasiado grandes. Por favor contacte o suporte técnico.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Parâmetros adicionais";
@@ -260,7 +271,7 @@
 "POLICY_MIN_LOWERCASE_LETTER" = "Mínimo de %{0} letras minúsculas";
 "POLICY_MIN_UPPERCASE_LETTER" = "Mínimo de %{0} letras maiúsculas";
 "POLICY_MIN_DIGIT" = "Mínimo de %{0} números";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Mínimo de %{0} símbolos especiais";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Mínimo de %{0} símbolos especiais ";
 "POLICY_MIN_LENGTH" = "Comprimento mínimo: %{0}";
 
 
@@ -309,6 +320,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
+"Galician" = "Galician";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -405,6 +417,7 @@
 
 "Keep the message" = "Manter a mensagem";
 "Forward the message to" = "Reencaminhar a mensagem para";
+"Notify the message to" = "Notify the message to";
 
 /* Input field label of "forward" mail filter action */
 "Email" = "Email";
