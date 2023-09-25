@@ -24,6 +24,7 @@
 "Vacation" = "Abwesenheit";
 "Forward" = "Weiterleitung";
 "Password" = "Passwort";
+"Notification" = "Benachrichtigung";
 "Categories" = "Kategorien";
 "Appointments invitations" = "Einladungen zu Terminen";
 "Name" = "Name";
@@ -45,6 +46,7 @@
 "Days between responses" = "Tage zwischen automatischen Antworten";
 "Do not send responses to mailing lists" = "Keine automatischen Abwesenheitsnachrichten an Mailinglisten senden";
 "Activation Constraints" = "Aktivierungsbedingungen";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Stellen Sie Tage und Stundenbereiche unabhängig voneinander ein, und kombinieren diese optional mit spezifischen Wochentagen, um Ihren Abwesenheitsfilter an Ihre Wünsche anzupassen.";
 "Enable auto reply on" = "Automatische Abwesenheitsnachricht anschalten am";
 "First day of vacation" = "Erster Urlaubstag";
 "Disable auto reply after" = "Automatische Abwesenheitsnachricht abschalten nach dem";
@@ -78,6 +80,11 @@
 "You are not allowed to forward your messages to an external email address." = "Es ist Ihnen nicht erlaubt, Ihre Nachrichten an externe E-Mail-Adressen weiterzuleiten.";
 "You are not allowed to forward your messages to an internal email address." = "Es ist Ihnen nicht erlaubt, Ihre Nachrichten an interne E-Mail-Adressen weiterzuleiten.";
 "You are not allowed to forward your messages to this domain:" = "Es ist Ihnen nicht erlaubt, Ihre Nachrichten an diese Domäne weiterzuleiten: ";
+
+/* notification */
+"Notify incoming messsages" = "Über ankommende Nachrichten benachrichtigen";
+"Notification Message Sent" = "Benachrichtigung verschickt";
+"Notification Message" = "Über neue Nachricht bei %{0} benachrichtigen";
 
 /* d & t */
 "Time Zone" = "Zeitzone";
@@ -194,6 +201,9 @@
 "Compose messages in" = "Nachrichten verfassen in";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Reintext";
+"Insert signature on new message" = "Signatur bei neuer Nachricht hinzufügen";
+"Insert signature on reply" = "Signatur bei Antwort hinzufügen";
+"Insert signature on forward" = "Signatur bei Weiterleitung hinzufügen";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Standard-Schriftgröße";
@@ -247,6 +257,7 @@
 "Digitally sign the message by default" = "Nachricht standardmäßig kryptographisch signieren";
 "Always try to encrypt the message" = "Versuche Nachricht immer zu verschlüsseln";
 "An error occurred while importing the certificate. Verify your password." = "Beim Importieren des Zertifikates ist ein Fehler aufgetreten. Bitte prüfen Sie Ihr Passwort.";
+"Data too big. Please contact technical support." = "Daten sind zu groß. Bitte kontaktieren Sie Ihren technischen Support.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Zusätzliche Einstellungen";
@@ -309,6 +320,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
+"Galician" = "Galician";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -381,7 +393,7 @@
 "For incoming messages that" = "Für eingehende Nachrichten die";
 "match all of the following rules" = "mit allen der folgenden Regeln übereinstimmen";
 "match any of the following rules" = "mit mindestens einer der folgenden Regeln übereinstimmen";
-"match all messages" = "mit allen Nachrichten übereinstimmen";
+"match all messages" = "stimmt mit allen Nachrichten überein";
 "Perform these actions" = "Führe folgende Aktionen aus";
 "Untitled Filter" = "Namenloser Filter";
 "Subject" = "Betreff";
@@ -405,6 +417,7 @@
 
 "Keep the message" = "Behalte die Nachricht";
 "Forward the message to" = "Weiterleiten der Nachricht an";
+"Notify the message to" = "Benachrichtigung an";
 
 /* Input field label of "forward" mail filter action */
 "Email" = "E-Mail-Adresse";
@@ -489,8 +502,8 @@
 "Invalid TOTP verification code" = "TOTP Verifikationskode ungültig";
 
 /* External Sieve scripts */
-"An external Sieve script is active" = "Ein externes Sieve-Script ist aktiv";
-"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve ist eine Programmiersprache, die zur E-Mail-Filterung verwendet wird. Wenn Sie ihre Filter, Abwesenheits- und E-Mail-Weiterleitungs-Einstellungen über SOGo verwalten, wird ihr aktives Script deaktiviert.";
+"An external Sieve script is active" = "Ein externes Sieve-Skript ist aktiv";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve ist eine Programmiersprache, die zur E-Mail-Filterung verwendet wird. Wenn Sie ihre Filter, Abwesenheits- und E-Mail-Weiterleitungs-Einstellungen über SOGo verwalten, wird ihr aktives Skript deaktiviert.";
 "Let SOGo handle everything" = "Alles über SOGo verwalten";
 
 /* Password Recovery */

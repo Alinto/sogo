@@ -44,6 +44,9 @@
 "Expand" = "Erweitern";
 "Reduce" = "Verkleinern";
 
+/* tooltip */
+"Refresh" = "Aktualisieren";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
         = "Es ist nicht möglich, diesen Ordner zu abonnieren!";

@@ -15,9 +15,9 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "The task \"%{Summary}\" was created" = "Die Aufgabe \"%{Summary}\" wurde angelegt";
 "The task \"%{Summary}\" was deleted" = "Die Aufgabe \"%{Summary}\" wurde gelöscht";
 "The task \"%{Summary}\" was updated" = "Die Aufgabe \"%{Summary}\" wurde geändert";
-"The following attendees(s) were notified" = "Die folgenden Teilnehmer wurden benachrichtigt";
-"The following attendees(s) were added" = "Die folgenden Teilnehmer wurden hinzugefügt";
-"The following attendees(s) were removed" = "Die folgenden Teilnehmer wurden entfernt";
+"The following attendees(s) were notified" = "Die folgenden Teilnehmer*innen wurden benachrichtigt";
+"The following attendees(s) were added" = "Die folgenden Teilnehmer*innen wurden hinzugefügt";
+"The following attendees(s) were removed" = "Die folgenden Teilnehmer*innen wurden entfernt";
 
 /* IMIP messages */
 "calendar_label" = "Kalender";
@@ -30,12 +30,12 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "summary_label" = "Zusammenfassung:";
 "comment_label" = "Kommentar:";
 "organizer_label" = "Organisator";
-"attendee_label" = "Teilnehmer";
+"attendee_label" = "Teilnehmer*in";
 
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Termineinladung: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(gesendet von %{SentBy}) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} Hat Sie eingeladen zu \"%{Summary}\".\n\nBeginn: %{StartDate}\nEnde: %{EndDate}\nBeschreibung: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} hat Sie eingeladen zu \"%{Summary}\".\n\nBeginn: %{StartDate}\nEnde: %{EndDate}\nBeschreibung: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} hat Sie eingeladen zu \"%{Summary}\".\n\nBeginn: %{StartDate} um %{StartTime}\nEnde: %{EndDate} um %{EndTime}\nBeschreibung: %{Description}";
 
 /* Deletion */
@@ -47,13 +47,13 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
-= "Die Verabredung \"%{Summary}\" am %{OldStartDate} wurde geändert";
+= "Der Termin \"%{Summary}\" am %{OldStartDate} wurde geändert";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
 = "Der Termin \"%{Summary}\" am %{OldStartDate} um %{OldStartTime} hat sich geändert";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
 = "Folgendes wurde am Termin \"%{Summary}\" geändert:";
 "Please accept or decline those changes."
-= "Bitte akzeptieren Sie diese Änderung oder lehnen Sie diese ab.";
+= "Bitte akzeptieren Sie diese Änderung, oder lehnen Sie diese ab.";
 
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Einladung zugestimmt: \"%{Summary}\"";

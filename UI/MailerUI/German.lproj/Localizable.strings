@@ -261,8 +261,8 @@
 "Print..." = "Drucken...";
 "Delete Message" = "Nachricht löschen";
 "Delete Selected Messages" = "Gewählte Nachricht(en) löschen";
-"Mark the selected messages as junk" = "Gewählte Nachricht(en) als Junk einstufen";
-"Mark the selected messages as not junk" = "Die ausgewählte Nachricht nicht mehr als Spam markieren";
+"Mark the selected messages as junk" = "Gewählte Nachricht(en) als Spam einstufen";
+"Mark the selected messages as not junk" = "Gewählte Nachricht(en) als Kein-Spam markieren";
 
 /* Text appended to the recipients list when there are too many recipients */
 "and %{0} more..." = "und %{0} weitere...";
@@ -277,7 +277,7 @@
 "to_time" = "bis";
 
 /* Date formatting from one day to another day */
-"to_date" = "an";
+"to_date" = "bis";
 
 /* Encrypted message notification */
 "This message is encrypted" = "Diese Nachricht ist verschlüsselt.";
@@ -320,9 +320,9 @@
 "As Read By Date..." = "Datumsbereich gelesen...";
 "All Read" = "Alles gelesen";
 "Flag" = "Markierung";
-"As Junk" = "Junk";
-"As Not Junk" = "Kein Junk";
-"Run Junk Mail Controls" = "Junk-Filter anwenden";
+"As Junk" = "Spam";
+"As Not Junk" = "Kein -Spam";
+"Run Junk Mail Controls" = "Spam-Filter anwenden";
 "Search messages in" = "Nachrichten suchen in";
 "Search" = "Suchen";
 "Search subfolders" = "Durchsuche Unterordner";
@@ -355,7 +355,7 @@
 "Are you sure you want to delete the selected messages?" = "Wollen Sie wirklich die ausgewählten Nachrichten löschen?";
 
 /* Notification on the number of messages successfuly copied */
-"%{0} message(s) copied" = "%{0} Nachrichten kopiert";
+"%{0} message(s) copied" = "%{0} Nachricht(en) kopiert";
 
 /* Notification on the number of messages successfuly movied */
 "%{0} message(s) moved" = "%{0} Nachricht(en) verschoben";
@@ -365,7 +365,7 @@
 "Please select only one message to print." = "Bitte wählen Sie nur eine Nachricht zum Drucken aus.";
 "The message you have selected doesn't exist anymore." = "Die gewählte Nachricht existiert nicht mehr.";
 "The folder with name \"%{0}\" could not be created."
-= "Der Ordner mit dem Namen \"%{0}\" konnte nicht erzeugt werden.";
+= "Der Ordner mit dem Namen \"%{0}\" konnte nicht erstellt werden.";
 "This folder could not be renamed to \"%{0}\"."
 = "Dieser Ordner konnte nicht in \"%{0}\" umbenannt werden.";
 "The folder could not be deleted."
@@ -445,6 +445,8 @@
 "Back" = "Zurück";
 "Copy messages" = "Nachrichten kopieren";
 "More messages options" = "Weitere Nachrichtenoptionen";
+"Flag" = "Markierung";
+"Unflag" = "Markierung löschen";
 "Mark as Unread" = "Als Ungelesen markieren";
 "Mark as Read" = "Als gelesen markieren";
 "Closing Window ..." = "Schließe Fenster ...";
@@ -457,6 +459,8 @@
 "Your email has been saved" = "Ihre E-Mail wurde gespeichert";
 "Your email has been sent" = "Ihre E-Mail wurde gesendet";
 "Folder compacted" = "Ordner komprimiert";
+
+"More Options" = "Mehr Optionen";
 
 "New draft" = "Neuer Entwurf";
 "Create new draft with this template" = "Erstelle einen neuen Entwurf mit dieser Vorlage";

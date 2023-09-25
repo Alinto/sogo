@@ -8,20 +8,20 @@
 /* Modules titles */
 "ACLs_title" = "Benutzerordner ACL-Management";
 /* Modules descriptions */
-"ACLs_description" = "<p>Dieses Modul ermöglicht die Verwaltung der Zugriffsrechte (ACLs) für die Kalender und Adressbücher jedes Benutzer.</p><p>Zum Ändern der Zugriffsrechte geben Sie den Namen des jeweiligen Benutzers in das Suchfeld ein. Wählen Sie den zu ändernden Ordner mit einem Doppelklick aus der Liste aus.</p>";
+"ACLs_description" = "<p>Dieses Modul ermöglicht die Verwaltung der Zugriffsrechte (ACLs) für die Kalender und Adressbücher jedes/jeder Benutzer*in.</p><p>Zum Ändern der Zugriffsrechte geben Sie den Namen des/der jeweiligen Benutzer*in in das Suchfeld ein. Wählen Sie den zu ändernden Ordner mit einem Doppelklick aus der Liste aus.</p>";
 "Name or Email" = "Name oder E-Mail";
 "ACLs saved" = "Berechtigungen gespeichert";
 /* Rights module: initial search message */
 "Start a search to edit the rights" = "Suche starten, um die Rechte zu ändern";
 /* Rights module: Empty search result */
-"No matching user" = "Kein passender Benutzer";
+"No matching user" = "Kein/keine passende(r) Benutzer*in";
 /* Rights module: no selection */
 "No resource selected" = "Keine Ressource ausgewählt";
-"Add User" = "Benutzer hinzufügen";
-"Subscribe User" = "Benutzer abonnieren";
+"Add User" = "Benutzer*in hinzufügen";
+"Subscribe User" = "Benutzer*in abonnieren";
 "Rights" = "Rechte";
-"Search Users" = "Benutzer suchen";
-"users found" = "Benutzer gefunden";
+"Search Users" = "Benutzer*in suchen";
+"users found" = "Benutzer*innen gefunden";
 "No resource" = "Keine Ressource";
-"Any Authenticated User" = "Alle authentifizierten Benutzer";
+"Any Authenticated User" = "Alle authentifizierten Benutzer*innen";
 "Public Access" = "Öffentlicher Zugang";
