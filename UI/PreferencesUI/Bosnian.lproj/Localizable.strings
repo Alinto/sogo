@@ -24,6 +24,7 @@
 "Vacation" = "Odmor";
 "Forward" = "Proslijediti";
 "Password" = "Šifra";
+"Notification" = "Notification";
 "Categories" = "Kategorije";
 "Appointments invitations" = "Termini";
 "Name" = "Ime";
@@ -45,6 +46,7 @@
 "Days between responses" = "Dani između odogovora";
 "Do not send responses to mailing lists" = "Ne šalji odgovore na mailing liste";
 "Activation Constraints" = "Aktivacijska Ograničenja";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences";
 "Enable auto reply on" = "Uključiti auto-odgovor";
 "First day of vacation" = "Prvi dan odmora";
 "Disable auto reply after" = "Disable auto reply after";
@@ -78,6 +80,11 @@
 "You are not allowed to forward your messages to an external email address." = "Nije vam omogućeno da prosljeđujete poruke na eksterne E-mail adrese. ";
 "You are not allowed to forward your messages to an internal email address." = "Nije vam omogućeno da prosljeđujete poruke na interne E-mail adrese.";
 "You are not allowed to forward your messages to this domain:" = "Nije vam omogućeno da prosljeđujete poruke na ovu domenu:";
+
+/* notification */
+"Notify incoming messsages" = "Notify incoming messsages";
+"Notification Message Sent" = "Notification message sent";
+"Notification Message" = "Notification of new message on %{0}";
 
 /* d & t */
 "Time Zone" = "Vremenska Zona";
@@ -194,6 +201,9 @@
 "Compose messages in" = "Sastaviti poruku u";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Običan Tekst";
+"Insert signature on new message" = "Insert signature on new message";
+"Insert signature on reply" = "Insert signature on reply";
+"Insert signature on forward" = "Insert signature on forward";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Standardna veličina fonta";
@@ -247,6 +257,7 @@
 "Digitally sign the message by default" = "Uvijek digitalno potpisati poruke";
 "Always try to encrypt the message" = "Uvijek enkriptujte poruke";
 "An error occurred while importing the certificate. Verify your password." = "Dogodila se greška prilikom uvoza certifikata. Provjerite šifru.";
+"Data too big. Please contact technical support." = "Data too big. Please contact technical support.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Dodatni Parametri";
@@ -260,7 +271,7 @@
 "POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
 "POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
 "POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0}special symbols";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0} special symbols";
 "POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
 
 
@@ -309,6 +320,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
+"Galician" = "Galician";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -405,6 +417,7 @@
 
 "Keep the message" = "Zadržati poruku";
 "Forward the message to" = "Proslijediti Poruku";
+"Notify the message to" = "Notify the message to";
 
 /* Input field label of "forward" mail filter action */
 "Email" = "E-mail";
