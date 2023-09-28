@@ -117,6 +117,7 @@
                       </md-button>
                     </md-menu-item>
                   </var:if>
+                  <md-menu-divider><!-- divider --></md-menu-divider>
                   <md-menu-item>
                     <md-button ng-click="folder.downloadProvisioningProfile()">
                        <var:string label:value="Download configuration profile"/>

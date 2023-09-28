@@ -26,6 +26,12 @@
 @class SOGoMobileProvision;
 @class NSString;
 
+typedef enum
+{
+    ProvisioningTypeCalendar = 0,
+    ProvisioningTypeContact = 1
+} ProvisioningType;
+
 @interface SOGoMobileProvision : SOGoObject
 {
   

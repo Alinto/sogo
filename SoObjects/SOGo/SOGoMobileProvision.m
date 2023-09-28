@@ -24,11 +24,6 @@
 #import "SOGoMobileProvision.h"
 #import "SOGoUser.h"
 
-typedef NS_ENUM(NSInteger, ProvisioningType) {
-  ProvisioningTypeCalendar,
-  ProvisioningTypeContact
-};
-
 @implementation SOGoMobileProvision
 
 + (NSString *)_plistWithContext:(WOContext *)context andPath:(NSString *)path andType:(ProvisioningType) provisioningType
