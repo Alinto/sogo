@@ -239,6 +239,9 @@
   [newRecord setObject: [oldRecord objectForKey: @"c_uid"]
                 forKey: @"c_uid"];
 
+  //source id
+  [newRecord setObject: [source sourceID] forKey: @"sourceID"];
+
   // c_name => id
   [newRecord setObject: [oldRecord objectForKey: @"c_name"]
                 forKey: @"c_name"];

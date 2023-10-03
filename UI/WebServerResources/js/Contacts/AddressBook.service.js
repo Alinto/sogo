@@ -103,7 +103,12 @@
     return AddressBook.$$resource.fetch(null, 'allContactSearch', params).then(function(response) {
       var results, card, index,
           compareIds = function(data) {
-            return this.id == data.id;
+            if(this.sourceID === undefined || data.sourceid === undefined) {
+              return this.id == data.id;
+            }
+            else {
+              return this.id == data.id && this.sourceID == data.sourceid;
+            }
           };
       if (excludedCards) {
         // Remove excluded cards from results
@@ -130,7 +135,7 @@
           cards.splice(index, 0, card);
         }
       });
-      AddressBook.$log.debug(cards);
+      // AddressBook.$log.debug(cards);
       return cards;
     });
   };
