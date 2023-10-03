@@ -149,7 +149,7 @@
 "read"    = "Lus";
 "unread"  = "Non Lus";
 "deleted" = "Effacés";
-"flagged" = "Drapeau";
+"flagged" = "Marqués";
 
 /* MailListView */
 "Sender" = "Expéditeur";
@@ -319,7 +319,6 @@
 "Thread As Read" = "La discussion comme lue";
 "As Read By Date..." = "Comme lus par date...";
 "All Read" = "Tous les messages comme lus";
-"Flag" = "Avec un drapeau";
 "As Junk" = "Comme indésirable";
 "As Not Junk" = "Comme acceptable";
 "Run Junk Mail Controls" = "Lancer le contrôle des indésirables";
