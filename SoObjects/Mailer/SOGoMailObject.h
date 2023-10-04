@@ -97,6 +97,7 @@ extern NSArray *SOGoMailCoreInfoKeys;
 - (NSString *) cc;
 - (NSString *) from;
 - (NSString *) inReplyTo;
+- (NSString *) references;
 - (NSString *) messageId;
 - (NSString *) received;
 

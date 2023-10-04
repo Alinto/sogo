@@ -56,6 +56,7 @@
   int sourceIMAP4ID;
   NSMutableDictionary *headers;
   NSString *inReplyTo;
+  NSString *references;
   NSString *text;
   NSString *sourceURL;
   NSString *sourceFlag;
@@ -94,6 +95,9 @@
 /* for replies and forwards */
 - (NSString *) inReplyTo;
 - (void) setInReplyTo: (NSString *) newInReplyTo;
+
+- (NSString *) references;
+- (void) setReferences: (NSString *) newReferences;
 
 - (void) setSourceURL: (NSString *) newSurceURL;
 - (void) setSourceFlag: (NSString *) newSourceFlag;

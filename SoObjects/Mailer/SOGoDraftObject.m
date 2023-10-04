@@ -138,6 +138,7 @@ static NSString    *userAgent      = nil;
       sourceURL = nil;
       sourceFlag = nil;
       inReplyTo = nil;
+      references = nil;
       isHTML = NO;
       sign = NO;
       encrypt = NO;
@@ -155,6 +156,7 @@ static NSString    *userAgent      = nil;
   [sourceURL release];
   [sourceFlag release];
   [inReplyTo release];
+  [references release];
   [super dealloc];
 }
 
@@ -361,6 +363,16 @@ static NSString    *userAgent      = nil;
   ASSIGN (inReplyTo, newInReplyTo);
 }
 
+- (NSString *) references
+{
+  return references;
+}
+
+- (void) setReferences: (NSString *) newReferences
+{
+  ASSIGN (references, newReferences);
+}
+
 - (void) setSourceURL: (NSString *) newSourceURL
 {
   ASSIGN (sourceURL, newSourceURL);
@@ -421,6 +433,8 @@ static NSString    *userAgent      = nil;
                 forKey: @"isHTML"];
       if (inReplyTo)
 	[infos setObject: inReplyTo forKey: @"inReplyTo"];
+      if (references)
+	[infos setObject: references forKey: @"references"];
       if (sourceIMAP4ID > -1)
 	[infos setObject: [NSString stringWithFormat: @"%i", sourceIMAP4ID]
                   forKey: @"sourceIMAP4ID"];
@@ -492,6 +506,10 @@ static NSString    *userAgent      = nil;
   value = [infoDict objectForKey: @"inReplyTo"];
   if (value)
     [self setInReplyTo: value];
+
+  value = [infoDict objectForKey: @"references"];
+  if (value)
+    [self setReferences: value];
 }
 
 //
@@ -1041,6 +1059,7 @@ static NSString    *userAgent      = nil;
 {
   BOOL fromSentMailbox;
   NSString *msgID;
+  NSString *oldReferences;
   NSMutableDictionary *info;
   NGImap4Envelope *sourceEnvelope;
   SOGoUserDefaults *ud;
@@ -1059,6 +1078,13 @@ static NSString    *userAgent      = nil;
   msgID = [sourceEnvelope messageID];
   if ([msgID length] > 0)
     [self setInReplyTo: msgID];
+    oldReferences = [sourceMail references];
+    if ([oldReferences length] > 0)
+      [self setReferences: [oldReferences stringByAppendingFormat: @" %@", msgID]];
+    else
+      [self setReferences: msgID];
+    
+
 
   ud = [[context activeUser] userDefaults];
 
@@ -1831,6 +1857,9 @@ static NSString    *userAgent      = nil;
 
   if (inReplyTo)
     [map setObject: inReplyTo forKey: @"in-reply-to"];
+
+  if (references)
+    [map setObject: references forKey: @"references"];
 
   /* add subject */
   if ([(s = [headers objectForKey: @"subject"]) length] > 0)
