@@ -27,6 +27,7 @@
 #import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLAccess/EOAdaptorContext.h>
 #import <GDLAccess/EOAttribute.h>
+#import <SOGo/SOGoCache.h>
 
 #import "SOGoSystemDefaults.h"
 
@@ -35,6 +36,7 @@
 static NSURL *tableURL = nil;
 static NSString *uidColumnName = @"c_uid";
 static EOAttribute *textColumn = nil;
+static const NSString *kCDefaultsLenKey = @"kCDefaultsLenKey";
 
 @implementation SOGoSQLUserProfile
 
@@ -248,22 +250,34 @@ static EOAttribute *textColumn = nil;
   EOAdaptorContext *context;
   NSArray *attrs;
   NSDictionary *infos;
+  SOGoCache *cache;
+  NSNumberFormatter *formatter;
 
   r = 65535;
-
-  cm = [GCSChannelManager defaultChannelManager];
-  channel = [cm acquireOpenChannelForURL: tableURL];
-  sql = [NSString stringWithFormat: @"select character_octet_length as CHARACTER_MAXIMUM_LENGTH from information_schema.columns where table_name = '%@' AND column_name = 'c_defaults'", [tableURL gcsTableName]];
-  ex = [channel evaluateExpressionX: sql];
-  if (!ex) {
-    attrs = [channel describeResults: NO];
-    infos = [channel fetchAttributes: attrs withZone: NULL];
-    [cm releaseChannel: channel  immediately: YES];
-    if (infos && [infos objectForKey:@"CHARACTER_MAXIMUM_LENGTH"]) {
-      r = [[infos objectForKey:@"CHARACTER_MAXIMUM_LENGTH"] longLongValue];
-    }
+  
+  cache = [SOGoCache sharedCache];
+  if ([cache valueForKey:kCDefaultsLenKey]) {
+    formatter = [[NSNumberFormatter alloc] init];
+    formatter.numberStyle = NSNumberFormatterDecimalStyle;
+    r = [[formatter numberFromString: [cache valueForKey:kCDefaultsLenKey]] unsignedLongLongValue];
+    [formatter release];
+  } else {
+    cm = [GCSChannelManager defaultChannelManager];
+    channel = [cm acquireOpenChannelForURL: tableURL];
+    sql = [NSString stringWithFormat: @"select character_octet_length as CHARACTER_MAXIMUM_LENGTH from information_schema.columns where table_name = '%@' AND column_name = 'c_defaults'", [tableURL gcsTableName]];
+    ex = [channel evaluateExpressionX: sql];
     
+    if (!ex) {
+      attrs = [channel describeResults: NO];
+      infos = [channel fetchAttributes: attrs withZone: NULL];
+      [cm releaseChannel: channel  immediately: YES];
+      if (infos && [infos objectForKey:@"CHARACTER_MAXIMUM_LENGTH"]) {
+        r = [[infos objectForKey:@"CHARACTER_MAXIMUM_LENGTH"] longLongValue];
+        [cache setValue: [[NSNumber numberWithUnsignedLongLong: r] stringValue] forKey: kCDefaultsLenKey];
+      }
+    }
   }
+  
 
   return r;
 }
