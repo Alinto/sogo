@@ -2627,17 +2627,17 @@ FIXME
       // We first check of any of the collections we want to sync are already
       // in an other sync process. If that's the case, we do not do anything
       // and we return immediately. So we'll let the other sync process terminate
+      globalMetadata = [self globalMetadataForDevice];
       for (j = 0; j < [allCollections count]; j++)
         {
           aCollection = [allCollections objectAtIndex: j];
-          globalMetadata = [self globalMetadataForDevice];
 
           key = [NSString stringWithFormat: @"SyncRequest+%@", [[[(id)[aCollection getElementsByTagName: @"CollectionId"] lastObject] textValue] stringByUnescapingURL]];
 
           if (!([[globalMetadata objectForKey: key] isEqual: processIdentifier]))
             {
               if (debugOn)
-                [self logWithFormat: @"EAS - Discard response %@", [self globalMetadataForDevice]];
+                [self logWithFormat: @"EAS - Discard response %@", globalMetadata];
 
               [output appendString: @"<Status>13</Status>"];
               [output appendString: @"</Sync>"];
