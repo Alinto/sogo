@@ -273,9 +273,12 @@ static const NSString *kCDefaultsLenKey = @"kCDefaultsLenKey";
       [cm releaseChannel: channel  immediately: YES];
       if (infos && [infos objectForKey:@"CHARACTER_MAXIMUM_LENGTH"]) {
         r = [[infos objectForKey:@"CHARACTER_MAXIMUM_LENGTH"] longLongValue];
-        [cache setValue: [[NSNumber numberWithUnsignedLongLong: r] stringValue] forKey: kCDefaultsLenKey];
+      } else if (infos && [infos objectForKey:@"character_maximum_length"]) { // PGSQL case
+        r = [[infos objectForKey:@"character_maximum_length"] longLongValue];
       }
     }
+
+    [cache setValue: [[NSNumber numberWithUnsignedLongLong: r] stringValue] forKey: kCDefaultsLenKey];
   }
   
 
