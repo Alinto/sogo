@@ -1041,7 +1041,7 @@
   Message.prototype.download = function () {
     var options;
 
-    options = { filename: this.subject + '.eml' };
+    options = { filename: this.subject + '.eml', type: 'message/rfc822' };
     return Message.$$resource.download(this.$absolutePath(), 'export', undefined, options);
   };
 
