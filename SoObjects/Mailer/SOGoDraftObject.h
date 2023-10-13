@@ -121,7 +121,7 @@
 
 /* NGMime representations */
 
-- (NSData *) mimeMessageForRecipient: (NSString *) theRecipient;
+- (NSData *)mimeMessageForRecipient:(NSString *)theRecipient extractingImages:(BOOL)extractImage;
 
 /* operations */
 - (NSArray *) allRecipients;

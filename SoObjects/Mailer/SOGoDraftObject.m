@@ -588,7 +588,7 @@ static NSString    *userAgent      = nil;
   id result;
 
   error = nil;
-  message = [self mimeMessageForRecipient: nil];
+  message = [self mimeMessageForRecipient: nil extractingImages: NO];
 
   if (!message)
     {
@@ -2006,7 +2006,7 @@ static NSString    *userAgent      = nil;
 //
 // Return a NGMimeMessage object with inline HTML images (<img src=data>) extracted as attachments (<img src=cid>).
 //
-- (NSData *) mimeMessageForRecipient: (NSString *) theRecipient
+- (NSData *) mimeMessageForRecipient: (NSString *) theRecipient extractingImages: (BOOL)extractImage
 {
   NGMimeMessageGenerator *generator, *partGenerator;
   NGMimeMessage *mimeMessage;
@@ -2019,7 +2019,7 @@ static NSString    *userAgent      = nil;
   // Nothing to sign or encrypt, let's generate the message and return immediately
   if (![self sign] && ![self encrypt])
     {
-      mimeMessage = [self mimeMessageWithHeaders: nil  excluding: nil  extractingImages: YES  bodyOnly: NO];
+      mimeMessage = [self mimeMessageWithHeaders: nil  excluding: nil  extractingImages: extractImage  bodyOnly: NO];
       if (mimeMessage)
         {
           generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
@@ -2033,7 +2033,7 @@ static NSString    *userAgent      = nil;
   partGenerator = [[[NGMimePartGenerator alloc] init] autorelease];
   content = [partGenerator generateMimeFromPart: [self mimeMessageWithHeaders: nil
                                                                     excluding: nil
-                                                             extractingImages: YES
+                                                             extractingImages: extractImage
                                                                      bodyOnly: YES]];
 
   if ([self sign])
@@ -2300,9 +2300,9 @@ static NSString    *userAgent      = nil;
           recipient = [recipients objectAtIndex: i];
 
           if ([[context activeUser] hasEmail: recipient])
-            message = messageForSent = [self mimeMessageForRecipient: nil];
+            message = messageForSent = [self mimeMessageForRecipient: nil extractingImages: YES];
           else
-            message = [self mimeMessageForRecipient: recipient];
+            message = [self mimeMessageForRecipient: recipient extractingImages: YES];
 
           if (!message)
             return  [NSException exceptionWithHTTPStatus: 500
@@ -2323,12 +2323,12 @@ static NSString    *userAgent      = nil;
       // If the current user isn't part of the recipient list for encrypted emails
       // let's generate a crypted email for its sent folder.
       if (!messageForSent)
-        messageForSent = [self mimeMessageForRecipient: nil];
+        messageForSent = [self mimeMessageForRecipient: nil extractingImages: YES];
     }
   else
     {
       // Encryption is done or not, if we didn't have to.
-      message = messageForSent = [self mimeMessageForRecipient: nil];
+      message = messageForSent = [self mimeMessageForRecipient: nil extractingImages: YES];
 
       if (!message)
         return  [NSException exceptionWithHTTPStatus: 500
@@ -2401,7 +2401,7 @@ static NSString    *userAgent      = nil;
   NSString *str;
   NSData *message;
 
-  message = [self mimeMessageForRecipient: nil];
+  message = [self mimeMessageForRecipient: nil extractingImages: NO];
   if (message)
     {
       str = [[NSString alloc] initWithData: message
