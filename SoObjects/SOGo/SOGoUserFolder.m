@@ -87,8 +87,7 @@
 }
 
 - (NSString *) nameInContainer {
-  NSString *foo = [SOGoUser getEncryptedUsernameIfNeeded: [super nameInContainer] withContext: context];
-  return foo;
+  return [SOGoUser getEncryptedUsernameIfNeeded: [super nameInContainer] withContext: context];
 }
 
 - (NSString *) davURLAsString
