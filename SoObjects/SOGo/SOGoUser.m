@@ -39,12 +39,15 @@
 #import "SOGoUserManager.h"
 #import "SOGoUserSettings.h"
 #import "WOResourceManager+SOGo.h"
+#import "NSString+Crypto.h"
 
 #if defined(MFA_CONFIG)
 #include <liboath/oath.h>
 #endif
 
 #import "SOGoUser.h"
+
+static const NSString *kEncryptedUserNamePrefix = @"uenc-";
 
 @implementation SoUser (SOGoExtension)
 
@@ -1196,5 +1199,84 @@
 
   return [accessValue boolValue];
 }
+
+/* Encryption */
++ (NSString *) getEncryptedUsernameIfNeeded:(NSString *)username withContext:(WOContext *)context
+{
+  NSException *exception;
+  NSString *tmp, *cacheKey;
+  SOGoCache *cache;
+  WORequest *request;
+
+  if (![[SOGoSystemDefaults sharedSystemDefaults] isURLEncryptionEnabled])
+    return username;
+
+  request = [context request];
+  cache = [SOGoCache sharedCache];
+  cacheKey = [NSString stringWithFormat: @"%@%@%@", kEncryptedUserNamePrefix, username, [request requestHandlerKey]];
+  exception = nil;
+  tmp = nil;
+
+  tmp = [cache valueForKey: cacheKey];
+  if (tmp) {
+    return tmp;
+  } else {
+    if (username && [username length] > 0) {
+      tmp = [username encodeAES128ECBBase64: [[SOGoSystemDefaults sharedSystemDefaults] urlEncryptionPassphrase] encodedURL:YES exception: &exception];
+      if (!exception) {
+        [cache setValue:tmp forKey:cacheKey];
+        return tmp;
+      } else {
+        [self errorWithFormat: @"URL Encryption error : %@", [exception reason]];
+        return username;
+      }
+    } else {
+      [self logWithFormat: @"Empty username for encryption"];
+      return username;
+    }
+  }
+}
+
++ (NSString *) getDecryptedUsernameIfNeeded:(NSString *)username withContext:(WOContext *)context
+{
+  NSException *exception;
+  NSString *tmp, *cacheKey;
+  SOGoCache *cache;
+  WORequest *request;
+
+  if (![[SOGoSystemDefaults sharedSystemDefaults] isURLEncryptionEnabled])
+    return username;
+
+  request = [context request];
+  cache = [SOGoCache sharedCache];
+  cacheKey = [NSString stringWithFormat: @"%@%@%@", kEncryptedUserNamePrefix, username, [request requestHandlerKey]];
+  exception = nil;
+  tmp = nil;
+  
+  tmp = [cache valueForKey: cacheKey];
+  if (tmp) {
+    return tmp;
+  } else {
+    if (username && [username length] > 0) {
+      tmp = [username decodeAES128ECBBase64: [[SOGoSystemDefaults sharedSystemDefaults] urlEncryptionPassphrase] encodedURL:YES exception: &exception];
+      if (tmp) {
+        [cache setValue:tmp forKey:cacheKey];
+      } else {
+        [cache setValue:username forKey:cacheKey];
+      }
+      if (!exception) {
+        return tmp;
+      } else {
+        [self errorWithFormat: @"URL Decryption error : %@", [exception reason]];
+        return username;
+      }
+    } else {
+      [self errorWithFormat: @"Empty username for decryption"];
+      return username;
+    }
+    
+  }
+}
+
 
 @end /* SOGoUser */

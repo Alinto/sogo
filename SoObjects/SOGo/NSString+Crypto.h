@@ -26,6 +26,7 @@
 #define NSSTRING_CRYPTO_H
 
 #import <Foundation/NSString.h>
+#import <Foundation/Foundation.h>
 
 typedef enum {
   encDefault, //!< default encoding, let the algorithm decide
@@ -35,8 +36,10 @@ typedef enum {
 } keyEncoding;
 
 @class NSObject;
+@class NSScanner;
 
-@interface NSString (SOGoCryptoExtension)
+    @interface
+    NSString(SOGoCryptoExtension)
 
 - (BOOL) isEqualToCrypted: (NSString *) cryptedPassword
         withDefaultScheme: (NSString *) theScheme
@@ -61,6 +64,9 @@ typedef enum {
 - (NSString *) asLMHash;
 
 + (NSArray *) getDefaultEncodingForScheme: (NSString *) passwordScheme;
+
+- (NSString *) encodeAES128ECBBase64:(NSString *)passwordScheme encodedURL:(BOOL)encodedURL exception:(NSException **)ex;
+- (NSString *) decodeAES128ECBBase64:(NSString *)passwordScheme encodedURL:(BOOL)encodedURL exception:(NSException **)ex;
 
 @end
 

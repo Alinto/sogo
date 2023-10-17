@@ -41,10 +41,17 @@
 {
   static SOGoDAVAuthenticator *auth = nil;
  
-  if (!auth)
+  if (!auth) {
     auth = [self new];
+    context = nil;
+  }
 
   return auth;
+}
+
+- (void) setContext: (WOContext *) _context
+{
+  context = _context;
 }
 
 - (BOOL) checkLogin: (NSString *) _login
@@ -68,6 +75,10 @@
               expire: &expire
                grace: &grace]
         && perr == PolicyNoError);
+        if (context) {
+          [SOGoUser getEncryptedUsernameIfNeeded: [_login stringByReplacingString: @"%40"
+                                           withString: @"@"] withContext: context]; // Create cache entry
+        }
   if (!rc)
     {
       sd = [SOGoSystemDefaults sharedSystemDefaults];

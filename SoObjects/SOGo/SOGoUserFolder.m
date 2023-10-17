@@ -24,6 +24,8 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest+So.h>
 
+#import <SaxObjC/XMLNamespaces.h>
+
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 #import <DOM/DOMNode.h>
@@ -36,6 +38,7 @@
 #import "NSArray+Utilities.h"
 #import "NSDictionary+Utilities.h"
 #import "NSString+Utilities.h"
+#import "NSString+Crypto.h"
 #import "SOGoUserManager.h"
 #import "SOGoPermissions.h"
 #import "SOGoSystemDefaults.h"
@@ -81,6 +84,17 @@
   // [children addObject: @"Preferences"];
 
   return children;
+}
+
+- (NSString *) nameInContainer {
+  NSString *foo = [SOGoUser getEncryptedUsernameIfNeeded: [super nameInContainer] withContext: context];
+  return foo;
+}
+
+- (NSString *) davURLAsString
+{
+  return [[container davURLAsString]
+           stringByAppendingFormat: @"%@/", [self nameInContainer]];
 }
 
 /* ownership */

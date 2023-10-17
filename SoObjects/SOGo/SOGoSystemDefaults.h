@@ -131,6 +131,9 @@ NSComparisonResult languageSort(id el1, id el2, void *context);
 
 - (NSArray *) disableSharing;
 
+- (BOOL)isURLEncryptionEnabled;
+- (NSString *)urlEncryptionPassphrase;
+
 @end
 
 #endif /* SOGOSYSTEMDEFAULTS_H */

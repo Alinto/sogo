@@ -360,7 +360,7 @@
   NSString *usersUrl;
 
   usersUrl = [NSString stringWithFormat: @"%@%@/",
-		       [[WOApplication application] davURLAsString], owner];
+		       [[WOApplication application] davURLAsString], [SOGoUser getEncryptedUsernameIfNeeded: owner withContext: context]];
   ownerHREF = davElementWithContent (@"href", XMLNS_WEBDAV, usersUrl);
 
   return [davElementWithContent (@"owner", XMLNS_WEBDAV, ownerHREF)
@@ -1222,7 +1222,7 @@
     davCurrentUserPrincipal = nil;
   else
     {
-      s = [NSString stringWithFormat: @"/SOGo/dav/%@", login];
+      s = [NSString stringWithFormat: @"/SOGo/dav/%@", [SOGoUser getEncryptedUsernameIfNeeded:login withContext:[self context]]];
       userHREF = davElementWithContent (@"href", XMLNS_WEBDAV, s);
       davCurrentUserPrincipal
         = [davElementWithContent (@"current-user-principal",

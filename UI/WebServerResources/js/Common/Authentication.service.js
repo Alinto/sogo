@@ -102,7 +102,7 @@
               else if (typeof data.totpDisabled != 'undefined') {
                 d.resolve({
                   cn: data.cn,
-                  url: redirectUrl(username, domain),
+                  url: redirectUrl(data.username, domain),
                   totpdisabled: 1
                 });
               }
@@ -124,12 +124,12 @@
                 else {
                   d.resolve({
                     cn: data.cn,
-                    url: redirectUrl(username, domain)
+                    url: redirectUrl(data.username, domain)
                   });
                 }
               }
               else {
-                d.resolve({ url: redirectUrl(username, domain) });
+                d.resolve({ url: redirectUrl(data.username, domain) });
               }
             }
           }, function(error) {

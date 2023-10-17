@@ -819,5 +819,20 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
   return disableSharing;
 }
 
+- (BOOL)isURLEncryptionEnabled {
+  return [self boolForKey: @"SOGoURLEncryptionEnabled"];
+}
+
+- (NSString *) urlEncryptionPassphrase
+{
+  NSString *passphrase;
+
+  passphrase = [self stringForKey: @"SOGoURLEncryptionPassphrase"];
+
+  if (!passphrase)
+    passphrase = @"SOGoSuperSecret0"; // Default passphrase
+
+  return passphrase;
+}
 
 @end
