@@ -211,6 +211,11 @@
 
 /* ownership */
 
+- (NSString *) owner
+{
+  return owner;
+}
+
 - (void) setOwner: (NSString *) newOwner
 {
   NSString *uid;

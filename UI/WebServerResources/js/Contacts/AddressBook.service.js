@@ -756,14 +756,25 @@
    * @returns a promise of the HTTP operation
    */
   AddressBook.prototype.downloadProvisioningProfile = function () {
-    var options;
+    var options, resource, index, ownerPaths, realOwnerId, path;
 
     options = {
       type: 'application/octet-stream',
       filename: 'addressbook.mobileconfig'
     }
 
-    return AddressBook.$$resource.open('', 'mobileconfig', null, options);
+    if (this.isSubscription) {
+      index = this.urls.cardDavURL.indexOf('/dav/');
+      ownerPaths = this.urls.cardDavURL.substring(index + 5).split(/\//);
+      realOwnerId = ownerPaths[0];
+      resource = AddressBook.$$resource.userResource(realOwnerId);
+      path = ownerPaths[1] + '/' + ownerPaths[2];
+    } else {
+      resource = AddressBook.$$resource;
+      path = this.id;
+    }
+
+    return resource.open(path, 'mobileconfig', null, options);
   };
 
   /**

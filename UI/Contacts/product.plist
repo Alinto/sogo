@@ -50,11 +50,6 @@
           pageName    = "UIxContactFoldersView";
           actionName  = "saveDragHandleState";
         };
-        mobileconfig = {
-          protectedBy = "Access Contents Information";
-          actionClass = "UIxContactView";
-          actionName  = "mobileconfig";
-        };
       };
     };
 
@@ -114,6 +109,11 @@
           protectedBy = "Access Contents Information";
           pageName = "UIxContactFolderProperties";
           actionName = "saveProperties";
+        };
+        mobileconfig = {
+          protectedBy = "Access Contents Information";
+          actionClass = "UIxContactFolderActions";
+          actionName  = "mobileconfig";
         };
       };
     };

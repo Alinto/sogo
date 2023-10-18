@@ -51,6 +51,7 @@
 #import <SoObjects/Contacts/SOGoContactGCSFolder.h>
 
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoMobileProvision.h>
 
 #import "UIxContactFolderActions.h"
 
@@ -461,6 +462,31 @@ static NSArray *photoTags = nil;
     }
 
   return rc;
+}
+
+- (WOResponse *) mobileconfigAction
+{
+  SOGoContactGCSFolder *folder;
+  NSString *davURL, *plistContent, *disposition;
+  WOResponse *response;
+
+  folder = [self clientObject];
+  davURL = [folder davURLAsString];
+  plistContent = [SOGoMobileProvision plistForContactsWithContext: context andPath: davURL andName: [NSString stringWithFormat: @"%@ - %@", [folder owner], [folder realNameInContainer]]];
+ 
+  if (nil != plistContent) {
+    response = [self responseWithStatus: 200
+                            andString: plistContent];
+    [response setHeader: @"application/x-plist; charset=utf-8" 
+                forKey: @"content-type"];
+    disposition = [NSString stringWithString: @"attachment; filename=\"contacts.mobileconfig\""];
+    [response setHeader: disposition forKey: @"Content-Disposition"];
+  } else {
+    response = [self responseWithStatus: 500
+                            andString: @"Error while generating profile"];
+  }
+
+  return response;
 }
 
 @end /* UIxContactFolderActions */
