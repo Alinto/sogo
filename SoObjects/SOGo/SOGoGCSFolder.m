@@ -533,7 +533,7 @@ static NSArray *childRecordFields = nil;
         publicParticle = @"";
       path = [NSString stringWithFormat: @"/%@/dav%@/%@/%@/%@/",
                        appName, publicParticle,
-                       [[self ownerInContext: nil] stringByEscapingURL],
+                       [[SOGoUser getEncryptedUsernameIfNeeded:[self ownerInContext: nil] withContext: context] stringByEscapingURL],
                        [[container nameInContainer] stringByEscapingURL],
                        [[self realNameInContainer] stringByEscapingURL]];
       currentDavURL = [self davURL];

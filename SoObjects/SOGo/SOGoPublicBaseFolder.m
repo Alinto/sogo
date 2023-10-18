@@ -32,9 +32,11 @@
           acquire: (BOOL) acquire
 {
   id userFolder;
+  NSString *login;
 
-  if ([key length] > 0 && [SOGoUser userWithLogin: key roles: nil])
-    userFolder = [SOGoUserFolder objectWithName: key inContainer: self];
+  login = [SOGoUser getDecryptedUsernameIfNeeded: key withContext: localContext];
+  if ([key length] > 0 && [SOGoUser userWithLogin: login roles: nil])
+    userFolder = [SOGoUserFolder objectWithName: login inContainer: self];
   else
     userFolder = nil;
 
