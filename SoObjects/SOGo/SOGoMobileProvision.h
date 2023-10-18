@@ -37,8 +37,8 @@ typedef enum
   
 }
 
-+ (NSString *)plistForCalendarsWithContext:(WOContext *)context andPath:(NSString *)path;
-+ (NSString *)plistForContactsWithContext:(WOContext *)context andPath:(NSString *)path;
++ (NSString *)plistForCalendarsWithContext:(WOContext *)context andPath:(NSString *)path andName:(NSString *)name;
++ (NSString *)plistForContactsWithContext:(WOContext *)context andPath:(NSString *)path andName:(NSString *)name;
 
 @end
 

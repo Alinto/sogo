@@ -666,7 +666,7 @@
 
   folders = [self clientObject];
   davURL = [[folders container] davURLAsString];
-  plistContent = [SOGoMobileProvision plistForCalendarsWithContext: context andPath: davURL];
+  plistContent = [SOGoMobileProvision plistForCalendarsWithContext: context andPath: davURL andName: [folders owner]];
  
   if (nil != plistContent) {
     response = [self responseWithStatus: 200

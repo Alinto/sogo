@@ -583,14 +583,25 @@
    * @returns a promise of the HTTP operation
    */
   Calendar.prototype.downloadProvisioningProfile = function () {
-    var options;
+    var options, resource, index, ownerPaths, realOwnerId, path;
 
     options = {
       type: 'application/octet-stream',
       filename: 'calendar.mobileconfig'
     }
 
-    return Calendar.$$resource.open('', 'mobileconfig', null, options);
+    if (this.isSubscription) {
+      index = this.urls.webDavICSURL.indexOf('/dav/');
+      ownerPaths = this.urls.webDavICSURL.substring(index + 5).split(/\//);
+      realOwnerId = ownerPaths[0];
+      resource = Calendar.$$resource.userResource(realOwnerId);
+      path = 'Calendar';
+    } else {
+      resource = Calendar.$$resource;
+      path = '';
+    }
+
+    return resource.open(path, 'mobileconfig', null, options);
   };
 
   /**
