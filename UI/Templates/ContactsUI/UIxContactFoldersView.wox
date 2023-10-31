@@ -120,7 +120,7 @@
                   <md-menu-divider><!-- divider --></md-menu-divider>
                   <md-menu-item>
                     <md-button ng-click="folder.downloadProvisioningProfile()">
-                       <var:string label:value="Download configuration profile"/>
+                      <var:string label:value="Download iOS - MacOS configuration profile"/>
                     </md-button>
                   </md-menu-item>
                 </md-menu-content>
@@ -208,7 +208,7 @@
                   <md-menu-divider><!-- divider --></md-menu-divider>
                   <md-menu-item>
                     <md-button ng-click="folder.downloadProvisioningProfile()">
-                       <var:string label:value="Download configuration profile"/>
+                      <var:string label:value="Download iOS - MacOS configuration profile"/>
                     </md-button>
                   </md-menu-item>
                 </md-menu-content>

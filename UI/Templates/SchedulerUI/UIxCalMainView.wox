@@ -598,7 +598,7 @@
         <md-divider><!-- divider --></md-divider>
         <md-menu-item>
           <md-button ng-click="$menuCtrl.calendar.downloadProvisioningProfile()">
-             <var:string label:value="Download configuration profile"/>
+            <var:string label:value="Download iOS - MacOS configuration profile"/>
           </md-button>
         </md-menu-item>
       </md-menu-content>

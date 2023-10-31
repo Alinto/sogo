@@ -65,7 +65,7 @@
 "A total of %{0} events were imported in the calendar." = "A total of %{0} events were imported in the calendar.";
 "Compose E-Mail to All Attendees" = "Compose E-Mail to All Attendees";
 "Compose E-Mail to Undecided Attendees" = "Compose E-Mail to Undecided Attendees";
-"Download configuration profile" = "Download configuration profile";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* Relative dates */
 "Yesterday" = "Yesterday";
