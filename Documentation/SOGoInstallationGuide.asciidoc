@@ -3243,6 +3243,12 @@ http://127.0.0.1/SOGo/dav/jdoe/
 
 Note that the trailing slash is important for the old Apple iCal 3 application.
 
+Since SOGo 5.9.1, calendar can be installed using provisioning profiles. On the calendar interface next to the calendar name (eg `Personal`), click on the three dots button and click on `Download iOS - MacOS configuration profile`.
+You have to add the profile to your device :
+
+* Go to Settings / Profiles / Click on + / Continue
+* Type your SOGo account password and click on install
+
 Apple AddressBook
 ~~~~~~~~~~~~~~~~~
 
@@ -3285,6 +3291,12 @@ The virtual host should be defined like:
 
 This configuration is also required if you want to configure a CardDAV
 account on an Apple iOS device (version 4.0 and later).
+
+Since SOGo 5.9.1, address book can be installed using provisioning profiles. On the address book interface next to the address book name (eg `Personal`), click on the three dots button and click on `Download iOS - MacOS configuration profile`.
+You have to add the profile to your device :
+
+* Go to Settings / Profiles / Click on + / Continue
+* Type your SOGo account password and click on install
 
 Microsoft ActiveSync
 ~~~~~~~~~~~~~~~~~~~~
