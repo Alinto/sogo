@@ -27,6 +27,8 @@
 #import <NGMime/NGMimeBodyPart.h>
 #import <NGMime/NGMimeMultipartBody.h>
 
+#import <SOGo/SOGoUserDefaults.h>
+
 #import <UI/MailerUI/WOContext+UIxMailer.h>
 
 #import "UIxMailRenderingContext.h"
@@ -98,6 +100,7 @@
   NSString *contentType;
   id viewer, info;
   NSArray *parts;
+  SOGoUserDefaults *ud;
 
   NSUInteger i, max;
 
@@ -119,14 +122,23 @@
         [self setChildInfo: [parts objectAtIndex: i]];
 
       info = [self childInfo];
-      viewer = [[[self context] mailRenderingContext] viewerForBodyInfo: info];
-      [viewer setBodyInfo: info];
-      [viewer setPartPath: [self childPartPath]];
-      if ([self decodedFlatContent])
-        [viewer setDecodedContent: [parts objectAtIndex: i]];
-      [viewer setAttachmentIds: attachmentIds];
+      
+      ud = [[[self context] activeUser] userDefaults];
 
-      [renderedParts addObject: [viewer renderedPart]];
+      if (!([info objectForKey:@"disposition"] 
+        && [[info objectForKey:@"disposition"] objectForKey:@"type"]
+        && [[[info objectForKey:@"disposition"] objectForKey:@"type"] isEqualToString:@"INLINE"]
+        && [ud hideInlineAttachments])) {
+        viewer = [[[self context] mailRenderingContext] viewerForBodyInfo: info];
+        [viewer setBodyInfo: info];
+        [viewer setPartPath: [self childPartPath]];
+        if ([self decodedFlatContent])
+          [viewer setDecodedContent: [parts objectAtIndex: i]];
+        [viewer setAttachmentIds: attachmentIds];
+
+        
+        [renderedParts addObject: [viewer renderedPart]];
+      }
     }
 
   contentType = [NSString stringWithFormat: @"%@/%@",

@@ -204,6 +204,7 @@
 "Insert signature on new message" = "Insert signature on new message";
 "Insert signature on reply" = "Insert signature on reply";
 "Insert signature on forward" = "Insert signature on forward";
+"Hide inline attachments" = "Hide inline attachments";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Default font size";

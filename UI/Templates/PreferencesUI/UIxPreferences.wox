@@ -697,6 +697,16 @@
 
             <div>
               <md-checkbox
+                  ng-model="app.preferences.defaults.SOGoMailHideInlineAttachments"
+                  ng-true-value="1"
+                  ng-false-value="0"
+                  label:aria-label="Hide inline attachments">
+                <var:string label:value="Hide inline attachments"/>
+              </md-checkbox>
+            </div>
+
+            <div>
+              <md-checkbox
                   ng-model="app.preferences.defaults.SOGoMailAutoMarkAsReadEnabled"
                   label:aria-label="Automatically mark messages as read">
                 <var:string label:value="Automatically mark messages as read"/>

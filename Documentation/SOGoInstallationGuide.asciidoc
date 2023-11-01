@@ -2481,6 +2481,10 @@ Defaults to `NO` when unset.
 
 Defaults to `inline` when unset.
 
+|U |SOGoMailHideInlineAttachments
+|Hide inline message as attachements if set to `YES`. Default value is `NO`.
+
+
 |U |SOGoMailCustomFullName
 |The string to use as full name when composing an email, if
 _SOGoMailCustomFromEnabled_ is set in the user's domain defaults.

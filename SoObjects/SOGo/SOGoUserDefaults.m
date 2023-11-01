@@ -959,6 +959,16 @@ NSString *SOGoPasswordRecoverySecondaryEmail = @"SecondaryEmail";
   return [self objectForKey: @"SOGoMailLabelsColors"];
 }
 
+- (void) setHideInlineAttachments: (BOOL) newValue
+{
+  [self setBool: newValue forKey: @"SOGoMailHideInlineAttachments"];
+}
+
+- (BOOL) hideInlineAttachments
+{
+  return [self boolForKey: @"SOGoMailHideInlineAttachments"];
+}
+
 - (void) setSieveFilters: (NSArray *) newValue
 {
   [self setObject: newValue forKey: @"SOGoSieveFilters"];
