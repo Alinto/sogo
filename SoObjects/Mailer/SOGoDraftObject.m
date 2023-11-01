@@ -67,6 +67,7 @@
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoSystemDefaults.h>
+#import <SOGo/NGMimeFileData+SOGo.h>
 
 #import <NGCards/NGVCard.h>
 
@@ -142,6 +143,7 @@ static NSString    *userAgent      = nil;
       isHTML = NO;
       sign = NO;
       encrypt = NO;
+      tmpFiles = [[NSMutableArray alloc] init];
     }
 
   return self;
@@ -157,6 +159,7 @@ static NSString    *userAgent      = nil;
   [sourceFlag release];
   [inReplyTo release];
   [references release];
+  [tmpFiles release];
   [super dealloc];
 }
 
@@ -1921,8 +1924,10 @@ static NSString    *userAgent      = nil;
   if (_extractImages)
     {
       newText = [text htmlByExtractingImages: extractedBodyParts];
-      if ([extractedBodyParts count])
+      if ([extractedBodyParts count]) {
         [self setText: newText];
+        [self addTmpFiles: extractedBodyParts];
+      }
 
     }
 
@@ -1934,8 +1939,11 @@ static NSString    *userAgent      = nil;
       //[self debugWithFormat: @"MIME Envelope: %@", map];
       allBodyParts = [self bodyPartsForAllAttachments];
 
-      if (!allBodyParts)
-	return nil;
+      if (!allBodyParts) {
+        return nil;
+      } else {
+        [self addTmpFiles: allBodyParts];
+      }
 
       //[self debugWithFormat: @"attachments: %@", bodyParts];
 
@@ -2225,6 +2233,41 @@ static NSString    *userAgent      = nil;
   return [self sendMailAndCopyToSent: YES];
 }
 
+// Extract tmp files in NGMimeBuildMimeTempDirectory from NSArray and store locally
+// The tmp files will be deleted once the message sent
+- (void) addTmpFiles:(NSArray *) parts {
+  NGMimeBodyPart *part;
+
+  for (part in parts) {
+    NGMimeFileData *body;
+    NSString *path;
+
+    body = [part body];
+    if (body) {
+      path = [body path];
+      if (path) {
+        [tmpFiles addObject: path];
+      }
+    }
+  }
+}
+
+// Clean temporary files
+- (void) cleanTmpFiles {
+  NSString *path;
+  NSFileManager *fm;
+
+  fm = [NSFileManager defaultManager];
+  
+  for (path in tmpFiles) {
+    if ([fm fileExistsAtPath: path])
+      [fm removeFileAtPath: path handler: nil];
+  }
+
+  // Clean tmp files
+  [tmpFiles removeAllObjects];
+}
+
 //
 //
 //
@@ -2270,8 +2313,10 @@ static NSString    *userAgent      = nil;
                        inContext: context
                    systemMessage: NO];
 
-          if (error)
+          if (error) {
+            [self cleanTmpFiles];
             return error;
+          }
         }
 
       // If the current user isn't part of the recipient list for encrypted emails
@@ -2329,6 +2374,8 @@ static NSString    *userAgent      = nil;
       ![self delete] &&
       [imap4 doesMailboxExistAtURL: [container imap4URL]])
     [(SOGoDraftsFolder *) container expunge];
+
+  [self cleanTmpFiles];
 
   return error;
 }

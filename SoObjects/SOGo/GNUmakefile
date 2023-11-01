@@ -94,6 +94,7 @@ SOGo_HEADER_FILES = \
 	JWT.h	\
 	\
 	NGMimeBodyPart+SOGo.h \
+	NGMimeFileData+SOGo.h \
 	\
 	SOGoMobileProvision.h
 
@@ -183,6 +184,7 @@ SOGo_OBJC_FILES = \
 	JWT.m	\
 	\
 	NGMimeBodyPart+SOGo.m \
+	NGMimeFileData+SOGo.m \
 	\
 	SOGoMobileProvision.m
 
