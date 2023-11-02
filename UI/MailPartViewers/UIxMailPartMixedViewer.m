@@ -127,7 +127,7 @@
 
       if (!([info objectForKey:@"disposition"] 
         && [[info objectForKey:@"disposition"] objectForKey:@"type"]
-        && [[[info objectForKey:@"disposition"] objectForKey:@"type"] isEqualToString:@"INLINE"]
+        && [[[[info objectForKey:@"disposition"] objectForKey:@"type"] uppercaseString] isEqualToString:@"INLINE"]
         && [ud hideInlineAttachments])) {
         viewer = [[[self context] mailRenderingContext] viewerForBodyInfo: info];
         [viewer setBodyInfo: info];
