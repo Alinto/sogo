@@ -146,6 +146,9 @@
       [helpString appendFormat: @"\t%-20@-- %@\n",
                   command, [currentTool objectAtIndex: 1]];
     }
+  [helpString appendString: @"\n  Visit https://www.sogo.nu/files/docs/SOGoInstallationGuide.html#_using_sogo_tool to get more infos"];
+
+
 
   NSLog (@"%@", helpString);
 }

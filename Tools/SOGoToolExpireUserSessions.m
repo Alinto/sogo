@@ -138,6 +138,8 @@
     sessionExpireMinutes = [[arguments objectAtIndex: 0] intValue];
   }
 
+  NSLog(@"Remove all sessions older than %d min", sessionExpireMinutes);
+
   if (sessionExpireMinutes >= 0)
   {
     rc = [self expireUserSessionOlderThan: sessionExpireMinutes];

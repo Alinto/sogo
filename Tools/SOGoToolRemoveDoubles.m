@@ -86,15 +86,15 @@
   /* we want to match the field value case-insensitively */
   recordEmail = [[record objectForKey: field] uppercaseString];
   if ([recordEmail length])
+  {
+    recordList = [doubleEmails objectForKey: recordEmail];
+    if (!recordList)
     {
-      recordList = [doubleEmails objectForKey: recordEmail];
-      if (!recordList)
-	{
-	  recordList = [NSMutableArray arrayWithCapacity: 5];
-	  [doubleEmails setObject: recordList forKey: recordEmail];
-	}
-      [recordList addObject: record];
+      recordList = [NSMutableArray arrayWithCapacity: 5];
+      [doubleEmails setObject: recordList forKey: recordEmail];
     }
+    [recordList addObject: record];
+  }
 }
 
 - (void) cleanupSingleRecords: (NSMutableDictionary *) doubleEmails
@@ -220,21 +220,20 @@
 
   recordsToRemove = [NSMutableArray arrayWithCapacity: (max - 1)];
   for (count = 0; count < max; count++)
+  {
+    if (count != keptRecord)
     {
-      if (count != keptRecord)
-	{
-	  currentRecord = [records objectAtIndex: count];
-	  [recordsToRemove
-	    addObject: [currentRecord objectForKey: @"c_name"]];
-	}
+      currentRecord = [records objectAtIndex: count];
+      [recordsToRemove addObject: [currentRecord objectForKey: @"c_name"]];
     }
+  }
 
   return recordsToRemove;
 }
 
 - (NSArray *) records: (NSArray *) records
      withLowestScores: (unsigned int *) scores
-		count: (unsigned int) max
+		            count: (unsigned int) max
 {
   unsigned int count, highestScore;
   int highestScoreRecord;
@@ -242,13 +241,13 @@
   highestScore = 0;
   highestScoreRecord = -1;
   for (count = 0; count < max; count++)
+  {
+    if (scores[count] > highestScore)
     {
-      if (scores[count] > highestScore)
-	{
-	  highestScore = scores[count];
-	  highestScoreRecord = count;
-	}
+      highestScore = scores[count];
+      highestScoreRecord = count;
     }
+  }
 
   if (highestScoreRecord == -1)
     highestScoreRecord = 0;
@@ -268,16 +267,15 @@
 
   highestVersion = 0;
   for (count = 0; count < max; count++)
+  {
+    currentVersion = [[records objectAtIndex: count] objectForKey: @"c_version"];
+    version = [currentVersion intValue];
+    if (version > highestVersion)
     {
-      currentVersion
-	= [[records objectAtIndex: count] objectForKey: @"c_version"];
-      version = [currentVersion intValue];
-      if (version > highestVersion)
-	{
-	  mostModified = count;
-	  highestVersion = version;
-	}
+      mostModified = count;
+      highestVersion = version;
     }
+  }
 
   return mostModified;
 }
@@ -291,25 +289,25 @@
   amount = 0;
 
   if (!quickFields)
-    {
-      quickFields = [NSArray arrayWithObjects: @"c_givenname", @"c_cn",
-			     @"c_sn", @"c_screenname", @"c_l", @"c_mail",
-			     @"c_o", @"c_ou", @"c_telephonenumber", nil];
-      [quickFields retain];
-    }
+  {
+    quickFields = [NSArray arrayWithObjects: @"c_givenname", @"c_cn",
+          @"c_sn", @"c_screenname", @"c_l", @"c_mail",
+          @"c_o", @"c_ou", @"c_telephonenumber", nil];
+    [quickFields retain];
+  }
 
   max = [quickFields count];
   for (count = 0; count < max; count++)
+  {
+    value = [record objectForKey: [quickFields objectAtIndex: count]];
+    if ([value isKindOfClass: [NSString class]])
     {
-      value = [record objectForKey: [quickFields objectAtIndex: count]];
-      if ([value isKindOfClass: [NSString class]])
-	{
-	  if ([value length])
-	    amount++;
-	}
-      else if ([value isKindOfClass: [NSNumber class]])
-	amount++;
+      if ([value length])
+        amount++;
     }
+    else if ([value isKindOfClass: [NSNumber class]])
+      amount++;
+  }
 
   return amount;
 }
@@ -323,15 +321,14 @@
 
   highestQFields = 0;
   for (count = 0; count < max; count++)
+  {
+    currentQFields = [self amountOfFilledQuickFields: [records objectAtIndex: count]];
+    if (currentQFields > highestQFields)
     {
-      currentQFields
-	= [self amountOfFilledQuickFields: [records objectAtIndex: count]];
-      if (currentQFields > highestQFields)
-	{
-	  mostQuickFields = count;
-	  highestQFields = currentQFields;
-	}
+      mostQuickFields = count;
+      highestQFields = currentQFields;
     }
+  }
 
   return mostQuickFields;
 }
@@ -399,10 +396,28 @@
 }
 
 - (void) assignScores: (unsigned int *) scores
-	    toRecords: (NSArray *) records
-		count: (unsigned int) max
+	          toRecords: (NSArray *) records
+		            count: (unsigned int) max
      withCardsInLists: (NSArray *) cardsInLists
 {
+  /*
+  Records is an Array of record which are duplicates of each other.
+  The goal here is to know which one to keep and whoch ones to discard.
+  We will assign a score to each record, the one with the best scores is kept
+  Record which has been the last modified: +1
+  Record has the most content: +2
+  Record has the most quick field set: +3
+  Record is in a list: +6
+  
+  If two record have the same, for exemple, content. It's the first one on the list
+  that will get the points.
+  If two recors have the same score. t's the first one on the list
+  that will get the points.
+
+  quick fiels are =("c_givenname": Firstname, @"c_cn": Display,
+		@"c_sn": LastName, @"c_screenname": Screen Name @"c_l": City, @"c_mail": mails,
+		@"c_o": organisation, @"c_ou": organisation unit, @"c_telephonenumber": telephone)
+  */
   int recordIndex;
 
   recordIndex = [self mostModifiedRecord: records count: max];

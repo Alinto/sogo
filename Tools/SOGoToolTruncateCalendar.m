@@ -210,8 +210,7 @@
   GCSFolder *folder;
   BOOL rc;
 
-  folderPath = [NSString stringWithFormat: @"/Users/%@/Calendar/%@",
-			 username, folderId];
+  folderPath = [NSString stringWithFormat: @"/Users/%@/Calendar/%@", username, folderId];
   folder = [fom folderAtPath: folderPath];
   if (folder)
     rc = [self truncateEntriesFromFolder: folder  usingDate: date];
@@ -238,12 +237,13 @@
   // in the default timezone.
   s = [NSString stringWithFormat: @"%@ GMT", date];  
   d = [NSCalendarDate dateWithString: s  calendarFormat: @"%Y-%m-%dT%H:%M:%S %Z"];
+  NSLog(@"Date is: %@", d);
   fom = [GCSFolderManager defaultFolderManager];
 
   if (d && fom)
     rc = [self processFolder: folder
 		      ofUser: username
-			date: d
+			      date: d
 		     withFoM: fom];
   else
     rc = NO;

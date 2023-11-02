@@ -221,95 +221,95 @@
   count = [objects count];
 
   for (i = 0; i < count; i++)
-    {
-      content = [[[objects objectAtIndex: i] objectForKey: @"c_content"] stringByTrimmingSpaces];
-      c_name = [[objects objectAtIndex: i] objectForKey: @"c_name"];
-      if (is_calendar)
-	{
-	  // We check for
-	  // BEGIN:VCALENDAR
-	  // ..
-	  // END:VCALENDAR
-	  iCalCalendar *calendar;
+  {
+    content = [[[objects objectAtIndex: i] objectForKey: @"c_content"] stringByTrimmingSpaces];
+    c_name = [[objects objectAtIndex: i] objectForKey: @"c_name"];
+    if (is_calendar)
+	  {
+	    // We check for
+	    // BEGIN:VCALENDAR
+	    // ..
+	    // END:VCALENDAR
+	    iCalCalendar *calendar;
 	      
-	  if ([content length] < 30 ||
+	    if ([content length] < 30 ||
 	      [[content substringToIndex: 15] caseInsensitiveCompare: @"BEGIN:VCALENDAR"] != NSOrderedSame ||
 	      [[content substringFromIndex: [content length]-13] caseInsensitiveCompare: @"END:VCALENDAR"] != NSOrderedSame)
 	    {
 	      NSLog(@"Corrupted calendar item (missing tags) in path %@ with c_name = %@", folder, c_name);
 	      if (delete)
-		[gcsFolder deleteContentWithName: c_name];
+		      [gcsFolder deleteContentWithName: c_name];
 	      rc = NO;
 	    }
-	  else
+	    else
 	    {
 	      calendar = [iCalCalendar parseSingleFromSource: content];
 	      if (!calendar)
-		{
-		  NSLog(@"Corrupted calendar item (unparsable) in path %@ with c_name = %@", folder, c_name);
-		  if (delete)
-		    [gcsFolder deleteContentWithName: c_name];
-		  rc = NO;
-		}
-              else
-                {
-                  iCalEvent *event;
+		    {
+		      NSLog(@"Corrupted calendar item (unparsable) in path %@ with c_name = %@", folder, c_name);
+		      if (delete)
+		        [gcsFolder deleteContentWithName: c_name];
+		      rc = NO;
+		    }
+        else
+        {
+          iCalEvent *event;
 
-                  event = (iCalEvent *) [calendar firstChildWithTag: @"vevent"];
-                  if (event)
-                    {
-                      iCalDateTime *startDate, *endDate;
+          event = (iCalEvent *) [calendar firstChildWithTag: @"vevent"];
+          if (event)
+          {
+            iCalDateTime *startDate, *endDate;
 
-                      startDate = (iCalDateTime *) [event uniqueChildWithTag: @"dtstart"];
-                      if (![startDate dateTime])
-                        {
-                          NSLog(@"Missing start date of event in path %@ with c_name = %@ (%@)", folder, c_name, [event summary]);
-                          if (delete)
-                            [gcsFolder deleteContentWithName: c_name];
-                          rc = NO;
-                        }
-                      endDate = (iCalDateTime *) [event uniqueChildWithTag: @"dtend"];
-                      if (![endDate dateTime] && ![event hasDuration])
-                        {
-                          NSLog(@"Missing end date of event in path %@ with c_name = %@ (%@)", folder, c_name, [event summary]);
-                          if (delete)
-                            [gcsFolder deleteContentWithName: c_name];
-                          rc = NO;
-                        }
-                      if ([startDate dateTime] && [endDate dateTime])
-                        {
-                          NSComparisonResult comparison;
+            startDate = (iCalDateTime *) [event uniqueChildWithTag: @"dtstart"];
+            if (![startDate dateTime])
+            {
+              NSLog(@"Missing start date of event in path %@ with c_name = %@ (%@)", folder, c_name, [event summary]);
+              if (delete)
+                [gcsFolder deleteContentWithName: c_name];
+              rc = NO;
+            }
+            endDate = (iCalDateTime *) [event uniqueChildWithTag: @"dtend"];
+            if (![endDate dateTime] && ![event hasDuration])
+            {
+              NSLog(@"Missing end date of event in path %@ with c_name = %@ (%@)", folder, c_name, [event summary]);
+              if (delete)
+                [gcsFolder deleteContentWithName: c_name];
+              rc = NO;
+            }
+            if ([startDate dateTime] && [endDate dateTime])
+            {
+              NSComparisonResult comparison;
 
-                          comparison = [[startDate dateTime] compare: [endDate dateTime]];
-                          if (([event isAllDay] && comparison == NSOrderedDescending) ||
-                              (![event isAllDay] && comparison != NSOrderedAscending))
-                            {
-                              NSLog(@"Start date (%@) is not before end date (%@) for event in path %@ with c_name = %@ (%@)",
-                                    [startDate dateTime], [endDate dateTime], folder, c_name, [event summary]);
-                              if (delete)
-                                [gcsFolder deleteContentWithName: c_name];
-                              rc = NO;
-                            }
-                        }
-                    }
-                }
+              comparison = [[startDate dateTime] compare: [endDate dateTime]];
+              if (([event isAllDay] && comparison == NSOrderedDescending) ||
+                  (![event isAllDay] && comparison != NSOrderedAscending))
+              {
+                NSLog(@"Start date (%@) is not before end date (%@) for event in path %@ with c_name = %@ (%@)",
+                      [startDate dateTime], [endDate dateTime], folder, c_name, [event summary]);
+                if (delete)
+                  [gcsFolder deleteContentWithName: c_name];
+                rc = NO;
+              }
+            }
+          }
+        }
 	    }
-	}
-      else
-	{
-	  NGVCard *card;
+	  }
+    else
+	  {
+	    NGVCard *card;
 
-	  card = [NGVCard parseSingleFromSource: content];
+	    card = [NGVCard parseSingleFromSource: content];
 
-	  if (!card)
+	    if (!card)
 	    {
-	       NSLog(@"Corrupted card item (unparsable) in path %@ with c_name = %@", folder, c_name);
-	       if (delete)
-		 [gcsFolder deleteContentWithName: c_name];
-	       rc = NO;
+	      NSLog(@"Corrupted card item (unparsable) in path %@ with c_name = %@", folder, c_name);
+	      if (delete)
+		      [gcsFolder deleteContentWithName: c_name];
+	      rc = NO;
 	    }
-	}
-    }
+	  }
+  }
 
   return rc;
 }
