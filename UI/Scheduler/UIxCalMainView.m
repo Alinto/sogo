@@ -376,6 +376,20 @@
   return result;
 }
 
+- (BOOL) isCalendarExportEnabled {
+  BOOL result;
+  SOGoSystemDefaults *sd;
+
+  result = YES;
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if (nil != [sd disableExport] 
+    && NSNotFound != [[sd disableExport] indexOfObject: kDisableSharingCalendar]) {
+      result = NO;
+  }
+
+  return result;
+}
+
 @end
 
 /* Component Viewer, parent class of Appointment Viewer and Task Viewer */

@@ -507,6 +507,20 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
   return result;
 }
 
+- (BOOL) isContactExportEnabled {
+  BOOL result;
+  SOGoSystemDefaults *sd;
+
+  result = YES;
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if (nil != [sd disableExport] 
+    && NSNotFound != [[sd disableExport] indexOfObject: kDisableSharingContacts]) {
+      result = NO;
+  }
+
+  return result;
+}
+
 - (id) defaultAction
 {
   // NSString *check;

@@ -104,11 +104,13 @@
                       <var:string label:value="Import"/>
                     </md-button>
                   </md-menu-item>
-                  <md-menu-item>
-                    <md-button type="button" ng-click="folder.exportCards(false)">
-                      <var:string label:value="Export"/>
-                    </md-button>
-                  </md-menu-item>
+                  <var:if condition="isContactExportEnabled">
+                    <md-menu-item>
+                      <md-button type="button" ng-click="folder.exportCards(false)">
+                        <var:string label:value="Export"/>
+                      </md-button>
+                    </md-menu-item>
+                  </var:if>
                   <var:if condition="isContactSharingEnabled">
                     <md-menu-divider><!-- divider --></md-menu-divider>
                     <md-menu-item>

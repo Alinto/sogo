@@ -590,8 +590,20 @@
 - (WOResponse *) exportFolderAction
 {
   WOResponse *response;
+  SOGoSystemDefaults *sd;
 
-  response = [[self clientObject] archiveAllMessagesInContext: context];
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if (nil != [sd disableExport] && NSNotFound != [[sd disableExport] indexOfObject: kDisableSharingMail])
+  {
+    response = [self responseWithStatus: 401
+                  andJSONRepresentation: [NSDictionary dictionaryWithObject: @"Exporting mail folder is not authorized"
+                                                                     forKey: @"message"]];
+
+  }
+  else
+  {
+    response = [[self clientObject] archiveAllMessagesInContext: context];
+  }
 
   return response;
 }

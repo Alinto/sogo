@@ -832,5 +832,17 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
   return disableSharingAnyAuthUser;
 }
 
+- (NSArray *) disableExport
+{
+  static NSArray *disableExport = nil;
+
+  if (!disableExport)
+    {
+      disableExport = [self stringArrayForKey: @"SOGoDisableExport"];
+      [disableExport retain];
+    }
+  
+  return disableExport;
+}
 
 @end

@@ -131,6 +131,7 @@ NSComparisonResult languageSort(id el1, id el2, void *context);
 
 - (NSArray *) disableSharing;
 - (NSArray *) disableSharingAnyAuthUser;
+- (NSArray *) disableExport;
 
 @end
 

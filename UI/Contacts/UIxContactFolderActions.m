@@ -19,6 +19,8 @@
   02111-1307, USA.
 */
 
+#import <SOGo/SOGoSystemDefaults.h>
+
 #import <Foundation/Foundation.h>
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
@@ -78,35 +80,47 @@ static NSArray *photoTags = nil;
   id currentChild;
   SOGoContactGCSFolder *sourceFolder;
   NSMutableString *content;
+ SOGoSystemDefaults *sd;
 
-  content = [NSMutableString string];
-  sourceFolder = [self clientObject];
-  contactsId = [[[[context request] contentAsString] objectFromJSONString] objectForKey: @"uids"];
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if (nil != [sd disableExport] && NSNotFound != [[sd disableExport] indexOfObject: kDisableSharingContacts])
+  {
+    response = [self responseWithStatus: 401
+                  andJSONRepresentation: [NSDictionary dictionaryWithObject: @"Exporting contacts folder is not authorized"
+                                                                     forKey: @"message"]];
 
-  if (!contactsId)
-    contactsId = [sourceFolder toOneRelationshipKeys];
+  }
+  else
+  {
+    content = [NSMutableString string];
+    sourceFolder = [self clientObject];
+    contactsId = [[[[context request] contentAsString] objectFromJSONString] objectForKey: @"uids"];
 
-  uids = [contactsId objectEnumerator];
-  while ((uid = [uids nextObject]))
-    {
-      currentChild = [sourceFolder lookupName: uid
-                                    inContext: [self context]
-                                      acquire: NO];
-      if ([currentChild respondsToSelector: @selector (vCard)])
-        [content appendFormat: @"%@", [[currentChild ldifRecord] ldifRecordAsString]];
-      else if ([currentChild respondsToSelector: @selector (vList)])
-        [content appendFormat: @"%@", [[currentChild vList] ldifString]];
-      [content appendString: @"\n"];
-    }
+    if (!contactsId)
+      contactsId = [sourceFolder toOneRelationshipKeys];
 
-  response = [context response];
-  [response setHeader: @"application/directory; charset=utf-8"
-               forKey: @"content-type"];
-  filename = [NSString stringWithFormat: @"%@.ldif",
-                       [[sourceFolder displayName] asQPSubjectString: @"utf-8"]];
-  disposition = [NSString stringWithFormat: @"attachment; filename=\"%@\"", filename];
-  [response setHeader: disposition forKey: @"Content-Disposition"];
-  [response setContent: [content dataUsingEncoding: NSUTF8StringEncoding]];
+    uids = [contactsId objectEnumerator];
+    while ((uid = [uids nextObject]))
+      {
+        currentChild = [sourceFolder lookupName: uid
+                                      inContext: [self context]
+                                        acquire: NO];
+        if ([currentChild respondsToSelector: @selector (vCard)])
+          [content appendFormat: @"%@", [[currentChild ldifRecord] ldifRecordAsString]];
+        else if ([currentChild respondsToSelector: @selector (vList)])
+          [content appendFormat: @"%@", [[currentChild vList] ldifString]];
+        [content appendString: @"\n"];
+      }
+
+    response = [context response];
+    [response setHeader: @"application/directory; charset=utf-8"
+                forKey: @"content-type"];
+    filename = [NSString stringWithFormat: @"%@.ldif",
+                        [[sourceFolder displayName] asQPSubjectString: @"utf-8"]];
+    disposition = [NSString stringWithFormat: @"attachment; filename=\"%@\"", filename];
+    [response setHeader: disposition forKey: @"Content-Disposition"];
+    [response setContent: [content dataUsingEncoding: NSUTF8StringEncoding]];
+  }
 
   return response;
 }
