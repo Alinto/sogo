@@ -101,7 +101,11 @@
   NSDictionary *currentUserInfos;
   NSMutableDictionary *userData;
   id <WOActionResults> result;
+  WORequest *request;
+  NSArray *reqPathArray;
   NSEnumerator *aclsEnum;
+  BOOL defaultUserDisable;
+  SOGoSystemDefaults *sd;
 
   if (!prepared)
     {
@@ -142,8 +146,27 @@
         }
 
       // Add the 'Any authenticated' user
-      if (defaultUserID)
+      request = [[self context] request];
+      reqPathArray = [request requestHandlerPathArray];
+      sd = [SOGoSystemDefaults sharedSystemDefaults];
+      if (NSNotFound != [reqPathArray indexOfObject: kDisableSharingMail]
+        && nil != [sd disableSharingAnyAuthUser] 
+        && NSNotFound != [[sd disableSharingAnyAuthUser] indexOfObject: kDisableSharingMail]) {
+          defaultUserDisable = YES;
+      }
+      if (NSNotFound != [reqPathArray indexOfObject: kDisableSharingContacts]
+        && nil != [sd disableSharingAnyAuthUser] 
+        && NSNotFound != [[sd disableSharingAnyAuthUser] indexOfObject: kDisableSharingContacts]) {
+          defaultUserDisable = YES;
+      }
+      if (NSNotFound != [reqPathArray indexOfObject: kDisableSharingCalendar]
+        && nil != [sd disableSharingAnyAuthUser] 
+        && NSNotFound != [[sd disableSharingAnyAuthUser] indexOfObject: kDisableSharingCalendar]) {
+          defaultUserDisable = YES;
+      }      
+      if (!defaultUserDisable && defaultUserID)
       {
+
           userData = [NSDictionary dictionaryWithObjectsAndKeys:
                                      defaultUserID, @"uid",
                                    [self labelForKey: @"Any Authenticated User"], @"cn",

@@ -292,6 +292,32 @@
   while ((currentUser = [usersList nextObject]))
     {
       currentUid = [currentUser objectForKey: @"uid"];
+
+      //Check if we disable the fact to set rights for defaultsUser
+      if (!defaultUserID)
+        ASSIGN (defaultUserID, [[self clientObject] defaultUserID]);
+      if([currentUid isEqualToString: defaultUserID])
+      {
+        if (NSNotFound != [reqPathArray indexOfObject: kDisableSharingMail]
+          && nil != [sd disableSharingAnyAuthUser] 
+          && NSNotFound != [[sd disableSharingAnyAuthUser] indexOfObject: kDisableSharingMail]) {
+            response = [self responseWithStatus: 403];
+            return response;
+        }
+        if (NSNotFound != [reqPathArray indexOfObject: kDisableSharingContacts]
+          && nil != [sd disableSharingAnyAuthUser] 
+          && NSNotFound != [[sd disableSharingAnyAuthUser] indexOfObject: kDisableSharingContacts]) {
+            response = [self responseWithStatus: 403];
+            return response;
+        }
+        if (NSNotFound != [reqPathArray indexOfObject: kDisableSharingCalendar]
+          && nil != [sd disableSharingAnyAuthUser] 
+          && NSNotFound != [[sd disableSharingAnyAuthUser] indexOfObject: kDisableSharingCalendar]) {
+            response = [self responseWithStatus: 403];
+            return response;
+        }
+      }
+
       if (!([self _initRightsForUserID: currentUid]))
         {
           jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"No such user."]

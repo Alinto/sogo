@@ -819,5 +819,18 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
   return disableSharing;
 }
 
+- (NSArray *) disableSharingAnyAuthUser
+{
+  static NSArray *disableSharingAnyAuthUser = nil;
+
+  if (!disableSharingAnyAuthUser)
+    {
+      disableSharingAnyAuthUser = [self stringArrayForKey: @"SOGoDisableSharingAnyAuthUser"];
+      [disableSharingAnyAuthUser retain];
+    }
+  
+  return disableSharingAnyAuthUser;
+}
+
 
 @end

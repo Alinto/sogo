@@ -693,6 +693,9 @@ Defaults to `NO` when unset.
 |S |SOGoDisableSharing
 |List of modules where sharing should be disabled, for example `(Mail, Calendar)`. Modules can be `Mail`, `Contacts` and `Calendar`. Default value empty list (sharing enabled for everybody).
 
+|S |SOGoDisableSharingAnyAuthUser
+|List of modules where sharing with any authenticated user option should be disabled, for example `(Mail, Calendar)`. Modules can be `Mail`, `Contacts` and `Calendar`. Default value empty list (sharing enabled for everybody).
+
 |S |SOGoPasswordChangeEnabled
 |Parameter used to allow or not users to change their passwords from
 SOGo.
