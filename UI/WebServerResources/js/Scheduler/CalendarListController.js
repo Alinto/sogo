@@ -45,6 +45,7 @@
     vm.reload = reload;
     vm.cancelSearch = cancelSearch;
     vm.mode = { search: false, multiple: 0 };
+    vm.allSelected = false;
 
 
     this.$onInit = function() {
@@ -120,8 +121,9 @@
 
     function selectAll() {
       _.forEach(Component['$' + vm.componentType], function(component) {
-        component.selected = true;
+        component.selected = !vm.allSelected;
       });
+      vm.allSelected = !vm.allSelected;
       vm.mode.multiple = Component['$' + vm.componentType].length;
     }
 
