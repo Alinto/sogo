@@ -585,7 +585,7 @@
               <var:string label:value="Export"/>
             </md-button>
           </md-menu-item>
-        <var:if>
+        </var:if>
         <var:if condition="isCalendarSharingEnabled">
           <md-divider
               ng-hide="::($menuCtrl.calendar.isSubscription || $menuCtrl.calendar.isWebCalendar)">
