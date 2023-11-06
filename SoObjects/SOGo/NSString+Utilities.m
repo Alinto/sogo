@@ -979,6 +979,18 @@ static int cssEscapingCount;
       newResult = [regex stringByReplacingMatchesInString:result options:0 range:NSMakeRange(0, [result length]) withTemplate:@"<ifr***"];
       result = [NSString stringWithString: newResult];
 
+      // Remove <form
+      regex = [NSRegularExpression regularExpressionWithPattern:@"<[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*f[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*o[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*r[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*m" 
+                                  options: NSRegularExpressionCaseInsensitive error:&error];
+      newResult = [regex stringByReplacingMatchesInString:result options:0 range:NSMakeRange(0, [result length]) withTemplate:@"<for*"];
+      result = [NSString stringWithString: newResult];
+
+      // Remove </form
+      regex = [NSRegularExpression regularExpressionWithPattern:@"<[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*/[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*f[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*o[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*r[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*m" 
+                                  options: NSRegularExpressionCaseInsensitive error:&error];
+      newResult = [regex stringByReplacingMatchesInString:result options:0 range:NSMakeRange(0, [result length]) withTemplate:@"</for*"];
+      result = [NSString stringWithString: newResult];
+
       // Remove onload
       regex = [NSRegularExpression regularExpressionWithPattern:@"onload=" 
                                   options: NSRegularExpressionCaseInsensitive error:&error];
