@@ -2243,7 +2243,7 @@ static NSString    *userAgent      = nil;
     NSString *path;
 
     body = [part body];
-    if (body) {
+    if (body && [body isKindOfClass: [NGMimeFileData class]]) {
       path = [body path];
       if (path) {
         [tmpFiles addObject: path];
