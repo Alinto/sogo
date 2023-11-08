@@ -189,14 +189,26 @@
         }
       }
 
-      // Flatten email for global address book instead of array
+      // Process for global address book instead of array
       if (globalAddressBookResults) {
         for (i = 0 ; i < [globalAddressBookResults count] ; i++) {
           tmpDict = [NSMutableDictionary dictionaryWithDictionary: [globalAddressBookResults objectAtIndex: i]];
           if ([tmpDict objectForKey: @"c_mail"] && [[tmpDict objectForKey: @"c_mail"] isKindOfClass:[NSArray class]] && [[tmpDict objectForKey: @"c_mail"] count] > 0) {
-            [tmpDict setObject:[[tmpDict objectForKey: @"c_mail"] componentsJoinedByString: @","] forKey:@"c_mail"];
-            [globalAddressBookResults replaceObjectAtIndex:i withObject: tmpDict];
+            // Flatten emails
+            [tmpDict setObject:[[tmpDict objectForKey: @"c_mail"] componentsJoinedByString: @","] forKey:@"c_mail"];            
           }
+
+          if ((![tmpDict objectForKey:@"c_cn"] || [tmpDict objectForKey:@"c_cn"] == [NSNull null]) && [tmpDict objectForKey:@"c_name"]) {
+            // Replace c_cn if not filled
+            [tmpDict setObject:[tmpDict objectForKey:@"c_name"] forKey:@"c_cn"];
+          }
+
+          if ((![tmpDict objectForKey:@"c_uid"] || [tmpDict objectForKey:@"c_uid"] == [NSNull null]) && [tmpDict objectForKey:@"c_id"]) {
+            // Replace c_uid if not filled
+            [tmpDict setObject:[tmpDict objectForKey:@"c_uid"] forKey:@"c_id"];
+          }
+
+          [globalAddressBookResults replaceObjectAtIndex:i withObject: tmpDict];
         }
       }
 
@@ -211,6 +223,7 @@
       // Add sourceid for current AB
       for (i = 0 ; i < [results count] ; i++) {
         tmpDict = [NSMutableDictionary dictionaryWithDictionary: [results objectAtIndex: i]];
+        // Add sourceid
         [tmpDict setObject:[folder nameInContainer] forKey:@"sourceid"];
         [results replaceObjectAtIndex:i withObject: tmpDict];
       }

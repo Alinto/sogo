@@ -35,6 +35,8 @@
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 
+#import <SoObjects/Contacts/SOGoContactSourceFolder.h>
+
 #import <Contacts/SOGoContactGCSEntry.h>
 #import <Contacts/SOGoContactGCSFolder.h>
 
@@ -173,12 +175,14 @@
 {
   NSAutoreleasePool *pool;
   NSDictionary *values;
-  NSArray *initialReferences, *refs, *emails;
+  NSArray *initialReferences, *refs, *emails, *folders;
   NSDictionary *currentReference;
   NSString *uid, *workMail, *fn, *newUID;
   int i, count;
   NGVCardReference *cardReference;
   SOGoContactGCSFolder *folder;
+  NSMutableArray *publicSourceIDs;
+  id f;
 
   folder = [co container];
 
@@ -199,6 +203,15 @@
   // Add new cards
   count = [references count];
   pool = [[NSAutoreleasePool alloc] init];
+
+  // List container name of global AB
+  folders = [[[co lookupUserFolder] privateContacts: @"Contacts" inContext: nil] subFolders];
+  publicSourceIDs = [[NSMutableArray alloc] init];
+  for (f in folders) {
+    if ([f isKindOfClass:[SOGoContactSourceFolder class]]) {
+      [publicSourceIDs addObject: [f nameInContainer]];
+    }
+  }
 
 
   for (i = 0; i < count; i++)
@@ -226,7 +239,7 @@
 
 		  [list addCardReference: cardReference];
 		}
-              else if ([currentReference objectForKey:@"sourceid"] && [[currentReference objectForKey:@"sourceid"] isEqualToString: @"public"]) {
+              else if ([currentReference objectForKey:@"sourceid"] && [publicSourceIDs containsObject:[currentReference objectForKey:@"sourceid"]]) {
               // Create reference for shared AB (public)
               uid = [currentReference objectForKey: @"id"];
               emails = [[currentReference objectForKey: @"c_mail"] componentsSeparatedByString: @","];
@@ -278,6 +291,8 @@
           pool = [[NSAutoreleasePool alloc] init];
         }
     }
+
+    [publicSourceIDs release];
 }
 
 - (BOOL) cardReferences: (NSArray *) references
