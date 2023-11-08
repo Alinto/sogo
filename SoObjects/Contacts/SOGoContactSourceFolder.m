@@ -242,6 +242,10 @@
   //source id
   [newRecord setObject: [source sourceID] forKey: @"sourceID"];
 
+  //source display name
+  [newRecord setObject: [self displayName]
+                          forKey: @"containerName"];
+
   // c_name => id
   [newRecord setObject: [oldRecord objectForKey: @"c_name"]
                 forKey: @"c_name"];

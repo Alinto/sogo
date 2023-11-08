@@ -200,12 +200,16 @@
   count = [references count];
   pool = [[NSAutoreleasePool alloc] init];
 
+
   for (i = 0; i < count; i++)
     {
       if ([[references objectAtIndex: i] isKindOfClass: [NSDictionary class]])
         {
           currentReference = [references objectAtIndex: i];
+
           uid = [currentReference objectForKey: @"id"];
+
+          
           if (![self cardReferences: [list cardReferences]
                             contain: uid])
             {
@@ -222,8 +226,18 @@
 
 		  [list addCardReference: cardReference];
 		}
-              else
-                {
+              else if ([currentReference objectForKey:@"sourceid"] && [[currentReference objectForKey:@"sourceid"] isEqualToString: @"public"]) {
+              // Create reference for shared AB (public)
+              uid = [currentReference objectForKey: @"id"];
+              emails = [[currentReference objectForKey: @"c_mail"] componentsSeparatedByString: @","];
+              cardReference = [NGVCardReference elementWithTag: @"card"];
+              [cardReference setFn: [currentReference objectForKey: @"c_cn"]];
+                          if ([emails count])
+                            [cardReference setEmail: [emails objectAtIndex: 0]];
+              [cardReference setReference: uid];
+
+              [list addCardReference: cardReference];
+            } else {
                   // Invalid UID or no UID
                   NGVCard *newCard;
                   CardElement *newWorkMail;

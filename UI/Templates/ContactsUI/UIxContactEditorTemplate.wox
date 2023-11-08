@@ -468,17 +468,37 @@
               <label class="pseudo-input-label">
                 <var:string label:value="Members"/>
               </label>
-              <md-contact-chips
-                  class="sg-chips-autocomplete"
-                  ng-model="editor.card.refs"
-                  ng-change="contactForm.$setDirty()"
-                  md-contacts="editor.userFilter($query, editor.card.refs)"
-                  md-contact-name="$$fullname"
-                  md-contact-image="$$image"
-                  md-contact-email="$$email"
-                  md-require-match="true"
-                  filter-selected="false"
-                  label:placeholder="Add Member"><!-- members --></md-contact-chips>
+              <md-chips ng-model="editor.card.refs"
+                        md-separator-keys="editor.recipientSeparatorKeys"
+                        md-add-on-blur="true"
+                        md-autocomplete-snap="width">
+                <md-autocomplete
+                    class="md-flex"
+                    ng-model="editor.card.refs"
+                    sg-enter="contactForm.$setDirty()"
+                    md-menu-class="md-2-line"
+                    md-search-text="editor.searchText"
+                    md-items="card in editor.userFilter(editor.searchText, editor.card.refs)"
+                    md-item-text="card.empty"
+                    md-autoselect="true"
+                    var:md-min-length="2"
+                    md-delay="150"
+                    md-no-cache="true">
+                  <md-item-template>
+                    <div class="sg-tile-content">
+                      <div class="sg-tile-content">
+                      <div class="sg-md-subhead md-block" md-highlight-text="editor.searchText" md-highlight-flags="gi">{{ card.$shortFormat(editor.searchText) }}</div>
+                      <div class="sg-md-body" md-colors="::{color: 'default-background-500'}">{{ card.containername }}</div>
+                    </div>
+                    </div>
+                  </md-item-template>
+                </md-autocomplete>
+                <md-chip-template>
+                    <div class="sg-tile-content">
+                      {{$chip.c_cn}}
+                    </div>
+                </md-chip-template>
+              </md-chips>
             </div>
           </div>
         </form>
