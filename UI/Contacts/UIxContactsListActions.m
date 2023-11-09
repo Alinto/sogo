@@ -175,7 +175,7 @@
       globalAddressBookResults = nil;
       for (folder in folders) {
         // Global AB
-        if ([folder isKindOfClass: [SOGoContactSourceFolder class]]) {
+        if ([folder isKindOfClass: [SOGoContactSourceFolder class]] && (![folder isEqual: [self clientObject]])) {
           tmpGlobalAddressBookResults = [folder lookupContactsWithFilter: valueText
                                       onCriteria: nil
                                           sortBy: [self sortKey]
@@ -193,8 +193,8 @@
       if (globalAddressBookResults) {
         for (i = 0 ; i < [globalAddressBookResults count] ; i++) {
           tmpDict = [NSMutableDictionary dictionaryWithDictionary: [globalAddressBookResults objectAtIndex: i]];
+          // Flatten emails
           if ([tmpDict objectForKey: @"c_mail"] && [[tmpDict objectForKey: @"c_mail"] isKindOfClass:[NSArray class]] && [[tmpDict objectForKey: @"c_mail"] count] > 0) {
-            // Flatten emails
             [tmpDict setObject:[[tmpDict objectForKey: @"c_mail"] componentsJoinedByString: @","] forKey:@"c_mail"];            
           }
 
