@@ -609,6 +609,18 @@ static int cssEscapingCount;
   return newString;
 }
 
+
+- (NSString *) mailDomain
+{
+  NSArray *mailSeparated;
+
+  mailSeparated = [self componentsSeparatedByString: @"@"];
+  if([mailSeparated count] == 2)
+    return [mailSeparated objectAtIndex: 1];
+  [self logWithFormat: @"Error while extracting domain from : %@", self];
+  return nil;
+}
+
 - (NSString *) pureEMailAddress
 {
   NSString *pureAddress;

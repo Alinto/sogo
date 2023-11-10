@@ -394,6 +394,13 @@
                  $window.forwardConstraintsDomains.indexOf(domain) < 0) {
           throw new Error(l("You are not allowed to forward your messages to this domain:") + " " + domain);
         }
+        else if ($window.forwardConstraints == 3 &&
+                  domains.indexOf(domain) < 0 &&
+                    ($window.forwardConstraintsDomains.length > 0 &&
+                    $window.forwardConstraintsDomains.indexOf(domain) < 0)) {
+          // If constraints mode is 3 and the domain is not an internal nor in forwardConstraintsDomains list, throw an error
+          throw new Error(l("You are not allowed to forward your messages to this domain:")+ " " + domain);
+        }
       }
 
       return true;

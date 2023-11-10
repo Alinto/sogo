@@ -2280,12 +2280,14 @@ Defaults to `NO` when unset.
 |D |SOGoForwardConstraints
 |Parameter used to set constraints on possible addresses used when
 automatically forwarding mails. When set to `0` (default), no constraint
-is enforced. When set to `1`, only internal domains can be used. When
-set to `2`, only external domains can be used.
+is enforced. When set to `1`, only internal domains can be used.
+When set to `2`, only external domains defined in `SOGoForwardConstraintsDomains`
+can be used. When set to `3`, internal domains and other domains defined
+in `SOGoForwardConstraintsDomains` can be used.
 
 |D |SOGoForwardConstraintsDomains
-|Parameter used to set which domains are allowed as external domains
-when SOGoForwardConstraints is set to `2`. For example, setting:
+|Parameter used to set which external domains are allowed
+when SOGoForwardConstraints is set to `2` or `3`. For example, setting:
 
 SOGoForwardConstraintsDomains = ("gmail.com", "googlemail.com");
 
