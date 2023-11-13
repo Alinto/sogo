@@ -739,7 +739,8 @@ static NSArray *childRecordFields = nil;
         qualifier = aclQualifier;
 
       // For Thunderbird, disable contact list
-      if ([[context request] isThunderbird]) {
+      // This will be removed when VCARD will be implemented
+      if ([[context request] isThunderbird] && [self isKindOfClass: NSClassFromString(@"SOGoContactGCSFolder")]) {
         vlistExclusionQualifier = [EOQualifier qualifierWithQualifierFormat: @"c_component != 'vlist'"];
         qualifier = [[[EOAndQualifier alloc] initWithQualifiers:
                                                     vlistExclusionQualifier,
@@ -1191,7 +1192,8 @@ static NSArray *childRecordFields = nil;
   folder = [self ocsFolder];
 
   // For Thunderbird, disable contact list
-  if ([[context request] isThunderbird]) {
+  // This will be removed when VCARD will be implemented
+  if ([[context request] isThunderbird] && [self isKindOfClass: NSClassFromString(@"SOGoContactGCSFolder")]) {
     vlistExclusionQualifier = [EOQualifier qualifierWithQualifierFormat: @"c_component != 'vlist'"];
     qualifier = [[[EOAndQualifier alloc] initWithQualifiers:
                                                 vlistExclusionQualifier,
