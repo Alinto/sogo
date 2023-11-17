@@ -140,7 +140,12 @@
 
   NSLog(@"Remove all sessions older than %d min", sessionExpireMinutes);
 
-  if (sessionExpireMinutes >= 0)
+  if (sessionExpireMinutes == 0 && ![[arguments objectAtIndex: 0] isEqualToString:@"0"])
+  {
+    //If the input is not a number intValue return 0 so we check that's really the case
+    [self usage];
+  }
+  else if (sessionExpireMinutes >= 0)
   {
     rc = [self expireUserSessionOlderThan: sessionExpireMinutes];
   }
