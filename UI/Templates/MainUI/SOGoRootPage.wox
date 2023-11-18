@@ -49,7 +49,7 @@
               </md-input-container>
               <md-input-container class="md-block">
                 <label><var:string label:value="Password"/></label>
-                <md-icon>email</md-icon>
+                <md-icon>key</md-icon>
                 <input id="passwordField" type="password" ng-model="app.creds.password" ng-required="true"/>
                 <md-icon id="password-visibility-icon" ng-click="app.changePasswordVisibility()">visibility</md-icon>
               </md-input-container>
