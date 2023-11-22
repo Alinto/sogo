@@ -581,9 +581,10 @@
         folder.$selectedMessages = [];
         for (; i < length; i++) {
           folder.$messages[i].selected = !vm.allSelected;
-          folder.$selectedMessages.push(folder.$messages[i]);
+          if(folder.$messages[i].selected)
+            folder.$selectedMessages.push(folder.$messages[i]);
+            count++;
         }
-        count += length;
       });
       vm.allSelected = !vm.allSelected;
       vm.mode.multiple = count;
