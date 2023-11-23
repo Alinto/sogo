@@ -273,7 +273,7 @@
    * @desc Format the first address of a specific type with a short description.
    * @returns a string of the name or the email of the envelope address type
    */
-  Message.prototype.$shortAddress = function (type) {
+  Message.prototype.$shortAddress = function (type, fullEmail) {
     var address = '';
     if (this[type]) {
       if (angular.isString(this[type])) {
@@ -289,7 +289,16 @@
       }
       else if (this[type].length > 0) {
         // We have an array of objects; pick the first one
-        address = this[type][0].name || this[type][0].email || '';
+        if(!fullEmail)
+          address = this[type][0].name || this[type][0].email || '';
+        else if(this[type][0].name && this[type][0].email)
+          address = this[type][0].name + ' <' + this[type][0].email +'>';
+        else if(this[type][0].name)
+          address = this[type][0].name;
+        else if(this[type][0].email)
+          address = this[type][0].email;
+        else
+          address =  '';
       }
     }
 

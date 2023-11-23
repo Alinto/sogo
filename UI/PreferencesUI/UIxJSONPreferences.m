@@ -356,6 +356,9 @@ static SoProduct *preferencesProduct = nil;
     [[defaults source] setObject: [NSNumber numberWithBool: [defaults mailAddOutgoingAddresses]] forKey: @"SOGoMailAddOutgoingAddresses"];
 
 
+  if (![[defaults source] objectForKey: @"SOGoMailDisplayFullEmail"])
+    [[defaults source] setObject: [NSNumber numberWithBool: [defaults mailDisplayFullEmail]]  forKey: @"SOGoMailDisplayFullEmail"];
+
   if (![[defaults source] objectForKey: @"SOGoMailComposeMessageType"])
     [[defaults source] setObject: [defaults mailComposeMessageType] forKey: @"SOGoMailComposeMessageType"];
 

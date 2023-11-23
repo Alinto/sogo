@@ -124,6 +124,7 @@
     SOGoMailComposeMessageType = "html";
     SOGoMailComposeFontSize = "0";
     SOGoMailHideInlineAttachments = NO;
+    SOGoMailDisplayFullEmail = NO;
     SOGoMailDisplayRemoteInlineImages = "never";
     SOGoMailCertificateEnabled = YES;
 

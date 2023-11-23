@@ -58,8 +58,8 @@
   /**
    * @ngInject
    */
-  sgMessageListItemMainController.$inject = ['$scope', '$element', '$parse', '$state', '$mdUtil', '$mdToast', 'Mailbox', 'Message', 'encodeUriFilter'];
-  function sgMessageListItemMainController($scope, $element, $parse, $state, $mdUtil, $mdToast, Mailbox, Message, encodeUriFilter) {
+  sgMessageListItemMainController.$inject = ['$scope', '$element', '$parse', '$state', '$mdUtil', '$mdToast', 'Mailbox', 'Message', 'encodeUriFilter', 'Preferences'];
+  function sgMessageListItemMainController($scope, $element, $parse, $state, $mdUtil, $mdToast, Mailbox, Message, encodeUriFilter, Preferences) {
     var $ctrl = this;
 
     this.$postLink = function () {
@@ -83,7 +83,6 @@
       threadButton = angular.element(threadButton);
       this.threadIconElement = threadButton.find('md-icon')[0];
       this.threadCountElement = threadButton.find('span')[0];
-
       this.priorityIconElement = contentDivElement.find('md-icon')[0];
 
       if (Mailbox.$virtualMode) {
@@ -144,9 +143,9 @@
 
           // Sender or recipient when in Sent or Draft mailbox
           if ($ctrl.MailboxService.selectedFolder.isSentFolder || $ctrl.MailboxService.selectedFolder.isDraftsFolder)
-            $ctrl.senderElement.innerHTML = $ctrl.message.$shortAddress('to').encodeEntities();
+            $ctrl.senderElement.innerHTML = $ctrl.message.$shortAddress('to', Preferences.defaults.SOGoMailDisplayFullEmail).encodeEntities();
           else
-            $ctrl.senderElement.innerHTML = $ctrl.message.$shortAddress('from').encodeEntities();
+            $ctrl.senderElement.innerHTML = $ctrl.message.$shortAddress('from', Preferences.defaults.SOGoMailDisplayFullEmail).encodeEntities();
 
           // Priority icon
           if ($ctrl.message.priority && $ctrl.message.priority.level < 3) {
