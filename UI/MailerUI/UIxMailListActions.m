@@ -314,24 +314,54 @@
   return [[[self message] valueForKey:@"uid"] stringValue];
 }
 
+- (BOOL) parseParts: (NSArray *) parts hasAttachment:(BOOL) hasAttachment {
+  NSEnumerator *part;
+  NSDictionary *currentPart;
+  SOGoUserDefaults *ud;
+  BOOL isInline;
+
+  ud = [[[self context] activeUser] userDefaults];
+  
+  if ([parts count] > 1)
+    {
+      part = [parts objectEnumerator];
+      while (!hasAttachment
+       && (currentPart = [part nextObject])) {
+          if ([currentPart objectForKey: @"type"] && ![[[currentPart objectForKey: @"type"] uppercaseString] hasPrefix: @"MULTIPART"]) {
+            isInline = currentPart && [currentPart objectForKey:@"disposition"] 
+                          && [[currentPart objectForKey:@"disposition"] objectForKey:@"type"] 
+                          && [[[[currentPart objectForKey:@"disposition"] objectForKey:@"type"] uppercaseString] isEqualToString:@"INLINE"];
+            if (![ud hideInlineAttachments] || ([ud hideInlineAttachments] && !isInline)) {
+              hasAttachment = (([currentPart objectForKey:@"disposition"] 
+                                && [[[currentPart objectForKey:@"disposition"] allKeys] length] > 0)
+                                || ([currentPart objectForKey:@"parameterList"]
+                                  && [[currentPart objectForKey:@"parameterList"] objectForKey:@"name"]
+                                ));
+            }
+          } else if ([currentPart objectForKey:@"parts"]) {
+            hasAttachment = [self parseParts: [currentPart objectForKey:@"parts"] hasAttachment: hasAttachment];
+          }
+       }
+    }
+
+  return hasAttachment;
+}
+
 - (BOOL) hasMessageAttachment 
 {
-  NSArray *parts;
-  NSEnumerator *dispositions;
-  NSDictionary *currentDisp;
   BOOL hasAttachment;
 
   hasAttachment = NO;
 
-  parts = [[message objectForKey: @"bodystructure"] objectForKey: @"parts"];
-  if ([parts count] > 1)
-    {
-      dispositions = [[parts objectsForKey: @"disposition"
-			     notFoundMarker: nil] objectEnumerator];
-      while (!hasAttachment
-	     && (currentDisp = [dispositions nextObject]))
-	hasAttachment = ([[currentDisp objectForKey: @"type"] length]);
-    }
+  NS_DURING
+  {
+  hasAttachment = [self parseParts: [[message objectForKey: @"bodystructure"] objectForKey: @"parts"] hasAttachment:hasAttachment];
+  }  
+  NS_HANDLER
+  {
+    [self logWithFormat: @"Error while parsing attachements for rendering bracket"];
+  }
+  NS_ENDHANDLER;
 
   return hasAttachment;
 }

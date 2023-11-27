@@ -123,6 +123,7 @@
     SOGoTemplatesFolderName = "Templates";
     SOGoMailComposeMessageType = "html";
     SOGoMailComposeFontSize = "0";
+    SOGoMailHideInlineAttachments = NO;
     SOGoMailDisplayRemoteInlineImages = "never";
     SOGoMailCertificateEnabled = YES;
 

@@ -72,8 +72,14 @@
 
 - (void) setEndDate: (NSCalendarDate *) newEndDate
 {
+  CardElement *c;
+
   [(iCalDateTime *) [self uniqueChildWithTag: @"dtend"]
 		    setDateTime: newEndDate];
+
+  c = [self uniqueChildWithTag: @"duration"];
+  if (c)
+    [self removeChild: c];
 }
 
 - (NSCalendarDate *) endDate

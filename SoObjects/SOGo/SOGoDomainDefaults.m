@@ -217,7 +217,7 @@
 
   v =  [self integerForKey: @"SOGoForwardConstraints"];
   
-  return (v > 2 ? 0 : v);
+  return (v > 3 ? 0 : v);
 }
 
 - (NSArray *) forwardConstraintsDomains

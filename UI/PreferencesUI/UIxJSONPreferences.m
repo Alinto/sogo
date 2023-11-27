@@ -368,6 +368,9 @@ static SoProduct *preferencesProduct = nil;
   if ([[defaults source] objectForKey: @"SOGoMailAutoMarkAsReadDelay"] == nil)
     [[defaults source] setObject: [NSNumber numberWithInt: [defaults mailAutoMarkAsReadDelay]] forKey: @"SOGoMailAutoMarkAsReadDelay"];
 
+  if ([[defaults source] objectForKey: @"SOGoMailHideInlineAttachments"] == nil)
+    [[defaults source] setObject: [NSNumber numberWithBool: [defaults hideInlineAttachments]] forKey: @"SOGoMailHideInlineAttachments"];
+  
   if (![[defaults source] objectForKey: @"SOGoMailAutoSave"])
     [[defaults source] setObject: [defaults mailAutoSave] forKey: @"SOGoMailAutoSave"];
 
