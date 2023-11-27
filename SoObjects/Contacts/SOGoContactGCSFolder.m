@@ -271,6 +271,9 @@ static NSArray *folderListingFields = nil;
   if ([data length])
     [contactRecord setObject: data forKey: @"id"];
 
+  // Container name
+  [contactRecord setObject: [self displayName] forKey: @"containerName"];
+
   // c_cn
   data = [contactRecord objectForKey: @"c_cn"];
   if (![data length])

@@ -26,6 +26,8 @@
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 
+#import <SoObjects/Contacts/SOGoContactSourceFolder.h>
+
 #import "UIxListView.h"
 
 @implementation UIxListView
@@ -36,6 +38,7 @@
   NGVCardReference *card, *cardCopy;
   int i, count;
   id test;
+  NSArray *folders;
 
   invalid = [NSMutableArray array];
 
@@ -46,7 +49,22 @@
       test = [[co container] lookupName: [card reference] 
                               inContext: context
                                 acquire: NO];
-      if ([test isKindOfClass: [NSException class]])
+      if ([test isKindOfClass: [NSException class]]) {
+        folders = [[[co lookupUserFolder] privateContacts: @"Contacts" inContext: nil] subFolders];
+        id <SOGoContactFolder> folder;
+        for (folder in folders) {
+        // Global AB
+          if ([folder isKindOfClass: [SOGoContactSourceFolder class]]) {
+            test = [folder lookupName: [card reference] 
+                                                  inContext: context
+                                                    acquire: NO];
+            if (test && ![test isKindOfClass: [NSException class]]) break;
+          }
+        }
+      }
+
+
+      if (test && [test isKindOfClass: [NSException class]])
         {
           //NSLog (@"%@ not found", [card reference]);
           cardCopy = [card copy];

@@ -35,6 +35,8 @@
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 
+#import <SoObjects/Contacts/SOGoContactSourceFolder.h>
+
 #import <Contacts/SOGoContactGCSEntry.h>
 #import <Contacts/SOGoContactGCSFolder.h>
 
@@ -173,12 +175,14 @@
 {
   NSAutoreleasePool *pool;
   NSDictionary *values;
-  NSArray *initialReferences, *refs, *emails;
+  NSArray *initialReferences, *refs, *emails, *folders;
   NSDictionary *currentReference;
   NSString *uid, *workMail, *fn, *newUID;
   int i, count;
   NGVCardReference *cardReference;
   SOGoContactGCSFolder *folder;
+  NSMutableArray *publicSourceIDs;
+  id f;
 
   folder = [co container];
 
@@ -200,12 +204,25 @@
   count = [references count];
   pool = [[NSAutoreleasePool alloc] init];
 
+  // List container name of global AB
+  folders = [[[co lookupUserFolder] privateContacts: @"Contacts" inContext: nil] subFolders];
+  publicSourceIDs = [[NSMutableArray alloc] init];
+  for (f in folders) {
+    if ([f isKindOfClass:[SOGoContactSourceFolder class]]) {
+      [publicSourceIDs addObject: [f nameInContainer]];
+    }
+  }
+
+
   for (i = 0; i < count; i++)
     {
       if ([[references objectAtIndex: i] isKindOfClass: [NSDictionary class]])
         {
           currentReference = [references objectAtIndex: i];
+
           uid = [currentReference objectForKey: @"id"];
+
+          
           if (![self cardReferences: [list cardReferences]
                             contain: uid])
             {
@@ -222,8 +239,18 @@
 
 		  [list addCardReference: cardReference];
 		}
-              else
-                {
+              else if ([currentReference objectForKey:@"sourceid"] && [publicSourceIDs containsObject:[currentReference objectForKey:@"sourceid"]]) {
+              // Create reference for shared AB (public)
+              uid = [currentReference objectForKey: @"id"];
+              emails = [[currentReference objectForKey: @"c_mail"] componentsSeparatedByString: @","];
+              cardReference = [NGVCardReference elementWithTag: @"card"];
+              [cardReference setFn: [currentReference objectForKey: @"c_cn"]];
+                          if ([emails count])
+                            [cardReference setEmail: [emails objectAtIndex: 0]];
+              [cardReference setReference: uid];
+
+              [list addCardReference: cardReference];
+            } else {
                   // Invalid UID or no UID
                   NGVCard *newCard;
                   CardElement *newWorkMail;
@@ -264,6 +291,8 @@
           pool = [[NSAutoreleasePool alloc] init];
         }
     }
+
+    [publicSourceIDs release];
 }
 
 - (BOOL) cardReferences: (NSArray *) references
