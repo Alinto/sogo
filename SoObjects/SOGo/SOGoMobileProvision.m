@@ -35,6 +35,7 @@
   NSDictionary *provisioning;
   NSError *error;
   NSString *payloadType, *prefix, *type;
+  NSNumber *port;
 
   activeUser = [context activeUser];
   serverURL = [context serverURL];
@@ -57,11 +58,20 @@
     break;
   }
 
+  port = [serverURL port];
+  if (!port) {
+    if ([[serverURL scheme] isEqualToString:@"https"]) {
+      port = [NSNumber numberWithInt: 443];
+    } else {
+      port = [NSNumber numberWithInt: 80];
+    }
+  }
+
   provisioning = [NSDictionary dictionaryWithObjectsAndKeys:
                                               [NSArray arrayWithObject: [NSDictionary dictionaryWithObjectsAndKeys:
                                               [NSString stringWithFormat:@"%@ %@", type, name], [NSString stringWithFormat:@"%@%@", prefix, @"AccountDescription"],
                                               [serverURL host], [NSString stringWithFormat:@"%@%@", prefix, @"HostName"],
-                                              [serverURL port], [NSString stringWithFormat:@"%@%@", prefix, @"Port"],
+                                              port, [NSString stringWithFormat:@"%@%@", prefix, @"Port"],
                                               path, [NSString stringWithFormat:@"%@%@", prefix, @"PrincipalURL"],
                                               [NSNumber numberWithBool:[[serverURL scheme] isEqualToString:@"https"]], [NSString stringWithFormat:@"%@%@", prefix, @"UseSSL"],
                                               [activeUser login], [NSString stringWithFormat:@"%@%@", prefix, @"Username"],
