@@ -33,7 +33,7 @@ static const NSString *POLICY_MIN_DIGIT = @"POLICY_MIN_DIGIT";
 static const NSString *POLICY_MIN_SPECIAL_SYMBOLS = @"POLICY_MIN_SPECIAL_SYMBOLS";
 static const NSString *POLICY_MIN_LENGTH = @"POLICY_MIN_LENGTH";
 
-static const NSString *SPECIAL_SYMBOL_ALLOWED = @"%$&*(){}!?\\@#.,:;+=";
+static const NSString *SPECIAL_SYMBOL_ALLOWED = @"%$&*(){}!?\\@#.,:;+=\\[\\]\\|<>\\/-_";
 
 @implementation SOGoPasswordPolicy
 
