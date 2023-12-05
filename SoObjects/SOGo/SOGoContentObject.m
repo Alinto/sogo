@@ -100,8 +100,19 @@
   if (data) {
     if ([data isKindOfClass: [NSString class]])
       ASSIGN (content, data);
-    else
-      ASSIGN (content, [NSString stringWithUTF8String:[data bytes]]);
+    else {
+      char lastByte;
+      [data getBytes:&lastByte range:NSMakeRange([data length]-1, 1)];
+      if (lastByte == 0x0) {
+          // string is null terminated
+          ASSIGN (content, [NSString stringWithUTF8String: [data bytes]]);
+      } else {
+          // string is not null terminated
+          NSString* myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+          ASSIGN (content, myString);
+          [myString release];
+      }
+    }
   }
   data = [objectRecord objectForKey: @"c_version"];
   if (data)
