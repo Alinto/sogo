@@ -38,7 +38,7 @@
 "Previous Month" = "Poprzedni miesiąc";
 "Next Month" = "Następny miesiąc";
 /* Week number prefix */
-"W" = "W";
+"W" = "T";
 
 /* Year */
 "this year" = "ten rok";
@@ -65,6 +65,7 @@
 "A total of %{0} events were imported in the calendar." = "Do kalendarza zaimportowano razem %{0} wydarzeń(nia).";
 "Compose E-Mail to All Attendees" = "Utwórz wiadomość e-mail do wszystkich uczestników";
 "Compose E-Mail to Undecided Attendees" = "Utwórz wiadomość e-mail do niezdecydowanych uczestników";
+"Download iOS - MacOS configuration profile" = "Pobierz profil konfiguracyjny iOS - MacOS";
 
 /* Relative dates */
 "Yesterday" = "Wczoraj";
@@ -315,12 +316,12 @@
 "Month(s)" = "Miesiące(cy)";
 
 /* [Event recurrence editor] Ex: _The_ first Sunday */
-"The" = "The";
+"The" = " ";
 "Recur on day(s)" = "Powtarzaj w dni";
 "Year(s)" = "Lat(a)";
 
 /* [Event recurrence editor] Ex: Every first Sunday _of_ April */
-"cycle_of" = "of";
+"cycle_of" = " ";
 "No end date" = "Bez daty końcowej";
 "Create" = "Utwórz";
 "appointment(s)" = "spotkanie(a)";
@@ -401,8 +402,8 @@
 "To" = "Do";
 
 /* dates */
-"DateFrom" = "From";
-"DateTo" = "To";
+"DateFrom" = "Od";
+"DateTo" = "Do";
 
 /* validation errors */
 validate_notitle           = "Nie podano tytułu, kontynuować?";
@@ -565,7 +566,7 @@ vtodo_class2 = "(Zadanie poufne)";
 "CalDAV URL" = "CalDAV URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
-"Copy to clipboard" = "Copy to clipboard";
+"Copy to clipboard" = "Skopiuj do schowka";
 
 /* Error messages */
 "dayFieldInvalid" = "W polu Dni wprowadź liczbę równą lub większą od 1.";
@@ -630,7 +631,7 @@ vtodo_class2 = "(Zadanie poufne)";
 "Rename" = "Zmień nazwę";
 "Import Calendar" = "Importuj kalendarz";
 "Select an ICS file." = "Wybierz plik ICS.";
-"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "Nie zapisałeś zmian. Chcesz zamknąć okno i utracić te dane?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Subskrypcja kalendarza zakończona powodzeniem";

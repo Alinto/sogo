@@ -193,6 +193,7 @@
 "Work" = "Praca";
 "Mobile" = "Telefon kom.";
 "Pager" = "Pager";
+"Download iOS - MacOS configuration profile" = "Pobierz profil konfiguracyjny iOS - MacOS";
 
 /* categories */
 "contacts_category_labels" = "Kolega, Konkurencja, Klient, Przyjaciel, Rodzina, Biznes, Dostawca, Prasa, VIP";
