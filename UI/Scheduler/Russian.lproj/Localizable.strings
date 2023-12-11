@@ -65,6 +65,7 @@
 "A total of %{0} events were imported in the calendar." = " Всего %{0} событий было импортировано в календарь.";
 "Compose E-Mail to All Attendees" = "Составить сообщение ко всем приглашенным";
 "Compose E-Mail to Undecided Attendees" = "Составить сообщение ко всем не решившим приглашенным";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* Relative dates */
 "Yesterday" = "Вчера";
@@ -77,7 +78,7 @@
 
 /* Misc */
 "OpenGroupware.org" = "OpenGroupware.org";
-"Forbidden" = "Запрешено";
+"Forbidden" = "Запрещено";
 
 /* acls */
 "Access rights to" = "Права доступа к";
@@ -184,7 +185,7 @@
 "General" = "Общее";
 "Reply" = "Ответ";
 "Created by" = "Создано";
-"You are invited to participate" = "Вы приглашаетесь участвовать";
+"You are invited to participate" = "Вас приглашают принять участие";
 "Target" = "Адрес";
 "attributes" = "атрибуты";
 "attendees" = "участники";
@@ -594,7 +595,7 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "Copy To" = "Копировать в";
 "Subscriptions" = "Подписки";
 "Subscribe to a shared calendar" = "Подписаться на общий календарь";
-"Subscribe to a web calendar..." = "Подписаться на калентарь в сети...";
+"Subscribe to a web calendar..." = "Подписаться на календарь в сети...";
 "URL of the Calendar" = "URL календаря";
 "Web Calendar" = "Web Calendar";
 "Web Calendars" = "Календарь в интернет";

@@ -319,7 +319,6 @@
 "Thread As Read" = "ветку как прочитанную";
 "As Read By Date..." = "как прочитанные по дате...";
 "All Read" = "все как прочитанные";
-"Flag" = "Флаг";
 "As Junk" = "Спам";
 "As Not Junk" = "Не спам";
 "Run Junk Mail Controls" = "Запустить фильтр спама";
@@ -371,7 +370,7 @@
 "The folder could not be deleted."
 = "Не удалось удалить папку. ";
 "The trash could not be emptied."
-= "Не могу очистить корзину.";
+= "Не удалось очистить корзину.";
 "The folder functionality could not be changed."
 = "Назначение папки не может быть изменено.";
 "You need to choose a non-virtual folder!" = "Вам нужно выбрать не виртуальную папку!";
@@ -450,7 +449,7 @@
 "Mark as Unread" = "Пометить как непрочитанное";
 "Mark as Read" = "Пометить как прочитанное";
 "Closing Window ..." = "Закрывается окно...";
-"Tried to send too many mails. Please wait." = "Пытался послать слишком много сообщений.  Пожалуйста ждите.";
+"Tried to send too many mails. Please wait." = "Пытался отправить слишком много сообщений.  Пожалуйста, подождите.";
 "View Mail" = "Просмотр почты";
 "This message contains external images." = "Это сообщение содержит внешние изображения.";
 "Expanded" = "Раскрытое";
