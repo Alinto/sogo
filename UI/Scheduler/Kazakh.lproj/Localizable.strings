@@ -65,6 +65,7 @@
 "A total of %{0} events were imported in the calendar." = " Күнтізбеге барлығы %{0} оқиға импортталды.";
 "Compose E-Mail to All Attendees" = "Шақырылғандардың барлығына хат жазу";
 "Compose E-Mail to Undecided Attendees" = "Шешім қабылдамаған шақырылушылардың барлығына хат жазу";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* Relative dates */
 "Yesterday" = "Кеше";
