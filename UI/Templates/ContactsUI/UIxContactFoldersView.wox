@@ -221,7 +221,8 @@
         <!-- Remote/domain addressbooks -->
         <section>
           <md-subheader class="sg-md-subheader--with-secondary-icon"
-                        md-colors="::{background: 'default-background-300'}">
+                        md-colors="::{background: 'default-background-300'}"
+                        ng-if="app.service.$remotes.length > 0">
             <var:string label:value="Global Addressbooks"/>
           </md-subheader>
           <md-list>

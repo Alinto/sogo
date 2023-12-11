@@ -75,6 +75,11 @@
 - (NSArray *) fetchContactsMatching: (NSString *) filter
                        withCriteria: (NSArray *) criteria
                            inDomain: (NSString *) domain;
+- (NSArray *)fetchContactsMatching:(NSString *)filter
+                      withCriteria:(NSArray *)criteria
+                          inDomain:(NSString *)domain
+                             limit:(int)limit;
+
 - (NSArray *) lookupContactsWithQualifier: (EOQualifier *) qualifier
                           andSortOrdering: (EOSortOrdering *) ordering
                                  inDomain: (NSString *) domain;

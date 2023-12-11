@@ -1385,6 +1385,21 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
                        withCriteria: (NSArray *) criteria
                            inDomain: (NSString *) theDomain
 {
+  if ([match length] > 0) {
+    return [self fetchContactsMatching: (NSString *) match
+                       withCriteria: (NSArray *) criteria
+                           inDomain: (NSString *) theDomain
+                              limit: -1];
+  } else {
+    return [NSMutableArray array];
+  }
+}
+
+- (NSArray *) fetchContactsMatching: (NSString *) match
+                       withCriteria: (NSArray *) criteria
+                           inDomain: (NSString *) theDomain
+                              limit: (int) limit
+{
   NSAutoreleasePool *pool;
   NGLdapConnection *ldapConnection;
   NGLdapEntry *currentEntry;
@@ -1392,26 +1407,58 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   NSMutableArray *contacts;
   EOQualifier *qualifier;
   unsigned int i;
+  NSString *sortAttribute;
+  BOOL sortReverse;
 
   contacts = [NSMutableArray array];
 
-  if ([match length] > 0 || !_listRequiresDot)
+  if (!_listRequiresDot)
     {
       ldapConnection = [self _ldapConnection];
       qualifier = [self _qualifierForFilter: match onCriteria: criteria];
 
-      if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
-        entries = [ldapConnection baseSearchAtBaseDN: _baseDN
-                                           qualifier: qualifier
-                                          attributes: _lookupFields];
-      else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame)
-        entries = [ldapConnection flatSearchAtBaseDN: _baseDN
-                                           qualifier: qualifier
-                                          attributes: _lookupFields];
-      else /* we do it like before */
-        entries = [ldapConnection deepSearchAtBaseDN: _baseDN
-                                           qualifier: qualifier
-                                          attributes: _lookupFields];
+      if (limit > 0) {
+        [ldapConnection setQuerySizeLimit: limit];
+      }
+
+      if (limit > 0) {
+        // Sort results
+        sortAttribute = @"cn";
+        sortReverse = NO;
+        if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
+          entries = [ldapConnection baseSearchAtBaseDN: _baseDN
+                                             qualifier: qualifier
+                                            attributes: _lookupFields
+                                         sortAttribute: sortAttribute
+                                           sortReverse: sortReverse];
+        else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame)
+          entries = [ldapConnection flatSearchAtBaseDN: _baseDN
+                                             qualifier: qualifier
+                                            attributes: _lookupFields
+                                         sortAttribute: sortAttribute
+                                           sortReverse: sortReverse];
+        else /* we do it like before */
+          entries = [ldapConnection deepSearchAtBaseDN: _baseDN
+                                            qualifier: qualifier
+                                           attributes: _lookupFields
+                                        sortAttribute: sortAttribute
+                                          sortReverse: sortReverse];
+      } else {
+        // No sort results
+        if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
+          entries = [ldapConnection baseSearchAtBaseDN: _baseDN
+                                            qualifier: qualifier
+                                            attributes: _lookupFields];
+        else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame)
+          entries = [ldapConnection flatSearchAtBaseDN: _baseDN
+                                            qualifier: qualifier
+                                            attributes: _lookupFields];
+        else /* we do it like before */
+          entries = [ldapConnection deepSearchAtBaseDN: _baseDN
+                                            qualifier: qualifier
+                                            attributes: _lookupFields];
+      }
+      
 
       i = 0;
       pool = [NSAutoreleasePool new];

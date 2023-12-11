@@ -845,4 +845,23 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
   return disableExport;
 }
 
+- (BOOL) globalAddressBookFirstEntriesEnabled
+{
+  return [self boolForKey: @"SOGoGlobalAddressBookFirstEntries"];
+}
+
+- (int) globalAddressBookFirstEntriesCount
+{
+  int v;
+
+  v = [self integerForKey: @"SOGoGlobalAddressBookFirstEntriesCount"];
+
+  if (!v)
+    v = 100;
+
+  return v;
+}
+
+
+
 @end
