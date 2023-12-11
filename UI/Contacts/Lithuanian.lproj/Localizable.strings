@@ -45,8 +45,8 @@
 "Copy To" = "Kopijuoti į";
 "Add to" = "Pridėti prie";
 "To" = "To";
-"Carbon Copy (Cc)" = "Carbon Copy (Cc)";
-"Blind Carbon Copy (Bcc)" = "Blind Carbon Copy (Bcc)";
+"Carbon Copy (Cc)" = "Kopija (Cc)";
+"Blind Carbon Copy (Bcc)" = "Nematomoji kopija (Bcc)";
 
 /* Search scope: name fields */
 "name" = "Vardas";
@@ -58,7 +58,7 @@
 "mozillanickname" = "Antras el. paštas";
 
 /* Search scope: screen name field */
-"nsaimid" = "Screen name";
+"nsaimid" = "Abonento vardas";
 
 /* Search scope: mail fields */
 "mail" = "Mail";
@@ -174,11 +174,11 @@
 "Sharing..." = "Bendrinti...";
 "Write" = "Rašyti";
 "Delete" = "Panaikinti";
-"Instant Message" = "Greitoji žinutė";
+"Instant Message" = "Žinutė";
 "Add..." = "Pridėti";
 "Remove" = "Pašalinti";
 "Please wait..." = "Prašome palaukti...";
-"No possible subscription" = "Nėra įmanomos prenumeratos";
+"No possible subscription" = "Prenumerata negalima";
 "Preferred" = "Pageidautina";
 "Display" = "Rodyti";
 "Display Name" = "Ekrano vardas";
@@ -193,6 +193,7 @@
 "Work" = "Darbo";
 "Mobile" = "Mobilus:";
 "Pager" = "Gaviklis:";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* categories */
 "contacts_category_labels" = "Kolega, konkurentas, Klientas, Draugas, Šeima, Verslo partneris, Teikėjas, Spauda, VIP";
@@ -213,28 +214,28 @@
 "Timezone" = "Laiko juosta";
 "Birthday" = "Gimtadienis";
 "Birthday (yyyy-mm-dd)" = "Gimtadienis (yyyy-mm-dd):";
-"Freebusy URL" = "Laisvalaikiui ir užimto adresas";
+"Freebusy URL" = "Užimtumo adresas";
 "Add as..." = "Pridėti kaip...";
 "Recipient" = "Gavėjas";
 "Carbon Copy" = "Kopija";
 "Blind Carbon Copy" = "Nematoma kopija";
 "New Addressbook..." = "Nauja adresų knyga...";
-"Subscribe to an Addressbook..." = "Įsirašyti į adresų knygą...";
-"Remove the selected Addressbook" = "Ištrinti pažymętus iš adresų knygos";
-"Subscribe to a shared contact" = "Subscribe to a shared addressbook";
-"Search User" = "Ieškoti vartotojo";
+"Subscribe to an Addressbook..." = "Prenumeruoti adresų knygą...";
+"Remove the selected Addressbook" = "Pašalinti pasirinktą adresų knygą";
+"Subscribe to a shared contact" = "Prisijungti prie bendros adresų knygos";
+"Search User" = "Ieškoti naudotojo";
 "Name of the Address Book" = "Adresų knygos pavadinimas";
 "Are you sure you want to delete the selected address book?"
 = "Ar jūs įsitikinęs, jog norite ištrinti pažymėtą adresų knygą?";
 "Are you sure you want to delete the addressbook \"%{0}\"?"
-= "Ar tikrai norite ištrinti adresų knygelę \"%{0}\"?";
+= "Ar tikrai norite ištrinti adresų knygą \"%{0}\"?";
 "You cannot remove nor unsubscribe from a public addressbook."
 = "Jūs negalite pašalinti arba atsisakyti iš viešos adresų knygos.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "Jūs negalite pašalinti arba atsisakyti iš jūsų asmeninės adresų knygos.";
 "Are you sure you want to delete the selected contacts?"
 = "Ar tikrai norite ištrinti pasirinktus kontaktus?";
-"Are you sure you want to delete the card of %{0}?" = "Are you sure you want to delete the card of %{0}?";
+"Are you sure you want to delete the card of %{0}?" = "Ar tikrai norite ištrinti kortelę %{0}?";
 "You cannot delete the card of \"%{0}\"."
 = "Jūs negalite trinti kortelės iš \"%{0}\".";
 "You cannot subscribe to a folder that you own!"
@@ -243,15 +244,15 @@
 = "Nepavyko prisijungti prie šio aplanko.";
 
 /* security */
-"Security" = "Security";
+"Security" = "Saugumas";
 "Uninstall" = "Uninstall";
 "Error reading the card certificate." = "Error reading the card certificate.";
 "No certificate associated to card." = "No certificate associated to card.";
 
 /* acls */
 "Access rights to" = "Prieigos teisės";
-"For user" = "Vartotojui";
-"Any Authenticated User" = "Visiems autorizuotiems vartotojams";
+"For user" = "Naudotojui";
+"Any Authenticated User" = "Visiems autorizuotiems naudotojams";
 "Public Access" = "Viešas priėjimas";
 "This person can add cards to this addressbook."
 = "Šis asmuo gali pridėti korteles šioje adresų knygoje.";
