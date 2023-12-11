@@ -65,6 +65,7 @@
 "A total of %{0} events were imported in the calendar." = "Kopumā no %{0} notikumiem tika importēti kalendārā.";
 "Compose E-Mail to All Attendees" = "Rakstīt e-pastu visiem dalībniekiem";
 "Compose E-Mail to Undecided Attendees" = "Rakstīt e-pastu iespējamajiem dalībniekiem";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* Relative dates */
 "Yesterday" = "Vakar";
