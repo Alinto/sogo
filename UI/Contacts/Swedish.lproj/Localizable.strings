@@ -193,6 +193,7 @@
 "Work" = "Arbete";
 "Mobile" = "Mobiltelefon";
 "Pager" = "Personsökare";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* categories */
 "contacts_category_labels" = "Kollega, Konkurrent, Kund, Vän, Familj, Affärspartner, Leverantör, Press, VIP";
