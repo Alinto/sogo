@@ -204,6 +204,8 @@
 "Insert signature on new message" = "Signatur bei neuer Nachricht hinzufügen";
 "Insert signature on reply" = "Signatur bei Antwort hinzufügen";
 "Insert signature on forward" = "Signatur bei Weiterleitung hinzufügen";
+"Show recipients or sender full email in mailboxes" = "Zeige die komplette E-Mail-Adresse des Empfängers oder des Senders in Postfächern";
+"Hide inline attachments" = "Eingebettete Attachments verbergen";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Standard-Schriftgröße";
@@ -320,7 +322,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
-"Galician" = "Galician";
+"Galician" = "Galego";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -445,8 +447,8 @@
 "Deleted" = "Gelöscht";
 "Answered" = "Beantwortet";
 "Flagged" = "Markiert";
-"Junk" = "Junk";
-"Not Junk" = "Kein Junk";
+"Junk" = "Spam";
+"Not Junk" = "Kein Spam";
 
 /* Password policy */
 "The password was changed successfully." = "Das Passwort wurde erfolgreich geändert.";
@@ -507,7 +509,7 @@
 "Let SOGo handle everything" = "Alles über SOGo verwalten";
 
 /* Password Recovery */
-"Password recovery mode" = "Passwortwiederherstellung";
+"Password recovery mode" = "Passwort Wiederherstellungsmodus";
 "Question" = "Frage";
 "Secondary e-mail" = "Zweit-E-Mail";
 "Answer" = "Antwort";
