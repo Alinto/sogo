@@ -65,6 +65,7 @@
 "A total of %{0} events were imported in the calendar." = "%{0} tehtävää tuotiin kalenteriin.";
 "Compose E-Mail to All Attendees" = "Luo sähköpostiviesti kaikille osallistujille";
 "Compose E-Mail to Undecided Attendees" = "Luo sähköpostiviesti epävarmoille osallistujille";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* Relative dates */
 "Yesterday" = "Yesterday";
