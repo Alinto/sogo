@@ -204,6 +204,8 @@
 "Insert signature on new message" = "Inserir firma en mensaxe nova";
 "Insert signature on reply" = "Inserir firma na resposta";
 "Insert signature on forward" = "Inserir firma ao reenviar";
+"Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
+"Hide inline attachments" = "Ocultar arquivos adxuntos en liña";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Tamaño de fonte por defecto.";
@@ -507,7 +509,7 @@
 "Let SOGo handle everything" = "Deixe que SOGo encárguese de todo";
 
 /* Password Recovery */
-"Password recovery mode" = "Recuperación de contrasinal";
+"Password recovery mode" = "Modo de recuperación de contrasinal";
 "Question" = "Pregunta";
 "Secondary e-mail" = "Correo electrónico secundario";
 "Answer" = "Resposta";
