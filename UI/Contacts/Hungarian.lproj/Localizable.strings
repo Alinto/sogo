@@ -193,6 +193,7 @@
 "Work" = "Munkahely";
 "Mobile" = "Mobiltelefon";
 "Pager" = "Személyhívó";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* categories */
 "contacts_category_labels" = "Munkatárs, Versenytárs, Felhasználó, Barát, Család, Üzleti partner, Szolgáltató, Sajtó, VIP";
