@@ -193,6 +193,7 @@
 "Work" = "Posao";
 "Mobile" = "Mobilni";
 "Pager" = "Pejdžer";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* categories */
 "contacts_category_labels" = "Kolega, Konkurent, Klijent, Prijatelj, Porodica, Poslovni Partner, Provajder, Štampa, VIP";
