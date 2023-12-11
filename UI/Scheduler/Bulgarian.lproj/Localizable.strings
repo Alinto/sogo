@@ -65,6 +65,7 @@
 "A total of %{0} events were imported in the calendar." = "Всичко %{0} събития бяха импортирани в календара.";
 "Compose E-Mail to All Attendees" = "Съставя имейл към всички участници";
 "Compose E-Mail to Undecided Attendees" = "Съставя имейл към нерешили участници";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* Relative dates */
 "Yesterday" = "Вчера";
