@@ -21,7 +21,7 @@ devices with SOGo.
 The instructions are based on version {release_version} of SOGo.
 
 The latest version of this guide is available
-at https://sogo.nu/downloads/documentation.html.
+at https://www.sogo.nu/support.html#/documentation.
 
 Introduction
 ------------
@@ -3222,7 +3222,7 @@ your site. However, be aware that in order to use the SOGo Integrator
 plug in, you will need to repackage it with specific modifications.
 Please refer to the documentation published online:
 
-https://sogo.nu/downloads/documentation.html
+https://www.sogo.nu/support.html#/documentation
 
 If you only use the SOGo Connector plug in, you can still easily access
 your data.
