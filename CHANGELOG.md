@@ -2,6 +2,87 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.9.1](https://github.com/Alinto/sogo/compare/SOGo-5.9.0...SOGo-5.9.1) (2023-12-11)
+
+
+### Features
+
+* **addressbook:** Add global address book autocomplete on vlist ([11ad203](https://github.com/Alinto/sogo/commit/11ad203388ad33a22bd300047745869a27872cd9) [0b1f2b0](https://github.com/Alinto/sogo/commit/0b1f2b0405410628cb7ba8602b9286d71256d8e6) [0560efd](https://github.com/Alinto/sogo/commit/0560efd1f6a94bcb256d970ebe5535954e36cafe))
+* **core:** Add mobile provisioning download for Apple's devices ([19915e3](https://github.com/Alinto/sogo/commit/19915e3dffc14c90b03277f9f97b4e6b1158aa87) [6d16ee7](https://github.com/Alinto/sogo/commit/6d16ee798863a7f196c14915c47888adf0758f1a) [d38cc86](https://github.com/Alinto/sogo/commit/d38cc86d29ffce580bf26dd278a6b68556471c14) [cd50ee0](https://github.com/Alinto/sogo/commit/cd50ee017656f3e6cfd46cff7147258d4893706b) [65f8336](https://github.com/Alinto/sogo/commit/65f8336255577566282039f4058fe4f3c38a16d4) [4fe01f9](https://github.com/Alinto/sogo/commit/4fe01f96d73690bf1a2d60755bb552d25324ccaf) [a273f7a](https://github.com/Alinto/sogo/commit/a273f7aca5df120a50af0486161880040ee20519))
+* **core:** add SOGoDisableExport option to disable export for mail, calendar and contacts ([d0b4b50](https://github.com/Alinto/sogo/commit/d0b4b50456cf3e23aa12d5cf7165531a7670edf6))
+* **core:** Add SOGoDisableSharingAnyAuthUser option to disable sharing to any user authenticated for mail, contacts and calendar ([e0ef59d](https://github.com/Alinto/sogo/commit/e0ef59d5f212aced72a17e3af9e72a434eedd68e))
+* **mail:** Add an option in Preferences to display full email instead of name alone in mailboxes ([2e670f7](https://github.com/Alinto/sogo/commit/2e670f7e6293b703f8cfe23ebf923ce13b463a19))
+* **mail:** Add SOGoMailHideInlineAttachments option to hide attachments when inline. Fixes [#5490](https://bugs.sogo.nu/view.php?id=5490). ([f41ab2e](https://github.com/Alinto/sogo/commit/f41ab2ed0c71903b80bda66adc54cc94b0cf70d6) [abce5f4](https://github.com/Alinto/sogo/commit/abce5f42cf4daef721ebf6b48d727eb957e20b14) [aa53524](https://github.com/Alinto/sogo/commit/aa535247513b06804fce666fe20ebcc9bd231c1f) [ca2c5c1](https://github.com/Alinto/sogo/commit/ca2c5c188ed980629f494e5b8e23ba42cdd54f58))
+* **password:** Add specials characters to POLICY_MIN_SPECIAL_SYMBOLS ([7d66699](https://github.com/Alinto/sogo/commit/7d666992198e5e91e29081b99443607b1c96d354))
+* **preferences:** can set SOGoForwardConstraints to 3 to accept both internal and external domains from SOGoForwardConstraintsDomains ([c872fb4](https://github.com/Alinto/sogo/commit/c872fb4d9c68382431a52181073ba1964cf44c22))
+* **reply:** add references header when replying ([b396a27](https://github.com/Alinto/sogo/commit/b396a277f00d879d2c179db780d6f621a9057d0c))
+* **ux:** select all button will unselect all if click again ([6e60b10](https://github.com/Alinto/sogo/commit/6e60b107556212123f41d95e4399d9605a4c16f9) [1ae02eb](https://github.com/Alinto/sogo/commit/1ae02ebd708da0a53ae588531e122adddaa7a5de))
+
+
+### Bug Fixes
+
+* **addressbook:** autocomplete correctly return two contacts from two ldap with same id ([1d3da92](https://github.com/Alinto/sogo/commit/1d3da92bab972ec7ec935eba72128e72387216c0))
+* **calendar:** do not let DURATION and DTEND be both present in vevent ([0023a9c](https://github.com/Alinto/sogo/commit/0023a9ce3c4027bb32699efc5529a4a53d7699f6))
+* **calendar:** If content is NSData, properly convert it to NSString ([21571ab](https://github.com/Alinto/sogo/commit/21571ab1e000da47b91b3f21bfaba89d1abec71f))
+* **calendar:** properly set the start date range for yearly events ([1e8127b](https://github.com/Alinto/sogo/commit/1e8127b46122e83df02c394536950288b0ee16aa))
+* **core:** Add cache for CDefaultsSize to avoid spamming SQL request ([87e1240](https://github.com/Alinto/sogo/commit/87e1240ace297645559e698a8c1f1a76b9901895) [81f2d88](https://github.com/Alinto/sogo/commit/81f2d88db362cc21c50858295d0e9d375db61f67))
+* **core:** Fix calendar issues with Thunderbird related to vlist exclusion. Fix error log on photo. Closes [#5885](https://bugs.sogo.nu/view.php?id=5885) ([6b08f2e](https://github.com/Alinto/sogo/commit/6b08f2e4decc87ee57609355dee5a6657bca6110))
+* **core:** Fix user profile retrieval when using utf8mb4_bin collation - in this case the SQL results may return NSdata instead of NSString. Fixes [#5902](https://bugs.sogo.nu/view.php?id=5902). ([3cd9910](https://github.com/Alinto/sogo/commit/3cd991063805f88a5672b10fbcc04a4149e13e26))
+* **hmtl:** prevent html injection of tag form ([7481ccf](https://github.com/Alinto/sogo/commit/7481ccf37087c3f456d7e5a844da01d0f8883098))
+* **http:** set correct Accept header when dowloading eml file ([c569ed2](https://github.com/Alinto/sogo/commit/c569ed2d77cf23c274c3dfc7cd3533cf268d09af))
+* **mail:** Clean temporary files when mail is sent ([f35a37b](https://github.com/Alinto/sogo/commit/f35a37bbdd2005a63b42f9bab1588ce9a935b112) [d163405](https://github.com/Alinto/sogo/commit/d1634054d6f4dd18bdb82a7903b3bbbceae5b0e8))
+* **mail:** Fix duplication of images when saving draft. Fixes [#5888](https://bugs.sogo.nu/view.php?id=5888) ([ee9899f](https://github.com/Alinto/sogo/commit/ee9899fe3d6aa7bf694f959a8e4f09faa39e737a) [9c09485](https://github.com/Alinto/sogo/commit/9c0948518b1e8365d6fadb3fccae1a0257b518ed))
+* **scripts:** wrong type for c_value in script for complete unicode coverage ([65374e4](https://github.com/Alinto/sogo/commit/65374e44fc2a861d3a7c9f1f9ba25505601d79f1))
+* **sogo-tool:** add protection to expire-sessions if the input is not an integer ([bb943e4](https://github.com/Alinto/sogo/commit/bb943e414d3fc8b71ebb169e31c261cd2dcd6d37))
+* **translation:** incorret value causing trouble to transifex ([4b45dc7](https://github.com/Alinto/sogo/commit/4b45dc7584984602071efe99b9638c6231efba8c))
+
+
+### Localization
+
+* **ar:** Update Arabic translations ([28d883d](https://github.com/Alinto/sogo/commit/28d883dac1ccbafb878b9e13ba38f570f44ea325))
+* **bg_BG:** Update Bulgarian translations ([3815bc1](https://github.com/Alinto/sogo/commit/3815bc1c5e6fe37aaad5492c246697fe34e4286d))
+* **bs_BA:** Update Bosnian translations ([2afbcbe](https://github.com/Alinto/sogo/commit/2afbcbeaed24571785437aa5af1c092ba129ce97))
+* **ca:** Update Catalan translations ([3040543](https://github.com/Alinto/sogo/commit/3040543c797fe9176df048b8a72a2c6f7dbfd3b7))
+* **cs:** Update Czech translations ([029a821](https://github.com/Alinto/sogo/commit/029a82143f1d0d82ca8d6a5c9e5a14ac351718bf))
+* **cy:** Update Welsh translations ([06a6ed7](https://github.com/Alinto/sogo/commit/06a6ed776824f47e5606c29a162903380e72fbd9))
+* **da_DK:** Update Danish translations ([76911fd](https://github.com/Alinto/sogo/commit/76911fd4454c9f0213f11b4e2e95b29010eed9a4))
+* **de:** Update German translations ([8a4bc2a](https://github.com/Alinto/sogo/commit/8a4bc2a71642a2a431008c02214ffdd0eb2ace23))
+* **es_AR:** Update SpanishArgentina translations ([527fded](https://github.com/Alinto/sogo/commit/527fded19ceaf995963e997659b79c5e1290b8c5))
+* **es_ES:** Update SpanishSpain translations ([057a1ba](https://github.com/Alinto/sogo/commit/057a1ba1053f462cd0633b86c3ee86d76acbd6bb))
+* **eu:** Update Basque translations ([33f3a1b](https://github.com/Alinto/sogo/commit/33f3a1b716a006df8a28c416fc947e44fc285e37))
+* **fi:** Update Finnish translations ([dba2332](https://github.com/Alinto/sogo/commit/dba2332864fa38116615c9b58eb3590fe251a37a))
+* **gl:** Change Galician name to Galego ([6eae3f2](https://github.com/Alinto/sogo/commit/6eae3f2b1601033558a791c27bc4e27acf0825e7))
+* **gl:** Update Galician translations ([5aa7ebf](https://github.com/Alinto/sogo/commit/5aa7ebf2aefef6e45423b2193c136fadced51375))
+* **he:** Update Hebrew translations ([694c21d](https://github.com/Alinto/sogo/commit/694c21de99522733c95304d0e775e81493ff7200))
+* **hr_HR:** Update Croatian translations ([715d25d](https://github.com/Alinto/sogo/commit/715d25d40a84b518b1d8f97b4946045a4be761b5))
+* **hu:** Update Hungarian translations ([0b22fa6](https://github.com/Alinto/sogo/commit/0b22fa6cd5b55db5d021bbbfcc53d411ff4bb9d7))
+* **id_ID:** Update Indonesian translations ([a16d29b](https://github.com/Alinto/sogo/commit/a16d29b70b50eeee14a3ad1b627e8f8a59216461))
+* **is:** Update Icelandic translations ([2de6241](https://github.com/Alinto/sogo/commit/2de624122045d9df877f39f665d271056af0fba8))
+* **it:** Update Italian translations ([53036b3](https://github.com/Alinto/sogo/commit/53036b323fe65b4bf40c838ff0578fa076bfea93))
+* **ja:** Update Japanese translations ([41fb85e](https://github.com/Alinto/sogo/commit/41fb85e6a320b25776ce63672ef4251e932f82f0))
+* **kk:** Update Kazakh translations ([2174195](https://github.com/Alinto/sogo/commit/21741954dd2762b3f03c0b5b21b8feb4d826cfb1))
+* **lt:** Update Lithuanian translations ([6e9e7f9](https://github.com/Alinto/sogo/commit/6e9e7f98ef379ce26937e00daedfad88383615a4))
+* **lv:** Update Latvian translations ([a9ecaed](https://github.com/Alinto/sogo/commit/a9ecaed5fa6fe8fecf08ec0354bbb187824d2fbb))
+* **mk_MK:** Update Macedonian translations ([d6c9ecd](https://github.com/Alinto/sogo/commit/d6c9ecdeb0490fa44bc1c444819b5c82ccf89073))
+* **nb_NO:** Update NorwegianBokmal translations ([3d5f352](https://github.com/Alinto/sogo/commit/3d5f35211189802ef031be688cadddc2ab684d37))
+* **nl:** Update Dutch translations ([402c3d0](https://github.com/Alinto/sogo/commit/402c3d0a1f83d32af2fca2f3e5abafbe8850de08))
+* **nn_NO:** Update NorwegianNynorsk translations ([6d270fe](https://github.com/Alinto/sogo/commit/6d270fe7a4bad2253f7e8427be660405460b2139))
+* **pl:** Update Polish translations ([c75f210](https://github.com/Alinto/sogo/commit/c75f210864de1a7bb313c1ba21be987143a2f7ca))
+* **pt_BR:** Update BrazilianPortuguese translations ([cfab856](https://github.com/Alinto/sogo/commit/cfab85624b3e725f121ea61d181340189e969229))
+* **pt:** Update Portuguese translations ([e4f07c4](https://github.com/Alinto/sogo/commit/e4f07c466e195d59f72b934567cb3aa4d18cb9f3))
+* **ro_RO:** Update Romanian translations ([d9c716c](https://github.com/Alinto/sogo/commit/d9c716c1b679a792876c9bc7ebed2d530ab8d89f))
+* **ru:** Update Russian translations ([3809ec3](https://github.com/Alinto/sogo/commit/3809ec3904a7882239e50c671aa72c9f7f013c62))
+* **sk:** Update Slovak translations ([cd7e06c](https://github.com/Alinto/sogo/commit/cd7e06c2ede339d078e54b76b6078523b78383fc))
+* **sl_SI:** Update Slovenian translations ([ca21bf4](https://github.com/Alinto/sogo/commit/ca21bf4ce1758717eac8ec961788d067e9428456))
+* **sr_ME@latin:** Update Montenegrin translations ([fe7369e](https://github.com/Alinto/sogo/commit/fe7369e427d7cc6f4efb23a78437bd2b2c65e6cd))
+* **sr@latin:** Update SerbianLatin translations ([9126cae](https://github.com/Alinto/sogo/commit/9126cae27d49b7f199f2a6b259eb40589b011a55))
+* **sr:** Update Serbian translations ([ed444fd](https://github.com/Alinto/sogo/commit/ed444fdc2266888f9d15d557e1ba92896158d870))
+* **sv:** Update Swedish translations ([10369aa](https://github.com/Alinto/sogo/commit/10369aa654058b50285ae7239a9356f736c7ac1c))
+* **tr_TR:** Update TurkishTurkey translations ([8d1fc1e](https://github.com/Alinto/sogo/commit/8d1fc1e306d926b3efeab2e3017823201254caf0))
+* **uk:** Update Ukrainian translations ([0e50d37](https://github.com/Alinto/sogo/commit/0e50d37531d850b46009af2af5049a6b46541da0))
+* **zh_CN:** Update ChineseChina translations ([cf87022](https://github.com/Alinto/sogo/commit/cf87022348296b9659e83e3a3985b48d89f5e01f))
+* **zh_TW:** Update ChineseTaiwan translations ([fc2a82c](https://github.com/Alinto/sogo/commit/fc2a82c3b0f4b780df3b4d27ad0da78e34f665c6))
+
 ## [5.9.0](https://github.com/Alinto/sogo/compare/SOGo-5.8.3...SOGo-5.9.0) (2023-09-27)
 
 
