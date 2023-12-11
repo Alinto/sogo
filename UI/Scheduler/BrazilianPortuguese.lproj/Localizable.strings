@@ -65,6 +65,7 @@
 "A total of %{0} events were imported in the calendar." = "Um total de %{0} eventos foram importados no calendário.";
 "Compose E-Mail to All Attendees" = "Compor E-Mail para Todos os Participantes";
 "Compose E-Mail to Undecided Attendees" = "Compor E-Mail para os Participantes não confirmados";
+"Download iOS - MacOS configuration profile" = "Baixe perfil de configuração para iOS -MacOS ";
 
 /* Relative dates */
 "Yesterday" = "Ontem";
@@ -223,11 +224,11 @@
 "view_next31" = "Próximos 31 dias";
 "view_thismonth" = "Este Mês";
 "view_thisyear" = "Esse ano";
-"view_last7" = "Last 7 days";
-"view_last14" = "Last 14 days";
-"view_last31" = "Last 31 days";
-"view_lastmonth" = "Last Month";
-"view_lastyear" = "Last Year";
+"view_last7" = "Últimos 7 dias";
+"view_last14" = "Últimos 14 dias";
+"view_last31" = "Últimos 31 dias";
+"view_lastmonth" = "Mês passado";
+"view_lastyear" = "Ano passado";
 "view_future" = "Todos os Eventos Futuros";
 "view_selectedday" = "Dia Selecionado";
 "view_not_started" = "Tarefas não iniciadas";
@@ -401,8 +402,8 @@
 "To" = "Até";
 
 /* dates */
-"DateFrom" = "From";
-"DateTo" = "To";
+"DateFrom" = "De";
+"DateTo" = "Para";
 
 /* validation errors */
 validate_notitle           = "Nenhum título informado, continue?";
@@ -444,7 +445,7 @@ validate_untilbeforeend    = "A recorrência deve terminar após a primeira ocor
 "Workweek days only" = "Somente semanas úteis";
 "Tasks in View" = "Tarefas na vista";
 "eventDeleteConfirmation" = "O(s) seguinte(s) evento(s) será(ão) apagado(s):";
-"taskDeleteConfirmation" = "Apagar permanentemente esta tarefa.";
+"taskDeleteConfirmation" = "Apagar permanentemente esta(s) tarefa(s).";
 "Would you like to continue?" = "Gostaria de continuar?";
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Você não pode remover nem retirar-se do seu calendário pessoal.";
@@ -511,7 +512,7 @@ validate_untilbeforeend    = "A recorrência deve terminar após a primeira ocor
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Existe um conflito de horários com um ou mais participantes.\nAinda assim, gostaria de manter as configurações atuais?";
 "Would you like to remove them and send the invitation to the remaining attendees?"
-= "Would you like to remove them and send the invitation to the remaining attendees?";
+= "Você gostaria de removê-los e enviar o convite para os participantes restantes?";
 
 /* events list */
 "Due" = "Até";
@@ -565,7 +566,7 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "CalDAV URL" = "CalDAV URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
-"Copy to clipboard" = "Copy to clipboard";
+"Copy to clipboard" = "Copiar para a área de transferência";
 
 /* Error messages */
 "dayFieldInvalid" = "Por favor, especifique um valor numérico no campo Dias, maior ou igual a 1.";
@@ -630,7 +631,7 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "Rename" = "Renomear";
 "Import Calendar" = "Importar Calendário";
 "Select an ICS file." = "Selecionar um arquivo ICS.";
-"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "Você modificou dados não salvos. Deseja fechar a janela pop-up e perder os dados?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Inscrito com sucesso no calendário";
