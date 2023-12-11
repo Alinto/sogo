@@ -65,6 +65,7 @@
 "A total of %{0} events were imported in the calendar." = "共匯入 %{0} 筆事件至此行事曆。";
 "Compose E-Mail to All Attendees" = "發送通知信件給所有的受邀者";
 "Compose E-Mail to Undecided Attendees" = "發送通知信件給所有未決定的受邀者";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* Relative dates */
 "Yesterday" = "昨日";
