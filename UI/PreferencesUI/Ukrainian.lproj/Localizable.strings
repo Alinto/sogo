@@ -204,6 +204,8 @@
 "Insert signature on new message" = "Вставляти підпис у нове повідомлення";
 "Insert signature on reply" = "Вставляти підпис у відповідь";
 "Insert signature on forward" = "Вставляти підпис при переадресації";
+"Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
+"Hide inline attachments" = "Hide inline attachments";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Розмір шрифта за замовчуванням";
@@ -320,7 +322,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
-"Galician" = "Галісійська";
+"Galician" = "Galego";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -507,7 +509,7 @@
 "Let SOGo handle everything" = "Надати SOGo можливість управляти всім";
 
 /* Password Recovery */
-"Password recovery mode" = "Відновлення пароля";
+"Password recovery mode" = "Password recovery mode";
 "Question" = "Питання";
 "Secondary e-mail" = "Додаткова електронна пошта";
 "Answer" = "Відповідь";
