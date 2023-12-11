@@ -65,6 +65,7 @@
 "A total of %{0} events were imported in the calendar." = "Gertakarien %{0}a inportatu da egutegian";
 "Compose E-Mail to All Attendees" = "Sortu mezu bat partaide guztientzat";
 "Compose E-Mail to Undecided Attendees" = "Sortu mezu bat ezbaian dauden partaideei";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* Relative dates */
 "Yesterday" = "Yesterday";
