@@ -564,7 +564,7 @@
           // Respect the order of the results
           _.forEach(results, function(cardId, index) {
             var oldIndex, removedCards;
-            if (cards[index].id != cardId) {
+            if (!_.isUndefined(cards[index]) && cards[index].id != cardId) {
               oldIndex = _.findIndex(cards, _.bind(compareIds, cardId));
               removedCards = cards.splice(oldIndex, 1);
               cards.splice(index, 0, removedCards[0]);
