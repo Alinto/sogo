@@ -2,12 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [5.9.1](https://github.com/Alinto/sogo/compare/SOGo-5.9.0...SOGo-5.9.1) (2023-12-11)
+## [5.9.1](https://github.com/Alinto/sogo/compare/SOGo-5.9.0...SOGo-5.9.1) (2023-12-12)
 
 
 ### Features
 
-* **addressbook:** Add global address book autocomplete on vlist ([11ad203](https://github.com/Alinto/sogo/commit/11ad203388ad33a22bd300047745869a27872cd9) [0b1f2b0](https://github.com/Alinto/sogo/commit/0b1f2b0405410628cb7ba8602b9286d71256d8e6) [0560efd](https://github.com/Alinto/sogo/commit/0560efd1f6a94bcb256d970ebe5535954e36cafe))
+* **addressbook:** Add global address book autocomplete on vlist ([11ad203](https://github.com/Alinto/sogo/commit/11ad203388ad33a22bd300047745869a27872cd9) [0b1f2b0](https://github.com/Alinto/sogo/commit/0b1f2b0405410628cb7ba8602b9286d71256d8e6) [0560efd](https://github.com/Alinto/sogo/commit/0560efd1f6a94bcb256d970ebe5535954e36cafe), [f85c531](https://github.com/Alinto/sogo/commit/f85c53190c38c4e28536f78e43623f6776248291))
 * **core:** Add mobile provisioning download for Apple's devices ([19915e3](https://github.com/Alinto/sogo/commit/19915e3dffc14c90b03277f9f97b4e6b1158aa87) [6d16ee7](https://github.com/Alinto/sogo/commit/6d16ee798863a7f196c14915c47888adf0758f1a) [d38cc86](https://github.com/Alinto/sogo/commit/d38cc86d29ffce580bf26dd278a6b68556471c14) [cd50ee0](https://github.com/Alinto/sogo/commit/cd50ee017656f3e6cfd46cff7147258d4893706b) [65f8336](https://github.com/Alinto/sogo/commit/65f8336255577566282039f4058fe4f3c38a16d4) [4fe01f9](https://github.com/Alinto/sogo/commit/4fe01f96d73690bf1a2d60755bb552d25324ccaf) [a273f7a](https://github.com/Alinto/sogo/commit/a273f7aca5df120a50af0486161880040ee20519))
 * **core:** add SOGoDisableExport option to disable export for mail, calendar and contacts ([d0b4b50](https://github.com/Alinto/sogo/commit/d0b4b50456cf3e23aa12d5cf7165531a7670edf6))
 * **core:** Add SOGoDisableSharingAnyAuthUser option to disable sharing to any user authenticated for mail, contacts and calendar ([e0ef59d](https://github.com/Alinto/sogo/commit/e0ef59d5f212aced72a17e3af9e72a434eedd68e))
