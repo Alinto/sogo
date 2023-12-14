@@ -909,18 +909,63 @@ static NSArray *reminderValues = nil;
 //
 // Used by templates
 //
+- (NSDictionary *) _localizedContactsLabels
+{
+  NSArray *categoryLabels, *localizedCategoryLabels;
+  NSDictionary *labelsDictionary;
+
+  labelsDictionary = nil;
+  localizedCategoryLabels = [[self labelForKey: @"contacts_category_labels"
+                                   withResourceManager: [self resourceManager]]
+                              componentsSeparatedByString: @","];
+  categoryLabels = [[[self resourceManager]
+                                      stringForKey: @"contacts_category_labels"
+                                      inTableNamed: nil
+                                  withDefaultValue: @""
+                                         languages: [NSArray arrayWithObject: @"English"]]
+                                      componentsSeparatedByString: @","];
+
+  if ([localizedCategoryLabels count] == [categoryLabels count])
+    labelsDictionary = [NSDictionary dictionaryWithObjects: localizedCategoryLabels
+                                                   forKeys: categoryLabels];
+  else
+    [self logWithFormat: @"ERROR: localizable strings contacts_category_labels is incorrect for language %@",
+          [[[context activeUser] userDefaults] language]];
+
+  return labelsDictionary;
+}
+
 - (NSString *) defaultContactsCategories
 {
-  NSArray *contactsCategories;
+  NSArray *labels;
+  NSDictionary *localizedLabels;
+  NSMutableArray *defaultCategoriesLabels;
+  NSString *label, *localizedLabel;
+  unsigned int i;
 
-  contactsCategories = [[[[self labelForKey: @"contacts_category_labels"  withResourceManager: [self resourceManager]]
-                              componentsSeparatedByString: @","] trimmedComponents]
-                             sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
+  localizedLabels = [self _localizedContactsLabels];
+  labels = [[SOGoSystemDefaults sharedSystemDefaults] contactsCategories];
+  defaultCategoriesLabels = [NSMutableArray array];
 
-  if (!contactsCategories)
-    contactsCategories = [NSArray array];
+  if(labels)
+  {
+    for (i = 0; i < [labels count]; i++)
+    {
+      label = [labels objectAtIndex: i];
+      if (!(localizedLabel = [localizedLabels objectForKey: label]))
+      {
+        localizedLabel = label;
+      }
+      [defaultCategoriesLabels addObject: localizedLabel];
+    }
+  }
+  else
+  {
+    defaultCategoriesLabels = [localizedLabels allValues];
+  }
 
-  return [contactsCategories jsonRepresentation];
+
+  return [defaultCategoriesLabels jsonRepresentation];
 }
 
 //

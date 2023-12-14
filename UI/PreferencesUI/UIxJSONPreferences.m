@@ -78,6 +78,32 @@ static SoProduct *preferencesProduct = nil;
   return labelsDictionary;
 }
 
+- (NSDictionary *) _localizedContactsLabels
+{
+  NSArray *categoryLabels, *localizedCategoryLabels;
+  NSDictionary *labelsDictionary;
+
+  labelsDictionary = nil;
+  localizedCategoryLabels = [[self labelForKey: @"contacts_category_labels"
+                                   withResourceManager: [preferencesProduct resourceManager]]
+                              componentsSeparatedByString: @","];
+  categoryLabels = [[[preferencesProduct resourceManager]
+                                      stringForKey: @"contacts_category_labels"
+                                      inTableNamed: nil
+                                  withDefaultValue: @""
+                                         languages: [NSArray arrayWithObject: @"English"]]
+                                      componentsSeparatedByString: @","];
+
+  if ([localizedCategoryLabels count] == [categoryLabels count])
+    labelsDictionary = [NSDictionary dictionaryWithObjects: localizedCategoryLabels
+                                                   forKeys: categoryLabels];
+  else
+    [self logWithFormat: @"ERROR: localizable strings contacts_category_labels is incorrect for language %@",
+          [[[context activeUser] userDefaults] language]];
+
+  return labelsDictionary;
+}
+
 - (WOResponse *) activeExternalSieveScriptsAction
 {
   NGSieveClient *client;
@@ -121,7 +147,7 @@ static SoProduct *preferencesProduct = nil;
   SOGoUserDefaults *defaults;
   SOGoDomainDefaults *domainDefaults;
   NSMutableArray *accounts;
-  NSDictionary *categoryLabels, *vacationOptions;
+  NSDictionary *calendarCategoryLabels, *contactsCategoriesLabels, *vacationOptions;
 
   if (!preferencesProduct)
     {
@@ -131,7 +157,8 @@ static SoProduct *preferencesProduct = nil;
 
   defaults = [[context activeUser] userDefaults];
   domainDefaults = [[context activeUser] domainDefaults];
-  categoryLabels = nil;
+  calendarCategoryLabels = nil;
+  contactsCategoriesLabels = nil;
 
   //
   // Default General preferences
@@ -223,7 +250,7 @@ static SoProduct *preferencesProduct = nil;
     {
       NSArray *defaultCalendarCategories;
 
-      categoryLabels = [self _localizedCategoryLabels];
+      calendarCategoryLabels = [self _localizedCategoryLabels];
 
       if ((defaultCalendarCategories = [defaults calendarCategories]))
         {
@@ -239,7 +266,7 @@ static SoProduct *preferencesProduct = nil;
           for (count = 0; count < max; count++)
             {
               label = [defaultCalendarCategories objectAtIndex: count];
-              if (!(localizedLabel = [categoryLabels objectForKey: label]))
+              if (!(localizedLabel = [calendarCategoryLabels objectForKey: label]))
                 {
                   localizedLabel = label;
                 }
@@ -252,15 +279,15 @@ static SoProduct *preferencesProduct = nil;
         {
           // Calendar categories are taken from localizable strings
 
-          [defaults setCalendarCategories: [categoryLabels allValues]];
+          [defaults setCalendarCategories: [calendarCategoryLabels allValues]];
         }
     }
   if (![[defaults source] objectForKey: @"SOGoCalendarCategoriesColors"])
     {
       NSDictionary *defaultCalendarCategoriesColors;
 
-      if (!categoryLabels)
-        categoryLabels = [self _localizedCategoryLabels];
+      if (!calendarCategoryLabels)
+        calendarCategoryLabels = [self _localizedCategoryLabels];
 
       if ((defaultCalendarCategoriesColors = [defaults calendarCategoriesColors]))
         {
@@ -278,7 +305,7 @@ static SoProduct *preferencesProduct = nil;
           for (count = 0; count < max; count++)
             {
               label = [defaultCalendarCategories objectAtIndex: count];
-              if (!(localizedLabel = [categoryLabels objectForKey: label]))
+              if (!(localizedLabel = [calendarCategoryLabels objectForKey: label]))
                 {
                   localizedLabel = label;
                 }
@@ -296,7 +323,7 @@ static SoProduct *preferencesProduct = nil;
           NSMutableDictionary *colors;
           int i;
 
-          calendarCategories = [categoryLabels allValues];
+          calendarCategories = [calendarCategoryLabels allValues];
           colors = [NSMutableDictionary dictionaryWithCapacity: [calendarCategories count]];
 
           for (i = 0; i < [calendarCategories count]; i++)
@@ -311,18 +338,41 @@ static SoProduct *preferencesProduct = nil;
   //
   // Populate default contact categories, based on the user's preferred language
   //
-  if (![defaults contactsCategories])
+  if (![[defaults source] objectForKey: @"SOGoContactsCategories"])
     {
       NSArray *contactsCategories;
 
-      contactsCategories = [[[[self labelForKey: @"contacts_category_labels"  withResourceManager: [preferencesProduct resourceManager]]
-                              componentsSeparatedByString: @","] trimmedComponents]
-                             sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
+      contactsCategoriesLabels = [self _localizedContactsLabels];
 
-      if (!contactsCategories)
-        contactsCategories = [NSArray array];
+      if((contactsCategories = [defaults contactsCategories]))
+      {
+        // Contact categories are taken from SOGo's configuration or SOGoDefaults.plist
 
-      [defaults setContactsCategories: contactsCategories];
+        NSMutableArray *filteredContactsCategories;
+        NSString *label, *localizedLabel;
+        int count, max;
+
+        max = [contactsCategories count];
+        filteredContactsCategories = [NSMutableArray arrayWithCapacity: max];
+
+        for (count = 0; count < max; count++)
+          {
+            label = [contactsCategories objectAtIndex: count];
+            if (!(localizedLabel = [contactsCategoriesLabels objectForKey: label]))
+              {
+                localizedLabel = label;
+              }
+            [filteredContactsCategories addObject: localizedLabel];
+          }
+
+        [defaults setContactsCategories: filteredContactsCategories];
+      }
+      else
+      {
+        // Contact categories are taken from localizable strings
+
+        [defaults setContactsCategories: [contactsCategoriesLabels allValues]];
+      }
     }
 
   if (![[defaults source] objectForKey: @"SOGoMailAddOutgoingAddresses"])
