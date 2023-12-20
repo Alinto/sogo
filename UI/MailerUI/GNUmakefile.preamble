@@ -8,6 +8,8 @@ SOGo_LIBRARIES_DEPEND_UPON += -lcrypto
 endif
 endif
 
+SOGo_LIBRARIES_DEPEND_UPON += -lytnef
+
 ADDITIONAL_CPPFLAGS += \
         -Wall -DCOMPILE_FOR_GSTEP_MAKE=1        \
         -DSOGO_MAJOR_VERSION="@\"$(MAJOR_VERSION)\""   \
