@@ -1412,7 +1412,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 
   contacts = [NSMutableArray array];
 
-  if (!_listRequiresDot)
+  if ([match length] > 0 || !_listRequiresDot)
     {
       ldapConnection = [self _ldapConnection];
       qualifier = [self _qualifierForFilter: match onCriteria: criteria];

@@ -951,7 +951,7 @@
 
   results = [NSMutableArray array];
 
-  if (!_listRequiresDot)
+  if ([filter length] > 0 || !_listRequiresDot)
     {
       cm = [GCSChannelManager defaultChannelManager];
       channel = [cm acquireOpenChannelForURL: _viewURL];
