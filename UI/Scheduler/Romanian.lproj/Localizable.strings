@@ -65,6 +65,7 @@
 "A total of %{0} events were imported in the calendar." = "Un total de %{0} evenimente au fost importate în calendar.";
 "Compose E-Mail to All Attendees" = "Compune un e-mail către toți participanții";
 "Compose E-Mail to Undecided Attendees" = "Compune un e-mail către participanții indeciși";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* Relative dates */
 "Yesterday" = "Ieri";

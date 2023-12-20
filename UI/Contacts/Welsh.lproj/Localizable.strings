@@ -193,6 +193,7 @@
 "Work" = "Gwaith";
 "Mobile" = "Symudol";
 "Pager" = "Peiriant galw";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* categories */
 "contacts_category_labels" = "Cydweithiwr, Cystadleuydd, Cwsmer, Ffrind, Teulu, Partner Busnes, Darparwr, Y Wasg, Pwysigyn";

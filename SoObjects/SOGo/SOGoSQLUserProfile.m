@@ -102,10 +102,12 @@ static const NSString *kCDefaultsLenKey = @"kCDefaultsLenKey";
   EOAdaptorChannel *channel;
   NSDictionary *row;
   NSException *ex;
-  NSString *sql, *value;
+  NSString *sql, *result;
+  id value;
   NSArray *attrs;
 
   value = nil;
+  result = nil;
 
   cm = [GCSChannelManager defaultChannelManager];
   channel = [cm acquireOpenChannelForURL: tableURL];
@@ -136,6 +138,12 @@ static const NSString *kCDefaultsLenKey = @"kCDefaultsLenKey";
           value = [row objectForKey: fieldName];
           if (![value isNotNull])
             value = nil; /* we discard any NSNull instance */
+
+          if (value && [value isKindOfClass: [NSData class]]) {
+            result = [NSString stringWithUTF8String: [value bytes]];
+          } else if (value && [value isKindOfClass: [NSString class]]) {
+            result = value;
+          }
         }
 
       [cm releaseChannel: channel];
@@ -147,7 +155,7 @@ static const NSString *kCDefaultsLenKey = @"kCDefaultsLenKey";
             tableURL];
     }
 
-  return value;
+  return result;
 }
 
 - (NSString *) generateSQLForInsert: (NSString *) jsonRepresentation

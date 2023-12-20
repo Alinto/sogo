@@ -104,11 +104,13 @@
                       <var:string label:value="Import"/>
                     </md-button>
                   </md-menu-item>
-                  <md-menu-item>
-                    <md-button type="button" ng-click="folder.exportCards(false)">
-                      <var:string label:value="Export"/>
-                    </md-button>
-                  </md-menu-item>
+                  <var:if condition="isContactExportEnabled">
+                    <md-menu-item>
+                      <md-button type="button" ng-click="folder.exportCards(false)">
+                        <var:string label:value="Export"/>
+                      </md-button>
+                    </md-menu-item>
+                  </var:if>
                   <var:if condition="isContactSharingEnabled">
                     <md-menu-divider><!-- divider --></md-menu-divider>
                     <md-menu-item>
@@ -120,7 +122,7 @@
                   <md-menu-divider><!-- divider --></md-menu-divider>
                   <md-menu-item>
                     <md-button ng-click="folder.downloadProvisioningProfile()">
-                       <var:string label:value="Download configuration profile"/>
+                      <var:string label:value="Download iOS - MacOS configuration profile"/>
                     </md-button>
                   </md-menu-item>
                 </md-menu-content>
@@ -208,7 +210,7 @@
                   <md-menu-divider><!-- divider --></md-menu-divider>
                   <md-menu-item>
                     <md-button ng-click="folder.downloadProvisioningProfile()">
-                       <var:string label:value="Download configuration profile"/>
+                      <var:string label:value="Download iOS - MacOS configuration profile"/>
                     </md-button>
                   </md-menu-item>
                 </md-menu-content>
@@ -219,7 +221,8 @@
         <!-- Remote/domain addressbooks -->
         <section>
           <md-subheader class="sg-md-subheader--with-secondary-icon"
-                        md-colors="::{background: 'default-background-300'}">
+                        md-colors="::{background: 'default-background-300'}"
+                        ng-if="app.service.$remotes.length > 0">
             <var:string label:value="Global Addressbooks"/>
           </md-subheader>
           <md-list>

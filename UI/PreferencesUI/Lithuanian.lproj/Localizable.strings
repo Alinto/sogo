@@ -59,7 +59,7 @@
 "Disable auto reply at" = "Išjungti autoatsakiklį";
 "Enable auto reply on these days" = "Įjungti autoatsakiklį šiomis dienomis";
 "Always send vacation message response" = "Visada siųsti atostogų žinutę";
-"The vacation message is sent prior to apply your filters." = "Atostogų žinutė siunčiama prieš pritaikant jūsų filtrus.";
+"The vacation message is sent prior to apply your filters." = "Atostogų žinutė siunčiama prieš taikant jūsų filtrus.";
 "Discard incoming mails during vacation" = "Nepriimti gaunamų laiškų atostogų metu";
 "The vacation message is sent but incoming messages are not delivered to your inbox." = "Atostogų žinutė yra išsiunčiama, bet įeinantys laiškai nėra pristatomi į jūsų pašto dėžutę.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
@@ -71,7 +71,7 @@
 /* forward messages */
 "Forward incoming messages" = "Persiųsti gaunamus laiškus";
 "Always forward" = "Visada persiųsti";
-"Incoming messages are forwarded prior to apply your filters." = "Gaunami laiškai yra persiunčiami prieš pritaikant Jūsų filtrus";
+"Incoming messages are forwarded prior to apply your filters." = "Gaunami laiškai persiunčiami prieš taikant Jūsų filtrus.";
 "Keep a copy" = "Pasilikti kopiją";
 "Enter an email" = "Įveskite el. pašto adresą";
 "Add another email" = "Įveskite kitą el. pašto adresą";
@@ -154,7 +154,7 @@
 "Calendar categories must have unique names." = "Kalendoriaus kategorijos turi turėti unikalius pavadinimus.";
 
 /* Default Calendar */
-"Default calendar" = "Numatysasis kalendorius";
+"Default calendar" = "Numatytasis kalendorius";
 "selectedCalendar" = "Pasirinktas kalendorius";
 "personalCalendar" = "Asmeninis kalendorius";
 "firstCalendar" = "Pirmas įgalintas kalendorius";
@@ -181,7 +181,7 @@
 "IMAP labels must have unique names." = "IMAP etiketės turi turėti unikalius pavadinimus.";
 "New label" = "Nauja etiketė";
 "Show subscribed mailboxes only" = "Rodyti tik pasirašytas pašto dėžutes";
-"Synchronize only default mail folders (EAS)" = "Sinchronizuoti tik numatytus pašto aplankus (EAS)";
+"Synchronize only default mail folders (EAS)" = "Sinchronizuoti tik numatytuosius pašto aplankus (EAS)";
 "Fetch count of unseen messages for all mailboxes" = "Skaičiuoti gautų laiškų skaičių visoms pašto dėžutėms";
 "Sort messages by threads" = "Rūšiuoti pranešimus pagal temas";
 "Always open mail composer" = "Visada atsidaryti pašto redaktorių";
@@ -193,20 +193,22 @@
 "messageforward_inline" = "Pagal";
 "messageforward_attached" = "Kaip priedą";
 "When replying to a message" = "Kai atsakote į pranešimą";
-"replyplacement_above" = "Pradėkite mano atsakymą virš citatos";
-"replyplacement_below" = "Pradėkite mano atsakymą po citata";
+"replyplacement_above" = "Rašyti atsakymą virš originalo";
+"replyplacement_below" = "Rašyti atsakymą po originalu";
 "And place my signature" = "Ir mano parašą";
 "signatureplacement_above" = "po mano atsakymu";
-"signatureplacement_below" = "po citata";
+"signatureplacement_below" = "po originalu";
 "Compose messages in" = "Kurti pranešimus";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Paprastas tekstas";
 "Insert signature on new message" = "Parašas po pranešimu";
 "Insert signature on reply" = "Parašas po atsakymu";
 "Insert signature on forward" = "Parašas po persiunčiamu laišku";
+"Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
+"Hide inline attachments" = "Hide inline attachments";
 
 /* Base font size for messages composed in HTML */
-"Default font size" = "Numatytas teksto dydis";
+"Default font size" = "Numatytasis teksto dydis";
 
 "Display remote inline images" = "Rodyti nuotolinius įdėtus vaizdus";
 "displayremoteinlineimages_never" = "Niekada";
@@ -232,7 +234,7 @@
 "Port" = "Prievadas";
 "Encryption" = "Šifravimas";
 "None" = "Nė vienas";
-"User Name" = "Vartotojo vardas\n";
+"User Name" = "Vartotojo vardas";
 "Full Name" = "Pilvas vardas";
 "Email" = "El. paštas";
 "Reply To Email" = "Atsakyti į elektroninį laišką";
@@ -286,7 +288,7 @@
 "Calendar Category" = "Kalendoriaus kategorija";
 "Add Calendar Category" = "Pridėti kalendoriaus kategoriją";
 "New category" = "Nauja kategorija";
-"Reset to defaults" = "Atkurti numatytus";
+"Reset to defaults" = "Atkurti numatytuosius";
 "Remove Calendar Category" = "Pašalinti kalendoriaus kategoriją";
 "Contact Category" = "Kontakto kategorija";
 "Add Contact Category" = "Pridėti kontakto kategoriją";
@@ -320,7 +322,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
-"Galician" = "Galician";
+"Galician" = "Galego";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -404,7 +406,7 @@
 "Size (Kb)" = "Dydis (Kb)";
 "Header" = "Antraštė";
 "Body" = "Turinys";
-"Flag the message with" = "Pažymėti laiška su";
+"Flag the message with" = "Pažymėti laišką su";
 
 /* Select field label of "flag message" mail filter action */
 "Flag" = "Vėliava";
@@ -507,7 +509,7 @@
 "Let SOGo handle everything" = "Tegul SOGo viską tvarko";
 
 /* Password Recovery */
-"Password recovery mode" = "Slaptažodžio grąžinimas";
+"Password recovery mode" = "Password recovery mode";
 "Question" = "Klausimas";
 "Secondary e-mail" = "Antras el. paštas";
 "Answer" = "Atsakymas";

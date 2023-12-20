@@ -65,6 +65,7 @@
 "A total of %{0} events were imported in the calendar." = "Total %{0} Acara yang diimpor di kalender";
 "Compose E-Mail to All Attendees" = "Tulis E-mail untuk semua peserta";
 "Compose E-Mail to Undecided Attendees" = "Tulis E-mail untuk peserta yang belum diputuskan";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* Relative dates */
 "Yesterday" = "Kemarin";

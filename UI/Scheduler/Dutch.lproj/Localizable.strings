@@ -65,6 +65,7 @@
 "A total of %{0} events were imported in the calendar." = "Een totaal van %{0} afspraken is geïmporteerd naar de kalender.";
 "Compose E-Mail to All Attendees" = "E-mail aan alle deelnemers opstellen";
 "Compose E-Mail to Undecided Attendees" = "E-mail opstellen aan deelnemers die nog niet hebben gereageerd";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* Relative dates */
 "Yesterday" = "Gisteren";

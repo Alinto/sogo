@@ -27,6 +27,7 @@
       this.service = AddressBook;
       this.selectedFolder = stateAddressbook;
       this.mode = { search: false, multiple: 0 };
+      this.allSelected = false;
 
 
       _registerHotkeys(hotkeys);
@@ -307,8 +308,9 @@
 
     this.selectAll = function() {
       _.forEach(this.selectedFolder.$cards, function(card) {
-        card.selected = true;
+        card.selected = !vm.allSelected;
       });
+      vm.allSelected = !vm.allSelected;
       this.mode.multiple = this.selectedFolder.$cards.length;
     };
 

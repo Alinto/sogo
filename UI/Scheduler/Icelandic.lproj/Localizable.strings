@@ -65,6 +65,7 @@
 "A total of %{0} events were imported in the calendar." = "Alls voru %{0} viðburðir fluttir inn í dagatalið.";
 "Compose E-Mail to All Attendees" = "Skrifa tölvubréf til allra þáttakenda";
 "Compose E-Mail to Undecided Attendees" = "Skrifa tölvubréf til þáttakenda sem ekki hafa ákveðið sig";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* Relative dates */
 "Yesterday" = "Yesterday";

@@ -184,10 +184,6 @@
             },
             data: { userName: userName, newPassword: newPassword, oldPassword: oldPassword, token: token }
           }).then(function() {
-            // Clean cookies for reauthenticate
-            $cookies.remove('XSRF-TOKEN', { path: '/SOGo/' });
-            $cookies.remove('0xHIGHFLYxSOGo', { path: '/SOGo/' });
-
             d.resolve({url: redirectUrl(userName, domain)});
           }, function(response) {
             var error,

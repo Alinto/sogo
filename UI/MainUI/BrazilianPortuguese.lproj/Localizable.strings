@@ -45,7 +45,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
-"Galician" = "Galician";
+"Galician" = "Galego";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -77,7 +77,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "Sobre";
-"AboutBox" = "Developed by Inverse and Alinto, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
+"AboutBox" = "Desenvolvido pela Inverse e Alinto, o SOGo é um servidor de groupware completo, com foco em escalabilidade e simplicidade.<br/><br/>\nO SOGo oferece uma interface web rica baseada em AJAX e suporta vários clientes nativos por meio do uso de protocolos padrão, como CalDAV e CardDAV.<br/><br/>\nO SOGo é distribuído sob a licença <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> versão 2 ou posterior e partes são distribuídas sob a licença GNU LGPL versão 2. Este é um software livre: você tem a liberdade de modificá-lo e redistribuí-lo. Não há GARANTIA, na medida permitida por lei.<br/><br/>\nConsulte <a href=\"http://www.sogo.nu/en/support/community.html\">esta página</a> para várias opções de suporte.";
 "Your account was locked due to too many failed attempts." = "Sua conta foi bloqueada devido a muitas tentativas fracassadas.";
 "Your account was locked due to an expired password." = "Sua conta foi bloqueada devido a uma senha expirada.";
 "Login failed due to unhandled error case" = "O Login falhou pelo seguinte erro";
@@ -113,17 +113,17 @@
 "Missing type parameter" = "Faltando tipo de parâmetro";
 
 /* Password Recovery */
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password lost" = "Password lost";
-"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
-"Invalid secret question answer" = "Invalid secret question answer";
-"Next" = "Next";
-"Back" = "Back";
-"Please enter a new password below" = "Please enter a new password below";
-"A link will be sent to %{0}" = "A link will be sent to %{0}";
-"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
-"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
-"Password recovery email in error" = "Password recovery email in error";
-"Password reset" = "Password reset";
-"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";
+"Secondary e-mail" = "E-mail secundário";
+"Answer" = "Resposta";
+"Password lost" = "Senha perdida";
+"No password recovery method has been defined for this user" = "Nenhum método de recuperação de senha foi definido para este usuário.";
+"Invalid secret question answer" = "Resposta inválida à pergunta secreta";
+"Next" = "Próximo";
+"Back" = "Voltar";
+"Please enter a new password below" = "Por favor, insira uma nova senha abaixo";
+"A link will be sent to %{0}" = "Um link será enviado para %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "Um link de redefinição de senha foi enviado, por favor verifique sua caixa de e-mail de recuperação e clique no link.";
+"Invalid configuration for email password recovery" = "Configuração inválida para recuperação de senha de email";
+"Password recovery email in error" = "E-mail de recuperação de senha com erro";
+"Password reset" = "Redefinição de senha";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Olá %{0},\nHouve uma solicitação para alterar sua senha!\n\nSe você não fez essa solicitação, por favor, ignore este e-mail.\n\nCaso contrário, clique neste link para alterar sua senha: %{1}";

@@ -204,6 +204,8 @@
 "Insert signature on new message" = "Sett inn signatur på ny melding";
 "Insert signature on reply" = "Sett inn signatur på svar";
 "Insert signature on forward" = "Sett inn signatur på videresending";
+"Show recipients or sender full email in mailboxes" = "Vis mottakere eller avsender av hele e-posten i innboksene";
+"Hide inline attachments" = "Skjul innfelte vedlegg";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Standard skriftstørrelse ";
@@ -507,7 +509,7 @@
 "Let SOGo handle everything" = "La SOGo håndtere alt. ";
 
 /* Password Recovery */
-"Password recovery mode" = "Tilbakestille passord";
+"Password recovery mode" = "Tilbakestilling av passord";
 "Question" = "Spørsmål";
 "Secondary e-mail" = "Sekundær e-post";
 "Answer" = "Svar";

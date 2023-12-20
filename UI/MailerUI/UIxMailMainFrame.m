@@ -597,6 +597,20 @@
   return result;
 }
 
+- (BOOL) isMailExportEnabled {
+  BOOL result;
+  SOGoSystemDefaults *sd;
+
+  result = YES;
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if (nil != [sd disableExport] 
+    && NSNotFound != [[sd disableExport] indexOfObject: kDisableSharingMail]) {
+      result = NO;
+  }
+
+  return result;
+}
+
 @end /* UIxMailMainFrame */
 
 @interface UIxMailFolderTemplate : UIxComponent

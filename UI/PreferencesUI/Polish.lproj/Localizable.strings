@@ -24,7 +24,7 @@
 "Vacation" = "Nieobecność";
 "Forward" = "Przekazywanie";
 "Password" = "Hasło";
-"Notification" = "Notification";
+"Notification" = "Powiadomienie";
 "Categories" = "Kategorie";
 "Appointments invitations" = "Ograniczanie zaproszeń";
 "Name" = "Nazwa";
@@ -46,10 +46,10 @@
 "Days between responses" = "Dni pomiędzy odpowiedziami";
 "Do not send responses to mailing lists" = "Nie wysyłaj odpowiedzi do grup pocztowych";
 "Activation Constraints" = " Ograniczenia aktywacji";
-"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Dopasuj niezależnie zakresy dni i godzin i/lub połącz je z konkretnymi dniami tygodnia, aby dostosować filtry wakacyjne do swoich preferencji";
 "Enable auto reply on" = "Włącz autoodpowiedź w";
 "First day of vacation" = "Pierwszy dzień nieobecności";
-"Disable auto reply after" = "Disable auto reply after";
+"Disable auto reply after" = "Zablokuj autoodpowiedź po";
 "Last day of vacation" = "Ostatni dzień nieobecności";
 "Enter date" = "Wprowadź datę";
 /* Enable auto reply at this time of the day */
@@ -82,9 +82,9 @@
 "You are not allowed to forward your messages to this domain:" = "Nie masz uprawnień, by przekazywać wiadomości do tej domeny:";
 
 /* notification */
-"Notify incoming messsages" = "Notify incoming messsages";
-"Notification Message Sent" = "Notification message sent";
-"Notification Message" = "Notification of new message on %{0}";
+"Notify incoming messsages" = "Powiadomienie o przychodzącej wiadomości";
+"Notification Message Sent" = "Powiadomienie o wysłaniu wiadomości";
+"Notification Message" = "Powiadomienie o nowej wiadomości w %{0}";
 
 /* d & t */
 "Time Zone" = "Strefa czasowa";
@@ -195,15 +195,17 @@
 "When replying to a message" = "Gdy odpowiadam na wiadomość";
 "replyplacement_above" = "Rozpocznij moją odpowiedź powyżej cytatu";
 "replyplacement_below" = "Rozpocznij moją odpowiedź poniżej cytatu";
-"And place my signature" = "i wstaw mój podpis";
+"And place my signature" = "i wstaw moją sygnaturę";
 "signatureplacement_above" = "poniżej odpowiedzi";
 "signatureplacement_below" = "poniżej cytatu";
 "Compose messages in" = "Twórz wiadomości";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "czysty tekst";
-"Insert signature on new message" = "Insert signature on new message";
-"Insert signature on reply" = "Insert signature on reply";
-"Insert signature on forward" = "Insert signature on forward";
+"Insert signature on new message" = "Wstaw sygnaturę w nowej wiadomości";
+"Insert signature on reply" = "Wstaw sygnaturę w odpowiedzi";
+"Insert signature on forward" = "Wstaw sygnaturę przy przekierowaniu";
+"Show recipients or sender full email in mailboxes" = "Pokazuj w skrzynkach pocztowych pełne adresy e-mail odbiorców lub nadawców";
+"Hide inline attachments" = "Ukryj podlinkowane w treści załączniki";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Podstawowy rozmiar czcionki";
@@ -257,7 +259,7 @@
 "Digitally sign the message by default" = "Domyślnie podpisuj cyfrowo wiadomość";
 "Always try to encrypt the message" = "Zawsze próbuj zaszyfrować wiadomość";
 "An error occurred while importing the certificate. Verify your password." = "Błąd w trakcie importu certyfikatu. Sprawdź hasło.";
-"Data too big. Please contact technical support." = "Data too big. Please contact technical support.";
+"Data too big. Please contact technical support." = "Zbyt dużo danych. Skontaktuj się z pomocą techniczną.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Dodatkowe parametry";
@@ -268,11 +270,11 @@
 "Confirmation" = "Potwierdzenie";
 "Change" = "Zmiana";
 "Passwords don't match" = "Hasła nie są takie same";
-"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
-"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
-"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0} special symbols";
-"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+"POLICY_MIN_LOWERCASE_LETTER" = "Co najmniej %{0} małych liter";
+"POLICY_MIN_UPPERCASE_LETTER" = "Co najmniej %{0} dużych liter";
+"POLICY_MIN_DIGIT" = "Co najmniej %{0} cyfr";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Co najmniej %{0} znaków specjalnych";
+"POLICY_MIN_LENGTH" = "Długość co najmniej %{0} znaków";
 
 
 /* Event+task classifications */
@@ -320,7 +322,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
-"Galician" = "Galician";
+"Galician" = "Galego";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -417,7 +419,7 @@
 
 "Keep the message" = "Zatrzymaj wiadomość";
 "Forward the message to" = "Przekaż wiadomość do";
-"Notify the message to" = "Notify the message to";
+"Notify the message to" = "Powiadomienie o wiadomości do";
 
 /* Input field label of "forward" mail filter action */
 "Email" = "E-mail";
@@ -498,8 +500,8 @@
 "Enable two-factor authentication using a TOTP application" = "Włącz dwuskładnikowe uwierzytelnianie przez aplikację TOTP";
 "You must enter this key into your TOTP application." = "Musisz wpisać ten klucz w aplikacji TOTP.";
 "If you do not and you log out you will not be able to login again." = "Jeśli tego nie zrobisz i wylogujesz się, nie będziesz w stanie ponownie się zalogować.";
-"Enter TOTP verification code :" = "Enter TOTP verification code :";
-"Invalid TOTP verification code" = "Invalid TOTP verification code";
+"Enter TOTP verification code :" = "Wprowadź kod TOTP:";
+"Invalid TOTP verification code" = "Błędny kod TOTP";
 
 /* External Sieve scripts */
 "An external Sieve script is active" = "Obecnie aktywny jest zewnętrzny skrypt Sieve";
@@ -507,9 +509,9 @@
 "Let SOGo handle everything" = "Pozwól SOGo zająć się wszystkim";
 
 /* Password Recovery */
-"Password recovery mode" = "Password recovery";
-"Question" = "Question";
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password recovery" = "Password recovery";
-"Password change" = "Password change";
+"Password recovery mode" = "Tryb odzyskiwania hasła";
+"Question" = "Pytanie";
+"Secondary e-mail" = "Dodatkowy e-mail";
+"Answer" = "Odpowiedź";
+"Password recovery" = "Odzyskiwanie hasła";
+"Password change" = "Zmiana hasła";

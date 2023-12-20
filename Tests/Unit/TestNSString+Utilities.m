@@ -105,6 +105,7 @@
   testEquals([[NSString stringWithString:@"<img vbscript:test"] stringWithoutHTMLInjection: NO], @"<img test");
   testEquals([[NSString stringWithString:@"<img javascript:test"] stringWithoutHTMLInjection: NO], @"<img test");
   testEquals([[NSString stringWithString:@"<img livescript:test"] stringWithoutHTMLInjection: NO], @"<img test");
+  testEquals([[NSString stringWithString:@"foobar <form action=\"\">bar</form>"] stringWithoutHTMLInjection: NO], @"foobar <for* action=\"\">bar</for*>");
   testEquals([[NSString stringWithString:@"foobar <iframe src=\"\">bar</iframe>"] stringWithoutHTMLInjection: NO], @"foobar <ifr*** src=\"\">bar</iframe>");
   testEquals([[NSString stringWithString:@"foobar <img onload=foo bar"] stringWithoutHTMLInjection: NO], @"foobar <img onl***=foo bar");
   testEquals([[NSString stringWithString:@"foobar <img onmouseover=foo bar"] stringWithoutHTMLInjection: NO], @"foobar <img onmouseo***=foo bar");

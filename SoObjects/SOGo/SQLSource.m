@@ -924,6 +924,22 @@
 - (NSArray *) fetchContactsMatching: (NSString *) filter
                        withCriteria: (NSArray *) criteria
                            inDomain: (NSString *) domain
+                           
+{
+  if ([filter length] > 0) {
+    return [self fetchContactsMatching: (NSString *) filter
+                       withCriteria: (NSArray *) criteria
+                           inDomain: (NSString *) domain
+                              limit: -1];
+  } else {
+    return [NSMutableArray array];
+  }
+}
+
+- (NSArray *)fetchContactsMatching: (NSString *)filter
+                      withCriteria: (NSArray *)criteria
+                          inDomain: (NSString *)domain
+                             limit: (int)limit
 {
   EOAdaptorChannel *channel;
   NSEnumerator *criteriaList;
@@ -994,6 +1010,8 @@
                 [sql appendFormat: @" AND %@ IS NULL", _domainField];
             }
 
+          if (limit > 0)
+            [sql appendFormat: @" ORDER BY c_cn ASC LIMIT %i", limit];
           ex = [channel evaluateExpressionX: sql];
           if (!ex)
             {

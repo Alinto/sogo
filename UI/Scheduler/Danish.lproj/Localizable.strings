@@ -65,6 +65,7 @@
 "A total of %{0} events were imported in the calendar." = "I alt %{0} begivenheder blev importeret i kalenderen.";
 "Compose E-Mail to All Attendees" = "Skriv besked til alle deltagere";
 "Compose E-Mail to Undecided Attendees" = "Skriv besked til ikke ubestemte deltagere";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS-konfigurationsprofil";
 
 /* Relative dates */
 "Yesterday" = "I går";

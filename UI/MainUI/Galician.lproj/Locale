@@ -1,7 +1,7 @@
 /* Galician */
 {
   NSLanguageName = "Galician";
-  NSFormalName = "Galician";
+  NSFormalName = "Galego";
   NSLocaleCode = "gl"; /* ISO 639-1 */
   NSLanguageCode = "glg"; /* ISO 639-2 */
   NSParentContext = "";

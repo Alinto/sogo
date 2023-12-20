@@ -65,6 +65,7 @@
 "A total of %{0} events were imported in the calendar." = "Mewngludwyd cyfanswm o %{0} digwyddiad i'r calendr.";
 "Compose E-Mail to All Attendees" = "Cyfansoddi E-bost i'r Holl Fynychwyr";
 "Compose E-Mail to Undecided Attendees" = "Cyfansoddi E-bost i bawb sydd heb benderfynu";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* Relative dates */
 "Yesterday" = "Ddoe";

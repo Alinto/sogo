@@ -64,6 +64,7 @@
   BOOL isHTML;
   BOOL sign;
   BOOL encrypt;
+  NSMutableArray *tmpFiles;
 
   // Used during S/MIME encryption
   NSMutableDictionary *certificates;

@@ -45,7 +45,7 @@
 "Reduce" = "Reduzir";
 
 /* tooltip */
-"Refresh" = "Refresh";
+"Refresh" = "Atualizar";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -109,7 +109,7 @@
 "Personal" = "Pessoal";
 "To Do" = "Tarefa";
 "Later" = "Adiar";
-"Forwarded" = "Forwarded";
+"Forwarded" = "Encaminhado";
 "Return Receipt Sent" = "Confirmação de recebimento enviada";
 "a2_Sunday" = "Dom";
 "a2_Monday" = "Seg";
@@ -227,9 +227,9 @@
 "Move forward" = "Mover para frente";
 
 /* Password Recovery */
-"passwordRecovery_Disabled" = "Disabled";
-"passwordRecovery_SecretQuestion" = "Secret question";
-"passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
-"passwordRecovery_SecretQuestion2" = "What was your first car ?";
-"passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
-"passwordRecovery_SecondaryEmail" = "Secondary E-mail";
+"passwordRecovery_Disabled" = "Desabilitado";
+"passwordRecovery_SecretQuestion" = "Pergunta secreta";
+"passwordRecovery_SecretQuestion1" = "Qual é o nome do seu primeiro animal de estimação?";
+"passwordRecovery_SecretQuestion2" = "Qual foi o seu primeiro carro?";
+"passwordRecovery_SecretQuestion3" = "Qual é o seu filme favorito ?";
+"passwordRecovery_SecondaryEmail" = "E-mail secundário";

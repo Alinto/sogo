@@ -609,6 +609,18 @@ static int cssEscapingCount;
   return newString;
 }
 
+
+- (NSString *) mailDomain
+{
+  NSArray *mailSeparated;
+
+  mailSeparated = [self componentsSeparatedByString: @"@"];
+  if([mailSeparated count] == 2)
+    return [mailSeparated objectAtIndex: 1];
+  [self logWithFormat: @"Error while extracting domain from : %@", self];
+  return nil;
+}
+
 - (NSString *) pureEMailAddress
 {
   NSString *pureAddress;
@@ -977,6 +989,18 @@ static int cssEscapingCount;
       regex = [NSRegularExpression regularExpressionWithPattern:@"<[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*i[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*f[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*r[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*a[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*m[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*e" 
                                   options: NSRegularExpressionCaseInsensitive error:&error];
       newResult = [regex stringByReplacingMatchesInString:result options:0 range:NSMakeRange(0, [result length]) withTemplate:@"<ifr***"];
+      result = [NSString stringWithString: newResult];
+
+      // Remove <form
+      regex = [NSRegularExpression regularExpressionWithPattern:@"<[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*f[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*o[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*r[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*m" 
+                                  options: NSRegularExpressionCaseInsensitive error:&error];
+      newResult = [regex stringByReplacingMatchesInString:result options:0 range:NSMakeRange(0, [result length]) withTemplate:@"<for*"];
+      result = [NSString stringWithString: newResult];
+
+      // Remove </form
+      regex = [NSRegularExpression regularExpressionWithPattern:@"<[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*/[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*f[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*o[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*r[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*m" 
+                                  options: NSRegularExpressionCaseInsensitive error:&error];
+      newResult = [regex stringByReplacingMatchesInString:result options:0 range:NSMakeRange(0, [result length]) withTemplate:@"</for*"];
       result = [NSString stringWithString: newResult];
 
       // Remove onload

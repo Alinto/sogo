@@ -13,10 +13,10 @@
  * (1) https://ckeditor.com/cke4/builder
  *     Visit online builder to build CKEditor from scratch.
  *
- * (2) https://ckeditor.com/cke4/builder/cf468bcabf9e91f643b535dd7f5a98ac
+ * (2) https://ckeditor.com/cke4/builder/ca0c67134ee4ddfe3d60aaf021104a9d
  *     Visit online builder to build CKEditor, starting with the same setup as before.
  *
- * (3) https://ckeditor.com/cke4/builder/download/cf468bcabf9e91f643b535dd7f5a98ac
+ * (3) https://ckeditor.com/cke4/builder/download/ca0c67134ee4ddfe3d60aaf021104a9d
  *     Straight download link to the latest version of CKEditor (Optimized) with the same setup as before.
  *
  * NOTE:
@@ -44,6 +44,7 @@ var CKBUILDER_CONFIG = {
 		'README.md',
 		'bender-err.log',
 		'bender-out.log',
+		'bender-runner.config.json',
 		'bender.ci.js',
 		'bender.js',
 		'dev',
@@ -58,7 +59,6 @@ var CKBUILDER_CONFIG = {
 		'about' : 1,
 		'autogrow' : 1,
 		'autolink' : 1,
-		'base64image' : 1,
 		'basicstyles' : 1,
 		'bidi' : 1,
 		'blockquote' : 1,

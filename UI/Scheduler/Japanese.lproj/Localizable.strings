@@ -65,6 +65,7 @@
 "A total of %{0} events were imported in the calendar." = "合計で%{0}件のイベントをカレンダーにインポートしました。";
 "Compose E-Mail to All Attendees" = "すべての出席者にメールを作成";
 "Compose E-Mail to Undecided Attendees" = "出席が未定の参加者にメールを作成";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* Relative dates */
 "Yesterday" = "昨日";

@@ -21,7 +21,7 @@ devices with SOGo.
 The instructions are based on version {release_version} of SOGo.
 
 The latest version of this guide is available
-at https://sogo.nu/downloads/documentation.html.
+at https://www.sogo.nu/support.html#/documentation.
 
 Introduction
 ------------
@@ -693,6 +693,13 @@ Defaults to `NO` when unset.
 |S |SOGoDisableSharing
 |List of modules where sharing should be disabled, for example `(Mail, Calendar)`. Modules can be `Mail`, `Contacts` and `Calendar`. Default value empty list (sharing enabled for everybody).
 
+|S |SOGoDisableSharingAnyAuthUser
+|List of modules where sharing with any authenticated user option should be disabled, for example `(Mail, Calendar)`. Modules can be `Mail`, `Contacts` and `Calendar`. Default value empty list (sharing enabled for everybody).
+
+|S |SOGoDisableExport
+|List of modules where export should be disabled, for example `(Mail, Calendar)`. Modules can be `Mail`, `Contacts` and `Calendar`. Default value empty list (export enabled for everybody).
+
+
 |S |SOGoPasswordChangeEnabled
 |Parameter used to allow or not users to change their passwords from
 SOGo.
@@ -819,8 +826,17 @@ specified as an array of dictionaries.
 |D |SOGoCreateIdentitiesDisabled
 |Disable identity creation for users in preferences. If `YES`, users won't be able to add new identities and will allow to change only full name, signature and default identity. Default value is `NO`. Note : If this settings is set to `YES`, it will not be possible to crete auxiliary mail accounts.
 
+<<<<<<< HEAD
 |S |SOGoURLEncryptionEnabled
 |Enable URL encryption to make SOGo GDPR compatible. Setting this parameter to `YES` will encrypt username in URL. The encryption data are cached to avoid high cpu usage. If the encryption is enabled, the DAV url will change. Default value is `NO`.
+||||||| 65f833625
+=======
+|S |SOGoGlobalAddressBookFirstEntries
+|Display first entries in Global Address Book. Default value is `NO`. If source is LDAP, the LDAP overlay `sssvlv` must be enabled on the system for server side sorting.
+
+|S |SOGoGlobalAddressBookFirstEntriesCount
+|Number of entries displayed when `SOGoGlobalAddressBookFirstEntries` is enabled. Default value is `100`.
+>>>>>>> master
 
 |S |SOGoURLEncryptionPassphrase
 |Passphrase for `SOGoURLEncryptionEnabled`. The string must be 128 bits (16 characters). If this settings change, the cache server must be restarted, and the DAV url will change. Default value is `SOGoSuperSecret0`.
@@ -2277,12 +2293,14 @@ Defaults to `NO` when unset.
 |D |SOGoForwardConstraints
 |Parameter used to set constraints on possible addresses used when
 automatically forwarding mails. When set to `0` (default), no constraint
-is enforced. When set to `1`, only internal domains can be used. When
-set to `2`, only external domains can be used.
+is enforced. When set to `1`, only internal domains can be used.
+When set to `2`, only external domains defined in `SOGoForwardConstraintsDomains`
+can be used. When set to `3`, internal domains and other domains defined
+in `SOGoForwardConstraintsDomains` can be used.
 
 |D |SOGoForwardConstraintsDomains
-|Parameter used to set which domains are allowed as external domains
-when SOGoForwardConstraints is set to `2`. For example, setting:
+|Parameter used to set which external domains are allowed
+when SOGoForwardConstraints is set to `2` or `3`. For example, setting:
 
 SOGoForwardConstraintsDomains = ("gmail.com", "googlemail.com");
 
@@ -2484,6 +2502,13 @@ Defaults to `NO` when unset.
 * `attached`
 
 Defaults to `inline` when unset.
+
+|U |SOGoMailDisplayFullEmail
+|Show recipients or sender full email in mailboxes if set to `YES`. Default value is `NO`.
+
+|U |SOGoMailHideInlineAttachments
+|Hide inline message as attachements if set to `YES`. Default value is `NO`.
+
 
 |U |SOGoMailCustomFullName
 |The string to use as full name when composing an email, if
@@ -3210,7 +3235,7 @@ your site. However, be aware that in order to use the SOGo Integrator
 plug in, you will need to repackage it with specific modifications.
 Please refer to the documentation published online:
 
-https://sogo.nu/downloads/documentation.html
+https://www.sogo.nu/support.html#/documentation
 
 If you only use the SOGo Connector plug in, you can still easily access
 your data.
@@ -3246,6 +3271,12 @@ as the Account URL, an URL such as:
 http://127.0.0.1/SOGo/dav/jdoe/
 
 Note that the trailing slash is important for the old Apple iCal 3 application.
+
+Since SOGo 5.9.1, calendar can be installed using provisioning profiles. On the calendar interface next to the calendar name (eg `Personal`), click on the three dots button and click on `Download iOS - MacOS configuration profile`.
+You have to add the profile to your device :
+
+* Go to Settings / Profiles / Click on + / Continue
+* Type your SOGo account password and click on install
 
 Apple AddressBook
 ~~~~~~~~~~~~~~~~~
@@ -3290,6 +3321,12 @@ The virtual host should be defined like:
 This configuration is also required if you want to configure a CardDAV
 account on an Apple iOS device (version 4.0 and later).
 
+Since SOGo 5.9.1, address book can be installed using provisioning profiles. On the address book interface next to the address book name (eg `Personal`), click on the three dots button and click on `Download iOS - MacOS configuration profile`.
+You have to add the profile to your device :
+
+* Go to Settings / Profiles / Click on + / Continue
+* Type your SOGo account password and click on install
+
 Microsoft ActiveSync
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -3299,6 +3336,488 @@ any mobile devices that support Microsoft ActiveSync. Microsoft Outlook
 
 The Microsoft ActiveSync server URL is generally something
 like: `http://127.0.0.1/Microsoft-Server-ActiveSync`.
+
+Using sogo-tool
+---------------
+The command _sogo-tool_ allows to do some operations on database and sieve filter. It is included with
+the sogo package on Debian/Ubuntu but must be installed manually on RHEl/CentOS:
+
+ yum install sogo-tool
+
+*_WARNING_: Use sogo-tool with full awareness of what you are doing. This is an admin tool that can cause loss of data
+or completely make the webmail unusable by a user.*
+
+sogo-tool backup/restore
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+The backup tool saves the information of a user into a file. The information saved are its preferences, its events and its contacts.
+
+ sogo-tool backup directory ALL|user1 [user2] ...
+
+* First argument, *directory* must be a path, only the last subdirectory will be created, the previous ones must exist.
+* Second argument is *ALL* to backup all users or put each user space-separated.
+* Each user's info will take one file, the filename will be the username.
+* The files are readable but in a specific format for _sogo-tool restore_.
+
+Example:
+----
+sogo-tool backup /tmp/foo ALL # Will save all users into /tmp/foo
+sogo-tool backup /etc/sogo_backup/foo user1 user2 # Will save only user1 and user2. The directory /etc/sogo_backup must exist.
+----
+
+Using the files produced by the backup, you can restore all or some information of a user with the _restore_ command:
+
+ sogo-tool restore [-l|-p|-f/-F folder/ALL] [-c credentialFile] directory user
+
+* First argument must be one of the four mode options *-l*, *-p*, *-f* or *-F*.
+* Second, optional, is *-c* with the credential file. Only useful with *-p* mode.
+* *directory* is the path where the backup file is.
+* *user* is the name of the backup file, which is the username if you use the _backup_ tool.
+
+The differents mode are:
+
+* *-l* will only list the folders (meaning calendar and address book) that would be restored with *-f* or *-F*.
+
+Example:
+----
+sogo-tool restore -l /tmp/backup user1
+----
+Result:
+----
+Calendar/60C8-65323D80-7-4D9F7D80 (new_calendar)
+Calendar/personal (Personal Calendar)
+Contacts/personal (Personal Address Book)
+----
+
+* *-p* will restore the user's preferences. If the user has an active sieve script (filter, vacation, forward...) you must provide a credential file with
+the parameters *-c*. The credential file  is a simple one-line file that contains the "username:password" of an admin account of your imap/sieve server.
+
+Example:
+----
+sogo-tool restore -p /tmp/backup user1
+sogo-tool restore -p -c /var/sogo/cred /tmp/backup user1
+----
+
+* *-f* will restore the events/contacts of folders (calendar and address book) from the backup file that don't exist in the database. If the event/contact 
+was deleted but is in the backup file, it will be restored. If the event/contact exist, nothing will be done even if it has been modified compared to the
+backup file. If a whole folder has been deleted but is in the backup file, it will be restored. *-f* expect a value that can be ALL to restore all folders,
+or the name of the folder to restore. You can list them with the *-l* mode.
+
+Example:
+----
+sogo-tool restore -f ALL /tmp/backup user1
+sogo-tool restore -f "Contacts/personal" tmp/backup user1
+sogo-tool restore -f "Calendar/60C8-65323D80-7-4D9F7D80" tmp/backup user1
+----
+The commands will either prints out nothing or any events/contacts restored:
+----
+restoring record '60CA-65323D00-1-680B0A00.ics'
+restoring record '60C8-65323D00-1-4D9F7D80.vcf'
+restoring record '60C8-65323D80-9-4D9F7D80.ics'
+----
+
+* *-F* has the same behavior as *-f* but it will first delete all contacts and events in database before restoring the backup.
+So if an event/contact is not in the backup file, it will be lost. If a folder exists but is not in the backup file, nothing will happen
+to it and its content.
+
+*-F* expect a value that can be ALL to restore all folders, or the name of the folder to restore. You can list them with the *-l* mode.
+
+Example:
+----
+sogo-tool restore -F ALL /tmp/backup user1
+sogo-tool restore -F "Contacts/personal" tmp/backup user1
+sogo-tool restore -F "Calendar/60C8-65323D80-7-4D9F7D80" tmp/backup user1
+----
+
+sogo-tool checkup
+~~~~~~~~~~~~~~~~~
+
+Check the events and contacts data's integrity of a user
+
+ sogo-tool checkup [-d] user...
+
+* *-d*, optional, will delete all corrupted data.
+* *user* is a single username or  multiple user each space-separated.
+
+Will print out nothing if no corrupted data were found or one of the following messages:
+
+* Corrupted calendar item (missing tags) in path <path> with c_name = <ics_id>
+* Corrupted calendar item (unparsable) in path <path> with c_name = <ics_id>
+* Missing start date of event in path <path> with c_name = <ics_id> (<event_name>)"
+* Missing end date of event in path <path> with c_name = <ics_id> (<event_name>)"
+* Start date (<start_date>) is not before end date (<end_date>) for event in path <path> with c_name = <ics_id> (<event_name>)
+* Corrupted card item (unparsable) in path <path> with c_name = <vcard_id>
+
+It can also print log from SOGo if it raise errors:
+
+* <0x0x55e0956c4d00[VSCardSaxDriver]> serious inconsistency among begin/end tags
+
+Example:
+----
+sogo-tool checkup user1
+sogo-tool checkup -d user1
+----
+
+sogo-tool cleanup
+~~~~~~~~~~~~~~~~~
+
+Will purge all user's deleted events and contacts which the deletion is older than a number of days.
+
+ sogo-tool cleanup [days] ALL|user1 [user2]
+
+* *days* the age of deleted records to purge in days
+* Second argument is *ALL* to purge events of all users or put each user space-separated.
+
+Example:
+----
+sogo-tool cleanup 30 ALL
+sogo-tool cleanup 30 user1 user2
+----
+Outputs:
+----
+Purged 3 records from folder /Users/user1/Calendar/60C7-65325300-9-18F39AA0
+Purged 1 records from folder /Users/user1/Calendar/60C8-65323D80-7-4D9F7D80
+Purged 0 records from folder /Users/user1/Calendar/personal
+Purged 0 records from folder /Users/user1/Contacts/personal
+Purged 5 records from folder /Users/user2/Calendar/personal
+----
+
+
+sogo-tool create-folder
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Create a folder (Calendar or Address Book) for a user.
+
+ create-folder user type [displayname ...]
+
+* *user* is the name of the user
+* *type* is either "Calendar" or "Contacts"
+* *displayname* is the folder's name. If the name is already taken, a new folder will still be made but with another uid.
+
+Example:
+----
+sogo-tool create-folder user1 Contacts Pro_Contacts Ext_Contacts
+sogo-tool create-folder user2 Calendar Pro_Calendar
+----
+
+
+sogo-tool dump-defaults
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Output all current defaults value of GNUstep and SOGo (sogo.conf)
+
+ sogo-tool dump-defaults [-f <filename>|[all]]
+
+* Can be used without arguments and will output the defaults for gnustep domain 'sogod'.
+* *all* option will output all defaults value found from sogo and gnustep in property list format.
+* *-f* expect a filepath of an .xml file and will output it in property list format (sogo.conf). May need some tweaks, though.
+
+Example:
+----
+sogo-tool dump-defaults
+sogo-tool dump-defaults all
+sogo-tool dump-defaults -f /tmp/foo/conf.xml
+----
+
+sogo-tool expire-sessions
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Expires user sessions from database without activity for specified number of minutes. When a user log in to sogo for
+the first time, sogo will create a entry in database's table OCSSessionsFolderURL with the user's information. Sogo will 
+also set a cookie with an encoded value to fetch this database table. That way, each time the user make a request with that cookie,
+sogo will know which connected user it is. This command will remove all user's session from database
+without activity for specified number of minutes. Those users will have to log in again.
+
+ sogo-tool expire-sessions [nbMinutes]
+
+* *nbMinutes* Integer, number of minutes. All session without activity in these last minutes will be removed.
+
+Example:
+----
+sogo-tool expire-sessions         #Will print usage.
+sogo-tool expire-sessions 160     #Will remove session which last activity is older than 160 minutes.
+sogo-tool expire-sessions 0       #Will remove session which last activity is older than 0 minutes.
+----
+
+sogo-tool manage-acl
+~~~~~~~~~~~~~~~~~~~~
+
+Manage access-control list (ACL) of a user for folders (Calendar and Address Book).
+
+ sogo-tool manage-acl get|add|remove|subscribe|unsubscribe owner folder user|group <rights>
+
+* First argument is the action among *get*, *add*, *remove*, *subscribe* and *unsubscribe*.
+* Second argument is the username of the folder's owner.
+* Third argument is the name of the folder.
+* Fourth argument is the user whom to manage its acl. It also can be _ALL_, _anonymous_ and _<defaults>_.
+* Fifth argument, only needed with *add* action, is the rights to set for the user.
+
+The actions:
+
+* *get* will print out the folder's rights of the user or nothing if the user is not found or doesn't have any rights.
+
+Example:
+----
+sogo-tool manage-acl get sogo-tests1 Calendar/5E1F-653FC400-1-38155940 sogo-tests2
+----
+Result:
+----
+Rights for sogo-tests2 ["PublicModifier", "ConfidentialModifier", "PrivateModifier", "ObjectCreator", "ObjectEraser"]
+----
+
+* *add* will add the given rights to the user for the given folder. the value right is a json string of an array with each right to set.
+Be Careful as there is no check for the rights already set. It could be better to first remove them, then add them.
+
+The rights for Address Book are:
+
+* _ObjectCreator_: can create cards (contact of list)
+* _ObjectEditor_: can modify cards
+* _ObjectViewer_: can view cards
+* _ObjectEraser_: can delete cards
+
+The rights for Calendar are:
+
+* _ObjectCreator_: can create event or task
+* _ObjectEraser_: can delete event or task
+* _<type>_ can be _Public_, _Confidential_ or _Private_
+* _<type>Viewer_: can view the whole events (ex: PrivateViewer)
+* _<type>DAndTViewer_: can only view the date and time of events
+* _<type>Modifier_: can view and edit the events
+* _<type>Responder_: can view the events
+
+Example:
+----
+sogo-tool manage-acl add sogo-tests1 Contacts/5E1D-653FC400-1-1A330C40 sogo-tests2 '["ObjectViewer", "ObjectEraser"]'
+----
+
+* *remove* all user's rights to the folder.
+
+Example:
+----
+sogo-tool manage-acl remove sogo-tests1 Contacts/5E1D-653FC400-1-1A330C40 sogo-tests2
+----
+
+* *subscribe* the user to the folder.
+
+Example:
+----
+sogo-tool manage-acl subscribe sogo-tests1 Contacts/5E1D-653FC400-1-1A330C40 sogo-tests2
+----
+
+* *unsubscribe* the user to the folder.
+
+Example:
+----
+sogo-tool manage-acl unsubscribe sogo-tests1 Contacts/5E1D-653FC400-1-1A330C40 sogo-tests2
+----
+
+sogo-tool manage-eas
+~~~~~~~~~~~~~~~~~~~~
+
+Manage EAS folders
+
+ sogo-tool manage-eas listdevices|listfolders|resetdevice|resetfolder|mergevcard|mergevevent user <deviceId | folderId> <YES | NO>
+
+* First argument is the action among *listdevices*, *listfolders*, *resetdevice*, *resetfolder*, *mergevcard* and *mergevevent*.
+* Second argument is the *user* whom to perform the action.
+* Third argument is the *deviceId* of, if the action is *resetFolder*, the *folderId*. No need of this argument if the action is *listdevices*
+* Fourth argument, only use with *mergevcard* and *mergevevent* is either YES to merge and *NO* to un-merge.
+
+The actions:
+
+* *listdevices*: list the devices belonging to user.
+* *listfolders*: list all folders of deviceId for user.
+* *resetdevice*: force deviceId of user to resync everything.
+* *resetfolder*: force folderId of user to resync everything.
+* *mergevcard*: merge/un-merge all addressbooks into one for deviceId of user.
+* *mergevevent*: merge/un-merge all calendars into one for deviceId of user.
+
+Examples:
+----
+sogo-tool manage-eas listdevices janedoe
+sogo-tool manage-eas listfolders janedoe androidc316986417
+sogo-tool manage-eas resetdevice janedoe androidc316986417
+sogo-tool manage-eas resetfolder janedow androidc316986417 folderlala-dada-sasa_7a13_1a2386e0_e
+sogo-tool manage-eas mergevcard  janedow androidc316986417 YES
+sogo-tool manage-eas mergevevent janedow androidc316986417 YES
+----
+
+sogo-tool remove
+~~~~~~~~~~~~~~~~
+
+Remove all folders (Calendar and Address Book) and Preference settings of a user. The personal Calendar and Address Book
+will stay but be emptied of all entries. The Preferences will go back to defaults values as for a new user.
+
+ sogo-tool remove user1 [user2]
+
+* Arguments one user or several space-separated.
+* You can add -v after sogo*tool to list all removed folders
+
+Example:
+----
+sogo-tool remove user1
+sogo-tool -v remove user2
+----
+Output example with -v options:
+----
+Deleting /Users/user2/Calendar/B088-65363400-3-2B9DF0C0
+Deleting /Users/user2/Calendar/personal
+Deleting /Users/user2/Contacts/B087-65363380-5-374DA380
+Deleting /Users/user2/Contacts/B087-65363400-7-374DA380
+Deleting /Users/user2/Contacts/personal
+----
+
+sogo-tool remove-doubles
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+remove duplicate contacts from the specified user addressbook
+
+ sogo-tool remove-doubles USER FOLDER
+
+* *USER* is the name of the user to perform the removal
+* *FOLDER* is the name of the folder to clean from duplicates
+
+Two contacts are considered duplicates when they have the same mails or display name. When two or more contacts
+are duplicates, each one will get a score. The ones with the highest score will be kept and the others
+will be discarded. If two records have the same score, the first one to have reach it will be kept.
+The scores are distributed as such:
+* Record which has been the last modified: +1
+* Record has the most content: +2
+* Record has the most quick field set: +3
+* Record is in a contact list: +6
+
+Example:
+----
+sogo-tool remove-doubles user1 personal
+sogo-tool remove-doubles user2 489-65376E80-1-2D2BA000
+----
+
+sogo-tool rename-user
+~~~~~~~~~~~~~~~~~~~~~
+
+Update records pertaining to a user after a change of user id. Will change all folders path, subscriptions from others users,
+all mention of user id in database.
+
+ sogo-tool rename-user fromuserid touserid
+
+* *fromuserid* Previous user id
+* *touserid* New user id
+
+If the new user id already exist, the command will output a message and do nothing.
+**WARNING** This command only change database of sogo, if you use ldap or others databases they will still keep the old id.
+
+Example:
+----
+sogo-tool rename-user old_username new_username
+----
+
+sogo-tool truncate-calendar
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Remove old calendar entries from the specified user calendar.
+
+ sogo-tool truncate-calendar [-r] USER FOLDER DATE
+
+* *-r* optional, to also delete recurrent events that have occurrence after *DATE*
+* *USER* is the name of the owner of the calendar
+* *FOLDER* is the name of the calendar folder to clean up
+* *DATE* UTC datetime, event older than this date will be removed
+
+Without *-r*, only reccurrent events which all occurrences are older than *DATE* will be removed.
+With *-r*, event the if there are occurrences after *DATE*, the recurrent event will be removed.
+*DATE* can take the value `date +%FT%T` which is the current time
+
+Example:
+----
+sogo-tool truncate-calendar sogo-tests1 personal 2023-10-25T00:00:00
+sogo-tool truncate-calendar -r sogo-tests2 5E38-6538BE80-5-AFF8310 2022-01-01T15:30:00
+sogo-tool truncate-calendar -r sogo-tests2 personal `date +%FT%T` #will delete all event older than now
+----
+Result:
+----
+No record to remove. All records kept.
+----
+----
+Removing 1 records...
+Removed 1 records.
+----
+
+sogo-tool update-autoreply
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+_This command is only useful if your sieve server doesn't have the capabilities *date* or *relational*_
+In that case this command will check vacation's setting of all the users. If vacation is enabled/disabled,
+the starting and ending date, the body and others parameters. If needed, the command
+will write the sieve script accordingly. 
+
+ sogo-tool update-autoreply -p credentialFile
+
+* *-p- The credential file, a simple one-line file that contains "username:password" of an admin account of your imap/sieve server.
+
+Example:
+----
+ sogo-tool update-autoreply -p /var/sogo/cred
+----
+
+sogo-tool user-preferences
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Get, set or unset user defaults / settings in the database.
+
+_Settings_ stores parameters for user's calendar, mail and contacts. It can be graphic
+as month view or week view for calendar but it also stores subscription, delegation...
+It also stores the private Salt for TOTP and the parameter ForceResetPassword to force the
+user to change password.
+
+_Defaults_ stores all parameters that can be found in Preferences panel. So it goes from default language to
+autoreply to many others options.
+
+
+ user-preferences get|set|unset defaults|settings user key [value|-f filename] [-p credentialFile]
+
+* First argument is the action *get*, *set* or *unset*
+* Second argument is parameter type *settings* or *defaults* 
+* Third argument *user* is the name of the user where to make the action
+* Fourth argument *key* is the name of the parameters where to make the action
+* If the action is *set*, you should provide either *value* as fifth argument or a file with the value inside with *-f* filename/path
+* If the action is *set* or *unset* and the *key* concerns a sieve script (filter, vacation, forward...), you
+should provide a credential file, a one-line file that contains "username:password" of an admin account of your imap/sieve server.
+
+As there is a lot of parameters, this documentation will not go into details for each one. To know what are 
+the key names and their value you should got to your database in table defined by _SOGoProfileURL_ in your sogo.conf.
+Here, for each row (user) you will find c_defaults and c_settings which are json with the keys. However, if
+a parameter has never been set, it won't appears in those json. The clean way to know the missing keys is to
+set it up in one of your dummy/dev/test account then see the values in _SOGoProfileURL_. Be careful, a value
+can be a json itself, only the primary key can be get/set/unset.
+
+Example with forwarding, *get* action:
+----
+sogo-tool user-preferences get defaults user1 Forward
+----
+If forward has never been set the result will be:
+----
+Value for key "Forward" not found in defaults 
+----
+Else it will be
+----
+{"forwardAddress":["sogo-tests2@sogo.alinto"],"enabled":1,"keepCopy":1}
+----
+
+*unset* action:
+----
+sogo-tool user-preferences unset defaults user1 Forward -p /etc/sogo/cred
+----
+
+*set* action:
+----
+sogo-tool user-preferences set defaults user1 Forward '{"forwardAddress":["sogo-tests2@sogo.alinto"],"enabled":1,"keepCopy":0}' -p cred
+----
+or create a json file which contains _{"forwardAddress":["sogo-tests2@sogo.alinto"],"enabled":1,"keepCopy":0}_ then:
+----
+sogo-tool user-preferences set defaults user1 Forward -f /path/filename -p cred
+----
+
+
 
 Upgrading
 ---------

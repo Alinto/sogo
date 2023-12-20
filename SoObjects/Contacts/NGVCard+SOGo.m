@@ -418,7 +418,7 @@ convention:
     [self setCategories: [o componentsSeparatedByString: @","]];
 
   // Photo
-  if ([ldifRecord objectForKey: @"photo"])
+  if ([ldifRecord objectForKey: @"photo"] && [ldifRecord objectForKey: @"photo"] != [NSNull null])
     [self setPhoto: [[ldifRecord objectForKey: @"photo"] stringByEncodingBase64]];
 
   [self cleanupEmptyChildren];

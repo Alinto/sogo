@@ -319,7 +319,6 @@
 "Thread As Read" = "Tarefa Como Lido";
 "As Read By Date..." = "Como Lido Por Data...";
 "All Read" = "Tudo Lido";
-"Flag" = "Sinalizado";
 "As Junk" = "Como Lixo Eletrônico";
 "As Not Junk" = "Como Não é Lixo Eletrônico";
 "Run Junk Mail Controls" = "Executar Controle de Lixo Eletrônico";
@@ -446,7 +445,7 @@
 "Copy messages" = "Copiar mensagens";
 "More messages options" = "Mais opções de mensagens";
 "Flag" = "Sinalizado";
-"Unflag" = "Unflag";
+"Unflag" = "Desmarcar";
 "Mark as Unread" = "Marcar como Não Lido";
 "Mark as Read" = "Marcar como lido";
 "Closing Window ..." = "Fechando Janela ...";
@@ -460,7 +459,7 @@
 "Your email has been sent" = "Seu e-mail foi enviado";
 "Folder compacted" = "Pasta compactada";
 
-"More Options" = "More Options";
+"More Options" = "Mais Opções";
 
 "New draft" = "Novo rascunho";
 "Create new draft with this template" = "Criar novo rascunho com esse modelo";

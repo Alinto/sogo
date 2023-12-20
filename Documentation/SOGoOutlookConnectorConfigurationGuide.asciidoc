@@ -22,7 +22,7 @@ Guide_ for more information on installing and configuring SOGo.
 The instructions are based on version {release_version} of SOGo.
 
 The latest version of this guide is available
-at https://sogo.nu/downloads/documentation.html.
+at https://www.sogo.nu/support.html#/documentation.
 
 Introduction
 ------------

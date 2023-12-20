@@ -33,6 +33,7 @@
       this.selectedFolder = stateMailbox;
       this.messageDialog = null; // also access from Message controller
       this.mode = { search: false, multiple: 0 };
+      this.allSelected = false;
 
       if (!Mailbox.$virtualMode)
         this.selectedFolder.getLabels(); // fetch labels from server
@@ -579,11 +580,13 @@
         var i = 0, length = folder.$messages.length;
         folder.$selectedMessages = [];
         for (; i < length; i++) {
-          folder.$messages[i].selected = true;
-          folder.$selectedMessages.push(folder.$messages[i]);
+          folder.$messages[i].selected = !vm.allSelected;
+          if(folder.$messages[i].selected)
+            folder.$selectedMessages.push(folder.$messages[i]);
+            count++;
         }
-        count += length;
       });
+      vm.allSelected = !vm.allSelected;
       vm.mode.multiple = count;
     };
 

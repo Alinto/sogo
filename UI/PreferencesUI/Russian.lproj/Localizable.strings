@@ -39,7 +39,7 @@
 "Enable vacation auto reply" = "Включить автоматическую отправку сообщения об отпуске";
 "Enable custom auto reply subject" = "Настраиваемая тема сообщения автоответа";
 "Auto reply subject" = "Тема сообщения автоответа";
-"You can write ${subject} to insert the original subject" = "Вы может написать ${subject} для вставки в исходную тему";
+"You can write ${subject} to insert the original subject" = "Вы можете написать ${subject} для вставки в исходную тему";
 "Auto reply message" = "Текст сообщения автоответа";
 "Email addresses" = "Адреса электронной почты";
 "Add default email addresses" = "Добавить e-mail адреса по умолчанию";
@@ -204,6 +204,8 @@
 "Insert signature on new message" = "Вставить подпись в новое сообщение";
 "Insert signature on reply" = "Вставить подпись в ответе";
 "Insert signature on forward" = "Вставить подпись при пересылке";
+"Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
+"Hide inline attachments" = "Hide inline attachments";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Размер шрифта по умолчанию";
@@ -320,7 +322,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
-"Galician" = "Галисийский";
+"Galician" = "Galego";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -507,7 +509,7 @@
 "Let SOGo handle everything" = "Предоставить SOGo возможность управлять всем";
 
 /* Password Recovery */
-"Password recovery mode" = "Восстановление пароля";
+"Password recovery mode" = "Password recovery mode";
 "Question" = "Вопрос";
 "Secondary e-mail" = "Дополнительный адрес электронной почты";
 "Answer" = "Ответ";

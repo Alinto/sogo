@@ -65,6 +65,7 @@
 - (id) objectFromJSONString;
 
 /* bare email addresses */
+- (NSString *) mailDomain;
 - (NSString *) pureEMailAddress;
 
 - (NSString *) asQPSubjectString: (NSString *) encoding;

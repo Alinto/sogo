@@ -34,6 +34,7 @@
 
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoSystemDefaults.h>
 
 #import <Appointments/SOGoWebAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolderICS.h>
@@ -47,15 +48,26 @@
   WOResponse *response;
   SOGoAppointmentFolderICS *folderICS;
   NSString *disposition;
+  SOGoSystemDefaults *sd;
 
-  folderICS = [self clientObject];
-  response = [self responseWithStatus: 200
-                            andString: [folderICS contentAsString]];
-  [response setHeader: @"text/calendar; charset=utf-8" 
-               forKey: @"content-type"];
-  disposition = [NSString stringWithFormat: @"attachment; filename=\"%@.ics\"",
-                          [[folderICS displayName] asQPSubjectString: @"utf-8"]];
-  [response setHeader: disposition forKey: @"Content-Disposition"];
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if (nil != [sd disableExport] && NSNotFound != [[sd disableExport] indexOfObject: kDisableSharingCalendar])
+  {
+    response = [self responseWithStatus: 401
+                  andJSONRepresentation: [NSDictionary dictionaryWithObject: @"Exporting calendar folder is not authorized"
+                                                                     forKey: @"message"]];
+  }
+  else
+  {
+    folderICS = [self clientObject];
+    response = [self responseWithStatus: 200
+                              andString: [folderICS contentAsString]];
+    [response setHeader: @"text/calendar; charset=utf-8" 
+                forKey: @"content-type"];
+    disposition = [NSString stringWithFormat: @"attachment; filename=\"%@.ics\"",
+                            [[folderICS displayName] asQPSubjectString: @"utf-8"]];
+    [response setHeader: disposition forKey: @"Content-Disposition"];
+  }
 
   return response;
 }

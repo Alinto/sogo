@@ -193,6 +193,7 @@
 "Work" = "Posao";
 "Mobile" = "Mobitel";
 "Pager" = "Pager";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* categories */
 "contacts_category_labels" = "Kolega, Natjecatelj, Kupac, Prijatelj, Obitelj, Poslovni partner, Uslužitelj, Tisak, VIP";

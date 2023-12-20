@@ -6,7 +6,7 @@
 "Empty Junk Folder" = "Išvalyti šlamšto aplanką";
 "Delete"      = "Ištrinti";
 "Expunge"     = "Išbraukti";
-"Forward"     = "Persiūsti";
+"Forward"     = "Persiųsti";
 "Get Mail"    = "Gauti";
 "Junk"        = "Šlamštas";
 "Not junk"    = "Ne šlamštas";
@@ -34,7 +34,7 @@
 "Go to address book" = "Eiti į adresų knygą";
 "Reply to the message" = "Atsakyti į šį pranešimą";
 "Reply to sender and all recipients" = "Atsakyti siuntėjui ir visiems gavėjams";
-"Forward selected message" = "Persiūsti pažymėtą pranešimą";
+"Forward selected message" = "Persiųsti pažymėtą pranešimą";
 "Delete selected message or folder" = "Ištrinti pažymėtą pranešimą arba katalogą";
 "Print this message" = "Spausdinti šį pranešimą";
 "Stop the current transfer" = "Sustabdyti dabartinį perdavimą";
@@ -319,7 +319,6 @@
 "Thread As Read" = "Giją kaip perskaitytą";
 "As Read By Date..." = "Skaityti pagal datą...";
 "All Read" = "Visi perskaityti";
-"Flag" = "Vėliava";
 "As Junk" = "Kaip šiukšlę";
 "As Not Junk" = "Ne kaip šiukšlė";
 "Run Junk Mail Controls" = "Paleisti pašto šiukšlių valdymą";

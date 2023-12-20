@@ -113,13 +113,13 @@ typedef enum
 	   "           remove       remove all ACL information of folder for user\n"
 	   "           subscribe    subscribe user to owner's folder\n"
 	   "           unsubscribe  unsubscribe user to owner's folder\n"
-           "           owner        the user owning the folder\n"
+     "           owner        the user owning the folder\n"
 	   "           folder       the folder - Calendar/<ID> or Contacts/<ID>\n"
 	   "           user         the user (or group without the @ prefix) to get/set rights for - 'ALL', '<default>', 'anonymous' are supported\n"
-           "           rights       rights to add\n\n"
-           "Example:   sogo-tool manage-acl get jdoe Calendar/personal ALL\n\n"
-           "Note:      You can add only one access right at the time. To set them all at once,\n"
-           "           invoke 'remove' first to remove them all.\n\n");
+     "           rights       rights to add\n\n"
+     "Example:   sogo-tool manage-acl get jdoe Calendar/personal ALL\n\n"
+     "Note:      You can add only one access right at the time. To set them all at once,\n"
+     "           invoke 'remove' first to remove them all.\n\n");
 }
 
 - (BOOL) parseArguments

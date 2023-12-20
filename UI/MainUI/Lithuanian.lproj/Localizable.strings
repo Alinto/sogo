@@ -45,7 +45,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
-"Galician" = "Galician";
+"Galician" = "Galego";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -108,7 +108,7 @@
 "Confirmation" = "Patvirtinimas";
 "Cancel" = "Atšaukti";
 "Please wait..." = "Prašome palaukti...";
-"Close" = "Uždarytis";
+"Close" = "Uždaryti";
 "Missing search parameter" = "Trūksta paieškos parametrų";
 "Missing type parameter" = "Trūksta rūšes parametrų";
 

@@ -634,7 +634,7 @@
 
   if (authname == nil || authpwd == nil)
     {
-      NSLog(@"To update Sieve scripts, you must provide the \"-p credentialFile\" parameter");
+      NSLog(@"To update Sieve scripts, you must provide the \"-c credentialFile\" parameter");
       return NO;
     }
 

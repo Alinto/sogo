@@ -67,6 +67,7 @@
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoSystemDefaults.h>
+#import <SOGo/NGMimeFileData+SOGo.h>
 
 #import <NGCards/NGVCard.h>
 
@@ -142,6 +143,7 @@ static NSString    *userAgent      = nil;
       isHTML = NO;
       sign = NO;
       encrypt = NO;
+      tmpFiles = [[NSMutableArray alloc] init];
     }
 
   return self;
@@ -157,6 +159,7 @@ static NSString    *userAgent      = nil;
   [sourceFlag release];
   [inReplyTo release];
   [references release];
+  [tmpFiles release];
   [super dealloc];
 }
 
@@ -932,7 +935,6 @@ static NSString    *userAgent      = nil;
       if (filename)
         {
           NSMutableDictionary *currentInfo;
-
           currentInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                                filename, @"filename",
                                              mimeType, @"mimetype",
@@ -1922,8 +1924,10 @@ static NSString    *userAgent      = nil;
   if (_extractImages)
     {
       newText = [text htmlByExtractingImages: extractedBodyParts];
-      if ([extractedBodyParts count])
+      if ([extractedBodyParts count]) {
         [self setText: newText];
+        [self addTmpFiles: extractedBodyParts];
+      }
 
     }
 
@@ -1935,8 +1939,11 @@ static NSString    *userAgent      = nil;
       //[self debugWithFormat: @"MIME Envelope: %@", map];
       allBodyParts = [self bodyPartsForAllAttachments];
 
-      if (!allBodyParts)
-	return nil;
+      if (!allBodyParts) {
+        return nil;
+      } else {
+        [self addTmpFiles: allBodyParts];
+      }
 
       //[self debugWithFormat: @"attachments: %@", bodyParts];
 
@@ -1955,53 +1962,8 @@ static NSString    *userAgent      = nil;
         }
     }
 
-    if (_extractImages)
-    { 
-      int i;
-      for (i = 0 ; i < [extractedBodyParts count] ; i++) {
-        NSMutableDictionary *currentInfo;
-        NSString *filename, *mimeType, *bodyId, *encoding;
-        NSData *body;
-        NGMimeBodyPart *extractedBodyPart;
-        NGMimeContentDispositionHeaderField *contentDisposition;
-
-        extractedBodyPart = [extractedBodyParts objectAtIndex:i];
-        if (extractedBodyPart && [extractedBodyPart headerForKey: @"content-disposition"]) {
-          encoding = [extractedBodyPart encoding];
-          contentDisposition = [[NGMimeContentDispositionHeaderField alloc] initWithString: [extractedBodyPart headerForKey: @"content-disposition"]];
-          
-          if (encoding 
-              && [extractedBodyPart contentType] 
-              && [extractedBodyPart contentId]
-              && [contentDisposition filename]) {
-
-            mimeType = [[extractedBodyPart contentType] stringValue];
-            bodyId = [[extractedBodyPart contentId] stringValue];
-            filename = [contentDisposition filename];
-            currentInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                                  filename, @"filename",
-                                                mimeType, @"mimetype",
-                                                bodyId, @"bodyId", 
-                                                nil];
-
-            if ([[extractedBodyParts objectAtIndex:i] body]) {
-                if (encoding && [encoding rangeOfString:@"base64"].location != NSNotFound)
-                  body = [[[extractedBodyParts objectAtIndex:i] body] dataByDecodingBase64];
-                else
-                  body = [[extractedBodyParts objectAtIndex:i] body];
-
-                [self saveAttachment: body
-                  withMetadata: currentInfo];
-            }
-          }
-          [contentDisposition release];
-        }
-        
-      }
-    }
-
   return message;
-}
+} 
 
 //
 // Return a NGMimeMessage object with inline HTML images (<img src=data>) extracted as attachments (<img src=cid>).
@@ -2271,6 +2233,41 @@ static NSString    *userAgent      = nil;
   return [self sendMailAndCopyToSent: YES];
 }
 
+// Extract tmp files in NGMimeBuildMimeTempDirectory from NSArray and store locally
+// The tmp files will be deleted once the message sent
+- (void) addTmpFiles:(NSArray *) parts {
+  NGMimeBodyPart *part;
+
+  for (part in parts) {
+    NGMimeFileData *body;
+    NSString *path;
+
+    body = [part body];
+    if (body && [body isKindOfClass: [NGMimeFileData class]]) {
+      path = [body path];
+      if (path) {
+        [tmpFiles addObject: path];
+      }
+    }
+  }
+}
+
+// Clean temporary files
+- (void) cleanTmpFiles {
+  NSString *path;
+  NSFileManager *fm;
+
+  fm = [NSFileManager defaultManager];
+  
+  for (path in tmpFiles) {
+    if ([fm fileExistsAtPath: path])
+      [fm removeFileAtPath: path handler: nil];
+  }
+
+  // Clean tmp files
+  [tmpFiles removeAllObjects];
+}
+
 //
 //
 //
@@ -2316,8 +2313,10 @@ static NSString    *userAgent      = nil;
                        inContext: context
                    systemMessage: NO];
 
-          if (error)
+          if (error) {
+            [self cleanTmpFiles];
             return error;
+          }
         }
 
       // If the current user isn't part of the recipient list for encrypted emails
@@ -2375,6 +2374,8 @@ static NSString    *userAgent      = nil;
       ![self delete] &&
       [imap4 doesMailboxExistAtURL: [container imap4URL]])
     [(SOGoDraftsFolder *) container expunge];
+
+  [self cleanTmpFiles];
 
   return error;
 }

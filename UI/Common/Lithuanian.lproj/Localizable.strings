@@ -26,15 +26,15 @@
 "Subscribe User" = "Prenumeruoti vartotoją";
 "Any Authenticated User" = "Bet kokiam autentifikuotam vartotojui";
 "Public Access" = "Vieša prieiga";
-"Any user not listed above" = "Bet kuris vartotojas, nesantis aukščiau išvardytų";
-"Anybody accessing this resource from the public area" = "Kas nors jungiansi prie šio šaltinio iš viešos erdvės";
-"Sorry, the user rights can not be configured for that object." = "Atsiprašome, vartotojo teisės negali būti konfiguruojamos šiam objektui.";
+"Any user not listed above" = "Bet kuris pirmiau nenurodytas naudotojas";
+"Anybody accessing this resource from the public area" = "Visi, kurie prie šio ištekliaus prieina iš viešosios erdvės.";
+"Sorry, the user rights can not be configured for that object." = "Atsiprašome, naudotojo teisių šiam objektui konfigūruoti negalima.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Bet kuris vartotojas turintis paskyrą šioje sistemoje galės prieiti prie Jūsų elektroninės pašto dėžutės \"%{0}\". Ar Jūs tikrai jais pasitikite?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
      = "Bet kuris vartotojas turintis paskyrą šioje sistemoje galės prieiti prie Jūsų kalendoriaus \"%{0}\". Ar Jūs tikrai jais pasitikite?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Potencialiai visi internete galės prieiti prie Jūsų kalendoriaus \"%{0}\", net jei jie ir neturi paskyros šioje sistemoje. Ar ši informacija tinka viešai prieigai?";
+     = "Prie Jūsų kalendoriaus \"%{0}\" galės prieiti bet kuris internete esantis asmuo, net jei jis neturi paskyros šioje sistemoje. Ar ši informacija tinka viešai prieigai?";
 "Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
      = "Visi vartotojai turintys paskyras šioje sistemoje galės prieiti prie adresų knygos \"%{0}\". Ar Jūs tikrai jais pasitikite?";
 "Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
@@ -51,29 +51,29 @@
 "Unable to subscribe to that folder!"
         = "Neįmanoma prenumeruoti šio aplanko!";
 "You cannot subscribe to a folder that you own!"
-        = "Jūs negalite prenumeruoti savo aplanko!";
+        = "Jūs negalite prenumeruoti Jums priklausančio aplanko!";
 "Unable to unsubscribe from that folder!"
-        = "Negalima neprenumeruoti iš šio aplanko!";
+        = "Nepavyksta atsisakyti prenumeratos šiame aplanke!";
 "You cannot unsubscribe from a folder that you own!"
-        = "Jūs negalite neprenumeruoti savo aplanko!";
+        = "Negalite atsisakyti prenumeratos iš Jums priklausančio aplanko!";
 "Unable to rename that folder!" = "Negalima pervardinti aplanko!";
 "You have already subscribed to that folder!"
-        = "Jūs jau prenumeruojate šį aplanką!";
+        = "Jūs jau užsiprenumeravote šį aplanką!";
 "The user rights cannot be edited for this object!"
         = "Vartotojo teisės negali būti keičiamos šiam objektui!";
 "A folder by that name already exists." = "Aplankas tokiu pavadinimu jau egzistuoja.";
 "You cannot create a list in a shared address book."
-        = "Jūs negalite sukurti sąrašo pasidalintoje adresų knygoje.";
+        = "Bendrai naudojamoje adresų knygoje negalima sukurti sąrašo.";
 "Warning" = "Įspėjimas";
 "Can't contact server" = "Įvyko klaida, kai buvo bandoma susisiekti su serveriu. Prašome bandyti dar kartą.";
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Jums negalima prieiti prie šio modulio ar šios sistemos. Prašome susisiekti su Jūsų sistemos administratoriumi.";
 "You don't have the required privileges to perform the operation."
-= "Jūs neturite reikalingų teisių atlikti šiam veiksmui.";
-"noEmailForDelegation" = "Jūs turite nurodyti adresą, kurį norite perduoti Jūsų kvietime.";
+= "Neturite reikalingų teisių šiam veiksmui atlikti.";
+"noEmailForDelegation" = "Turite nurodyti adresą, kuriam norite perduoti kvietimą.";
 "delegate is organizer" = "Atstovas yra kelionių organizatorius. Prašome nurodyti kitą ";
 "delegate is a participant" = "Atstovas jau yra dalyvis.";
-"delegate is a group" = "Nurodytas adresas atitinka grupę. Jūs galite tik atstovauti unikalų asmenį.";
+"delegate is a group" = "Nurodytas adresas atitinka grupę. Deleguoti galima tik unikaliam asmeniui.";
 
 /* common buttons */
 "OK" = "Gerai";
@@ -119,14 +119,14 @@
 "a2_Friday" = "Pn";
 "a2_Saturday" = "Š";
 "Access Rights" = "Prieigos teisės";
-"Add User" = "Pridėti vartotoją";
+"Add User" = "Pridėti naudotoją";
 "Loading" = "Įkrovimas";
-"No such user." = "Tokio vartotojo nėra.";
+"No such user." = "Tokio naudotojo nėra.";
 "You cannot (un)subscribe to a folder that you own!" = "Jūs negalite (atsisakyti) užsiregistruoti šio aplanko, nes jis jums priklauso!";
 
 /* SMIME Certificate field */
-"S/MIME Certificate" = "S/MIME Certificate";
-"Subject Name" = "Subject Name";
+"S/MIME Certificate" = "S/MIME Sertifikatas";
+"Subject Name" = "Temos pavadinimas";
 "Issuer" = "Issuer";
 "streetAddress" = "Street";
 "stateOrProvinceName" = "State or Province";

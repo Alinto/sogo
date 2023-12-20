@@ -45,6 +45,7 @@
     vm.reload = reload;
     vm.cancelSearch = cancelSearch;
     vm.mode = { search: false, multiple: 0 };
+    vm.allSelected = false;
 
 
     this.$onInit = function() {
@@ -120,8 +121,9 @@
 
     function selectAll() {
       _.forEach(Component['$' + vm.componentType], function(component) {
-        component.selected = true;
+        component.selected = !vm.allSelected;
       });
+      vm.allSelected = !vm.allSelected;
       vm.mode.multiple = Component['$' + vm.componentType].length;
     }
 
@@ -138,19 +140,20 @@
     }
 
     function confirmDeleteSelectedComponents() {
-      Dialog.confirm(l('Warning'),
-                     l('Are you sure you want to delete the selected components?'),
-                     { ok: l('Delete') })
-        .then(function() {
-          // User confirmed the deletion
-          var components = _.filter(Component['$' + vm.componentType], function(component) {
-            return component.selected;
+      var components = _.filter(Component['$' + vm.componentType], function(component) {
+        return component.selected;
+      });
+      if(components.length > 0)
+        Dialog.confirm(l('Warning'),
+                      l('Are you sure you want to delete the selected components?'),
+                      { ok: l('Delete') })
+          .then(function() {
+            // User confirmed the deletion
+            Calendar.$deleteComponents(components).then(function() {
+              vm.mode.multiple = 0;
+              $rootScope.$emit('calendars:list');
+            });
           });
-          Calendar.$deleteComponents(components).then(function() {
-            vm.mode.multiple = 0;
-            $rootScope.$emit('calendars:list');
-          });
-        });
     }
 
     function openEvent($event, event) {

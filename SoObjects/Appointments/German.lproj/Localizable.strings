@@ -53,7 +53,7 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
 = "Folgendes wurde am Termin \"%{Summary}\" geändert:";
 "Please accept or decline those changes."
-= "Bitte akzeptieren Sie diese Änderung, oder lehnen Sie diese ab.";
+= "Bitte akzeptieren Sie diese Änderungen, oder lehnen Sie diese ab.";
 
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Einladung zugestimmt: \"%{Summary}\"";

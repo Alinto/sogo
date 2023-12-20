@@ -156,6 +156,9 @@ extern NSString *SOGoPasswordRecoverySecondaryEmail;
 - (void) setMailComposeFontSize: (int) newValue;
 - (int) mailComposeFontSize;
 
+- (void) setMailDisplayFullEmail: (BOOL *) newValue;
+- (BOOL *) mailDisplayFullEmail;
+
 - (void) setMailDisplayRemoteInlineImages: (NSString *) newValue;
 - (NSString *) mailDisplayRemoteInlineImages;
 
@@ -228,8 +231,11 @@ extern NSString *SOGoPasswordRecoverySecondaryEmail;
 - (void) setMailLabelsColors: (NSDictionary *) newValues;
 - (NSDictionary *) mailLabelsColors;
 
+- (void)setHideInlineAttachments:(BOOL)newValue;
+- (BOOL)hideInlineAttachments;
+
 /* calendar */
-- (void) setCalendarCategories: (NSArray *) newValues;
+- (void)setCalendarCategories : (NSArray *)newValues;
 - (NSArray *) calendarCategories;
 
 - (void) setCalendarCategoriesColors: (NSDictionary *) newValues;

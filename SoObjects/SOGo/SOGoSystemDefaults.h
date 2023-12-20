@@ -130,6 +130,11 @@ NSComparisonResult languageSort(id el1, id el2, void *context);
 - (NSString *) JWTSecret;
 
 - (NSArray *) disableSharing;
+- (NSArray *) disableSharingAnyAuthUser;
+- (NSArray *) disableExport;
+
+- (BOOL) enableGlobalAddressBookFirstEntries;
+- (int) globalAddressBookFirstEntriesCount;
 
 - (BOOL)isURLEncryptionEnabled;
 - (NSString *)urlEncryptionPassphrase;

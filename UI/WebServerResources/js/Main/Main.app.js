@@ -76,8 +76,14 @@
         } else {
           vm.retrievePasswordRecoveryEnabled();
         }
-       }, 100);
 
+        // Manage autofill 
+        if (document.querySelectorAll('*:autofill').length > 0) {
+          document.querySelectorAll('*:autofill').forEach((el) => {
+            el.parentElement.classList.add("md-input-has-value");
+          });
+        }
+       }, 100);
       
     };
 

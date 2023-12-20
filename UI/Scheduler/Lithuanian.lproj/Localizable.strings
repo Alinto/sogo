@@ -31,12 +31,12 @@
 "this week" = "Šita savaitė";
 "Week %d" = "Savaitė %d";
 "Previous Week" = "Praėjusi savaitė";
-"Next Week" = "Sekanti savaitė";
+"Next Week" = "Ateinanti savaitė";
 
 /* Month */
 "this month" = "Šis mėnesis";
 "Previous Month" = "Praėjęs mėnuo";
-"Next Month" = "Sekantis mėnesis";
+"Next Month" = "Ateinantis mėnesis";
 /* Week number prefix */
 "W" = "W";
 
@@ -48,7 +48,7 @@
 "Contacts" = "Kontaktai";
 "New Calendar..." = "Naujas kalendorius...";
 "Delete Calendar" = "Ištrinti kalendorių...";
-"Unsubscribe Calendar" = "Nebeprenumeruoti kalendoriaus";
+"Unsubscribe Calendar" = "Atsisakyti kalendoriaus";
 "Sharing..." = "Dalintis...";
 "Export Calendar..." = "Eksportuoti kalendorių...";
 "Import Events..." = "Importuoti įvykius...";
@@ -65,11 +65,12 @@
 "A total of %{0} events were imported in the calendar." = "Iš viso importuota įvykių iš %{0} į kalendorių.";
 "Compose E-Mail to All Attendees" = "Rašyti elektroninį laišką visiems dalyviams";
 "Compose E-Mail to Undecided Attendees" = "Rašyti elektroninį laišką neapsisprendusiems dalyviams";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* Relative dates */
-"Yesterday" = "Yesterday";
+"Yesterday" = "Vakar";
 "Today" = "Šiandien";
-"Tomorrow" = "Tomorrow";
+"Tomorrow" = "Rytoj";
 "Last %@" = "Last %@";
 
 /* Folders */
@@ -103,7 +104,7 @@
 = "Šis asmuo gali ištrinti objektus iš mano kalendoriaus";
 
 /* Button Titles */
-"Subscribe to a Calendar..." = "Komentuoti į kalendorių";
+"Subscribe to a Calendar..." = "Prenumeruoti kalendorių...";
 "Remove the selected Calendar" = "Pašalinti pasirinktą kalendorių";
 "New calendar" = "Naujas kalendorius";
 "Name of the Calendar" = "Kalendoriaus pavadinimas";
@@ -353,7 +354,7 @@
 "reminder_5_MINUTES_BEFORE" = "pries 5 minutes";
 "reminder_10_MINUTES_BEFORE" = "prieš 10 minučių";
 "reminder_15_MINUTES_BEFORE" = "prieš 15 minučių";
-"reminder_30_MINUTES_BEFORE" = "prieš 20 minučių";
+"reminder_30_MINUTES_BEFORE" = "prieš 30 minučių";
 "reminder_45_MINUTES_BEFORE" = "prieš 45 minutes";
 "reminder_1_HOUR_BEFORE" = "prieš 1 valandą";
 "reminder_2_HOURS_BEFORE" = "prieš 2 valandas";
@@ -572,7 +573,7 @@ vtodo_class2 = "(Konfidenciali užduotis)";
 "weekFieldInvalid" = "Prašome nurodyti skaitinę savaitės(čių) vertę didesnę arba lygią 1, savaitės laukelyje.";
 "monthFieldInvalid" = "Prašome nurodyti skaitinę mėnesinę(ės) vertę didesnę arba lygią 1, mėnesio laukelyje.";
 "monthDayFieldInvalid" = "Prašome nurodyti skaitinę mėnesio dienos vertę didesnę arba lygią 1, mėnesio dienos laukelyje.";
-"yearFieldInvalid" = "Prašome nurodyti skaitinę metų() vertę didesnę arba lygią 1, metų laukelyje.";
+"yearFieldInvalid" = "Prašome nurodyti skaitinę metų vertę didesnę arba lygią 1, metų laukelyje.";
 "appointmentFieldInvalid" = "Prašome nurodyti skaitinę paskyrimo(ų) vertę didesnę arba lygią 1, paskyrimo laukelyje.";
 "recurrenceUnsupported" = "Šiuo metu nepaikomas šio tipo pasikartojimas";
 "Please specify a calendar name." = "Prašome nurodyti kalendoriaus pavadinimą.";

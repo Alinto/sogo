@@ -319,7 +319,6 @@
 "Thread As Read" = "Wątek jako przeczytany";
 "As Read By Date..." = "jako przeczytane do daty";
 "All Read" = "wszystkie przeczytane";
-"Flag" = "Flaga";
 "As Junk" = "Jako spam";
 "As Not Junk" = "Jako nie spam";
 "Run Junk Mail Controls" = "Uruchom kontrolę niechcianych wiadomości";
@@ -446,7 +445,7 @@
 "Copy messages" = "Kopiuj wiadomości";
 "More messages options" = "Więcej opcji wiadomości";
 "Flag" = "Flaga";
-"Unflag" = "Unflag";
+"Unflag" = "Bez flagi";
 "Mark as Unread" = "Oznacz jako nieprzeczytany";
 "Mark as Read" = "Oznacz jako przeczytane";
 "Closing Window ..." = "Zamykanie okna";
@@ -460,7 +459,7 @@
 "Your email has been sent" = "E-mail został wysłany";
 "Folder compacted" = "Folder zkompaktowany";
 
-"More Options" = "More Options";
+"More Options" = "Więcej opcji";
 
 "New draft" = "Nowy szkic";
 "Create new draft with this template" = "Utwórz nowy szkic z tego wzorca";

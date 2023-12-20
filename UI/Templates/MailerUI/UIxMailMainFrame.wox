@@ -243,11 +243,13 @@
             <var:string label:value="Empty Junk Folder"/>
           </md-button>
         </md-menu-item>
-        <md-menu-item>
-          <md-button type="button" ng-click="$menuCtrl.folder.exportFolder()">
-            <var:string label:value="Export"/>
-          </md-button>
-        </md-menu-item>
+        <var:if condition="isMailExportEnabled">
+          <md-menu-item>
+            <md-button type="button" ng-click="$menuCtrl.folder.exportFolder()">
+              <var:string label:value="Export"/>
+            </md-button>
+          </md-menu-item>
+        </var:if>
         <md-menu-item>
           <md-button type="button" ng-click="$menuCtrl.showAdvancedSearch()">
             <var:string label:value="Search"/>

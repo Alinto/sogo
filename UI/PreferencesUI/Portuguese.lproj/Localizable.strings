@@ -24,7 +24,7 @@
 "Vacation" = "Férias";
 "Forward" = "Reencaminhar";
 "Password" = "Palavra-passe";
-"Notification" = "Notification";
+"Notification" = "Notificação";
 "Categories" = "Categorias";
 "Appointments invitations" = "Convites de Compromissos";
 "Name" = "Nome";
@@ -82,9 +82,9 @@
 "You are not allowed to forward your messages to this domain:" = "Não é permitido reencaminhar as suas mensagens para este domínio:";
 
 /* notification */
-"Notify incoming messsages" = "Notify incoming messsages";
-"Notification Message Sent" = "Notification message sent";
-"Notification Message" = "Notification of new message on %{0}";
+"Notify incoming messsages" = "Notificar quando chega uma mensagem";
+"Notification Message Sent" = "Notificação de mensagem enviada";
+"Notification Message" = "Notificação de nova mensagem em %{0}";
 
 /* d & t */
 "Time Zone" = "Fuso horário";
@@ -201,9 +201,11 @@
 "Compose messages in" = "Escrever as mensagens em";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Texto normal";
-"Insert signature on new message" = "Insert signature on new message";
-"Insert signature on reply" = "Insert signature on reply";
-"Insert signature on forward" = "Insert signature on forward";
+"Insert signature on new message" = "Inserir assinatura nas mensagens novas";
+"Insert signature on reply" = "Inserir assinatura nas respostas";
+"Insert signature on forward" = "Inserir assinatura no reencaminhamento";
+"Show recipients or sender full email in mailboxes" = "Mostrar destinatários ou endereço completo do remetente nas caixas de correio";
+"Hide inline attachments" = "Esconder anexos em linha";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Tamanho da letra por defeito";
@@ -320,7 +322,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
-"Galician" = "Galician";
+"Galician" = "Galego";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -417,7 +419,7 @@
 
 "Keep the message" = "Manter a mensagem";
 "Forward the message to" = "Reencaminhar a mensagem para";
-"Notify the message to" = "Notify the message to";
+"Notify the message to" = "Notificar a mensagem para";
 
 /* Input field label of "forward" mail filter action */
 "Email" = "Email";
@@ -507,7 +509,7 @@
 "Let SOGo handle everything" = "Deixar o SOGo gerir tudo";
 
 /* Password Recovery */
-"Password recovery mode" = "Recuperação da palavra-passe";
+"Password recovery mode" = "Modo de recuperação de palavra-passe";
 "Question" = "Pergunta";
 "Secondary e-mail" = "Email secundário";
 "Answer" = "Resposta";

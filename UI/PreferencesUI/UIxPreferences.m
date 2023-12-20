@@ -909,18 +909,63 @@ static NSArray *reminderValues = nil;
 //
 // Used by templates
 //
+- (NSDictionary *) _localizedContactsLabels
+{
+  NSArray *categoryLabels, *localizedCategoryLabels;
+  NSDictionary *labelsDictionary;
+
+  labelsDictionary = nil;
+  localizedCategoryLabels = [[self labelForKey: @"contacts_category_labels"
+                                   withResourceManager: [self resourceManager]]
+                              componentsSeparatedByString: @","];
+  categoryLabels = [[[self resourceManager]
+                                      stringForKey: @"contacts_category_labels"
+                                      inTableNamed: nil
+                                  withDefaultValue: @""
+                                         languages: [NSArray arrayWithObject: @"English"]]
+                                      componentsSeparatedByString: @","];
+
+  if ([localizedCategoryLabels count] == [categoryLabels count])
+    labelsDictionary = [NSDictionary dictionaryWithObjects: localizedCategoryLabels
+                                                   forKeys: categoryLabels];
+  else
+    [self logWithFormat: @"ERROR: localizable strings contacts_category_labels is incorrect for language %@",
+          [[[context activeUser] userDefaults] language]];
+
+  return labelsDictionary;
+}
+
 - (NSString *) defaultContactsCategories
 {
-  NSArray *contactsCategories;
+  NSArray *labels;
+  NSDictionary *localizedLabels;
+  NSMutableArray *defaultCategoriesLabels;
+  NSString *label, *localizedLabel;
+  unsigned int i;
 
-  contactsCategories = [[[[self labelForKey: @"contacts_category_labels"  withResourceManager: [self resourceManager]]
-                              componentsSeparatedByString: @","] trimmedComponents]
-                             sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
+  localizedLabels = [self _localizedContactsLabels];
+  labels = [[SOGoSystemDefaults sharedSystemDefaults] contactsCategories];
+  defaultCategoriesLabels = [NSMutableArray array];
 
-  if (!contactsCategories)
-    contactsCategories = [NSArray array];
+  if(labels)
+  {
+    for (i = 0; i < [labels count]; i++)
+    {
+      label = [labels objectAtIndex: i];
+      if (!(localizedLabel = [localizedLabels objectForKey: label]))
+      {
+        localizedLabel = label;
+      }
+      [defaultCategoriesLabels addObject: localizedLabel];
+    }
+  }
+  else
+  {
+    defaultCategoriesLabels = [localizedLabels allValues];
+  }
 
-  return [contactsCategories jsonRepresentation];
+
+  return [defaultCategoriesLabels jsonRepresentation];
 }
 
 //
@@ -1532,6 +1577,44 @@ static NSArray *reminderValues = nil;
   return (forwardEnabled ? @"true" : @"false");
 }
 
+- (BOOL) doForwardsMatchTheConstraints: (NSArray *) forwardMails
+{
+  NSArray *allUserMails, *domainConstraints;
+  NSMutableArray *allUserDomains;
+  NSString *currentMail, *currentDomain, *userMail;
+  SOGoDomainDefaults *dd;
+  int constraint;
+  
+  dd = [[context activeUser] domainDefaults];
+  constraint = [dd forwardConstraints];
+
+  if(constraint > 0)
+  {
+    allUserMails = [[user allEmails] uniqueObjects];
+    allUserDomains = [NSMutableArray array];
+    for(userMail in allUserMails)
+    {
+      [allUserDomains push: [userMail mailDomain]];
+    }
+    for(currentMail in forwardMails)
+    {
+      currentDomain = [currentMail mailDomain];
+      domainConstraints = [dd forwardConstraintsDomains];
+      if (constraint == 1 && [allUserDomains indexOfObject: currentDomain] == NSNotFound)
+        return NO;
+      else if (constraint == 2 && [allUserDomains indexOfObject: currentDomain] != NSNotFound)
+        return NO;
+      else if (constraint == 2 && (!domainConstraints || [domainConstraints indexOfObject: currentDomain] == NSNotFound))
+        return NO;
+      else if (constraint == 3 && 
+              [allUserDomains indexOfObject: currentDomain] == NSNotFound &&
+                (!domainConstraints || [domainConstraints indexOfObject: currentDomain] == NSNotFound))
+        return NO;
+    }
+  }
+  return YES;
+}
+
 /**
  * @api {post} /so/:username/Preferences/save Save user's defaults and settings
  * @apiVersion 1.0.0
@@ -1561,8 +1644,8 @@ static NSArray *reminderValues = nil;
   if ((v = [o objectForKey: @"defaults"]))
     {
       NSMutableDictionary *sanitizedLabels;
-      NSArray *allKeys, *accounts, *identities;
-      NSDictionary *newLabels;
+      NSArray *allKeys, *accounts, *identities, *forwardMails;
+      NSDictionary *newLabels, *forwardPref;
       NSString *name;
       id loginModule;
 
@@ -1600,6 +1683,20 @@ static NSArray *reminderValues = nil;
           [v removeObjectForKey: @"SOGoAlternateAvatar"];
           [[[user userDefaults] source] removeObjectForKey: @"SOGoAlternateAvatar"];
         }
+      
+      //We check if there are forward constraints
+      forwardPref = [v objectForKey: @"Forward"];
+      if(forwardPref && [forwardPref isKindOfClass: [NSDictionary class]]
+                     && [forwardPref objectForKey: @"enabled"]
+                     && [[forwardPref objectForKey: @"enabled"] boolValue])
+      {
+        BOOL doForward = NO;
+        forwardMails = [forwardPref objectForKey: @"forwardAddress"];
+        if (forwardMails && [forwardMails isKindOfClass: [NSArray class]] && [forwardMails count]>0)
+          doForward = [self doForwardsMatchTheConstraints: [forwardPref objectForKey: @"forwardAddress"]];
+        if(!doForward)
+          [v removeObjectForKey: @"Forward"];
+      }
 
       if ([self userHasMailAccess])
         {
@@ -1658,7 +1755,7 @@ static NSArray *reminderValues = nil;
                   // - forceDefaultIdentity                => SOGoMailForceDefaultIdentity
                   // - receipts.receiptAction              => SOGoMailReceiptAllow
                   // - receipts.receiptNonRecipientAction  => SOGoMailReceiptNonRecipientAction
-                  // - receipts.receiptOutsideDomainAction => SOGoMailReceiptOutsideDomainAction
+                  // - receipts.receiptOutsideDomaforwardAddressinAction => SOGoMailReceiptOutsideDomainAction
                   // - receipts.receiptAnyAction           => SOGoMailReceiptAnyAction
                   // - security.alwaysSign                 => SOGoMailCertificateAlwaysSign
                   // - security.alwaysEncrypt              => SOGoMailCertificateAlwaysEncrypt

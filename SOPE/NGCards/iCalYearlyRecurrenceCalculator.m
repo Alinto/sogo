@@ -44,10 +44,11 @@
 {
   NSMutableArray *ranges;
   NSArray *byMonth;
-  NSCalendarDate *firStart, *lastDate, *rStart, *rEnd, *until, *referenceDate;
+  NSCalendarDate *firStart, *lastDate, *rStart, *rEnd, *until, *referenceDate, *rTemp;
+  NSInteger *hoursOfOffset;
   iCalMonthlyRecurrenceCalculator *monthlyCalc;
   unsigned j, yearIdxInRange, numberOfYearsInRange, count, interval, monthDiff;
-  int diff, repeatCount, currentMonth;
+  int diff, repeatCount, currentMonth, origNbDaysInMonth;
 
   firStart = [firstRange startDate];
   rStart = [_r startDate];
@@ -186,18 +187,31 @@
                                                            days: 0];
 
 
-                      //Due to the bug with dateByAddingYears, we have to take off one day (see line 133)
-                      rStart = [NSCalendarDate dateWithYear: [rStart yearOfCommonEra]
-                                        month: [rStart monthOfYear]
-                                          day: 0
-                                        hour: [rStart hourOfDay]
-                                      minute: [rStart minuteOfHour]
-                                      second: 0
-                                    timeZone: [rStart timeZone]];
+                      //Due to the bug with dateByAddingYears, we may take the previous day (see line 133)
+                      hoursOfOffset = [rStart hourOfDay];
+                      origNbDaysInMonth = [rStart numberOfDaysInMonth];
+                      if(hoursOfOffset > 12) {
+                        //If rStart is 1st 22:00, we should start at the previous day 22:00
+                        rTemp = [NSCalendarDate dateWithYear: [rStart yearOfCommonEra]
+                                          month: 1+([rStart monthOfYear]-2)%12
+                                            day: 1
+                                          hour: [rStart hourOfDay]
+                                        minute: [rStart minuteOfHour]
+                                        second: 0
+                                      timeZone: [rStart timeZone]];
+                        rStart = [NSCalendarDate dateWithYear: [rStart yearOfCommonEra]
+                                          month: 1+([rStart monthOfYear]-2)%12
+                                            day: [rTemp numberOfDaysInMonth]
+                                          hour: [rStart hourOfDay]
+                                        minute: [rStart minuteOfHour]
+                                        second: 0
+                                      timeZone: [rStart timeZone]];
+                      }
+
                       
                       rEnd = [rStart dateByAddingYears: 0
                                                 months: 0
-                                                  days: [rStart numberOfDaysInMonth]];
+                                                  days: origNbDaysInMonth];
                       
                       
                       rangeForMonth = [NGCalendarDateRange calendarDateRangeWithStartDate: rStart

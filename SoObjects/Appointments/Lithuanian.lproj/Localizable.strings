@@ -12,9 +12,9 @@ vtodo_class2 = "(Konfidenciali užduotis)";
 "The event \"%{Summary}\" was created" = "Įvykis \"%{summary}\" buvo sukurtas";
 "The event \"%{Summary}\" was deleted" = "Įvykis \"%{Summary}\" buvo ištrintas";
 "The event \"%{Summary}\" was updated" = "Įvykis \"%{Summary}\" buvo atnaujintas";
-"The task \"%{Summary}\" was created" = "Įvykis \\"%{summary}\\" buvo sukurtas";
-"The task \"%{Summary}\" was deleted" = "Įvykis \\"%{Summary}\\" buvo ištrintas";
-"The task \"%{Summary}\" was updated" = "Įvykis \\"%{Summary}\\" buvo atnaujintas";
+"The task \"%{Summary}\" was created" = "Įvykis \"%{summary}\" buvo sukurtas";
+"The task \"%{Summary}\" was deleted" = "Įvykis \"%{Summary}\" buvo ištrintas";
+"The task \"%{Summary}\" was updated" = "Įvykis \"%{Summary}\" buvo atnaujintas";
 "The following attendees(s) were notified" = "Šiems dalyviui(iams) buvo pranešta";
 "The following attendees(s) were added" = "Šie dalyvis(iai) buvo pridėti";
 "The following attendees(s) were removed" = "Šie dalyvis(iai) buvo pašalinti";
@@ -33,13 +33,13 @@ vtodo_class2 = "(Konfidenciali užduotis)";
 "attendee_label" = "Dalyvis";
 
 /* Invitation */
-"Event Invitation: \"%{Summary}\"" = "Įvykio pakvietimas: \"%{Summary}\"";
-"(sent by %{SentBy}) " = "(išsiųsta nuo %{SentBy}) ";
+"Event Invitation: \"%{Summary}\"" = "Kvietimas į renginį: \"%{Summary}\"";
+"(sent by %{SentBy}) " = "(išsiųsta  %{SentBy}) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} pakvietė Jus į %{Summary}.\nPradžia: %{StartDate}\nPabaiga: %{EndDate}\nAprašymas: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} pakvietė Jus į %{Summary}.\n\nPradžia: %{StartDate} nuo %{StartTime}\nPabaiga: %{EndDate} nuo %{EndTime}\nAprašymas: %{Description}";
 
 /* Deletion */
-"Event Cancelled: \"%{Summary}\"" = "Įvykis atšauktas: \\"%{Summary}\\"";
+"Event Cancelled: \"%{Summary}\"" = "Įvykis atšauktas: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} atšaukė šį įvykį: %{Summary}.\n\nPradžia: %{StartDate}\nPabaiga: %{EndDate}\nAprašymas: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
@@ -63,11 +63,11 @@ vtodo_class2 = "(Konfidenciali užduotis)";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText} priėmė Jūsų įvykio pakvietimą.";
 "%{Attendee} %{SentByText}has declined your event invitation."
-= "%{Attendee} %{SentByText} atmetė Jūsų įvykio pakvietimą.";
+= "%{Attendee} %{SentByText} atmetė Jūsų pakvietimą į renginį.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
 = "%{Attendee} %{SentByText} delegavo pakvietimą į %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
-= "%{Attendee} %{SentByText} neapsisprendė dėl Jūsų įvykio pakvietimo.";
+= "%{Attendee} %{SentByText} neapsisprendė dėl Jūsų kvietimo į renginį.";
 
 /* Reminder */
 "Reminder: \"%{Summary}\" - %{StartDate}" = "Priminimas: \"%{Summary}\" - %{StartDate}";

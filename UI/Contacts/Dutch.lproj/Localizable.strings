@@ -193,6 +193,7 @@
 "Work" = "Werk";
 "Mobile" = "Mobiel";
 "Pager" = "Pieper";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* categories */
 "contacts_category_labels" = "Collega, Concurrent, Klant, Vriend, Familie, Zakenpartner, Leverancier, Pers, VIP";

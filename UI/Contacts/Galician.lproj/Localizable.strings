@@ -193,6 +193,7 @@
 "Work" = "Traballo";
 "Mobile" = "Móbil";
 "Pager" = "Buscapersonas";
+"Download iOS - MacOS configuration profile" = "Descargar o perfil de configuración de iOS - MacOS";
 
 /* categories */
 "contacts_category_labels" = "Colega, Competidor, Cliente, Amigo, Familia, Socio, Provedor, Prensa, VIP";

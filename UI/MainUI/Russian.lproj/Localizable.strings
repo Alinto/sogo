@@ -45,7 +45,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
-"Galician" = "Галисийский";
+"Galician" = "Galego";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -96,7 +96,7 @@
 "seconds" = "секунд";
 "Password change failed" = "Ошибка изменения пароля";
 "Password change failed - Permission denied" = "Ошибка изменения пароля - Доступ запрещен";
-"Password change failed - Insufficient password quality" = "Ошибка изменения пароля - Пароль не достаточно сложный";
+"Password change failed - Insufficient password quality" = "Ошибка изменения пароля - Пароль недостаточно сложный";
 "Password change failed - Password is too short" = "Ошибка изменения пароля - Пароль слишком короткий";
 "Password change failed - Password is too young" = "Ошибка изменения пароля - пароль слишком молод";
 "Password change failed - Password is in history" = "Ошибка изменения пароля - Пароль уже есть в истории";

@@ -65,6 +65,7 @@
 "A total of %{0} events were imported in the calendar." = "ما مجموعه%{0} من الأحداث تم استيرادها في التقويم.";
 "Compose E-Mail to All Attendees" = "إنشاء رسالة بريد إلكتروني لجميع الحاضرين";
 "Compose E-Mail to Undecided Attendees" = "إنشاء رسالة بريد إلكتروني الى الحضور الغير مؤكد حضورهم.";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
 
 /* Relative dates */
 "Yesterday" = "Yesterday";

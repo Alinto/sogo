@@ -242,6 +242,10 @@
   //source id
   [newRecord setObject: [source sourceID] forKey: @"sourceID"];
 
+  //source display name
+  [newRecord setObject: [self displayName]
+                          forKey: @"containerName"];
+
   // c_name => id
   [newRecord setObject: [oldRecord objectForKey: @"c_name"]
                 forKey: @"c_name"];
@@ -430,26 +434,43 @@
 {
   NSArray *records, *result;
   EOSortOrdering *ordering;
+  BOOL processed;
 
   result = nil;
+  processed = NO;
 
-  if ([filter length] > 0 || ![source listRequiresDot])
+  [source setListRequiresDot: NO];
+  if ( ![source listRequiresDot])
     {
-      records = [source fetchContactsMatching: filter
+      if ([filter length] > 0) {
+        records = [source fetchContactsMatching: filter
                                  withCriteria: criteria
                                      inDomain: domain];
-      [childRecords setObjects: records
-                       forKeys: [records objectsForKey: @"c_name"
-                                        notFoundMarker: nil]];
-      records = [self _flattenedRecords: records];
-      ordering
-        = [EOSortOrdering sortOrderingWithKey: sortKey
-                          selector: ((sortOrdering == NSOrderedDescending)
-                                     ? EOCompareCaseInsensitiveDescending
-                                     : EOCompareCaseInsensitiveAscending)];
-      result
-        = [records sortedArrayUsingKeyOrderArray:
-                     [NSArray arrayWithObject: ordering]];
+        processed = YES;
+      } else if ([[SOGoSystemDefaults sharedSystemDefaults] globalAddressBookFirstEntriesEnabled]) {
+        records = [source fetchContactsMatching: filter
+                                 withCriteria: criteria
+                                     inDomain: domain
+                                        limit: [[SOGoSystemDefaults sharedSystemDefaults] globalAddressBookFirstEntriesCount]];
+        processed = YES;
+      }
+
+      if (processed) {
+        [childRecords setObjects: records
+                        forKeys: [records objectsForKey: @"c_name"
+                                          notFoundMarker: nil]];
+        records = [self _flattenedRecords: records];
+        ordering
+          = [EOSortOrdering sortOrderingWithKey: sortKey
+                            selector: ((sortOrdering == NSOrderedDescending)
+                                      ? EOCompareCaseInsensitiveDescending
+                                      : EOCompareCaseInsensitiveAscending)];
+        result
+          = [records sortedArrayUsingKeyOrderArray:
+                      [NSArray arrayWithObject: ordering]];
+      }
+      
+      
     }
 
   return result;

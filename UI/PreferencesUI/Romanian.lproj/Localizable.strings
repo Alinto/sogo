@@ -204,6 +204,8 @@
 "Insert signature on new message" = "Insert signature on new message";
 "Insert signature on reply" = "Insert signature on reply";
 "Insert signature on forward" = "Insert signature on forward";
+"Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
+"Hide inline attachments" = "Hide inline attachments";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Marime font implicită";
@@ -320,7 +322,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
-"Galician" = "Galician";
+"Galician" = "Galego";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -507,7 +509,7 @@
 "Let SOGo handle everything" = "Let SOGo handle everything";
 
 /* Password Recovery */
-"Password recovery mode" = "Password recovery";
+"Password recovery mode" = "Password recovery mode";
 "Question" = "Question";
 "Secondary e-mail" = "Secondary e-mail";
 "Answer" = "Answer";

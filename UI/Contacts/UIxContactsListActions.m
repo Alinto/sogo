@@ -42,6 +42,7 @@
 
 #import <SoObjects/Contacts/SOGoContactGCSEntry.h>
 #import <SoObjects/Contacts/SOGoContactGCSFolder.h>
+#import <SoObjects/Contacts/SOGoContactSourceFolder.h>
 
 #import "UIxContactsListActions.h"
 
@@ -138,19 +139,20 @@
 
 - (NSArray *) contactInfos
 {
-  id <SOGoContactFolder> folder;
+  id <SOGoContactFolder> folder, sourceFolder;
   NSString *ascending, *valueText;
-  NSArray *results, *searchFields, *fields;
-  NSMutableArray *filteredContacts, *headers;
+  NSArray *searchFields, *fields, *folders, *tmpGlobalAddressBookResults;
+  NSMutableArray *filteredContacts, *headers, *results, *globalAddressBookResults;
   NSDictionary *data, *contact;
   BOOL excludeLists;
   NSComparisonResult ordering;
   NSUInteger max, count;
   unsigned int i;
+  NSSortDescriptor *descriptor;
+  NSMutableDictionary *tmpDict;
 
   if (!contactInfos)
     {
-      folder = [self clientObject];
       data = [self requestData];
 
       ascending = [data objectForKey: @"asc"];
@@ -167,11 +169,80 @@
       excludeLists = [[data objectForKey: @"excludeLists"] boolValue];
 
       [contactInfos release];
-      results = [folder lookupContactsWithFilter: valueText
+
+      sourceFolder = [self clientObject];
+      globalAddressBookResults = nil;
+      if (![sourceFolder isKindOfClass: [SOGoContactSourceFolder class]]) {
+        folders = [[[self clientObject] container] subFolders];
+      
+        for (folder in folders) {
+          // Global AB
+          if ([folder isKindOfClass: [SOGoContactSourceFolder class]] && (![folder isEqual: [self clientObject]])) {
+            tmpGlobalAddressBookResults = [folder lookupContactsWithFilter: valueText
+                                        onCriteria: nil
+                                            sortBy: [self sortKey]
+                                          ordering: ordering
+                                          inDomain: [[context activeUser] domain]];
+            if (globalAddressBookResults) {
+              globalAddressBookResults = [NSMutableArray arrayWithArray: [globalAddressBookResults arrayByAddingObjectsFromArray: tmpGlobalAddressBookResults]];
+            } else {
+              globalAddressBookResults = [NSMutableArray arrayWithArray: tmpGlobalAddressBookResults];
+            }
+          }
+        }
+
+        // Process for global address book instead of array
+        if (globalAddressBookResults) {
+          for (i = 0 ; i < [globalAddressBookResults count] ; i++) {
+            tmpDict = [NSMutableDictionary dictionaryWithDictionary: [globalAddressBookResults objectAtIndex: i]];
+            // Flatten emails
+            if ([tmpDict objectForKey: @"c_mail"] && [[tmpDict objectForKey: @"c_mail"] isKindOfClass:[NSArray class]] && [[tmpDict objectForKey: @"c_mail"] count] > 0) {
+              [tmpDict setObject:[[tmpDict objectForKey: @"c_mail"] componentsJoinedByString: @","] forKey:@"c_mail"];            
+            }
+
+            if ((![tmpDict objectForKey:@"c_cn"] || [tmpDict objectForKey:@"c_cn"] == [NSNull null]) && [tmpDict objectForKey:@"c_name"]) {
+              // Replace c_cn if not filled
+              [tmpDict setObject:[tmpDict objectForKey:@"c_name"] forKey:@"c_cn"];
+            }
+
+            if ((![tmpDict objectForKey:@"c_uid"] || [tmpDict objectForKey:@"c_uid"] == [NSNull null]) && [tmpDict objectForKey:@"c_id"]) {
+              // Replace c_uid if not filled
+              [tmpDict setObject:[tmpDict objectForKey:@"c_uid"] forKey:@"c_id"];
+            }
+
+            [globalAddressBookResults replaceObjectAtIndex:i withObject: tmpDict];
+          }
+        }
+      }
+
+      // Current AB
+      results = [NSMutableArray arrayWithArray: [sourceFolder lookupContactsWithFilter: valueText
                                       onCriteria: searchFields
                                           sortBy: [self sortKey]
                                         ordering: ordering
-                                        inDomain: [[context activeUser] domain]];
+                                        inDomain: [[context activeUser] domain]]];
+
+      // Add sourceid for current AB
+      for (i = 0 ; i < [results count] ; i++) {
+        tmpDict = [NSMutableDictionary dictionaryWithDictionary: [results objectAtIndex: i]];
+        // Add sourceid
+        [tmpDict setObject:[sourceFolder nameInContainer] forKey:@"sourceid"];
+        [results replaceObjectAtIndex:i withObject: tmpDict];
+      }
+
+      if (globalAddressBookResults && results) { // Both results, merge arrays
+        // Results in personal folder will appear first
+        results = [results arrayByAddingObjectsFromArray: globalAddressBookResults];
+      } else if (globalAddressBookResults) { // No results in personal AB
+        results = globalAddressBookResults;
+      }
+
+      // Sort the results
+      descriptor = [[NSSortDescriptor alloc] initWithKey: [self sortKey]
+                                               ascending: ordering];
+      results = [results sortedArrayUsingDescriptors: [NSArray arrayWithObjects: descriptor, nil]];
+      [descriptor release];
+
       if (excludeLists)
         {
           filteredContacts = [NSMutableArray array];
@@ -198,6 +269,7 @@
           count = 0;
           fields = [[contactInfos objectAtIndex: 0] allKeys];
           [headers addObject: fields];
+          
           while (count < max)
             {
               [headers addObject: [[contactInfos objectAtIndex: count] objectsForKeys: fields
