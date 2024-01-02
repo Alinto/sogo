@@ -1219,7 +1219,6 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
   tmp = nil;
 
   tmp = [cache valueForKey: cacheKey];
-  NSLog(@"DKEY %@ - %@", cacheKey, tmp);
   if (tmp) {
     return tmp;
   } else {
