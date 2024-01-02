@@ -798,7 +798,6 @@
    */
   Component.prototype.canRemindAttendeesByEmail = function() {
     return this.alarm.action == 'email' &&
-      this.isEditable &&
       this.attendees && this.attendees.length > 0;
   };
 
