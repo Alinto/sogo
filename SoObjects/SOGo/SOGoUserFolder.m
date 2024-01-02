@@ -87,13 +87,7 @@
 }
 
 - (NSString *) nameInContainer {
-  return [SOGoUser getEncryptedUsernameIfNeeded: [super nameInContainer] withContext: context];
-}
-
-- (NSString *) davURLAsString
-{
-  return [[container davURLAsString]
-           stringByAppendingFormat: @"%@/", [self nameInContainer]];
+  return [SOGoUser getEncryptedUsernameIfNeeded: [super nameInContainer]];
 }
 
 /* ownership */

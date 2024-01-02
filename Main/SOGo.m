@@ -351,7 +351,6 @@ static BOOL debugLeaks;
         authenticator = [SOGoWebAuthenticator sharedSOGoWebAuthenticator];
       else {
         authenticator = [SOGoDAVAuthenticator sharedSOGoDAVAuthenticator];
-        [authenticator setContext: context];
       }
         
     }
@@ -369,7 +368,7 @@ static BOOL debugLeaks;
   NSData *decodedLogin;
   NSString *login;
   
-  login = [SOGoUser getDecryptedUsernameIfNeeded: _key withContext: _ctx];
+  login = [SOGoUser getDecryptedUsernameIfNeeded: _key];
   
   user = [SOGoUser userWithLogin: login roles: nil];
   if (user)

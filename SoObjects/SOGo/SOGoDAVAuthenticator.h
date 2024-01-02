@@ -29,8 +29,6 @@
 
 @interface SOGoDAVAuthenticator : SoHTTPAuthenticator <SOGoAuthenticator>
 
-WOContext *context;
-
 + (id) sharedSOGoDAVAuthenticator;
 
 @end

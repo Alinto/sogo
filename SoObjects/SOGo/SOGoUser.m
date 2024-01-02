@@ -1201,25 +1201,22 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
 }
 
 /* Encryption */
-+ (NSString *) getEncryptedUsernameIfNeeded:(NSString *)username withContext:(WOContext *)context
++ (NSString *) getEncryptedUsernameIfNeeded:(NSString *)username
 {
   NSException *exception;
   NSString *tmp, *cacheKey;
   SOGoCache *cache;
-  WORequest *request;
 
   if (![[SOGoSystemDefaults sharedSystemDefaults] isURLEncryptionEnabled])
     return username;
 
-  request = [context request];
   cache = [SOGoCache sharedCache];
-  cacheKey = [NSString stringWithFormat: @"%@_%@_%@", kEncryptedUserNamePrefix, username, [request requestHandlerKey]];
+  cacheKey = [NSString stringWithFormat: @"%@_%@", kEncryptedUserNamePrefix, username];
   
   exception = nil;
   tmp = nil;
 
   tmp = [cache valueForKey: cacheKey];
-  NSLog(@"DKEY %@ - %@", cacheKey, tmp);
   if (tmp) {
     return tmp;
   } else {
@@ -1239,19 +1236,17 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
   }
 }
 
-+ (NSString *) getDecryptedUsernameIfNeeded:(NSString *)username withContext:(WOContext *)context
++ (NSString *) getDecryptedUsernameIfNeeded:(NSString *)username
 {
   NSException *exception;
   NSString *tmp, *cacheKey;
   SOGoCache *cache;
-  WORequest *request;
 
   if (![[SOGoSystemDefaults sharedSystemDefaults] isURLEncryptionEnabled])
     return username;
 
-  request = [context request];
   cache = [SOGoCache sharedCache];
-  cacheKey = [NSString stringWithFormat: @"%@_%@_%@", kEncryptedUserNamePrefix, username, [request requestHandlerKey]];
+  cacheKey = [NSString stringWithFormat: @"%@_%@", kEncryptedUserNamePrefix, username];
   exception = nil;
   tmp = nil;
   

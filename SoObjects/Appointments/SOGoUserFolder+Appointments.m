@@ -88,7 +88,7 @@
     }
 
   tag = [NSArray arrayWithObjects: @"href", XMLNS_WEBDAV, @"D",
-                 [NSString stringWithFormat: @"/SOGo/dav/%@/", [self nameInContainer]],
+                 [NSString stringWithFormat: @"/SOGo/dav/%@/", nameInContainer],
                  nil];
   [addresses addObjectUniquely: tag];
 
@@ -128,7 +128,7 @@
     }
 
   tag = [NSArray arrayWithObjects: @"href", XMLNS_WEBDAV, @"D",
-                 [NSString stringWithFormat: @"/SOGo/dav/%@/", [self nameInContainer]],
+                 [NSString stringWithFormat: @"/SOGo/dav/%@/", nameInContainer],
                  nil];
   [addresses addObjectUniquely: tag];
 

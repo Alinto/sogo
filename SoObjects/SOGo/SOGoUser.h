@@ -136,8 +136,8 @@
 - (SOGoContactFolder *) personalContactsFolderInContext: (WOContext *) context;
 
 /* Encryption */
-+ (NSString *)getEncryptedUsernameIfNeeded:(NSString *)username withContext:(WOContext *)context;
-+ (NSString *)getDecryptedUsernameIfNeeded:(NSString *)username withContext:(WOContext *)context;
++ (NSString *)getEncryptedUsernameIfNeeded:(NSString *)username;
++ (NSString *)getDecryptedUsernameIfNeeded:(NSString *)username;
 
 @end
 

@@ -365,7 +365,7 @@
   NSString *usersUrl;
 
   usersUrl = [NSString stringWithFormat: @"%@%@/",
-		       [[WOApplication application] davURLAsString], [SOGoUser getEncryptedUsernameIfNeeded: owner withContext: context]];
+		       [[WOApplication application] davURLAsString], owner];
   ownerHREF = davElementWithContent (@"href", XMLNS_WEBDAV, usersUrl);
 
   return [davElementWithContent (@"owner", XMLNS_WEBDAV, ownerHREF)
@@ -946,6 +946,7 @@
   NSMutableArray *path;
   NSString *baseURL, *urlMethod, *fullHost;
   NSNumber *port;
+  int i;
 
   serverURL = [context serverURL];
   baseURL = [[self baseURLInContext: context] stringByUnescapingURL];
@@ -972,6 +973,17 @@
 			 [serverURL host], port];
   else
     fullHost = [serverURL host];
+
+  for (i = 0 ; i < [path count] ; i++) {
+    // For DAV url, the username must be decrypted
+    // Username is placed afted dav in url components
+    if ([[[path objectAtIndex: i] lowercaseString] isEqualToString:@"dav"]) {
+      if ([path count] > (i + 1)) {
+        [path replaceObjectAtIndex: (i +1)
+                        withObject: [SOGoUser getDecryptedUsernameIfNeeded: [path objectAtIndex: (i + 1)]]];
+      }
+    }
+  }
 
   url = [[NSURL alloc] initWithScheme: [serverURL scheme]
 		       host: fullHost
@@ -1227,7 +1239,7 @@
     davCurrentUserPrincipal = nil;
   else
     {
-      s = [NSString stringWithFormat: @"/SOGo/dav/%@", [SOGoUser getEncryptedUsernameIfNeeded:login withContext:[self context]]];
+      s = [NSString stringWithFormat: @"/SOGo/dav/%@", login];
       userHREF = davElementWithContent (@"href", XMLNS_WEBDAV, s);
       davCurrentUserPrincipal
         = [davElementWithContent (@"current-user-principal",

@@ -343,7 +343,7 @@ static const NSString *kJwtKey = @"jwt";
                 forKey: @"expire"];
         [json setObject: [NSNumber numberWithInt: grace]
                 forKey: @"grace"];
-        [json setObject: [SOGoUser getEncryptedUsernameIfNeeded: username withContext: context]
+        [json setObject: [SOGoUser getEncryptedUsernameIfNeeded: username]
                 forKey: @"username"];
 
         response = [self responseWithStatus: 200
