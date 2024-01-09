@@ -34,6 +34,7 @@
 
       // Start dragging on mousedown
       element.on('mousedown', onDragDetect);
+      element.on('dblclick', onDoubleClick);
 
       // Deregister listeners when removing the element from the DOM
       scope.$on('$destroy', function() {
@@ -216,6 +217,35 @@
           _.forEach(block.component.blocks, function(b) {
             b.dragging = false;
           });
+      }
+
+      function onDoubleClick(ev) {
+        var block, pointerHandler, startDate, newData, newComponent;
+        
+        startDate = calendarDayCtrl.dayString.parseDate(Preferences.$mdDateLocaleProvider, '%Y-%m-%e');
+        newData = {
+          type: 'appointment',
+          pid: Calendar.$defaultCalendar(),
+          summary: l('New Event'),
+          startDate: startDate,
+          isAllDay: 1
+        };
+        newComponent = new Component(newData);
+        block = {
+          component: newComponent,
+          dayNumber: calendarDayCtrl.dayNumber,
+          length: 0
+        };
+        block.component.blocks = [block];
+
+        pointerHandler = new SOGoEventDragPointerHandler('double-click');
+        pointerHandler.initFromBlock(block);
+        
+        // Update Component.$ghost
+        Component.$ghost.pointerHandler = pointerHandler;
+
+        Component.$ghost.component = block.component;
+        $rootScope.$emit('calendar:doubleclick');
       }
 
       /**

@@ -66,6 +66,7 @@
 
       // Update the component being dragged
       $rootScope.$on('calendar:dragend', updateComponentFromGhost);
+      $rootScope.$on('calendar:doubleclick', updateComponentFromGhost);
 
       $scope.$on('$destroy', function() {
         // Deregister hotkeys
