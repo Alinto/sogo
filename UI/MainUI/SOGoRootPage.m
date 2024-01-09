@@ -869,11 +869,18 @@ static const NSString *kJwtKey = @"jwt";
   if (!mode && jwtToken) {
     response = [self _standardDefaultAction];
   } else if ([mode isEqualToString: SOGoPasswordRecoverySecondaryEmail]) {
-    if (mailDomain && username) {
+    if (username) {
+        ownerUser = [SOGoUser userWithLogin: username];
+        dd = [ownerUser domainDefaults];
+
         // Email recovery
 
         // Create email from
-        fromEmail = [NSString stringWithFormat:@"noreply@%@", mailDomain];
+        if (mailDomain) {
+          fromEmail = [NSString stringWithFormat:@"noreply@%@", mailDomain];
+        } else {
+          fromEmail = [dd passwordRecoveryFrom];
+        }
 
         // Get password recovery email
         info = [um contactInfosForUserWithUIDorEmail: username];
@@ -887,8 +894,6 @@ static const NSString *kJwtKey = @"jwt";
           jwtToken = [um generateAndSavePasswordRecoveryTokenWithUid: uid username: username domain: domain];
 
           // Send mail
-          ownerUser = [SOGoUser userWithLogin: username];
-          dd = [ownerUser domainDefaults];
           mailer = [SOGoMailer mailerWithDomainDefaults: dd];
           url = [NSString stringWithFormat:@"%@%@?token=%@"
                       , [[request headers] objectForKey:@"origin"]
@@ -922,7 +927,7 @@ static const NSString *kJwtKey = @"jwt";
                               andString: @"Invalid configuration for email password recovery"];
         }
     } else {
-      [self logWithFormat: @"No user domain found for password recovery"];
+      [self logWithFormat: @"No user found for password recovery"];
       response = [self responseWithStatus: 403
                               andString: @"Invalid configuration for email password recovery"];
     }

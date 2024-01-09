@@ -448,4 +448,16 @@
   return [self boolForKey: @"SOGoCreateIdentitiesDisabled"];
 }
 
+- (NSString *) passwordRecoveryFrom
+{
+  NSString *emailFrom;
+
+  emailFrom = [self stringForKey: @"SOGoPasswordRecoveryFrom"];
+
+  if (!emailFrom)
+    emailFrom = @"noreply@domain.com"; // Default email from when no domain set
+
+  return emailFrom;
+}
+
 @end

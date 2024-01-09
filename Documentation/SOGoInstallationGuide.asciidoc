@@ -808,6 +808,9 @@ specified as an array of dictionaries.
 |S |SOGoPasswordRecoveryDomains
 |List of domains where password recovery is enabled, for example `(example.org, example.net)`. If empty array `()`, disabled for all domains. If not set, enabled for all domains.
 
+|D |SOGoPasswordRecoveryFrom
+|From email when `SOGoPasswordRecoverySecondaryEmail` is set and no user domain is defined - otherwise it will use noreply@foo.bar where foo.bar is the selected user domain. Default value is `noreply@domain.com`.
+
 |U |SOGoPasswordRecoveryMode
 |User password recovery mode. Values can be `Disabled`, `SecretQuestion` or `SecondaryEmail`.
 

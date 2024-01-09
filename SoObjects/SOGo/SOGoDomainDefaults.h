@@ -99,6 +99,8 @@
 
 - (BOOL) createIdentitiesDisabled;
 
+- (NSString *) passwordRecoveryFrom;
+
 @end
 
 #endif /* SOGODOMAINDEFAULTS_H */
