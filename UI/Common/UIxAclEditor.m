@@ -104,8 +104,8 @@
   WORequest *request;
   NSArray *reqPathArray;
   NSEnumerator *aclsEnum;
-  BOOL defaultUserDisable;
   SOGoSystemDefaults *sd;
+  BOOL defaultUserDisable = NO;
 
   if (!prepared)
     {
