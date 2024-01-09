@@ -1403,15 +1403,18 @@ static NSArray *reminderValues = nil;
 //
 // Used internally
 //
-- (void) _extractMainAccountSettings: (NSDictionary *) account
+- (NSException *) _extractMainAccountSettings: (NSDictionary *) account
                         inDictionary: (NSMutableDictionary *) target
 {
   NSArray *identities;
   SOGoDomainDefaults *dd;
   NSMutableArray *previousIdentities, *newIdentities;
-  NSMutableDictionary *identity, *newIdentitiesAsDict;
+  NSMutableDictionary *identity, *previousIdentity, *newIdentitiesAsDict;
+  NSException *error;
   int i;
-  BOOL isDefault;
+  BOOL isDefault, found;
+
+  error = nil;
 
   if ([account isKindOfClass: [NSDictionary class]])
     {
@@ -1430,6 +1433,37 @@ static NSArray *reminderValues = nil;
             newIdentitiesAsDict = [[NSMutableDictionary alloc] init];
             for (NSDictionary *identity in identities) {
               [newIdentitiesAsDict setObject: identity forKey: [identity objectForKey:@"email"]];
+              // Check if email has been changed (unauthorized)
+              if ([identity objectForKey:@"email"]) {
+                found = NO;
+                for (previousIdentity in previousIdentities) {
+                  if ([[identity objectForKey:@"email"] isEqualToString: [previousIdentity objectForKey:@"email"]]) {
+                    found = YES;
+                  }
+                }
+                if (!found) {
+                  error = [NSException exceptionWithName: @"SOGOPreferencesException"
+                                      reason: @"Invalid operation"
+                                    userInfo: nil];;
+                  return error; // Break
+                }
+              }
+              
+              // Check if replyTo has been changed (unauthorized)
+              if ([identity objectForKey:@"replyTo"]) {
+                found = NO;
+                for (previousIdentity in previousIdentities) {
+                  if ([[identity objectForKey:@"replyTo"] isEqualToString: [previousIdentity objectForKey:@"replyTo"]]) {
+                    found = YES;
+                  }
+                }
+                if (!found) {
+                  error = [NSException exceptionWithName: @"SOGOPreferencesException"
+                                      reason: @"Invalid operation"
+                                    userInfo: nil];;
+                  return error; // Break
+                }
+              }
             }
 
             i = 0;
@@ -1485,6 +1519,8 @@ static NSArray *reminderValues = nil;
       [self _extractMainReceiptsPreferences: [account objectForKey: @"receipts"]  inDictionary: target];
       [self _extractMainSecurityPreferences: [account objectForKey: @"security"]  inDictionary: target];
     }
+
+    return error;
 }
 
 //
@@ -1759,7 +1795,11 @@ static NSArray *reminderValues = nil;
                   // - receipts.receiptAnyAction           => SOGoMailReceiptAnyAction
                   // - security.alwaysSign                 => SOGoMailCertificateAlwaysSign
                   // - security.alwaysEncrypt              => SOGoMailCertificateAlwaysEncrypt
-                  [self _extractMainAccountSettings: [accounts objectAtIndex: 0]  inDictionary: v];
+                  if ([self _extractMainAccountSettings: [accounts objectAtIndex: 0]  inDictionary: v]) {
+                    return [self responseWithStatus: 403
+                              andString: @"Invalid operation"];
+                  }
+
                   if ([self mailAuxiliaryUserAccountsEnabled])
                     accounts = [self _extractAuxiliaryAccounts: accounts];
                   else
