@@ -788,8 +788,10 @@ static const NSString *kJwtKey = @"jwt";
               [us disableForceResetPassword];
             }
           }
+          
+          response = [self responseWithStatus: 200 andJSONRepresentation: 
+                  [NSDictionary dictionaryWithObjectsAndKeys: [SOGoUser getEncryptedUsernameIfNeeded:username], @"username", nil]];
 
-          response = [self responseWith204];
           if (!passwordRecovery) {
             authCookie = [auth cookieWithUsername: username
                                       andPassword: newPassword

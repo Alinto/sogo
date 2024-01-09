@@ -183,8 +183,12 @@
               'X-XSRF-TOKEN' : xsrfCookie
             },
             data: { userName: userName, newPassword: newPassword, oldPassword: oldPassword, token: token }
-          }).then(function() {
-            d.resolve({url: redirectUrl(userName, domain)});
+          }).then(function (response) {
+            if (response && response.data && response.data.username) {
+              d.resolve({ url: redirectUrl(response.data.username, domain) });
+            } else {
+              d.resolve({ url: redirectUrl(userName, domain) });
+            }
           }, function(response) {
             var error,
                 data = response.data,
