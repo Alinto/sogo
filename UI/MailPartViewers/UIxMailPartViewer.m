@@ -54,6 +54,7 @@
       attachmentIds = nil;
       flatContent = nil;
       decodedContent = nil;
+      _shouldDisplayAttachment = YES;
     }
 
   return self;
@@ -204,6 +205,7 @@
                        [[self sizeFormatter] stringForObjectValue: [bodyInfo objectForKey: @"size"]], @"size",
                        [self pathToAttachment], @"viewURL",
                        [self pathForDownload], @"downloadURL",
+                       [NSNumber numberWithBool:_shouldDisplayAttachment], @"shouldDisplayAttachment",
                        nil];
 }
 
@@ -220,6 +222,12 @@
 - (void) setAttachmentIds: (NSDictionary *) newAttachmentIds
 {
   attachmentIds = newAttachmentIds;
+}
+
+- (void) setAttachmentIds:(NSDictionary *)newAttachmentIds displayAttachment:(BOOL)shouldDisplayAttachment
+{
+  [self setAttachmentIds: newAttachmentIds];
+  _shouldDisplayAttachment = shouldDisplayAttachment;
 }
 
 - (NSString *) flatContentAsString

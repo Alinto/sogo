@@ -14,6 +14,7 @@
       this.calendarService = Calendar;
       this.service = Component;
       this.component = stateComponent;
+      this.isDeleting = false;
 
       // Put organizer in an array to display it as an mdChip
       this.organizer = [stateComponent.organizer];
@@ -144,17 +145,26 @@
     };
 
     this.deleteOccurrence = function () {
-      this.component.remove(true).then(function() {
-        $rootScope.$emit('calendars:list');
-        $mdDialog.hide();
-      });
+      if (!this.isDeleting) {
+        this.isDeleting = true;
+        this.component.remove(true).then(function() {
+          $rootScope.$emit('calendars:list');
+          $mdDialog.hide();
+          vm.isDeleting = false;
+        });
+      }
     };
 
     this.deleteAllOccurrences = function () {
-      this.component.remove().then(function() {
-        $rootScope.$emit('calendars:list');
-        $mdDialog.hide();
-      });
+      if (!this.isDeleting) {
+        this.isDeleting = true;
+        this.component.remove().then(function () {
+          $rootScope.$emit('calendars:list');
+          $mdDialog.hide();
+          vm.isDeleting = false;
+        });
+      }
+      
     };
 
     this.toggleRawSource = function ($event) {

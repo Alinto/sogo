@@ -461,7 +461,9 @@
 
             // Trusted content that can be compiled (Angularly-speaking)
             part.compile = true;
-            parts.push(part);
+            if (!Object.hasOwn(part, 'shouldDisplayAttachment') || 1 == part.shouldDisplayAttachment ) {
+              parts.push(part);
+            }
           }
           else {
             part.html = true;

@@ -124,21 +124,18 @@
       info = [self childInfo];
       
       ud = [[[self context] activeUser] userDefaults];
+      viewer = [[[self context] mailRenderingContext] viewerForBodyInfo: info];
+      [viewer setBodyInfo: info];
+      [viewer setPartPath: [self childPartPath]];
+      if ([self decodedFlatContent])
+        [viewer setDecodedContent: [parts objectAtIndex: i]];
+      [viewer setAttachmentIds: attachmentIds 
+             displayAttachment:!([info objectForKey:@"disposition"] 
+              && [[info objectForKey:@"disposition"] objectForKey:@"type"]
+              && [[[[info objectForKey:@"disposition"] objectForKey:@"type"] uppercaseString] isEqualToString:@"INLINE"]
+              && [ud hideInlineAttachments])];
 
-      if (!([info objectForKey:@"disposition"] 
-        && [[info objectForKey:@"disposition"] objectForKey:@"type"]
-        && [[[[info objectForKey:@"disposition"] objectForKey:@"type"] uppercaseString] isEqualToString:@"INLINE"]
-        && [ud hideInlineAttachments])) {
-        viewer = [[[self context] mailRenderingContext] viewerForBodyInfo: info];
-        [viewer setBodyInfo: info];
-        [viewer setPartPath: [self childPartPath]];
-        if ([self decodedFlatContent])
-          [viewer setDecodedContent: [parts objectAtIndex: i]];
-        [viewer setAttachmentIds: attachmentIds];
-
-        
-        [renderedParts addObject: [viewer renderedPart]];
-      }
+      [renderedParts addObject: [viewer renderedPart]];
     }
 
   contentType = [NSString stringWithFormat: @"%@/%@",

@@ -46,6 +46,7 @@
 @class NSData;
 @class NSFormatter;
 @class NSMutableDictionary;
+@class NSNumber;
 
 @class SOGoMailBodyPart;
 
@@ -56,6 +57,7 @@
   NSData  *flatContent;
   id      decodedContent;
   NSDictionary *attachmentIds;
+  BOOL _shouldDisplayAttachment;
 }
 
 /* accessors */
@@ -71,6 +73,7 @@
 
 - (NSDictionary *) attachmentIds;
 - (void) setAttachmentIds: (NSDictionary *) newAttachmentIds;
+- (void) setAttachmentIds:(NSDictionary *)newAttachmentIds displayAttachment:(BOOL)shouldDisplayAttachment;
 
 - (NSData *)flatContent;
 - (void) setFlatContent: (NSData *) theData;

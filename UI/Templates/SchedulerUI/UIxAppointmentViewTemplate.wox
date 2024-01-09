@@ -276,6 +276,7 @@
       <md-button class="md-warn"
                  label:aria-label="Delete Event"
                  ng-show="::editor.component.isErasable"
+                 ng-disabled="editor.isDeleting"
                  ng-click="editor.deleteAllOccurrences()">
         <var:string label:value="Delete"/>
       </md-button>
@@ -292,6 +293,7 @@
         <md-button class="md-warn"
                    label:aria-label="Delete Event"
                    ng-click="$mdMenu.open()"
+                   ng-disabled="editor.isDeleting"
                    md-menu-origin="md-menu-origin">
           <var:string label:value="Delete"/> <md-icon>arrow_drop_down</md-icon>
         </md-button>
@@ -299,6 +301,7 @@
           <md-menu-item>
             <md-button class="md-warn"
                        label:aria-label="Delete This Occurrence"
+                       ng-disabled="editor.isDeleting"
                        ng-click="editor.deleteOccurrence()">
               <md-icon>repeat_one</md-icon> <var:string label:value="Delete This Occurrence"/>
             </md-button>
@@ -306,6 +309,7 @@
           <md-menu-item>
             <md-button class="md-warn"
                        label:aria-label="Delete All Occurrences"
+                       ng-disabled="editor.isDeleting"
                        ng-click="editor.deleteAllOccurrences()">
               <md-icon>repeat</md-icon> <var:string label:value="Delete All Occurrences"/>
             </md-button>
@@ -339,6 +343,7 @@
     <md-dialog-actions ng-show="::editor.component.isInvitation()">
       <md-button class="md-warn"
                  label:aria-label="Delete Event"
+                 ng-disabled="editor.isDeleting"
                  ng-click="editor.deleteAllOccurrences()">
         <var:string label:value="Delete"/>
       </md-button>
@@ -355,6 +360,7 @@
         <md-button class="md-warn"
                    label:aria-label="Delete Event"
                    ng-click="$mdMenu.open()"
+                   ng-disabled="editor.isDeleting"
                    md-menu-origin="md-menu-origin">
           <var:string label:value="Delete"/> <md-icon>arrow_drop_down</md-icon>
         </md-button>
@@ -362,6 +368,7 @@
           <md-menu-item>
             <md-button class="md-warn"
                        label:aria-label="Delete This Occurrence"
+                       ng-disabled="editor.isDeleting"
                        ng-click="editor.deleteOccurrence()">
               <md-icon>repeat_one</md-icon> <var:string label:value="Delete This Occurrence"/>
             </md-button>
@@ -369,6 +376,7 @@
           <md-menu-item>
             <md-button class="md-warn"
                        label:aria-label="Delete All Occurrences"
+                       ng-disabled="editor.isDeleting"
                        ng-click="editor.deleteAllOccurrences()">
               <md-icon>repeat</md-icon> <var:string label:value="Delete All Occurrences"/>
             </md-button>
