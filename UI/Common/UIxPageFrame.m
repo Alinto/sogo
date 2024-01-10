@@ -497,6 +497,15 @@
   return [[sd authenticationType] isEqualToString: @"cas"];
 }
 
+- (BOOL) usesOpenIdAuthentication
+{
+  SOGoSystemDefaults *sd;
+
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+
+  return [[sd authenticationType] isEqualToString: @"openid"];
+}
+
 - (BOOL) usesSAML2Authenticationx
 {
   SOGoSystemDefaults *sd;
@@ -545,11 +554,13 @@
       sd = [SOGoSystemDefaults sharedSystemDefaults];
       authType = [sd authenticationType];
       if ([authType isEqualToString: @"cas"])
-	canLogoff = [sd CASLogoutEnabled];
+	      canLogoff = [sd CASLogoutEnabled];
       else if ([authType isEqualToString: @"saml2"])
-	canLogoff = [sd SAML2LogoutEnabled];
+	      canLogoff = [sd SAML2LogoutEnabled];
+      else if ([authType isEqualToString: @"openid"])
+	      canLogoff = [sd openIdLogoutEnabled];
       else
-	canLogoff = [[auth cookieNameInContext: context] length] > 0;
+	      canLogoff = [[auth cookieNameInContext: context] length] > 0;
     }
   else
     canLogoff = NO;

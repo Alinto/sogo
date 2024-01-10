@@ -429,6 +429,10 @@
       redirectURL = [SOGoCASSession CASURLWithAction: @"logout"
                                        andParameters: nil];
     }
+  else if ([[sd authenticationType] isEqualToString: @"openId"])
+  {
+    redirectURL = "#todo";
+  }
 #if defined(SAML2_CONFIG)
   else if ([[sd authenticationType] isEqualToString: @"saml2"])
     {

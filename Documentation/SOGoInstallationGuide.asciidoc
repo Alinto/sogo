@@ -437,8 +437,8 @@ Defaults to `300`.
 
 |S |SOGoAuthenticationType
 |Parameter used to define the way by which users will be authenticated.
-For C.A.S., specify `cas`. For SAML2, specify `saml2`. For anything
-else, leave that value empty.
+For C.A.S., specify `cas`. For SAML2, specify `saml2`. For opendID Connect, specify `openid`.
+For anything else, leave that value empty.
 
 |S |SOGoTrustProxyAuthentication
 |Parameter used to set whether HTTP username should be trusted.

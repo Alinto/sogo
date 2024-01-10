@@ -91,6 +91,12 @@ NSComparisonResult languageSort(id el1, id el2, void *context);
 - (NSString *) CASServiceURL;
 - (BOOL) CASLogoutEnabled;
 
+- (NSString *) openIdUrl;
+- (NSString *) openIdScope;
+- (NSString *) openIdClient;
+- (NSString *) openIdClientSecret;
+- (BOOL) openIdLogoutEnabled;
+
 - (NSString *) SAML2PrivateKeyLocation;
 - (NSString *) SAML2CertificateLocation;
 - (NSString *) SAML2IdpMetadataLocation;

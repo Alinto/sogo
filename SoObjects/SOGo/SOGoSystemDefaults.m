@@ -581,6 +581,32 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
   return [self boolForKey: @"SOGoCASLogoutEnabled"];
 }
 
+/* OpenId Support */
+- (NSString *) openIdUrl
+{
+  return [self stringForKey: @"SOGoOpenIdUrl"];
+}
+
+- (NSString *) openIdScope
+{
+  return [self stringForKey: @"SOGoOpenIdScope"];
+}
+
+- (NSString *) openIdClient
+{
+  return [self stringForKey: @"SOGoOpenIdClient"];
+}
+
+- (NSString *) openIdClientSecret
+{
+  return [self stringForKey: @"SOGoOpenIdClientSecret"];
+}
+
+- (NSString *) openIdLogoutEnabled
+{
+  return [self boolForKey: @"SOGoOpenIdLogoutEnabled"];
+}
+
 /* SAML2 support */
 - (NSString *) SAML2PrivateKeyLocation
 {
