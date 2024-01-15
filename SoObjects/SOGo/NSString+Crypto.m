@@ -404,8 +404,7 @@ static const NSString *kAES128ECError = @"kAES128ECError";
   outputData = [NSData dataWithBytes: (char *)output length: size];
   
   if (outputData) {
-    NSString *className = [outputData className];
-    value = [(NSData *)outputData base64EncodedStringWithOptions: 0]; 
+    value = [outputData stringByEncodingBase64];
     if (encodedURL) {
       value = [value stringByReplacingOccurrencesOfString: @"+" withString: @"."];
       value = [value stringByReplacingOccurrencesOfString: @"/" withString: @"_"];
@@ -452,7 +451,7 @@ static const NSString *kAES128ECError = @"kAES128ECError";
     inputString = [inputString stringByReplacingOccurrencesOfString: @"-" withString: @"="];
   }
 
-  inputData = [[NSData alloc] initWithBase64EncodedString:inputString options:0];
+  inputData = [inputString dataByDecodingBase64];
 
   if (inputData == nil) {
     *ex = [NSException exceptionWithName:kAES128ECError reason: @"Invalid input data (decrypt)" userInfo: nil];
