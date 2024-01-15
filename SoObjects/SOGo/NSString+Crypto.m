@@ -404,7 +404,8 @@ static const NSString *kAES128ECError = @"kAES128ECError";
   outputData = [NSData dataWithBytes: (char *)output length: size];
   
   if (outputData) {
-    value = [outputData base64EncodedStringWithOptions: 0]; 
+    NSString *className = [outputData className];
+    value = [(NSData *)outputData base64EncodedStringWithOptions: 0]; 
     if (encodedURL) {
       value = [value stringByReplacingOccurrencesOfString: @"+" withString: @"."];
       value = [value stringByReplacingOccurrencesOfString: @"/" withString: @"_"];
