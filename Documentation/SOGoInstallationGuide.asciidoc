@@ -2507,7 +2507,7 @@ Defaults to `inline` when unset.
 |Show recipients or sender full email in mailboxes if set to `YES`. Default value is `NO`.
 
 |U |SOGoMailHideInlineAttachments
-|Hide inline message as attachements if set to `YES`. Default value is `NO`.
+|Hide inline images as attachements if set to `YES`. Default value is `NO`.
 
 
 |U |SOGoMailCustomFullName

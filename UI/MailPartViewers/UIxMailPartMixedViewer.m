@@ -31,8 +31,12 @@
 
 #import <UI/MailerUI/WOContext+UIxMailer.h>
 
+#import <Mailer/SOGoMailBodyPart.h>
+
 #import "UIxMailRenderingContext.h"
 #import "UIxMailPartMixedViewer.h"
+
+@class SOGoImageMailBodyPart;
 
 @implementation UIxMailPartMixedViewer
 
@@ -101,6 +105,7 @@
   id viewer, info;
   NSArray *parts;
   SOGoUserDefaults *ud;
+  BOOL displayAttachment;
 
   NSUInteger i, max;
 
@@ -127,13 +132,21 @@
       viewer = [[[self context] mailRenderingContext] viewerForBodyInfo: info];
       [viewer setBodyInfo: info];
       [viewer setPartPath: [self childPartPath]];
+      
       if ([self decodedFlatContent])
         [viewer setDecodedContent: [parts objectAtIndex: i]];
-      [viewer setAttachmentIds: attachmentIds 
-             displayAttachment:!([info objectForKey:@"disposition"] 
+      
+      contentType = [NSString stringWithFormat: @"%@/%@",
+                          [info objectForKey: @"type"],
+                          [info objectForKey: @"subtype"]];
+      displayAttachment = !([info objectForKey:@"disposition"] 
               && [[info objectForKey:@"disposition"] objectForKey:@"type"]
               && [[[[info objectForKey:@"disposition"] objectForKey:@"type"] uppercaseString] isEqualToString:@"INLINE"]
-              && [ud hideInlineAttachments])];
+              && [ud hideInlineAttachments]
+              && [SOGoMailBodyPart bodyPartClassForMimeType: [contentType lowercaseString] inContext: [self context]] == [SOGoImageMailBodyPart class]);
+      
+      [viewer setAttachmentIds: attachmentIds 
+             displayAttachment: displayAttachment];
 
       [renderedParts addObject: [viewer renderedPart]];
     }

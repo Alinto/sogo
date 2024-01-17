@@ -50,6 +50,7 @@
 #import <Mailer/SOGoDraftsFolder.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoSentFolder.h>
+#import <Mailer/SOGoMailBodyPart.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
@@ -66,6 +67,8 @@
 #import "UIxMailFormatter.h"
 
 #import "UIxMailListActions.h"
+
+@class SOGoImageMailBodyPart;
 
 // The maximum number of headers to prefetch when querying the UIDs list
 #define headersPrefetchMaxSize 100
@@ -318,20 +321,34 @@
   NSEnumerator *part;
   NSDictionary *currentPart;
   SOGoUserDefaults *ud;
-  BOOL isInline;
+  BOOL isInline, isImage;
+  NSString *contentType;
 
   ud = [[[self context] activeUser] userDefaults];
   
-  if ([parts count] > 1)
+  if ([parts count] > 0)
     {
       part = [parts objectEnumerator];
       while (!hasAttachment
        && (currentPart = [part nextObject])) {
           if ([currentPart objectForKey: @"type"] && ![[[currentPart objectForKey: @"type"] uppercaseString] hasPrefix: @"MULTIPART"]) {
+            contentType = [NSString stringWithFormat: @"%@/%@",
+                          [currentPart objectForKey: @"type"],
+                          [currentPart objectForKey: @"subtype"]];
+
             isInline = currentPart && [currentPart objectForKey:@"disposition"] 
                           && [[currentPart objectForKey:@"disposition"] objectForKey:@"type"] 
                           && [[[[currentPart objectForKey:@"disposition"] objectForKey:@"type"] uppercaseString] isEqualToString:@"INLINE"];
-            if (![ud hideInlineAttachments] || ([ud hideInlineAttachments] && !isInline)) {
+            isImage = [SOGoMailBodyPart bodyPartClassForMimeType: [contentType lowercaseString] inContext: [self context]] == [SOGoImageMailBodyPart class];
+
+            if (![ud hideInlineAttachments] || ([ud hideInlineAttachments] && !(isInline && isImage))) {
+              BOOL a = [currentPart objectForKey:@"disposition"] ;
+              BOOL b = [[[currentPart objectForKey:@"disposition"] allKeys] length] > 0 ;
+              BOOL c = [currentPart objectForKey:@"parameterList"] ;
+              BOOL d = [[currentPart objectForKey:@"parameterList"] objectForKey:@"name"];
+              BOOL foo = ([currentPart objectForKey:@"parameterList"]
+                                  && [[currentPart objectForKey:@"parameterList"] objectForKey:@"name"]
+                                );
               hasAttachment = (([currentPart objectForKey:@"disposition"] 
                                 && [[[currentPart objectForKey:@"disposition"] allKeys] length] > 0)
                                 || ([currentPart objectForKey:@"parameterList"]
@@ -341,6 +358,9 @@
           } else if ([currentPart objectForKey:@"parts"]) {
             hasAttachment = [self parseParts: [currentPart objectForKey:@"parts"] hasAttachment: hasAttachment];
           }
+
+          if (hasAttachment)
+            break;
        }
     }
 
