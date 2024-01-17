@@ -710,8 +710,8 @@
                   ng-model="app.preferences.defaults.SOGoMailHideInlineAttachments"
                   ng-true-value="1"
                   ng-false-value="0"
-                  label:aria-label="Hide inline images">
-                <var:string label:value="Hide inline images"/>
+                  label:aria-label="Hide attachements for inline images">
+                <var:string label:value="Hide attachements for inline images"/>
               </md-checkbox>
             </div>
 
