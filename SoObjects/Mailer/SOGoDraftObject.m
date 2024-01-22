@@ -1059,13 +1059,13 @@ static NSString    *userAgent      = nil;
 - (void) fetchMailForReplying: (SOGoMailObject *) sourceMail
                         toAll: (BOOL) toAll
 {
-  BOOL fromSentMailbox;
+  BOOL fromSentMailbox, shouldRetrieveAttachements;
   NSString *msgID;
   NSString *oldReferences;
   NSMutableDictionary *info;
   NGImap4Envelope *sourceEnvelope;
   SOGoUserDefaults *ud;
-
+  
   fromSentMailbox = [[sourceMail container] isKindOfClass: [SOGoSentFolder class]];
   [sourceMail fetchCoreInfos];
 
@@ -1089,6 +1089,7 @@ static NSString    *userAgent      = nil;
 
 
   ud = [[context activeUser] userDefaults];
+  
 
   [self setText: [sourceMail contentForReply]];
   [self setHeaders: info];
@@ -1098,16 +1099,17 @@ static NSString    *userAgent      = nil;
   [self setSourceIMAP4ID: [[sourceMail nameInContainer] intValue]];
   [self setSourceFolderWithMailObject: sourceMail];
 
-
-  ud = [[context activeUser] userDefaults];
-
   [self setText: [sourceMail contentForReply]];
-  if ([sourceMail isEncrypted])
-    [self _fetchAttachmentsFromEncryptedMail: sourceMail onlyImages: YES];
-  else if ([sourceMail isOpaqueSigned])
-    [self _fetchAttachmentsFromOpaqueSignedMail: sourceMail onlyImages: YES];
-  else
-    [self _fetchAttachmentsFromMail: sourceMail onlyImages: YES];
+  shouldRetrieveAttachements = [[ud mailComposeMessageType] isEqualToString: @"html"];
+
+  if (shouldRetrieveAttachements) {
+    if ([sourceMail isEncrypted])
+      [self _fetchAttachmentsFromEncryptedMail: sourceMail onlyImages: YES];
+    else if ([sourceMail isOpaqueSigned])
+      [self _fetchAttachmentsFromOpaqueSignedMail: sourceMail onlyImages: YES];
+    else
+      [self _fetchAttachmentsFromMail: sourceMail onlyImages: YES];
+  }
 
   [self save];
 
