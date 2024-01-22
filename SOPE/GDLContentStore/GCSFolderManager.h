@@ -31,7 +31,7 @@
 */
 
 @class NSString, NSArray, NSURL, NSDictionary, NSException;
-@class GCSChannelManager, GCSAlarmsFolder, GCSFolder, GCSFolderType, GCSSessionsFolder;
+@class GCSChannelManager, GCSAlarmsFolder, GCSAdminFolder, GCSFolder, GCSFolderType, GCSSessionsFolder;
 
 @interface GCSFolderManager : NSObject
 {
@@ -88,6 +88,9 @@
 
 /* sessions */
 - (GCSSessionsFolder *)sessionsFolder;
+
+/* admin */
+- (GCSAdminFolder *)adminFolder;
 
 /* folder types */
 

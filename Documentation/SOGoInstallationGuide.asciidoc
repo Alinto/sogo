@@ -1586,6 +1586,11 @@ For PostgresSQL, set the database URL to something like:
 all cache data. You must also set `OCSStoreURL` and `OCSAclURL`
 if you set this parameter.
 
+|S |OCSAdminURL
+|Parameter used to set the database URL so that SOGo can use to store
+all administration elements.
+
+
 For PostgresSQL, set the database URL to something like:
 `postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_cache_folder`.
 |=======================================================================

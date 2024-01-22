@@ -29,6 +29,34 @@
     return new Administration(); // return unique instance
   }];
 
+  /**
+   * @function $getMotd
+   * @memberof Administration.prototype
+   * @desc Get the motd to the server.
+   */
+  Administration.prototype.$getMotd = function () {
+    var _this = this;
+
+    return Administration.$$resource.fetch("Administration/getMotd")
+      .then(function (data) {
+        return data;
+      });
+  };
+
+  /**
+   * @function $saveMotd
+   * @memberof Administration.prototype
+   * @desc Save the motd to the server.
+   */
+  Administration.prototype.$saveMotd = function (message) {
+    var _this = this;
+
+    return Administration.$$resource.save("Administration", { motd: message }, { action: "saveMotd" })
+      .then(function (data) {
+        return data;
+      });
+  };
+
   /* Initialize module if necessary */
   try {
     angular.module('SOGo.AdministrationUI');

@@ -25,3 +25,7 @@
 "No resource" = "Aucune ressource";
 "Any Authenticated User" = "Tout utilisateur authentifié";
 "Public Access" = "Accès public";
+"Save" = "Sauvegarder";
+"Clear" = "Effacer";
+"Message of the day" = "Message du jour";
+"Message of the day has been saved" = "Le message du jour a été sauvegardé";

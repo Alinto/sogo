@@ -1,6 +1,6 @@
-/* GCSAlarmsFolder.m - this file is part of SOGo
+/* GCSAdminFolder.m - this file is part of SOGo
  *
- * Copyright (C) 2010-2022 Inverse inc.
+ * Copyright (C) 2023 Alinto
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,23 +33,23 @@
 #import "GCSSpecialQueries.h"
 #import "NSURL+GCS.h"
 
-#import "GCSAlarmsFolder.h"
+#import "GCSAdminFolder.h"
 
-static NSString *alarmsFolderURLString = nil;
+static NSString *adminFolderURLString = nil;
 
-#warning GCSAlarmsFolder should share a common ancestor with GCSFolder
+#warning GCSAdminFolder should share a common ancestor with GCSFolder
 
-@implementation GCSAlarmsFolder
+@implementation GCSAdminFolder
 
 + (void) initialize
 {
   NSUserDefaults *ud;
 
-  if (!alarmsFolderURLString)
+  if (!adminFolderURLString)
     {
       ud = [NSUserDefaults standardUserDefaults];
-      ASSIGN (alarmsFolderURLString,
-              [ud stringForKey: @"OCSEMailAlarmsFolderURL"]);
+      ASSIGN (adminFolderURLString,
+              [ud stringForKey: @"OCSAdminURL"]);
     }
 }
 
@@ -57,7 +57,7 @@ static NSString *alarmsFolderURLString = nil;
 {
   GCSAlarmsFolder *newFolder;
 
-  if (alarmsFolderURLString)
+  if (adminFolderURLString)
     {
       newFolder = [self new];
       [newFolder autorelease];
@@ -65,7 +65,7 @@ static NSString *alarmsFolderURLString = nil;
     }
   else
     {
-      [self errorWithFormat: @"'OCSEMailAlarmsFolderURL' is not set"];
+      [self errorWithFormat: @"'OCSAdminURL' is not set"];
       newFolder = nil;
     }
 
@@ -83,11 +83,11 @@ static NSString *alarmsFolderURLString = nil;
 {
   NSURL *location;
 
-  if (alarmsFolderURLString)
-    location = [NSURL URLWithString: alarmsFolderURLString];
+  if (adminFolderURLString)
+    location = [NSURL URLWithString: adminFolderURLString];
   else
     {
-      [self warnWithFormat: @"'OCSEMailAlarmsFolderURL' is not set"];
+      [self warnWithFormat: @"'OCSAdminURL' is not set"];
       location = nil;
     }
 
@@ -109,9 +109,7 @@ static NSString *alarmsFolderURLString = nil;
   static EOEntity *entity = nil;
   EOAttribute *attribute;
   NSString *tableName;
-  NSString *columns[] = { @"c_path", @"c_name", @"c_uid",
-                          @"c_recurrence_id", @"c_alarm_number",
-                          @"c_alarm_date", nil };
+  NSString *columns[] = { @"c_key", @"c_content", nil };
   NSString **column;
   NSMutableArray *keys;
   NSDictionary *types;
@@ -123,7 +121,7 @@ static NSString *alarmsFolderURLString = nil;
       [entity setName: tableName];
       [entity setExternalName: tableName];
 
-      types = [[tc specialQueries] emailAlarmsAttributeTypes];
+      types = [[tc specialQueries] adminAttributeTypes];
 
       column = columns;
       while (*column)
@@ -137,15 +135,12 @@ static NSString *alarmsFolderURLString = nil;
           column++;
         }
 
-      keys = [NSMutableArray arrayWithCapacity: 2];
-      [keys addObject: [entity attributeNamed: @"c_path"]];
-      [keys addObject: [entity attributeNamed: @"c_name"]];
+      keys = [NSMutableArray arrayWithCapacity: 1];
+      [keys addObject: [entity attributeNamed: @"c_key"]];
       [entity setPrimaryKeyAttributes: keys];
 
-      keys = [NSMutableArray arrayWithCapacity: 3];
-      [keys addObject: [entity attributeNamed: @"c_uid"]];
-      [keys addObject: [entity attributeNamed: @"c_recurrence_id"]];
-      [keys addObject: [entity attributeNamed: @"c_alarm_number"]];
+      keys = [NSMutableArray arrayWithCapacity: 1];
+      [keys addObject: [entity attributeNamed: @"c_content"]];
       [entity setClassProperties: keys];
 
       [entity setAttributesUsedForLocking: [NSArray array]];
@@ -186,10 +181,10 @@ static NSString *alarmsFolderURLString = nil;
                   [self _storeTableName]];
   if ([tc evaluateExpressionX: sql])
     {
-      sql = [queries createEMailAlarmsFolderWithName: tableName];
+      sql = [queries createAdminFolderWithName: tableName];
       if (![tc evaluateExpressionX: sql])
 	[self logWithFormat:
-                @"email alarms folder table '%@' successfully created!",
+                @"admin folder table '%@' successfully created!",
               tableName];
     }
   else
@@ -201,15 +196,11 @@ static NSString *alarmsFolderURLString = nil;
 /* operations */
 
 /* table has the following fields:
-     c_path VARCHAR(255) NOT NULL
-     c_name VARCHAR(255) NOT NULL
-     c_uid VARCHAR(255) NOT NULL
-     c_recurrence_id INT NULL
-     c_alarm_number INT NOT NULL
+     c_key VARCHAR(255) NOT NULL
+     c_content MEDIUMTEXT NOT NULL
 */
 
-- (NSDictionary *) recordForEntryWithCName: (NSString *) cname
-                          inCalendarAtPath: (NSString *) path
+- (NSDictionary *) recordForEntryWithKey: (NSString *) key
 {
   EOAdaptorChannel *tc;
   EOAdaptorContext *context;
@@ -228,8 +219,8 @@ static NSString *alarmsFolderURLString = nil;
       entity = [self _storeTableEntityForChannel: tc];
       qualifier = [[EOSQLQualifier alloc] initWithEntity: entity
                                          qualifierFormat:
-                                            @"c_path='%@' AND c_name='%@'",
-                                          path, cname];
+                                            @"c_key='%@'",
+                                          key];
       [qualifier autorelease];
 
       [context beginTransaction];
@@ -253,84 +244,26 @@ static NSString *alarmsFolderURLString = nil;
   return record;
 }
 
-- (NSArray *) recordsForEntriesFromDate: (NSCalendarDate *) fromDate
-                                 toDate: (NSCalendarDate *) toDate
-{
-  EOAdaptorChannel *tc;
-  EOAdaptorContext *context;
-  NSException *error;
-  NSArray *attrs;
-  NSDictionary *record;
-  EOEntity *entity;
-  EOSQLQualifier *qualifier;
-  NSMutableArray *records;
+- (NSString *) getMotd {
+  NSDictionary *r;
 
-  records = nil;
+  r = [self recordForEntryWithKey: @"motd"];
+  if (r && [r objectForKey:@"c_content"]) {
+    return [r objectForKey:@"c_content"];
+  }
 
-  tc = [self _acquireStoreChannel];
-  if (tc)
-    {
-      context = [tc adaptorContext];
-      entity = [self _storeTableEntityForChannel: tc];
-      qualifier
-        = [[EOSQLQualifier alloc] initWithEntity: entity
-                                 qualifierFormat:
-                                    @"c_alarm_date >= %d AND c_alarm_date <= %d",
-                                  (int) [fromDate timeIntervalSince1970],
-                                  (int) [toDate timeIntervalSince1970]];
-      [qualifier autorelease];
-
-      [context beginTransaction];
-      error = [tc selectAttributesX: [entity attributesUsedForFetch]
-               describedByQualifier: qualifier
-                         fetchOrder: nil
-                               lock: NO];
-      if (error)
-        [self errorWithFormat:@"%s: cannot execute fetch: %@", 
-              __PRETTY_FUNCTION__, error];
-      else
-        {
-          records = [NSMutableArray array];
-	  attrs = [tc describeResults: NO];
-          while ((record = [tc fetchAttributes: attrs withZone: NULL]))
-            [records addObject: record];
-        }
-      [context rollbackTransaction];
-      [self _releaseChannel: tc];
-    }
-
-  return records;
+  return nil;
 }
 
-- (NSDictionary *) _newRecordWithCName: (NSString *) cname
-                      inCalendarAtPath: (NSString *) path
-                                forUID: (NSString *) uid
-                          recurrenceId: (NSCalendarDate *) recId
-                           alarmNumber: (NSNumber *) alarmNbr
-                          andAlarmDate: (NSCalendarDate *) alarmDate
+- (NSDictionary *) _newRecordWithKey: (NSString *) key
+                      content: (NSString *) content
 {
-  NSNumber *tRecId, *tADate;
-
-  // We check if recId and alarmDate are nil prior calling -timeIntervalSince1970
-  // Weird gcc optimizations can cause issue here.
-  tRecId = [NSNumber numberWithInt: (recId ? (int)[recId timeIntervalSince1970] : 0)];
-  tADate = [NSNumber numberWithInt: (alarmDate ? (int)[alarmDate timeIntervalSince1970] : 0)];
-
-  return [NSDictionary dictionaryWithObjectsAndKeys: cname, @"c_name",
-                       path, @"c_path",
-                       uid, @"c_uid",
-                       tRecId, @"c_recurrence_id",
-                       alarmNbr, @"c_alarm_number",
-                       tADate, @"c_alarm_date",
+  return [NSDictionary dictionaryWithObjectsAndKeys: key, @"c_key",
+                       content, @"c_content",
                        nil];
 }
 
-- (void) writeRecordForEntryWithCName: (NSString *) cname
-                     inCalendarAtPath: (NSString *) path
-                               forUID: (NSString *) uid
-                         recurrenceId: (NSCalendarDate *) recId
-                          alarmNumber: (NSNumber *) alarmNbr
-                         andAlarmDate: (NSCalendarDate *) alarmDate
+- (NSException *) writeMotd: (NSString *)motd
 {
   NSDictionary *record, *newRecord;
   NSException *error;
@@ -339,26 +272,20 @@ static NSString *alarmsFolderURLString = nil;
   EOEntity *entity;
   EOSQLQualifier *qualifier;
 
+  error = nil;
   tc = [self _acquireStoreChannel];
   if (tc)
     {
       context = [tc adaptorContext];
-      newRecord = [self _newRecordWithCName: cname
-                           inCalendarAtPath: path
-                                     forUID: uid
-                               recurrenceId: recId
-                                alarmNumber: alarmNbr
-                               andAlarmDate: alarmDate];
-      record = [self recordForEntryWithCName: cname
-                            inCalendarAtPath: path];
+      newRecord = [self _newRecordWithKey: @"motd" content: motd];
+      record = [self recordForEntryWithKey: @"motd"];
       entity = [self _storeTableEntityForChannel: tc];
       [context beginTransaction];
       if (record)
         {
           qualifier = [[EOSQLQualifier alloc] initWithEntity: entity
                                              qualifierFormat:
-                                                @"c_path='%@' AND c_name='%@'",
-                                              path, cname];
+                                                @"c_key='motd'"];
           [qualifier autorelease];
           error = [tc updateRowX: newRecord describedByQualifier: qualifier];
         }
@@ -374,10 +301,10 @@ static NSString *alarmsFolderURLString = nil;
         [context commitTransaction];
       [self _releaseChannel: tc];
     }
+  return error;
 }
 
-- (void) deleteRecordForEntryWithCName: (NSString *) cname
-                      inCalendarAtPath: (NSString *) path
+- (NSException *) deleteRecordForKey: (NSString *) key
 {
   EOAdaptorChannel *tc;
   EOAdaptorContext *context;
@@ -385,6 +312,7 @@ static NSString *alarmsFolderURLString = nil;
   EOSQLQualifier *qualifier;
   NSException *error;
 
+  error = nil;
   tc = [self _acquireStoreChannel];
   if (tc)
     {
@@ -392,8 +320,8 @@ static NSString *alarmsFolderURLString = nil;
       entity = [self _storeTableEntityForChannel: tc];
       qualifier = [[EOSQLQualifier alloc] initWithEntity: entity
                                          qualifierFormat:
-                                            @"c_path='%@' AND c_name='%@'",
-                                          path, cname];
+                                            @"c_key='%@'",
+                                          key];
       [qualifier autorelease];
       [context beginTransaction];
       error = [tc deleteRowsDescribedByQualifierX: qualifier];
@@ -407,6 +335,13 @@ static NSString *alarmsFolderURLString = nil;
         [context commitTransaction];
       [self _releaseChannel: tc];
     }
+  
+  return error;
+}
+
+- (NSException *) deleteMotd
+{
+  return [self deleteRecordForKey:@"motd"];
 }
 
 @end

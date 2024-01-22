@@ -51,6 +51,7 @@
 #import <SOGo/SOGoWebAuthenticator.h>
 #import <SOGo/SOGoEmptyAuthenticator.h>
 #import <SOGo/SOGoMailer.h>
+#import <SOGo/SOGoAdmin.h>
 
 #if defined(MFA_CONFIG)
 #include <liboath/oath.h>
@@ -1041,6 +1042,22 @@ static const NSString *kJwtKey = @"jwt";
 #else
   return NO;
 #endif
+}
+
+
+- (NSString *)motd
+{
+  return [[SOGoAdmin sharedInstance] getMotd];
+}
+
+- (NSString *)motdEscaped
+{
+  return [[[SOGoAdmin sharedInstance] getMotd] stringWithoutHTMLInjection: YES];
+}
+
+- (BOOL)hasMotd
+{
+  return [[SOGoAdmin sharedInstance] getMotd] && [[[SOGoAdmin sharedInstance] getMotd] length] > 1;
 }
 
 @end /* SOGoRootPage */

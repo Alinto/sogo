@@ -25,6 +25,7 @@ libGDLContentStore_HEADER_FILES +=		\
 	EOAdaptorChannel+GCS.h			\
 	\
 	GCSAlarmsFolder.h			\
+	GCSAdminFolder.h			\
 	GCSContext.h				\
 	GCSFieldInfo.h				\
 	GCSFolder.h				\
@@ -41,6 +42,7 @@ libGDLContentStore_OBJC_FILES +=		\
 	EOQualifier+GCS.m			\
 	\
 	GCSAlarmsFolder.m			\
+	GCSAdminFolder.m			\
 	GCSContext.m				\
 	GCSFieldInfo.m				\
 	GCSFolder.m				\

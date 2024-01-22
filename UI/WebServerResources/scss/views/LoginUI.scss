@@ -1,4 +1,5 @@
 /// LoginUI.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
+@use "sass:color";
 
 $sg-login-width: grid-step(5);
 
@@ -7,6 +8,12 @@ $sg-login-width: grid-step(5);
     // Keep content centered
     margin: auto;
     overflow: hidden;
+    background: transparent;
+
+    #loginContent {
+      background-color: $colorGrey50;
+      margin-top: 10px;
+    }
 
     .sg-logo {
       // Center image
@@ -15,6 +22,31 @@ $sg-login-width: grid-step(5);
         height: 100%;
         width: grid-step(5);
       }
+    }
+
+    @keyframes fade-in {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .motd {
+      margin-top: 50px;
+      margin-bottom: 50px;
+      justify-content: center;
+      margin-left: 2%;
+      margin-right: 2%;
+      padding: 50px;
+      animation: fade-in ease 1.5s;
+      border: solid 5px sg-color($sogoGreen, 500);
+    }
+
+    .md-whiteframe-3dp {
+      margin-bottom: 8px;
     }
 
     .password-lost-link {
@@ -52,6 +84,9 @@ $sg-login-width: grid-step(5);
           max-width: 75%;
         }
       }
+      #loginContent {
+        margin-top: 0;
+      }
       .sg-login {
         // Let the form take all available space
         flex-grow: 1;
@@ -60,6 +95,11 @@ $sg-login-width: grid-step(5);
       .sg-login-content {
         margin: auto;
         max-width: $sg-login-width;
+      }
+      .motd {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: none;
       }
     }
 

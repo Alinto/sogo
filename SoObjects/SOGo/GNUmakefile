@@ -96,7 +96,9 @@ SOGo_HEADER_FILES = \
 	NGMimeBodyPart+SOGo.h \
 	NGMimeFileData+SOGo.h \
 	\
-	SOGoMobileProvision.h
+	SOGoMobileProvision.h \
+	\
+	SOGoAdmin.h
 
 all::
 	@touch SOGoBuild.m
@@ -186,7 +188,9 @@ SOGo_OBJC_FILES = \
 	NGMimeBodyPart+SOGo.m \
 	NGMimeFileData+SOGo.m \
 	\
-	SOGoMobileProvision.m
+	SOGoMobileProvision.m \
+	\
+	SOGoAdmin.m
 
 SOGo_C_FILES += lmhash.c aes.c crypt_blowfish.c pkcs5_pbkdf2.c
 

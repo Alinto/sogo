@@ -81,6 +81,20 @@
   return nil;
 }
 
+- (NSString *) createAdminFolderWithName: (NSString *) tableName
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
+- (NSDictionary *) adminAttributeTypes
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
 - (NSString *) createFolderTableWithName: (NSString *) tableName
 {
   [self subclassResponsibility: _cmd];
@@ -152,6 +166,30 @@
       [types setObject: @"int" forKey: @"c_recurrence_id"];
       [types setObject: @"int" forKey: @"c_alarm_number"];
       [types setObject: @"int" forKey: @"c_alarm_date"];
+    }
+
+  return types;
+}
+
+- (NSString *) createAdminFolderWithName: (NSString *) tableName
+{
+  static NSString *sqlFolderFormat
+    = (@"CREATE TABLE %@ (" 
+       @" c_key VARCHAR(255) NOT NULL,"
+       @" c_content TEXT NOT NULL)");
+
+  return [NSString stringWithFormat: sqlFolderFormat, tableName];
+}
+
+- (NSDictionary *) adminAttributeTypes
+{
+  static NSMutableDictionary *types = nil;
+
+  if (!types)
+    {
+      types = [NSMutableDictionary new];
+      [types setObject: @"varchar" forKey: @"c_key"];
+      [types setObject: @"varchar" forKey: @"c_content"];
     }
 
   return types;
@@ -262,6 +300,30 @@
   return types;
 }
 
+- (NSString *) createAdminFolderWithName: (NSString *) tableName
+{
+  static NSString *sqlFolderFormat
+    = (@"CREATE TABLE %@ (" 
+       @" c_key VARCHAR(255) NOT NULL,"
+       @" c_content MEDIUMTEXT NOT NULL)");
+
+  return [NSString stringWithFormat: sqlFolderFormat, tableName];
+}
+
+- (NSDictionary *) adminAttributeTypes
+{
+  static NSMutableDictionary *types = nil;
+
+  if (!types)
+    {
+      types = [NSMutableDictionary new];
+      [types setObject: @"varchar" forKey: @"c_key"];
+      [types setObject: @"varchar" forKey: @"c_content"];
+    }
+
+  return types;
+}
+
 - (NSString *) createFolderTableWithName: (NSString *) tableName
 {
   static NSString *sqlFolderFormat
@@ -362,6 +424,30 @@
       [types setObject: @"integer" forKey: @"c_recurrence_id"];
       [types setObject: @"integer" forKey: @"c_alarm_number"];
       [types setObject: @"integer" forKey: @"c_alarm_date"];
+    }
+
+  return types;
+}
+
+- (NSString *) createAdminFolderWithName: (NSString *) tableName
+{
+  static NSString *sqlFolderFormat
+    = (@"CREATE TABLE %@ (" 
+       @" c_key VARCHAR2(255) NOT NULL,"
+       @" c_content VARCHAR2(65535) NOT NULL)");
+
+  return [NSString stringWithFormat: sqlFolderFormat, tableName];
+}
+
+- (NSDictionary *) adminAttributeTypes
+{
+  static NSMutableDictionary *types = nil;
+
+  if (!types)
+    {
+      types = [NSMutableDictionary new];
+      [types setObject: @"varchar2" forKey: @"c_key"];
+      [types setObject: @"varchar2" forKey: @"c_content"];
     }
 
   return types;

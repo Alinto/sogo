@@ -1,0 +1,27 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:label="OGo:label"
+    >
+  <md-toolbar layout="row" layout-align="space-between center" class="sg-toolbar-main">
+    <var:component className="UIxTopnavToolbar" />
+  </md-toolbar>
+  <md-content class="md-padding ng-scope">
+    <div class="pseudo-input-container ng-scope">
+      <label class="pseudo-input-label"><var:string label:value="Message of the day"/></label>
+        <sg-ckeditor
+            class="ng-cloak"
+            config="ctrl.ckConfig"
+            ck-margin="8px"
+            ng-model="ctrl.motd"><!-- HTML editor --></sg-ckeditor>
+      <div layout="row" layout-align="end center" class="layout-align-end-center layout-row">
+        <button class="md-primary md-button ng-binding md-ink-ripple" ng-click="ctrl.clear()"><var:string label:value="Clear"/></button>
+        <button class="md-primary md-button ng-binding md-ink-ripple" ng-click="ctrl.save()"><var:string label:value="Save"/></button>
+      </div>
+    </div>
+  </md-content>
+
+</container>

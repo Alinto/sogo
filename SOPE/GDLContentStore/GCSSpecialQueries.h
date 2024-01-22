@@ -39,8 +39,11 @@
 - (NSString *) createSessionsFolderWithName: (NSString *) tableName;
 - (NSDictionary *) sessionsAttributeTypes;
 
-- (NSString *) updateCPathInFolderInfo: (NSString *) tableName
-                            withCPath2: (NSString *) c_path2;
+- (NSString *)createAdminFolderWithName:(NSString *)tableName;
+- (NSDictionary *)adminAttributeTypes;
+
+- (NSString *) updateCPathInFolderInfo:(NSString *)tableName
+withCPath2:(NSString *)c_path2;
 
 @end
 

@@ -22,6 +22,20 @@
           protectedBy = "View";
           pageName    = "UIxThemePreview";
         };
+        UIxAdministrationMotd = {
+          protectedBy = "View";
+          pageName = "UIxAdministrationMotd";
+        };
+        getMotd = {
+          protectedBy = "View";
+          pageName    = "UIxAdministrationMotd";
+          actionName  = "get";
+        };
+        saveMotd = {
+          protectedBy = "View";
+          pageName    = "UIxAdministrationMotd";
+          actionName  = "save";
+        };
       };
     };
   };

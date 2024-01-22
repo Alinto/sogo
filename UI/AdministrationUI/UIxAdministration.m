@@ -23,6 +23,8 @@
 #import <SoObjects/SOGo/SOGoUser.h>
 //#import "../../Main/SOGo.h"
 
+#import <SOGo/SOGoAdmin.h>
+
 #import "UIxAdministration.h"
 
 @implementation UIxAdministration
@@ -53,10 +55,16 @@
   return @"Administration";
 }
 
+
 - (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
                            inContext: (WOContext*) context
 {
   return [[request method] isEqualToString: @"POST"];
+}
+
+- (BOOL) isAdminTableConfigured
+{
+  return [[SOGoAdmin sharedInstance] isConfigured];
 }
 
 @end

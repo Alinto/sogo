@@ -274,7 +274,7 @@ static BOOL debugLeaks;
 
   if ([GCSFolderManager singleStoreMode])
     {
-      urlStrings = [NSArray arrayWithObjects: @"SOGoProfileURL", @"OCSFolderInfoURL", @"OCSStoreURL", @"OCSAclURL", @"OCSCacheFolderURL", nil];
+      urlStrings = [NSArray arrayWithObjects: @"SOGoProfileURL", @"OCSFolderInfoURL", @"OCSStoreURL", @"OCSAclURL", @"OCSCacheFolderURL", @"OCSAdminURL", nil];
       quickTypeStrings = [NSArray arrayWithObjects: @"contact", @"appointment", nil];
       combined = YES;
     }
@@ -313,6 +313,9 @@ static BOOL debugLeaks;
   if (ok)
     {
       fm = [GCSFolderManager defaultFolderManager];
+
+      // Create the sessions table
+      [[fm adminFolder] createFolderIfNotExists];
 
       // Create the sessions table
       [[fm sessionsFolder] createFolderIfNotExists];

@@ -4,7 +4,7 @@
 (function() {
   'use strict';
 
-  angular.module('SOGo.AdministrationUI', ['ui.router', 'SOGo.Common', 'SOGo.Authentication', 'SOGo.PreferencesUI', 'SOGo.ContactsUI', 'SOGo.SchedulerUI'])
+  angular.module('SOGo.AdministrationUI', ['ui.router', 'SOGo.Common', 'SOGo.Authentication', 'SOGo.PreferencesUI', 'SOGo.ContactsUI', 'SOGo.SchedulerUI', 'sgCkeditor'])
     .config(configure)
     .run(runBlock);
 
@@ -53,6 +53,16 @@
           module: {
             templateUrl: 'UIxThemePreview', // UI/Templates/Administration/UIxThemePreview.wox
             controller: 'ThemePreviewController',
+            controllerAs: 'ctrl'
+          }
+        }
+      })
+      .state('administration.motd', {
+        url: '/motd',
+        views: {
+          module: {
+            templateUrl: 'UIxAdministrationMotd', // UI/Templates/Administration/UIxAdministrationMotd.wox
+            controller: 'AdministrationMotdController',
             controllerAs: 'ctrl'
           }
         }

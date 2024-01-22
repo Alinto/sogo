@@ -9,7 +9,7 @@
                title="moduleName"
                const:jsFiles="Common.js, Administration.js,
                               Administration.services.js, Preferences.services.js,
-                              Contacts.services.js, Scheduler.services.js">
+                              Contacts.services.js, Scheduler.services.js, vendor/ckeditor/ckeditor.js, Common/sgCkeditor.component.js">
 
   <main class="view"
         layout="row" layout-fill="layout-fill"
@@ -38,6 +38,14 @@
             <md-icon>palette</md-icon>
             <p class="sg-item-name"><var:string label:value="Theme Preview"/></p>
           </md-list-item>
+          <var:if condition="isAdminTableConfigured">
+            <md-list-item ng-click="app.go('motd')"
+                          ui-sref="administration.motd"
+                          ui-sref-active="md-default-theme md-background md-bg md-hue-1">
+              <md-icon>insert_comment</md-icon>
+              <p class="sg-item-name"><var:string label:value="Message of the day"/></p>
+            </md-list-item>
+          </var:if>
         </md-list>
       </md-content>
     </md-sidenav>

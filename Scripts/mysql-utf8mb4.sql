@@ -39,6 +39,7 @@
 --   OCSSessionsFolderURL    -> sogo_sessions_folder
 --   OCSStoreURL             -> sogo_store
 --   SOGoProfileURL          -> sogo_user_profile
+--	 OCSAdminURL			 -> sogo_admin
 --
 -- SOGo needs to know MySQL has full Unicode coverage;
 -- the following needs to be put in sogo.conf:
@@ -156,6 +157,12 @@ CREATE TABLE sogo_store (
 	c_version      int(11)      NOT NULL,
 	c_deleted      int(11)      DEFAULT NULL,
 	PRIMARY KEY (c_folder_id,c_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+
+CREATE TABLE sogo_admin (
+	c_key         varchar(255) NOT NULL DEFAULT '',
+	c_content      mediumtext   NOT NULL,
+	PRIMARY KEY (c_key)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE sogo_user_profile (

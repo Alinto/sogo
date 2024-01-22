@@ -37,6 +37,7 @@
 #import "GCSChannelManager.h"
 #import "EOAdaptorChannel+GCS.h"
 #import "GCSAlarmsFolder.h"
+#import "GCSAdminFolder.h"
 #import "GCSFolder.h"
 #import "GCSFolderType.h"
 #import "GCSSessionsFolder.h"
@@ -495,6 +496,12 @@ static BOOL       _singleStoreMode           = NO;
 - (GCSSessionsFolder *)sessionsFolder
 {
   return [GCSSessionsFolder sessionsFolderWithFolderManager: self];
+}
+
+/* admin */
+- (GCSAdminFolder *) adminFolder
+{
+  return [GCSAdminFolder alarmsFolderWithFolderManager: self];
 }
 
 - (NSString *)generateSQLWhereForInternalNames:(NSArray *)_names
