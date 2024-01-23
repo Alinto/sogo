@@ -274,13 +274,13 @@ static BOOL debugLeaks;
 
   if ([GCSFolderManager singleStoreMode])
     {
-      urlStrings = [NSArray arrayWithObjects: @"SOGoProfileURL", @"OCSFolderInfoURL", @"OCSStoreURL", @"OCSAclURL", @"OCSCacheFolderURL", @"OCSAdminURL", nil];
+      urlStrings = [NSArray arrayWithObjects: @"SOGoProfileURL", @"OCSFolderInfoURL", @"OCSStoreURL", @"OCSAclURL", @"OCSCacheFolderURL", nil];
       quickTypeStrings = [NSArray arrayWithObjects: @"contact", @"appointment", nil];
       combined = YES;
     }
   else
     {
-      urlStrings = [NSArray arrayWithObjects: @"SOGoProfileURL", @"OCSFolderInfoURL", nil];
+      urlStrings = [NSArray arrayWithObjects: @"SOGoProfileURL", @"OCSFolderInfoURL", @"OCSAdminURL", nil];
       combined = NO;
     }
 

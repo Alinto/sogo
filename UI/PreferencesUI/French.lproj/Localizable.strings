@@ -303,7 +303,6 @@
 "Last" = "Dernier utilisé";
 "Default Module " = "Module par défaut";
 "SOGo Version" = "Version";
-"Administration" = "Administration";
 
 /* Confirmation asked when changing the language */
 "Save preferences and reload page now?" = "Sauvegarder les préférences et recharger maintenant?";

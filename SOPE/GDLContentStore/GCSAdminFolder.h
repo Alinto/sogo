@@ -34,7 +34,7 @@
   GCSFolderManager *folderManager;
 }
 
-+ (id) alarmsFolderWithFolderManager: (GCSFolderManager *) newFolderManager;
++ (id)adminFolderWithFolderManager:(GCSFolderManager *)newFolderManager;
 
 - (void) setFolderManager: (GCSFolderManager *) newFolderManager;
 

@@ -53,7 +53,7 @@ static NSString *adminFolderURLString = nil;
     }
 }
 
-+ (id) alarmsFolderWithFolderManager: (GCSFolderManager *) newFolderManager
++ (id) adminFolderWithFolderManager: (GCSFolderManager *) newFolderManager
 {
   GCSAlarmsFolder *newFolder;
 

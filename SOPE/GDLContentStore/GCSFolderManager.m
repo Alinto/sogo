@@ -501,7 +501,7 @@ static BOOL       _singleStoreMode           = NO;
 /* admin */
 - (GCSAdminFolder *) adminFolder
 {
-  return [GCSAdminFolder alarmsFolderWithFolderManager: self];
+  return [GCSAdminFolder adminFolderWithFolderManager: self];
 }
 
 - (NSString *)generateSQLWhereForInternalNames:(NSArray *)_names
