@@ -46,6 +46,7 @@
 @interface SOGoMailBaseObject : SOGoObject
 {
   NSURL             *imap4URL;
+  NSURL             *smtp4URL;
   NGImap4Connection *imap4;
   BOOL              imap4ExceptionsEnabled;
 }
@@ -74,6 +75,7 @@
 - (NSMutableString *) traversalFromMailAccount;
 
 - (NSURL *) imap4URL;
+- (NSURL *) smtp4URL;
 - (NSString *) imap4PasswordRenewed: (BOOL) renew;
 
 - (void) flushMailCaches;

@@ -231,8 +231,10 @@
 "Mail Account" = "Compte courriel";
 "New Mail Account" = "Nouveau compte";
 "Server Name" = "Serveur";
+"Outgoing Server Name (SMTP)" = "Serveur sortant (SMTP)";
 "Port" = "Port";
 "Encryption" = "Chiffrement";
+"Outgoing Encryption" = "Chiffrement sortant";
 "None" = "Aucun";
 "User Name" = "Utilisateur";
 "Full Name" = "Nom complet";

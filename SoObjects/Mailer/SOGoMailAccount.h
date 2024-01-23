@@ -95,7 +95,10 @@ typedef enum {
 - (NSDictionary *) identityForEmail: (NSString *) email;
 - (NSString *) signature;
 - (NSString *) encryption;
+- (NSString *) smtpEncryption;
 - (NSString *) tlsVerifyMode;
+- (NSString *) smtpTlsVerifyMode;
+- (NSMutableString *) smtp4URLString;
 
 /* folder pathes */
 - (NSArray *) toManyRelationshipKeysWithNamespaces: (BOOL) withNSs;

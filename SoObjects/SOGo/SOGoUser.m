@@ -650,16 +650,17 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
 
 - (void) _appendSystemMailAccountWithDelegatedIdentities: (BOOL) appendDeletegatedIdentities
 {
-  NSString *fullName, *imapLogin, *imapServer, *cImapServer,
-    *encryption, *scheme, *action, *queryTls, *customEmail, *sieveServer, *tlsVerifyMode;
+  NSString *fullName, *imapLogin, *imapServer, *cImapServer, *smtpServer,
+    *imapEncryption, *smtpEncryption, *imapScheme, *smtpScheme, *action, *imapQueryTls, *smtpQueryTls, 
+    *customEmail, *sieveServer, *imapTlsVerifyMode, *smtpTlsVerifyMode;
   NSMutableDictionary *mailAccount, *identity, *mailboxes, *receipts, *security, *mailSettings;
-  NSDictionary *queryComponents;
-  NSNumber *port;
+  NSDictionary *imapQueryComponents, *smtpQueryComponents;
+  NSNumber *imapPort, *smtpPort;
   NSMutableArray *identities, *mails;
   NSArray *delegators, *delegates;
-  NSURL *url, *cUrl;
+  NSURL *imapUrl, *cImapUrl, *smtpUrl;
   unsigned int count, max; //, default_identity;
-  NSInteger defaultPort;
+  NSInteger imapDefaultPort, smtpDefaultPort;
   NSUInteger index;
   BOOL hasDefaultIdentity;
 
@@ -675,7 +676,7 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
                                    inDomain: [self domain]];
   [mailAccount setObject: imapLogin forKey: @"userName"];
 
-  // 2. server
+  // 2.1 IMAP server
   // imapServer might have the following format
   // localhost
   // localhost:143
@@ -687,57 +688,105 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
 
   cImapServer = [self _fetchFieldForUser: @"c_imaphostname"];
   imapServer = [[self domainDefaults] imapServer];
-  cUrl = [NSURL URLWithString: (cImapServer ? cImapServer : @"")];
-  url = [NSURL URLWithString: imapServer];
-  if([cUrl host])
-    imapServer = [cUrl host];
+  cImapUrl = [NSURL URLWithString: (cImapServer ? cImapServer : @"")];
+  imapUrl = [NSURL URLWithString: imapServer];
+  if([cImapUrl host])
+    imapServer = [cImapUrl host];
   else
     if(cImapServer)
       imapServer = cImapServer;
     else
-      if([url host])
-        imapServer = [url host];
+      if([imapUrl host])
+        imapServer = [imapUrl host];
   [mailAccount setObject: imapServer forKey: @"serverName"];
 
-  // 3. port & encryption
-  scheme = [cUrl scheme] ? [cUrl scheme] : [url scheme];
-  queryComponents = [cUrl query] ? [cUrl queryComponents] : [url queryComponents];
-  queryTls = [queryComponents valueForKey: @"tls"];
-  tlsVerifyMode = [queryComponents valueForKey: @"tlsVerifyMode"];
+  // 2.2 IMAP port & encryption
+  imapScheme = [cImapUrl scheme] ? [cImapUrl scheme] : [imapUrl scheme];
+  imapQueryComponents = [cImapUrl query] ? [cImapUrl queryComponents] : [imapUrl queryComponents];
+  imapQueryTls = [imapQueryComponents valueForKey: @"tls"];
+  imapTlsVerifyMode = [imapQueryComponents valueForKey: @"tlsVerifyMode"];
 
-  if (!tlsVerifyMode)
-    tlsVerifyMode = @"default";
+  if (!imapTlsVerifyMode)
+    imapTlsVerifyMode = @"default";
 
-  if (scheme
-      && [scheme caseInsensitiveCompare: @"imaps"] == NSOrderedSame)
+  if (imapScheme && [imapScheme caseInsensitiveCompare: @"imaps"] == NSOrderedSame)
     {
-      if (queryTls && [queryTls caseInsensitiveCompare: @"YES"] == NSOrderedSame)
+      if (imapQueryTls && [imapQueryTls caseInsensitiveCompare: @"YES"] == NSOrderedSame)
         {
-          defaultPort = 143;
-          encryption = @"tls";
+          imapDefaultPort = 143;
+          imapEncryption = @"tls";
         }
       else
         {
-          encryption = @"ssl";
-          defaultPort = 993;
+          imapEncryption = @"ssl";
+          imapDefaultPort = 993;
         }
     }
   else
     {
-      if (queryTls && [queryTls caseInsensitiveCompare: @"YES"] == NSOrderedSame)
-        encryption = @"tls";
+      if (imapQueryTls && [imapQueryTls caseInsensitiveCompare: @"YES"] == NSOrderedSame)
+        imapEncryption = @"tls";
       else
-        encryption = @"none";
+        imapEncryption = @"none";
 
-      defaultPort = 143;
+      imapDefaultPort = 143;
     }
 
-  port = [cUrl port] ? [cUrl port] : [url port];
-  if ([port intValue] == 0) /* port is nil or intValue == 0 */
-    port = [NSNumber numberWithInt: defaultPort];
-  [mailAccount setObject: port forKey: @"port"];
-  [mailAccount setObject: encryption forKey: @"encryption"];
-  [mailAccount setObject: tlsVerifyMode forKey: @"tlsVerifyMode"];
+  imapPort = [cImapUrl port] ? [cImapUrl port] : [imapUrl port];
+  if ([imapPort intValue] == 0) /* port is nil or intValue == 0 */
+    imapPort = [NSNumber numberWithInt: imapDefaultPort];
+  [mailAccount setObject: imapPort forKey: @"port"];
+  [mailAccount setObject: imapEncryption forKey: @"encryption"];
+  [mailAccount setObject: imapTlsVerifyMode forKey: @"tlsVerifyMode"];
+
+  //3.1 SMTP server
+  smtpServer = [[self domainDefaults] smtpServer];
+  smtpUrl = [NSURL URLWithString: smtpServer];
+  if([smtpUrl host])
+    smtpServer = [smtpUrl host];
+  [mailAccount setObject: smtpServer forKey: @"smtpServerName"];
+
+  // 3.2 SMTP port and encryption
+  smtpScheme = [smtpUrl scheme];
+  smtpQueryComponents = [smtpUrl queryComponents];
+  smtpQueryTls = [smtpQueryComponents valueForKey: @"tls"];
+  smtpTlsVerifyMode = [smtpQueryComponents valueForKey: @"tlsVerifyMode"];
+
+  if (!smtpTlsVerifyMode)
+    smtpTlsVerifyMode = @"default";
+
+  if (smtpScheme && [smtpScheme caseInsensitiveCompare: @"smtps"] == NSOrderedSame)
+    {
+      if (smtpQueryTls && [smtpQueryTls caseInsensitiveCompare: @"YES"] == NSOrderedSame)
+        {
+          smtpDefaultPort = 465; //Shoud be 587 but sope sope-mime/NGMail/NGSmtpClient.m initWithUrl doesn't agree...
+          smtpEncryption = @"tls";
+        }
+      else
+        {
+          smtpEncryption = @"ssl";
+          smtpDefaultPort = 465; //Shoud be 587 but sope sope-mime/NGMail/NGSmtpClient.m initWithUrl doesn't agree...
+        }
+    }
+  else
+    {
+      if (smtpQueryTls && [smtpQueryTls caseInsensitiveCompare: @"YES"] == NSOrderedSame)
+      {
+        smtpEncryption = @"tls";
+        smtpDefaultPort = 465;
+      }
+      else {
+        smtpEncryption = @"none";
+        smtpDefaultPort = 25;
+      }
+    }
+
+  smtpPort = [smtpUrl port];
+  if ([smtpPort intValue] == 0) /* port is nil or intValue == 0 */
+    smtpPort = [NSNumber numberWithInt: smtpDefaultPort];
+  [mailAccount setObject: smtpPort forKey: @"smtpPort"];
+  [mailAccount setObject: smtpEncryption forKey: @"smtpEncryption"];
+  [mailAccount setObject: smtpTlsVerifyMode forKey: @"smtpTlsVerifyMode"];
 
   // 4. Sieve server
   sieveServer = [self _fetchFieldForUser: @"c_sievehostname"];

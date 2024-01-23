@@ -12,6 +12,7 @@
     var vm = this, usesSSO = $window.usesCASAuthentication || $window.usesSAML2Authentication;
 
     this.defaultPort = 143;
+    this.smtpDefaultPort = 25;
     this.defaults = defaults;
     this.account = account;
     this.maxSize = maxSize;
@@ -29,6 +30,11 @@
       this.account.encryption = "none";
     else if (this.account.encryption == "ssl")
       this.defaultPort = 993;
+
+    if (!this.account.smtpEncryption)
+      this.account.smtpEncryption = "none";
+    else
+      this.smtpDefaultPort = 465;
 
     _loadCertificate();
 

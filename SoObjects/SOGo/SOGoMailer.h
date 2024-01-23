@@ -43,6 +43,8 @@
 }
 
 + (SOGoMailer *) mailerWithDomainDefaults: (SOGoDomainDefaults *) dd;
++ (SOGoMailer *) mailerWithDomainDefaultsAndSmtpUrl: (SOGoDomainDefaults *) dd
+                                            smtpUrl: (NSURL *) smtpUrl;
 
 - (id) initWithDomainDefaults: (SOGoDomainDefaults *) dd;
 - (BOOL) requiresAuthentication;

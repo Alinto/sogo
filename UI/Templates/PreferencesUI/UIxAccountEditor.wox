@@ -78,6 +78,54 @@
             </md-input-container>
 
             <div layout="row">
+              <md-input-container class="md-block md-flex">
+                <label><var:string label:value="Outgoing Server Name (SMTP)"/></label>
+                <input name="smtpServerName" type="text"
+                       ng-pattern="$AccountDialogController.hostnameRE"
+                       ng-disabled="$AccountDialogController.accountId == 0"
+                       ng-model="$AccountDialogController.account.smtpServerName"/>
+                <div ng-messages="accountForm.smtpServerName.$error" role="alert">
+                  <div ng-message="pattern"><var:string label:value="Specify a hostname other than the local host"/></div>
+                </div>
+              </md-input-container>
+
+              <md-input-container class="md-block" flex="30">
+                <label><var:string label:value="Port"/></label>
+                <input type="number" min="1" max="65535"
+                       ng-disabled="$AccountDialogController.accountId == 0"
+                       ng-model="$AccountDialogController.account.smtpPort"
+                       placeholder=""
+                       sg-placeholder="$AccountDialogController.smtpDefaultPort"/>
+              </md-input-container>
+            </div>
+
+            <md-input-container class="md-block md-input-has-value">
+              <label><var:string label:value="Outgoing Encryption"/></label>
+              <md-radio-group ng-model="$AccountDialogController.account.smtpEncryption">
+                <div layout="row" layout-align="space-around">
+                  <div>
+                    <md-radio-button
+                        ng-click="$AccountDialogController.smtpDefaultPort = 25"
+                        ng-disabled="$AccountDialogController.accountId == 0"
+                        value="none" class="md-primary"><var:string label:value="None"/></md-radio-button>
+                  </div>
+                  <div>
+                    <md-radio-button
+                        ng-click="$AccountDialogController.smtpDefaultPort = 465"
+                        ng-disabled="$AccountDialogController.accountId == 0"
+                        value="ssl"><var:string label:value="SSL"/></md-radio-button>
+                  </div>
+                  <div>
+                    <md-radio-button
+                        ng-click="$AccountDialogController.smtpDefaultPort = 465"
+                        ng-disabled="$AccountDialogController.accountId == 0"
+                        value="tls"><var:string label:value="TLS"/></md-radio-button>
+                  </div>
+                </div>
+              </md-radio-group>
+            </md-input-container>
+
+            <div layout="row">
               <md-input-container class="md-block" flex="50">
                 <label><var:string label:value="User Name"/></label>
                 <input type="text" required="required"

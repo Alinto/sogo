@@ -148,6 +148,13 @@
   return [[self alloc] initWithDomainDefaults: dd];
 }
 
++ (SOGoMailer *) mailerWithDomainDefaultsAndSmtpUrl: (SOGoDomainDefaults *) dd
+                                            smtpUrl: (NSURL *) smtpUrl
+{
+  return [[self alloc] initWithDomainDefaultsAndSmtpUrl: dd
+                                                smtpUrl: smtpUrl];
+}
+
 - (id) initWithDomainDefaults: (SOGoDomainDefaults *) dd
 {
   if ((self = [self init]))
@@ -157,8 +164,23 @@
       smtpMasterUserEnabled = [dd smtpMasterUserEnabled];
       ASSIGN (smtpMasterUserUsername, [dd smtpMasterUserUsername]);
       ASSIGN (smtpMasterUserPassword, [dd smtpMasterUserPassword]);
-      ASSIGN (authenticationType,
-              [[dd smtpAuthenticationType] lowercaseString]);
+      ASSIGN (authenticationType, [[dd smtpAuthenticationType] lowercaseString]);
+    }
+
+  return self;
+}
+
+- (id) initWithDomainDefaultsAndSmtpUrl: (SOGoDomainDefaults *) dd
+                                smtpUrl: (NSURL *) smtpUrl
+{
+  if ((self = [self init]))
+    {
+      ASSIGN (mailingMechanism, [dd mailingMechanism]);
+      ASSIGN (smtpServer, [smtpUrl absoluteString]);
+      smtpMasterUserEnabled = [dd smtpMasterUserEnabled];
+      ASSIGN (smtpMasterUserUsername, [dd smtpMasterUserUsername]);
+      ASSIGN (smtpMasterUserPassword, [dd smtpMasterUserPassword]);
+      ASSIGN (authenticationType, [[dd smtpAuthenticationType] lowercaseString]);
     }
 
   return self;
@@ -242,8 +264,11 @@
   NGSmtpClient *client;
   NSException *result;
   NSURL * smtpUrl;
+  SOGoUser* user;
 
   result = nil;
+
+  //find the smtpurl for the account
 
   smtpUrl = [[[NSURL alloc] initWithString: smtpServer] autorelease];
 

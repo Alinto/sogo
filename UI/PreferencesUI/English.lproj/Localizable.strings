@@ -231,8 +231,10 @@
 "Mail Account" = "Mail Account";
 "New Mail Account" = "New Mail Account";
 "Server Name" = "Server Name";
+"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
 "Port" = "Port";
 "Encryption" = "Encryption";
+"Outgoing Encryption" = "Outgoing Encryption";
 "None" = "None";
 "User Name" = "User Name";
 "Full Name" = "Full Name";

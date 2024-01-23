@@ -2278,7 +2278,7 @@ static NSString    *userAgent      = nil;
   NSData *message, *messageForSent;
   SOGoMailFolder *sentFolder;
   SOGoDomainDefaults *dd;
-  NSURL *sourceIMAP4URL;
+  NSURL *sourceIMAP4URL, *smtpUrl;
   NSException *error;
 
   dd = [[context activeUser] domainDefaults];
@@ -2307,13 +2307,28 @@ static NSString    *userAgent      = nil;
             return  [NSException exceptionWithHTTPStatus: 500
                                                   reason: @"could not generate message content"];
 
-          error = [[SOGoMailer mailerWithDomainDefaults: dd]
-                    sendMailData: message
-                    toRecipients: [NSArray arrayWithObject: recipient]
-                          sender: [self sender]
-                    withAuthenticator: [self authenticatorInContext: context]
-                       inContext: context
-                   systemMessage: NO];
+          smtpUrl = [self smtp4URL];
+
+          if (smtpUrl)
+          {
+            error = [[SOGoMailer mailerWithDomainDefaultsAndSmtpUrl: dd smtpUrl: smtpUrl]
+                        sendMailData: message
+                        toRecipients: [NSArray arrayWithObject: recipient]
+                              sender: [self sender]
+                   withAuthenticator: [self authenticatorInContext: context]
+                           inContext: context
+                       systemMessage: NO];
+          }
+          else
+          {
+            error = [[SOGoMailer mailerWithDomainDefaults: dd]
+                 sendMailData: message
+                 toRecipients: [NSArray arrayWithObject: recipient]
+                       sender: [self sender]
+            withAuthenticator: [self authenticatorInContext: context]
+                    inContext: context
+                systemMessage: NO];
+          }
 
           if (error) {
             [self cleanTmpFiles];
@@ -2335,7 +2350,9 @@ static NSString    *userAgent      = nil;
         return  [NSException exceptionWithHTTPStatus: 500
                                               reason: @"could not generate message content"];
 
-      error = [[SOGoMailer mailerWithDomainDefaults: dd]
+      smtpUrl = [self smtp4URL];
+
+      error = [[SOGoMailer mailerWithDomainDefaultsAndSmtpUrl: dd smtpUrl: smtpUrl]
                   sendMailData: message
                   toRecipients: [self allBareRecipients]
                         sender: [self sender]

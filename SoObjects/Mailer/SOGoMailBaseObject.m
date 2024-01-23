@@ -71,6 +71,7 @@
 - (void) dealloc
 {
   [imap4URL release];
+  [smtp4URL release];
   [imap4 release];
   [super dealloc];
 }
@@ -315,6 +316,35 @@
     }
 
   return imap4URL;
+}
+
+- (NSURL *) smtp4URL
+{
+  SOGoMailAccount *account;
+  NSString *urlString, *smtpUrl;
+  NSString *useTls = @"NO";
+
+  /* this could probably be handled better from NSURL but it's buggy in
+     GNUstep */
+  if (!smtp4URL)
+    {
+      account = [self mailAccountFolder];
+      smtpUrl = [account smtp4URLString];
+      if(smtpUrl)
+      {
+        if ([[account smtpEncryption] isEqualToString: @"tls"])
+        {
+          useTls = @"YES";
+        }
+        urlString = [NSString stringWithFormat: @"%@?tls=%@&tlsVerifyMode=%@",
+                                smtpUrl, useTls, [account smtpTlsVerifyMode]];
+        smtp4URL = [[NSURL alloc] initWithString: urlString];
+      }
+      else
+        smtp4URL = nil;
+    }
+
+  return smtp4URL;
 }
 
 - (NSString *) imap4PasswordRenewed: (BOOL) renewed

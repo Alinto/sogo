@@ -800,11 +800,33 @@ static NSString *inboxFolderName = @"INBOX";
   return encryption;
 }
 
+- (NSString *) smtpEncryption
+{
+  NSString *encryption;
+
+  encryption = [[self _mailAccount] objectForKey: @"smtpEncryption"];
+  if (![encryption length])
+    encryption = @"none";
+
+  return encryption;
+}
+
 - (NSString *) tlsVerifyMode
 {
   NSString *verifyMode;
 
   verifyMode = [[self _mailAccount] objectForKey: @"tlsVerifyMode"];
+  if (!verifyMode || ![verifyMode length])
+    verifyMode = @"default";
+
+  return verifyMode;
+}
+
+- (NSString *) smtpTlsVerifyMode
+{
+  NSString *verifyMode;
+
+  verifyMode = [[self _mailAccount] objectForKey: @"smtpTlsVerifyMode"];
   if (!verifyMode || ![verifyMode length])
     verifyMode = @"default";
 
@@ -847,6 +869,42 @@ static NSString *inboxFolderName = @"INBOX";
   [imap4URLString appendString: @"/"];
 
   return imap4URLString;
+}
+
+- (NSMutableString *) smtp4URLString
+{
+  NSMutableString *smtp4URLString;
+  NSDictionary *mailAccount;
+  NSString *encryption, *protocol, *smtpServerName;
+  int defaultPort, port;
+
+  mailAccount = [self _mailAccount];
+  smtpServerName = [mailAccount objectForKey: @"smtpServerName"];
+  if(!smtpServerName)
+    return nil; //Auxiliary account can be only configured for imap and not smtp
+  encryption = [mailAccount objectForKey: @"smtpEncryption"];
+  defaultPort = 25;
+  protocol = @"smtp";
+
+  if ([encryption isEqualToString: @"ssl"])
+  {
+    protocol = @"smtps";
+    defaultPort = 465;
+  }
+  else if ([encryption isEqualToString: @"tls"])
+  {
+    protocol = @"smtps";
+    defaultPort = 465;
+  }
+
+  smtp4URLString = [NSMutableString stringWithFormat: @"%@://%@", protocol, smtpServerName];
+  port = [[mailAccount objectForKey: @"smtpPort"] intValue];
+  if (port && port != defaultPort)
+    [smtp4URLString appendFormat: @":%d", port];
+
+  [smtp4URLString appendString: @"/"];
+
+  return smtp4URLString;
 }
 
 - (NSMutableString *) traversalFromMailAccount
