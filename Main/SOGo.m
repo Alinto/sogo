@@ -280,7 +280,7 @@ static BOOL debugLeaks;
     }
   else
     {
-      urlStrings = [NSArray arrayWithObjects: @"SOGoProfileURL", @"OCSFolderInfoURL", @"OCSAdminURL", nil];
+      urlStrings = [NSArray arrayWithObjects: @"SOGoProfileURL", @"OCSFolderInfoURL", nil];
       combined = NO;
     }
 
