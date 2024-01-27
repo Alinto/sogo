@@ -554,7 +554,7 @@ static const NSString *kJwtKey = @"jwt";
   {
     serverUrl = [[context serverURL] absoluteString];
     redirectLocation = [serverUrl stringByAppendingString: [[self clientObject] baseURLInContext: context]];
-    if((formValues = [rq formValues]))
+    if((formValues = [rq formValues]) && [formValues objectForKey: @"session_state"] && [formValues objectForKey: @"code"])
     {
       value = [formValues objectForKey: @"session_state"];
       if ([value isKindOfClass: [NSArray class]])

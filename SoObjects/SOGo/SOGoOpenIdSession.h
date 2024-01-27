@@ -67,6 +67,7 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer);
                        headers: (NSDictionary *) headers
                           body: (NSData *) body;
 - (NSMutableDictionary *) fecthConfiguration;
+- (void) setAccessToken;
 - (NSString*) getToken; 
 - (NSString *) loginUrl: (NSString *) oldLocation;
 - (NSMutableDictionary *) fetchToken: (NSString *) code redirect: (NSString *) oldLocation;

@@ -86,6 +86,7 @@ NSComparisonResult languageSort(id el1, id el2, void *context);
 - (NSString *) loginSuffix;
 
 - (NSString *) authenticationType;
+- (BOOL) isSsoUsed;
 - (NSString *) davAuthenticationType;
 
 - (NSString *) CASServiceURL;

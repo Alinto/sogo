@@ -32,6 +32,7 @@
 
 #import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoCASSession.h>
+#import <SOGo/SOGoOpenIdSession.h>
 #if defined(SAML2_CONFIG)
 #import <SOGo/SOGoSAML2Session.h>
 #endif
@@ -431,7 +432,10 @@
     }
   else if ([[sd authenticationType] isEqualToString: @"openId"])
   {
-    redirectURL = "#todo";
+    SOGoOpenIdSession* session;
+    session = [SOGoOpenIdSession OpenIdSession];
+
+    // redirectURL = [session];
   }
 #if defined(SAML2_CONFIG)
   else if ([[sd authenticationType] isEqualToString: @"saml2"])

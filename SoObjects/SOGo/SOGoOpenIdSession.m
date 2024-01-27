@@ -198,18 +198,24 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
 {
   SOGoOpenIdSession *newSession;
 
-  // if (newTicket)
-  //   {
-  //     newSession = [self new];
-  //     [newSession autorelease];
-  //     [newSession setTicket: newTicket
-  //                 fromProxy: fromProxy];
-  //   }
-  // else
-  //   newSession = nil;
+  if (token)
+    {
+      newSession = [self new];
+      [newSession autorelease];
+      [newSession initialize];
+      
+      [self setAccessToken: token];
+    }
+  else
+    newSession = nil;
 
   return newSession;
 }
+
+// - (NSString*) endSessionUrl
+// {
+
+// }
 
 - (NSString*) loginUrl: (NSString *) oldLocation
 {
@@ -228,6 +234,11 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
   return self->accessToken;
 }
 
+- (void) setAccessToken: (NSString* ) token
+{
+  self->accessToken = token;
+}
+
 - (NSMutableDictionary *) fetchToken: (NSString * ) code redirect: (NSString *) oldLocation
 {
   NSString *location, *form, *content;
@@ -236,8 +247,7 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
   NSURL *url;
 
   result = [NSMutableDictionary dictionary];
-
-  // Prepare HTTPS post using libcurl
+  
   location = self->tokenEndpoint;
   url = [NSURL URLWithString: location];
   if (url)
@@ -274,66 +284,31 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
 
 - (NSMutableDictionary *) fetchUserInfo
 {
-  NSString *location, *content, *auth;
+  NSString *location, *auth, *content;
   NSMutableDictionary *result;
-  NSMutableData *buffer;
-  NSDictionary *profile;
+  NSDictionary *profile, *headers;
   NSURL *url;
-  CURL *curl;
-
-  NSUInteger status;
-  char error[CURL_ERROR_SIZE];
-  struct curl_slist *chunk = NULL;
-  CURLcode rc;
+  NSString *email;
 
   result = [NSMutableDictionary dictionary];
+  [result setObject: @"ok" forKey: @"error"];
 
-  // Prepare HTTPS post using libcurl
   location = self->userinfoEndpoint;
-  [result setObject: location forKey: @"url"];
-
   url = [NSURL URLWithString: location];
   if (url)
   {
-    curl_global_init(CURL_GLOBAL_SSL);
-    curl = curl_easy_init();
-    if (curl)
+    auth = [NSString initWithString: @"Bearer "];
+    auth = [auth stringByAppendingString: self->accessToken];
+    headers = [NSDictionary dictionaryWithObject: auth forKey: @"Authorization"];
+
+    content = [self _performOpenIdRequest: location
+                       method: @"GET"
+                      headers: headers
+                         body: nil];
+    if (content)
     {
-      curl_easy_setopt(curl, CURLOPT_URL, [location UTF8String]);
-      curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
-      curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
-      curl_easy_setopt(curl, CURLOPT_TIMEOUT, 60L);
-      curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-
-      /* buffering ivar, no need to retain/release */
-      auth = @"Authorization: Bearer ";
-      auth = [auth stringByAppendingString: self->accessToken];
-      chunk = curl_slist_append(chunk, [auth UTF8String]);
-      curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
-
-      buffer = [NSMutableData data];
-
-      curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curl_body_function);
-      curl_easy_setopt(curl, CURLOPT_WRITEDATA, buffer);
-
-      error[0] = 0;
-      curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, &error);
-  
-      // Perform SOAP request
-      rc = curl_easy_perform(curl);
-      if (rc == CURLE_OK)
-      {
-        curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &status);
-        [result setObject: [NSNumber numberWithUnsignedInt: status] forKey: @"status"];
-
-        if (status == 200)
-        {
-          content = [[NSString alloc] initWithData: buffer
-                                          encoding: NSUTF8StringEncoding];
-          if (!content)
-            content = [[NSString alloc] initWithData: buffer
-                                            encoding: NSISOLatin1StringEncoding];
-          profile = [content objectFromJSONString];
+        profile = [content objectFromJSONString];
+        [self errorWithFormat: @"Profile is %@", profile];
 
           /*profile = {"sub":"70a3e6a1-37cf-4cf6-b114-6973aabca86a",
                       "email_verified":false,"address":{},
@@ -342,20 +317,15 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
                       "given_name":"Foo",
                       "family_name":"Bar",
                       "email":"myuser@user.com"}*/
-
-          //TODO
-          [content autorelease];
-        }
+        if (email = [profile objectForKey: @"email"])
+          [result setObject: email forKey: @"login"];
         else
-          [result setObject: @"http-error" forKey: @"error"];
-      }
-      else
-      {
-        [self errorWithFormat: @"CURL error while accessing %@ (%d): %@", location, rc,
-              [NSString stringWithCString: strlen(error) ? error : curl_easy_strerror(rc)]];
-        [result setObject: @"bad-url" forKey: @"error"];
-      }
-      curl_easy_cleanup (curl);
+          [result setObject: @"no mail found"  forKey: @"error"];
+        [content autorelease];
+    }
+    else
+    {
+      [result setObject: @"http-error" forKey: @"error"];
     }
   }
   else
@@ -367,10 +337,16 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
 - (NSString *) login
 {
   NSMutableDictionary *resultUserInfo;
+  NSString *error;
+
   resultUserInfo = [self fetchUserInfo];
-  if ([resultUserInfo objectForKey: @"status"] == 200)
+  if ([[resultUserInfo objectForKey: @"error"] isEqualToString: @"ok"])
   {
     return [resultUserInfo objectForKey: @"login"];
+  }
+  else
+  {
+    [self errorWithFormat: @"Can't get user email from profile because: %@", [resultUserInfo objectForKey: @"error"]];
   }
   return nil;
 }

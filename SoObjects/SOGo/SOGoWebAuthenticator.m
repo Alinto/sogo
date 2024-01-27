@@ -35,6 +35,7 @@
 
 #import "SOGoCache.h"
 #import "SOGoCASSession.h"
+#import "SOGoOpenIdSession.h"
 #import "SOGoPermissions.h"
 #import "SOGoSession.h"
 #import "SOGoSystemDefaults.h"
@@ -129,7 +130,8 @@
               grace: (int *) _grace
            useCache: (BOOL) _useCache
 {
-  SOGoCASSession *session;
+  SOGoCASSession *casSession;
+  SOGoOpenIdSession * openIdSession;
   SOGoSystemDefaults *sd;
   NSString *authenticationType;
   BOOL rc;
@@ -139,12 +141,20 @@
   authenticationType = [sd authenticationType];
   if ([authenticationType isEqualToString: @"cas"])
     {
-      session = [SOGoCASSession CASSessionWithIdentifier: _pwd fromProxy: NO];
-      if (session)
-        rc = [[session login] isEqualToString: _login];
+      casSession = [SOGoCASSession CASSessionWithIdentifier: _pwd fromProxy: NO];
+      if (casSession)
+        rc = [[casSession login] isEqualToString: _login];
       else
         rc = NO;
     }
+  else if ([authenticationType isEqualToString: @"openid"])
+  {
+    openIdSession = [SOGoOpenIdSession OpenIdSessionWithToken: _pwd];
+    if (openIdSession)
+      rc = [[openIdSession login] isEqualToString: _login];
+    else
+      rc = NO;
+  }
 #if defined(SAML2_CONFIG)
   else if ([authenticationType isEqualToString: @"saml2"])
     {
@@ -304,6 +314,13 @@
           if ([password length] || renew)
             [session updateCache];
         }
+      else if ([authType isEqualToString: @"openid"])
+      {
+        SOGoOpenIdSession* session;
+        //Apparently nothing to do here as the password is already the access_token ??
+        // In our case, we do authenticate xoauth2 <password>
+
+      }
 #if defined(SAML2_CONFIG)
       else if ([authType isEqualToString: @"saml2"])
         {

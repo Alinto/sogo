@@ -566,6 +566,14 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
   return [[self stringForKey: @"SOGoAuthenticationType"] lowercaseString];
 }
 
+- (BOOL) isSsoUsed
+{
+  NSString* authType;
+  authType = [self authenticationType];
+
+  return ([authType isEqualToString: @"cas"] || [authType isEqualToString: @"saml2"] || [authType isEqualToString: @"openid"]);
+}
+
 - (NSString *) davAuthenticationType
 {
   return [[self stringForKey: @"SOGoDAVAuthenticationType"] lowercaseString];
