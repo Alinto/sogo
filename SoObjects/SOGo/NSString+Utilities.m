@@ -904,6 +904,28 @@ static int cssEscapingCount;
 }
 
 /**
+ * Remove all HTML tags except for <a> </a>
+ * @return A clean string
+ */
+- (NSString *)removeHTMLTagsExceptAnchorTags {
+    NSError *error;
+    NSRegularExpression *regex;
+    NSString *stringWithoutHTML;
+    
+    error = nil;
+    
+    regex = [NSRegularExpression regularExpressionWithPattern: @"<(?!a|\\/a\\b)[^>]*>" options: NSRegularExpressionCaseInsensitive error: &error];
+    stringWithoutHTML = [regex stringByReplacingMatchesInString: self options: 0 range: NSMakeRange(0, [self length]) withTemplate:@""];
+
+    if (error) {
+      [self logWithFormat: @"Error while removing tags : %@", [error localizedDescription]];
+      return self;
+    }
+    
+    return stringWithoutHTML;
+}
+
+/**
  * Get the safe string avoiding HTML injection
  * @param stripHTMLCode Remove all HTML code from content
  * @return A safe string

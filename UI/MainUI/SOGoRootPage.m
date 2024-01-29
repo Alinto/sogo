@@ -1052,7 +1052,7 @@ static const NSString *kJwtKey = @"jwt";
 
 - (NSString *)motdEscaped
 {
-  return [[[SOGoAdmin sharedInstance] getMotd] stringWithoutHTMLInjection: YES];
+  return [[[SOGoAdmin sharedInstance] getMotd] removeHTMLTagsExceptAnchorTags];
 }
 
 - (BOOL)hasMotd

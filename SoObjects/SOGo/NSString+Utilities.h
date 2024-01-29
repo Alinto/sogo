@@ -76,6 +76,8 @@
 /* OpenSSL multiline DN */
 - (NSArray *) componentsFromMultilineDN;
 
+/* XSS protection */
+- (NSString *) removeHTMLTagsExceptAnchorTags;
 - (NSString *) stringWithoutHTMLInjection: (BOOL)stripHTMLCode;
 
 #ifndef GNUSTEP_BASE_LIBRARY
