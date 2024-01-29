@@ -575,7 +575,7 @@ static const NSString *kJwtKey = @"jwt";
       response
 	= [self redirectToLocation: [NSString stringWithFormat: @"%@%@",
 					      oldLocation,
-                                              [login stringByEscapingURL]]];
+                                              [[SOGoUser getEncryptedUsernameIfNeeded:login] stringByEscapingURL]]];
     }
   else
     {
