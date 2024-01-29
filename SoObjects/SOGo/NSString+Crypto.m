@@ -29,9 +29,14 @@
 #import "NSData+Crypto.h"
 #import <NGExtensions/NGBase64Coding.h>
 
+#ifdef HAVE_OPENSSL
+#import <openssl/evp.h>
+#import <openssl/aes.h>
+#endif
+
 #import "aes.h"
-#define AES_SIZE  8096
 #define AES_KEY_SIZE  16
+#define AES_BLOCK_SIZE 16
 
 static const NSString *kAES128ECError = @"kAES128ECError";
 
@@ -364,59 +369,66 @@ static const NSString *kAES128ECError = @"kAES128ECError";
  */
 - (NSString *) encodeAES128ECBBase64:(NSString *)passwordScheme encodedURL:(BOOL)encodedURL exception:(NSException **)ex
 {
-  NSData *inputData, *keyData, *outputData;
+  NSData *data, *keyData, *outputData;
+  NSString *value;
+  int c_len, f_len;
+  unsigned char *ciphertext;
+  #ifdef HAVE_OPENSSL
+    EVP_CIPHER_CTX *ctx;
+  #endif
+
+  value = nil;
 
   if (AES_KEY_SIZE != [passwordScheme length]) {
-    *ex = [NSException exceptionWithName:kAES128ECError reason: [NSString stringWithFormat:@"Key must be %d bits", (AES_KEY_SIZE * 8)] userInfo: nil];
-    return nil;
-  }
-  
-  NSString *value;
-  int size, i;
-  uint8_t  output[AES_SIZE], input[AES_SIZE];
-
-  inputData = [self dataUsingEncoding: NSUnicodeStringEncoding];
-  keyData = [passwordScheme dataUsingEncoding: NSUnicodeStringEncoding];
-  size = [inputData length] + 16; // Add one unicode char size 16 bits (NUL)
-
-  if (inputData == nil) {
-    *ex = [NSException exceptionWithName:kAES128ECError reason: @"Invalid input data (encrypt)" userInfo: nil];
+    *ex = [NSException exceptionWithName: kAES128ECError reason: [NSString stringWithFormat:@"Key must be %d bits", (AES_KEY_SIZE * 8)] userInfo: nil];
     return nil;
   }
 
-  if (((AES_SIZE / 2) - 16) < [self length]) {
-    *ex = [NSException exceptionWithName:kAES128ECError reason: [NSString stringWithFormat:@"Invalid size (encrypt). max size is %d. Current size : %d", ((AES_SIZE / 2) - 16), [self length]] userInfo: nil];
-    return nil;
-  }
+  #ifdef HAVE_OPENSSL
 
-  memset(output, 0x00, AES_SIZE);
-  memset(input, 0x00, AES_SIZE);
+    data = [self dataUsingEncoding: NSUTF8StringEncoding];
+    keyData = [passwordScheme dataUsingEncoding: NSUTF8StringEncoding];
 
-  [inputData getBytes: input length: [inputData length]];
-  input[[inputData length]] = '\0'; // Add NUL
-  
+    // Initialize OpenSSL
+    ctx = EVP_CIPHER_CTX_new();
 
-  for(i = 0 ; i < (AES_SIZE / 16) ; ++i)
-  {
-      AES128_ECB_encrypt(input + (i*16), [keyData bytes], output+(i*16));
-  }
+    // Set up cipher parameters
+    EVP_CIPHER_CTX_init(ctx);
+    EVP_EncryptInit_ex(ctx, EVP_aes_128_ecb(), NULL, [keyData bytes], NULL);
+    EVP_CIPHER_CTX_set_padding(ctx, 1);
 
-  outputData = [NSData dataWithBytes: (char *)output length: size];
-  
-  if (outputData) {
-    value = [outputData stringByEncodingBase64];
-    if (encodedURL) {
-      value = [value stringByReplacingOccurrencesOfString: @"+" withString: @"."];
-      value = [value stringByReplacingOccurrencesOfString: @"/" withString: @"_"];
-      value = [value stringByReplacingOccurrencesOfString: @"=" withString: @"-"];
+    // Perform encryption
+    c_len = [data length] + AES_BLOCK_SIZE;
+    ciphertext = malloc(c_len);
+    f_len = 0;
+
+    EVP_EncryptInit_ex(ctx, NULL, NULL, NULL, NULL);
+    EVP_EncryptUpdate(ctx, ciphertext, &c_len, [data bytes], [data length]);
+    EVP_EncryptFinal_ex(ctx, ciphertext + c_len, &f_len);
+    c_len += f_len;
+
+    EVP_CIPHER_CTX_free(ctx);
+
+    
+    outputData = [NSData dataWithBytes: (char *)ciphertext length: c_len];
+    free(ciphertext);
+    if (outputData) {
+      value = [outputData stringByEncodingBase64];
+      if (encodedURL) {
+        value = [value stringByReplacingOccurrencesOfString: @"+" withString: @"."];
+        value = [value stringByReplacingOccurrencesOfString: @"/" withString: @"_"];
+        value = [value stringByReplacingOccurrencesOfString: @"=" withString: @"-"];
+      }
+    } else {
+      *ex = [NSException exceptionWithName: kAES128ECError reason:@"Empty data" userInfo: nil];
     }
 
     return value;
-  } else {
-    *ex = [NSException exceptionWithName:kAES128ECError reason:@"Empty data" userInfo: nil];
-  }
-  
-  return nil;
+
+  #else
+    *ex = [NSException exceptionWithName: kAES128ECError reason:@"Missing OpenSSL framework" userInfo: nil];
+    return self;
+  #endif
 }
 
 /**
@@ -429,60 +441,79 @@ static const NSString *kAES128ECError = @"kAES128ECError";
  */
 - (NSString *) decodeAES128ECBBase64:(NSString *)passwordScheme encodedURL:(BOOL)encodedURL exception:(NSException **)ex
 {
-  NSData *inputData, *keyData, *outputData;
-  NSString *value, *inputString, *tmpStr;
-  int i;
-  uint8_t output[AES_SIZE];
 
-  if (AES_KEY_SIZE != [passwordScheme length]) {
-    *ex = [NSException exceptionWithName:kAES128ECError reason: [NSString stringWithFormat:@"Key must be %d bits", (AES_KEY_SIZE * 8)] userInfo: nil];
-    return nil;
-  }
-  
+  NSData *keyData, *data, *outputData;
+  NSString *inputString, *value;
+  int p_len, f_len;
+  unsigned char *plaintext;
 
   value = nil;
-  keyData = [passwordScheme dataUsingEncoding: NSUnicodeStringEncoding];
-  memset(output, 0x00, AES_SIZE);
 
-  inputString = [NSString stringWithString: self];
-  if (encodedURL) {
-    inputString = [inputString stringByReplacingOccurrencesOfString: @"." withString: @"+"];
-    inputString = [inputString stringByReplacingOccurrencesOfString: @"_" withString: @"/"];
-    inputString = [inputString stringByReplacingOccurrencesOfString: @"-" withString: @"="];
-  }
+  #ifdef HAVE_OPENSSL
 
-  inputData = [inputString dataByDecodingBase64];
-
-  if (inputData == nil) {
-    *ex = [NSException exceptionWithName:kAES128ECError reason: @"Invalid input data (decrypt)" userInfo: nil];
-    return nil;
-  }
-
-  if ((AES_SIZE) < [inputData length]) {
-    *ex = [NSException exceptionWithName:kAES128ECError reason: [NSString stringWithFormat:@"Invalid size (decrypt). max size is %d. Current size : %d", AES_SIZE, [inputData length]] userInfo: nil];
-    return nil;
-  }
-
-  for(i = 0; i < (AES_SIZE / 16); ++i)
-  {
-    AES128_ECB_decrypt([inputData bytes] + (i*16), [keyData bytes], output + (i*16));
-  }
-
-  outputData = [NSData dataWithBytes: output length:([inputData length] - 16)];
-  if (outputData) {
-    tmpStr = [[NSString alloc] initWithData: outputData encoding: NSUnicodeStringEncoding];
-    if (tmpStr) {
-      value = [NSString stringWithUTF8String: [tmpStr UTF8String]];
-    } else {
-      *ex = [NSException exceptionWithName:kAES128ECError reason:@"Empty converted decrypted data" userInfo: nil];
-      value = nil;
+    if (AES_KEY_SIZE != [passwordScheme length]) {
+      *ex = [NSException exceptionWithName: kAES128ECError reason: [NSString stringWithFormat:@"Key must be %d bits", (AES_KEY_SIZE * 8)] userInfo: nil];
+      return nil;
     }
-    [tmpStr release];
-  } else {
-    *ex = [NSException exceptionWithName:kAES128ECError reason:@"Empty data" userInfo: nil];
-  }
-  
-  return value;
+    keyData = [passwordScheme dataUsingEncoding: NSUTF8StringEncoding];
+
+    inputString = [NSString stringWithString: self];
+    if (encodedURL) {
+      inputString = [inputString stringByReplacingOccurrencesOfString: @"." withString: @"+"];
+      inputString = [inputString stringByReplacingOccurrencesOfString: @"_" withString: @"/"];
+      inputString = [inputString stringByReplacingOccurrencesOfString: @"-" withString: @"="];
+    }
+    data = [[NSData alloc] initWithBase64EncodedString: inputString options:0];
+
+    // Initialize OpenSSL
+    EVP_CIPHER_CTX *ctx;
+    ctx = EVP_CIPHER_CTX_new();
+
+    // Set up cipher parameters
+    EVP_CIPHER_CTX_init(ctx);
+    EVP_DecryptInit_ex(ctx, EVP_aes_128_ecb(), NULL, [keyData bytes], NULL);
+    EVP_CIPHER_CTX_set_padding(ctx, 1);
+
+    // Perform decryption
+    p_len = [data length];
+    plaintext = malloc(p_len);
+    f_len = 0;
+
+    EVP_DecryptInit_ex(ctx, NULL, NULL, NULL, NULL);
+    EVP_DecryptUpdate(ctx, plaintext, &p_len, [data bytes], [data length]);
+    EVP_DecryptFinal_ex(ctx, plaintext + p_len, &f_len);
+    p_len += f_len;
+
+    EVP_CIPHER_CTX_free(ctx);
+
+    // Trim padding
+    while (plaintext[p_len - 1] == '\0') {
+        p_len--;
+    }
+
+    
+    if (p_len > 0) {
+      // Convert to NSString
+      outputData = [NSData dataWithBytes: plaintext length: p_len];
+      if (outputData) {
+        value = [NSString stringWithUTF8String: [outputData bytes]];
+      } else {
+        *ex = [NSException exceptionWithName: kAES128ECError reason:@"Empty data" userInfo: nil];
+      }
+    } else {
+      *ex = [NSException exceptionWithName: kAES128ECError reason:@"Could not decrypt" userInfo: nil];
+    }
+
+    // Clean up
+    free(plaintext);
+    [data release];
+
+    return value;
+
+  #else
+    *ex = [NSException exceptionWithName:kAES128ECError reason:@"Missing OpenSSL framework" userInfo: nil];
+    return self;
+  #endif
 }
 
 @end
