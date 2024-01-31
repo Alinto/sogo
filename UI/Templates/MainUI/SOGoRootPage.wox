@@ -28,7 +28,7 @@
                 layout="column" layout-align="start stretch"
                 ng-show="app.showLogin">
       <var:if condition="hasMotd">
-        <div flex="100" class="motd hide show-gt-md">
+        <div flex="100" class="motd hide show-gt-md md-default-theme md-bdr md-accent">
           <var:string var:value="motd" const:escapeHTML="NO" />
         </div>
       </var:if>

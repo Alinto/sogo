@@ -42,7 +42,8 @@ $sg-login-width: grid-step(5);
       margin-right: 2%;
       padding: 50px;
       animation: fade-in ease 1.5s;
-      border: solid 5px sg-color($sogoGreen, 500);
+      border-width: 5px;
+      border-style: solid;
     }
 
     .md-whiteframe-3dp {
