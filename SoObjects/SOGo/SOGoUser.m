@@ -1041,7 +1041,51 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
         {
           auxAccounts = [[self userDefaults] auxiliaryMailAccounts];
           if (auxAccounts)
+          {
+            //Check if we need to decrypt password
+            NSString* sogoSecret;
+            sogoSecret = [[SOGoSystemDefaults sharedSystemDefaults] sogoSecretValue];
+            if(sogoSecret)
+            {
+              int i;
+              NSString *encryptedPassword, *password, *iv, *tag;
+              NSDictionary *account, *accountPassword;
+              NSException* exception = nil;
+              for (i = 0; i < [auxAccounts count]; i++)
+              {
+                account = [auxAccounts objectAtIndex: i];
+                if (![[account objectForKey: @"password"] isKindOfClass: [NSDictionary class]])
+                {
+                  [self errorWithFormat:@"Can't decrypt the password for auxiliary account %@, is not a dictionnary",
+                              [account objectForKey: @"name"]];
+                  continue;
+                }
+
+                accountPassword = [account objectForKey: @"password"];
+                encryptedPassword = [accountPassword objectForKey: @"cypher"];
+                iv = [accountPassword objectForKey: @"iv"];
+                tag = [accountPassword objectForKey: @"tag"];
+                NS_DURING
+                {
+                  password = [encryptedPassword decryptAES256GCM: sogoSecret iv: iv tag: tag exception:&exception];
+                }
+                NS_HANDLER
+                {
+                  [self errorWithFormat:@"Can't decrypt the password for auxiliary account %@",
+                              [account objectForKey: @"name"]];
+                  password = [account objectForKey: @"password"];
+                }
+                NS_ENDHANDLER
+                if(exception)
+                  [self errorWithFormat:@"Can't decrypt the password for auxiliary account %@: %@",
+                              [account objectForKey: @"name"], [exception reason]];
+                else
+                  [account setObject: password forKey: @"password"];
+              }
+            }
+
             [mailAccounts addObjectsFromArray: auxAccounts];
+          }
         }
     }
 

@@ -48,7 +48,16 @@ main (int argc, char **argv, char **env)
       rc = 0;
       sd = [SOGoSystemDefaults sharedSystemDefaults];
       [NSTimeZone setDefaultTimeZone: [sd timeZone]];
-      WOWatchDogApplicationMain (@"SOGo", argc, (void *) argv);
+      //Check if sogo secret is set and correct
+      if([sd isSogoSecretSet] && ![sd sogoSecretValue])
+      {
+        rc =-1;
+        NSLog (@"Sogo secret is not correctly set");
+      }
+      else
+      {
+        WOWatchDogApplicationMain (@"SOGo", argc, (void *) argv);
+      }
     }
   else
     {

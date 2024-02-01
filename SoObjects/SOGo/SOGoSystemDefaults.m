@@ -25,10 +25,12 @@
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSProcessInfo.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "NSArray+Utilities.h"
+#import "NSString+Crypto.h"
 #import "NSDictionary+Utilities.h"
 #import "SOGoStartupLogger.h"
 
@@ -352,6 +354,60 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
 {
   return [self stringForKey: @"SOGoEncryptionKey"];
 }
+
+
+- (BOOL) isSogoSecretSet
+{
+  NSString *type;
+  type = [self stringForKey: @"SOGoSecretType"];
+  if(!type || [type isEqualToString:@"none"])
+    return NO;
+  else
+    return YES;
+}
+
+- (NSString *) sogoSecretValue
+{
+  NSString *value, *type;
+  NSDictionary *env;
+
+  type = [self stringForKey: @"SOGoSecretType"];
+  if(!type)
+    type = @"none";
+
+  if ([type isEqualToString:@"plain"])
+  {
+    value = [self stringForKey: @"SOGoSecretValue"];
+  }
+  else if ([type isEqualToString:@"env"])
+  {
+    value = [self stringForKey: @"SOGoSecretValue"];
+    [self errorWithFormat: @"SOGo env fetching %@", value];
+    if(!value || [value length] < 1)
+    {
+      [self errorWithFormat: @"SOGoSecretValue is not set!"];
+      return nil;
+    }
+    env = [[NSProcessInfo processInfo] environment];
+    value = [env objectForKey:value];
+  }
+  else if ([type isEqualToString:@"none"])
+  {
+    return nil;
+  }
+  else {
+    [self errorWithFormat: @"SOGo can't understand the type of secret SOGoSecretType"];
+    return nil;
+  }
+
+  if(!value || [value length] != 32){
+    [self errorWithFormat: @"SOGo doesn't have a correct secret value of 32 chars SOGoSecretValue"];
+    return nil;
+  }
+
+  return value;
+}
+
 
 - (BOOL) useRelativeURLs
 {

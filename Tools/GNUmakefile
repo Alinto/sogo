@@ -27,7 +27,8 @@ $(SOGO_TOOL)_OBJC_FILES += \
 	SOGoToolUserPreferences.m \
 	SOGoToolManageACL.m \
 	SOGoToolManageEAS.m \
-	SOGoToolTruncateCalendar.m
+	SOGoToolTruncateCalendar.m \
+	SOGoToolUpdateSecret.m
 TOOL_NAME += $(SOGO_TOOL)
 
 ###

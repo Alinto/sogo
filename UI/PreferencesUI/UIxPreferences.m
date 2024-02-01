@@ -35,6 +35,7 @@
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/NSString+Crypto.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoSieveManager.h>
@@ -1532,6 +1533,7 @@ static NSArray *reminderValues = nil;
   int count, max;
   NSMutableArray *auxAccounts;
   NSMutableDictionary *account;
+  NSString *sogoSecret, *password;
 
   max = [accounts count];
   auxAccounts = [NSMutableArray arrayWithCapacity: max];
@@ -1542,6 +1544,24 @@ static NSArray *reminderValues = nil;
       if ([self _validateAccount: account])
         {
           [self _updateAuxiliaryAccount: account];
+
+          //Encrypt password if needed
+          sogoSecret = [[SOGoSystemDefaults sharedSystemDefaults] sogoSecretValue];
+          //Note that password here will always be a string and not a dictionnary of gcm encryption as it comes from the saveAction Request
+          password = [account objectForKey: @"password"];
+          if(sogoSecret && [password length] > 0)
+          {
+            NSDictionary* newPassword;
+            NSException* exception = nil;
+            newPassword = [password encryptAES256GCM: sogoSecret exception:&exception];
+            if(exception)
+              [self errorWithFormat:@"Can't encrypt the password: %@", [exception reason]];
+            else
+              [account setObject: newPassword forKey: @"password"];
+          }
+          else
+            [self warnWithFormat:@"Password for auxiliary accounts are not stored encrypted see SOGoSecretType"];
+
           [auxAccounts addObject: account];
         }
     }
@@ -1556,7 +1576,7 @@ static NSArray *reminderValues = nil;
   NSDictionary *oldAccount, *oldSecurity;
   NSEnumerator *comparisonAttributesList;
   NSMutableDictionary *newSecurity;
-  NSString *comparisonAttribute, *password, *certificate;
+  NSString *comparisonAttribute, *password, *certificate, *sogoSecret, *decryptedPassword;
 
   comparisonAttributes = [NSArray arrayWithObjects: @"serverName", @"userName", nil];
   oldAccounts = [user mailAccounts];
@@ -1580,11 +1600,59 @@ static NSArray *reminderValues = nil;
       // Use previous password if none is provided
       password = [newAccount objectForKey: @"password"];
       if (!password)
-        password = [oldAccount objectForKey: @"password"];
-      if (!password)
-        password = @"";
-      [newAccount setObject: password forKey: @"password"];
+      {
+        if([oldAccount objectForKey: @"password"])
+        {
+          if([[oldAccount objectForKey: @"password"] isKindOfClass: [NSDictionary class]])
+          {
+            //Old password is encrypted, decrypt it first as it will be encrypt again after
+            NSDictionary *accountPassword;
+            NSString *encryptedPassword, *iv, *tag;
+            accountPassword = [oldAccount objectForKey: @"password"];
+            encryptedPassword = [accountPassword objectForKey: @"cypher"];
+            iv = [accountPassword objectForKey: @"iv"];
+            tag = [accountPassword objectForKey: @"tag"];
+            sogoSecret = [[SOGoSystemDefaults sharedSystemDefaults] sogoSecretValue];
+            if(sogoSecret)
+            {
+              NSException* exception = nil;
+              NS_DURING
+                decryptedPassword = [encryptedPassword decryptAES256GCM: sogoSecret iv: iv tag: tag exception:&exception];
+                if(exception)
+                {
+                  [self errorWithFormat:@"Can't decrypt the password for auxiliary account %@: %@",
+                          [oldAccount objectForKey: @"name"], [exception reason]];
+                  decryptedPassword = @"";
+                }
+                else
+                  password = decryptedPassword;
+              NS_HANDLER
+                [self errorWithFormat:@"Can't decrypt the password for auxiliary account %@, probably wrong key",
+                            [oldAccount objectForKey: @"name"]];
+                decryptedPassword = @"";
+              NS_ENDHANDLER
+              [newAccount setObject: decryptedPassword forKey: @"password"];
+            }
+            else
+            {
+              [self errorWithFormat:@"Password currently stored for account %@ is encrypted but there is a no secret SOGoSecretValue to decrypt with",
+                            [newAccount objectForKey: @"name"]];
+              [newAccount setObject: @"" forKey: @"password"];
+            }
+          }
+          else
+          {
+            //Old password is not encrypted, nothing to do
+            [newAccount setObject: [oldAccount objectForKey: @"password"] forKey: @"password"];
+          }
+        }
+        else {
+          //No password for this account, weird choice but possible
+          [newAccount setObject: @"" forKey: @"password"];
+        }
+      }
 
+    
       // Keep previous certificate
       oldSecurity = [oldAccount objectForKey: @"security"];
       if (oldSecurity)

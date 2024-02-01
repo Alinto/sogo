@@ -29,6 +29,9 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WEClientCapabilities.h>
 
+#import <SOGo/SOGoSystemDefaults.h>
+#import <SOGo/NSString+Crypto.h>
+
 #import "NSString+Utilities.h"
 #import "SOGoSystemDefaults.h"
 #import "SOGoUserProfile.h"

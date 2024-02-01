@@ -35,10 +35,15 @@
 #endif
 
 #import "aes.h"
-#define AES_KEY_SIZE  16
-#define AES_BLOCK_SIZE 16
+#define AES_128_KEY_SIZE  16
+#define AES_128_BLOCK_SIZE 16
+#define AES_256_KEY_SIZE  32
+#define AES_256_BLOCK_SIZE 16
+#define GMC_IV_LEN 12
+#define GMC_TAG_LEN 16
 
 static const NSString *kAES128ECError = @"kAES128ECError";
+static const NSString *kAES256GCMError = @"kAES256GCMError";
 
 @implementation NSString (SOGoCryptoExtension)
 
@@ -379,8 +384,8 @@ static const NSString *kAES128ECError = @"kAES128ECError";
 
   value = nil;
 
-  if (AES_KEY_SIZE != [passwordScheme length]) {
-    *ex = [NSException exceptionWithName: kAES128ECError reason: [NSString stringWithFormat:@"Key must be %d bits", (AES_KEY_SIZE * 8)] userInfo: nil];
+  if (AES_128_KEY_SIZE != [passwordScheme length]) {
+    *ex = [NSException exceptionWithName: kAES128ECError reason: [NSString stringWithFormat:@"Key must be %d bits", (AES_128_KEY_SIZE * 8)] userInfo: nil];
     return nil;
   }
 
@@ -398,7 +403,7 @@ static const NSString *kAES128ECError = @"kAES128ECError";
     EVP_CIPHER_CTX_set_padding(ctx, 1);
 
     // Perform encryption
-    c_len = [data length] + AES_BLOCK_SIZE;
+    c_len = [data length] + AES_128_BLOCK_SIZE;
     ciphertext = malloc(c_len);
     f_len = 0;
 
@@ -451,8 +456,8 @@ static const NSString *kAES128ECError = @"kAES128ECError";
 
   #ifdef HAVE_OPENSSL
 
-    if (AES_KEY_SIZE != [passwordScheme length]) {
-      *ex = [NSException exceptionWithName: kAES128ECError reason: [NSString stringWithFormat:@"Key must be %d bits", (AES_KEY_SIZE * 8)] userInfo: nil];
+    if (AES_128_KEY_SIZE != [passwordScheme length]) {
+      *ex = [NSException exceptionWithName: kAES128ECError reason: [NSString stringWithFormat:@"Key must be %d bits", (AES_128_KEY_SIZE * 8)] userInfo: nil];
       return nil;
     }
     keyData = [passwordScheme dataUsingEncoding: NSUTF8StringEncoding];
@@ -512,6 +517,169 @@ static const NSString *kAES128ECError = @"kAES128ECError";
 
   #else
     *ex = [NSException exceptionWithName:kAES128ECError reason:@"Missing OpenSSL framework" userInfo: nil];
+    return self;
+  #endif
+}
+
+- (NSDictionary *)encryptAES256GCM:(NSString *)passwordScheme exception:(NSException **)ex
+{
+
+  NSData *data, *keyData, *ivData, *tagData, *outputData;
+  NSString *value;
+  NSError *error;
+  NSMutableDictionary* gcmDisctionary;
+  int c_len, f_len;
+  unsigned char *ciphertext;
+  unsigned char tag[16];
+
+  #ifdef HAVE_OPENSSL
+    EVP_CIPHER_CTX *ctx;
+  #endif
+
+  value = nil;
+  gcmDisctionary = [NSMutableDictionary dictionaryWithObject: @"" forKey: @"cypher"];
+
+
+  if (AES_256_KEY_SIZE != [passwordScheme length]) {
+    *ex = [NSException exceptionWithName: kAES256GCMError reason: [NSString stringWithFormat:@"Key must be %d bits", (AES_256_KEY_SIZE * 8)] userInfo: nil];
+    return nil;
+  }
+
+  #ifdef HAVE_OPENSSL
+
+    //Generate random IV
+    ivData = [[NSFileHandle fileHandleForReadingAtPath:@"/dev/random"] readDataOfLength:GMC_IV_LEN];
+    if (GMC_IV_LEN != [ivData length]) {
+      *ex = [NSException exceptionWithName: kAES256GCMError reason: [NSString stringWithFormat:@"IV must be %d bits", (GMC_IV_LEN * 8)] userInfo: nil];
+      return nil;
+    }
+
+    data = [self dataUsingEncoding: NSUTF8StringEncoding];
+    keyData = [passwordScheme dataUsingEncoding: NSUTF8StringEncoding];
+
+    //Set cipher encryption
+    ctx = EVP_CIPHER_CTX_new();
+    EVP_EncryptInit_ex(ctx, EVP_aes_256_gcm(), NULL, NULL, NULL);
+    EVP_EncryptInit_ex(ctx, EVP_aes_256_gcm(), NULL, NULL, NULL);
+    EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_AEAD_SET_IVLEN, GMC_IV_LEN, NULL);
+    EVP_EncryptInit_ex(ctx, NULL, NULL, [keyData bytes], [ivData bytes]);
+
+    //Start Encryption
+    c_len = [data length];
+    ciphertext = malloc(c_len);
+    int status = 0;
+    EVP_EncryptUpdate(ctx, ciphertext, &c_len, [data bytes], (int)[data length]);
+    status = EVP_EncryptFinal_ex(ctx, ciphertext + c_len, &f_len);
+    c_len += f_len;
+
+    outputData = nil;
+    tagData = nil;
+    if(status)
+    {
+      outputData = [NSData dataWithBytes: (char *)ciphertext length: c_len];
+      EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, GMC_TAG_LEN, tag);
+      tagData = [NSData dataWithBytes: (char *)tag length: GMC_TAG_LEN];
+    }
+    else {
+      *ex = [NSException exceptionWithName: kAES256GCMError reason:@"Encryption not successful" userInfo: nil];
+    }
+
+    EVP_CIPHER_CTX_free(ctx);
+
+    free(ciphertext);
+    if(outputData && tagData)
+    {
+      [gcmDisctionary setObject: [outputData stringByEncodingBase64] forKey: @"cypher"];
+      [gcmDisctionary setObject: [ivData stringByEncodingBase64] forKey: @"iv"];
+      [gcmDisctionary setObject: [tagData stringByEncodingBase64] forKey: @"tag"];
+    }
+    else {
+      *ex = [NSException exceptionWithName: kAES256GCMError reason:@"Empty data" userInfo: nil];
+    }
+
+    return gcmDisctionary;
+      
+  #else
+    *ex = [NSException exceptionWithName:kAES256GCMError reason:@"Missing OpenSSL framework" userInfo: nil];
+    return nil;
+  #endif
+}
+
+- (NSString *)decryptAES256GCM:(NSString *)passwordScheme iv:(NSString *)ivString tag:(NSString *)tagString exception:(NSException **)ex
+{
+
+  NSData *keyData, *ivData, *tagData, *data, *outputData;
+  NSString *inputString, *value;
+  int p_len, f_len, rv;
+  unsigned char *plaintext;
+
+  value = nil;
+
+  #ifdef HAVE_OPENSSL
+
+    keyData = [passwordScheme dataUsingEncoding: NSUTF8StringEncoding];
+    ivData = [[NSData alloc] initWithBase64EncodedString: ivString options:0];
+    tagData = [[NSData alloc] initWithBase64EncodedString: tagString options:0];
+
+    if (AES_256_KEY_SIZE != [keyData length]) {
+      *ex = [NSException exceptionWithName: kAES256GCMError reason: [NSString stringWithFormat:@"Key must be %d bits", (AES_256_KEY_SIZE * 8)] userInfo: nil];
+      return nil;
+    }
+    if (GMC_IV_LEN!= [ivData length]) {
+      *ex = [NSException exceptionWithName: kAES256GCMError reason: [NSString stringWithFormat:@"Key must be %d bits", (GMC_IV_LEN * 8)] userInfo: nil];
+      return nil;
+    }
+    if (GMC_TAG_LEN != [tagData length]) {
+      *ex = [NSException exceptionWithName: kAES256GCMError reason: [NSString stringWithFormat:@"Tag must be %d bits", (GMC_TAG_LEN * 8)] userInfo: nil];
+      return nil;
+    }
+
+    inputString = [NSString stringWithString: self];
+    data = [[NSData alloc] initWithBase64EncodedString: inputString options:0];
+
+    // Initialize OpenSSL
+    EVP_CIPHER_CTX *ctx;
+    ctx = EVP_CIPHER_CTX_new();
+
+    // Set up cipher parameters
+    EVP_CIPHER_CTX_init(ctx);
+    EVP_DecryptInit_ex(ctx, EVP_aes_256_gcm(), NULL, NULL, NULL);
+    EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_AEAD_SET_IVLEN, GMC_IV_LEN, NULL);
+    EVP_DecryptInit_ex(ctx, NULL, NULL, [keyData bytes], [ivData bytes]);
+
+    // Perform decryption
+    p_len = [data length];
+    plaintext = malloc(p_len);
+    f_len = 0;
+
+    int status = 0;
+    EVP_DecryptUpdate(ctx, plaintext, &p_len, [data bytes], [data length]);
+    outputData = [NSData dataWithBytes: plaintext length: p_len];
+    EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_AEAD_SET_TAG, GMC_TAG_LEN, (void *)[tagData bytes]);
+    rv = EVP_DecryptFinal_ex(ctx, plaintext + p_len, &f_len);
+    p_len += f_len;
+    EVP_CIPHER_CTX_free(ctx);
+
+    if (rv > 0) {
+      if (outputData) {
+        value = [NSString stringWithUTF8String: [outputData bytes]];
+      } else {
+        *ex = [NSException exceptionWithName: kAES256GCMError reason:@"Decryption ok but output empty" userInfo: nil];
+      }
+    } else {
+      *ex = [NSException exceptionWithName: kAES256GCMError reason:@"Decryption not ok" userInfo: nil];
+    }
+
+    // Clean up
+    free(plaintext);
+    [data release];
+    [ivData release];
+    [tagData release];
+
+    return value;
+
+  #else
+    *ex = [NSException exceptionWithName:kAES256GCMError reason:@"Missing OpenSSL framework" userInfo: nil];
     return self;
   #endif
 }

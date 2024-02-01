@@ -445,6 +445,25 @@ else, leave that value empty.
 
 Defaults to `NO` when unset.
 
+|S |SOGoSecretType
+|To be used with _SOGoSecretValue_. Parameter used to define what
+type is the secret: 'plain' to directly put the secret in _SOGoSecretValue_, 'env'
+to put the name of a environment variable in  _SOGoSecretValue_
+'none' to not use any secret.
+For now, it is only used to encrypt/decrypt auxiliary account's password. the secret must be
+128 bits long i.e. 32 utf8 chars string.
+
+Defaults to 'none' when unset
+
+|S |SOGoSecretValue
+|Parameter used whenever SOGo need a secret to encrypt/decrypt. For now,
+only for password of auxiliary accounts. If _SOGoSecretType_ is 'plain',
+directly put the secret here. if _SOGoSecretType_ is 'env', put the name
+of the environment variable here. Must be set with _SOGoSecretType_.
+If _SOGoSecretType_ is not 'none', sogo won't start is the value is unfetchable or incorrect
+
+There is no default value
+
 |S |SOGoEncryptionKey
 |Parameter used to define a key to encrypt the passwords of remote Web
 calendars when _SOGoTrustProxyAuthentication_ is enabled.

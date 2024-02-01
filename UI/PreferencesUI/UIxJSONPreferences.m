@@ -29,10 +29,11 @@
 #import <NGImap4/NGSieveClient.h>
 
 #import <SOPE/NGCards/iCalRecurrenceRule.h>
-
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/NSString+Crypto.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoSieveManager.h>
 #import <SOGo/SOGoUser.h>
@@ -493,8 +494,10 @@ static SoProduct *preferencesProduct = nil;
   if ([accounts count])
     {
       int i;
-      NSDictionary *security;
+      NSDictionary *security, *accountPassword;
       NSMutableDictionary *auxAccount, *limitedSecurity;
+      NSString *password, *encryptedPassword, *sogoSecret, *iv, *tag;
+      NSException* exception = nil;
 
       for (i = 0; i < [accounts count]; i++)
         {
@@ -510,6 +513,37 @@ static SoProduct *preferencesProduct = nil;
                 }
               [auxAccount setObject: limitedSecurity forKey: @"security"];
             }
+          
+          //Decrypt password if needed
+          sogoSecret = [[SOGoSystemDefaults sharedSystemDefaults] sogoSecretValue];
+          if (sogoSecret)
+          {
+            if(![[auxAccount objectForKey: @"password"] isKindOfClass: [NSDictionary class]])
+            {
+              [self errorWithFormat:@"Can't decrypt the password for auxiliary account %@, is not a dictionnary",
+                        [auxAccount objectForKey: @"name"]];
+              continue;
+            }
+            accountPassword = [auxAccount objectForKey: @"password"];
+            encryptedPassword = [accountPassword objectForKey: @"cypher"];
+            iv = [accountPassword objectForKey: @"iv"];
+            tag = [accountPassword objectForKey: @"tag"];
+            if([encryptedPassword length] > 0)
+            {
+              NS_DURING
+                password = [encryptedPassword decryptAES256GCM: sogoSecret iv: iv tag: tag exception:&exception];
+              NS_HANDLER
+                [self errorWithFormat:@"Can't decrypt the password for auxiliary account %@, probably not encrypted.",
+                            [auxAccount objectForKey: @"name"]];
+                password = [auxAccount objectForKey: @"password"];
+              NS_ENDHANDLER
+              if(exception)
+                [self errorWithFormat:@"Can't decrypt the password for auxiliary account %@: %@",
+                        [auxAccount objectForKey: @"name"], [exception reason]];
+              else
+                [auxAccount setObject: password forKey: @"password"];
+            }
+          }
         }
     }
   // We inject our default mail account

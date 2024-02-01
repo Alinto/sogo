@@ -46,6 +46,8 @@ static const NSString *kDisableSharingCalendar = @"Calendar";
 - (int) vmemLimit;
 - (BOOL) trustProxyAuthentication;
 - (NSString *) encryptionKey;
+- (BOOL) isSogoSecretSet;
+- (NSString *) sogoSecretValue;
 - (BOOL) useRelativeURLs;
 - (NSString *) sieveFolderEncoding;
 
