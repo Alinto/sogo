@@ -561,7 +561,7 @@ static const NSString *kAES256GCMError = @"kAES256GCMError";
     ctx = EVP_CIPHER_CTX_new();
     EVP_EncryptInit_ex(ctx, EVP_aes_256_gcm(), NULL, NULL, NULL);
     EVP_EncryptInit_ex(ctx, EVP_aes_256_gcm(), NULL, NULL, NULL);
-    EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_AEAD_SET_IVLEN, GMC_IV_LEN, NULL);
+    EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, GMC_IV_LEN, NULL);
     EVP_EncryptInit_ex(ctx, NULL, NULL, [keyData bytes], [ivData bytes]);
 
     //Start Encryption
@@ -644,7 +644,7 @@ static const NSString *kAES256GCMError = @"kAES256GCMError";
     // Set up cipher parameters
     EVP_CIPHER_CTX_init(ctx);
     EVP_DecryptInit_ex(ctx, EVP_aes_256_gcm(), NULL, NULL, NULL);
-    EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_AEAD_SET_IVLEN, GMC_IV_LEN, NULL);
+    EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, GMC_IV_LEN, NULL);
     EVP_DecryptInit_ex(ctx, NULL, NULL, [keyData bytes], [ivData bytes]);
 
     // Perform decryption
@@ -655,7 +655,7 @@ static const NSString *kAES256GCMError = @"kAES256GCMError";
     int status = 0;
     EVP_DecryptUpdate(ctx, plaintext, &p_len, [data bytes], [data length]);
     outputData = [NSData dataWithBytes: plaintext length: p_len];
-    EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_AEAD_SET_TAG, GMC_TAG_LEN, (void *)[tagData bytes]);
+    EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, GMC_TAG_LEN, (void *)[tagData bytes]);
     rv = EVP_DecryptFinal_ex(ctx, plaintext + p_len, &f_len);
     p_len += f_len;
     EVP_CIPHER_CTX_free(ctx);
