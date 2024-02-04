@@ -25,11 +25,13 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/NSString+Crypto.h>
 #import <SOGo/SOGoProductLoader.h>
 #import "SOGo/SOGoCredentialsFile.h"
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserSettings.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <Mailer/SOGoMailAccounts.h>
 #import <Mailer/SOGoMailAccount.h>
 
@@ -188,93 +190,178 @@ typedef enum
       switch (cmd)
         {
           case UserPreferencesGet:
-                 o = [source objectForKey: key];
+            o = [source objectForKey: key];
 
-                 if (o)
-                   {
-                     printf("%s: %s\n", [key UTF8String], [[o jsonRepresentation] UTF8String]);
-                     rc = YES;
-                   }
-                 else
-                   {
-                     NSLog(@"Value for key \"%@\" not found in %@", key, type);
-                     return rc;
-                   }
-                 break;
+            if (o)
+            {
+              if([key isEqualToString: @"AuxiliaryMailAccounts"])
+              {
+                //May need to decrypt password for auxiliary accounts
+                NSString* sogoSecret;
+                sogoSecret = [[SOGoSystemDefaults sharedSystemDefaults] sogoSecretValue];
+                if(sogoSecret)
+                {
+                  NSDictionary* account, *accountPassword;
+                  NSString *password, *iv, *tag;
+                  int i;
+                  for(i=0; i < [o count]; i++)
+                  {
+                    account = [o objectAtIndex: i];
+                    if(![account objectForKey: @"password"])
+                      continue;
+                    if([[account objectForKey: @"password"] isKindOfClass: [NSString class]])
+                      NSLog(@"WARNING: your sogo.conf has a secret SOGoSecretValue but the password for account %@ is not encrypted", userId);
+                    else
+                    {
+                      accountPassword = [account objectForKey: @"password"];
+                      password = [accountPassword objectForKey: @"cypher"];
+                      iv = [accountPassword objectForKey: @"iv"];
+                      tag = [accountPassword objectForKey: @"tag"];
+                      if([password length] > 0)
+                      {
+                        NSString* newPassword;
+                        NSException* exception = nil;
+                        NS_DURING
+                          newPassword = [password decryptAES256GCM: sogoSecret iv: iv tag: tag exception:&exception];
+                          if(exception)
+                            NSLog(@"Can't decrypt the password: %@", [exception reason]);
+                          else
+                            [account setObject: newPassword forKey: @"password"];
+                        NS_HANDLER
+                          NSLog(@"Can't decrypt the password, unexpected exception");
+                        NS_ENDHANDLER
+                      }
+                      else
+                        NSLog(@"Password not found! For user: %@ and account %@", user, account);        
+                    }
+                  }
+                }                
+              }
+              printf("%s: %s\n", [key UTF8String], [[o jsonRepresentation] UTF8String]);
+              rc = YES;
+            }
+            else
+            {
+              NSLog(@"Value for key \"%@\" not found in %@", key, type);
+              return rc;
+            }
+            break;
 
           case UserPreferencesSet:
-                 if (max > 4)
-                   {
-                     /* value specified on command line */
-                     value = [sanitizedArguments objectAtIndex: 4];
-                   }
-                 else
-                   {
-                     /* value is to be found in file specified with -f filename */
-                     jsonValueFile = [[NSUserDefaults standardUserDefaults]
-                                                       stringForKey: @"f"];
+            if (max > 4)
+            {
+              /* value specified on command line */
+              value = [sanitizedArguments objectAtIndex: 4];
+            }
+            else
+            {
+              /* value is to be found in file specified with -f filename */
+              jsonValueFile = [[NSUserDefaults standardUserDefaults]
+                                                stringForKey: @"f"];
 
-                     if (jsonValueFile == nil)
-                       {
-                         NSLog(@"No value specified, aborting");
-                         [self usage];
-                         return rc;
-                       }
-                     else
-                       {
+              if (jsonValueFile == nil)
+              {
+                NSLog(@"No value specified, aborting");
+                [self usage];
+                return rc;
+              }
+              else
+              {
 
-                         NSData *data = [NSData dataWithContentsOfFile: jsonValueFile];
-                         if (data == nil)
-                           {
-                             NSLog(@"Error reading file '%@'", jsonValueFile);
-                             [self usage];
-                             return rc;
-                           }
-                         value = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-                         [value autorelease];
-                       }
-                   }
-                 o = [value objectFromJSONString];
+                NSData *data = [NSData dataWithContentsOfFile: jsonValueFile];
+                if (data == nil)
+                {
+                  NSLog(@"Error reading file '%@'", jsonValueFile);
+                  [self usage];
+                  return rc;
+                }
+                value = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+                [value autorelease];
+              }
+            }
+            o = [value objectFromJSONString];
 
-                 //
-                 // We support setting only "values" - for example, setting :
-                 //
-                 // SOGoDayStartTime to 9:00
-                 //
-                 // Values in JSON must be a dictionary so we must support passing:
-                 // 
-                 // key == SOGoDayStartTime
-                 // value == '{"SOGoDayStartTime":  "09:00"}'
-                 //
-                 // to achieve what we want.
-                 //
-                 if (o && [o isKindOfClass: [NSDictionary class]] && [o count] == 1)
+            //
+            // We support setting only "values" - for example, setting :
+            //
+            // SOGoDayStartTime to 9:00
+            //
+            // Values in JSON must be a dictionary so we must support passing:
+            // 
+            // key == SOGoDayStartTime
+            // value == '{"SOGoDayStartTime":  "09:00"}'
+            //
+            // to achieve what we want.
+            //
+            if (o && [o isKindOfClass: [NSDictionary class]] && [o count] == 1)
+            {
+              o = [[o allValues] lastObject];
+            }
+
+            //
+            // We also support passing values that are already dictionaries so in this
+            // case, we simply set it to the passed key.
+            //
+            if (o)
+            {
+              if([key isEqualToString: @"AuxiliaryMailAccounts"])
+              {
+                //May need to encrypt password for auxiliary accounts
+                NSString* sogoSecret;
+                sogoSecret = [[SOGoSystemDefaults sharedSystemDefaults] sogoSecretValue];
+                if(sogoSecret)
+                {
+                  int i;
+                  NSDictionary *account, *newPassword;
+                  NSString *password;
+                  if(![o isKindOfClass: [NSArray class]])
                   {
-                    [source setObject: [[o allValues] lastObject] forKey: key];
+                      NSLog(@"The value for AuxiliaryMailAccounts is supposed to be an Array (even for 1 account) but is %@",
+                                    [o class]);
+                      return rc;
                   }
-                 //
-                 // We also support passing values that are already dictionaries so in this
-                 // case, we simply set it to the passed key.
-                 //
-                 else if (o)
-                   {
-                     [source setObject: o  forKey: key];
-                   }
-                 else
-                   {
-                     NSLog(@"Invalid JSON input - no changes performed in the database. The supplied value was: %@", value);
-                     [self usage];
-                     return rc;
-                   }
+                  for (i = 0; i < [o count]; i++)
+                  {
+                    account = [o objectAtIndex: i];
+                    if(![[account objectForKey: @"password"] isKindOfClass: [NSString class]])
+                    {
+                      NSLog(@"Can't encrypt the password for auxiliary account %@, password is not a string",
+                                    [account objectForKey: @"name"]);
+                      continue;
+                    }
+                    password = [account objectForKey: @"password"];
+                    if([password length] > 0)
+                    {
+                      NSString* newPassword;
+                      NSException* exception = nil;
+                      newPassword = [password encryptAES256GCM: sogoSecret exception:&exception];
+                      if(exception)
+                        NSLog(@"Can't encrypt the password: %@", [exception reason]);
+                      else
+                        [account setObject: newPassword forKey: @"password"];
+                    }
+                    else
+                      NSLog(@"Password not given for account %@", account);
+                  }
+                }
+              }
+              [source setObject: o forKey: key];
+            }
+            else
+              {
+                NSLog(@"Invalid JSON input - no changes performed in the database. The supplied value was: %@", value);
+                [self usage];
+                return rc;
+              }
 
-                 rc = [self _updateSieveScripsForkey: key
-                                               login: userId];
-                 if (rc)
-                   [source synchronize];
-                 else
-                   NSLog(@"Error updating sieve script, not updating database");
+            rc = [self _updateSieveScripsForkey: key
+                                          login: userId];
+            if (rc)
+              [source synchronize];
+            else
+              NSLog(@"Error updating sieve script, not updating database");
 
-                 break;
+            break;
 
           case UserPreferencesUnset:
                  [source removeObjectForKey: key];

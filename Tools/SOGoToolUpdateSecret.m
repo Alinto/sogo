@@ -188,7 +188,7 @@
         password = [account objectForKey: @"password"];
         if([password length] > 0)
         {
-          NSString* newPassword;
+          NSDictionary* newPassword;
           NSException* exception = nil;
           newPassword = [password encryptAES256GCM: secret exception:&exception];
           if(exception)
