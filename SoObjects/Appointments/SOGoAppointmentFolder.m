@@ -1026,40 +1026,32 @@ static Class iCalEventK = nil;
 - (void) _computeAlarmForRow: (NSMutableDictionary *) row
                       master: (iCalEntityObject *) master
 {
-  iCalEntityObject *component;
   iCalAlarm *alarm;
   
   if (![master recurrenceId])
+  {
+    [master setStartDate: [NSCalendarDate dateWithTimeIntervalSince1970: [[row objectForKey: @"c_startdate"] intValue]]];
+    if ([master isKindOfClass: [iCalEvent class]])
     {
-      component = [master copy];
-
-      [component setStartDate: [NSCalendarDate dateWithTimeIntervalSince1970: [[row objectForKey: @"c_startdate"] intValue]]];
-
-      if ([component isKindOfClass: [iCalEvent class]])
-        {
-          [(iCalEvent *)component setEndDate: [NSCalendarDate dateWithTimeIntervalSince1970: [[row objectForKey: @"c_enddate"] intValue]]];
-        }
-      else
-        {
-          [(iCalToDo *)component setDue: [NSCalendarDate dateWithTimeIntervalSince1970: [[row objectForKey: @"c_enddate"] intValue]]];
-        }
+      [(iCalEvent *)master setEndDate: [NSCalendarDate dateWithTimeIntervalSince1970: [[row objectForKey: @"c_enddate"] intValue]]];
     }
-  else
+    else
     {
-      component = master;
-      RETAIN(component);
+      [(iCalToDo *)master setDue: [NSCalendarDate dateWithTimeIntervalSince1970: [[row objectForKey: @"c_enddate"] intValue]]];
     }
-
-  // Check if we have any alarm, that could happen for recurrence exceptions with no
-  // alarm defined.
-  if ([[component alarms] count])
+    if ([[master alarms] count])
     {
-      alarm = [component firstSupportedAlarm];
+      alarm = [master firstSupportedAlarm];
       [row setObject: [NSNumber numberWithInt: [[alarm nextAlarmDate] timeIntervalSince1970]]
-              forKey: @"c_nextalarm"];
+            forKey: @"c_nextalarm"];
     }
-
-  RELEASE(component);
+  }
+  else
+  {
+    alarm = [master firstSupportedAlarm];
+    [row setObject: [NSNumber numberWithInt: [[alarm nextAlarmDate] timeIntervalSince1970]]
+          forKey: @"c_nextalarm"];
+  }
 }
 
 //
