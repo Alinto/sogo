@@ -23,9 +23,10 @@
 
 #import "UIxMailPartViewer.h"
 
-@interface UIxMailPartHTMLViewer : UIxMailPartViewer
+@interface UIxMailPartHTMLViewer : UIxMailPartViewer <SaxErrorHandler>
 {
   id handler;
+  NSException *ex;
 }
 
 - (NSString *) flatContentAsString;
@@ -35,6 +36,7 @@
 @interface UIxMailPartExternalHTMLViewer : UIxMailPartViewer
 {
   id handler;
+  NSException *ex;
 }
 
 - (NSString *) flatContentAsString;

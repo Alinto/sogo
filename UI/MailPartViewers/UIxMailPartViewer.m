@@ -190,16 +190,27 @@
 
 - (id) renderedPart
 {
-  NSString *type;
+  NSString *type, *content;
+  NSException *e;
+  NSMutableDictionary *r;
 
+  e = nil;
   type = [NSString stringWithFormat: @"%@/%@",
                             [bodyInfo objectForKey: @"type"],
                             [bodyInfo objectForKey: @"subtype"]];
+  
 
-  return [NSDictionary dictionaryWithObjectsAndKeys:
+
+  content = [[[self generateResponse] contentAsString] stringWithoutHTMLInjection: NO];
+  if ([self respondsToSelector:@selector(getException)]) {
+    e = [self getException];
+  }
+  
+
+  r = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                          [self className], @"type",
                        type, @"contentType",
-                       [[[self generateResponse] contentAsString] stringWithoutHTMLInjection: NO], @"content",
+                       content, @"content",
                        [self filenameForDisplay], @"filename",
                        [self preferredPathExtension], @"extension",
                        [[self sizeFormatter] stringForObjectValue: [bodyInfo objectForKey: @"size"]], @"size",
@@ -207,6 +218,11 @@
                        [self pathForDownload], @"downloadURL",
                        [NSNumber numberWithBool:_shouldDisplayAttachment], @"shouldDisplayAttachment",
                        nil];
+  if (e) {
+    [r setObject: [e userInfo] forKey: @"exception"];
+  }
+  
+  return r;
 }
 
 - (NSDictionary *) attachmentIds

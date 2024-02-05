@@ -179,8 +179,9 @@
   id info, viewer;
   NSArray *parts;
   NSMutableArray *renderedParts;
-  NSString *preferredType;
+  NSString *preferredType, *htmlNoTags;
   NSUInteger i, max;
+  BOOL fallbackNeeded, hasTextPlain;
 
   if ([self decodedFlatContent])
     parts = [[self decodedFlatContent] parts];
@@ -213,6 +214,27 @@
   preferredType = [NSString stringWithFormat: @"%@/%@",
                             [[self childInfo] objectForKey: @"type"],
                             [[self childInfo] objectForKey: @"subtype"]];
+
+  // Check if the HTML part is good
+  // If no, try to fallback on text/plain
+  fallbackNeeded = NO;
+  hasTextPlain = NO;
+  for (i = 0 ; i < [renderedParts length] ; i++) {
+    if ([[[[renderedParts objectAtIndex: i] objectForKey: @"contentType"] lowercaseString] isEqualToString: @"text/html"]
+        && [[preferredType lowercaseString] isEqualToString: @"text/html"]) {
+      if ([[renderedParts objectAtIndex: i] objectForKey:@"exception"]) {
+        fallbackNeeded = YES;
+      }
+    }
+
+    if ([[[[renderedParts objectAtIndex: i] objectForKey: @"contentType"] lowercaseString] isEqualToString: @"text/plain"]) {
+      hasTextPlain = YES;
+    }
+  }
+
+  if (fallbackNeeded && hasTextPlain) {
+    preferredType = @"text/plain";
+  }
 
   return [NSDictionary dictionaryWithObjectsAndKeys:
                          [self className], @"type",

@@ -750,6 +750,7 @@ _xmlCharsetForCharset (NSString *charset)
   if ((self = [super init]))
     {
       handler = nil;
+      ex = nil;
     }
 
   return self;
@@ -758,6 +759,9 @@ _xmlCharsetForCharset (NSString *charset)
 - (void) dealloc
 {
   [handler release];
+  if (ex) {
+    [ex release];
+  }
   [super dealloc];
 }
 
@@ -781,6 +785,8 @@ _xmlCharsetForCharset (NSString *charset)
   NSString *s;
 
   xmlCharEncoding enc;
+
+  [self cleanException];
 
   if ([[self decodedFlatContent] isKindOfClass: [NGMimeBodyPart class]])
     preparsedContent = [[[self decodedFlatContent] body] sanitizedContentUsingVoidTags: VoidTags];
@@ -852,8 +858,36 @@ _xmlCharsetForCharset (NSString *charset)
   [handler setContentEncoding: enc];
 
   [parser setContentHandler: handler];
+  [parser setErrorHandler: self];
   [parser parseFromSource: preparsedContent];
 }
+
+- (void)cleanException
+{
+  ex = nil;
+}
+
+- (void)warning:(SaxParseException *)_exception
+{
+
+}
+
+- (void)error:(SaxParseException *)_exception
+{
+
+}
+
+- (void)fatalError:(SaxParseException *)_exception
+{
+  ex = [NSException exceptionWithName:[_exception name] reason: [_exception reason] userInfo: [_exception userInfo]];
+  [ex retain];
+}
+
+- (NSException *)getException
+{
+  return ex;
+}
+
 
 - (NSString *) cssContent
 {
@@ -890,6 +924,7 @@ _xmlCharsetForCharset (NSString *charset)
   if ((self = [super init]))
     {
       handler = nil;
+      ex = nil;
     }
 
   return self;
@@ -898,6 +933,9 @@ _xmlCharsetForCharset (NSString *charset)
 - (void) dealloc
 {
   [handler release];
+  if (ex) {
+    [ex release];
+  }
   [super dealloc];
 }
 
@@ -920,6 +958,8 @@ _xmlCharsetForCharset (NSString *charset)
   SOGoMailBodyPart *part;
   NSString *encoding;
   xmlCharEncoding enc;
+
+  [self cleanException];
 
   parser = [[SaxXMLReaderFactory standardXMLReaderFactory]
              createXMLReaderForMimeType: @"text/html"];
@@ -966,7 +1006,34 @@ _xmlCharsetForCharset (NSString *charset)
 
   [handler setContentEncoding: enc];
   [parser setContentHandler: handler];
+  [parser setErrorHandler: self];
   [parser parseFromSource: preparsedContent];
+}
+
+- (void)cleanException
+{
+  ex = nil;
+}
+
+- (void)warning:(SaxParseException *)_exception
+{
+
+}
+
+- (void)error:(SaxParseException *)_exception
+{
+
+}
+
+- (void)fatalError:(SaxParseException *)_exception
+{
+  ex = [NSException exceptionWithName:[_exception name] reason: [_exception reason] userInfo: [_exception userInfo]];
+  [ex retain];
+}
+
+- (NSException *)getException
+{
+  return ex;
 }
 
 - (NSString *) filename
