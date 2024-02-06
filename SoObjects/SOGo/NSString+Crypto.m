@@ -618,8 +618,8 @@ static const NSString *kAES256GCMError = @"kAES256GCMError";
   #ifdef HAVE_OPENSSL
 
     keyData = [passwordScheme dataUsingEncoding: NSUTF8StringEncoding];
-    ivData = [[NSData alloc] initWithBase64EncodedString: ivString options:0];
-    tagData = [[NSData alloc] initWithBase64EncodedString: tagString options:0];
+    ivData = [ivString dataByDecodingBase64];
+    tagData = [tagString dataByDecodingBase64];
 
     if (AES_256_KEY_SIZE != [keyData length]) {
       *ex = [NSException exceptionWithName: kAES256GCMError reason: [NSString stringWithFormat:@"Key must be %d bits", (AES_256_KEY_SIZE * 8)] userInfo: nil];
@@ -635,7 +635,7 @@ static const NSString *kAES256GCMError = @"kAES256GCMError";
     }
 
     inputString = [NSString stringWithString: self];
-    data = [[NSData alloc] initWithBase64EncodedString: inputString options:0];
+    data = [inputString dataByDecodingBase64];
 
     // Initialize OpenSSL
     EVP_CIPHER_CTX *ctx;
