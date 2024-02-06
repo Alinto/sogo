@@ -10,7 +10,7 @@
 "Do you want to save your changes made to the configuration?" = "Do you want to save your changes made to the configuration?";
 
 /* Unsaved changes confirmation dialog button */
-"Save" = "Save";
+"Save" = "Vista";
 
 /* Unsaved changes confirmation dialog button */
 "Don't Save" = "Don't Save";
@@ -464,7 +464,7 @@
 "Unhandled error response" = "Unhandled error response";
 "Password change is not supported." = "Password change is not supported.";
 "Unhandled HTTP error code: %{0}" = "Unhandled HTTP error code: %{0}";
-"Cancel" = "Cancel";
+"Cancel" = "Hætta við";
 "Invitations" = "Invitations";
 "Edit Filter" = "Edit Filter";
 "Delete Filter" = "Delete Filter";
