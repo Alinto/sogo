@@ -468,7 +468,7 @@ static const NSString *kAES256GCMError = @"kAES256GCMError";
       inputString = [inputString stringByReplacingOccurrencesOfString: @"_" withString: @"/"];
       inputString = [inputString stringByReplacingOccurrencesOfString: @"-" withString: @"="];
     }
-    data = [[NSData alloc] initWithBase64EncodedString: inputString options:0];
+    data = [inputString dataByDecodingBase64];
 
     // Initialize OpenSSL
     EVP_CIPHER_CTX *ctx;
@@ -511,7 +511,6 @@ static const NSString *kAES256GCMError = @"kAES256GCMError";
 
     // Clean up
     free(plaintext);
-    [data release];
 
     return value;
 
