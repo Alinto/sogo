@@ -671,9 +671,6 @@ static const NSString *kAES256GCMError = @"kAES256GCMError";
 
     // Clean up
     free(plaintext);
-    [data release];
-    [ivData release];
-    [tagData release];
 
     return value;
 
