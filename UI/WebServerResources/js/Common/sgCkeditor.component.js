@@ -28,6 +28,10 @@
       // Allow the toolbar to be collapsed (useful for small screens)
       toolbarCanCollapse: true,
 
+      // Disable check version
+      // NOTE : This is not definitive and ckeditor will be updated
+      versionCheck: false,
+
       // Dialog windows are also simplified.
       removeDialogTabs: 'link:advanced',
 
