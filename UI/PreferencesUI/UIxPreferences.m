@@ -1359,7 +1359,7 @@ static NSArray *reminderValues = nil;
   if (!knownKeys)
     {
       knownKeys = [NSArray arrayWithObjects: @"id", @"name", @"serverName", @"port",
-                           @"smtpServerName", @"smtpPort", @"smtpEncryption",
+                           @"smtpServerName", @"smtpPort", @"smtpEncryption", @"smtpAuth",
                            @"userName", @"password", @"encryption", @"replyTo",
                            @"identities", @"mailboxes", @"forceDefaultIdentity",
                            @"receipts", @"security", @"isNew",

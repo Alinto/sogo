@@ -97,6 +97,14 @@
                        placeholder=""
                        sg-placeholder="$AccountDialogController.smtpDefaultPort"/>
               </md-input-container>
+
+              <md-checkbox class="sg-checkbox--input-container"
+                    ng-disabled="$AccountDialogController.accountId == 0"
+                    ng-model="$AccountDialogController.account.smtpAuth"
+                    ng-true-value="1"
+                    ng-false-value="0">
+                <var:string label:value="Smtp Auth"/>
+              </md-checkbox>
             </div>
 
             <md-input-container class="md-block md-input-has-value">

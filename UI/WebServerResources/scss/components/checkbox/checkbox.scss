@@ -19,6 +19,12 @@ md-sidenav .md-dense :not(.md-dense-disabled) md-checkbox:not(.md-dense-disabled
   min-height: $checkbox-width;
 }
 
+//Checkbox with input container
+md-checkbox.sg-checkbox--input-container {
+  margin: auto;
+  margin-left: 16px;
+}
+
 // Checkbox in an inline form beside a select element
 .md-inline-form md-checkbox.sg-checkbox--with-select {
   margin: 2.5*$baseline-grid $baseline-grid*0.5 3*$baseline-grid + 2 0;

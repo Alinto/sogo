@@ -232,6 +232,7 @@
 "New Mail Account" = "New Mail Account";
 "Server Name" = "Server Name";
 "Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
+"Smtp Auth" = "Smtp Auth";
 "Port" = "Port";
 "Encryption" = "Encryption";
 "Outgoing Encryption" = "Outgoing Encryption";

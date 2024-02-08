@@ -513,37 +513,6 @@ static SoProduct *preferencesProduct = nil;
                 }
               [auxAccount setObject: limitedSecurity forKey: @"security"];
             }
-          
-          //Decrypt password if needed
-          sogoSecret = [[SOGoSystemDefaults sharedSystemDefaults] sogoSecretValue];
-          if (sogoSecret)
-          {
-            if(![[auxAccount objectForKey: @"password"] isKindOfClass: [NSDictionary class]])
-            {
-              [self errorWithFormat:@"Can't decrypt the password for auxiliary account %@, is not a dictionnary",
-                        [auxAccount objectForKey: @"name"]];
-              continue;
-            }
-            accountPassword = [auxAccount objectForKey: @"password"];
-            encryptedPassword = [accountPassword objectForKey: @"cypher"];
-            iv = [accountPassword objectForKey: @"iv"];
-            tag = [accountPassword objectForKey: @"tag"];
-            if([encryptedPassword length] > 0)
-            {
-              NS_DURING
-                password = [encryptedPassword decryptAES256GCM: sogoSecret iv: iv tag: tag exception:&exception];
-              NS_HANDLER
-                [self errorWithFormat:@"Can't decrypt the password for auxiliary account %@, probably not encrypted.",
-                            [auxAccount objectForKey: @"name"]];
-                password = [auxAccount objectForKey: @"password"];
-              NS_ENDHANDLER
-              if(exception)
-                [self errorWithFormat:@"Can't decrypt the password for auxiliary account %@: %@",
-                        [auxAccount objectForKey: @"name"], [exception reason]];
-              else
-                [auxAccount setObject: password forKey: @"password"];
-            }
-          }
         }
     }
   // We inject our default mail account

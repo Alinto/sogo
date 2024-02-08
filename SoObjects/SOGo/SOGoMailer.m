@@ -150,9 +150,11 @@
 
 + (SOGoMailer *) mailerWithDomainDefaultsAndSmtpUrl: (SOGoDomainDefaults *) dd
                                             smtpUrl: (NSURL *) smtpUrl
+                                            userIdAccount: (NSString *) _userIdAccount
 {
   return [[self alloc] initWithDomainDefaultsAndSmtpUrl: dd
-                                                smtpUrl: smtpUrl];
+                                                smtpUrl: smtpUrl
+                                                 userIdAccount: _userIdAccount];
 }
 
 - (id) initWithDomainDefaults: (SOGoDomainDefaults *) dd
@@ -165,6 +167,7 @@
       ASSIGN (smtpMasterUserUsername, [dd smtpMasterUserUsername]);
       ASSIGN (smtpMasterUserPassword, [dd smtpMasterUserPassword]);
       ASSIGN (authenticationType, [[dd smtpAuthenticationType] lowercaseString]);
+      ASSIGN (userIdAccount, @"0");
     }
 
   return self;
@@ -172,6 +175,7 @@
 
 - (id) initWithDomainDefaultsAndSmtpUrl: (SOGoDomainDefaults *) dd
                                 smtpUrl: (NSURL *) smtpUrl
+                                userIdAccount: (NSString *) _userIdAccount
 {
   if ((self = [self init]))
     {
@@ -181,6 +185,7 @@
       ASSIGN (smtpMasterUserUsername, [dd smtpMasterUserUsername]);
       ASSIGN (smtpMasterUserPassword, [dd smtpMasterUserPassword]);
       ASSIGN (authenticationType, [[dd smtpAuthenticationType] lowercaseString]);
+      ASSIGN (userIdAccount, _userIdAccount);
     }
 
   return self;
@@ -196,6 +201,7 @@
       smtpMasterUserUsername = nil;
       smtpMasterUserPassword = nil;
       authenticationType = nil;
+      userIdAccount = nil;
     }
 
   return self;
@@ -208,6 +214,7 @@
   [smtpMasterUserUsername release];
   [smtpMasterUserPassword release];
   [authenticationType release];
+  [userIdAccount release];
   [super dealloc];
 }
 
@@ -259,35 +266,58 @@
                   systemMessage: (BOOL) isSystemMessage
 {
   NSString *currentTo, *login, *password;
+  NSDictionary *currentAcount;
   NSMutableArray *toErrors;
   NSEnumerator *addresses;
   NGSmtpClient *client;
   NSException *result;
   NSURL * smtpUrl;
   SOGoUser* user;
+  BOOL doSmtpAuth;
 
   result = nil;
+  doSmtpAuth = NO;
 
   //find the smtpurl for the account
-
   smtpUrl = [[[NSURL alloc] initWithString: smtpServer] autorelease];
-
   client = [NGSmtpClient clientWithURL: smtpUrl];
+
+  //Get the user and the current account 
+  int userId = [userIdAccount intValue];
+  user = [SOGoUser userWithLogin: [[woContext activeUser] login]];
+  currentAcount = [[user mailAccounts] objectAtIndex: userId];
+
+  //Check if we do an smtp authentication
+  doSmtpAuth = [authenticationType isEqualToString: @"plain"] && ![authenticator isKindOfClass: [SOGoEmptyAuthenticator class]];
+  if(!doSmtpAuth && userId > 0)
+  {
+    doSmtpAuth = [currentAcount objectForKey: @"smtpAuth"] ? [[currentAcount objectForKey: @"smtpAuth"] boolValue] : NO;
+  }
 
   NS_DURING
     {
       [client connect];
-      if ([authenticationType isEqualToString: @"plain"] && ![authenticator isKindOfClass: [SOGoEmptyAuthenticator class]])
+      if (doSmtpAuth)
         {
-          /* XXX Allow static credentials by peeking at the classname */
-          if ([authenticator isKindOfClass: [SOGoStaticAuthenticator class]])
-            login = [(SOGoStaticAuthenticator *)authenticator username];
+          //Check if the ccurent mail folder if for an auxiliary account (userId > 0)
+          if(userId > 0)
+          {
+            login = [currentAcount objectForKey: @"userName"];
+            password = [currentAcount objectForKey: @"password"];
+          }
           else
-            login = [[SOGoUserManager sharedUserManager]
-                       getExternalLoginForUID: [[authenticator userInContext: woContext] loginInDomain]
-                                     inDomain: [[authenticator userInContext: woContext] domain]];
+          {
+            /* XXX Allow static credentials by peeking at the classname */
+            if ([authenticator isKindOfClass: [SOGoStaticAuthenticator class]])
+              login = [(SOGoStaticAuthenticator *)authenticator username];
+            else
+              login = [[SOGoUserManager sharedUserManager]
+                        getExternalLoginForUID: [[authenticator userInContext: woContext] loginInDomain]
+                                      inDomain: [[authenticator userInContext: woContext] domain]];
 
-          password = [authenticator passwordInContext: woContext];
+            password = [authenticator passwordInContext: woContext];
+          }
+
 
           if (isSystemMessage 
               && ![[[SOGoUserManager sharedUserManager] getEmailForUID: [[authenticator userInContext: woContext] loginInDomain]] isEqualToString: sender] 
@@ -299,7 +329,9 @@
                                   @" (smtp) authentication failure"];
               [self errorWithFormat: @"Could not connect to the SMTP server with master credentials %@", smtpServer];
             }
-          } else {
+          } 
+          else
+          {
             if ([login length] == 0
               || [login isEqualToString: @"anonymous"]
               || ![client plainAuthenticateUser: login

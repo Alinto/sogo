@@ -2280,9 +2280,11 @@ static NSString    *userAgent      = nil;
   SOGoDomainDefaults *dd;
   NSURL *sourceIMAP4URL, *smtpUrl;
   NSException *error;
+  NSString *userId;
 
   dd = [[context activeUser] domainDefaults];
   messageForSent = nil;
+  userId = [[self->container mailAccountFolder] nameInContainer];
 
   // If we are encrypting mails, let's generate and
   // send them individually
@@ -2311,7 +2313,7 @@ static NSString    *userAgent      = nil;
 
           if (smtpUrl)
           {
-            error = [[SOGoMailer mailerWithDomainDefaultsAndSmtpUrl: dd smtpUrl: smtpUrl]
+            error = [[SOGoMailer mailerWithDomainDefaultsAndSmtpUrl: dd smtpUrl: smtpUrl userIdAccount: userId]
                         sendMailData: message
                         toRecipients: [NSArray arrayWithObject: recipient]
                               sender: [self sender]
@@ -2352,13 +2354,26 @@ static NSString    *userAgent      = nil;
 
       smtpUrl = [self smtp4URL];
 
-      error = [[SOGoMailer mailerWithDomainDefaultsAndSmtpUrl: dd smtpUrl: smtpUrl]
-                  sendMailData: message
-                  toRecipients: [self allBareRecipients]
-                        sender: [self sender]
+      if (smtpUrl)
+      {
+        error = [[SOGoMailer mailerWithDomainDefaultsAndSmtpUrl: dd smtpUrl: smtpUrl userIdAccount: userId]
+                    sendMailData: message
+                    toRecipients: [self allBareRecipients]
+                          sender: [self sender]
                 withAuthenticator: [self authenticatorInContext: context]
-                     inContext: context
-                 systemMessage: NO];
+                        inContext: context
+                    systemMessage: NO];
+      }
+      else
+      {
+        error = [[SOGoMailer mailerWithDomainDefaults: dd]
+              sendMailData: message
+              toRecipients: [self allBareRecipients]
+                    sender: [self sender]
+        withAuthenticator: [self authenticatorInContext: context]
+                inContext: context
+            systemMessage: NO];
+      }
     }
 
   if (!error && copyToSent)

@@ -40,11 +40,14 @@
   NSString *smtpMasterUserUsername;
   NSString *smtpMasterUserPassword;
   NSString *authenticationType;
+  NSString* userIdAccount;
 }
 
 + (SOGoMailer *) mailerWithDomainDefaults: (SOGoDomainDefaults *) dd;
 + (SOGoMailer *) mailerWithDomainDefaultsAndSmtpUrl: (SOGoDomainDefaults *) dd
-                                            smtpUrl: (NSURL *) smtpUrl;
+                                            smtpUrl: (NSURL *) smtpUrl
+                                            userIdAccount: (NSString *) userIdAccount;
+
 
 - (id) initWithDomainDefaults: (SOGoDomainDefaults *) dd;
 - (BOOL) requiresAuthentication;
