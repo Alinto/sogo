@@ -1186,8 +1186,8 @@ Defaults to `NO` when unset.
 (with read-only access). Note that if set to `NO`, autocompletion will
 not work for entries in this source and thus, freebusy lookups.
 
-!displayName (optional)
-!If set as an address book, the human identification name of the LDAP
+|displayName (optional)
+|If set as an address book, the human identification name of the LDAP
 repository
 
 |listRequiresDot (optional)

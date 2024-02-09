@@ -1079,6 +1079,8 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
                 if(exception)
                   [self errorWithFormat:@"Can't decrypt the password for auxiliary account %@: %@",
                               [account objectForKey: @"name"], [exception reason]];
+                else if(!password)
+                  [self errorWithFormat:@"No exception but decyrpted password is empty for account %@",[account objectForKey: @"name"]];
                 else
                   [account setObject: password forKey: @"password"];
               }

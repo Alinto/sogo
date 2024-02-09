@@ -511,7 +511,6 @@ static const NSString *kAES256GCMError = @"kAES256GCMError";
 
     // Clean up
     free(plaintext);
-
     return value;
 
   #else
@@ -653,7 +652,7 @@ static const NSString *kAES256GCMError = @"kAES256GCMError";
 
     int status = 0;
     EVP_DecryptUpdate(ctx, plaintext, &p_len, [data bytes], [data length]);
-    outputData = [NSData dataWithBytes: plaintext length: p_len];
+    outputData = [NSData dataWithBytes: (char *)plaintext length: p_len];
     EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, GMC_TAG_LEN, (void *)[tagData bytes]);
     rv = EVP_DecryptFinal_ex(ctx, plaintext + p_len, &f_len);
     p_len += f_len;
@@ -672,7 +671,14 @@ static const NSString *kAES256GCMError = @"kAES256GCMError";
     // Clean up
     free(plaintext);
 
-    return value;
+    if(value)
+      return value;
+    else
+    {
+      *ex = [NSException exceptionWithName: kAES128ECError reason:@"Could decrypt but value is null" userInfo: nil];
+      return nil;
+    }
+
 
   #else
     *ex = [NSException exceptionWithName:kAES256GCMError reason:@"Missing OpenSSL framework" userInfo: nil];
