@@ -660,7 +660,16 @@ static const NSString *kAES256GCMError = @"kAES256GCMError";
 
     if (rv > 0) {
       if (outputData) {
-        value = [NSString stringWithUTF8String: [outputData bytes]];
+        char lastByte;
+        [outputData getBytes:&lastByte range:NSMakeRange([outputData length]-1, 1)];
+        if (lastByte == 0x0) {
+          // string is null terminated
+          value = [NSString stringWithUTF8String: [outputData bytes]];
+        } else {
+          // string is not null terminated
+          value = [[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding];
+          [value autorelease];
+        }
       } else {
         *ex = [NSException exceptionWithName: kAES256GCMError reason:@"Decryption ok but output empty" userInfo: nil];
       }
