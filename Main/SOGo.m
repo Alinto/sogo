@@ -370,9 +370,11 @@ static BOOL debugLeaks;
   id userFolder;
   NSData *decodedLogin;
   NSString *login;
-  
-  login = [SOGoUser getDecryptedUsernameIfNeeded: _key];
-  
+  WORequest *request;
+
+  request = [_ctx request];
+  login = [SOGoUser getDecryptedUsernameIfNeeded: _key request: request];
+
   user = [SOGoUser userWithLogin: login roles: nil];
   if (user)
     userFolder = [$(@"SOGoUserFolder") objectWithName: login

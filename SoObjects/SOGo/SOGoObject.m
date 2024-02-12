@@ -980,7 +980,7 @@
     if ([[[path objectAtIndex: i] lowercaseString] isEqualToString:@"dav"]) {
       if ([path count] > (i + 1)) {
         [path replaceObjectAtIndex: (i +1)
-                        withObject: [SOGoUser getDecryptedUsernameIfNeeded: [path objectAtIndex: (i + 1)]]];
+                        withObject: [SOGoUser getDecryptedUsernameIfNeeded: [path objectAtIndex: (i + 1)]  request: [context request]]];
       }
     }
   }

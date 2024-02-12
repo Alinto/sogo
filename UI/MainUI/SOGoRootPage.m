@@ -344,7 +344,7 @@ static const NSString *kJwtKey = @"jwt";
                 forKey: @"expire"];
         [json setObject: [NSNumber numberWithInt: grace]
                 forKey: @"grace"];
-        [json setObject: [SOGoUser getEncryptedUsernameIfNeeded: username]
+        [json setObject: [SOGoUser getEncryptedUsernameIfNeeded: username request: request]
                 forKey: @"username"];
 
         response = [self responseWithStatus: 200
@@ -575,7 +575,7 @@ static const NSString *kJwtKey = @"jwt";
       response
 	= [self redirectToLocation: [NSString stringWithFormat: @"%@%@",
 					      oldLocation,
-                                              [[SOGoUser getEncryptedUsernameIfNeeded:login] stringByEscapingURL]]];
+                                              [[SOGoUser getEncryptedUsernameIfNeeded:login request: [context request]] stringByEscapingURL]]];
     }
   else
     {
@@ -791,7 +791,7 @@ static const NSString *kJwtKey = @"jwt";
           }
           
           response = [self responseWithStatus: 200 andJSONRepresentation: 
-                  [NSDictionary dictionaryWithObjectsAndKeys: [SOGoUser getEncryptedUsernameIfNeeded:username], @"username", nil]];
+                  [NSDictionary dictionaryWithObjectsAndKeys: [SOGoUser getEncryptedUsernameIfNeeded:username request: request], @"username", nil]];
 
           if (!passwordRecovery) {
             authCookie = [auth cookieWithUsername: username

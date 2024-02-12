@@ -87,7 +87,7 @@
 }
 
 - (NSString *) nameInContainer {
-  return [SOGoUser getEncryptedUsernameIfNeeded: [super nameInContainer]];
+  return [SOGoUser getEncryptedUsernameIfNeeded: [super nameInContainer] request: [context request]];
 }
 
 /* ownership */

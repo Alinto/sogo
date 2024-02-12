@@ -41,6 +41,7 @@
 @class NSString;
 
 @class WOContext;
+@class WORequest;
 
 @class SOGoAppointmentFolder;
 @class SOGoAppointmentFolders;
@@ -136,8 +137,8 @@
 - (SOGoContactFolder *) personalContactsFolderInContext: (WOContext *) context;
 
 /* Encryption */
-+ (NSString *)getEncryptedUsernameIfNeeded:(NSString *)username;
-+ (NSString *)getDecryptedUsernameIfNeeded:(NSString *)username;
++ (NSString *)getEncryptedUsernameIfNeeded:(NSString *)username request:(WORequest *)request;
++ (NSString *)getDecryptedUsernameIfNeeded:(NSString *)username request:(WORequest *)request;
 
 @end
 
