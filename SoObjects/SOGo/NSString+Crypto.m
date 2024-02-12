@@ -500,8 +500,17 @@ static const NSString *kAES256GCMError = @"kAES256GCMError";
     if (p_len > 0) {
       // Convert to NSString
       outputData = [NSData dataWithBytes: plaintext length: p_len];
-      if (outputData) {
-        value = [NSString stringWithUTF8String: [outputData bytes]];
+      if (outputData && [outputData length] > 0) {
+        char lastByte;
+        [outputData getBytes:&lastByte range:NSMakeRange([outputData length]-1, 1)];
+        if (lastByte == 0x0) {
+          // string is null terminated
+          value = [NSString stringWithUTF8String: [outputData bytes]];
+        } else {
+          // string is not null terminated
+          value = [[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding];
+          [value autorelease];
+        }
       } else {
         *ex = [NSException exceptionWithName: kAES128ECError reason:@"Empty data" userInfo: nil];
       }
@@ -659,7 +668,7 @@ static const NSString *kAES256GCMError = @"kAES256GCMError";
     EVP_CIPHER_CTX_free(ctx);
 
     if (rv > 0) {
-      if (outputData) {
+      if (outputData && [outputData length] > 0) {
         char lastByte;
         [outputData getBytes:&lastByte range:NSMakeRange([outputData length]-1, 1)];
         if (lastByte == 0x0) {

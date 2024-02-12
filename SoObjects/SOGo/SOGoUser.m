@@ -1302,7 +1302,7 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
   NSString *tmp, *cacheKey;
   SOGoCache *cache;
 
-  if (![[SOGoSystemDefaults sharedSystemDefaults] isURLEncryptionEnabled])
+  if (![[SOGoSystemDefaults sharedSystemDefaults] isURLEncryptionEnabled] || [username isEqualToString: @"anonymous"])
     return username;
 
   cache = [SOGoCache sharedCache];
@@ -1337,7 +1337,7 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
   NSString *tmp, *cacheKey;
   SOGoCache *cache;
 
-  if (![[SOGoSystemDefaults sharedSystemDefaults] isURLEncryptionEnabled])
+  if (![[SOGoSystemDefaults sharedSystemDefaults] isURLEncryptionEnabled] || [username isEqualToString: @"anonymous"])
     return username;
 
   cache = [SOGoCache sharedCache];
