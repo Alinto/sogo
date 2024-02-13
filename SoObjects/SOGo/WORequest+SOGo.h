@@ -37,6 +37,7 @@
 - (BOOL) isIPhoneAddressBookApp;
 - (BOOL) isAndroid;
 - (BOOL) isMacOSXCalendar;
+- (BOOL) isThunderbird;
 
 @end
 
