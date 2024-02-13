@@ -61,8 +61,8 @@
                   <md-input-container class="md-block">
                     <label><var:string label:value="Password"/></label>
                     <md-icon>vpn_key</md-icon>
-                    <input id="passwordField" type="password" ng-model="app.creds.password" ng-required="true"/>
-                    <md-icon id="password-visibility-icon" ng-click="app.changePasswordVisibility()">visibility</md-icon>
+                    <input id="passwordField" ng-model="app.creds.password" ng-required="true"/>
+                    <md-icon id="password-visibility-icon" ng-click="app.changePasswordVisibility('passwordField', 'password-visibility-icon')">visibility</md-icon>
                   </md-input-container>
                   
 
@@ -221,17 +221,20 @@
                     <md-input-container class="md-block" flex="flex" ng-if="!app.isInPasswordRecoveryMode()">
                         <label><var:string label:value="Current password"/>
                         </label>
-                        <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.oldPassword"/>
+                        <input type="password" id="oldPassword" sg-no-dirty-check="true" ng-model="app.passwords.oldPassword"/>
+                        <md-icon id="oldpassword-visibility-icon" ng-click="app.changePasswordVisibility('oldPassword', 'oldpassword-visibility-icon')">visibility</md-icon>
                       </md-input-container>
                       <md-input-container class="md-block" flex="flex">
                         <label><var:string label:value="New password"/>
                         </label>
-                        <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.newPassword"/>
+                        <input type="password" id="newPassword" sg-no-dirty-check="true" ng-model="app.passwords.newPassword"/>
+                        <md-icon id="newpassword-visibility-icon" ng-click="app.changePasswordVisibility('newPassword', 'newpassword-visibility-icon')">visibility</md-icon>
                       </md-input-container>
                       <md-input-container class="md-block" flex="flex">
                         <label><var:string label:value="Confirmation"/>
                         </label>
-                        <input type="password" name="newPasswordConfirmation" sg-no-dirty-check="true" ng-model="app.passwords.newPasswordConfirmation"/>
+                        <input type="password" id="newPasswordConfirmation" name="newPasswordConfirmation" sg-no-dirty-check="true" ng-model="app.passwords.newPasswordConfirmation"/>
+                        <md-icon id="newpasswordconfirmation-visibility-icon" ng-click="app.changePasswordVisibility('newPasswordConfirmation', 'newpasswordconfirmation-visibility-icon')">visibility</md-icon>
                         <div ng-messages="loginForm.newPasswordConfirmation.$error">
                           <div ng-message="newPasswordMismatch"><var:string label:value="Passwords don't match"/></div>
                         </div>

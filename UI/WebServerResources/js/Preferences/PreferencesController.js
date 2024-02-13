@@ -14,6 +14,7 @@
     this.$onInit = function() {
       this.preferences = Preferences;
       this.passwords = { newPassword: null, newPasswordConfirmation: null, oldPassword: null };
+      this.passwordsDisplayed = { oldPassword: false, newPassword: false, newPasswordConfirmation: false};
       this.timeZonesList = $window.timeZonesList;
       this.timeZonesSearchText = '';
       this.addressesSearchText = '';
@@ -743,6 +744,18 @@
         return recipient;
       else
         return null;
+    };
+
+    this.changePasswordVisibility = function (fieldId, iconId) {
+      this.passwordsDisplayed[fieldId] = !this.passwordsDisplayed[fieldId];
+      var field = document.getElementById(fieldId);
+      if (this.passwordsDisplayed[fieldId]) {
+        field.type = "text";
+        document.getElementById(iconId).innerHTML = 'visibility_off';
+      } else {
+        field.type = "password";
+        document.getElementById(iconId).innerHTML = 'visibility';
+      }
     };
 
   }

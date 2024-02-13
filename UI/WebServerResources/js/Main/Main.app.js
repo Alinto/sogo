@@ -29,7 +29,8 @@
       this.verificationCodePattern = '\\d{6}';
 
       // Password policy - change expired password
-      this.passwords = { newPassword: null, newPasswordConfirmation: null, oldPassword: null, visible: false };
+      this.passwords = { newPassword: null, newPasswordConfirmation: null, oldPassword: null };
+      this.passwordsDisplayed = { password: false, oldPassword: false, newPassword: false, newPasswordConfirmation: false };
 
       // Password recovery
       this.passwordRecovery = {
@@ -330,17 +331,17 @@
       }
     };
 
-    this.changePasswordVisibility = function () {
-      this.passwords.visible = !this.passwords.visible;
-      var field = document.getElementById("passwordField");
-      if (this.passwords.visible) {
+    this.changePasswordVisibility = function (fieldId, iconId) {
+      this.passwordsDisplayed[fieldId] = !this.passwordsDisplayed[fieldId];
+      var field = document.getElementById(fieldId);
+      if (this.passwordsDisplayed[fieldId]) {
         field.type = "text";
-        document.getElementById("password-visibility-icon").innerHTML = 'visibility_off';
+        document.getElementById(iconId).innerHTML = 'visibility_off';
       } else {
         field.type = "password";
-        document.getElementById("password-visibility-icon").innerHTML = 'visibility';
+        document.getElementById(iconId).innerHTML = 'visibility';
       }
-    }
+    };
   }
 
   angular
