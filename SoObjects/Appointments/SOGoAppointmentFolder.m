@@ -1028,7 +1028,9 @@ static Class iCalEventK = nil;
 {
   iCalEntityObject *component;
   iCalAlarm *alarm;
-  
+  NSAutoreleasePool *pool;
+
+  pool = [[NSAutoreleasePool alloc] init];
   if (![master recurrenceId])
     {
       component = [master copy];
@@ -1060,6 +1062,7 @@ static Class iCalEventK = nil;
     }
 
   RELEASE(component);
+  DESTROY(pool);
 }
 
 //
