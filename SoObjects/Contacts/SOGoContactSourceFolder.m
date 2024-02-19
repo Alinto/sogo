@@ -254,12 +254,11 @@
 
   // displayname || c_cn => fn
   data = [oldRecord objectForKey: @"displayname"];
-  if (!data)
+  if(!data || data == [NSNull null] || [data length] < 1)
     data = [oldRecord objectForKey: @"c_cn"];
-  if (data)
-    [newRecord setObject: data forKey: @"fn"];
-  else
+  if(!data || data == [NSNull null] || [data length] < 1)
     data = @"";
+  [newRecord setObject: data forKey: @"fn"];
   [newRecord setObject: data forKey: @"c_cn"];
 
   // sn => c_sn
