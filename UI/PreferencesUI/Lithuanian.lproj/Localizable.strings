@@ -205,7 +205,7 @@
 "Insert signature on reply" = "Parašas po atsakymu";
 "Insert signature on forward" = "Parašas po persiunčiamu laišku";
 "Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
-"Hide inline attachments" = "Hide inline attachments";
+"Hide attachements for inline images" = "Hide attachements for inline images";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Numatytasis teksto dydis";
@@ -231,8 +231,11 @@
 "Mail Account" = "Pašto paskyra";
 "New Mail Account" = "Nauja pašto paskyra";
 "Server Name" = "Serverio pavadinimas";
+"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
+"Smtp Auth" = "Smtp Auth";
 "Port" = "Prievadas";
 "Encryption" = "Šifravimas";
+"Outgoing Encryption" = "Outgoing Encryption";
 "None" = "Nė vienas";
 "User Name" = "Vartotojo vardas";
 "Full Name" = "Pilvas vardas";
