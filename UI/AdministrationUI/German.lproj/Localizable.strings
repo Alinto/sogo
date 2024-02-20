@@ -25,3 +25,7 @@
 "No resource" = "Keine Ressource";
 "Any Authenticated User" = "Alle authentifizierten Benutzer*innen";
 "Public Access" = "Öffentlicher Zugang";
+"Save" = "Speichern";
+"Clear" = "Leeren";
+"Message of the day" = "Nachricht des Tages";
+"Message of the day has been saved" = "Nachricht des Tages wurde gespeichert";

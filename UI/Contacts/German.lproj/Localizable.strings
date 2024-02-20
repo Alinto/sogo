@@ -121,7 +121,7 @@
 "mozillahomepostalcode" = "Postleitzahl";
 
 /* Search scope: home country field */
-"mozillahomecountryname" = "Wohnland";
+"mozillahomecountryname" = "Heimatland";
 
 /* Search scope: home web page field */
 "mozillahomeurl" = "Private Webseite";
