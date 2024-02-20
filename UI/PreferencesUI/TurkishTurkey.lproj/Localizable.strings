@@ -205,7 +205,7 @@
 "Insert signature on reply" = "Insert signature on reply";
 "Insert signature on forward" = "Insert signature on forward";
 "Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
-"Hide inline attachments" = "Hide inline attachments";
+"Hide attachements for inline images" = "Hide attachements for inline images";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Varsayılan yazı büyüklüğü";
@@ -231,8 +231,11 @@
 "Mail Account" = "E-posta Hesabı";
 "New Mail Account" = "Yeni E-posta Hesabı";
 "Server Name" = "Sunucu Adı";
+"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
+"Smtp Auth" = "Smtp Auth";
 "Port" = "Port";
 "Encryption" = "Şifreleme";
+"Outgoing Encryption" = "Outgoing Encryption";
 "None" = "Hiç biri";
 "User Name" = "Kullanıcı Adı";
 "Full Name" = "Ad Soyad";
