@@ -205,7 +205,7 @@
 "Insert signature on reply" = "Insert signature on reply";
 "Insert signature on forward" = "Insert signature on forward";
 "Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
-"Hide inline attachments" = "Hide inline attachments";
+"Hide attachements for inline images" = "Hide attachements for inline images";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "ברירת מחדל גודל גופן";
@@ -231,8 +231,11 @@
 "Mail Account" = "חשבון מייל";
 "New Mail Account" = "חשבון מייל חדש";
 "Server Name" = "שם שרת";
+"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
+"Smtp Auth" = "Smtp Auth";
 "Port" = "יציאה";
 "Encryption" = "הצפנה";
+"Outgoing Encryption" = "Outgoing Encryption";
 "None" = "ללא";
 "User Name" = "שם משתמש";
 "Full Name" = "שם מלא";
