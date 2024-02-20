@@ -205,7 +205,7 @@
 "Insert signature on reply" = "Insert signature on reply";
 "Insert signature on forward" = "Insert signature on forward";
 "Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
-"Hide inline attachments" = "Hide inline attachments";
+"Hide attachements for inline images" = "Hide attachements for inline images";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Default font size";
@@ -231,8 +231,11 @@
 "Mail Account" = "Mail Account";
 "New Mail Account" = "新的電子郵件帳號";
 "Server Name" = "伺服器名稱";
+"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
+"Smtp Auth" = "Smtp Auth";
 "Port" = "埠號";
 "Encryption" = "加密";
+"Outgoing Encryption" = "Outgoing Encryption";
 "None" = "無";
 "User Name" = "使用者名稱";
 "Full Name" = "全名";
