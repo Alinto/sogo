@@ -205,7 +205,7 @@
 "Insert signature on reply" = "Insert signature on reply";
 "Insert signature on forward" = "Insert signature on forward";
 "Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
-"Hide inline attachments" = "Hide inline attachments";
+"Hide attachements for inline images" = "Hide attachements for inline images";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Подразуевана величина фонта";
@@ -231,8 +231,11 @@
 "Mail Account" = "Поштански налог";
 "New Mail Account" = "Нови поштански налог";
 "Server Name" = "Име сервера";
+"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
+"Smtp Auth" = "Smtp Auth";
 "Port" = "Порт";
 "Encryption" = "Енкрипција";
+"Outgoing Encryption" = "Outgoing Encryption";
 "None" = "Нема";
 "User Name" = "Корисничко име";
 "Full Name" = "Име и презиме";
