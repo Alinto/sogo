@@ -205,7 +205,7 @@
 "Insert signature on reply" = "Insert signature on reply";
 "Insert signature on forward" = "Insert signature on forward";
 "Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
-"Hide inline attachments" = "Hide inline attachments";
+"Hide attachements for inline images" = "Hide attachements for inline images";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Zadana veličina slova";
@@ -231,8 +231,11 @@
 "Mail Account" = "Račun e pošte";
 "New Mail Account" = "Novi račun e pošte";
 "Server Name" = "Ime poslužitelja";
+"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
+"Smtp Auth" = "Smtp Auth";
 "Port" = "Ulaz";
 "Encryption" = "Enkripcija";
+"Outgoing Encryption" = "Outgoing Encryption";
 "None" = "Ništa";
 "User Name" = "Korisničko ime";
 "Full Name" = "Puno ime";
