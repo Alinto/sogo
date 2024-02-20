@@ -205,7 +205,7 @@
 "Insert signature on reply" = "Indsæt signatur på svar";
 "Insert signature on forward" = "Indsæt signatur på videresend";
 "Show recipients or sender full email in mailboxes" = "Vis modtagere eller afsender fulde e-mail i postkasserne";
-"Hide inline attachments" = "Skjul indbyggede vedhæftede filer";
+"Hide attachements for inline images" = "Hide attachements for inline images";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Standard skriftstørrelse";
@@ -231,8 +231,11 @@
 "Mail Account" = "E-mail konto";
 "New Mail Account" = "Ny mail-konto";
 "Server Name" = "Server Navn";
+"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
+"Smtp Auth" = "Smtp Auth";
 "Port" = "Port";
 "Encryption" = "Krypteret";
+"Outgoing Encryption" = "Outgoing Encryption";
 "None" = "Ingen";
 "User Name" = "Brugernavn";
 "Full Name" = "Fulde navn";
