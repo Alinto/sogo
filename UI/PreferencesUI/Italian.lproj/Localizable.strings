@@ -205,7 +205,7 @@
 "Insert signature on reply" = "Insert signature on reply";
 "Insert signature on forward" = "Insert signature on forward";
 "Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
-"Hide inline attachments" = "Hide inline attachments";
+"Hide attachements for inline images" = "Hide attachements for inline images";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Grandezza carattere predefinita";
@@ -231,8 +231,11 @@
 "Mail Account" = "Account di Posta";
 "New Mail Account" = "Nuovo Account di Posta";
 "Server Name" = "Nome del server";
+"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
+"Smtp Auth" = "Smtp Auth";
 "Port" = "Porta";
 "Encryption" = "Crittografia";
+"Outgoing Encryption" = "Outgoing Encryption";
 "None" = "Nessuno";
 "User Name" = "Nome Utente";
 "Full Name" = "Nome completo";
