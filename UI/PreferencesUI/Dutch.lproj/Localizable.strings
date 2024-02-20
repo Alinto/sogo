@@ -205,7 +205,7 @@
 "Insert signature on reply" = "Insert signature on reply";
 "Insert signature on forward" = "Insert signature on forward";
 "Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
-"Hide inline attachments" = "Hide inline attachments";
+"Hide attachements for inline images" = "Hide attachements for inline images";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Standaard lettergrootte";
@@ -231,8 +231,11 @@
 "Mail Account" = "Mailaccount";
 "New Mail Account" = "Nieuw mailaccount";
 "Server Name" = "Servernaam";
+"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
+"Smtp Auth" = "Smtp Auth";
 "Port" = "Poort";
 "Encryption" = "Encryptie";
+"Outgoing Encryption" = "Outgoing Encryption";
 "None" = "Geen";
 "User Name" = "Gebruikersnaam";
 "Full Name" = "Naam";
