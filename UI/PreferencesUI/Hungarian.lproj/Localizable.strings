@@ -205,7 +205,7 @@
 "Insert signature on reply" = "Aláírás beszúrása válasz esetén";
 "Insert signature on forward" = "Aláírás beszúrása továbbítás esetén";
 "Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
-"Hide inline attachments" = "Hide inline attachments";
+"Hide attachements for inline images" = "Hide attachements for inline images";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Alapértelmezett betűméret";
@@ -231,8 +231,11 @@
 "Mail Account" = "Levelezési fiók";
 "New Mail Account" = "Új email fiók";
 "Server Name" = "Kiszolgáló neve";
+"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
+"Smtp Auth" = "Smtp Auth";
 "Port" = "Port";
 "Encryption" = "Titkosítás";
+"Outgoing Encryption" = "Outgoing Encryption";
 "None" = "Nincs";
 "User Name" = "Felhasználónév";
 "Full Name" = "Teljes név";
