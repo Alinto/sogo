@@ -205,7 +205,7 @@
 "Insert signature on reply" = "Insert signature on reply";
 "Insert signature on forward" = "Insert signature on forward";
 "Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
-"Hide inline attachments" = "Hide inline attachments";
+"Hide attachements for inline images" = "Hide attachements for inline images";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Noklusējuma fonta lielums";
@@ -231,8 +231,11 @@
 "Mail Account" = "E-pasta konts";
 "New Mail Account" = "Jauns e-pasta konts";
 "Server Name" = "Servera nosaukums";
+"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
+"Smtp Auth" = "Smtp Auth";
 "Port" = "Ports";
 "Encryption" = "Šifrēšana";
+"Outgoing Encryption" = "Outgoing Encryption";
 "None" = "Neviens";
 "User Name" = "Lietotāja vārds";
 "Full Name" = "Pilns vārds";
