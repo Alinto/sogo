@@ -1,19 +1,19 @@
 /* toolbar */
-"Save and Close" = "Gravar e Fechar";
+"Save and Close" = "Guardar e Fechar";
 "Close" = "Fechar";
-"Preferences saved" = "Preferências gravadas";
+"Preferences saved" = "Preferências guardadas";
 
 /* Unsaved changes confirmation dialog title */
-"Unsaved Changes" = "Alterações por gravar";
+"Unsaved Changes" = "Alterações por guardar";
 
 /* Unsaved changes confirmation dialog text */
-"Do you want to save your changes made to the configuration?" = "Deseja gravar as alterações feitas à configuração?";
+"Do you want to save your changes made to the configuration?" = "Deseja guardar as alterações feitas à configuração?";
 
 /* Unsaved changes confirmation dialog button */
 "Save" = "Guardar";
 
 /* Unsaved changes confirmation dialog button */
-"Don't Save" = "Sair sem gravar";
+"Don't Save" = "Sair sem guardar";
 
 /* tabs */
 "General" = "Geral";
@@ -205,7 +205,7 @@
 "Insert signature on reply" = "Inserir assinatura nas respostas";
 "Insert signature on forward" = "Inserir assinatura no reencaminhamento";
 "Show recipients or sender full email in mailboxes" = "Mostrar destinatários ou endereço completo do remetente nas caixas de correio";
-"Hide inline attachments" = "Esconder anexos em linha";
+"Hide attachements for inline images" = "Ocultar anexos para imagens em linha";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Tamanho da letra por defeito";
@@ -213,7 +213,7 @@
 "Display remote inline images" = "Exibir imagens remotas";
 "displayremoteinlineimages_never" = "Nunca";
 "displayremoteinlineimages_always" = "Sempre";
-"Auto save every" = "Gravar automaticamente a cada";
+"Auto save every" = "Guardar automaticamente a cada";
 "minutes" = "minutos";
 "Automatically mark messages as read" = "Marcar automaticamente as mensagens como lidas";
 "Immediately on display" = "Imediatamente ao visualizar";
@@ -231,8 +231,11 @@
 "Mail Account" = "Conta de Email";
 "New Mail Account" = "Nova conta de email";
 "Server Name" = "Nome do Servidor";
+"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
+"Smtp Auth" = "Smtp Auth";
 "Port" = "Porta";
 "Encryption" = "Encriptação";
+"Outgoing Encryption" = "Outgoing Encryption";
 "None" = "Nenhum";
 "User Name" = "Nome do Utilizador";
 "Full Name" = "Nome Completo";

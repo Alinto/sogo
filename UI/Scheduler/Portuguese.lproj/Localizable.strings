@@ -114,14 +114,14 @@
 "edit" = "Editar";
 "delete" = "Apagar";
 "proposal" = "Proposta";
-"Save and Close" = "Gravar e Fechar";
+"Save and Close" = "Guardar e Fechar";
 "Close" = "Fechar";
 "Invite Attendees" = "Convidar Participantes";
 "Attach" = "Anexar";
 "Update" = "Atualizar";
 "Cancel" = "Cancelar";
 "Reset" = "Repor";
-"Save" = "Gravar";
+"Save" = "Guardar";
 "show_rejected_apts" = "Exibir compromissos rejeitados";
 "hide_rejected_apts" = "Ocultar compromissos rejeitados";
 
@@ -631,7 +631,7 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "Rename" = "Renomear";
 "Import Calendar" = "Importar Calendário";
 "Select an ICS file." = "Selecionar um ficheiro ICS";
-"You have modified data unsaved. Do you want to close popup and loose data ?" = "Tem dados modificados por gravar. Deseja fechar a janela e perder os dados?";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "Tem dados modificados por guardar. Deseja fechar a janela e perder os dados?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Subscrição ao calendário realizada com sucesso";

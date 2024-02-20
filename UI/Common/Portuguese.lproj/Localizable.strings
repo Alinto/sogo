@@ -1,7 +1,7 @@
 /* this file is in UTF-8 format! */
 
 /* toolbars */
-"Save" = "Gravar";
+"Save" = "Guardar";
 "Close" = "Fechar";
 "Edit User Rights" = "Editar direitos do utilizador";
 "Home" = "Início";
@@ -173,7 +173,7 @@
 "Toggle range of items" = "Alternar gama de itens";
 
 /* Question mark shows list of hotkeys */
-"Show or hide this help" = "Mostrar ou ocultar a ajuda";
+"Show or hide this help" = "Mostrar ou ocultar esta ajuda";
 
 /* Space key */
 "key_space" = "space";

@@ -19,7 +19,7 @@
 "Send" = "Enviar";
 "Contacts" = "Contactos";
 "Attach" = "Anexar";
-"Save" = "Gravar";
+"Save" = "Guardar";
 "Options" = "Opções";
 "Close" = "Fechar";
 "Size" = "Tamanho";
@@ -28,7 +28,7 @@
 "Send this message now" = "Enviar esta mensagem agora";
 "Select a recipient from an Address Book" = "Selecionar um destinatário a partir de um Livro de Endereços";
 "Include an attachment" = "Incluir um anexo";
-"Save this message" = "Gravar esta mensagem";
+"Save this message" = "Guardar esta mensagem";
 "Get new messages" = "Receber novas mensagens";
 "Create a new message" = "Criar uma nova mensagem";
 "Go to address book" = "Ir para livro de endereços";
@@ -100,7 +100,7 @@
 "Expunge this folder" = "Expurgar esta pasta";
 "Export This Folder" = "Exportar esta pasta";
 "Modify the acl of this folder" = "Modificar as permissões desta pasta";
-"Saved Messages.zip" = "Mensagens Gravadas.zip";
+"Saved Messages.zip" = "Mensagens.zip guardado";
 "Update" = "Actualizar";
 "Cancel" = "Cancelar";
 
@@ -119,7 +119,7 @@
 "Attach Web Page..." = "Anexar Página Web...";
 "file" = "ficheiro";
 "files" = "ficheiros";
-"Save all" = "Gravar tudo";
+"Save all" = "Guardar tudo";
 "to"            = "Para";
 "cc"            = "Cc";
 "bcc"           = "Bcc";
@@ -201,8 +201,8 @@
 "Create Filter From Message..." = "Criar Filtro a partir da Mensagem...";
 
 /* Image Popup menu */
-"Save Image" = "Gravar Imagem";
-"Save Attachment" = "Gravar Anexo";
+"Save Image" = "Guardar Imagem";
+"Save Attachment" = "Guardar Anexo";
 
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Abrir numa Nova Janela";
@@ -236,7 +236,7 @@
 "Copy To" = "Copiar Para";
 "Label" = "Etiqueta";
 "Mark" = "Marcar";
-"Save As..." = "Gravar Como...";
+"Save As..." = "Guardar Como...";
 "Print Preview" = "Pré-visualizar Impressão";
 "View Message Source" = "Ver Código-Fonte da Mensagem";
 
@@ -268,7 +268,7 @@
 "and %{0} more..." = "e %{0} mais...";
 
 /* Button label to hide extended list of recipients */
-"Hide" = "Esconder";
+"Hide" = "Ocultar";
 
 /* Number of selected messages in list */
 "selected" = "selecionadas";
@@ -455,7 +455,7 @@
 "Expanded" = "Expandido";
 "Add a Criteria" = "Adicionar Critério";
 "More search options" = "Mais opções de pesquisa";
-"Your email has been saved" = "O seu email foi gravado";
+"Your email has been saved" = "O seu email foi guardado";
 "Your email has been sent" = "O seu email foi enviado";
 "Folder compacted" = "Pasta compactada";
 
