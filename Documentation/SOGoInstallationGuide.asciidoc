@@ -445,25 +445,6 @@ else, leave that value empty.
 
 Defaults to `NO` when unset.
 
-|S |SOGoSecretType
-|To be used with _SOGoSecretValue_. Parameter used to define what
-type is the secret: 'plain' to directly put the secret in _SOGoSecretValue_, 'env'
-to put the name of a environment variable in  _SOGoSecretValue_
-'none' to not use any secret.
-For now, it is only used to encrypt/decrypt auxiliary account's password. the secret must be
-128 bits long i.e. 32 utf8 chars string.
-
-Defaults to 'none' when unset
-
-|S |SOGoSecretValue
-|Parameter used whenever SOGo need a secret to encrypt/decrypt. For now,
-only for password of auxiliary accounts. If _SOGoSecretType_ is 'plain',
-directly put the secret here. if _SOGoSecretType_ is 'env', put the name
-of the environment variable here. Must be set with _SOGoSecretType_.
-If _SOGoSecretType_ is not 'none', sogo won't start is the value is unfetchable or incorrect
-
-There is no default value
-
 |S |SOGoEncryptionKey
 |Parameter used to define a key to encrypt the passwords of remote Web
 calendars when _SOGoTrustProxyAuthentication_ is enabled.
@@ -861,6 +842,104 @@ specified as an array of dictionaries.
 |Number of entries displayed when `SOGoGlobalAddressBookFirstEntries` is enabled. Default value is `100`.
 
 |=======================================================================
+
+
+[[Secret-for-sensitive-data]]
+
+Secret for sensitive data
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+_Since 5.10_
+
+SOGo can store sensitive data in its database. In default behavior, SOGo will not do anything and store them in plain text.
+Starting with 5.10, you can now set a secret for SOGo to encrypt this data in database.
+The encryption method is AES-GCM with a 256 bits key.
+
+Two parameters in your sogo.conf are needed to do that
+
+[cols="^4,46,50a"]
+|=======================================================================
+
+|S |SOGoSecretType
+|Parameter  to define what kind is the secret: 'plain' to directly put the secret in _SOGoSecretValue_, 'env'
+to put the name of a environment variable in  _SOGoSecretValue_ or 'none' to not use any secret.
+For now, it is only used to encrypt/decrypt auxiliary account's password. the secret must be
+256 bits long i.e. 32 utf8 chars string.
+
+Defaults to 'none' when unset
+
+|S |SOGoSecretValue
+|Parameter used whenever SOGo need a secret to encrypt/decrypt. For now,
+only for password of auxiliary accounts. If _SOGoSecretType_ is 'plain',
+directly put the secret here. if _SOGoSecretType_ is 'env', put the name
+of the environment variable here. Must be set with _SOGoSecretType_.
+If _SOGoSecretType_ is not 'none', sogo won't start is the value is unfetchable or incorrect
+
+There is no default value
+
+|=======================================================================
+
+If you want to use an environment variable, set:
+----
+SOGoSecretType = "env";
+SOGoSecretValue = "SOGO_SECRET";
+----
+SOGO_SECRET must be an environment variable containing a 32 chars (256 bits) string. Note that SOGO_SECRET must be accessible
+to the unix user 'sogo'. If you use sogo with systemd or init.d, be sure your process have access to that environment variable.
+
+If you want to directly put the secret in your sogo.conf:
+----
+SOGoSecretType = "plain";
+SOGoSecretValue = "secret_is_a_32_characters_string";
+----
+
+*Note that if _SOGoSecretType_ is set to something different than 'none', sogo will check the secret and won't start if it is not ok.
+The reason will be given in the log (size, can't found the env...)*
+
+If you want to use a secret for the first time or change the secret. There is a a _sogo-tool_ command to encrypt all
+your sensitive data. Check the doc of _<<sogo-tool-update-secret,sogo-tool update-secret>>_
+
+**How to use a secret for the first time?**
+
+- Stop sogo
+- Modify your sogo.conf to add your secret
+- Use the sogo-tool command to encrypt all sensitive data that are already in your database
+----
+ sogo-tool update-secret -n myNewSecret
+----
+- Restart sogo
+
+**How to change the value of the secret?**
+
+- Stop sogo
+- Modify your sogo.conf to modify your secret
+- Use the sogo-tool command to encrypt all sensitive data with the new secret, you will need to pass your current secret too.
+----
+ sogo-tool update-secret -n myNewSecret -p myCurrentSecret
+----
+- Restart sogo
+
+**I can't stop sogo in my environement**
+
+In that case, simply modify the sogo.conf and use the sogo-tool. If you're unluncky, a user would have made
+a request that will encrypt its data without the correct secret at the same time you run sogo-tool.
+If that's the case, the wrong behavior and their solution are listed below.
+
+**Unexpected behavior**
+
+Be aware that it must have a synchronisation between the secret in your sogo.conf and the sensitive data in your database. Meaning if the
+data is not encrypted with the correct secret, some wrong behavior can happens. There are listed here as well as their solution.
+
+As for now, it only affects the IMAP's passwords of auxiliary accounts and here the unexpected behavior in case of mismatch of secret are:
+
+- *The auxiliary account of the user is correctly set but it can't see any mail folders*: The user will have to go to preferences -> mail -> imap accounts.
+Then it simply has to edit its account, put its password again and save the preferences. The password will be correctly encrypted then.
+- *the user has errors and blank pages*: Should not happen, please open a ticket. But, if it does, do this to unstuck the user:
+----
+sogo-tool user-preferences unset default <user> AuxiliaryMailAccounts
+----
+user being the full mail address or just the username if domainless. After that, the user will have to set its auxiliary accounts again.
+
 
 Authentication using LDAP
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -3708,6 +3787,7 @@ Two contacts are considered duplicates when they have the same mails or display 
 are duplicates, each one will get a score. The ones with the highest score will be kept and the others
 will be discarded. If two records have the same score, the first one to have reach it will be kept.
 The scores are distributed as such:
+
 * Record which has been the last modified: +1
 * Record has the most content: +2
 * Record has the most quick field set: +3
@@ -3784,6 +3864,37 @@ will write the sieve script accordingly.
 Example:
 ----
  sogo-tool update-autoreply -p /var/sogo/cred
+----
+
+
+[[sogo-tool-update-secret]]
+
+
+sogo-tool update-secret
+~~~~~~~~~~~~~~~~~~~~~~~
+
+_New in 5.10_
+
+Please read this section before <<Secret-for-sensitive-data, Secret for sensitive data>>
+
+This command will encrypt/decrypt sensitive data in your database. For now it only affects the IMAP's passwords of auxiliary account.
+A secret is a 32 chars utf-8 string (256 bits). Be careful, the secret use here must match the secret of _SOGoSecretValue_.
+
+ sogo-tool update-secret -n newSecret -o oldSecret
+
+If your data are still plain and you want to encrypt them, use:
+----
+ sogo-tool update-secret -n myNewSecret
+----
+
+If your data are already encrypted with 'oldSecret' but you want to encrypt them with a new secret value 'myNewSecret':
+----
+ sogo-tool update-secret -n myNewSecret -o oldSecret
+----
+
+If your data are already encrypted with 'oldSecret' but you want to decrypt them to plain data:
+----
+ sogo-tool update-secret -o oldSecret
 ----
 
 sogo-tool user-preferences
