@@ -204,8 +204,8 @@
 "Insert signature on new message" = "Вставляти підпис у нове повідомлення";
 "Insert signature on reply" = "Вставляти підпис у відповідь";
 "Insert signature on forward" = "Вставляти підпис при переадресації";
-"Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
-"Hide inline attachments" = "Hide inline attachments";
+"Show recipients or sender full email in mailboxes" = "Показувати повну електронну пошту одержувачів або відправника в поштових скриньках";
+"Hide attachements for inline images" = "Hide attachements for inline images";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Розмір шрифта за замовчуванням";
@@ -231,8 +231,11 @@
 "Mail Account" = "Обліковий запис";
 "New Mail Account" = "Новий обліковий запис";
 "Server Name" = "Ім’я сервера";
+"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
+"Smtp Auth" = "Smtp Auth";
 "Port" = "Порт";
 "Encryption" = "Шифрування";
+"Outgoing Encryption" = "Outgoing Encryption";
 "None" = "Відсутнє";
 "User Name" = "Ім’я користувача";
 "Full Name" = "Повне ім’я";
@@ -509,7 +512,7 @@
 "Let SOGo handle everything" = "Надати SOGo можливість управляти всім";
 
 /* Password Recovery */
-"Password recovery mode" = "Password recovery mode";
+"Password recovery mode" = "Режим відновлення пароля";
 "Question" = "Питання";
 "Secondary e-mail" = "Додаткова електронна пошта";
 "Answer" = "Відповідь";
