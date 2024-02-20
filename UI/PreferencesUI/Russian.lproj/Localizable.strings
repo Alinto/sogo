@@ -204,8 +204,8 @@
 "Insert signature on new message" = "Вставить подпись в новое сообщение";
 "Insert signature on reply" = "Вставить подпись в ответе";
 "Insert signature on forward" = "Вставить подпись при пересылке";
-"Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
-"Hide inline attachments" = "Hide inline attachments";
+"Show recipients or sender full email in mailboxes" = "Показывать полную электронную почту получателей или отправителя в почтовых ящиках";
+"Hide attachements for inline images" = "Hide attachements for inline images";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Размер шрифта по умолчанию";
@@ -231,8 +231,11 @@
 "Mail Account" = "Учетная запись почты";
 "New Mail Account" = "Новая учетная запись почты";
 "Server Name" = "Имя сервера";
+"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
+"Smtp Auth" = "Smtp Auth";
 "Port" = "Порт";
 "Encryption" = "Шифрование";
+"Outgoing Encryption" = "Outgoing Encryption";
 "None" = "Отсутствует";
 "User Name" = "Имя пользователя";
 "Full Name" = "Полное имя";
@@ -509,7 +512,7 @@
 "Let SOGo handle everything" = "Предоставить SOGo возможность управлять всем";
 
 /* Password Recovery */
-"Password recovery mode" = "Password recovery mode";
+"Password recovery mode" = "Режим восстановления пароля";
 "Question" = "Вопрос";
 "Secondary e-mail" = "Дополнительный адрес электронной почты";
 "Answer" = "Ответ";
