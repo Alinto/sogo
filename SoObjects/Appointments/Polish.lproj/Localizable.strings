@@ -35,13 +35,13 @@ vtodo_class2 = "(Zadanie poufne)";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Zaproszenie na wydarzenie: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(wysłane przez %{SentBy}) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}zaprosił Cię na %{Summary}.⏎ ⏎ Początek: %{StartDate}⏎ Koniec: %{EndDate}⏎ Opis: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}zaprosił Cię na %{Summary}.\n \n Początek: %{StartDate}\n Koniec: %{EndDate}\n Opis: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}zaprosił cię na %{Summary}.\n\nPoczątek: %{StartDate} o %{StartTime}\nKoniec: %{EndDate} o %{EndTime}\nOpis: %{Description}";
 
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Wydarzenie anulowane: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText} anulował(a) to wydarzenie: %{Summary}.⏎⏎ Początek: %{StartDate}⏎ Koniec: %{EndDate}⏎ Opis: %{Description}";
+= "%{Organizer} %{SentByText} anulował(a) to wydarzenie: %{Summary}.\n\n Początek: %{StartDate}\n Koniec: %{EndDate}\n Opis: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}anulował(a) to wydarzenie: %{Summary}.\n\nPoczątek: %{StartDate} o %{StartTime}\nKoniec: %{EndDate} o %{EndTime}\nOpis: %{Description}";
 
