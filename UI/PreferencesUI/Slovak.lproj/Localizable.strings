@@ -205,7 +205,7 @@
 "Insert signature on reply" = "Insert signature on reply";
 "Insert signature on forward" = "Insert signature on forward";
 "Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
-"Hide inline attachments" = "Hide inline attachments";
+"Hide attachements for inline images" = "Hide attachements for inline images";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Predvolená veľkosť písma";
@@ -231,8 +231,11 @@
 "Mail Account" = "Mailový účet";
 "New Mail Account" = "Nový mailový účet";
 "Server Name" = "Meno servera";
+"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
+"Smtp Auth" = "Smtp Auth";
 "Port" = "Port";
 "Encryption" = "Šifrovanie";
+"Outgoing Encryption" = "Outgoing Encryption";
 "None" = "Žiadne";
 "User Name" = "Používateľské meno";
 "Full Name" = "Celé meno";
