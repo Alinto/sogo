@@ -205,7 +205,7 @@
 "Insert signature on reply" = "Insert signature on reply";
 "Insert signature on forward" = "Insert signature on forward";
 "Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
-"Hide inline attachments" = "Hide inline attachments";
+"Hide attachements for inline images" = "Hide attachements for inline images";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Oletuskirjasinkoko";
@@ -231,8 +231,11 @@
 "Mail Account" = "Sähköpostitili";
 "New Mail Account" = "Uusi sähköpostitili";
 "Server Name" = "Palvelinnimi";
+"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
+"Smtp Auth" = "Smtp Auth";
 "Port" = "Portti";
 "Encryption" = "Salaus";
+"Outgoing Encryption" = "Outgoing Encryption";
 "None" = "Ei mitään";
 "User Name" = "Käyttäjätunnus";
 "Full Name" = "Koko nimi";
