@@ -79,6 +79,7 @@ _xmlCharsetForCharset (NSString *charset)
     { @"iso-2022-jp", XML_CHAR_ENCODING_2022_JP},
 //     { @"iso-2022-jp", XML_CHAR_ENCODING_SHIFT_JIS},
     { @"koi8-r", XML_CHAR_ENCODING_ERROR},       // unsupported, will trigger koi8-r -> utf8 conversion
+    { @"koi8-u", XML_CHAR_ENCODING_ERROR},       // unsupported, will trigger koi8-u -> utf8 conversion
     { @"windows-1250", XML_CHAR_ENCODING_ERROR}, // unsupported, will trigger windows-1250 -> utf8 conversion
     { @"windows-1251", XML_CHAR_ENCODING_ERROR}, // unsupported, will trigger windows-1251 -> utf8 conversion
     { @"windows-1255", XML_CHAR_ENCODING_ERROR}, // unsupported, will trigger windows-1255 -> utf8 conversion
