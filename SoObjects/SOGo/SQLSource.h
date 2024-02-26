@@ -52,6 +52,7 @@
   NSString *_multipleBookingsField;
 
   BOOL _listRequiresDot;
+  int _globalAddressBookFirstEntriesCount;
 
   NSDictionary *_modulesConstraints;
 }

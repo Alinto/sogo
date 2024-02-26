@@ -127,6 +127,11 @@
   return [source listRequiresDot];
 }
 
+- (BOOL) globalAddressBookFirstEntriesCount
+{
+  return [source globalAddressBookFirstEntriesCount];
+}
+
 - (NSString *) groupDavResourceType
 {
   return @"vcard-collection";
@@ -433,45 +438,33 @@
 {
   NSArray *records, *result;
   EOSortOrdering *ordering;
-  BOOL processed;
 
   result = nil;
-  processed = NO;
 
-  [source setListRequiresDot: NO];
-  if ( ![source listRequiresDot])
-    {
-      if ([filter length] > 0) {
-        records = [source fetchContactsMatching: filter
-                                 withCriteria: criteria
-                                     inDomain: domain];
-        processed = YES;
-      } else if ([[SOGoSystemDefaults sharedSystemDefaults] globalAddressBookFirstEntriesEnabled]) {
-        records = [source fetchContactsMatching: filter
-                                 withCriteria: criteria
-                                     inDomain: domain
-                                        limit: [[SOGoSystemDefaults sharedSystemDefaults] globalAddressBookFirstEntriesCount]];
-        processed = YES;
-      }
+  if (![source listRequiresDot]) {
+    records = [source fetchContactsMatching: filter
+                              withCriteria: criteria
+                                  inDomain: domain
+                                    limit: [source globalAddressBookFirstEntriesCount]];
+  } else {
+    records = [source fetchContactsMatching: filter
+                              withCriteria: criteria
+                                  inDomain: domain];
 
-      if (processed) {
-        [childRecords setObjects: records
-                        forKeys: [records objectsForKey: @"c_name"
-                                          notFoundMarker: nil]];
-        records = [self _flattenedRecords: records];
-        ordering
-          = [EOSortOrdering sortOrderingWithKey: sortKey
-                            selector: ((sortOrdering == NSOrderedDescending)
-                                      ? EOCompareCaseInsensitiveDescending
-                                      : EOCompareCaseInsensitiveAscending)];
-        result
-          = [records sortedArrayUsingKeyOrderArray:
-                      [NSArray arrayWithObject: ordering]];
-      }
-      
-      
-    }
+  }
 
+  [childRecords setObjects: records
+                  forKeys: [records objectsForKey: @"c_name"
+                                    notFoundMarker: nil]];
+  records = [self _flattenedRecords: records];
+  ordering
+    = [EOSortOrdering sortOrderingWithKey: sortKey
+                      selector: ((sortOrdering == NSOrderedDescending)
+                                ? EOCompareCaseInsensitiveDescending
+                                : EOCompareCaseInsensitiveAscending)];
+  result
+    = [records sortedArrayUsingKeyOrderArray:
+                [NSArray arrayWithObject: ordering]];
   return result;
 }
 

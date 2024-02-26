@@ -64,6 +64,7 @@
   NSArray *_bindFields;
 
   BOOL _listRequiresDot;
+  int _globalAddressBookFirstEntriesCount;
 
   NSString *_domain;
   NSString *_contactInfoAttribute;

@@ -49,6 +49,8 @@
 /* requires a "." to obtain the full list of contacts */
 - (void) setListRequiresDot: (BOOL) aBool;
 - (BOOL) listRequiresDot;
+- (void) setGlobalAddressBookFirstEntriesCount: (int)value;
+- (int) globalAddressBookFirstEntriesCount;
 
 - (BOOL) checkLogin: (NSString *) _login
 	   password: (NSString *) _pwd

@@ -106,6 +106,7 @@ static Class NSStringK;
       _filter = nil;
       _userPasswordAlgorithm = nil;
       _listRequiresDot = YES;
+      _globalAddressBookFirstEntriesCount = -1;
 
       _passwordPolicy = NO;
       _updateSambaNTLMPasswords = NO;
@@ -200,10 +201,15 @@ static Class NSStringK;
             andMultipleBookingsField: [udSource objectForKey: @"MultipleBookingsFieldName"]];
 
       dotValue = [udSource objectForKey: @"listRequiresDot"];
-      if (dotValue)
+      if (dotValue) {
         [self setListRequiresDot: [dotValue boolValue]];
+        if ([udSource objectForKey: @"globalAddressBookFirstEntriesCount"])
+          [self setGlobalAddressBookFirstEntriesCount: [[udSource objectForKey: @"globalAddressBookFirstEntriesCount"] intValue]];
+      }
+
       [self setContactMapping: [udSource objectForKey: @"mapping"]
              andObjectClasses: [udSource objectForKey: @"objectClasses"]];
+             
 
       [self setModifiers: [udSource objectForKey: @"modifiers"]];
       ASSIGN(_abOU, [udSource objectForKey: @"abOU"]);
@@ -398,6 +404,16 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 - (BOOL) listRequiresDot
 {
   return _listRequiresDot;
+}
+
+- (void) setGlobalAddressBookFirstEntriesCount: (int)value
+{
+  _globalAddressBookFirstEntriesCount = value;
+}
+
+- (int) globalAddressBookFirstEntriesCount
+{
+  return _globalAddressBookFirstEntriesCount;
 }
 
 - (NSArray *) searchFields

@@ -835,12 +835,6 @@ specified as an array of dictionaries.
 |S |SOGoURLEncryptionPassphrase
 |Passphrase for `SOGoURLEncryptionEnabled`. The string must be 128 bits (16 characters). If this settings change, the cache server must be restarted, and the DAV url will change. Default value is `SOGoSuperSecret0`.
 
-|S |SOGoGlobalAddressBookFirstEntries
-|Display first entries in Global Address Book. Default value is `NO`. If source is LDAP, the LDAP overlay `sssvlv` must be enabled on the system for server side sorting.
-
-|S |SOGoGlobalAddressBookFirstEntriesCount
-|Number of entries displayed when `SOGoGlobalAddressBookFirstEntries` is enabled. Default value is `100`.
-
 |=======================================================================
 
 
@@ -1272,6 +1266,9 @@ repository
 |listRequiresDot (optional)
 |If set to `YES`, listing of this LDAP source is only possible when performing a search (respecting the SOGoSearchMinimumWordLength parameter) or when explicitly typing a single dot.
 Defaults to `YES` when unset.
+
+|globalAddressBookFirstEntriesCount (optional)
+|Number of entries displayed when `listRequiresDot` is enabled. Default value is `-1` (all records). If source is LDAP, the LDAP overlay sssvlv must be enabled on the system for server side sorting.
 
 |ModulesConstraints (optional)
 |Limits the access of any module through a constraint based on an LDAP

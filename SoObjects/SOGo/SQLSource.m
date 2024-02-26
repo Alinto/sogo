@@ -108,6 +108,7 @@
       _imapHostField = nil;
       _sieveHostField = nil;
       _listRequiresDot = YES;
+      _globalAddressBookFirstEntriesCount = -1;
       _modulesConstraints = nil;
     }
 
@@ -170,8 +171,12 @@
     _viewURL = [[NSURL alloc] initWithString: [udSource objectForKey: @"viewURL"]];
 
   dotValue = [udSource objectForKey: @"listRequiresDot"];
-  if (dotValue)
+  if (dotValue) {
     [self setListRequiresDot: [dotValue boolValue]];
+    if ([udSource objectForKey: @"globalAddressBookFirstEntriesCount"])
+      [self setGlobalAddressBookFirstEntriesCount: [[udSource objectForKey: @"globalAddressBookFirstEntriesCount"] intValue]];
+  }
+
 
 #warning this domain code has no effect yet
   if ([sourceDomain length])
@@ -1154,6 +1159,16 @@
 - (BOOL) listRequiresDot
 {
   return _listRequiresDot;
+}
+
+- (void) setGlobalAddressBookFirstEntriesCount: (int)value
+{
+  _globalAddressBookFirstEntriesCount = value;
+}
+
+- (int) globalAddressBookFirstEntriesCount
+{
+  return _globalAddressBookFirstEntriesCount;
 }
 
 /* card editing */
