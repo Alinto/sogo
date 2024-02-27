@@ -22,7 +22,16 @@
     this.addressesSearchText = '';
     this.ckConfig = {
       'autoGrow_minHeight': 70,
-      removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Find,Replace,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,CopyFormatting,RemoveFormat,NumberedList,BulletedList,Outdent,Indent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,Language,Unlink,Anchor,Flash,Table,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Styles,Format,Maximize,ShowBlocks,About,Strike,Subscript,Superscript,Underline,Image,Emojipanel,Emoji,',
+      toolbar: {
+        "items": [
+          "bold", "italic", "|",
+          "fontColor", "fontFamily", "fontSize", "|",
+          "link", "|",
+          "specialCharacters", "imageUpload", "|",
+          "sourceEditing"
+        ],
+        "shouldNotGroupWhenFull": true
+      },
       language: defaults.ckLocaleCode
     };
 

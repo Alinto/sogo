@@ -9,7 +9,7 @@
     className="UIxPageFrame"
     title="title"
     const:popup="YES"
-    const:jsFiles="Common.js, Preferences.services.js, Contacts.services.js, Scheduler.services.js, Mailer.app.popup.js, Mailer.services.js, vendor/ckeditor/ckeditor.js, Common/sgCkeditor.component.js, vendor/angular-file-upload.min.js, vendor/FileSaver.min.js, vendor/punycode.js">
+    const:jsFiles="Common.js, Preferences.services.js, Contacts.services.js, Scheduler.services.js, Mailer.app.popup.js, Mailer.services.js, vendor/ckeditor/build/ckeditor.js, Common/sgCkeditor.component.js, vendor/angular-file-upload.min.js, vendor/FileSaver.min.js, vendor/punycode.js">
 
   <main class="layout-fill" ng-controller="navController">
     <div id="detailView" class="view-detail md-default-theme md-background md-bg md-hue-2"

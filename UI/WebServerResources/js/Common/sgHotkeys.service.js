@@ -128,7 +128,7 @@
         /**
          * Keybindings are ignored by default when coming from special elements
          */
-        this._preventInClass = ['md-chip-content'];
+        this._preventInClass = ['md-chip-content', 'ck-content', 'ck-widget', 'ck-editor__editable', 'ck-editor__nested-editable', 'ck-table-bogus-paragraph'];
 
         this._onKeydown = this._onKeydown.bind(this);
         this._onKeyup = this._onKeyup.bind(this);

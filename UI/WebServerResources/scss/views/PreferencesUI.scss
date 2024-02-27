@@ -1,14 +1,21 @@
 /// PreferencesUI.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 
-.text-preview {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
+[ui-view="signature"] {
+  .text-preview {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
 
-.sub-information {
-  margin-bottom: 14px;
-  text-align: left;
-  font-size: 12px;
-  line-height: 14px;
-  font-weight: 600;
+  .sub-information {
+    margin-bottom: 14px;
+    text-align: left;
+    font-size: 12px;
+    line-height: 14px;
+    font-weight: 600;
+  }
+
+  // CKEditor
+  .ck-editor__editable {
+    min-height: 70px;
+  }
 }

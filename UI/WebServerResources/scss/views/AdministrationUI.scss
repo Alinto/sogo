@@ -5,4 +5,9 @@
     margin-left: $bl * 2;
     margin-right: $bl * 2;
   }
+
+  // CKEditor
+  .ck-editor__editable {
+    min-height: 200px;
+  }
 }

@@ -9,7 +9,7 @@
                title="moduleName"
                const:jsFiles="Common.js, Administration.js,
                               Administration.services.js, Preferences.services.js,
-                              Contacts.services.js, Scheduler.services.js, vendor/ckeditor/ckeditor.js, Common/sgCkeditor.component.js">
+                              Contacts.services.js, Scheduler.services.js, vendor/ckeditor/build/ckeditor.js, Common/sgCkeditor.component.js">
 
   <main class="view"
         layout="row" layout-fill="layout-fill"

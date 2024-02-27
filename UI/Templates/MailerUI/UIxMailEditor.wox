@@ -13,7 +13,8 @@
              nv-file-over="nv-file-over"
              over-class="sg-over-dropzone"
              uploader="editor.uploader"
-             var:sg-labels="framework">
+             var:sg-labels="framework"
+             ui-view="maileditor">
     <form name="messageForm">
       <md-toolbar>
         <div class="md-toolbar-tools">

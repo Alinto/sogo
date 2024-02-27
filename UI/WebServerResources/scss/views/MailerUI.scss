@@ -320,6 +320,11 @@ md-sidenav {
   }
 }
 
+// For CKEditor
+.image_resized {
+  height: auto!important;
+}
+
 .sg-mail-editor {
   .pseudo-input-container {
     max-height: $baseline-grid * 4 * 6; // about 6 lines
@@ -386,4 +391,36 @@ md-dialog md-dialog-actions.sg-mail-editor-attachments {
 // Default styles for HTML parts
 .SOGoHTMLMail-CSS-Delimiter p {
   margin: 0 0 1em;
+}
+
+[ui-view="maileditor"] {
+  // CKEditor
+  .ck.ck-editor__main>.ck-editor__editable {
+    border-left: 0px !important;
+    border-right: 0px !important;
+    border-bottom: 0px !important;
+    box-shadow: none!important;
+    border-color: var(--ck-color-widget-blurred-border) !important;
+    margin-bottom: 10px;
+  }
+
+  .ck.ck-toolbar {
+    border: 0px !important;
+    box-shadow: none!important;
+  }
+
+  .ck-editor__editable {
+    min-height: 300px!important;
+  }
+
+  .ck.ck-focused {
+    border-color: var(--ck-color-widget-blurred-border)!important;
+  }
+
+  .ck-dropdown__panel {
+    top: 100%!important;
+    bottom: auto!important;
+    right: 0!important;
+    left: auto!important;
+  }
 }

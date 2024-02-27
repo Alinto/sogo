@@ -18,7 +18,7 @@ module.exports = function(grunt) {
   };
   var custom_vendor_files = {
     'js/vendor/angular-file-upload.min.js': ['node_modules/angular-file-upload/dist/angular-file-upload.js', 'js/Common/angular-file-upload.trump.js'],
-    'js/vendor/FileSaver.min.js': ['node_modules/file-saver/dist/FileSaver.js']
+    'js/vendor/FileSaver.min.js': ['node_modules/file-saver/dist/FileSaver.js', 'js/vendor/ckeditor/build/translations/*.js']
   };
 
   const sass = require('sass');

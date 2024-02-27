@@ -8,7 +8,7 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="moduleName"
-    const:jsFiles="vendor/ckeditor/ckeditor.js, Common/sgCkeditor.component.js, Common.js, Preferences.services.js, Contacts.services.js, Scheduler.services.js, Mailer.js, Mailer.services.js, vendor/angular-file-upload.min.js, vendor/FileSaver.min.js, vendor/punycode.js">
+    const:jsFiles="vendor/ckeditor/build/ckeditor.js, Common/sgCkeditor.component.js, Common.js, Preferences.services.js, Contacts.services.js, Scheduler.services.js, Mailer.js, Mailer.services.js, vendor/angular-file-upload.min.js, vendor/FileSaver.min.js, vendor/punycode.js">
   <script type="text/javascript">
     var mailAccounts = <var:string value="mailAccounts" const:escapeHTML="NO" />;
     var userNames = <var:string value="userNames" const:escapeHTML="NO" />;

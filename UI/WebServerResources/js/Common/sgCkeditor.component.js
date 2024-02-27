@@ -16,41 +16,7 @@
   */
   function sgCkeditorConfigProvider() {
     // Default plugins that have successfully passed through Angular's $sanitize service
-    var defaultConfiguration = {
-      toolbarGroups: [
-        { name: 'basicstyles', groups: [ 'basicstyles', 'colors', 'list', 'indent', 'blocks', 'align', 'links', 'insert', 'spellchecker', 'styles', 'mode', 'emoji' ] }
-      ],
-
-      // The default plugins included in the basic setup define some buttons that
-      // are not needed in a basic editor. They are removed here.
-      removeButtons: 'Strike,Subscript,Superscript,BGColor,Anchor,Format,Image',
-
-      // Allow the toolbar to be collapsed (useful for small screens)
-      toolbarCanCollapse: true,
-
-      // Disable check version
-      // NOTE : This is not definitive and ckeditor will be updated
-      versionCheck: false,
-
-      // Dialog windows are also simplified.
-      removeDialogTabs: 'link:advanced',
-
-      enterMode: CKEDITOR.ENTER_BR,
-      tabSpaces: 4,
-      // fullPage: true, include header and body
-      allowedContent: true, // don't filter tags
-      entities: false,
-
-      // Configure autogrow
-      // https://ckeditor.com/docs/ckeditor4/latest/guide/dev_autogrow.html
-      autoGrow_onStartup: true,
-      autoGrow_minHeight: 300,
-      autoGrow_bottomSpace: 0,
-      language: 'en',
-
-      // The Upload Image plugin requires a remote URL to be defined even though we won't use it
-      imageUploadUrl: '/SOGo/'
-    };
+    
 
     var events = [
       'activeEnterModeChange',
@@ -129,7 +95,7 @@
       'widgetDefinition'
     ];
 
-    var config = angular.copy(defaultConfiguration);
+    var config = {};//angular.copy(defaultConfiguration);
 
     this.$get = function () {
       return {
@@ -233,6 +199,10 @@
     controller: sgCkeditorController
   };
 
+  var emojis = [
+    { title: 'Grinning Face', character: '😀' }, { title: 'Grinning Face with Big Eyes', character: '😃' }, { title: 'Grinning Face with Smiling Eyes', character: '😄' }, { title: 'Beaming Face with Smiling Eyes', character: '😁' }, { title: 'Grinning Squinting Face', character: '😆' }, { title: 'Grinning Face with Sweat', character: '😅' }, { title: 'Rolling on the Floor Laughing', character: '🤣' }, { title: 'Face with Tears of Joy', character: '😂' }, { title: 'Slightly Smiling Face', character: '🙂' }, { title: 'Upside-Down Face', character: '🙃' }, { title: 'Winking Face', character: '😉' }, { title: 'Smiling Face with Smiling Eyes', character: '😊' }, { title: 'Smiling Face with Halo', character: '😇' }, { title: 'Smiling Face with Hearts', character: '🥰' }, { title: 'Smiling Face with Heart-Eyes', character: '😍' }, { title: 'Star-Struck', character: '🤩' }, { title: 'Face Blowing a Kiss', character: '😘' }, { title: 'Kissing Face', character: '😗' }, { title: 'Smiling Face', character: '☺️' }, { title: 'Kissing Face with Closed Eyes', character: '😚' }, { title: 'Kissing Face with Smiling Eyes', character: '😙' }, { title: 'Smiling Face with Tear', character: '🥲' }, { title: 'Face Savoring Food', character: '😋' }, { title: 'Face with Tongue', character: '😛' }, { title: 'Winking Face with Tongue', character: '😜' }, { title: 'Zany Face', character: '🤪' }, { title: 'Squinting Face with Tongue', character: '😝' }, { title: 'Money-Mouth Face', character: '🤑' }, { title: 'Hugging Face', character: '🤗' }, { title: 'Face with Hand Over Mouth', character: '🤭' }, { title: 'Shushing Face', character: '🤫' }, { title: 'Thinking Face', character: '🤔' }, { title: 'Zipper-Mouth Face', character: '🤐' }, { title: 'Face with Raised Eyebrow', character: '🤨' }, { title: 'Neutral Face', character: '😐' }, { title: 'Expressionless Face', character: '😑' }, { title: 'Face Without Mouth', character: '😶' }, { title: 'Smirking Face', character: '😏' }, { title: 'Unamused Face', character: '😒' }, { title: 'Face with Rolling Eyes', character: '🙄' }, { title: 'Grimacing Face', character: '😬' }, { title: 'Lying Face', character: '🤥' }, { title: 'Relieved Face', character: '😌' }, { title: 'Pensive Face', character: '😔' }, { title: 'Sleepy Face', character: '😪' }, { title: 'Drooling Face', character: '🤤' }, { title: 'Sleeping Face', character: '😴' }, { title: 'Face with Medical Mask', character: '😷' }, { title: 'Face with Thermometer', character: '🤒' }, { title: 'Face with Head-Bandage', character: '🤕' }, { title: 'Nauseated Face', character: '🤢' }, { title: 'Face Vomiting', character: '🤮' }, { title: 'Sneezing Face', character: '🤧' }, { title: 'Hot Face', character: '🥵' }, { title: 'Cold Face', character: '🥶' }, { title: 'Woozy Face', character: '🥴' }, { title: 'Dizzy Face', character: '😵' }, { title: 'Exploding Head', character: '🤯' }, { title: 'Cowboy Hat Face', character: '🤠' }, { title: 'Partying Face', character: '🥳' }, { title: 'Disguised Face', character: '🥸' }, { title: 'Smiling Face with Sunglasses', character: '😎' }, { title: 'Nerd Face', character: '🤓' }, { title: 'Face with Monocle', character: '🧐' }, { title: 'Confused Face', character: '😕' }, { title: 'Worried Face', character: '😟' }, { title: 'Slightly Frowning Face', character: '🙁' }, { title: 'Frowning Face', character: '☹️' }, { title: 'Face with Open Mouth', character: '😮' }, { title: 'Hushed Face', character: '😯' }, { title: 'Astonished Face', character: '😲' }, { title: 'Flushed Face', character: '😳' }, { title: 'Pleading Face', character: '🥺' }, { title: 'Frowning Face with Open Mouth', character: '😦' }, { title: 'Anguished Face', character: '😧' }, { title: 'Fearful Face', character: '😨' }, { title: 'Anxious Face with Sweat', character: '😰' }, { title: 'Sad but Relieved Face', character: '😥' }, { title: 'Crying Face', character: '😢' }, { title: 'Loudly Crying Face', character: '😭' }, { title: 'Face Screaming in Fear', character: '😱' }, { title: 'Confounded Face', character: '😖' }, { title: 'Persevering Face', character: '😣' }, { title: 'Disappointed Face', character: '😞' }, { title: 'Downcast Face with Sweat', character: '😓' }, { title: 'Weary Face', character: '😩' }, { title: 'Tired Face', character: '😫' }, { title: 'Yawning Face', character: '🥱' }, { title: 'Face with Steam From Nose', character: '😤' }, { title: 'Pouting Face', character: '😡' }, { title: 'Angry Face', character: '😠' }, { title: 'Face with Symbols on Mouth', character: '🤬' }, { title: 'Smiling Face with Horns', character: '😈' }, { title: 'Angry Face with Horns', character: '👿' }, { title: 'Skull', character: '💀' }, { title: 'Skull and Crossbones', character: '☠️' }, { title: 'Pile of Poo', character: '💩' }, { title: 'Clown Face', character: '🤡' }, { title: 'Ogre', character: '👹' }, { title: 'Goblin', character: '👺' }, { title: 'Ghost', character: '👻' }, { title: 'Alien', character: '👽' }, { title: 'Alien Monster', character: '👾' }, { title: 'Robot', character: '🤖' }, { title: 'Grinning Cat', character: '😺' }, { title: 'Grinning Cat with Smiling Eyes', character: '😸' }, { title: 'Cat with Tears of Joy', character: '😹' }, { title: 'Smiling Cat with Heart-Eyes', character: '😻' }, { title: 'Cat with Wry Smile', character: '😼' }, { title: 'Kissing Cat', character: '😽' }, { title: 'Weary Cat', character: '🙀' }, { title: 'Crying Cat', character: '😿' }, { title: 'Pouting Cat', character: '😾' }, { title: 'Kiss Mark', character: '💋' }, { title: 'Waving Hand', character: '👋' }, { title: 'Raised Back of Hand', character: '🤚' }, { title: 'Hand with Fingers Splayed', character: '🖐️' }, { title: 'Raised Hand', character: '✋' }, { title: 'Vulcan Salute', character: '🖖' }, { title: 'OK Hand', character: '👌' }, { title: 'Pinched Fingers', character: '🤌' }, { title: 'Pinching Hand', character: '🤏' }, { title: 'Victory Hand', character: '✌️' }, { title: 'Crossed Fingers', character: '🤞' }, { title: 'Love-You Gesture', character: '🤟' }, { title: 'Sign of the Horns', character: '🤘' }, { title: 'Call Me Hand', character: '🤙' }, { title: 'Backhand Index Pointing Left', character: '👈' }, { title: 'Backhand Index Pointing Right', character: '👉' }, { title: 'Backhand Index Pointing Up', character: '👆' }, { title: 'Middle Finger', character: '🖕' }, { title: 'Backhand Index Pointing Down', character: '👇' }, { title: 'Index Pointing Up', character: '☝️' }, { title: 'Thumbs Up', character: '👍' }, { title: 'Thumbs Down', character: '👎' }, { title: 'Raised Fist', character: '✊' }, { title: 'Oncoming Fist', character: '👊' }, { title: 'Left-Facing Fist', character: '🤛' }, { title: 'Right-Facing Fist', character: '🤜' }, { title: 'Clapping Hands', character: '👏' }, { title: 'Raising Hands', character: '🙌' }, { title: 'Open Hands', character: '👐' }, { title: 'Palms Up Together', character: '🤲' }, { title: 'Handshake', character: '🤝' }, { title: 'Folded Hands', character: '🙏' }, { title: 'Writing Hand', character: '✍️' }, { title: 'Nail Polish', character: '💅' }, { title: 'Selfie', character: '🤳' }, { title: 'Flexed Biceps', character: '💪' }, { title: 'Mechanical Arm', character: '🦾' }, { title: 'Mechanical Leg', character: '🦿' }, { title: 'Leg', character: '🦵' }, { title: 'Foot', character: '🦶' }, { title: 'Ear', character: '👂' }, { title: 'Ear with Hearing Aid', character: '🦻' }, { title: 'Nose', character: '👃' }, { title: 'Brain', character: '🧠' }, { title: 'Anatomical Heart', character: '🫀' }, { title: 'Lungs', character: '🫁' }, { title: 'Tooth', character: '🦷' }, { title: 'Bone', character: '🦴' }, { title: 'Eyes', character: '👀' }, { title: 'Eye', character: '👁️' }, { title: 'Tongue', character: '👅' }, { title: 'Mouth', character: '👄' }, { title: 'Baby', character: '👶' }, { title: 'Child', character: '🧒' }, { title: 'Boy', character: '👦' }, { title: 'Girl', character: '👧' }, { title: 'Person', character: '🧑' }, { title: 'Person: Blond Hair', character: '👱' }, { title: 'Man', character: '👨' }, { title: 'Person: Beard', character: '🧔' }, { title: 'Man: Red Hair', character: '👨‍🦰' }, { title: 'Man: Curly Hair', character: '👨‍🦱' }, { title: 'Man: White Hair', character: '👨‍🦳' }, { title: 'Man: Bald', character: '👨‍🦲' }, { title: 'Woman', character: '👩' }, { title: 'Woman: Red Hair', character: '👩‍🦰' }, { title: 'Person: Red Hair', character: '🧑‍🦰' }, { title: 'Woman: Curly Hair', character: '👩‍🦱' }, { title: 'Person: Curly Hair', character: '🧑‍🦱' }, { title: 'Woman: White Hair', character: '👩‍🦳' }, { title: 'Person: White Hair', character: '🧑‍🦳' }, { title: 'Woman: Bald', character: '👩‍🦲' }, { title: 'Person: Bald', character: '🧑‍🦲' }, { title: 'Woman: Blond Hair', character: '👱‍♀️' }, { title: 'Man: Blond Hair', character: '👱‍♂️' }, { title: 'Older Person', character: '🧓' }, { title: 'Old Man', character: '👴' }, { title: 'Old Woman', character: '👵' }, { title: 'Person Frowning', character: '🙍' }, { title: 'Man Frowning', character: '🙍‍♂️' }, { title: 'Woman Frowning', character: '🙍‍♀️' }, { title: 'Person Pouting', character: '🙎' }, { title: 'Man Pouting', character: '🙎‍♂️' }, { title: 'Woman Pouting', character: '🙎‍♀️' }, { title: 'Person Gesturing No', character: '🙅' }, { title: 'Man Gesturing No', character: '🙅‍♂️' }, { title: 'Woman Gesturing No', character: '🙅‍♀️' }, { title: 'Person Gesturing OK', character: '🙆' }, { title: 'Man Gesturing OK', character: '🙆‍♂️' }, { title: 'Woman Gesturing OK', character: '🙆‍♀️' }, { title: 'Person Tipping Hand', character: '💁' }, { title: 'Man Tipping Hand', character: '💁‍♂️' }, { title: 'Woman Tipping Hand', character: '💁‍♀️' }, { title: 'Person Raising Hand', character: '🙋' }, { title: 'Man Raising Hand', character: '🙋‍♂️' }, { title: 'Woman Raising Hand', character: '🙋‍♀️' }, { title: 'Deaf Person', character: '🧏' }, { title: 'Deaf Man', character: '🧏‍♂️' }, { title: 'Deaf Woman', character: '🧏‍♀️' }, { title: 'Person Bowing', character: '🙇' }, { title: 'Man Bowing', character: '🙇‍♂️' }, { title: 'Woman Bowing', character: '🙇‍♀️' }, { title: 'Person Facepalming', character: '🤦' }, { title: 'Man Facepalming', character: '🤦‍♂️' }, { title: 'Woman Facepalming', character: '🤦‍♀️' }, { title: 'Person Shrugging', character: '🤷' }, { title: 'Man Shrugging', character: '🤷‍♂️' }, { title: 'Woman Shrugging', character: '🤷‍♀️' }, { title: 'Health Worker', character: '🧑‍⚕️' }, { title: 'Man Health Worker', character: '👨‍⚕️' }, { title: 'Woman Health Worker', character: '👩‍⚕️' }, { title: 'Student', character: '🧑‍🎓' }, { title: 'Man Student', character: '👨‍🎓' }, { title: 'Woman Student', character: '👩‍🎓' }, { title: 'Teacher', character: '🧑‍🏫' }, { title: 'Man Teacher', character: '👨‍🏫' }, { title: 'Woman Teacher', character: '👩‍🏫' }, { title: 'Judge', character: '🧑‍⚖️' }, { title: 'Man Judge', character: '👨‍⚖️' }, { title: 'Woman Judge', character: '👩‍⚖️' }, { title: 'Farmer', character: '🧑‍🌾' }, { title: 'Man Farmer', character: '👨‍🌾' }, { title: 'Woman Farmer', character: '👩‍🌾' }, { title: 'Cook', character: '🧑‍🍳' }, { title: 'Man Cook', character: '👨‍🍳' }, { title: 'Woman Cook', character: '👩‍🍳' }, { title: 'Mechanic', character: '🧑‍🔧' }, { title: 'Man Mechanic', character: '👨‍🔧' }, { title: 'Woman Mechanic', character: '👩‍🔧' }, { title: 'Factory Worker', character: '🧑‍🏭' }, { title: 'Man Factory Worker', character: '👨‍🏭' }, { title: 'Woman Factory Worker', character: '👩‍🏭' }, { title: 'Office Worker', character: '🧑‍💼' }, { title: 'Man Office Worker', character: '👨‍💼' }, { title: 'Woman Office Worker', character: '👩‍💼' }, { title: 'Scientist', character: '🧑‍🔬' }, { title: 'Man Scientist', character: '👨‍🔬' }, { title: 'Woman Scientist', character: '👩‍🔬' }, { title: 'Technologist', character: '🧑‍💻' }, { title: 'Man Technologist', character: '👨‍💻' }, { title: 'Woman Technologist', character: '👩‍💻' }, { title: 'Singer', character: '🧑‍🎤' }, { title: 'Man Singer', character: '👨‍🎤' }, { title: 'Woman Singer', character: '👩‍🎤' }, { title: 'Artist', character: '🧑‍🎨' }, { title: 'Man Artist', character: '👨‍🎨' }, { title: 'Woman Artist', character: '👩‍🎨' }, { title: 'Pilot', character: '🧑‍✈️' }, { title: 'Man Pilot', character: '👨‍✈️' }, { title: 'Woman Pilot', character: '👩‍✈️' }, { title: 'Astronaut', character: '🧑‍🚀' }, { title: 'Man Astronaut', character: '👨‍🚀' }, { title: 'Woman Astronaut', character: '👩‍🚀' }, { title: 'Firefighter', character: '🧑‍🚒' }, { title: 'Man Firefighter', character: '👨‍🚒' }, { title: 'Woman Firefighter', character: '👩‍🚒' }, { title: 'Police Officer', character: '👮' }, { title: 'Man Police Officer', character: '👮‍♂️' }, { title: 'Woman Police Officer', character: '👮‍♀️' }, { title: 'Detective', character: '🕵️' }, { title: 'Man Detective', character: '🕵️‍♂️' }, { title: 'Woman Detective', character: '🕵️‍♀️' }, { title: 'Guard', character: '💂' }, { title: 'Man Guard', character: '💂‍♂️' }, { title: 'Woman Guard', character: '💂‍♀️' }, { title: 'Ninja', character: '🥷' }, { title: 'Construction Worker', character: '👷' }, { title: 'Man Construction Worker', character: '👷‍♂️' }, { title: 'Woman Construction Worker', character: '👷‍♀️' }, { title: 'Prince', character: '🤴' }, { title: 'Princess', character: '👸' }, { title: 'Person Wearing Turban', character: '👳' }, { title: 'Man Wearing Turban', character: '👳‍♂️' }, { title: 'Woman Wearing Turban', character: '👳‍♀️' }, { title: 'Person With Skullcap', character: '👲' }, { title: 'Woman with Headscarf', character: '🧕' }, { title: 'Person in Tuxedo', character: '🤵' }, { title: 'Man in Tuxedo', character: '🤵‍♂️' }, { title: 'Woman in Tuxedo', character: '🤵‍♀️' }, { title: 'Person With Veil', character: '👰' }, { title: 'Man with Veil', character: '👰‍♂️' }, { title: 'Woman with Veil', character: '👰‍♀️' }, { title: 'Pregnant Woman', character: '🤰' }, { title: 'Breast-Feeding', character: '🤱' }, { title: 'Woman Feeding Baby', character: '👩‍🍼' }, { title: 'Man Feeding Baby', character: '👨‍🍼' }, { title: 'Person Feeding Baby', character: '🧑‍🍼' }, { title: 'Baby Angel', character: '👼' }, { title: 'Santa Claus', character: '🎅' }, { title: 'Mrs. Claus', character: '🤶' }, { title: 'Mx Claus', character: '🧑‍🎄' }, { title: 'Superhero', character: '🦸' }, { title: 'Man Superhero', character: '🦸‍♂️' }, { title: 'Woman Superhero', character: '🦸‍♀️' }, { title: 'Supervillain', character: '🦹' }, { title: 'Man Supervillain', character: '🦹‍♂️' }, { title: 'Woman Supervillain', character: '🦹‍♀️' }, { title: 'Mage', character: '🧙' }, { title: 'Man Mage', character: '🧙‍♂️' }, { title: 'Woman Mage', character: '🧙‍♀️' }, { title: 'Fairy', character: '🧚' }, { title: 'Man Fairy', character: '🧚‍♂️' }, { title: 'Woman Fairy', character: '🧚‍♀️' }, { title: 'Vampire', character: '🧛' }, { title: 'Man Vampire', character: '🧛‍♂️' }, { title: 'Woman Vampire', character: '🧛‍♀️' }, { title: 'Merperson', character: '🧜' }, { title: 'Merman', character: '🧜‍♂️' }, { title: 'Mermaid', character: '🧜‍♀️' }, { title: 'Elf', character: '🧝' }, { title: 'Man Elf', character: '🧝‍♂️' }, { title: 'Woman Elf', character: '🧝‍♀️' }, { title: 'Genie', character: '🧞' }, { title: 'Man Genie', character: '🧞‍♂️' }, { title: 'Woman Genie', character: '🧞‍♀️' }, { title: 'Zombie', character: '🧟' }, { title: 'Man Zombie', character: '🧟‍♂️' }, { title: 'Woman Zombie', character: '🧟‍♀️' }, { title: 'Person Getting Massage', character: '💆' }, { title: 'Man Getting Massage', character: '💆‍♂️' }, { title: 'Woman Getting Massage', character: '💆‍♀️' }, { title: 'Person Getting Haircut', character: '💇' }, { title: 'Man Getting Haircut', character: '💇‍♂️' }, { title: 'Woman Getting Haircut', character: '💇‍♀️' }, { title: 'Person Walking', character: '🚶' }, { title: 'Man Walking', character: '🚶‍♂️' }, { title: 'Woman Walking', character: '🚶‍♀️' }, { title: 'Person Standing', character: '🧍' }, { title: 'Man Standing', character: '🧍‍♂️' }, { title: 'Woman Standing', character: '🧍‍♀️' }, { title: 'Person Kneeling', character: '🧎' }, { title: 'Man Kneeling', character: '🧎‍♂️' }, { title: 'Woman Kneeling', character: '🧎‍♀️' }, { title: 'Person with White Cane', character: '🧑‍🦯' }, { title: 'Man with White Cane', character: '👨‍🦯' }, { title: 'Woman with White Cane', character: '👩‍🦯' }, { title: 'Person in Motorized Wheelchair', character: '🧑‍🦼' }, { title: 'Man in Motorized Wheelchair', character: '👨‍🦼' }, { title: 'Woman in Motorized Wheelchair', character: '👩‍🦼' }, { title: 'Person in Manual Wheelchair', character: '🧑‍🦽' }, { title: 'Man in Manual Wheelchair', character: '👨‍🦽' }, { title: 'Woman in Manual Wheelchair', character: '👩‍🦽' }, { title: 'Person Running', character: '🏃' }, { title: 'Man Running', character: '🏃‍♂️' }, { title: 'Woman Running', character: '🏃‍♀️' }, { title: 'Woman Dancing', character: '💃' }, { title: 'Man Dancing', character: '🕺' }, { title: 'Person in Suit Levitating', character: '🕴️' }, { title: 'People with Bunny Ears', character: '👯' }, { title: 'Men with Bunny Ears', character: '👯‍♂️' }, { title: 'Women with Bunny Ears', character: '👯‍♀️' }, { title: 'Person in Steamy Room', character: '🧖' }, { title: 'Man in Steamy Room', character: '🧖‍♂️' }, { title: 'Woman in Steamy Room', character: '🧖‍♀️' }, { title: 'Person in Lotus Position', character: '🧘' }, { title: 'People Holding Hands', character: '🧑‍🤝‍🧑' }, { title: 'Women Holding Hands', character: '👭' }, { title: 'Woman and Man Holding Hands', character: '👫' }, { title: 'Men Holding Hands', character: '👬' }, { title: 'Kiss', character: '💏' }, { title: 'Kiss: Woman, Man', character: '👩‍❤️‍💋‍👨' }, { title: 'Kiss: Man, Man', character: '👨‍❤️‍💋‍👨' }, { title: 'Kiss: Woman, Woman', character: '👩‍❤️‍💋‍👩' }, { title: 'Couple with Heart', character: '💑' }, { title: 'Couple with Heart: Woman, Man', character: '👩‍❤️‍👨' }, { title: 'Couple with Heart: Man, Man', character: '👨‍❤️‍👨' }, { title: 'Couple with Heart: Woman, Woman', character: '👩‍❤️‍👩' }, { title: 'Family', character: '👪' }, { title: 'Family: Man, Woman, Boy', character: '👨‍👩‍👦' }, { title: 'Family: Man, Woman, Girl', character: '👨‍👩‍👧' }, { title: 'Family: Man, Woman, Girl, Boy', character: '👨‍👩‍👧‍👦' }, { title: 'Family: Man, Woman, Boy, Boy', character: '👨‍👩‍👦‍👦' }, { title: 'Family: Man, Woman, Girl, Girl', character: '👨‍👩‍👧‍👧' }, { title: 'Family: Man, Man, Boy', character: '👨‍👨‍👦' }, { title: 'Family: Man, Man, Girl', character: '👨‍👨‍👧' }, { title: 'Family: Man, Man, Girl, Boy', character: '👨‍👨‍👧‍👦' }, { title: 'Family: Man, Man, Boy, Boy', character: '👨‍👨‍👦‍👦' }, { title: 'Family: Man, Man, Girl, Girl', character: '👨‍👨‍👧‍👧' }, { title: 'Family: Woman, Woman, Boy', character: '👩‍👩‍👦' }, { title: 'Family: Woman, Woman, Girl', character: '👩‍👩‍👧' }, { title: 'Family: Woman, Woman, Girl, Boy', character: '👩‍👩‍👧‍👦' }, { title: 'Family: Woman, Woman, Boy, Boy', character: '👩‍👩‍👦‍👦' }, { title: 'Family: Woman, Woman, Girl, Girl', character: '👩‍👩‍👧‍👧' }, { title: 'Family: Man, Boy', character: '👨‍👦' }, { title: 'Family: Man, Boy, Boy', character: '👨‍👦‍👦' }, { title: 'Family: Man, Girl', character: '👨‍👧' }, { title: 'Family: Man, Girl, Boy', character: '👨‍👧‍👦' }, { title: 'Family: Man, Girl, Girl', character: '👨‍👧‍👧' }, { title: 'Family: Woman, Boy', character: '👩‍👦' }, { title: 'Family: Woman, Boy, Boy', character: '👩‍👦‍👦' }, { title: 'Family: Woman, Girl', character: '👩‍👧' }, { title: 'Family: Woman, Girl, Boy', character: '👩‍👧‍👦' }, { title: 'Family: Woman, Girl, Girl', character: '👩‍👧‍👧' }, { title: 'Speaking Head', character: '🗣️' }, { title: 'Bust in Silhouette', character: '👤' }, { title: 'Busts in Silhouette', character: '👥' }, { title: 'People Hugging', character: '🫂' }, { title: 'Footprints', character: '👣' }, { title: 'Luggage', character: '🧳' }, { title: 'Closed Umbrella', character: '🌂' }, { title: 'Umbrella', character: '☂️' }, { title: 'Jack-O-Lantern', character: '🎃' }, { title: 'Thread', character: '🧵' }, { title: 'Yarn', character: '🧶' }, { title: 'Glasses', character: '👓' }, { title: 'Sunglasses', character: '🕶️' }, { title: 'Goggles', character: '🥽' }, { title: 'Lab Coat', character: '🥼' }, { title: 'Safety Vest', character: '🦺' }, { title: 'Necktie', character: '👔' }, { title: 'T-Shirt', character: '👕' }, { title: 'Jeans', character: '👖' }, { title: 'Scarf', character: '🧣' }, { title: 'Gloves', character: '🧤' }, { title: 'Coat', character: '🧥' }, { title: 'Socks', character: '🧦' }, { title: 'Dress', character: '👗' }, { title: 'Kimono', character: '👘' }, { title: 'Sari', character: '🥻' }, { title: 'One-Piece Swimsuit', character: '🩱' }, { title: 'Briefs', character: '🩲' }, { title: 'Shorts', character: '🩳' }, { title: 'Bikini', character: '👙' }, { title: 'Woman’s Clothes', character: '👚' }, { title: 'Purse', character: '👛' }, { title: 'Handbag', character: '👜' }, { title: 'Clutch Bag', character: '👝' }, { title: 'Backpack', character: '🎒' }, { title: 'Thong Sandal', character: '🩴' }, { title: 'Man’s Shoe', character: '👞' }, { title: 'Running Shoe', character: '👟' }, { title: 'Hiking Boot', character: '🥾' }, { title: 'Flat Shoe', character: '🥿' }, { title: 'High-Heeled Shoe', character: '👠' }, { title: 'Woman’s Sandal', character: '👡' }, { title: 'Ballet Shoes', character: '🩰' }, { title: 'Woman’s Boot', character: '👢' }, { title: 'Crown', character: '👑' }, { title: 'Woman’s Hat', character: '👒' }, { title: 'Top Hat', character: '🎩' }, { title: 'Graduation Cap', character: '🎓' }, { title: 'Billed Cap', character: '🧢' }, { title: 'Military Helmet', character: '🪖' }, { title: 'Rescue Worker’s Helmet', character: '⛑️' }, { title: 'Lipstick', character: '💄' }, { title: 'Ring', character: '💍' }, { title: 'Briefcase', character: '💼' }, { title: 'Drop of Blood', character: '🩸' }
+  ];
+
   sgCkeditorController.$inject = ['$element', '$scope', '$parse', '$timeout', 'sgCkeditorConfig'];
   function sgCkeditorController ($element, $scope, $parse, $timeout, sgCkeditorConfig) {
     var vm = this;
@@ -245,11 +215,12 @@
 
     this.$onInit = function () {
       vm.ngModelCtrl.$render = function () {
-        if (editor) {
-          editor.setData(vm.ngModelCtrl.$viewValue, {
+        content = vm.ngModelCtrl.$viewValue;
+        if (vm.editor) {
+          vm.editor.setData(vm.ngModelCtrl.$viewValue, {
             noSnapshot: true,
             callback: function () {
-              editor.fire('updateSnapshot')
+              vm.editor.fire('updateSnapshot')
             }
           })
         }
@@ -260,7 +231,7 @@
       if (config.language) {
         // Pickup the first matching language supported by SCAYT
         // See http://docs.ckeditor.com/#!/guide/dev_howtos_scayt
-        config.scayt_sLang = _.find(['en_US', 'en_GB', 'pt_BR', 'da_DK', 'nl_NL', 'en_CA', 'fi_FI', 'fr_FR', 'fr_CA', 'de_DE', 'el_GR', 'it_IT', 'nb_NO', 'pt_PT', 'es_ES', 'sv_SE'], function(sLang) {
+        config.scayt_sLang = _.find(['en_US', 'en_GB', 'pt_BR', 'da_DK', 'nl_NL', 'en_CA', 'fi_FI', 'fr_FR', 'fr_CA', 'de_DE', 'el_GR', 'it_IT', 'nb_NO', 'pt_PT', 'es_ES', 'sv_SE'], function (sLang) {
           return sLang.lastIndexOf(config.language, 0) == 0;
         }) || 'en_US';
 
@@ -268,48 +239,82 @@
         // See https://github.com/WebSpellChecker/ckeditor-plugin-scayt/issues/126
         config.scayt_disableOptionsStorage = 'lang';
       }
-
-      if (vm.ckMargin) {
-        // Set the margin of the iframe editable content
-        CKEDITOR.addCss('.cke_editable { margin-top: ' + vm.ckMargin +
-                        '; margin-left: ' + vm.ckMargin +
-                        '; margin-right: ' + vm.ckMargin + '; }');
+      if (!config.toolbar) {
+        config.toolbar = {
+          "items": [
+            "bold", "italic", "underline", "|",
+            "fontColor", "fontFamily", "fontSize", "|",
+            "numberedList", "bulletedList", "|",
+            "outdent", "indent", "|",
+            "blockQuote", "|",
+            "alignment", "|",
+            "link", "|",
+            "insertTable", "specialCharacters", "imageUpload", "|",
+            "undo", "redo", "sourceEditing"
+          ],
+          "shouldNotGroupWhenFull": true
+        }
       }
+      config.image = {
+        resizeUnit: "px",
+        insert: {
+          type: "inline"
+        }
+      };
+      vm.config = config;
     };
 
     this.$postLink = function () {
-      editorElement = $element[0].children[0];
-      editor = CKEDITOR.replace(editorElement, config);
+      var editorElement = $element[0].children[0];;
+      ClassicEditor
+        .create(editorElement, vm.config)
+        .then(editor => {
+          vm.editor = editor;
 
-      editor.on('instanceReady', onInstanceReady);
-      editor.on('pasteState', onEditorChange);
-      editor.on('change', onEditorChange);
-      editor.on('paste', onEditorPaste);
-      editor.on('fileUploadRequest', onEditorFileUploadRequest);
+          // Add Emoticons
+          editor.plugins.get('SpecialCharacters').addItems('Emoji', emojis, { label: 'Emoticons' });
 
-      if (content) {
-        modelChanged = true
-        editor.setData(content, {
-          noSnapshot: true,
-          callback: function () {
-            editor.fire('updateSnapshot')
+          // if (vm.ckMargin) {
+          //   // Set the margin of the iframe editable content
+          //   vm.editor.editing.view.domRoots.get("main").style.marginTop = vm.ckMargin;
+          //   vm.editor.editing.view.domRoots.get("main").style.marginLeft = vm.ckMargin;
+          //   vm.editor.editing.view.domRoots.get("main").style.marginRight = vm.ckMargin;
+          // }
+          
+          vm.editor.model.document.on('pasteState', onEditorChange);
+          vm.editor.model.document.on('change:data', onEditorChange);
+          vm.editor.model.document.on('paste', onEditorPaste);
+
+          onInstanceReady();
+
+          if (content) {
+            modelChanged = true
+            vm.editor.setData(content, {
+              noSnapshot: true,
+              callback: function () {
+                vm.editor.fire('updateSnapshot')
+              }
+            });
           }
+          
+        })
+        .catch(error => {
+          console.error(error);
         });
-      }
     };
 
     this.$onChanges = function (changes) {
       if (
         changes.ngModel &&
-          changes.ngModel.currentValue !== changes.ngModel.previousValue
+        changes.ngModel.currentValue !== changes.ngModel.previousValue
       ) {
         content = changes.ngModel.currentValue;
-        if (editor && !editorChanged) {
+        if (vm.editor && !editorChanged) {
           if (content) {
-            editor.setData(content, {
+            vm.editor.setData(content, {
               noSnapshot: true,
               callback: function () {
-                editor.fire('updateSnapshot')
+                vm.editor.fire('updateSnapshot')
               }
             });
             modelChanged = true;
@@ -324,46 +329,16 @@
 
     this.$onDestroy = function () {
       var noUpdate = true;
-      editorElement.classList.add('ng-cloak');
-      editor.destroy(noUpdate);
-    }
-
-    function onInstanceReady (event) {
-      // Register binded callbacks for all available events
-      _.forEach(_.filter(sgCkeditorConfig.events, function (eventName) {
-        return eventName != 'instanceReady';
-      }), function (eventName) {
-        var callbackName = 'on' + eventName[0].toUpperCase() + eventName.slice(1);
-        if (vm[callbackName]) {
-          editor.on(eventName, function (event) {
-            vm[callbackName]({
-              '$event': event,
-              '$editor': editor
-            });
-          });
-        }
-      });
-
-      if (vm.onInstanceReady) {
-        vm.onInstanceReady({
-          '$event': event,
-          '$editor': editor
-        });
-      }
-
-      editorElement.classList.remove('ng-cloak');
-      vm.ngModelCtrl.$render();
+      if (vm.editor)
+        vm.editor.destroy(noUpdate);
     }
 
     function onEditorChange () {
-      var html = editor.getData();
-      var body = editor.document ? editor.document.getBody() : null;
-      var text;
+      var html = vm.editor.getData();
 
-      if (_.isEmpty(body))
-        return;
-      else
-        text = body.getText();
+      var dom = document.createElement("DIV");
+      dom.innerHTML = html;
+      var text = (dom.textContent || dom.innerText);
 
       if (text === '\n') {
         text = '';
@@ -375,7 +350,7 @@
         validate(vm.checkTextLength ? text : html);
         if (vm.onContentChanged) {
           vm.onContentChanged({
-            'editor': editor,
+            'editor': vm.editor,
             'html': html,
             'text': text
           });
@@ -393,17 +368,18 @@
       }
     }
 
-    function onEditorFileUploadRequest (event) {
-      // Intercept the request when an image is pasted, keep an inline base64 version only.
-      var data, img;
-      data = event.data.fileLoader.data;
-      img = editor.document.createElement('img');
-      img.setAttribute('src', data);
-      editor.insertElement(img);
-      event.cancel();
+    function onInstanceReady(event) {
+      if (vm.onInstanceReady) {
+        vm.onInstanceReady({
+          '$event': event,
+          '$editor': vm.editor
+        });
+      }
+
+      vm.ngModelCtrl.$render();
     }
 
-    function validate (body) {
+    function validate(body) {
       if (vm.maxLength) {
         vm.ngModelCtrl.$setValidity('maxlength', body.length > vm.maxLength + 1);
       }
@@ -413,6 +389,7 @@
       if (vm.required) {
         vm.ngModelCtrl.$setValidity('required', body.length > 0);
       }
+      
     }
   }
 

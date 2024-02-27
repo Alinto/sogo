@@ -8,7 +8,7 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="moduleName"
-    const:jsFiles="vendor/ckeditor/ckeditor.js, vendor/ng-sortable.min.js, Common/sgCkeditor.component.js, Common.js, Preferences.services.js, Contacts.services.js, Mailer.services.js, vendor/angular-file-upload.min.js, Scheduler.js, Scheduler.services.js, vendor/FileSaver.min.js, vendor/punycode.js">
+    const:jsFiles="vendor/ckeditor/build/ckeditor.js, vendor/ng-sortable.min.js, Common/sgCkeditor.component.js, Common.js, Preferences.services.js, Contacts.services.js, Mailer.services.js, vendor/angular-file-upload.min.js, Scheduler.js, Scheduler.services.js, vendor/FileSaver.min.js, vendor/punycode.js">
   <script type="text/javascript">
     var firstDayOfWeek = <var:string value="firstDayOfWeek"/>;
     var dayStartHour = <var:string value="dayStartHour"/>;

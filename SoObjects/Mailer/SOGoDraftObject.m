@@ -1089,9 +1089,8 @@ static NSString    *userAgent      = nil;
 
 
   ud = [[context activeUser] userDefaults];
-  
 
-  [self setText: [sourceMail contentForReply]];
+  
   [self setHeaders: info];
   [self setIsHTML: [[ud mailComposeMessageType] isEqualToString: @"html"]];
   [self setSourceURL: [sourceMail imap4URLString]];
@@ -1099,7 +1098,11 @@ static NSString    *userAgent      = nil;
   [self setSourceIMAP4ID: [[sourceMail nameInContainer] intValue]];
   [self setSourceFolderWithMailObject: sourceMail];
 
-  [self setText: [sourceMail contentForReply]];
+  if ([[ud mailComposeMessageType] isEqualToString: @"html"]) {
+    [self setText: [NSString stringWithFormat: @"<br/><br/>%@", [sourceMail contentForReply]]];
+  } else {
+    [self setText: [NSString stringWithFormat: @"\n\n%@", [sourceMail contentForReply]]];
+  }
   shouldRetrieveAttachements = [[ud mailComposeMessageType] isEqualToString: @"html"];
 
   if (shouldRetrieveAttachements) {

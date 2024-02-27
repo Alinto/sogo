@@ -7,7 +7,7 @@
     xmlns:label="OGo:label"
     xmlns:rsrc="OGo:url"
     xmlns:uix="OGo:uix"><var:string var:value="doctype" const:escapeHTML="NO" />
-<md-dialog flex="50" flex-sm="80" flex-xs="100">
+<md-dialog flex="50" flex-sm="80" flex-xs="100" ui-view="signature">
   <form id="accountForm" name="accountForm" var:href="ownPath">
     <md-toolbar>
       <div class="md-toolbar-tools">
