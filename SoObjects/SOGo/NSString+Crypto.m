@@ -385,7 +385,7 @@ static const NSString *kAES256GCMError = @"kAES256GCMError";
   value = nil;
 
   if (AES_128_KEY_SIZE != [passwordScheme length]) {
-    *ex = [NSException exceptionWithName: kAES128ECError reason: [NSString stringWithFormat:@"Key must be %d bits", (AES_128_KEY_SIZE * 8)] userInfo: nil];
+    *ex = [NSException exceptionWithName: kAES128ECError reason: [NSString stringWithFormat:@"Key must be %d bits, but key has %d bits", (AES_128_KEY_SIZE * 8), ([passwordScheme length] * 8)] userInfo: nil];
     return nil;
   }
 
@@ -457,7 +457,7 @@ static const NSString *kAES256GCMError = @"kAES256GCMError";
   #ifdef HAVE_OPENSSL
 
     if (AES_128_KEY_SIZE != [passwordScheme length]) {
-      *ex = [NSException exceptionWithName: kAES128ECError reason: [NSString stringWithFormat:@"Key must be %d bits", (AES_128_KEY_SIZE * 8)] userInfo: nil];
+      *ex = [NSException exceptionWithName: kAES128ECError reason: [NSString stringWithFormat:@"Key must be %d bits, but key has %d bits", (AES_128_KEY_SIZE * 8), ([passwordScheme length] * 8)] userInfo: nil];
       return nil;
     }
     keyData = [passwordScheme dataUsingEncoding: NSUTF8StringEncoding];
