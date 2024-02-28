@@ -1270,6 +1270,10 @@ Defaults to `YES` when unset.
 |globalAddressBookFirstEntriesCount (optional)
 |Number of entries displayed when `listRequiresDot` is enabled. Default value is `-1` (all records). If source is LDAP, the LDAP overlay sssvlv must be enabled on the system for server side sorting.
 
+|disableSubgroups (optional)
+|If set to `YES`, disable recursive search. Consider this option when groups have the same name than a member (https://bugs.sogo.nu/view.php?id=5913).
+Defaults to `NO` when unset.
+
 |ModulesConstraints (optional)
 |Limits the access of any module through a constraint based on an LDAP
 attribute; must be a dictionary with keys `Mail`, and/or `Calendar`,

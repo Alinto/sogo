@@ -66,6 +66,8 @@
   BOOL _listRequiresDot;
   int _globalAddressBookFirstEntriesCount;
 
+  BOOL _disableSubgroups;
+
   NSString *_domain;
   NSString *_contactInfoAttribute;
   BOOL _groupExpansionEnabled;

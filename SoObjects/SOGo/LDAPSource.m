@@ -108,6 +108,8 @@ static Class NSStringK;
       _listRequiresDot = YES;
       _globalAddressBookFirstEntriesCount = -1;
 
+      _disableSubgroups = NO;
+
       _passwordPolicy = NO;
       _updateSambaNTLMPasswords = NO;
       _lookupFields = [NSArray arrayWithObject: @"*"];
@@ -171,7 +173,7 @@ static Class NSStringK;
                inDomain: (NSString *) sourceDomain
 {
   SOGoDomainDefaults *dd;
-  NSNumber *udQueryLimit, *udQueryTimeout, *udGroupExpansionEnabled, *dotValue;
+  NSNumber *udQueryLimit, *udQueryTimeout, *udGroupExpansionEnabled, *dotValue, *disableSubgroupsValue;
 
   if ((self = [self init]))
     {
@@ -206,6 +208,10 @@ static Class NSStringK;
         if ([udSource objectForKey: @"globalAddressBookFirstEntriesCount"])
           [self setGlobalAddressBookFirstEntriesCount: [[udSource objectForKey: @"globalAddressBookFirstEntriesCount"] intValue]];
       }
+
+      disableSubgroupsValue = [udSource objectForKey: @"disableSubgroups"];
+      if (disableSubgroupsValue)
+        _disableSubgroups = [disableSubgroupsValue boolValue];
 
       [self setContactMapping: [udSource objectForKey: @"mapping"]
              andObjectClasses: [udSource objectForKey: @"objectClasses"]];
@@ -2355,16 +2361,21 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
               user = [SOGoUser userWithLogin: login  roles: nil];
               if (user)
                 {
-                  contactInfos = [self lookupContactEntryWithUIDorEmail: login inDomain: nil];
-                  if ([contactInfos objectForKey: @"isGroup"])
+                  if (!_disableSubgroups) {
+                    contactInfos = [self lookupContactEntryWithUIDorEmail: login inDomain: nil];
+                    if ([contactInfos objectForKey: @"isGroup"])
                     {
                       subusers = [self membersForGroupWithUID: login];
                       [members addObjectsFromArray: subusers];
                     }
-                  else
+                    else
                     {
                       [members addObject: user];
                     }
+                  } else {
+                    [members addObject: user];
+                  }
+                  
                 }
               [pool release];
             }
@@ -2377,16 +2388,20 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
               user = [SOGoUser userWithLogin: login  roles: nil];
               if (user)
                 {
-                  contactInfos = [self lookupContactEntryWithUIDorEmail: login inDomain: nil];
-                  if ([contactInfos objectForKey: @"isGroup"])
+                  if (!_disableSubgroups) {
+                    contactInfos = [self lookupContactEntryWithUIDorEmail: login inDomain: nil];
+                    if ([contactInfos objectForKey: @"isGroup"])
                     {
                       subusers = [self membersForGroupWithUID: login];
                       [members addObjectsFromArray: subusers];
                     }
-                  else
+                    else
                     {
                       [members addObject: user];
                     }
+                  } else {
+                    [members addObject: user];
+                  }
                 }
               [pool release];
             }
