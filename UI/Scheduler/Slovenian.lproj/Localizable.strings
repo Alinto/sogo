@@ -224,11 +224,11 @@
 "view_next31" = "Naslednjih 31 dni";
 "view_thismonth" = "Ta mesec";
 "view_thisyear" = "To leto";
-"view_last7" = "Last 7 days";
-"view_last14" = "Last 14 days";
-"view_last31" = "Last 31 days";
-"view_lastmonth" = "Last Month";
-"view_lastyear" = "Last Year";
+"view_last7" = "Zadnjih 7 dni";
+"view_last14" = "Zadnjih 14 dni";
+"view_last31" = "Zadnjih 31 dni";
+"view_lastmonth" = "Zadnji mesec";
+"view_lastyear" = "Zadnje leto";
 "view_future" = "Vsi prihodnji dogodki";
 "view_selectedday" = "Izbrani dan";
 "view_not_started" = "Nezačeta opravila";
@@ -248,7 +248,7 @@
 
 /* calendar modes */
 "Overview" = "Pregled";
-"Chart" = "Grafikon";
+"Chart" = "Graf";
 "List" = "Seznam";
 "Columns" = "Stolpci";
 
@@ -302,7 +302,7 @@
 "cycle_yearly" = "cycle_yearly";
 "cycle_end_never" = "cycle_end_never";
 "cycle_end_until" = "cycle_end_until";
-"Recurrence pattern" = "Ponovitev vzorca";
+"Recurrence pattern" = "Ponovitveni vzorec";
 "Range of recurrence" = "Obseg ponovitev";
 "Daily" = "Dnevno";
 "Multi-Columns" = "Več stolpcev";

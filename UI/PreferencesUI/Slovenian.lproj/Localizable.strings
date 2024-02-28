@@ -422,7 +422,7 @@
 
 "Keep the message" = "Obdrži sporočilo";
 "Forward the message to" = "Posreduj sporočilo za";
-"Notify the message to" = "Notify the message to";
+"Notify the message to" = "Obvesti";
 
 /* Input field label of "forward" mail filter action */
 "Email" = "E-pošta";
@@ -463,7 +463,7 @@
 "Password change failed - Password is too short" = "Sprememba gesla ni uspela - geslo je prekratko";
 "Password change failed - Password is too young" = "Sprememba gesla ni uspela - geslo ni dovolj staro";
 "Password change failed - Password is in history" = "Sprememba gesla ni uspela - geslo je v zgodovini";
-"Unhandled policy error: %{0}" = "Neobravnavana napaka police: %{0}";
+"Unhandled policy error: %{0}" = "Neobravnavana napaka pravilnika: %{0}";
 "Unhandled error response" = "Neobravnavana napaka odziva";
 "Password change is not supported." = "Sprememba gesla ni podprta.";
 "Unhandled HTTP error code: %{0}" = "Neobravnavana HTTP napaka: %{0}";
@@ -503,8 +503,8 @@
 "Enable two-factor authentication using a TOTP application" = "Omogoči two-factor authentication z uporabo TOTP aplikacije";
 "You must enter this key into your TOTP application." = "Ta ključ je potrebno vnesti v TOTP aplikacijo.";
 "If you do not and you log out you will not be able to login again." = "Če ne, se ob naslednji prijavi ne boste uspeli vpisati.";
-"Enter TOTP verification code :" = "Enter TOTP verification code :";
-"Invalid TOTP verification code" = "Invalid TOTP verification code";
+"Enter TOTP verification code :" = "Vnesi TOTP številko :";
+"Invalid TOTP verification code" = "Neveljavna TOTP številka";
 
 /* External Sieve scripts */
 "An external Sieve script is active" = "Zunanja Sieve skripta je aktivna";
@@ -512,9 +512,9 @@
 "Let SOGo handle everything" = "Naj SOGo upravlja z vsem";
 
 /* Password Recovery */
-"Password recovery mode" = "Password recovery mode";
-"Question" = "Question";
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password recovery" = "Password recovery";
-"Password change" = "Password change";
+"Password recovery mode" = "Sistem za ponastavitev gesla";
+"Question" = "Vprašanje";
+"Secondary e-mail" = "Rezervni elekronski naslov";
+"Answer" = "Odgovor";
+"Password recovery" = "Ponastaviten gesla";
+"Password change" = "Spremenba gesla";

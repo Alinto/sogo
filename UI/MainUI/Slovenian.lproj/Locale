@@ -12,8 +12,8 @@
   NSDateTimeOrdering = MDYH;
   NSDecimalDigits = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
   NSDecimalSeparator = ".";
-  NSEarlierTimeDesignations = (pred, zadnji, prejsnji, "ze pred");
-  NSHourNameDesignations = ((0, polnoc), (10, jutro), (12, opoldne), (14, popoldne), (19, zvecer));
+  NSEarlierTimeDesignations = (pred, zadnji, prejšnji, "že pred");
+  NSHourNameDesignations = ((0, polnoč), (10, jutro), (12, opoldne), (14, popoldne), (19, zvečer));
   NSInternationalCurrencyString = EUR; /* ISO 4217 */
   NSLaterTimeDesignations = (next);
   NSMonthNameArray = (Januar, Februar, Marec, April, Maj, Junij, Julij, Avgust, September, Oktober, November, December);
@@ -23,12 +23,12 @@
   NSShortDateFormatString = "%m/%e/%y";
   NSShortMonthNameArray = (Jan, Feb, Mar, Apr, Maj, Jun, Jul, Avg, Sep, Okt, Nov, Dec);
   NSShortTimeDateFormatString = "%m/%e/%y %I:%M %p";
-  NSShortWeekDayNameArray = (Ned, Pon, Tor, Sre, Cet, Pet, Sob);
+  NSShortWeekDayNameArray = (Ned, Pon, Tor, Sre, Čet, Pet, Sob);
   NSThisDayDesignations = (danes, sedaj);
   NSThousandsSeparator = ",";
   NSTimeDateFormatString = "%A, %B %e, %Y %I:%M:%S %p %Z";
   NSTimeFormatString = "%I:%M:%S %p";
-  NSWeekDayNameArray = (Nedelja, Ponedeljek, Torek, Sreda, Cetrtek, Petek, Sobota);
+  NSWeekDayNameArray = (Nedelja, Ponedeljek, Torek, Sreda, Četrtek, Petek, Sobota);
   NSYearMonthWeekDesignations = (leto, mesec, teden);
   NSPositiveCurrencyFormatString = "€9,999.00";
   NSNegativeCurrencyFormatString = "-€9,999.00";
