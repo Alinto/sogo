@@ -1268,7 +1268,7 @@ repository
 Defaults to `YES` when unset.
 
 |globalAddressBookFirstEntriesCount (optional)
-|Number of entries displayed when `listRequiresDot` is enabled. Default value is `-1` (all records). If source is LDAP, the LDAP overlay sssvlv must be enabled on the system for server side sorting.
+|Number of entries displayed when `listRequiresDot` is enabled. Default value is `-1` (all records / equals to SOGoLDAPQueryLimit). This parameter must be less or equal to SOGoLDAPQueryLimit. If source is LDAP, the LDAP overlay sssvlv must be enabled on the system for server side sorting.
 
 |disableSubgroups (optional)
 |If set to `YES`, disable recursive search. Consider this option when groups have the same name than a member (https://bugs.sogo.nu/view.php?id=5913).
@@ -3966,6 +3966,9 @@ current version of SOGo from the previous release.
 
 [cols="100a"]
 |=======================================================================
+
+h|5.10.1
+|Parameters `SOGoGlobalAddressBookFirstEntries` and `SOGoGlobalAddressBookFirstEntriesCount` has been removed. Please use `listRequiresDot` and `globalAddressBookFirstEntriesCount` instead
 
 h|5.9.0
 |Run the shell script `sql-update-5.8.4_to_5.9.0.sh` (if you are using MySQL). This will change the `c_defaults` to `MEDIUMTEXT`.
