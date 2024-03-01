@@ -207,7 +207,7 @@
   return rc;
 }
 
-- (void) updateSecretFromEncryptedData: (NSString*) newSecret oldSecret: (NSString*) oldSecret
+- (BOOL) updateSecretFromEncryptedData: (NSString*) newSecret oldSecret: (NSString*) oldSecret
 {
   BOOL rc;
   rc = [self fetchAllUsersForAuxiliaryAccountPassword];
