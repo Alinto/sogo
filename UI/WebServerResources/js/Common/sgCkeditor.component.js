@@ -228,17 +228,6 @@
 
       config = vm.config ? angular.merge(sgCkeditorConfig.config, vm.config) : sgCkeditorConfig.config;
 
-      if (config.language) {
-        // Pickup the first matching language supported by SCAYT
-        // See http://docs.ckeditor.com/#!/guide/dev_howtos_scayt
-        config.scayt_sLang = _.find(['en_US', 'en_GB', 'pt_BR', 'da_DK', 'nl_NL', 'en_CA', 'fi_FI', 'fr_FR', 'fr_CA', 'de_DE', 'el_GR', 'it_IT', 'nb_NO', 'pt_PT', 'es_ES', 'sv_SE'], function (sLang) {
-          return sLang.lastIndexOf(config.language, 0) == 0;
-        }) || 'en_US';
-
-        // Disable caching of the language
-        // See https://github.com/WebSpellChecker/ckeditor-plugin-scayt/issues/126
-        config.scayt_disableOptionsStorage = 'lang';
-      }
       if (!config.toolbar) {
         config.toolbar = {
           "items": [
@@ -250,7 +239,7 @@
             "alignment", "|",
             "link", "|",
             "insertTable", "specialCharacters", "imageUpload", "|",
-            "undo", "redo", "sourceEditing"
+            "undo", "redo", "sourceEditing", "htmlEmbed"
           ],
           "shouldNotGroupWhenFull": true
         }
@@ -261,6 +250,7 @@
           type: "inline"
         }
       };
+      config.disableNativeSpellChecker = false;
       vm.config = config;
     };
 

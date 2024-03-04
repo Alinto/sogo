@@ -9,7 +9,6 @@ import { Alignment } from '@ckeditor/ckeditor5-alignment';
 import { Autoformat } from '@ckeditor/ckeditor5-autoformat';
 import {
 	Bold,
-	Code,
 	Italic,
 	Strikethrough,
 	Subscript,
@@ -23,6 +22,7 @@ import { Essentials } from '@ckeditor/ckeditor5-essentials';
 import { FontBackgroundColor, FontColor, FontFamily, FontSize } from '@ckeditor/ckeditor5-font';
 import { Heading } from '@ckeditor/ckeditor5-heading';
 import { Highlight } from '@ckeditor/ckeditor5-highlight';
+import { HtmlEmbed } from '@ckeditor/ckeditor5-html-embed';
 import { GeneralHtmlSupport } from '@ckeditor/ckeditor5-html-support';
 import {
 	AutoImage,
@@ -40,12 +40,14 @@ import { List } from '@ckeditor/ckeditor5-list';
 import { MediaEmbed } from '@ckeditor/ckeditor5-media-embed';
 import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
 import { PasteFromOffice } from '@ckeditor/ckeditor5-paste-from-office';
+import { SelectAll } from '@ckeditor/ckeditor5-select-all';
 import { SourceEditing } from '@ckeditor/ckeditor5-source-editing';
 import {
 	SpecialCharacters,
-	SpecialCharactersEssentials
+	SpecialCharactersEssentials,
+	SpecialCharactersMathematical
 } from '@ckeditor/ckeditor5-special-characters';
-import { Table, TableToolbar } from '@ckeditor/ckeditor5-table';
+import { Table, TableProperties, TableToolbar } from '@ckeditor/ckeditor5-table';
 import { TextTransformation } from '@ckeditor/ckeditor5-typing';
 import { Undo } from '@ckeditor/ckeditor5-undo';
 import { Base64UploadAdapter } from '@ckeditor/ckeditor5-upload';
@@ -63,7 +65,6 @@ class Editor extends ClassicEditor {
 		BlockQuote,
 		Bold,
 		CloudServices,
-		Code,
 		Essentials,
 		FontBackgroundColor,
 		FontColor,
@@ -72,6 +73,7 @@ class Editor extends ClassicEditor {
 		GeneralHtmlSupport,
 		Heading,
 		Highlight,
+		HtmlEmbed,
 		Image,
 		ImageCaption,
 		ImageInsert,
@@ -86,13 +88,16 @@ class Editor extends ClassicEditor {
 		MediaEmbed,
 		Paragraph,
 		PasteFromOffice,
+		SelectAll,
 		SourceEditing,
 		SpecialCharacters,
 		SpecialCharactersEssentials,
+		SpecialCharactersMathematical,
 		Strikethrough,
 		Subscript,
 		Superscript,
 		Table,
+		TableProperties,
 		TableToolbar,
 		TextTransformation,
 		Underline,
@@ -102,33 +107,25 @@ class Editor extends ClassicEditor {
 	public static override defaultConfig: EditorConfig = {
 		toolbar: {
 			items: [
+				'heading',
+				'|',
 				'bold',
 				'italic',
-				'underline',
-				'|',
-				'fontColor',
-				'fontFamily',
-				'fontSize',
-				'|',
-				'numberedList',
+				'link',
 				'bulletedList',
+				'numberedList',
 				'|',
 				'outdent',
 				'indent',
 				'|',
-				'blockQuote',
-				'|',
-				'alignment',
-				'|',
-				'link',
-				'|',
-				'insertTable',
-				'specialCharacters',
 				'imageUpload',
-				'|',
+				'blockQuote',
+				'insertTable',
+				'mediaEmbed',
 				'undo',
 				'redo',
-				'sourceEditing'
+				'sourceEditing',
+				'htmlEmbed'
 			]
 		},
 		language: 'en',
@@ -145,7 +142,8 @@ class Editor extends ClassicEditor {
 			contentToolbar: [
 				'tableColumn',
 				'tableRow',
-				'mergeTableCells'
+				'mergeTableCells',
+				'tableProperties'
 			]
 		}
 	};

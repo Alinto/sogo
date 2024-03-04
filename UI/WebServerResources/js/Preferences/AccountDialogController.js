@@ -28,7 +28,7 @@
           "fontColor", "fontFamily", "fontSize", "|",
           "link", "|",
           "specialCharacters", "imageUpload", "|",
-          "sourceEditing"
+          "sourceEditing", "htmlEmbed"
         ],
         "shouldNotGroupWhenFull": true
       },
