@@ -244,6 +244,16 @@
           "shouldNotGroupWhenFull": true
         }
       }
+      config.htmlSupport = {
+        allow: [
+          {
+            name: /.*/,
+            attributes: true,
+            classes: true,
+            styles: true
+          }
+        ]
+      };
       config.image = {
         resizeUnit: "px",
         insert: {
