@@ -80,7 +80,7 @@
         }
       }));
       keys.push(sgHotkeys.createHotkey({
-        key: l('hotkey_junk'),
+        key: l('shift+j'),
         description: l('Mark the selected messages as junk'),
         callback: vm.markOrUnMarkMessagesAsJunk
       }));

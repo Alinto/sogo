@@ -485,9 +485,6 @@
 /* Hotkey to write a new message */
 "hotkey_compose" = "w";
 
-/* Hotkey to mark selected message(s) as junk */
-"hotkey_junk" = "j";
-
 /* Hotkey to flag a message */
 "hotkey_flag" = "*";
 
