@@ -423,4 +423,9 @@ md-dialog md-dialog-actions.sg-mail-editor-attachments {
     right: 0!important;
     left: auto!important;
   }
+
+  .ck-widget.raw-html-embed .raw-html-embed__preview-content>* {
+    margin-left: unset!important;
+    margin-right: unset!important;
+  }
 }

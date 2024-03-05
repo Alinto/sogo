@@ -1091,7 +1091,42 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
         }
     }
 
-  return mailAccounts;
+  // Patch for CKEditor 5
+  // HTML Signatures with tables are broken with CKEditor 5
+  // In this case, signatures may be encapsulated with a <div class="raw-html-embed">
+  // Details in https://bugs.sogo.nu/view.php?id=5920
+  NSMutableArray *tmpMailAccounts, *tmpIdentities;
+  NSDictionary *account, *identities, *identity;
+  NSMutableDictionary *tmpAccount, *tmpIdentity;
+  NSString *signature;
+
+  if (mailAccounts && [mailAccounts count] > 0) {
+    tmpMailAccounts = [NSMutableArray array];
+    for (account in mailAccounts) {
+      tmpAccount = [NSMutableDictionary dictionaryWithDictionary: account];
+      if ([account objectForKey: @"identities"]) {
+        identities = [account objectForKey: @"identities"];
+        tmpIdentities = [NSMutableArray array];
+        for (identity in identities) {
+          tmpIdentity = [NSMutableDictionary dictionaryWithDictionary: identity];
+          if ([tmpIdentity objectForKey: @"signature"]) {
+            // Add raw html embed class
+            if ([[tmpIdentity objectForKey: @"signature"] rangeOfString:@"<table"].location != NSNotFound 
+              && [[tmpIdentity objectForKey: @"signature"] rangeOfString:@"<figure class=\"table\""].location == NSNotFound
+              && [[tmpIdentity objectForKey: @"signature"] rangeOfString:@"raw-html-embed"].location == NSNotFound) {
+              signature = [NSString stringWithFormat:@"<div class=\"raw-html-embed\">%@</div>", [tmpIdentity objectForKey: @"signature"]];
+              [tmpIdentity setObject:signature forKey:@"signature"];
+            }
+          }
+          [tmpIdentities addObject: tmpIdentity];
+        }
+        [tmpAccount setObject:tmpIdentities forKey: @"identities"];
+      }
+      [tmpMailAccounts addObject: tmpAccount];
+    }
+  }
+
+  return tmpMailAccounts;
 }
 
 - (NSDictionary *) accountWithName: (NSString *) accountName;

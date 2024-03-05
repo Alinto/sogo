@@ -18,4 +18,9 @@
   .ck-editor__editable {
     min-height: 70px;
   }
+
+  .ck-widget.raw-html-embed .raw-html-embed__preview-content>* {
+      margin-left: unset!important;
+      margin-right: unset!important;
+  }
 }

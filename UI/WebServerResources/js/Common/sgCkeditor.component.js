@@ -254,6 +254,9 @@
           }
         ]
       };
+      config.htmlEmbed = {
+        showPreviews: true
+      };
       config.image = {
         resizeUnit: "px",
         insert: {
