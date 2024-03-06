@@ -55,5 +55,14 @@
         };
       };
     };
+    SOGoTNEFMailBodyPart = {
+      methods = {
+        addToCalendar = {
+          protectedBy = "View";
+          actionClass = "UIxMailPartICalActions";
+          actionName  = "addToCalendar";
+        };
+      };
+    };
   };
 }

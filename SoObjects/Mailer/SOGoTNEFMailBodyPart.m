@@ -277,6 +277,7 @@ unsigned char GetRruleMonthNum(unsigned char a, unsigned char b) {
   NSString *partName, *type, *subtype;
   NSString *value, *attendee;
   RTFHandler *handler;
+  NGMimeBodyPart* eventPart;
 
   DWORD signature;
   DDWORD *classification;
@@ -664,9 +665,10 @@ unsigned char GetRruleMonthNum(unsigned char a, unsigned char b) {
               if (debugOn)
                 NSLog(@"TNEF reconstructed vCalendar:\n%@", vcalendar);
 
-              [self bodyPartForData: [vcalendar dataUsingEncoding: NSUTF8StringEncoding]
+              eventPart = [self bodyPartForData: [vcalendar dataUsingEncoding: NSUTF8StringEncoding]
                            withType: @"text"
                          andSubtype: @"calendar"];
+              [self setPart: eventPart];
 
             }
           // Other classes to handle:
