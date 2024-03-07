@@ -831,9 +831,11 @@
             {
               NSMutableDictionary *info;
               NSMutableArray *conflicts;
+              NSArray *emails, *partstates;
               NSString *formattedEnd;
               SOGoUser *ownerUser;
               id o;
+              BOOL hasDelegated = NO;
 
               info = [NSMutableDictionary dictionary];
               conflicts = [NSMutableArray array];
@@ -855,23 +857,50 @@
                 }
 
               for (i = 0; i < [fbInfo count]; i++)
+              {
+                o = [fbInfo objectAtIndex: i];
+                //Check if the user has delegated the event
+                hasDelegated = NO;
+                emails = [[o objectForKey: @"c_partmails"] componentsSeparatedByString: @"\n"];
+                for (j = 0; j < [emails count]; j++)
                 {
-                  o = [fbInfo objectAtIndex: i];
-                  end = [o objectForKey: @"endDate"];
-                  if ([[o objectForKey: @"startDate"] isDateOnSameDay: end])
-                    formattedEnd = [formatter formattedTime: end];
-                  else
-                    formattedEnd = [formatter formattedDateAndTime: end];
-
-                  [conflicts addObject: [NSDictionary dictionaryWithObjectsAndKeys: [formatter formattedDateAndTime: [o objectForKey: @"startDate"]], @"startDate",
-                                                      formattedEnd, @"endDate", nil]];
+                  if ([[info objectForKey:@"attendee_email"] isEqualToString: [emails objectAtIndex: j]])
+                  {
+                    // We now fetch the c_partstates array and get the participation status of the user for the event
+                    partstates = [[o objectForKey: @"c_partstates"] componentsSeparatedByString: @"\n"];
+                    if (i < [partstates count])
+                    {
+                      // 0: needs action   (considered busy)
+                      // 1: accepted       (busy)
+                      // 2: declined       (free)
+                      // 3: tentative      (free)
+                      // 4: delegated      (free)
+                      hasDelegated = ([[partstates objectAtIndex: j] intValue] == 4);
+                    }
+                    break;
+                  }
                 }
+                if(hasDelegated)
+                  continue;
 
-              [info setObject: conflicts  forKey: @"conflicts"];
+                end = [o objectForKey: @"endDate"];
+                if ([[o objectForKey: @"startDate"] isDateOnSameDay: end])
+                  formattedEnd = [formatter formattedTime: end];
+                else
+                  formattedEnd = [formatter formattedDateAndTime: end];
 
-              // We immediately raise an exception, without processing the possible other attendees.
-              return [self exceptionWithHTTPStatus: 409
-                                            reason: [info jsonRepresentation]];
+                [conflicts addObject: [NSDictionary dictionaryWithObjectsAndKeys: [formatter formattedDateAndTime: [o objectForKey: @"startDate"]], @"startDate",
+                                                    formattedEnd, @"endDate", nil]];
+              }
+
+              if([conflicts count] > 0)
+              {
+                [info setObject: conflicts  forKey: @"conflicts"];
+
+                // We immediately raise an exception, without processing the possible other attendees.
+                return [self exceptionWithHTTPStatus: 409
+                                              reason: [info jsonRepresentation]];
+              }
             }
         } // if ([fbInfo count]) ...
       else if (currentAttendee && [user isResource])
