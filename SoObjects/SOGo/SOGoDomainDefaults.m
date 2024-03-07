@@ -106,6 +106,11 @@
   return [self boolForKey: @"SOGoMailAuxiliaryUserAccountsEnabled"];
 }
 
+- (BOOL) mailDisableXForward
+{
+  return [self boolForKey: @"SOGoMailDisableXForward"];
+}
+
 - (NSString *) mailDomain
 {
   return [self stringForKey: @"SOGoMailDomain"];

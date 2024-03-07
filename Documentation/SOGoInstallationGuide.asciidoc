@@ -530,6 +530,10 @@ This could be `America/New_York`, `Europe/Berlin`, `Asia/Tokyo` or
 
 In our example, we set the time zone to `America/Montreal`.
 
+|D |SOGoMailDisableXForward
+|Parameter used to prevent sogo from adding the mail header X-Forward that
+contains the user ip. Set to 'YES' to disable this header. Default to 'NO'.
+
 |D |SOGoMailDomain
 |Parameter used to set the default domain name used by SOGo. SOGo uses
 this parameter to build the list of valid email addresses for users.

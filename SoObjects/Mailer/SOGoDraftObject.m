@@ -1838,6 +1838,7 @@ static NSString    *userAgent      = nil;
   NSString *s, *dateString;
   NGMutableHashMap *map;
   id emails, from, replyTo;
+  BOOL addXForward = NO;
 
   map = [[[NGMutableHashMap alloc] initWithCapacity:16] autorelease];
 
@@ -1884,16 +1885,14 @@ static NSString    *userAgent      = nil;
   [map addObject: userAgent forKey: @"User-Agent"];
 
   /* add custom headers */
-  if ([(s = [[context request] headerForKey:@"x-webobjects-remote-host"]) length] > 0 &&
+  addXForward = ![[[context activeUser] domainDefaults] mailDisableXForward];
+  if (addXForward && [(s = [[context request] headerForKey:@"x-webobjects-remote-host"]) length] > 0 &&
       [s compare: @"localhost"] != NSOrderedSame)
-    [map addObject: s
-	    forKey: @"X-Forward"];
+    [map addObject: s forKey: @"X-Forward"];
   if ([(s = [headers objectForKey: @"X-Priority"]) length] > 0)
-    [map setObject: s
-            forKey: @"X-Priority"];
+    [map setObject: s forKey: @"X-Priority"];
   if ([(s = [headers objectForKey: @"Disposition-Notification-To"]) length] > 0)
-    [map setObject: s
-            forKey: @"Disposition-Notification-To"];
+    [map setObject: s forKey: @"Disposition-Notification-To"];
 
   [self _addHeaders: _headers toHeaderMap: map];
 
