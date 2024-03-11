@@ -1111,9 +1111,7 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
           tmpIdentity = [NSMutableDictionary dictionaryWithDictionary: identity];
           if ([tmpIdentity objectForKey: @"signature"]) {
             // Add raw html embed class
-            if ([[tmpIdentity objectForKey: @"signature"] rangeOfString:@"<table"].location != NSNotFound 
-              && [[tmpIdentity objectForKey: @"signature"] rangeOfString:@"<figure class=\"table\""].location == NSNotFound
-              && [[tmpIdentity objectForKey: @"signature"] rangeOfString:@"raw-html-embed"].location == NSNotFound) {
+            if ([[tmpIdentity objectForKey: @"signature"] rangeOfString:@"raw-html-embed"].location == NSNotFound) {
               signature = [NSString stringWithFormat:@"<div class=\"raw-html-embed\">%@</div>", [tmpIdentity objectForKey: @"signature"]];
               [tmpIdentity setObject:signature forKey:@"signature"];
             }
