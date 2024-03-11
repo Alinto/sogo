@@ -232,7 +232,7 @@
         config.toolbar = {
           "items": [
             "bold", "italic", "underline", "|",
-            "fontColor", "fontFamily", "fontSize", "|",
+            "fontColor", "fontFamily", "fontSize", "removeFormat", "|",
             "numberedList", "bulletedList", "|",
             "outdent", "indent", "|",
             "blockQuote", "|",
