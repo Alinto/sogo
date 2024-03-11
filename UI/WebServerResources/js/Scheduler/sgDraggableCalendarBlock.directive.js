@@ -240,6 +240,7 @@
 
         pointerHandler = new SOGoEventDragPointerHandler('double-click');
         pointerHandler.initFromBlock(block);
+        pointerHandler.currentEventCoordinates.duration = 0;
         
         // Update Component.$ghost
         Component.$ghost.pointerHandler = pointerHandler;
