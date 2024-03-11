@@ -101,4 +101,8 @@
   md-card {
     box-shadow: none !important;
   }
+
+  .sg-block-print div.SOGoHTMLMail-CSS-Delimiter.mailer_htmlcontent div[class^="WordSection"] {
+    page: auto !important;
+  }
 }
