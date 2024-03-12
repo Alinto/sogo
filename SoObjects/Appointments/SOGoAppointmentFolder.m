@@ -1255,7 +1255,12 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSInteger offset;
   id tz;
 
-  content = [theRecord objectForKey: @"c_cycleinfo"];
+  if ([theRecord objectForKey: @"c_cycleinfo"] && [[theRecord objectForKey: @"c_cycleinfo"] isKindOfClass: [NSData class]]) {
+    content = [NSString stringWithUTF8String: [[theRecord objectForKey: @"c_cycleinfo"] bytes]];
+  } else if ([theRecord objectForKey: @"c_cycleinfo"] && [[theRecord objectForKey: @"c_cycleinfo"] isKindOfClass: [NSString class]]) {
+    content = [theRecord objectForKey: @"c_cycleinfo"];
+  }
+
   if (![content isNotNull])
     {
       // If c_iscycle is set but c_cycleinfo is null, that means we're dealing with a vcalendar that
@@ -1282,6 +1287,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
         }
       return;
     }
+
 
   cycleinfo = [content propertyList];
   if (!cycleinfo)
