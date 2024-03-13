@@ -2968,7 +2968,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   
   if (!infos)
     infos = [[NSArray alloc] initWithObjects: @"c_content", @"c_partmails", @"c_partstates",
-                             @"c_isopaque", @"c_status", @"c_cycleinfo", @"c_orgmail", nil];
+                             @"c_isopaque", @"c_status", @"c_cycleinfo", @"c_orgmail", @"c_participants", nil];
 
   // We MUST include the protected information when checking for freebusy info as
   // we rely on the c_partmails/c_partstates fields for many operations.

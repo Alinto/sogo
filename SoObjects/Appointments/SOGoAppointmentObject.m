@@ -831,7 +831,7 @@
             {
               NSMutableDictionary *info;
               NSMutableArray *conflicts;
-              NSArray *emails, *partstates;
+              NSArray *emails, *c_names, *partstates;
               NSString *formattedEnd;
               SOGoUser *ownerUser;
               id o;
@@ -862,9 +862,11 @@
                 //Check if the user has delegated the event
                 hasDelegated = NO;
                 emails = [[o objectForKey: @"c_partmails"] componentsSeparatedByString: @"\n"];
+                c_names = [[o objectForKey: @"c_participants"] componentsSeparatedByString: @"\n"];
                 for (j = 0; j < [emails count]; j++)
                 {
-                  if ([[info objectForKey:@"attendee_email"] isEqualToString: [emails objectAtIndex: j]])
+                  if ([[info objectForKey:@"attendee_email"] isEqualToString: [emails objectAtIndex: j]] ||
+                      [[info objectForKey:@"attendee_name"] isEqualToString: [c_names objectAtIndex: j]])
                   {
                     // We now fetch the c_partstates array and get the participation status of the user for the event
                     partstates = [[o objectForKey: @"c_partstates"] componentsSeparatedByString: @"\n"];

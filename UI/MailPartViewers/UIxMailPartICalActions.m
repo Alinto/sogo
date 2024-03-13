@@ -247,11 +247,11 @@
       // For invitations, we take the organizers's alarm to start with
       alarm = [[chosenEvent alarms] lastObject];      
       response = (WOResponse*)[eventObject changeParticipationStatus: newStatus
-							withDelegate: delegate
-                                                               alarm: alarm
-						     forRecurrenceId: [chosenEvent recurrenceId]];
+							                                      withDelegate: delegate
+                                                           alarm: alarm
+						                                     forRecurrenceId: [chosenEvent recurrenceId]];
       if (!response)
-	response = [self responseWith204];
+	      response = [self responseWith204];
     }
   else
     {
