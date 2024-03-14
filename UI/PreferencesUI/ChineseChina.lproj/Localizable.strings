@@ -33,7 +33,7 @@
 "Delete" = "删除";
 
 /* contacts categories */
-"contacts_category_labels" = "同事，竞争对手，客户，朋友，家庭，工作伙伴，服务商，媒体，VIP";
+"contacts_category_labels" = "同事,竞争对手,客户,朋友,家庭,工作伙伴,服务商,媒体,VIP";
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "休假自动回复";

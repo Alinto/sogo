@@ -33,7 +33,7 @@
 "Delete" = "مسح";
 
 /* contacts categories */
-"contacts_category_labels" = "الزميل، المنافس، العملاء، الصديق، العائلة، شريك تجاري، مقدم خدمة ، الصحافة ،كبار الشخصيات";
+"contacts_category_labels" = "الزميل, المنافس, العملاء, الصديق, العائلة, شريك تجاري, مقدم خدمة , الصحافة ,كبار الشخصيات";
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "تمكين الرد التلقائي أثناء العطلة";
