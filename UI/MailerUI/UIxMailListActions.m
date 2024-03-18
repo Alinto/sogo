@@ -340,20 +340,17 @@
                           && [[currentPart objectForKey:@"disposition"] objectForKey:@"type"] 
                           && [[[[currentPart objectForKey:@"disposition"] objectForKey:@"type"] uppercaseString] isEqualToString:@"INLINE"];
             isImage = [SOGoMailBodyPart bodyPartClassForMimeType: [contentType lowercaseString] inContext: [self context]] == [SOGoImageMailBodyPart class];
+            id foo = [SOGoMailBodyPart bodyPartClassForMimeType: [contentType lowercaseString] inContext: [self context]];
+            
 
             if (![ud hideInlineAttachments] || ([ud hideInlineAttachments] && !(isInline && isImage))) {
-              BOOL a = [currentPart objectForKey:@"disposition"] ;
-              BOOL b = [[[currentPart objectForKey:@"disposition"] allKeys] length] > 0 ;
-              BOOL c = [currentPart objectForKey:@"parameterList"] ;
-              BOOL d = [[currentPart objectForKey:@"parameterList"] objectForKey:@"name"];
-              BOOL foo = ([currentPart objectForKey:@"parameterList"]
-                                  && [[currentPart objectForKey:@"parameterList"] objectForKey:@"name"]
-                                );
-              hasAttachment = (([currentPart objectForKey:@"disposition"] 
+              hasAttachment = ((([currentPart objectForKey:@"disposition"] 
                                 && [[[currentPart objectForKey:@"disposition"] allKeys] length] > 0)
                                 || ([currentPart objectForKey:@"parameterList"]
                                   && [[currentPart objectForKey:@"parameterList"] objectForKey:@"name"]
-                                ));
+                                ))
+                                && !(isInline && contentType && [[contentType lowercaseString] isEqualToString:@"text/plain"])
+                                && !(isInline && contentType && [[contentType lowercaseString] isEqualToString:@"text/html"]));
             }
           } else if ([currentPart objectForKey:@"parts"]) {
             hasAttachment = [self parseParts: [currentPart objectForKey:@"parts"] hasAttachment: hasAttachment];
