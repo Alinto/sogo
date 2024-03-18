@@ -758,6 +758,17 @@ unsigned char GetRruleMonthNum(unsigned char a, unsigned char b) {
                         {
                           partName = [NSString stringWithUTF8String: (const char *)attachmentName->data];
 
+                          if (!partName) {
+                            // Switch to different encoding
+                            partName = [[NSString alloc] initWithData: [NSData dataWithBytes: attachmentName->data length: strlen(attachmentName->data)] encoding:NSISOLatin1StringEncoding];
+                            [partName autorelease];
+                          }
+                          if (!partName) {
+                            // Fallback
+                            [self warnWithFormat: @"Could not get TNEF attachment name, fallback to unamed.bin"];
+                            partName = @"unnamed.bin";
+                          }
+
                           type = @"application";
                           subtype = @"octet-stream";
 
