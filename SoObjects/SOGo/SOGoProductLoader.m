@@ -122,28 +122,28 @@ static NSString *productDirectoryName = @"SOGo";
 
   pathes = [[self productSearchPathes] objectEnumerator];
   while ((lpath = [pathes nextObject]))
+  {
+    productNames = [[fm directoryContentsAtPath: lpath] objectEnumerator];
+    while ((productName = [productNames nextObject]))
     {
-      productNames = [[fm directoryContentsAtPath: lpath] objectEnumerator];
-      while ((productName = [productNames nextObject]))
-	{
-          if ([[productName pathExtension] isEqualToString: @"SOGo"])
-            {
-	      bpath = [lpath stringByAppendingPathComponent: productName];
-	      [registry registerProductAtPath: bpath];
-              [loadedProducts addObject: productName];
-	    }
-	}
-      if ([loadedProducts count])
+        if ([[productName pathExtension] isEqualToString: @"SOGo"])
         {
-	  if (verbose)
-	    {
-	      [self logWithFormat: @"SOGo products loaded from '%@':", lpath];
-	      [self logWithFormat: @"  %@",
-		    [loadedProducts componentsJoinedByString: @", "]];
-	    }
-          [loadedProducts removeAllObjects];
+          bpath = [lpath stringByAppendingPathComponent: productName];
+          [registry registerProductAtPath: bpath];
+          [loadedProducts addObject: productName];
         }
     }
+    if ([loadedProducts count])
+    {
+      if (verbose)
+      {
+        [self logWithFormat: @"SOGo products loaded from '%@':", lpath];
+        [self logWithFormat: @"  %@",
+        [loadedProducts componentsJoinedByString: @", "]];
+      }
+      [loadedProducts removeAllObjects];
+    }
+  }
 
   if (![registry loadAllProducts] && verbose)
     [self warnWithFormat: @"could not load all products !"];

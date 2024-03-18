@@ -10,6 +10,7 @@
 */obj/
 .scss-lint-config.yml_
 ActiveSync/ActiveSync.SOGo
+API/API.SOGo
 Documentation/*.docbook
 Documentation/*.pdf
 Documentation/*.html

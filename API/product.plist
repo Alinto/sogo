@@ -1,0 +1,31 @@
+{
+  requires = ( MAIN, Appointments, Contacts, Mailer );
+  
+  publicResources = ();
+
+  factories = {};
+
+  classes = {
+    SOGoAPI = {
+      protectedBy = "<public>";
+      defaultRoles = {
+        "View" = ( "Authenticated", "PublicUser" );
+      };
+    };
+  };
+
+  categories = {
+    SOGoAPI = {
+      slots = {
+      };
+      methods = {
+        Version = {
+          protectedBy = "View";
+          pageName = "SOGoAPI";
+          actionName = "sogoVersion";
+        };
+      };
+    };
+  };
+
+}

@@ -9,6 +9,7 @@ SUBPROJECTS = \
 	SoObjects	\
 	Main		\
 	UI		\
+	API  \
 	Tools		\
 	Tests/Unit	\
 
