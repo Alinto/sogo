@@ -34,6 +34,8 @@
       this.messageDialog = null; // also access from Message controller
       this.mode = { search: false, multiple: 0 };
       this.allSelected = false;
+      this.isLoadingMessage = false;
+      this.nextAction = null;
 
       if (!Mailbox.$virtualMode)
         this.selectedFolder.getLabels(); // fetch labels from server
@@ -289,6 +291,10 @@
      * User has pressed up arrow key
      */
     function _nextMessage($event) {
+      if (vm.isLoadingMessage) {
+        vm.nextAction = { m: _nextMessage, p: $event };
+      }
+
       var index = vm.selectedFolder.$selectedMessageIndex();
 
       if (angular.isDefined(index)) {
@@ -302,7 +308,7 @@
         vm.selectedFolder.$topIndex = vm.selectedFolder.getLength();
       }
 
-      if (index > -1)
+      if (index > -1 && !vm.isLoadingMessage)
         vm.selectMessage(vm.selectedFolder.getItemAtIndex(index));
 
       $event.preventDefault();
@@ -314,6 +320,10 @@
      * User has pressed the down arrow key
      */
     function _previousMessage($event) {
+      if (vm.isLoadingMessage) {
+        vm.nextAction = { m: _previousMessage, p: $event };
+      }
+
       var index = vm.selectedFolder.$selectedMessageIndex();
 
       if (angular.isDefined(index)) {
@@ -325,7 +335,7 @@
         // No message is selected, show newest
         index = 0;
 
-      if (index < vm.selectedFolder.getLength())
+      if (index < vm.selectedFolder.getLength() && !vm.isLoadingMessage)
         vm.selectMessage(vm.selectedFolder.getItemAtIndex(index));
       else
         index = -1;
@@ -370,10 +380,35 @@
     }
 
     this.selectMessage = function(message) {
-      if (Mailbox.$virtualMode)
-        $state.go('mail.account.virtualMailbox.message', {mailboxId: encodeUriFilter(encodeUriFilter(message.$mailbox.path)), messageId: message.uid});
-      else
-        $state.go('mail.account.mailbox.message', {mailboxId: encodeUriFilter(encodeUriFilter(message.$mailbox.path)), messageId: message.uid});
+      if (Mailbox.$virtualMode) {
+        vm.isLoadingMessage = true;
+        $state.go('mail.account.virtualMailbox.message', { mailboxId: encodeUriFilter(encodeUriFilter(message.$mailbox.path)), messageId: message.uid }).then(function () {
+
+        }).catch((err) => {
+          console.error(err);
+        })
+          .finally(() => {
+            vm.isLoadingMessage = false;
+            if (vm.nextAction) {
+              vm.nextAction.m(vm.nextAction.p);
+              vm.nextAction = null;
+            }
+          });
+      } else {
+        vm.isLoadingMessage = true;
+        $state.go('mail.account.mailbox.message', { mailboxId: encodeUriFilter(encodeUriFilter(message.$mailbox.path)), messageId: message.uid }).then(function () {
+
+        }).catch((err) => {
+          console.error(err);
+        })
+          .finally(() => {
+            vm.isLoadingMessage = false;
+            if (vm.nextAction) {
+              vm.nextAction.m(vm.nextAction.p);
+              vm.nextAction = null;
+            }
+          });
+      }
     };
 
     this.toggleMessageSelection = function($event, message) {
