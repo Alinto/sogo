@@ -44,7 +44,7 @@
 "Move To" = "Færa í";
 "Copy To" = "Afrita í";
 "Add to" = "Bæta við";
-"To" = "To";
+"To" = "Til";
 "Carbon Copy (Cc)" = "Carbon Copy (Cc)";
 "Blind Carbon Copy (Bcc)" = "Blind Carbon Copy (Bcc)";
 
@@ -204,7 +204,7 @@
 "Service" = "Þjónusta";
 "Company" = "Fyrirtæki";
 "Department" = "Deild";
-"City" = "Borg ";
+"City" = "Borg";
 "State_Province" = "Hérað/Fylki";
 "ZIP_Postal Code" = "Póstnúmer";
 "Country" = "Land";

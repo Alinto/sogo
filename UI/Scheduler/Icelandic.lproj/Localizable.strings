@@ -121,7 +121,7 @@
 "Update" = "Uppfæra";
 "Cancel" = "Hætta við";
 "Reset" = "Reset";
-"Save" = "Save";
+"Save" = "Vista";
 "show_rejected_apts" = "Sýna tímapantanir sem hefur verið hafnað";
 "hide_rejected_apts" = "Fela tímapantanir sem hefur verið hafnað";
 
@@ -398,8 +398,8 @@
 
 /* email notifications */
 "Send Appointment Notifications" = "Send Appointment Notifications";
-"From" = "From";
-"To" = "To";
+"From" = "Frá";
+"To" = "Til";
 
 /* dates */
 "DateFrom" = "From";
@@ -610,7 +610,7 @@ vtodo_class2 = "(Verkefni er trúnaðarmál)";
 "Select ending date" = "Select ending date";
 "Delegated to" = "Delegated to";
 "Keep sending me updates" = "Keep sending me updates";
-"OK" = "OK";
+"OK" = "Í lagi";
 "Confidential" = "Confidential";
 "Enable" = "Enable";
 "Filter" = "Filter";
