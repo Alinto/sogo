@@ -205,7 +205,7 @@
 "Insert signature on reply" = "Sett inn signatur på svar";
 "Insert signature on forward" = "Sett inn signatur på videresending";
 "Show recipients or sender full email in mailboxes" = "Vis mottakere eller avsender av hele e-posten i innboksene";
-"Hide attachements for inline images" = "Hide attachements for inline images";
+"Hide attachments for inline images" = "Hide attachments for inline images";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Standard skriftstørrelse ";

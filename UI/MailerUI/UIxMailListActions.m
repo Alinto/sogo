@@ -376,7 +376,7 @@
   }  
   NS_HANDLER
   {
-    [self logWithFormat: @"Error while parsing attachements for rendering bracket"];
+    [self logWithFormat: @"Error while parsing attachments for rendering bracket"];
   }
   NS_ENDHANDLER;
 

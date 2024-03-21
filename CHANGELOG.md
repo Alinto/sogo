@@ -317,9 +317,9 @@ All notable changes to this project will be documented in this file. See [standa
 * **eas:** Fix error 500 when SOGoCacheCleanup triggered cleanup with shibboleth 4.2.1. Fore refresh ticket in iFrame in this case ([7b711ea](https://github.com/Alinto/sogo/commit/7b711eabb346e7197c94880c8bfe264e0e3b6f0f) [5500ce7](https://github.com/Alinto/sogo/commit/5500ce7085a1c45a6858483b89fda5867f2aef36))
 * **js:** Fix display of body message when 'to' field is not filled in. Closes [#5721](https://bugs.sogo.nu/view.php?id=5721) ([6acb245](https://github.com/Alinto/sogo/commit/6acb245fec44bfc0bb7cf8b5b37dfd56b62089c5))
 * **js:** Fix JavaScript error when send mail from Addressbook. Fixes [#5750](https://bugs.sogo.nu/view.php?id=5750). ([3b0fbdd](https://github.com/Alinto/sogo/commit/3b0fbdd4f4584a010195daab9fa64c617e093c76))
-* **mail:** Fix images in attachements when replying to a mail. Fixes [#5731](https://bugs.sogo.nu/view.php?id=5731) ([dbd4e20](https://github.com/Alinto/sogo/commit/dbd4e20c344666a01cfb1fa5dfdd5547a59f0520))
+* **mail:** Fix images in attachments when replying to a mail. Fixes [#5731](https://bugs.sogo.nu/view.php?id=5731) ([dbd4e20](https://github.com/Alinto/sogo/commit/dbd4e20c344666a01cfb1fa5dfdd5547a59f0520))
 * **mail:** Fix invalid forward template when replying. Closes [#5726](https://bugs.sogo.nu/view.php?id=5726) ([d49ef40](https://github.com/Alinto/sogo/commit/d49ef4047a5c7f51850cf6e49cb3465b0dc7ac91))
-* **mail:** Removed attachements of images when replying to a mail. As the image is inline, the attachement shall be removed. ([0edd3f7](https://github.com/Alinto/sogo/commit/0edd3f757fc07aabd4270b393677cea6ff4a8ed6))
+* **mail:** Removed attachments of images when replying to a mail. As the image is inline, the attachement shall be removed. ([0edd3f7](https://github.com/Alinto/sogo/commit/0edd3f757fc07aabd4270b393677cea6ff4a8ed6))
 
 
 ### Localization
