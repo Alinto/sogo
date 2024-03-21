@@ -1059,7 +1059,7 @@ static NSString    *userAgent      = nil;
 - (void) fetchMailForReplying: (SOGoMailObject *) sourceMail
                         toAll: (BOOL) toAll
 {
-  BOOL fromSentMailbox, shouldRetrieveAttachements;
+  BOOL fromSentMailbox, shouldRetrieveattachments;
   NSString *msgID;
   NSString *oldReferences;
   NSMutableDictionary *info;
@@ -1103,9 +1103,9 @@ static NSString    *userAgent      = nil;
   } else {
     [self setText: [NSString stringWithFormat: @"\n\n%@", [sourceMail contentForReply]]];
   }
-  shouldRetrieveAttachements = [[ud mailComposeMessageType] isEqualToString: @"html"];
+  shouldRetrieveattachments = [[ud mailComposeMessageType] isEqualToString: @"html"];
 
-  if (shouldRetrieveAttachements) {
+  if (shouldRetrieveattachments) {
     if ([sourceMail isEncrypted])
       [self _fetchAttachmentsFromEncryptedMail: sourceMail onlyImages: YES];
     else if ([sourceMail isOpaqueSigned])

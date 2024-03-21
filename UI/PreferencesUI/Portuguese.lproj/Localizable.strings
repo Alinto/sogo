@@ -205,7 +205,7 @@
 "Insert signature on reply" = "Inserir assinatura nas respostas";
 "Insert signature on forward" = "Inserir assinatura no reencaminhamento";
 "Show recipients or sender full email in mailboxes" = "Mostrar destinatários ou endereço completo do remetente nas caixas de correio";
-"Hide attachements for inline images" = "Ocultar anexos para imagens em linha";
+"Hide attachments for inline images" = "Ocultar anexos para imagens em linha";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Tamanho da letra por defeito";

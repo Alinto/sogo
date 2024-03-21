@@ -205,7 +205,7 @@
 "Insert signature on reply" = "Вставляти підпис у відповідь";
 "Insert signature on forward" = "Вставляти підпис при переадресації";
 "Show recipients or sender full email in mailboxes" = "Показувати повну електронну пошту одержувачів або відправника в поштових скриньках";
-"Hide attachements for inline images" = "Hide attachements for inline images";
+"Hide attachments for inline images" = "Hide attachments for inline images";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Розмір шрифта за замовчуванням";
