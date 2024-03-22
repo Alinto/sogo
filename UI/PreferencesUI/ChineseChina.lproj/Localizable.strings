@@ -297,7 +297,7 @@
 "Add Contact Category" = "增加联系人分类";
 "Remove Contact Category" = "移除联系人分类";
 "category_none" = "空";
-"calendar_category_labels" = "结婚纪念日,生日,工作,电话,客户,竞争对手,客户,收藏夹,追踪,礼物,假期,想法,会议,课题,其他,个人,项目,公众假日,状态,供应商,旅游,休假";
+"calendar_category_labels" = "结婚纪念日,生日,工作,电话,客户,竞争对手,顾客,收藏夹,追踪,礼物,假期,想法,会议,课题,其他,个人,项目,公众假日,状态,供应商,旅游,休假";
 
 /* Default module */
 "Calendar" = "日历";
