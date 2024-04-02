@@ -1425,8 +1425,9 @@
 	  
 	  allRoles = [self _davGetRolesFromRequest: node];
 	  for (i = 0; i < [allUsers count]; i++)
-	    {
-	      [self setRoles: allRoles
+	    { 
+        if ([[[context activeUser] login] isEqualToString: owner])
+	        [self setRoles: allRoles
                      forUser: [allUsers objectAtIndex: i]];
 	    }
 	  result = @"";
