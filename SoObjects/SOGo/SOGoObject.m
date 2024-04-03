@@ -1400,7 +1400,7 @@
       else if ([nodeName isEqualToString: @"set-roles"])
 	{
     // Disable Acl modifications if this is not the owner
-    if (![[[context activeUser] login] isEqualToString: owner])
+    if (![self ignoreRights])
       return nil;
 
 	  // We support two ways of setting roles. The first one is, for example:
@@ -1451,7 +1451,7 @@
       else if ([nodeName isEqualToString: @"add-user"])
 	{
     // Disable Acl modifications if this is not the owner
-    if (![[[context activeUser] login] isEqualToString: owner])
+    if (![self ignoreRights])
       return nil;
 	  attrs = [node attributes];
 	  userAttr = [attrs namedItem: @"user"];
@@ -1462,7 +1462,7 @@
       else if ([nodeName isEqualToString: @"add-users"])
 	{
     // Disable Acl modifications if this is not the owner
-    if (![[[context activeUser] login] isEqualToString: owner])
+    if (![self ignoreRights])
       return nil;
 	  attrs = [node attributes];
 	  userAttr = [attrs namedItem: @"users"];
@@ -1485,7 +1485,7 @@
       else if ([nodeName isEqualToString: @"remove-user"])
 	{
     // Disable Acl modifications if this is not the owner
-    if (![[[context activeUser] login] isEqualToString: owner])
+    if (![self ignoreRights])
       return nil;
 	  attrs = [node attributes];
 	  userAttr = [attrs namedItem: @"user"];
