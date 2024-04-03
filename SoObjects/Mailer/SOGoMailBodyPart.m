@@ -500,49 +500,54 @@ static BOOL debugOn = NO;
 
   error = [self matchesRequestConditionInContext: localContext];
   if (error)
-    {
-      response = error; /* return 304 or 416 */
-    }
+  {
+    response = error; /* return 304 or 416 */
+  }
   else
-    {
-//   [self debugWithFormat: @"should fetch body part: %@",
+  {
+//  [self debugWithFormat: @"should fetch body part: %@",
 // 	[self bodyPartIdentifier]];
-      data = [self fetchBLOB];
-      if (data)
-	{
-//   [self debugWithFormat:@"  fetched %d bytes: %@", [data length],
-// 	[self partInfo]];
+    data = [self fetchBLOB];
+    if (data)
+	  {
+//    [self debugWithFormat:@"  fetched %d bytes: %@", [data length],
+// 	  [self partInfo]];
 
-	  response = [localContext response];
-	  mimeType = [self davContentType];
-	  if ([mimeType isEqualToString: @"application/x-xpinstall"])
-	    mimeType = @"application/octet-stream";
-          else if (!asAttachment)
-            mimeType = [self contentTypeForBodyPartInfo: [self partInfo]];
+	    response = [localContext response];
+	    mimeType = [self davContentType];
 
-	  [response setHeader: mimeType forKey: @"content-type"];
-	  [response setHeader: [NSString stringWithFormat:@"%d", (int)[data length]]
-		    forKey: @"content-length"];
+	    if ([mimeType isEqualToString: @"application/x-xpinstall"])
+	      mimeType = @"application/octet-stream";
+      else if (!asAttachment)
+        mimeType = [self contentTypeForBodyPartInfo: [self partInfo]];
 
-	  if (asAttachment)
-	    {
-	      fileName = [self filename];
-	      if ([fileName length])
-		[response setHeader: [NSString stringWithFormat: @"attachment; filename*=\"utf-8''%@\"",
-					       [fileName stringByEscapingURL]]
-			     forKey: @"content-disposition"];
-	    }
-
-	  etag = [self davEntityTag];
-	  if (etag)
-	    [response setHeader: etag forKey: @"etag"];
-
-	  [response setContent: data];
-	}
+      if([mimeType rangeOfString:@"xml"].location != NSNotFound || [mimeType rangeOfString:@"html"].location != NSNotFound
+         || [mimeType rangeOfString:@"css"].location != NSNotFound || [mimeType rangeOfString:@"javascript"].location != NSNotFound)
+        [response setHeader: @"text/plain" forKey: @"content-type"];
       else
-	response = [NSException exceptionWithHTTPStatus: 404 /* not found */
-				reason: @"did not find body part"];
-    }
+	      [response setHeader: mimeType forKey: @"content-type"];
+
+	    [response setHeader: [NSString stringWithFormat:@"%d", (int)[data length]] forKey: @"content-length"];
+
+      if (asAttachment)
+      {
+          fileName = [self filename];
+          if ([fileName length])
+            [response setHeader: [NSString stringWithFormat: @"attachment; filename*=\"utf-8''%@\"",
+                  [fileName stringByEscapingURL]]
+                  forKey: @"content-disposition"];
+      }
+
+      etag = [self davEntityTag];
+      if (etag)
+        [response setHeader: etag forKey: @"etag"];
+
+      [response setContent: data];
+	  }
+    else
+	    response = [NSException exceptionWithHTTPStatus: 404 /* not found */
+				  reason: @"did not find body part"];
+  }
 
   return response;
 }
