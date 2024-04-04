@@ -1109,9 +1109,10 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
         tmpIdentities = [NSMutableArray array];
         for (identity in identities) {
           tmpIdentity = [NSMutableDictionary dictionaryWithDictionary: identity];
-          if ([tmpIdentity objectForKey: @"signature"]) {
+          if ([tmpIdentity objectForKey: @"signature"] ) {
             // Add raw html embed class
-            if ([[tmpIdentity objectForKey: @"signature"] rangeOfString:@"raw-html-embed"].location == NSNotFound) {
+            if ([[tmpIdentity objectForKey: @"signature"] rangeOfString:@"raw-html-embed"].location == NSNotFound
+                && [[[self userDefaults] mailComposeMessageType] isEqualToString: @"html"]) {
               signature = [NSString stringWithFormat:@"<div class=\"raw-html-embed\">%@</div>", [tmpIdentity objectForKey: @"signature"]];
               [tmpIdentity setObject:signature forKey:@"signature"];
             }
