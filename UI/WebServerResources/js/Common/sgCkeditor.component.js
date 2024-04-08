@@ -288,9 +288,10 @@
           //   vm.editor.editing.view.domRoots.get("main").style.marginRight = vm.ckMargin;
           // }
           
-          vm.editor.model.document.on('pasteState', onEditorChange);
-          vm.editor.model.document.on('change:data', onEditorChange);
-          vm.editor.model.document.on('paste', onEditorPaste);
+          vm.editor.model.document.on('pasteState', function () { onEditorChange(false); });
+          vm.editor.model.document.on('change:data', function () { onEditorChange(false); });
+          vm.editor.model.document.on('paste', function () { onEditorChange(false); });
+          editor.editing.view.document.on('blur', function () { onEditorChange(true); });
 
           onInstanceReady();
 
@@ -340,11 +341,11 @@
         vm.editor.destroy(noUpdate);
     }
 
-    function onEditorChange() {
+    function onEditorChange(force) {
       if (editorChangedTimer)
         clearTimeout(editorChangedTimer);
 
-      editorChangedTimer = setTimeout(function () { 
+      var refresh = function() {
         var html = vm.editor.getData();
 
         var dom = document.createElement("DIV");
@@ -369,7 +370,13 @@
         }
         modelChanged = false;
         editorChangedTimer = null;
-      }, editorChangedTimerValue);
+      };
+
+      if (force) {
+        refresh();
+      } else {
+        editorChangedTimer = setTimeout(refresh, editorChangedTimerValue);
+      }
     }
 
     function onEditorPaste (event) {
