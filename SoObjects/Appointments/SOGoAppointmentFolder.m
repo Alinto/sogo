@@ -1255,6 +1255,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSInteger offset;
   id tz;
 
+  content = nil;
   if ([theRecord objectForKey: @"c_cycleinfo"] && [[theRecord objectForKey: @"c_cycleinfo"] isKindOfClass: [NSData class]]) {
     content = [NSString stringWithUTF8String: [[theRecord objectForKey: @"c_cycleinfo"] bytes]];
   } else if ([theRecord objectForKey: @"c_cycleinfo"] && [[theRecord objectForKey: @"c_cycleinfo"] isKindOfClass: [NSString class]]) {
@@ -1289,16 +1290,23 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     }
 
 
-  cycleinfo = [content propertyList];
-  if (!cycleinfo)
+  if (![content isNotNull])
   {
+    cycleinfo = [content propertyList];
+    if (!cycleinfo)
+    {
+      [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@", theRecord];
+      return;
+    }
+    rules = [cycleinfo objectForKey: @"rules"];
+    exRules = [cycleinfo objectForKey: @"exRules"];
+    rDates = [cycleinfo objectForKey: @"rDates"];
+    exDates = [cycleinfo objectForKey: @"exDates"];
+  } else {
     [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@", theRecord];
     return;
   }
-  rules = [cycleinfo objectForKey: @"rules"];
-  exRules = [cycleinfo objectForKey: @"exRules"];
-  rDates = [cycleinfo objectForKey: @"rDates"];
-  exDates = [cycleinfo objectForKey: @"exDates"];
+
   eventTimeZone = nil;
   allDayTimeZone = nil;
   tz = nil;
