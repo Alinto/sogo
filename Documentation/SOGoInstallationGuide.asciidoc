@@ -839,6 +839,9 @@ specified as an array of dictionaries.
 |S |SOGoURLEncryptionPassphrase
 |Passphrase for `SOGoURLEncryptionEnabled`. The string must be 128 bits (16 characters). If this settings change, the cache server must be restarted, and the DAV url will change. Default value is `SOGoSuperSecret0`.
 
+|D |SOGoForceRawHtmlSignature
+|Add `<div class="raw-html-embed sogo-raw-html-embed">` around signature to avoid CKEditor 5 modifying HTML code and breaking signature (https://bugs.sogo.nu/view.php?id=5920). Default value is `YES` (tag is added).
+
 |=======================================================================
 
 
@@ -3971,8 +3974,8 @@ current version of SOGo from the previous release.
 [cols="100a"]
 |=======================================================================
 
-h|5.10.1
-|Parameters `SOGoGlobalAddressBookFirstEntries` and `SOGoGlobalAddressBookFirstEntriesCount` has been removed. Please use `listRequiresDot` and `globalAddressBookFirstEntriesCount` instead
+h|5.11
+|Parameters `SOGoGlobalAddressBookFirstEntries` and `SOGoGlobalAddressBookFirstEntriesCount` has been removed. Please use `listRequiresDot` and `globalAddressBookFirstEntriesCount` instead. Signature are now between a div tag to avoid CKEditor changing the content - set `SOGoForceRawHtmlSignature` to `NO` to leave signature (https://bugs.sogo.nu/view.php?id=5920).
 
 h|5.9.0
 |Run the shell script `sql-update-5.8.4_to_5.9.0.sh` (if you are using MySQL). This will change the `c_defaults` to `MEDIUMTEXT`.

@@ -516,7 +516,7 @@ static SoProduct *preferencesProduct = nil;
         }
     }
   // We inject our default mail account
-  account = [[[context activeUser] mailAccounts] objectAtIndex: 0];
+  account = [[[context activeUser] mailAccountsNoRawHtmlSignature] objectAtIndex: 0];
   if (![account objectForKey: @"receipts"])
     {
       [account setObject: [NSDictionary dictionaryWithObjectsAndKeys: @"ignore", @"receiptAction",

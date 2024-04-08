@@ -102,6 +102,8 @@
 
 - (NSString *) passwordRecoveryFrom;
 
+- (BOOL) forceRawHtmlSignature;
+
 @end
 
 #endif /* SOGODOMAINDEFAULTS_H */

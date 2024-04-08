@@ -465,4 +465,9 @@
   return emailFrom;
 }
 
+- (BOOL) forceRawHtmlSignature
+{
+  return [self objectForKey: @"SOGoForceRawHtmlSignature"] ? [self boolForKey: @"SOGoForceRawHtmlSignature"] : YES;
+}
+
 @end

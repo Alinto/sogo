@@ -428,4 +428,28 @@ md-dialog md-dialog-actions.sg-mail-editor-attachments {
     margin-left: unset!important;
     margin-right: unset!important;
   }
+
+  .ck-widget.sogo-raw-html-embed:before {
+    display: none!important;
+  }
+
+  .sogo-raw-html-embed .raw-html-embed__buttons-wrapper {
+    display: none !important;
+  }
+
+  .ck-widget.sogo-raw-html-embed:not(.ck-widget_selected):not(:hover) {
+    outline: none!important;
+  }
+
+  .ck-widget.sogo-raw-html-embed {
+    background-color: unset;
+  }
+  
+  .ck-widget.sogo-raw-html-embed .raw-html-embed__preview-content {
+    background-color: unset;
+  }
+
+  .sogo-raw-html-embed .raw-html-embed__preview-placeholder {
+    display: none !important;
+  }
 }

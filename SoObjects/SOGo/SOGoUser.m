@@ -1026,10 +1026,15 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
 
 - (NSArray *) mailAccounts
 {
-  return [self mailAccountsWithDelegatedIdentities: YES];
+  return [self mailAccountsWithDelegatedIdentities: YES forceRawHtmlSignature: [[self domainDefaults] forceRawHtmlSignature]];
 }
 
-- (NSArray *) mailAccountsWithDelegatedIdentities: (BOOL) appendDeletegatedIdentities
+- (NSArray *) mailAccountsNoRawHtmlSignature
+{
+  return [self mailAccountsWithDelegatedIdentities: YES forceRawHtmlSignature: NO];
+}
+
+- (NSArray *) mailAccountsWithDelegatedIdentities: (BOOL) appendDeletegatedIdentities forceRawHtmlSignature: (BOOL) forceRawHtmlSignature
 {
   NSArray *auxAccounts;
 
@@ -1112,8 +1117,9 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
           if ([tmpIdentity objectForKey: @"signature"] ) {
             // Add raw html embed class
             if ([[tmpIdentity objectForKey: @"signature"] rangeOfString:@"raw-html-embed"].location == NSNotFound
-                && [[[self userDefaults] mailComposeMessageType] isEqualToString: @"html"]) {
-              signature = [NSString stringWithFormat:@"<div class=\"raw-html-embed\">%@</div>", [tmpIdentity objectForKey: @"signature"]];
+                && [[[self userDefaults] mailComposeMessageType] isEqualToString: @"html"]
+                && forceRawHtmlSignature) {
+              signature = [NSString stringWithFormat:@"<div class=\"raw-html-embed sogo-raw-html-embed\">%@</div>", [tmpIdentity objectForKey: @"signature"]];
               [tmpIdentity setObject:signature forKey:@"signature"];
             }
           }

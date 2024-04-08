@@ -113,6 +113,7 @@
 - (unsigned int) weekNumberForDate: (NSCalendarDate *) date;
 
 - (NSArray *) mailAccounts;
+- (NSArray *) mailAccountsNoRawHtmlSignature;
 - (NSArray *) mailAccountsWithDelegatedIdentities: (BOOL) appendDeletegatedIdentities;
 - (NSDictionary *) accountWithName: (NSString *) accountName;
 - (NSArray *) allIdentities;
