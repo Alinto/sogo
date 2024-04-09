@@ -1304,7 +1304,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     exDates = [cycleinfo objectForKey: @"exDates"];
   } else {
     [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@", theRecord];
-    return;
   }
 
   eventTimeZone = nil;
