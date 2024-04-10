@@ -69,7 +69,7 @@
     };
 
     this.resetContactsCategories = function(form) {
-      this.preferences.defaults.SOGoContactsCategories = $window.defaultContactsCategories;
+      this.preferences.defaults.SOGoContactsCategories = $window.defaultContactsCategories.slice();
       form.$setDirty();
     };
 
@@ -104,10 +104,10 @@
       var i = _.indexOf(this.preferences.defaults.SOGoContactsCategories, "");
       if (i < 0) {
         this.preferences.defaults.SOGoContactsCategories.push("");
+        form.$setDirty();
         i = this.preferences.defaults.SOGoContactsCategories.length - 1;
       }
       focus('contactCategory_' + i);
-      form.$setDirty();
     };
 
     this.removeContactCategory = function(index, form) {
