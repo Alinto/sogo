@@ -1289,13 +1289,12 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       return;
     }
 
-
-  if (![content isNotNull])
+  if (nil != content)
   {
     cycleinfo = [content propertyList];
     if (!cycleinfo)
     {
-      [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@", theRecord];
+      [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@, %@", theRecord, content];
       return;
     }
     rules = [cycleinfo objectForKey: @"rules"];
@@ -1303,7 +1302,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     rDates = [cycleinfo objectForKey: @"rDates"];
     exDates = [cycleinfo objectForKey: @"exDates"];
   } else {
-    [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@", theRecord];
+    [self warnWithFormat:@"record has no valid content -> %@, %@", theRecord, content];
   }
 
   eventTimeZone = nil;
