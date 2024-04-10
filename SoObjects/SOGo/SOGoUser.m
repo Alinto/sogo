@@ -1034,6 +1034,11 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
   return [self mailAccountsWithDelegatedIdentities: YES forceRawHtmlSignature: NO];
 }
 
+- (NSArray *) mailAccountsWithDelegatedIdentities: (BOOL) appendDeletegatedIdentities
+{
+  return [self mailAccountsWithDelegatedIdentities: appendDeletegatedIdentities forceRawHtmlSignature: [[self domainDefaults] forceRawHtmlSignature]];
+}
+
 - (NSArray *) mailAccountsWithDelegatedIdentities: (BOOL) appendDeletegatedIdentities forceRawHtmlSignature: (BOOL) forceRawHtmlSignature
 {
   NSArray *auxAccounts;

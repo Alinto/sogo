@@ -115,6 +115,7 @@
 - (NSArray *) mailAccounts;
 - (NSArray *) mailAccountsNoRawHtmlSignature;
 - (NSArray *) mailAccountsWithDelegatedIdentities: (BOOL) appendDeletegatedIdentities;
+- (NSArray *)mailAccountsWithDelegatedIdentities:(BOOL)appendDeletegatedIdentities forceRawHtmlSignature:(BOOL)forceRawHtmlSignature;
 - (NSDictionary *) accountWithName: (NSString *) accountName;
 - (NSArray *) allIdentities;
 - (NSDictionary *) primaryIdentity;
