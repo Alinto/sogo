@@ -658,263 +658,314 @@
   // the owner is a resource
   currentUser = [context activeUser];
   if (!activeUserIsOwner && ![currentUser isSuperUser])
-    {
-      [attendees addObject: owner];
-    }
+  {
+    [attendees addObject: owner];
+  }
   
   enumerator = [attendees objectEnumerator];
   while ((currentUID = [enumerator nextObject]))
+  {
+    NSCalendarDate *start, *end, *rangeStartDate, *rangeEndDate;
+    SOGoAppointmentFolder *folder;
+    SOGoFreeBusyObject *fb;
+    NGCalendarDateRange *range;
+    NSMutableArray *fbInfo;
+    NSArray *allOccurences;
+        
+    BOOL must_delete;
+    int i, j, delta;
+
+    user = [SOGoUser userWithLogin: currentUID];
+
+    // We get the start/end date for our conflict range. If the event to be added is recurring, we
+    // check for at least a year to start with.
+    start = [[theEvent startDate] dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: 1];
+    end = [[theEvent endDate] dateByAddingYears: ([theEvent isRecurrent] ? 1 : 0)  months: 0  days: 0  hours: 0  minutes: 0  seconds: -1];
+        
+    folder = [user personalCalendarFolderInContext: context];
+
+    // Deny access to the resource if the ACLs don't allow the user
+    if ([user isResource] && ![folder aclSQLListingFilter])
     {
-      NSCalendarDate *start, *end, *rangeStartDate, *rangeEndDate;
-      SOGoAppointmentFolder *folder;
-      SOGoFreeBusyObject *fb;
-      NGCalendarDateRange *range;
-      NSMutableArray *fbInfo;
-      NSArray *allOccurences;
+      NSDictionary *values;
+      NSString *reason;
           
-      BOOL must_delete;
-      int i, j, delta;
-
-      user = [SOGoUser userWithLogin: currentUID];
-
-      // We get the start/end date for our conflict range. If the event to be added is recurring, we
-      // check for at least a year to start with.
-      start = [[theEvent startDate] dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: 1];
-      end = [[theEvent endDate] dateByAddingYears: ([theEvent isRecurrent] ? 1 : 0)  months: 0  days: 0  hours: 0  minutes: 0  seconds: -1];
-          
-      folder = [user personalCalendarFolderInContext: context];
-
-      // Deny access to the resource if the ACLs don't allow the user
-      if ([user isResource] && ![folder aclSQLListingFilter])
-        {
-          NSDictionary *values;
-          NSString *reason;
-              
-          values = [NSDictionary dictionaryWithObjectsAndKeys:
-                                   [user cn], @"Cn",
-                                 [user systemEmail], @"SystemEmail", nil];
-          reason = [values keysWithFormat: [self labelForKey: @"Cannot access resource: \"%{Cn} %{SystemEmail}\""]];
-          return [self exceptionWithHTTPStatus:409 reason: reason];
-        }
-
-      fb = [SOGoFreeBusyObject objectWithName: @"freebusy.ifb" inContainer: [user homeFolderInContext: context]];
-      fbInfo = (NSMutableArray *)[fb fetchFreeBusyInfosFrom: start to: end];
-
-      //
-      // We must also check here for repetitive events that don't overlap our event.
-      // We remove all events that don't overlap. The events here are already
-      // decomposed.
-      //
-      if ([theEvent isRecurrent])
-        allOccurences = [theEvent recurrenceRangesWithinCalendarDateRange: [NGCalendarDateRange calendarDateRangeWithStartDate: start
-                                                                                                                       endDate: end]
-                                           firstInstanceCalendarDateRange: [NGCalendarDateRange calendarDateRangeWithStartDate: [theEvent startDate]
-                                                                                                                       endDate: [theEvent endDate]]];
-      else
-        allOccurences = nil;
-
-      for (i = [fbInfo count]-1; i >= 0; i--)
-        {
-	  // We first remove any occurences in the freebusy that corresponds to the
-	  // current event. We do this to avoid raising a conflict if we move a 1 hour
-	  // meeting from 12:00-13:00 to 12:15-13:15. We would overlap on ourself otherwise.
-          if ([[[fbInfo objectAtIndex: i] objectForKey: @"c_uid"] compare: [theEvent uid]] == NSOrderedSame)
-            {
-              [fbInfo removeObjectAtIndex: i];
-              continue;
-            }
-
-          // Ignore transparent events
-          if (![[[fbInfo objectAtIndex: i] objectForKey: @"c_isopaque"] boolValue])
-            {
-              [fbInfo removeObjectAtIndex: i];
-              continue;
-            }
-
-          // No need to check if the event isn't recurrent here as it's handled correctly
-          // when we compute the "end" date.
-          if ([allOccurences count])
-            {
-              must_delete = YES;
-
-              // We MUST use the -uniqueChildWithTag method here because the event has been flattened, so its timezone has been
-              // modified in SOGoAppointmentFolder: -fixupCycleRecord: ....
-              rangeStartDate = [[fbInfo objectAtIndex: i] objectForKey: @"startDate"];
-              delta = [[rangeStartDate timeZoneDetail] timeZoneSecondsFromGMT] - [[[(iCalDateTime *)[theEvent uniqueChildWithTag: @"dtstart"] timeZone] periodForDate: [theEvent startDate]] secondsOffsetFromGMT];
-              rangeStartDate = [rangeStartDate dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: delta];
-
-              rangeEndDate = [[fbInfo objectAtIndex: i] objectForKey: @"endDate"];
-              delta = [[rangeEndDate timeZoneDetail] timeZoneSecondsFromGMT] - [[[(iCalDateTime *)[theEvent uniqueChildWithTag: @"dtend"] timeZone] periodForDate: [theEvent endDate]] secondsOffsetFromGMT];
-              rangeEndDate = [rangeEndDate dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: delta];
-
-              range = [NGCalendarDateRange calendarDateRangeWithStartDate: rangeStartDate
-                                                                  endDate: rangeEndDate];
-
-              for (j = 0; j < [allOccurences count]; j++)
-                {
-                  if ([range doesIntersectWithDateRange: [allOccurences objectAtIndex: j]])
-                    {
-                      must_delete = NO;
-                      break;
-                    }
-                }
-              if (must_delete)
-                [fbInfo removeObjectAtIndex: i];
-            }
-        }
-
-      // Find the attendee associated to the current UID
-      currentAttendee = nil;
-      for (i = 0; i < [theAttendees count]; i++)
-        {
-          currentAttendee = [theAttendees objectAtIndex: i];
-          if ([[currentAttendee uidInContext: context] isEqualToString: currentUID])
-            break;
-          else
-            currentAttendee = nil;
-        }
-
-      if ([fbInfo count])
-        {
-          SOGoDateFormatter *formatter;
-
-          formatter = [[context activeUser] dateFormatterInContext: context];
-          
-          if ([user isResource])
-            {
-              // We always force the auto-accept if numberOfSimultaneousBookings <= 0 (ie., no limit
-              // is imposed) or if numberOfSimultaneousBookings is greater than the number of
-              // overlapping events.
-              // When numberOfSimultaneousBookings is set to -1, only force the auto-accept
-              // once the conflict has been raised and the action is forced by the user.
-              if ([user numberOfSimultaneousBookings] <= 0 ||
-                  [user numberOfSimultaneousBookings] > [fbInfo count])
-                {
-                  if (currentAttendee && ([user numberOfSimultaneousBookings] >= 0 || forceSave))
-                    {
-                      [[currentAttendee attributes] removeObjectForKey: @"RSVP"];
-                      [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
-		      _resourceHasAutoAccepted = YES;
-                    }
-                }
-              else
-                {
-                  iCalCalendar *calendar;
-                  NSDictionary *values, *info;
-                  NSString *reason;
-                  iCalEvent *event;
-
-                  calendar =  [iCalCalendar parseSingleFromSource: [[fbInfo objectAtIndex: 0] objectForKey: @"c_content"]];
-                  event = [[calendar events] lastObject];
-
-                  values = [NSDictionary dictionaryWithObjectsAndKeys:
-                                           [NSString stringWithFormat: @"%d", [user numberOfSimultaneousBookings]], @"NumberOfSimultaneousBookings",
-                                         [user cn], @"Cn",
-                                         [user systemEmail], @"SystemEmail",
-                                  ([event summary] ? [event summary] : @""), @"EventTitle",
-                                      [formatter formattedDateAndTime: [[fbInfo objectAtIndex: 0] objectForKey: @"startDate"]], @"StartDate",
-                                         nil];
-
-                  reason = [values keysWithFormat: [self labelForKey: @"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}."]];
-
-                  info = [NSDictionary dictionaryWithObject: reason forKey: @"reject"];
-
-                  return [self exceptionWithHTTPStatus: 409
-                                                reason: [info jsonRepresentation]];
-                }
-            }
-          //
-          // We are dealing with a normal attendee. Lets check if we have conflicts, unless
-          // we are being asked to force the save anyway
-          //
-          if (!forceSave && !_resourceHasAutoAccepted)
-            {
-              NSMutableDictionary *info;
-              NSMutableArray *conflicts;
-              NSArray *emails, *c_names, *partstates;
-              NSString *formattedEnd;
-              SOGoUser *ownerUser;
-              id o;
-              BOOL hasDelegated = NO;
-
-              info = [NSMutableDictionary dictionary];
-              conflicts = [NSMutableArray array];
-
-              if (currentAttendee)
-                {
-                  if ([currentAttendee cn])
-                    [info setObject: [currentAttendee cn]  forKey: @"attendee_name"];
-                  if ([currentAttendee rfc822Email])
-                    [info setObject: [currentAttendee rfc822Email]  forKey: @"attendee_email"];
-                }
-              else if ([owner isEqualToString: currentUID])
-                {
-                  ownerUser = [SOGoUser userWithLogin: owner];
-                  if ([ownerUser cn])
-                    [info setObject: [ownerUser cn]  forKey: @"attendee_name"];
-                  if ([ownerUser systemEmail])
-                    [info setObject: [ownerUser systemEmail]  forKey: @"attendee_email"];
-                }
-
-              for (i = 0; i < [fbInfo count]; i++)
-              {
-                o = [fbInfo objectAtIndex: i];
-                //Check if the user has delegated the event
-                hasDelegated = NO;
-                emails = [[o objectForKey: @"c_partmails"] componentsSeparatedByString: @"\n"];
-                c_names = [[o objectForKey: @"c_participants"] componentsSeparatedByString: @"\n"];
-                for (j = 0; j < [emails count]; j++)
-                {
-                  if ([[info objectForKey:@"attendee_email"] isEqualToString: [emails objectAtIndex: j]] ||
-                      [[info objectForKey:@"attendee_name"] isEqualToString: [c_names objectAtIndex: j]])
-                  {
-                    // We now fetch the c_partstates array and get the participation status of the user for the event
-                    partstates = [[o objectForKey: @"c_partstates"] componentsSeparatedByString: @"\n"];
-                    if (i < [partstates count])
-                    {
-                      // 0: needs action   (considered busy)
-                      // 1: accepted       (busy)
-                      // 2: declined       (free)
-                      // 3: tentative      (free)
-                      // 4: delegated      (free)
-                      hasDelegated = ([[partstates objectAtIndex: j] intValue] == 4);
-                    }
-                    break;
-                  }
-                }
-                if(hasDelegated)
-                  continue;
-
-                end = [o objectForKey: @"endDate"];
-                if ([[o objectForKey: @"startDate"] isDateOnSameDay: end])
-                  formattedEnd = [formatter formattedTime: end];
-                else
-                  formattedEnd = [formatter formattedDateAndTime: end];
-
-                [conflicts addObject: [NSDictionary dictionaryWithObjectsAndKeys: [formatter formattedDateAndTime: [o objectForKey: @"startDate"]], @"startDate",
-                                                    formattedEnd, @"endDate", nil]];
-              }
-
-              if([conflicts count] > 0)
-              {
-                [info setObject: conflicts  forKey: @"conflicts"];
-
-                // We immediately raise an exception, without processing the possible other attendees.
-                return [self exceptionWithHTTPStatus: 409
-                                              reason: [info jsonRepresentation]];
-              }
-            }
-        } // if ([fbInfo count]) ...
-      else if (currentAttendee && [user isResource])
-        {
-          // No conflict, we auto-accept. We do this for resources automatically if no
-          // double-booking is observed. If it's not the desired behavior, just don't
-          // set the resource as one!
-          [[currentAttendee attributes] removeObjectForKey: @"RSVP"];
-          [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
-          _resourceHasAutoAccepted = YES;
-        }
+      values = [NSDictionary dictionaryWithObjectsAndKeys:
+                                [user cn], @"Cn",
+                              [user systemEmail], @"SystemEmail", nil];
+      reason = [values keysWithFormat: [self labelForKey: @"Cannot access resource: \"%{Cn} %{SystemEmail}\""]];
+      return [self exceptionWithHTTPStatus:409 reason: reason];
     }
+
+    fb = [SOGoFreeBusyObject objectWithName: @"freebusy.ifb" inContainer: [user homeFolderInContext: context]];
+    fbInfo = (NSMutableArray *)[fb fetchFreeBusyInfosFrom: start to: end];
+
+    //
+    // We must also check here for repetitive events that don't overlap our event.
+    // We remove all events that don't overlap. The events here are already
+    // decomposed.
+    //
+    if ([theEvent isRecurrent])
+      allOccurences = [theEvent recurrenceRangesWithinCalendarDateRange: [NGCalendarDateRange calendarDateRangeWithStartDate: start
+                                                                                                                      endDate: end]
+                                          firstInstanceCalendarDateRange: [NGCalendarDateRange calendarDateRangeWithStartDate: [theEvent startDate]
+                                                                                                                      endDate: [theEvent endDate]]];
+    else
+      allOccurences = nil;
+
+    for (i = [fbInfo count]-1; i >= 0; i--)
+    {
+      // We first remove any occurences in the freebusy that corresponds to the
+      // current event. We do this to avoid raising a conflict if we move a 1 hour
+      // meeting from 12:00-13:00 to 12:15-13:15. We would overlap on ourself otherwise.
+      if ([[[fbInfo objectAtIndex: i] objectForKey: @"c_uid"] compare: [theEvent uid]] == NSOrderedSame)
+      {
+        [fbInfo removeObjectAtIndex: i];
+        continue;
+      }
+
+      // Ignore transparent events
+      if (![[[fbInfo objectAtIndex: i] objectForKey: @"c_isopaque"] boolValue])
+      {
+        [fbInfo removeObjectAtIndex: i];
+        continue;
+      }
+
+      // No need to check if the event isn't recurrent here as it's handled correctly
+      // when we compute the "end" date.
+      if ([allOccurences count])
+      {
+        must_delete = YES;
+
+        // We MUST use the -uniqueChildWithTag method here because the event has been flattened, so its timezone has been
+        // modified in SOGoAppointmentFolder: -fixupCycleRecord: ....
+        rangeStartDate = [[fbInfo objectAtIndex: i] objectForKey: @"startDate"];
+        delta = [[rangeStartDate timeZoneDetail] timeZoneSecondsFromGMT] - [[[(iCalDateTime *)[theEvent uniqueChildWithTag: @"dtstart"] timeZone] periodForDate: [theEvent startDate]] secondsOffsetFromGMT];
+        rangeStartDate = [rangeStartDate dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: delta];
+
+        rangeEndDate = [[fbInfo objectAtIndex: i] objectForKey: @"endDate"];
+        delta = [[rangeEndDate timeZoneDetail] timeZoneSecondsFromGMT] - [[[(iCalDateTime *)[theEvent uniqueChildWithTag: @"dtend"] timeZone] periodForDate: [theEvent endDate]] secondsOffsetFromGMT];
+        rangeEndDate = [rangeEndDate dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: delta];
+
+        range = [NGCalendarDateRange calendarDateRangeWithStartDate: rangeStartDate
+                                                            endDate: rangeEndDate];
+
+        for (j = 0; j < [allOccurences count]; j++)
+        {
+          if ([range doesIntersectWithDateRange: [allOccurences objectAtIndex: j]])
+          {
+            must_delete = NO;
+            break;
+          }
+        }
+        if (must_delete)
+          [fbInfo removeObjectAtIndex: i];
+      }
+    }
+
+    // Find the attendee associated to the current UID
+    currentAttendee = nil;
+    for (i = 0; i < [theAttendees count]; i++)
+    {
+      currentAttendee = [theAttendees objectAtIndex: i];
+      if ([[currentAttendee uidInContext: context] isEqualToString: currentUID])
+        break;
+      else
+        currentAttendee = nil;
+    }
+
+    if ([fbInfo count])
+    {
+      SOGoDateFormatter *formatter;
+
+      formatter = [[context activeUser] dateFormatterInContext: context];
+      
+      if ([user isResource])
+      {
+        // We always force the auto-accept if numberOfSimultaneousBookings <= 0 (ie., no limit
+        // is imposed) or if numberOfSimultaneousBookings is greater than the number of
+        // overlapping events.
+        // When numberOfSimultaneousBookings is set to -1, only force the auto-accept
+        // once the conflict has been raised and the action is forced by the user.
+        if ([user numberOfSimultaneousBookings] <= 0 || [user numberOfSimultaneousBookings] > [fbInfo count])
+        {
+          if (currentAttendee && ([user numberOfSimultaneousBookings] >= 0 || forceSave))
+          {
+            [[currentAttendee attributes] removeObjectForKey: @"RSVP"];
+            [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
+            _resourceHasAutoAccepted = YES;
+          }
+        }
+        else
+        {
+          if(currentAttendee)
+          {
+            //Check if the ressource has delegated to another resource
+            NSMutableDictionary *infoResource;
+            NSArray *r_emails, *r_names, *r_partstates;
+            int nbOfDelegation = 0;
+            BOOL r_hasDelegated = NO;
+            id r_o;
+
+            infoResource = [NSMutableDictionary dictionary];
+            if ([currentAttendee cn])
+              [infoResource setObject: [currentAttendee cn]  forKey: @"resource_name"];
+            if ([currentAttendee rfc822Email])
+              [infoResource setObject: [currentAttendee rfc822Email]  forKey: @"resource_email"];
+
+            for (i = 0; i < [fbInfo count]; i++)
+            {
+              r_o = [fbInfo objectAtIndex: i];
+              //Check if the resource has delegated the event
+              r_hasDelegated = NO;
+              r_emails = [[r_o objectForKey: @"c_partmails"] componentsSeparatedByString: @"\n"];
+              r_names = [[r_o objectForKey: @"c_participants"] componentsSeparatedByString: @"\n"];
+              for (j = 0; j < [r_emails count]; j++)
+              {
+                if ([[infoResource objectForKey:@"resource_email"] isEqualToString: [r_emails objectAtIndex: j]] ||
+                    [[infoResource objectForKey:@"resource_name"] isEqualToString: [r_names objectAtIndex: j]])
+                {
+                  // We now fetch the c_partstates array and get the participation status of the user for the event
+                  r_partstates = [[r_o objectForKey: @"c_partstates"] componentsSeparatedByString: @"\n"];
+                  if (i < [r_partstates count])
+                  {
+                    // 0: needs action   (considered busy)
+                    // 1: accepted       (busy)
+                    // 2: declined       (free)
+                    // 3: tentative      (free)
+                    // 4: delegated      (free)
+                    r_hasDelegated = ([[r_partstates objectAtIndex: j] intValue] == 4);
+                  }
+                  break;
+                }
+              }
+              if(r_hasDelegated)
+                nbOfDelegation++;
+            }
+            if([user numberOfSimultaneousBookings] >= [fbInfo count] - nbOfDelegation)
+            {
+              //Resource can still accept reservation, continue the while statement
+              continue;
+            }
+          }
+
+
+          iCalCalendar *calendar;
+          NSDictionary *values, *info;
+          NSString *reason;
+          iCalEvent *event;
+
+          calendar =  [iCalCalendar parseSingleFromSource: [[fbInfo objectAtIndex: 0] objectForKey: @"c_content"]];
+          event = [[calendar events] lastObject];
+
+          values = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [NSString stringWithFormat: @"%d", [user numberOfSimultaneousBookings]], @"NumberOfSimultaneousBookings",
+                                  [user cn], @"Cn",
+                                  [user systemEmail], @"SystemEmail",
+                          ([event summary] ? [event summary] : @""), @"EventTitle",
+                              [formatter formattedDateAndTime: [[fbInfo objectAtIndex: 0] objectForKey: @"startDate"]], @"StartDate",
+                                  nil];
+
+          reason = [values keysWithFormat: [self labelForKey: @"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}."]];
+
+          info = [NSDictionary dictionaryWithObject: reason forKey: @"reject"];
+
+          return [self exceptionWithHTTPStatus: 409
+                                        reason: [info jsonRepresentation]];
+        }
+      }
+      //
+      // We are dealing with a normal attendee. Lets check if we have conflicts, unless
+      // we are being asked to force the save anyway
+      //
+      if (!forceSave && !_resourceHasAutoAccepted)
+      {
+        NSMutableDictionary *info;
+        NSMutableArray *conflicts;
+        NSArray *emails, *c_names, *partstates;
+        NSString *formattedEnd;
+        SOGoUser *ownerUser;
+        id o;
+        BOOL hasDelegated = NO;
+
+        info = [NSMutableDictionary dictionary];
+        conflicts = [NSMutableArray array];
+
+        if (currentAttendee)
+        {
+          if ([currentAttendee cn])
+            [info setObject: [currentAttendee cn]  forKey: @"attendee_name"];
+          if ([currentAttendee rfc822Email])
+            [info setObject: [currentAttendee rfc822Email]  forKey: @"attendee_email"];
+        }
+        else if ([owner isEqualToString: currentUID])
+        {
+          ownerUser = [SOGoUser userWithLogin: owner];
+          if ([ownerUser cn])
+            [info setObject: [ownerUser cn]  forKey: @"attendee_name"];
+          if ([ownerUser systemEmail])
+            [info setObject: [ownerUser systemEmail]  forKey: @"attendee_email"];
+        }
+
+        for (i = 0; i < [fbInfo count]; i++)
+        {
+          o = [fbInfo objectAtIndex: i];
+          //Check if the user has delegated the event
+          hasDelegated = NO;
+          emails = [[o objectForKey: @"c_partmails"] componentsSeparatedByString: @"\n"];
+          c_names = [[o objectForKey: @"c_participants"] componentsSeparatedByString: @"\n"];
+          for (j = 0; j < [emails count]; j++)
+          {
+            if ([[info objectForKey:@"attendee_email"] isEqualToString: [emails objectAtIndex: j]] ||
+                [[info objectForKey:@"attendee_name"] isEqualToString: [c_names objectAtIndex: j]])
+            {
+              // We now fetch the c_partstates array and get the participation status of the user for the event
+              partstates = [[o objectForKey: @"c_partstates"] componentsSeparatedByString: @"\n"];
+              if (i < [partstates count])
+              {
+                // 0: needs action   (considered busy)
+                // 1: accepted       (busy)
+                // 2: declined       (free)
+                // 3: tentative      (free)
+                // 4: delegated      (free)
+                hasDelegated = ([[partstates objectAtIndex: j] intValue] == 4);
+              }
+              break;
+            }
+          }
+          if(hasDelegated)
+            continue;
+
+          end = [o objectForKey: @"endDate"];
+          if ([[o objectForKey: @"startDate"] isDateOnSameDay: end])
+            formattedEnd = [formatter formattedTime: end];
+          else
+            formattedEnd = [formatter formattedDateAndTime: end];
+
+          [conflicts addObject: [NSDictionary dictionaryWithObjectsAndKeys: [formatter formattedDateAndTime: [o objectForKey: @"startDate"]], @"startDate",
+                                              formattedEnd, @"endDate", nil]];
+        }
+
+        if([conflicts count] > 0)
+        {
+          [info setObject: conflicts  forKey: @"conflicts"];
+
+          // We immediately raise an exception, without processing the possible other attendees.
+          return [self exceptionWithHTTPStatus: 409
+                                        reason: [info jsonRepresentation]];
+        }
+      }
+    } // if ([fbInfo count]) ...
+    else if (currentAttendee && [user isResource])
+    {
+      // No conflict, we auto-accept. We do this for resources automatically if no
+      // double-booking is observed. If it's not the desired behavior, just don't
+      // set the resource as one!
+      [[currentAttendee attributes] removeObjectForKey: @"RSVP"];
+      [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
+      _resourceHasAutoAccepted = YES;
+    }
+  }
 
   return nil;
 }
