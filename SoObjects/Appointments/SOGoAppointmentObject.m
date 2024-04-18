@@ -842,9 +842,12 @@
               if(r_hasDelegated)
                 nbOfDelegation++;
             }
-            if([user numberOfSimultaneousBookings] >= [fbInfo count] - nbOfDelegation)
+            if([user numberOfSimultaneousBookings] > [fbInfo count] - nbOfDelegation)
             {
               //Resource can still accept reservation, continue the while statement
+              [[currentAttendee attributes] removeObjectForKey: @"RSVP"];
+              [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
+              _resourceHasAutoAccepted = YES;
               continue;
             }
           }
