@@ -7,16 +7,35 @@
 
 @implementation SOGoAPI
 
-- (NSDictionary *) sogoVersionAction {
-NSDictionary* result;
+- (id) init
+{
+  [super init];
 
-result = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                  @"major", SOGO_MAJOR_VERSION,
-                                  @"minor", SOGO_MINOR_VERSION,
-                                  @"patch", SOGO_PATCH_VERSION,
-                                  nil];
-[result autorelease];
-return result;
+  return self;
+}
+
+- (void) dealloc
+{
+  [super dealloc];
+}
+
+- (NSArray *) methodAllowed
+{
+  NSArray *result;
+
+  result = [NSArray arrayWithObjects:@"GET",nil];
+  return result;
+}
+
+- (NSDictionary *) action
+{
+  NSDictionary* result;
+
+  result = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                    @"API not defined", @"error", 
+                                    nil];
+  [result autorelease];
+  return result;
 }
 
 

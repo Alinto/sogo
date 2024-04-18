@@ -9,7 +9,9 @@ API_PRINCIPAL_CLASS = SOGoAPIProduct
 
 API_OBJC_FILES =			\
 	SOGoAPIProduct.m		\
-	SOGoAPI.m
+	SOGoAPI.m               \
+	SOGoAPIVersion.m        \
+	SOGoAPIDispatcher.m
 
 API_RESOURCE_FILES +=		\
 	product.plist

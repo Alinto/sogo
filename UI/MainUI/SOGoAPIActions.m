@@ -48,12 +48,12 @@
   Class clazz;
 
   request = (WORequest *)[context request];
-  response = [context response];
+  response = (WOResponse *)[context response];
   [response setStatus: 200];
-  [response setHeader: @"text/plain; charset=utf-8"  forKey: @"content-type"];
+  [response setHeader: @"application/json; charset=utf-8"  forKey: @"content-type"];
 
   bundle = [NSBundle bundleForClass: NSClassFromString(@"SOGoAPIProduct")];
-  clazz = [bundle classNamed: @"SOGoApiDispatcher"];
+  clazz = [bundle classNamed: @"SOGoAPIDispatcher"];
   dispatcher = [[clazz alloc] init];
 
   ex = [dispatcher dispatchRequest: request  inResponse: response  context: context];
@@ -67,7 +67,7 @@
 
   RELEASE(dispatcher);
 
-  [[SOGoCache sharedCache] killCache];
+  //[[SOGoCache sharedCache] killCache];
 
   return response;
 }

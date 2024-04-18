@@ -121,7 +121,7 @@
         SOGoAPI = {
           protectedBy = "<public>";
           actionClass = "SOGoAPIActions"; 
-          actionName = "sogoAPIAction";
+          actionName = "sogoAPI";
         };
         casProxy = { 
           protectedBy = "<public>";

@@ -23,9 +23,9 @@
 #import <Foundation/NSObject.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSArray.h>
+#import <SOGoAPI.h>
 
-@interface SOGoAPI : NSObject
+@interface SOGoAPIVersion : SOGoAPI
 - (NSArray *) methodAllowed;
 - (NSDictionary *) action;
-
 @end
