@@ -35,9 +35,7 @@
 
 @implementation SOGoAPIActions
 
-//
-// Invoked on POST actions
-//
+
 - (WOResponse *) sogoAPIAction
 {
   WOResponse *response;

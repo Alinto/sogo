@@ -100,13 +100,76 @@ void handle_api_terminate(int signum)
   [super dealloc];
 }
 
+- (void) _sendAPIErrorResponse: (WOResponse* ) response
+                   withMessage: (NSString *) message
+                    withStatus: (unsigned int) status
+{
+  NSDictionary *msg;
+  msg = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                  message, @"error",
+                                  nil];
+  [response setStatus: status];
+  [response setContent: [msg jsonRepresentation]];
+}
+
+- (NSString *) _getActionFromUri: (NSString *) _uri
+{
+  /*
+  _uri always start with /SOGo/SOGoAPI
+  full _uri example /SOGo/SOGoAPI/Action/subaction1?param1&param2
+  */
+  
+  NSString *uriWithoutParams, *action, *prefix;
+  NSArray *uriSplits;
+
+  prefix = @"/SOGo/SOGoAPI";
+  action = @"";
+
+  uriWithoutParams = [_uri urlWithoutParameters];
+  if(![uriWithoutParams hasPrefix: prefix])
+  {
+    [self errorWithFormat: @"Uri for API request does not start with /SOGo/SOGoAPI: %@", uriWithoutParams];
+    return nil;
+  }
+  else
+  {
+    uriWithoutParams = [uriWithoutParams substringFromIndex:[prefix length]];
+  }
+
+  //remove first and last '/'' if needed
+  if([uriWithoutParams hasPrefix: @"/"])
+  {
+    uriWithoutParams = [uriWithoutParams substringFromIndex:1];
+  }
+  if([uriWithoutParams hasSuffix: @"/"])
+  {
+      uriWithoutParams = [uriWithoutParams substringToIndex:([uriWithoutParams length] -1)];
+  }
+  if([uriWithoutParams length] == 0)
+  {
+    [self warnWithFormat: @"Uri for API request has no action, make Version instead: %@", uriWithoutParams];
+    return @"SOGoAPIVersion";
+  }
+  else
+  {
+    uriSplits = [uriWithoutParams componentsSeparatedByString: @"/"];
+    action = [@"SOGoAPI" stringByAppendingString: [uriSplits objectAtIndex: 0]];
+    if(debugOn)
+      [self logWithFormat: @"API request, action made is %@", action];
+  }
+
+  return action;
+}
+
+
+
 - (NSException *) dispatchRequest: (WORequest*) theRequest
                        inResponse: (WOResponse*) theResponse
                           context: (id) theContext
 {
   NSAutoreleasePool *pool;
   id activeUser;
-  NSString *method, *action;
+  NSString *method, *action, *error;
   NSDictionary *form;
   NSMutableDictionary *ret;
   NSBundle *bundle;
@@ -115,22 +178,55 @@ void handle_api_terminate(int signum)
 
 
   pool = [[NSAutoreleasePool alloc] init];
-
   ASSIGN(context, theContext);
 
   activeUser = [context activeUser];
 
   //Get the api action, check it
-  action = [theRequest uri]; //il retourne /SOGo/SOGoAPI
+  action = [self _getActionFromUri: [theRequest uri]];
+  if(!action)
+  {
+    error = [NSString stringWithFormat: @"No actions found for request to API: %@", [theRequest uri]];
+    [self errorWithFormat: error];
+    [self _sendAPIErrorResponse: theResponse withMessage: error withStatus: 400];
+    return nil;
+  }
 
-
+  //Get the class for this action, check it
   bundle = [NSBundle bundleForClass: NSClassFromString(@"SOGoAPIProduct")];
-  clazz = [bundle classNamed: @"SOGoAPIVersion"];
-  classAction = [[clazz alloc] init];
+  clazz = [bundle classNamed: action];
+  if(!clazz)
+  {
+    error = [NSString stringWithFormat: @"No backend API found for action: %@", action];
+    [self errorWithFormat: error];
+    [self _sendAPIErrorResponse: theResponse withMessage: error withStatus: 400];
+    return nil;
+  }
+
+  //try to instantiate the class
+  NS_DURING
+  {
+    classAction = [[clazz alloc] init];
+  }
+  NS_HANDLER
+  {
+    error = [NSString stringWithFormat: @"Can't alloc and init class: %@", classAction];
+    [self errorWithFormat: error];
+    [self _sendAPIErrorResponse: theResponse withMessage: error withStatus: 500];
+  }
+  NS_ENDHANDLER;
+  
 
   //Check user auth
 
-  //retreive data if needed and execute action
+
+  //Check method
+
+
+  //Check parameters
+
+
+  //Execute action
   ret = [classAction action];
 
   //Make the response
