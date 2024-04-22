@@ -205,10 +205,10 @@
 
 /* Appointments (participation state) */
 "partStat_NEEDS-ACTION" = "Beranduago berretsiko dut";
-"partStat_ACCEPTED" = "Zain egongo naiz";
-"partStat_DECLINED" = "Ez dut itxarongo";
-"partStat_TENTATIVE" = "Joan nintekeen";
-"partStat_DELEGATED" = "Eskuordetu dut";
+"partStat_ACCEPTED" = "Bertaratuko naiz";
+"partStat_DECLINED" = "Ez naiz bertaratuko";
+"partStat_TENTATIVE" = "Bertaratu ninteke";
+"partStat_DELEGATED" = "Eskuordetuko dut";
 "partStat_OTHER" = "Bestelakoak";
 
 /* Appointments (error messages) */
