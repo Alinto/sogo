@@ -521,8 +521,9 @@ static BOOL debugOn = NO;
       else if (!asAttachment)
         mimeType = [self contentTypeForBodyPartInfo: [self partInfo]];
 
-      if([mimeType rangeOfString:@"xml"].location != NSNotFound || [mimeType rangeOfString:@"html"].location != NSNotFound
+      if(([mimeType rangeOfString:@"xml"].location != NSNotFound || [mimeType rangeOfString:@"html"].location != NSNotFound
          || [mimeType rangeOfString:@"css"].location != NSNotFound || [mimeType rangeOfString:@"javascript"].location != NSNotFound)
+         && [mimeType rangeOfString:@"openxmlformats"].location == NSNotFound )
         [response setHeader: @"text/plain" forKey: @"content-type"];
       else
 	      [response setHeader: mimeType forKey: @"content-type"];
