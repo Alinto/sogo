@@ -47,10 +47,13 @@
                var:ng-click="navButtonClick"
                ng-href="{{::activeUser.path.mail}}">
       <md-icon>email</md-icon>
+      <var:if condition="userHasVacationDisabled">
+        <md-tooltip><var:string label:value="Mail"/></md-tooltip>
+      </var:if>
       <var:if condition="userHasVacationEnabled">
         <md-icon class="md-default-theme md-warn md-bg sg-icon--badge" label:aria-label="Vacation message is enabled">forward</md-icon>
+        <md-tooltip><var:string label:value="Vacation message is enabled"/></md-tooltip>
       </var:if>
-      <md-tooltip><var:string label:value="Mail"/></md-tooltip>
     </md-button>
     <md-button class="md-icon-button"
                ng-disabled="::baseURL.endsWith('/Administration')"

@@ -62,4 +62,9 @@
   return (vacationOptions && [[vacationOptions objectForKey: @"enabled"] boolValue]);
 }
 
+- (BOOL) userHasVacationDisabled
+{
+  return ![self userHasVacationEnabled];
+}
+
 @end
