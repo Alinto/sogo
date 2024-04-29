@@ -27,6 +27,7 @@
       this.sendState = false;
       this.toggleFullscreen = toggleFullscreen;
       this.firstFocus = true;
+      this.editor = null;
 
       _initFileUploader();
 
@@ -251,6 +252,9 @@
     };
 
     this.send = function () {
+      if (this.editor && this.editor.component)
+        this.editor.component.onEditorChange(true); // Call onEditorChange on sgCkEditor component
+      
       this.sendState = 'sending';
       if (this.autosave)
         $timeout.cancel(this.autosave);
@@ -527,6 +531,7 @@
 
     this.onHTMLReady = function ($editor) {
       if (!this.isNew()) {
+        this.editor = $editor;
         onCompletePromise().then(function() {
           $editor.focus();
         });

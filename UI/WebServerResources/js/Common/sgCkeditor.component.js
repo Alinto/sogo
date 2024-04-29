@@ -214,7 +214,6 @@
     var editorChangedTimerValue = 2000;
     var editorChangedTimer = null;
 
-
     this.$onInit = function () {
       vm.ngModelCtrl.$render = function () {
         content = vm.ngModelCtrl.$viewValue;
@@ -280,18 +279,12 @@
 
           // Add Emoticons
           editor.plugins.get('SpecialCharacters').addItems('Emoji', emojis, { label: 'Emoticons' });
-
-          // if (vm.ckMargin) {
-          //   // Set the margin of the iframe editable content
-          //   vm.editor.editing.view.domRoots.get("main").style.marginTop = vm.ckMargin;
-          //   vm.editor.editing.view.domRoots.get("main").style.marginLeft = vm.ckMargin;
-          //   vm.editor.editing.view.domRoots.get("main").style.marginRight = vm.ckMargin;
-          // }
           
-          vm.editor.model.document.on('pasteState', function () { onEditorChange(false); });
-          vm.editor.model.document.on('change:data', function () { onEditorChange(false); });
-          vm.editor.model.document.on('paste', function () { onEditorChange(false); });
-          editor.editing.view.document.on('blur', function () { onEditorChange(true); });
+          vm.editor.model.document.on('pasteState', function () { vm.onEditorChange(false); });
+          vm.editor.model.document.on('change:data', function () { vm.onEditorChange(false); });
+          vm.editor.model.document.on('paste', function () { vm.onEditorChange(false); });
+          vm.editor.editing.view.document.on('blur', function () { vm.onEditorChange(true); });
+          vm.editor.component = this;
 
           onInstanceReady();
 
@@ -341,7 +334,7 @@
         vm.editor.destroy(noUpdate);
     }
 
-    function onEditorChange(force) {
+    this.onEditorChange = function(force) {
       if (editorChangedTimer)
         clearTimeout(editorChangedTimer);
 
