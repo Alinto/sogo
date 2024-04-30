@@ -133,7 +133,9 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailUkrainianForward.wo \
 	SOGoMailUkrainianReply.wo \
 	SOGoMailWelshForward.wo \
-	SOGoMailWelshReply.wo
+	SOGoMailWelshReply.wo \
+	SOGoMailBasqueReply.wo \
+	SOGoMailBasqueForward.wo
 
 Mailer_LANGUAGES = $(SOGO_LANGUAGES)
 

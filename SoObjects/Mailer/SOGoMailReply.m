@@ -140,6 +140,9 @@
 @implementation SOGoMailGalicianReply
 @end
 
+@implementation SOGoMailBasqueReply
+@end
+
 @implementation SOGoMailGermanReply
 @end
 
