@@ -42,16 +42,7 @@
 
 #import "SOGoOpenIdSession.h"
 
-
-size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
-{
-  size_t total;
-  
-  total = size * nmemb;
-  [(NSMutableData *)buffer appendBytes: ptr length: total];
-  
-  return total;
-}
+static BOOL SOGoOpenIDDebugEnabled = YES;
 
 @implementation SOGoOpenIdSession
 
@@ -87,6 +78,7 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
   // accessToken = nil;
 
   sd = [SOGoSystemDefaults sharedSystemDefaults];
+  SOGoOpenIDDebugEnabled = [sd openIdDebugEnabled];
   if ([[self class] checkUserConfig])
   {
     openIdUrl = [sd openIdUrl];
@@ -102,14 +94,14 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
   }
 }
 
-- (NSString *) _performOpenIdRequest: (NSString *) endpoint
+- (WOResponse *) _performOpenIdRequest: (NSString *) endpoint
                         method: (NSString *) method
                        headers: (NSDictionary *) headers
                           body: (NSData *) body
 {
   NSURL *url;
   NSMutableDictionary* trueHeaders;
-  NSUInteger* status;
+  NSUInteger status;
   WORequest *request;
   WOResponse *response;
   WOHTTPConnection *httpConnection;
@@ -118,6 +110,13 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
   url = [NSURL URLWithString: endpoint];
   if (url)
   {
+    if(SOGoOpenIDDebugEnabled)
+    {
+      NSLog(@"OpenId perform request: %@ %@", method, [endpoint hostlessURL]);
+      NSLog(@"OpenId perform request, headers %@", headers);
+      NSLog(@"OpenId perform request: content %@", [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
+    }
+      
     httpConnection = [[WOHTTPConnection alloc] initWithURL: url];
     [httpConnection autorelease];
 
@@ -130,17 +129,22 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
     [httpConnection sendRequest: request];
     response = [httpConnection readResponse];
     status = [response status];
-    if(status >= 200 && status <400)
-      return [response contentString];
+    if(status >= 200 && status <500 && status != 404)
+      return response;
+    else if (status == 404)
+    {
+      [self errorWithFormat: @"OpenID endpoint not found (404): %@", endpoint];
+      return nil; 
+    }
     else
     {
-      [self errorWithFormat: @"OpenID failed request to %@: %@", endpoint, response];
+      [self errorWithFormat: @"OpenID server internal error during %@: %@", endpoint, response];
       return nil;
     }
   }
   else
   {
-    [self errorWithFormat: @"OpenID can't handle endpoint: '%@'", endpoint];
+    [self errorWithFormat: @"OpenID can't handle endpoint (not a url): '%@'", endpoint];
     return nil;
   }
 }
@@ -148,6 +152,8 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
 - (NSMutableDictionary *) fecthConfiguration
 {
   NSString *location, *content;
+  WOResponse * response;
+  NSUInteger status;
   NSMutableDictionary *result;
   NSDictionary *config;
   NSURL *url;
@@ -160,19 +166,29 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
   url = [NSURL URLWithString: location];
   if (url)
   {
-      content = [self _performOpenIdRequest: location
+      response = [self _performOpenIdRequest: location
                         method: @"GET"
                        headers: nil
                           body: nil];
-      if (content)
+
+      if (response)
       {
-          config = [content objectFromJSONString];
-          self->authorizationEndpoint = [config objectForKey: @"authorization_endpoint"];
-          self->tokenEndpoint         = [config objectForKey: @"token_endpoint"];
-          self->introspectionEndpoint = [config objectForKey: @"introspection_endpoint"];
-          self->userinfoEndpoint      = [config objectForKey: @"userinfo_endpoint"];
-          self->endSessionEndpoint    = [config objectForKey: @"end_session_endpoint"];
-          self->revocationEndpoint    = [config objectForKey: @"revocation_endpoint"];
+          status = [response status];
+          if(status >= 200 && status <300)
+          {
+            content = [response contentString];
+            config = [content objectFromJSONString];
+            self->authorizationEndpoint = [config objectForKey: @"authorization_endpoint"];
+            self->tokenEndpoint         = [config objectForKey: @"token_endpoint"];
+            self->introspectionEndpoint = [config objectForKey: @"introspection_endpoint"];
+            self->userinfoEndpoint      = [config objectForKey: @"userinfo_endpoint"];
+            self->endSessionEndpoint    = [config objectForKey: @"end_session_endpoint"];
+            self->revocationEndpoint    = [config objectForKey: @"revocation_endpoint"];
+          }
+          else
+          {
+            [self logWithFormat: @"Error during fetching the configuration (status %@), response: %@", status, response];
+          }
       }
       else
         [result setObject: @"http-error" forKey: @"error"];
@@ -204,7 +220,7 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
       [newSession autorelease];
       [newSession initialize];
       
-      [self setAccessToken: token];
+      [newSession setAccessToken: token];
     }
   else
     newSession = nil;
@@ -229,6 +245,11 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
   return logUrl;
 }
 
+- (NSString *) logoutUrl
+{
+  return self->endSessionEndpoint;
+}
+
 - (NSString*) getToken
 {
   return self->accessToken;
@@ -242,7 +263,10 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
 - (NSMutableDictionary *) fetchToken: (NSString * ) code redirect: (NSString *) oldLocation
 {
   NSString *location, *form, *content;
+  WOResponse *response;
+  NSUInteger status;
   NSMutableDictionary *result;
+  NSDictionary *headers;
   NSDictionary *tokenRet;
   NSURL *url;
 
@@ -254,22 +278,33 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
   {
     form = @"grant_type=authorization_code";
     form = [form stringByAppendingFormat: @"&code=%@", code];
-    form = [form stringByAppendingFormat: @"&redirect_uri=%@", oldLocation];
-    form = [form stringByAppendingFormat: @"&client_id=%@", self->openIdClient];
+    form = [form stringByAppendingFormat: @"&redirect_uri=%@", [oldLocation stringByEscapingURL]];
     form = [form stringByAppendingFormat: @"&client_secret=%@", self->openIdClientSecret];
+    form = [form stringByAppendingFormat: @"&client_id=%@", self->openIdClient];
 
-    content = [self _performOpenIdRequest: location
-                      method: @"GET"
-                      headers: nil
+    headers = [NSDictionary dictionaryWithObject: @"application/x-www-form-urlencoded"  forKey: @"content-type"];
+    
+    response = [self _performOpenIdRequest: location
+                      method: @"POST"
+                      headers: headers
                         body: [form dataUsingEncoding:NSUTF8StringEncoding]];
-    if (content)
+
+    if (response)
     {
+      status = [response status];
+      if(status >= 200 && status <300)
+      {
+        content = [response contentString];
         tokenRet = [content objectFromJSONString];
         self->accessToken = [tokenRet objectForKey: @"access_token"];
         self->refreshToken = [tokenRet objectForKey: @"refresh_token"];
         self->idToken = [tokenRet objectForKey: @"id_token"];
         self->tokenType = [tokenRet objectForKey: @"token_type"];
-        [content autorelease];
+      }
+      else
+      {
+        [self logWithFormat: @"Error during fetching the token (status %@), response: %@", status, response];
+      }
     }
     else
     {
@@ -285,6 +320,8 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
 - (NSMutableDictionary *) fetchUserInfo
 {
   NSString *location, *auth, *content;
+  WOResponse *response;
+  NSUInteger status;
   NSMutableDictionary *result;
   NSDictionary *profile, *headers;
   NSURL *url;
@@ -297,31 +334,40 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
   url = [NSURL URLWithString: location];
   if (url)
   {
-    auth = [NSString initWithString: @"Bearer "];
-    auth = [auth stringByAppendingString: self->accessToken];
-    headers = [NSDictionary dictionaryWithObject: auth forKey: @"Authorization"];
+    auth = [NSString stringWithFormat: @"Bearer %@", self->accessToken];
+    headers = [NSDictionary dictionaryWithObject: auth forKey: @"authorization"];
 
-    content = [self _performOpenIdRequest: location
+    response = [self _performOpenIdRequest: location
                        method: @"GET"
                       headers: headers
                          body: nil];
-    if (content)
+    if (response)
     {
-        profile = [content objectFromJSONString];
-        [self errorWithFormat: @"Profile is %@", profile];
+        status = [response status];
+        if(status >= 200 && status <300)
+        {
+          content = [response contentString];
+          profile = [content objectFromJSONString];
+          if(SOGoOpenIDDebugEnabled)
+            NSLog(@"OpenId fetch user info, profile is %@", profile);
 
-          /*profile = {"sub":"70a3e6a1-37cf-4cf6-b114-6973aabca86a",
-                      "email_verified":false,"address":{},
-                      "name":"Foo Bar",
-                      "preferred_username":"myuser",
-                      "given_name":"Foo",
-                      "family_name":"Bar",
-                      "email":"myuser@user.com"}*/
-        if (email = [profile objectForKey: @"email"])
-          [result setObject: email forKey: @"login"];
+            /*profile = {"sub":"70a3e6a1-37cf-4cf6-b114-6973aabca86a",
+                        "email_verified":false,"address":{},
+                        "name":"Foo Bar",
+                        "preferred_username":"myuser",
+                        "given_name":"Foo",
+                        "family_name":"Bar",
+                        "email":"myuser@user.com"}*/
+          if (email = [profile objectForKey: @"email"])
+            [result setObject: email forKey: @"login"];
+          else
+            [result setObject: @"no mail found"  forKey: @"error"];
+        }
         else
-          [result setObject: @"no mail found"  forKey: @"error"];
-        [content autorelease];
+        {
+          [self logWithFormat: @"Error during fetching the token (status %@), response: %@", status, response];
+          [result setObject: @"http-error" forKey: @"error"];
+        }
     }
     else
     {

@@ -25,6 +25,7 @@
    https://openid.net/developers/how-connect-works/ */
 
 #import <Foundation/NSURLSession.h>
+#import <NGObjWeb/WOResponse.h>
 
 
 @class NSString;
@@ -62,17 +63,17 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer);
 // + (SOGoOpenIdSession *) OpenIdSessionWithToken: (NSString *) token;
 
 - (void) initialize;
-- (NSString *) _performOpenIdRequest: (NSString *) endpoint
+- (WOResponse *) _performOpenIdRequest: (NSString *) endpoint
                         method: (NSString *) method
                        headers: (NSDictionary *) headers
                           body: (NSData *) body;
 - (NSMutableDictionary *) fecthConfiguration;
 - (void) setAccessToken;
-- (NSString*) getToken; 
+- (NSString *) getToken; 
 - (NSString *) loginUrl: (NSString *) oldLocation;
 - (NSMutableDictionary *) fetchToken: (NSString *) code redirect: (NSString *) oldLocation;
 // - (void) refreshToken;
-// - (void) revokeToken;
+- (NSString *) logoutUrl;
 - (NSMutableDictionary *) fetchUserInfo;
 - (NSString *) login;
 // - (void) logoutUrl;

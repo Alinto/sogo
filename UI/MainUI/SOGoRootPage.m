@@ -517,15 +517,17 @@ static const NSString *kJwtKey = @"jwt";
   WOResponse *response;
   NSString *login, *redirectLocation, *serverUrl;
   NSString *sessionState, *code;
-  NSURL *newLocation;
+  NSURL *newLocation, *oldLocation;
   NSDictionary *formValues;
   SOGoUser *loggedInUser;
-  WOCookie *opendIdCookie;
+  WOCookie *opendIdCookie, *opendIdCookieLocation;
   WORequest *rq;
+  SOGoWebAuthenticator *auth;
   SOGoOpenIdSession *openIdSession;
   id value;
 
   opendIdCookie = nil;
+  opendIdCookieLocation = nil;
   newLocation = nil;
 
   openIdSession = [SOGoOpenIdSession OpenIdSession];
@@ -534,33 +536,18 @@ static const NSString *kJwtKey = @"jwt";
   rq = [context request];
   if ([login isEqualToString: @"anonymous"])
     login = nil;
-  if (login)
-  {
-    opendIdCookie = [rq headerForKey: @"Authorization"];
-    // if (newLocation)
-    //   saml2LocationCookie = [self _authLocationCookie: YES
-    //                                           withName: @"saml2-location"];
-    // else
-    //   {
-    //     oldLocation = [[self clientObject] baseURLInContext: context];
-    //     newLocation = [NSString stringWithFormat: @"%@%@",
-    //                             oldLocation, [login stringByEscapingURL]];
-    //   }
-
-    // loggedInUser = [SOGoUser userWithLogin: login];
-    // [self _checkAutoReloadWebCalendars: loggedInUser];
-  }
-  else
+  if (!login)
   {
     serverUrl = [[context serverURL] absoluteString];
     redirectLocation = [serverUrl stringByAppendingString: [[self clientObject] baseURLInContext: context]];
-    if((formValues = [rq formValues]) && [formValues objectForKey: @"session_state"] && [formValues objectForKey: @"code"])
+    if((formValues = [rq formValues]) && [formValues objectForKey: @"code"])
     {
-      value = [formValues objectForKey: @"session_state"];
-      if ([value isKindOfClass: [NSArray class]])
-        sessionState = [value lastObject];
-      else
-        sessionState = value;
+      //NOT MANDATORY
+      // value = [formValues objectForKey: @"session_state"];
+      // if ([value isKindOfClass: [NSArray class]])
+      //   sessionState = [value lastObject];
+      // else
+      //   sessionState = value;
       value = [formValues objectForKey: @"code"];
       if ([value isKindOfClass: [NSArray class]])
         code = [value lastObject];
@@ -568,17 +555,39 @@ static const NSString *kJwtKey = @"jwt";
         code = value;
       [openIdSession fetchToken: code redirect: redirectLocation];
       login = [openIdSession login];
-      response = [self redirectToLocation: [NSString stringWithFormat: @"%@%@", redirectLocation, [login stringByEscapingURL]]];
+      if ([login length])
+      {
+        auth = [[WOApplication application] authenticatorInContext: context];
+        opendIdCookie = [auth cookieWithUsername: login
+                                  andPassword: [openIdSession getToken]
+                                    inContext: context];
+      }
+      newLocation = [rq cookieValueForKey: @"openid-location"];
+      opendIdCookieLocation = [self _authLocationCookie: YES withName: @"openid-location"];
     }
     else
     {
       newLocation = [openIdSession loginUrl: redirectLocation];
+      opendIdCookieLocation = [self _authLocationCookie: NO withName: @"openid-location"];
+    }
+  }
+  else
+  {
+    if (!newLocation)
+    {
+      oldLocation = [[self clientObject] baseURLInContext: context];
+      newLocation = [NSString stringWithFormat: @"%@%@", oldLocation, [login stringByEscapingURL]];
     }
 
+    loggedInUser = [SOGoUser userWithLogin: login];
+    [self _checkAutoReloadWebCalendars: loggedInUser];
   }
 
   response = [self redirectToLocation: newLocation];
-
+  if (opendIdCookie)
+    [response addCookie: opendIdCookie];
+  if (opendIdCookieLocation)
+    [response addCookie: opendIdCookieLocation];
   return response;
 }
 

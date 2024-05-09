@@ -152,7 +152,7 @@
   host = [NGInternetSocketAddress addressWithPort:0 onHost:[[self imap4URL] host]];
 
   sd = [SOGoSystemDefaults sharedSystemDefaults];
-  usesSSO = [[sd authenticationType] isSsoUsed];
+  usesSSO = [sd isSsoUsed];
 
   if (![[[self mailAccountFolder] nameInContainer] isEqualToString: @"0"] &&
       usesSSO &&
