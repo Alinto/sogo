@@ -430,13 +430,12 @@
       redirectURL = [SOGoCASSession CASURLWithAction: @"logout"
                                        andParameters: nil];
     }
-  // else if ([[sd authenticationType] isEqualToString: @"openId"])
-  // {
-  //   SOGoOpenIdSession* session;
-  //   session = [SOGoOpenIdSession OpenIdSession];
-
-  //   // redirectURL = [session];
-  // }
+  else if ([[sd authenticationType] isEqualToString: @"openid"])
+  {
+    SOGoOpenIdSession* session;
+    session = [SOGoOpenIdSession OpenIdSession];
+    redirectURL = [session logoutUrl];
+  }
 #if defined(SAML2_CONFIG)
   else if ([[sd authenticationType] isEqualToString: @"saml2"])
     {

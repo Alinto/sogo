@@ -76,7 +76,6 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer);
 - (NSString *) logoutUrl;
 - (NSMutableDictionary *) fetchUserInfo;
 - (NSString *) login;
-// - (void) logoutUrl;
 // - (void) updateCache;
 
 @end
