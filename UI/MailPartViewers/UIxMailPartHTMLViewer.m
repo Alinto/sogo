@@ -109,6 +109,13 @@ _xmlCharsetForCharset (NSString *charset)
   return encoding;
 }
 
+static NSString *_sanitizeHtmlForDisplay(NSString *content)
+{
+  // Sometimes, the mail contains SOGo mail template in the content, and broke mail display
+  // replace the responsible css
+  return [content stringByReplacingOccurrencesOfString: @"sg-face layout-fill layout-column" withString:@""];;
+}
+
 @interface _UIxHTMLMailContentHandler : NSObject <SaxContentHandler, SaxLexicalHandler>
 {
   NSMutableString *result;
@@ -912,8 +919,8 @@ _xmlCharsetForCharset (NSString *charset)
 {
   if (!handler)
     [self _parseContent];
-      
-  return [handler result];
+  
+  return _sanitizeHtmlForDisplay([handler result]);
 }
 
 @end
@@ -1065,7 +1072,7 @@ _xmlCharsetForCharset (NSString *charset)
   if (!handler)
     [self _parseContent];
 
-  return [handler result];
+  return _sanitizeHtmlForDisplay([handler result]);
 }
 
 @end
