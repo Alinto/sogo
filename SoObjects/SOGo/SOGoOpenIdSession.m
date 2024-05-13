@@ -187,7 +187,7 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
           }
           else
           {
-            [self logWithFormat: @"Error during fetching the configuration (status %@), response: %@", status, response];
+            [self logWithFormat: @"Error during fetching the configuration (status %d), response: %@", status, response];
           }
       }
       else
@@ -303,7 +303,7 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
       }
       else
       {
-        [self logWithFormat: @"Error during fetching the token (status %@), response: %@", status, response];
+        [self logWithFormat: @"Error during fetching the token (status %d), response: %@", status, response];
       }
     }
     else
@@ -348,11 +348,12 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
         {
           content = [response contentString];
           profile = [content objectFromJSONString];
-          if(SOGoOpenIDDebugEnabled)
+          if(SOGoOpenIDDebugEnabled && profile)
             NSLog(@"OpenId fetch user info, profile is %@", profile);
 
             /*profile = {"sub":"70a3e6a1-37cf-4cf6-b114-6973aabca86a",
-                        "email_verified":false,"address":{},
+                        "email_verified":false,
+                        "address":{},
                         "name":"Foo Bar",
                         "preferred_username":"myuser",
                         "given_name":"Foo",
@@ -365,7 +366,7 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
         }
         else
         {
-          [self logWithFormat: @"Error during fetching the token (status %@), response: %@", status, response];
+          [self logWithFormat: @"Error during fetching the token (status %d), response: %@", status, response];
           [result setObject: @"http-error" forKey: @"error"];
         }
     }
