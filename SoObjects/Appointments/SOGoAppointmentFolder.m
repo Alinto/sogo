@@ -1075,6 +1075,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                   withTimeZone: (NSTimeZone *) tz
                        toArray: (NSMutableArray *) ma
 {
+  NSAutoreleasePool *pool;
+
+  pool = [[NSAutoreleasePool alloc] init];
   NGCalendarDateRange *recurrenceIdRange;
   NSCalendarDate *recurrenceId, *masterEndDate, *endDate;
   NSMutableDictionary *newRecord;
@@ -1162,6 +1165,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                                                   endDate: [newRecord objectForKey: @"endDate"]];
         if ([dateRange doesIntersectWithDateRange: newRecordRange])
           [ma addObject: newRecord];
+          
         else
           newRecord = nil;
       } else {
@@ -1183,6 +1187,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
       [self _fixExceptionRecord: newRecord fromRow: row];
     }
+
+  DESTROY(pool);
 
   // We finally adjust the c_nextalarm
   [self _computeAlarmForRow: (id)row
