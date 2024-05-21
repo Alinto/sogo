@@ -53,8 +53,8 @@
   /**
    * @ngInject
    */
-  sgMailboxListItemController.$inject = ['$scope', '$element', '$state', '$timeout', '$mdToast', '$mdPanel', '$mdMedia', '$mdSidenav', 'sgConstant', 'Dialog', 'Mailbox', 'encodeUriFilter'];
-  function sgMailboxListItemController($scope, $element, $state, $timeout, $mdToast, $mdPanel, $mdMedia, $mdSidenav, sgConstant, Dialog, Mailbox, encodeUriFilter) {
+  sgMailboxListItemController.$inject = ['$scope', '$rootScope', '$element', '$state', '$timeout', '$mdToast', '$mdPanel', '$mdMedia', '$mdSidenav', 'sgConstant', 'Dialog', 'Mailbox', 'encodeUriFilter'];
+  function sgMailboxListItemController($scope, $rootScope, $element, $state, $timeout, $mdToast, $mdPanel, $mdMedia, $mdSidenav, sgConstant, Dialog, Mailbox, encodeUriFilter) {
     var $ctrl = this;
 
 
@@ -84,10 +84,12 @@
 
 
     this.selectFolder = function($event) {
+      $rootScope.$broadcast('resetMailAdvancedSearchPanel'); // Reset advanced search panel (broadcast event to MailboxesController)
       if (this.editMode || this.mailbox == Mailbox.selectedFolder || this.mailbox.isNoSelect())
         return;
-      Mailbox.$virtualPath = false;
-      if (Mailbox.$virtualMode) {
+      
+      this.mailbox.setHighlightWords([]);
+      if (Mailbox.selectedFolder) {
         Mailbox.$virtualMode = false;
         Mailbox.selectedFolder.$reset({ filter: true });
       }
@@ -283,6 +285,8 @@
           // Close sidenav on small devices
           if (!$mdMedia(sgConstant['gt-md']))
             $mdSidenav('left').close();
+
+          $rootScope.$broadcast('showMailAdvancedSearchPanel'); // Show advanced search panel (broadcast event to MailboxesController)
         };
 
         this.share = function() {

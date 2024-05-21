@@ -141,7 +141,8 @@ module.exports = function(grunt) {
       '<%= src %>/ng-sortable/dist/ng-sortable.min.js{,map}',
       '<%= src %>/lodash/lodash{,.min}.js',
       '<%= src %>/qrcodejs/qrcode{,.min}.js',
-      '<%= src %>/punycode/punycode.js'
+      '<%= src %>/punycode/punycode.js',
+      '<%= src %>/mark.js/dist/mark.min.js'
     ];
     for (var j = 0; j < js.length; j++) {
       var files = grunt.file.expand(grunt.template.process(js[j], {data: options}));

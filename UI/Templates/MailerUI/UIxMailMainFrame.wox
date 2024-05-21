@@ -8,7 +8,7 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="moduleName"
-    const:jsFiles="vendor/ckeditor/build/ckeditor.js, Common/sgCkeditor.component.js, Common.js, Preferences.services.js, Contacts.services.js, Scheduler.services.js, Mailer.js, Mailer.services.js, vendor/angular-file-upload.min.js, vendor/FileSaver.min.js, vendor/punycode.js">
+    const:jsFiles="vendor/ckeditor/build/ckeditor.js, Common/sgCkeditor.component.js, Common.js, Preferences.services.js, Contacts.services.js, Scheduler.services.js, Mailer.js, Mailer.services.js, vendor/angular-file-upload.min.js, vendor/FileSaver.min.js, vendor/punycode.js, vendor/mark.min.js">
   <script type="text/javascript">
     var mailAccounts = <var:string value="mailAccounts" const:escapeHTML="NO" />;
     var userNames = <var:string value="userNames" const:escapeHTML="NO" />;
@@ -122,58 +122,9 @@
   </script>
 
   <script type="text/ng-template" id="UIxMailFolderTemplate">
-    <md-toolbar layout="row" layout-align="space-between center" class="toolbar-main"
-                ng-hide="mailbox.service.$virtualPath !== false">
+  
+    <md-toolbar layout="row" layout-align="space-between center" class="toolbar-main">
       <var:component className="UIxTopnavToolbar"/>
-    </md-toolbar>
-
-    <!-- Advanced search toolbar -->
-    <md-toolbar layout="column" class="toolbar-main md-hue-3"
-                ng-show="mailbox.service.$virtualPath !== false">
-      <div class="md-toolbar-tools">
-        <div layout="column" class="md-flex">
-          <div class="pseudo-input-container pseudo-input-container--compact">
-            <label class="pseudo-input-label"><var:string label:value="Add a Criteria"/></label>
-          </div>
-          <div layout="row">
-            <span class="md-button sg-outline-button" ng-click="app.addSearchParam('subject')">
-              <var:string label:value="Subject"/>
-            </span>
-            <span class="md-button sg-outline-button" ng-click="app.addSearchParam('from')">
-              <var:string label:value="From"/>
-            </span>
-            <span class="md-button sg-outline-button" ng-click="app.addSearchParam('to')">
-              <var:string label:value="To"/>
-            </span>
-            <span class="md-button sg-outline-button" ng-click="app.addSearchParam('cc')">
-              <var:string label:value="Cc"/>
-            </span>
-            <span class="md-button sg-outline-button" ng-click="app.addSearchParam('body')">
-              <var:string label:value="Body"/>
-            </span>
-          </div>
-        </div>
-        <md-button type="button" class="sg-icon-button" ng-click="app.hideAdvancedSearch()">
-          <md-icon>close</md-icon>
-        </md-button>
-      </div>
-      <div class="md-toolbar-tools sg-toolbar-auto">
-        <md-chips class="md-flex"
-                  ng-show="app.search.params.length != 0 || app.currentSearchParam"
-                  ng-model="app.search.params"
-                  md-transform-chip="app.newSearchParam($chip)"
-                  md-add-on-blur="true">
-          <input type="text" sg-focus-on="advancedSearch"
-                 ng-disabled="app.currentSearchParam.length == 0"
-                 sg-placeholder="app.search.options[app.currentSearchParam]"/>
-          <md-chip-template>
-            <span class="md-caption" ng-show="$chip.negative == 0"><var:string label:value="match"/></span>
-            <span class="md-caption" ng-show="$chip.negative == 1"><var:string label:value="does not match"/></span>
-            <span class="md-caption" ng-bind="$chip.searchBy.capitalize() | loc"><!-- search by --></span>
-            <span ng-bind="$chip.searchInput"><!-- search input --></span>
-          </md-chip-template>
-        </md-chips>
-      </div>
     </md-toolbar>
 
     <div layout="row" class="md-flex sg-block-print">

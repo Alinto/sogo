@@ -45,6 +45,7 @@
       $refreshTimeout: null,
       $virtualMode: false,
       $virtualPath: false,
+      $searchMode: false,
       PRELOAD: PRELOAD,
       BATCH_DELETE_LIMIT: BATCH_DELETE_LIMIT
     });
@@ -169,6 +170,9 @@
       this.$visibleMessages = this.$messages;
       this.$selectedMessages = [];
     }
+    if (angular.isUndefined(this.$highlightWords)) {
+      this.$highlightWords = [];
+    }
     angular.extend(this, data);
     if (this.path) {
       this.id = this.$id();
@@ -240,6 +244,16 @@
   Mailbox.prototype.selectFolder = function() {
     if (!Mailbox.$virtualMode)
       Mailbox.selectedFolder = this;
+  };
+
+  /**
+   * @function setSearchMode
+   * @memberof Mailbox.prototype
+   * @desc Set search mode for controller
+   * @param {array} searchMode - a boolean
+   */
+  Mailbox.prototype.setSearchMode = function (searchMode) {
+    Mailbox.$searchMode = searchMode;
   };
 
   /**
@@ -384,6 +398,27 @@
     if (sortingAttributes)
       // Sorting preferences are common to all mailboxes
       angular.extend(Mailbox.$query, sortingAttributes);
+
+    if (filters && filters.length > 0) {
+      // Remove highlight words
+      this.$highlightWords = [];
+      filters.forEach(filter => {
+        if ("subject_or_from" == filter.searchBy
+          || "contains" == filter.searchBy
+          || "body" == filter.searchBy
+          || "from" == filter.searchBy
+          || "to" == filter.searchBy
+          || "subject" == filter.searchBy) {
+          var words = filter.searchInput.split(" ");
+          words.forEach(word => {
+            var cleanedWord = word.trim().toLowerCase();
+            if (!this.$highlightWords.includes(cleanedWord)) {
+              this.$highlightWords.push(cleanedWord);
+            }
+          });
+        }
+      });
+    }
 
     angular.extend(options, { sortingAttributes: Mailbox.$query });
     if (angular.isDefined(filters)) {
@@ -1249,4 +1284,23 @@
     Mailbox.$$resource.post(this.id, action);
   };
 
+  /**
+   * @function setHighlightWords
+   * @memberof Mailbox.prototype
+   * @desc Set highlight words when searching
+   * @param {array} highlightWords - a list of words
+   */
+  Mailbox.prototype.setHighlightWords = function (highlightWords) {
+    this.$highlightWords = highlightWords;
+  };
+
+  /**
+   * @function getHighlightWords
+   * @memberof Mailbox.prototype
+   * @desc Get highlight words when searching
+   * @returns a list of words
+   */
+  Mailbox.prototype.getHighlightWords = function () {
+    return this.$highlightWords;
+  };
 })();

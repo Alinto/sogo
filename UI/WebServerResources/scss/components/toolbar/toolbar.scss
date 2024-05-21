@@ -18,8 +18,35 @@ md-toolbar {
   transition-duration: 0s;
 }
 
-.md-toolbar-tools {
+.md-toolbar-tools, .md-toolbar-tools .md-datepicker-input, .md-chips {
   font-size: $subhead-font-size-base;
+}
+
+.md-toolbar-tools md-select:not([disabled]):focus .md-select-value {
+  border-bottom-color: unset;
+  color: unset;
+  border-bottom-width: 1px;
+}
+
+.search-right-space {
+  margin-right: 10px!important;
+  padding-right: 0px;
+}
+
+.search-and {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 12px;
+}
+
+.search-inline {
+  display: flex;
+  justify-content: center;
+}
+
+.md-toolbar-tools .md-datepicker-input {
+  margin-top: 5px;
 }
 
 md-toolbar,
@@ -144,7 +171,3 @@ hgroup {
   min-height: $bl * 6;
   height: $bl * 6;
 }
-
-//.sg-toolbar-search {
-//  padding: $toolbar-padding 0;
-//}

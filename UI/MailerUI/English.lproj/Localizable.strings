@@ -143,6 +143,23 @@
 "This mail is being sent from an unsecure network!" = "This mail is being sent from an unsecure network!";
 "Address Book" = "Address Book";
 "Search For" = "Search For";
+"Contains" = "Contains";
+"Does not contains" = "Does not contains";
+"Advanced search" = "Advanced search";
+"Anytime" = "Anytime";
+"Last 7 days" = "Last 7 days";
+"Last 30 days" = "Last 30 days";
+"Last 6 month" = "Last 6 month";
+"Before" = "Before";
+"After" = "After";
+"Between" = "Between";
+"and" = "and";
+"With attachments" = "With attachments";
+"In favorites" = "In favorites";
+"Unseen only" = "Unseen only";
+"Show more" = "Show more";
+"Reset" = "Reset";
+"Message size" = "Message size";
 
 /* Popup "show" */
 "all"     = "all";

@@ -141,7 +141,7 @@
         </md-card-actions>
         <md-card-content>
           <div class="sg-padded">
-            <h5 class="sg-md-headline" ng-bind="viewer.message.subject"><!-- subject --></h5>
+            <h5 class="sg-md-headline" ng-bind-html="viewer.message.subject"><!-- subject --></h5>
             <time class="msg-date" datetime="viewer.message.date" ng-bind="::viewer.message.date"><!-- date --></time>
           </div>
           <div layout="row" layout-wrap="layout-wrap">
@@ -151,7 +151,7 @@
                                  sg-email="::viewer.message.from[0].email"
                                  size="40">person</sg-avatar-image>
                 <div>
-                  <span ng-bind="::viewer.message.from[0].name"><!-- from --></span>
+                  <span ng-bind-html="::viewer.message.from[0].name"><!-- from --></span>
                   <a href="#" class="md-caption"
                      ng-bind="::viewer.message.from[0].email"
                      ng-click="viewer.selectRecipient(viewer.message.from[0], $event)"><!-- from --></a>

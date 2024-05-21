@@ -143,6 +143,23 @@
 "This mail is being sent from an unsecure network!" = "Ce mail est envoyé depuis un réseau non sécurisé !";
 "Address Book" = "Carnet d'adresses";
 "Search For" = "Rechercher";
+"Contains" = "Contient";
+"Does not contains" = "Ne contient pas";
+"Advanced search" = "Recherche avancée";
+"Anytime" = "N'importe quand";
+"Last 7 days" = "Les 7 derniers jours";
+"Last 30 days" = "Les 30 derniers jours";
+"Last 6 month" = "Les 6 derniers mois";
+"Before" = "Avant";
+"After" = "Après";
+"Between" = "Entre";
+"and" = "et";
+"With attachments" = "Avec des pièces jointes";
+"In favorites" = "En favori";
+"Unseen only" = "Non lu uniquement";
+"Show more" = "Plus de paramètres";
+"Reset" = "Réinitialiser";
+"Message size" = "Taille du message";
 
 /* Popup "show" */
 "all"     = "Tous";

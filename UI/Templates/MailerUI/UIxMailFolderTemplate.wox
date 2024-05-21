@@ -3,68 +3,34 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:label="OGo:label">
+    
   <div class="view-list hide-print" layout="column" ng-class="{'view-list--close': mailbox.centerIsClose(centerIsClose)}">
-
-    <!-- in virtual mailbox mode -->
-    <md-toolbar class="md-whiteframe-z1 md-hue-3"
-                ng-hide="mailbox.service.$virtualPath === false || mailbox.mode.multiple">
-      <div class="md-toolbar-tools"
-         layout="row" layout-align="start start">
-        <div class="pseudo-input-container pseudo-input-container--compact md-flex sg-no-wrap">
-          <label class="pseudo-input-label pseudo-input-label">
-            <var:string label:value="Search messages in"/>
-          </label>
-          <md-select class="pseudo-input-field" label:aria-label="Search messages in" ng-model="mailbox.service.$virtualPath">
-            <md-option ng-value="''">
-              <span ng-bind="app.accounts[0].name"><!-- main account name --></span>
-            </md-option>
-            <md-option ng-repeat="folder in
-                                  app.accounts[0].$flattenMailboxes()
-                                  track by folder.path"
-                       ng-value="folder.path">
-              <span ng-class="'sg-child-level-' + folder.level"
-                    ng-bind="folder.$displayName"><!-- mailbox name --></span>
-            </md-option>
-          </md-select>
-        </div>
-        <md-menu>
-          <md-button class="sg-icon-button" label:aria-label="More search options" ng-click="$mdMenu.open()">
-            <md-icon>settings</md-icon>
-          </md-button>
-          <md-menu-content>
-            <md-menu-item>
-              <sg-checkmark ng-model="app.search.subfolders"
-                            sg-true-value="1"
-                            sg-false-value="0">
-                <var:string label:value="Search subfolders"/>
-              </sg-checkmark>
-            </md-menu-item>
-            <md-menu-divider><!-- divider --></md-menu-divider>
-            <md-menu-item>
-              <md-button ng-click="app.search.match='AND'">
-                <md-icon label:aria-label="Match all of the following">{{ app.search.match == 'AND' ? 'check' : null }}</md-icon>
-                <var:string label:value="Match all of the following"/>
-              </md-button>
-            </md-menu-item>
-            <md-menu-item>
-              <md-button ng-click="app.search.match='OR'">
-                <md-icon label:aria-label="Match any of the following">{{ app.search.match == 'OR' ? 'check' : null }}</md-icon>
-                <var:string label:value="Match any of the following"/>
-              </md-button>
-            </md-menu-item>
-          </md-menu-content>
-        </md-menu>
-        <md-button class="sg-icon-button"
-                   label:aria-label="Search"
-                   ng-click="app.toggleAdvancedSearch()"
-                   ng-disabled="app.search.params.length == 0">
-          <md-icon>{{ app.service.selectedFolder.$isLoading ? 'stop' : 'search' }}</md-icon>
-        </md-button>
+     <!-- in virtual mailbox mode -->
+    <md-toolbar class="md-whiteframe-z1 md-hue-2 _md _md-toolbar-transitions advanced-search-clickable-toolbar"
+                ng-hide="app.service.$virtualPath === false || mailbox.mode.multiple"
+                ng-click="app.showAdvancedSearch()">
+      <md-icon class="material-icons sg-icon-toolbar-bg">search</md-icon>
+      <div class="sg-toolbar-auto">
+       <form class="md-toolbar-tools sg-toolbar-secondary" layout="row">
+          <div ng-click="app.hideAdvancedSearch($event)">
+            <a class="sg-icon-button" ng-click="app.hideAdvancedSearch($event)" aria-label="Back">
+              <md-icon>arrow_back</md-icon>
+            </a>
+          </div>
+          <md-input-container class="md-flex" md-no-float="md-no-float">
+            <var:string label:value="Advanced search"/>
+          </md-input-container>
+          
+          <a class="sg-icon-button show-advanced-search" ng-click="app.showAdvancedSearch()" aria-label="Advanced search">
+            <md-icon>more_horiz</md-icon>
+            <md-tooltip><var:string label:value="Advanced search"/></md-tooltip>
+          </a>
+        </form>
       </div>
     </md-toolbar>
     <!-- single-selection toolbars -->
     <md-toolbar class="md-accent md-hue-1"
-                ng-hide="mailbox.service.$virtualPath !== false || mailbox.mode.multiple">
+              ng-hide="mailbox.service.$virtualPath !== false || mailbox.mode.multiple">
       <!-- sort mode (default) -->
       <div class="md-toolbar-tools" ng-hide="mailbox.mode.search">
         <md-button class="sg-icon-button" label:aria-label="Search"
@@ -184,6 +150,10 @@
             <md-option value="body"><var:string label:value="Entire Message"/></md-option>
           </md-select>
         </md-input-container>
+        <a class="sg-icon-button show-advanced-search" ng-click="app.showAdvancedSearch()" aria-label="Advanced search">
+          <md-icon>more_horiz</md-icon>
+          <md-tooltip><var:string label:value="Advanced search"/></md-tooltip>
+        </a>
       </form>
     </md-toolbar>
 
@@ -418,4 +388,248 @@
            md-colors="::{color: 'default-background-500'}"><var:string label:value="No message selected"/></div>
     </md-content>
   </div>
+  <script type="text/ng-template" id="advancedSearch">
+    <md-dialog flex="50" flex-sm="80" flex-xs="100">
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <md-icon class="material-icons sg-icon-toolbar-bg">search</md-icon>
+          <div class="pseudo-input-container md-flex">
+            <var:string label:value="Advanced search"/>
+          </div>
+          <md-button class="md-icon-button" ng-click="dialogCtrl.closeDialog()">
+            <md-icon aria-label="Close dialog">close</md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+      <md-dialog-content class="md-dialog-content">
+
+          <div class="md-toolbar-tools sg-toolbar-auto advanced-search">
+
+            <md-input-container class="advanced-search-full">
+                <label><var:string label:value="From"/></label>
+                <input type="text" var:value="dialogCtrl.mainController.searchForm.from" ng-model="dialogCtrl.mainController.searchForm.from" ng-keyup="dialogCtrl.mainController.searchFieldChange($event)" />
+              </md-input-container>
+
+              <md-input-container class="advanced-search-full">
+                <label><var:string label:value="To"/></label>
+                <input type="text" var:value="dialogCtrl.mainController.searchForm.to"  ng-model="dialogCtrl.mainController.searchForm.to" ng-keyup="dialogCtrl.mainController.searchFieldChange($event)"/>
+              </md-input-container>
+
+              <md-input-container class="advanced-search-full">
+                <label><var:string label:value="Contains"/></label>
+                <input type="text" var:value="dialogCtrl.mainController.searchForm.contains" ng-model="dialogCtrl.mainController.searchForm.contains" ng-keyup="dialogCtrl.mainController.searchFieldChange($event)" />
+              </md-input-container>
+
+              <md-input-container class="advanced-search-full">
+                <label><var:string label:value="Does not contains"/></label>
+                <input type="text" var:value="dialogCtrl.mainController.searchForm.doesnotcontains" ng-model="dialogCtrl.mainController.searchForm.doesnotcontains" ng-keyup="dialogCtrl.mainController.searchFieldChange($event)"/>
+              </md-input-container>
+
+              <md-input-container class="advanced-search-full">
+                <label><var:string label:value="Subject"/></label>
+                <input type="text" var:value="dialogCtrl.mainController.searchForm.subject" ng-model="dialogCtrl.mainController.searchForm.subject" ng-keyup="dialogCtrl.mainController.searchFieldChange($event)"/>
+              </md-input-container>
+
+              <md-input-container class="advanced-search-full">
+                <label><var:string label:value="Body"/></label>
+                <input type="text" var:value="dialogCtrl.mainController.searchForm.body" ng-model="dialogCtrl.mainController.searchForm.body" ng-keyup="dialogCtrl.mainController.searchFieldChange($event)"/>
+              </md-input-container>
+
+              <div class="search-inline">
+                <md-select ng-model="dialogCtrl.mainController.searchForm.date"  class="search-right-space">
+                    <md-option value="anytime">
+                      <var:string label:value="Anytime"/>
+                    </md-option>
+                    <md-option value="last7days">
+                      <var:string label:value="Last 7 days"/>
+                    </md-option>
+                    <md-option value="last30days">
+                      <var:string label:value="Last 30 days"/>
+                    </md-option>
+                    <md-option value="last6month">
+                      <var:string label:value="Last 6 month"/>
+                    </md-option>
+                    <md-option value="before">
+                      <var:string label:value="Before"/>
+                    </md-option>
+                    <md-option value="after">
+                      <var:string label:value="After"/>
+                    </md-option>
+                    <md-option value="between">
+                      <var:string label:value="Between"/>
+                    </md-option>
+                </md-select>
+
+                <md-datepicker class="md-text search-right-space" 
+                  ng-model="dialogCtrl.mainController.searchForm.dateStart"
+                  md-hide-icons="calendar"
+                  ng-change="dialogCtrl.mainController.changeDate()"
+                  ng-show="['before', 'after', 'between'].indexOf(dialogCtrl.mainController.searchForm.date) != -1">
+                </md-datepicker>
+
+                <div class="search-right-space search-and" ng-show="['between'].indexOf(dialogCtrl.mainController.searchForm.date) != -1">
+                  <var:string label:value="and"/>
+                </div>
+
+                <md-datepicker class="md-text search-right-space " 
+                  ng-model="dialogCtrl.mainController.searchForm.dateEnd"
+                  md-hide-icons="calendar"
+                  ng-change="dialogCtrl.mainController.changeDate()"
+                  ng-show="['between'].indexOf(dialogCtrl.mainController.searchForm.date) != -1">
+                </md-datepicker>
+              </div>
+
+              <md-input-container class="advanced-search-full">
+                <label><var:string label:value="Bcc"/></label>
+                <input type="text" var:value="dialogCtrl.mainController.searchForm.bcc" ng-model="dialogCtrl.mainController.searchForm.bcc" ng-keyup="dialogCtrl.mainController.searchFieldChange($event)"/>
+              </md-input-container>
+
+              <div class="search-inline">
+                <md-input-container class="md-text search-right-space">
+                  <label><var:string label:value="Message size"/></label>
+                  <input type="number" var:value="dialogCtrl.mainController.searchForm.size" ng-model="dialogCtrl.mainController.searchForm.size" ng-keyup="dialogCtrl.mainController.searchFieldChange($event)"/>
+                </md-input-container>
+
+                <md-select ng-model="dialogCtrl.mainController.searchForm.sizeOperator" class="search-right-space">
+                    <md-option value="&gt;">
+                      &gt;
+                    </md-option>
+                    <md-option value="&lt;">
+                      &lt;
+                    </md-option>
+                </md-select>
+                <md-select ng-model="dialogCtrl.mainController.searchForm.sizeUnit" class="search-right-space">
+                    <md-option value="kb">
+                      <var:string label:value="KiB"/>
+                    </md-option>
+                    <md-option value="mb">
+                      <var:string label:value="MiB"/>
+                    </md-option>
+                    <md-option value="gb">
+                      <var:string label:value="GiB"/>
+                    </md-option>
+                </md-select>
+              </div>
+
+
+              <md-checkbox
+                            ng-model="dialogCtrl.mainController.searchForm.attachements"
+                            ng-true-value="1"
+                            ng-false-value="0"
+                            label:aria-label="With attachments">
+                <var:string label:value="With attachments"/>
+              </md-checkbox>
+
+              <md-checkbox
+                            ng-model="dialogCtrl.mainController.searchForm.favorite"
+                            ng-true-value="1"
+                            ng-false-value="0"
+                            label:aria-label="In favorites">
+                <var:string label:value="In favorites"/>
+              </md-checkbox>
+
+              <md-checkbox
+                            ng-model="dialogCtrl.mainController.searchForm.unseen"
+                            ng-true-value="1"
+                            ng-false-value="0"
+                            label:aria-label="Unseen only">
+                <var:string label:value="Unseen only"/>
+              </md-checkbox>
+
+              <md-chips class="sg-readonly advanced-search-full"
+                        sg-focus-on="flags"
+                        ng-model="dialogCtrl.mainController.searchForm.flags"
+                        md-transform-chip="$chip.name">
+                <md-chip-template>
+                  <span class="sg-chip-color">
+                    <span ng-style="{ 'background-color': dialogCtrl.message.$tags[$chip][1] }"><!-- color --></span>
+                  </span>
+                  <span ng-bind="dialogCtrl.message.$tags[$chip][0] || $chip"><!-- tag --></span>
+                </md-chip-template>
+                <md-autocomplete
+                    md-search-text="dialogCtrl.mainController.searchForm.tags.searchText"
+                    md-items="tag in dialogCtrl.message.filterTags(dialogCtrl.mainController.searchForm.tags.searchText, dialogCtrl.mainController.message.flags)"
+                    md-no-cache="true"
+                    label:placeholder="Add a tag">
+                  <md-item-template>
+                    <div layout="row" layout-align="start center">
+                      <div class="sg-color-chip"
+                          ng-style="{ 'background-color': tag.color }"><!-- color --></div>
+                      <div md-highlight-text="dialogCtrl.mainController.searchForm.tags.searchText"
+                          md-highlight-flags="^i">{{ tag.description }}</div>
+                    </div>
+                  </md-item-template>
+                </md-autocomplete>
+              </md-chips>
+          </div>
+          
+              <div class="search-inline advanced-search-full advanced-search-in">
+                <div class="pseudo-input-container pseudo-input-container--compact md-flex sg-no-wrap">
+                  <label class="pseudo-input-label pseudo-input-label">
+                    <var:string label:value="Search messages in"/>
+                  </label>
+                  <md-select class="pseudo-input-field" label:aria-label="Search messages in" ng-model="dialogCtrl.mailbox.$virtualPath">
+                    <md-option ng-value="''">
+                      <span ng-bind="dialogCtrl.mainController.accounts[0].name"><!-- main account name --></span>
+                    </md-option>
+                    <md-option ng-repeat="folder in
+                                          dialogCtrl.mainController.accounts[0].$flattenMailboxes()
+                                          track by folder.path"
+                              ng-value="folder.path">
+                      <span ng-class="'sg-child-level-' + folder.level"
+                            ng-bind="folder.$displayName"><!-- mailbox name --></span>
+                    </md-option>
+                  </md-select>
+                </div>
+                <md-menu>
+                  <md-button class="sg-icon-button" label:aria-label="More search options" ng-click="$mdMenu.open()">
+                    <md-icon>settings</md-icon>
+                  </md-button>
+                  <md-menu-content>
+                    <md-menu-item>
+                      <sg-checkmark ng-model="dialogCtrl.mainController.search.subfolders"
+                                    sg-true-value="1"
+                                    sg-false-value="0">
+                        <var:string label:value="Search subfolders"/>
+                      </sg-checkmark>
+                    </md-menu-item>
+                    <md-menu-divider><!-- divider --></md-menu-divider>
+                    <md-menu-item>
+                      <md-button ng-click="dialogCtrl.mainController.search.match='AND'">
+                        <md-icon label:aria-label="Match all of the following">{{ dialogCtrl.mainController.search.match == 'AND' ? 'check' : null }}</md-icon>
+                        <var:string label:value="Match all of the following"/>
+                      </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                      <md-button ng-click="dialogCtrl.mainController.search.match='OR'">
+                        <md-icon label:aria-label="Match any of the following">{{ dialogCtrl.mainController.search.match == 'OR' ? 'check' : null }}</md-icon>
+                        <var:string label:value="Match any of the following"/>
+                      </md-button>
+                    </md-menu-item>
+                  </md-menu-content>
+                </md-menu>
+              </div>
+        
+      </md-dialog-content>
+      <md-dialog-actions>
+        <md-button 
+                  class="md-warn"
+                  label:aria-label="Cancel"
+                  ng-click="dialogCtrl.closeDialog()">
+                  <var:string label:value="Cancel"/>
+        </md-button>
+        <md-button 
+                  label:aria-label="Reset"
+                  ng-click="dialogCtrl.mainController.reset()">
+                  <var:string label:value="Reset"/>
+        </md-button>
+        <div class="md-flex"><!-- spacer --></div>
+        <md-button 
+                  label:aria-label="Search"
+                  ng-click="dialogCtrl.search()">
+                  <var:string label:value="Search"/>
+        </md-button>         
+      </md-dialog-actions>
+    </md-dialog>
+  </script>
 </container>

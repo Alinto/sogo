@@ -16,7 +16,8 @@
     "lodash": "^4.17.21",
     "ng-sortable": "1.3.7",
     "qrcodejs": "^1.0.0",
-    "punycode": "^2.3.0"
+    "punycode": "^2.3.0",
+    "mark.js": "^8.11.0"
   },
   "devDependencies": {
     "autoprefixer": "^9.8.5",

@@ -453,3 +453,78 @@ md-dialog md-dialog-actions.sg-mail-editor-attachments {
     display: none !important;
   }
 }
+
+// Search highlight
+mark {
+  background: yellow;
+  color: black;
+}
+
+// Advanced search
+.advanced-search {
+  flex-direction: column;
+  align-items: baseline;
+}
+
+.advanced-search-full {
+  width: 100%;
+}
+
+.advanced-search md-input-container,
+.advanced-search md-select,
+.advanced-search md-datepicker,
+.advanced-search .search-and,
+.advanced-search a {
+  margin: 10px 0;
+  padding: 2px;
+}
+
+.advanced-search-in {
+  margin-top: 10px;
+}
+
+.search-inline md-menu,
+.search-inline button {
+  height: auto !important;
+  margin: auto !important;
+  padding: 0 !important;
+}
+
+.advanced-search-more {
+  display: flex;
+}
+
+.advanced-search-more-no-bottom {
+  margin-bottom: 0!important;
+  margin-top: 20px !important;
+}
+
+.advanced-search-more > :first-child {
+  width: 100%;
+}
+
+.advanced-search-clickable-toolbar {
+  cursor: pointer;
+}
+
+.advanced-search-clickable-toolbar form {
+  padding-left: 0!important;
+}
+
+.advanced-search-clickable-toolbar form >div:first-child {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 16px;
+}
+
+.advanced-search-more button {
+  margin-right: 0!important;
+}
+
+.show-advanced-search {
+  cursor: pointer;
+  padding-left: 10px;
+  padding-right: 10px;
+}
