@@ -52,7 +52,7 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
   SOGoSystemDefaults *sd;
 
   sd = [SOGoSystemDefaults sharedSystemDefaults];
-  return ([sd openIdUrl] && [sd openIdScope]  && [sd openIdClient]  && [sd openIdClientSecret]);
+  return ([sd openIdConfigUrl] && [sd openIdScope]  && [sd openIdClient]  && [sd openIdClientSecret]);
 }
 
 - (void) initialize
@@ -60,7 +60,7 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
   SOGoSystemDefaults *sd;
 
   // //From sogo.conf
-  // openIdUrl = nil;
+  // openIdConfigUrl = nil;
   // openIdScope = nil;
   // openIdClient = nil;
   // openIdClientSecret = nil;
@@ -81,12 +81,22 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
   SOGoOpenIDDebugEnabled = [sd openIdDebugEnabled];
   if ([[self class] checkUserConfig])
   {
-    openIdUrl = [sd openIdUrl];
-    openIdScope = [sd openIdScope];
-    openIdClient = [sd openIdClient];
+    openIdConfigUrl    = [sd openIdConfigUrl];
+    openIdScope        = [sd openIdScope];
+    openIdClient       = [sd openIdClient];
     openIdClientSecret = [sd openIdClientSecret];
+    userTokenInterval  = [sd openIdTokenCheckInterval];
+    cacheUpdateNeeded  = NO;
 
-    [self fecthConfiguration];
+
+    [self _loadSessionFromCache];
+
+    if(cacheUpdateNeeded)
+    {
+      [self fecthConfiguration];
+      [self _saveSessionToCache];
+    }
+      
   }
   else
   {
@@ -160,7 +170,7 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
 
   result = [NSMutableDictionary dictionary];
 
-  location = [self->openIdUrl stringByAppendingString: @"/.well-known/openid-configuration"];
+  location = [self->openIdConfigUrl stringByAppendingString: @"/.well-known/openid-configuration"];
   [result setObject: location forKey: @"url"];
 
   url = [NSURL URLWithString: location];
@@ -228,10 +238,89 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
   return newSession;
 }
 
-// - (NSString*) endSessionUrl
-// {
+- (void) _loadSessionFromCache
+{
+  SOGoCache *cache;
+  NSString *jsonSession;
+  NSDictionary *sessionDict;
 
-// }
+  cache = [SOGoCache sharedCache];
+  jsonSession = [cache OpendIdSessionFromServer: self->openIdConfigUrl];
+  if ([jsonSession length])
+  {
+    sessionDict = [jsonSession objectFromJSONString];
+    ASSIGN (authorizationEndpoint, [sessionDict objectForKey: @"authorization_endpoint"]);
+    ASSIGN (tokenEndpoint, [sessionDict objectForKey: @"token_endpoint"]);
+    ASSIGN (introspectionEndpoint, [sessionDict objectForKey: @"introspection_endpoint"]);
+    ASSIGN (userinfoEndpoint, [sessionDict objectForKey: @"userinfo_endpoint"]);
+    ASSIGN (endSessionEndpoint, [sessionDict objectForKey: @"end_session_endpoint"]);
+    ASSIGN (revocationEndpoint, [sessionDict objectForKey: @"revocation_endpoint"]);
+  }
+  else
+    cacheUpdateNeeded = YES;
+}
+
+- (void) _saveSessionToCache
+{
+  SOGoCache *cache;
+  NSString *jsonSession;
+  NSMutableDictionary *sessionDict;
+
+  cache = [SOGoCache sharedCache];
+  sessionDict = [NSMutableDictionary dictionary];
+  [sessionDict setObject: authorizationEndpoint forKey: @"authorization_endpoint"];
+  [sessionDict setObject: tokenEndpoint forKey: @"token_endpoint"];
+  [sessionDict setObject: introspectionEndpoint forKey: @"introspection_endpoint"];
+  [sessionDict setObject: userinfoEndpoint forKey: @"userinfo_endpoint"];
+  [sessionDict setObject: endSessionEndpoint forKey: @"end_session_endpoint"];
+  [sessionDict setObject: revocationEndpoint forKey: @"revocation_endpoint"];
+
+  jsonSession = [sessionDict jsonRepresentation];
+  [cache setOpenIdSession: jsonSession
+         forServer: self->openIdConfigUrl];
+}
+
+
+- (BOOL) _loadUserFromCache: (NSString *) email
+{
+  /*
+  Return NO if the user token must be check again, YES the user is valid for now
+  */
+  SOGoCache *cache;
+  NSString *identifier, *nextCheck;
+  NSTimeInterval *nextCheckTime, *timeNow;
+
+  identifier = [self->openIdClient stringByAppendingString: email];
+
+  cache = [SOGoCache sharedCache];
+  nextCheck = [cache OpendIdSessionFromServer: email];
+  if ([nextCheck length])
+  {
+    timeNow = [[NSDate date] timeIntervalSince1970];
+    nextCheckTime = [nextCheck doubleValue];
+    if(timeNow > nextCheckTime)
+      return NO;
+    else
+      return YES;
+  }
+  else
+    return NO;
+}
+
+- (void) _saveUserToCache: (NSString *) email
+{
+  SOGoCache *cache;
+  NSString *identifier, *nextCheck;
+  NSTimeInterval *nextCheckTime;
+
+  identifier    = [self->openIdClient stringByAppendingString: email];
+  nextCheckTime = [[NSDate date] timeIntervalSince1970] + self->userTokenInterval;
+  nextCheck     = [NSString stringWithFormat:@"%f", today];
+
+  cache = [SOGoCache sharedCache];
+  [cache setUserOpendIdSessionFromServer: identifier
+         nextCheckAfter: nextCheck];
+}
 
 - (NSString*) loginUrl: (NSString *) oldLocation
 {
@@ -240,8 +329,8 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
   logUrl = [logUrl stringByAppendingString: @"&response_type=code"];
   logUrl = [logUrl stringByAppendingFormat: @"&client_id=%@", self->openIdClient];
   logUrl = [logUrl stringByAppendingFormat: @"&redirect_uri=%@", oldLocation];
- 
   // logurl = [self->logurl stringByAppendingFormat: @"&state=%@", state];
+
   return logUrl;
 }
 
@@ -381,6 +470,7 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
   return result;
 }
 
+
 - (NSString *) login
 {
   NSMutableDictionary *resultUserInfo;
@@ -396,6 +486,12 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
     [self errorWithFormat: @"Can't get user email from profile because: %@", [resultUserInfo objectForKey: @"error"]];
   }
   return nil;
+}
+
+- (BOOL) checkLogin: (NSString *) identifier
+{
+
+
 }
 
 @end

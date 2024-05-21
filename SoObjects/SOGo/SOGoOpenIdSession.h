@@ -33,10 +33,13 @@
 @class NSURL;
 @class NSJSONSerialization;
 
-size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer);
 
 @interface SOGoOpenIdSession : NSObject
 {
+  //For cache
+  BOOL cacheUpdateNeeded;
+  int userTokenInterval;
+
   //From sogo.conf
   NSString *openIdUrl;
   NSString *openIdScope;
@@ -76,7 +79,8 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer);
 - (NSString *) logoutUrl;
 - (NSMutableDictionary *) fetchUserInfo;
 - (NSString *) login;
-// - (void) updateCache;
+- (BOOL) checkLogin: (NSString *) identifier;
+
 
 @end
 

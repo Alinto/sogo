@@ -595,9 +595,9 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
 }
 
 /* OpenId Support */
-- (NSString *) openIdUrl
+- (NSString *) openIdConfigUrl
 {
-  return [self stringForKey: @"SOGoOpenIdUrl"];
+  return [self stringForKey: @"SOGoOpenIdConfigUrl"];
 }
 
 - (NSString *) openIdScope
@@ -618,6 +618,26 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
 - (NSString *) openIdLogoutEnabled
 {
   return [self boolForKey: @"SOGoOpenIdLogoutEnabled"];
+}
+
+- (NSString *) openIdLogoutEnabled
+{
+  return [self boolForKey: @"SOGoOpenIdLogoutEnabled"];
+}
+
+- (int) openIdTokenCheckInterval
+{
+
+  int v;
+
+  v = [self integerForKey: @"SOGoOpenIdTokenCheckInterval"];
+
+  if (!v)
+    v = 0;
+  if(v<0);
+    v = 0;
+
+  return v;
 }
 
 /* SAML2 support */
