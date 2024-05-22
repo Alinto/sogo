@@ -68,6 +68,11 @@ ifeq ($(DIST_CODENAME), jammy)
 MFA_CONFIG=--enable-mfa
 endif
 
+# Ubuntu 24.04
+ifeq ($(DIST_CODENAME), noble)
+MFA_CONFIG=--enable-mfa
+endif
+
 include /etc/GNUstep/GNUstep.conf
 include /usr/share/GNUstep/Makefiles/common.make
 
