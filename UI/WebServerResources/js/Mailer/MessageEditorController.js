@@ -16,7 +16,7 @@
       this.account = stateAccount;
       this.autocomplete = {to: {}, cc: {}, bcc: {}};
       this.autosave = null;
-      this.isFullscreen = false;
+      this.isFullscreen = (typeof screen.orientation !== 'undefined' && screen.orientation && 'portrait-primary' == screen.orientation.type);
       this.hideBcc = (stateMessage.editable.bcc.length === 0);
       this.hideCc = (stateMessage.editable.cc.length === 0);
       this.identities = stateAccount.identities;

@@ -230,7 +230,7 @@
       this.categories = {};
       this.showRecurrenceEditor = this.component.$hasCustomRepeat;
       this.showAttendeesEditor = this.component.attendees && this.component.attendees.length;
-      this.isFullscreen = false;
+      this.isFullscreen = (typeof screen.orientation !== 'undefined' && screen.orientation && 'portrait-primary' == screen.orientation.type);
       this.originalModalCancel = $mdDialog.cancel;
 
       if (this.component.type == 'appointment') {
