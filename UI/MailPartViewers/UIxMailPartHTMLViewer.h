@@ -27,9 +27,11 @@
 {
   id handler;
   NSException *ex;
+  BOOL rawContent;
 }
 
 - (NSString *) flatContentAsString;
+- (void)activateRawContent;
 
 @end
 

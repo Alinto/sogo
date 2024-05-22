@@ -68,6 +68,19 @@
           stateMessage: stateMessage
         }
       })
+      .state('mail.account.mailbox.messageRaw', {
+        url: '/:messageId/viewRaw',
+        views: {
+          'message@': {
+            templateUrl: 'UIxMailViewTemplate', // UI/Templates/MailerUI/UIxMailViewTemplate.wox
+            controller: 'MessageController',
+            controllerAs: 'viewer'
+          }
+        },
+        resolve: {
+          stateMessage: stateMessageRaw
+        }
+      })
       .state('mail.account.mailbox.message.edit', {
         url: '/edit',
         views: {
@@ -252,6 +265,18 @@
       message = new Message(stateMailbox.$account.id, stateMailbox, data);
       return message.$reload();
     }
+  }
+
+  /**
+   * @ngInject
+   */
+  stateMessageRaw.$inject = ['encodeUriFilter', '$stateParams', 'stateMailbox', 'Message'];
+  function stateMessageRaw(encodeUriFilter, $stateParams,  stateMailbox, Message) {
+    var data, message;
+    
+    data = { uid: $stateParams.messageId.toString() };
+    message = new Message(stateMailbox.$account.id, stateMailbox, data);
+    return message.$reload({ useCache: false, raw: true });
   }
 
   /**

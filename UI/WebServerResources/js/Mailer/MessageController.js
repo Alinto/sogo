@@ -544,6 +544,10 @@
       }
     };
 
+    this.activateRawContent = function ($event) {
+      this.openInPopup('viewRaw');
+    };
+
     this.print = function($event) {
       $window.print();
     };

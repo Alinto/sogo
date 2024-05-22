@@ -48,14 +48,32 @@
 */
 
 @interface UIxMailPartAlternativeViewer : UIxMailPartMixedViewer
+{
+  BOOL rawContent;
+}
 
 @end
 
 @implementation UIxMailPartAlternativeViewer
 
+- (id) init
+{
+  if ((self = [super init]))
+  {
+    rawContent = NO;
+  }
+
+  return self;
+}
+
 - (void) dealloc
 {
   [super dealloc];
+}
+
+- (void)activateRawContent
+{
+  rawContent = YES;
 }
 
 /* part selection */
@@ -206,6 +224,9 @@
       [viewer setAttachmentIds: attachmentIds];
       if ([self decodedFlatContent])
         [viewer setDecodedContent: [parts objectAtIndex: i]];
+      
+      if ([viewer isKindOfClass:NSClassFromString(@"UIxMailPartHTMLViewer")] && rawContent)
+        [viewer activateRawContent];
       [renderedParts addObject: [viewer renderedPart]];
     }
 

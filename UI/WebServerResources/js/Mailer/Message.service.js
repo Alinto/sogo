@@ -792,7 +792,7 @@
    * @function $reload
    * @memberof Message.prototype
    * @desc Fetch the viewable message body along with other metadata such as the list of attachments.
-   * @param {object} [options] - set {useCache: true} to use already fetched data
+   * @param {object} [options] - set {useCache: true} to use already fetched data, {raw: true} to remove web mail alteration
    * @returns a promise of the HTTP operation
    */
   Message.prototype.$reload = function (options) {
@@ -813,7 +813,10 @@
       return this;
     }
 
-    futureMessageData = Message.$$resource.fetch(this.$absolutePath(options), 'view');
+    if (options && options.raw)
+      futureMessageData = Message.$$resource.fetch(this.$absolutePath(options), 'viewRaw');
+    else
+      futureMessageData = Message.$$resource.fetch(this.$absolutePath(options), 'view');
 
     return this.$unwrap(futureMessageData);
   };

@@ -117,6 +117,12 @@
                   <var:string label:value="View Message Source"/>
                 </md-button>
               </md-menu-item>
+              <md-menu-item ng-hide="::isPopup">
+                <md-button label:aria-label="View raw message"
+                           ng-click="viewer.activateRawContent($event)">
+                  <var:string label:value="View raw message"/>
+                </md-button>
+              </md-menu-item>
               <md-menu-item>
                 <md-button label:aria-label="Print..."
                            ng-click="viewer.print()">

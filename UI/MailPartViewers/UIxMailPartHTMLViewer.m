@@ -128,9 +128,11 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
   BOOL inCSSDeclaration;
   BOOL hasEmbeddedCSS;
   xmlCharEncoding contentEncoding;
+  BOOL rawContent;
 }
 
 - (NSString *) result;
+- (void) activateRawContent;
 
 @end
 
@@ -161,6 +163,7 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
       ignoreTag = nil;
       attachmentIds = nil;
       contentEncoding = XML_CHAR_ENCODING_UTF8;
+      rawContent = NO;
     }
 
   return self;
@@ -172,6 +175,11 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
   [css release];
   [ignoreTag release];
   [super dealloc];
+}
+
+- (void)activateRawContent
+{
+  rawContent = YES;
 }
 
 - (void) setContentEncoding: (xmlCharEncoding) newContentEncoding
@@ -376,7 +384,8 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
                     (*(currentChar-7) == 'p' || *(currentChar-7) == 'P') &&
                     (*(currentChar-8) == 'm' || *(currentChar-8) == 'M') &&
                     (*(currentChar-9) == 'i' || *(currentChar-9) == 'I') &&
-                    *(currentChar-10) == '!'))
+                    *(currentChar-10) == '!')
+                    && !rawContent)
                 {
                   length = (currentChar - start);
                   [declaration appendFormat: @"%@ !important;",
@@ -759,9 +768,15 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
     {
       handler = nil;
       ex = nil;
+      rawContent = NO;
     }
 
   return self;
+}
+
+- (void)activateRawContent
+{
+  rawContent = YES;
 }
 
 - (void) dealloc
@@ -805,6 +820,8 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
              createXMLReaderForMimeType: @"text/html"];
 
   handler = [_UIxHTMLMailContentHandler new];
+  if (rawContent)
+    [handler activateRawContent];
   [handler setAttachmentIds: attachmentIds];
 
   // Some broken email messages have some additionnal content outside the main HTML tags which are
@@ -919,6 +936,9 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
 {
   if (!handler)
     [self _parseContent];
+  
+  if (rawContent)
+    return [handler result];
   
   return _sanitizeHtmlForDisplay([handler result]);
 }

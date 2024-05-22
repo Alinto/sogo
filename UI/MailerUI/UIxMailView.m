@@ -275,6 +275,16 @@ static NSString *mailETag = nil;
 
 - (id <WOActionResults>) defaultAction
 {
+  return [self view: NO];
+}
+
+- (id <WOActionResults>) viewRawAction
+{
+  return [self view: YES];
+}
+
+- (id <WOActionResults>) view: (BOOL)raw
+{
   WOResponse *response;
   NSMutableDictionary *data;
   NSArray *addresses;
@@ -336,6 +346,12 @@ static NSString *mailETag = nil;
     }
 
   viewer = [self contentViewerComponent]; // set attachmentIds for common parts
+  
+  if (raw && ([viewer isKindOfClass: NSClassFromString(@"UIxMailPartHTMLViewer")]
+      || [viewer isKindOfClass: NSClassFromString(@"UIxMailPartAlternativeViewer")])) {
+    // In this case, disable html mail content modification by SOGo
+    [viewer activateRawContent];
+  }
   renderedPart = [viewer renderedPart];   // set attachmentIds for encrypted & TNEF parts
 
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:

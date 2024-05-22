@@ -218,6 +218,11 @@
           pageName    = "UIxMailView";
           actionName = "default";
         };
+        viewRaw = {
+          protectedBy = "View";
+          pageName    = "UIxMailView";
+          actionName = "viewRaw";
+        };
         sendMDN = {
           protectedBy = "View";
           pageName    = "UIxMailView";
