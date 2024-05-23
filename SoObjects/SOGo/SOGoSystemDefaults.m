@@ -615,9 +615,13 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
   return [self stringForKey: @"SOGoOpenIdClientSecret"];
 }
 
-- (NSString *) openIdLogoutEnabled
+- (NSString *) openIdEmailParam
 {
-  return [self boolForKey: @"SOGoOpenIdLogoutEnabled"];
+  NSString *emailParam;
+  emailParam = [self stringForKey: @"SOGoOpenIdEmailParam"];
+  if(!emailParam)
+    emailParam = @"email";
+  return emailParam;
 }
 
 - (NSString *) openIdLogoutEnabled
@@ -634,7 +638,7 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
 
   if (!v)
     v = 0;
-  if(v<0);
+  if(v<0)
     v = 0;
 
   return v;

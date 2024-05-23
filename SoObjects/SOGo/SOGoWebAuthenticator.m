@@ -151,7 +151,7 @@
   {
     openIdSession = [SOGoOpenIdSession OpenIdSessionWithToken: _pwd];
     if (openIdSession)
-      rc = [[openIdSession login] isEqualToString: _login];
+      rc = [[openIdSession checkLogin: _login] isEqualToString: _login];
     else
       rc = NO;
   }

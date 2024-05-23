@@ -532,16 +532,26 @@ static const NSString *kJwtKey = @"jwt";
 
   openIdSession = [SOGoOpenIdSession OpenIdSession];
 
+  if(![openIdSession sessionIsOk])
+  {
+    return [NSException exceptionWithHTTPStatus: 502 /* Bad OpenId Configuration */
+                                       reason: [NSString stringWithFormat: @"OpenId server not found or has unexpected behavior, contact your admin."]];
+  }
+
   login = [[context activeUser] login];
   rq = [context request];
   if ([login isEqualToString: @"anonymous"])
     login = nil;
   if (!login)
   {
+    //You get here if you nerver been logged in or if you token is expired
     serverUrl = [[context serverURL] absoluteString];
-    redirectLocation = [serverUrl stringByAppendingString: [[self clientObject] baseURLInContext: context]];
+    redirectLocation = [NSString stringWithFormat: @"%@/%@/", serverUrl, [rq applicationName]];
+    NSLog(@"ServerUrl %@ and redirect: %@", serverUrl, redirectLocation);
     if((formValues = [rq formValues]) && [formValues objectForKey: @"code"])
     {
+      //You get here if this is the callback of openid after you logged in
+
       //NOT MANDATORY
       // value = [formValues objectForKey: @"session_state"];
       // if ([value isKindOfClass: [NSArray class]])
@@ -567,6 +577,7 @@ static const NSString *kJwtKey = @"jwt";
     }
     else
     {
+      //You get here the first time you access sogo, it redirect to your openidserver
       newLocation = [openIdSession loginUrl: redirectLocation];
       opendIdCookieLocation = [self _authLocationCookie: NO withName: @"openid-location"];
     }

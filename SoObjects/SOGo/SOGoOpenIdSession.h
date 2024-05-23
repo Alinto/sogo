@@ -41,10 +41,12 @@
   int userTokenInterval;
 
   //From sogo.conf
-  NSString *openIdUrl;
+  BOOL openIdSessionIsOK;
+  NSString *openIdConfigUrl;
   NSString *openIdScope;
   NSString *openIdClient;
   NSString *openIdClientSecret;
+  NSString *openIdEmailParam;
 
   //From request to well-known/configuration
   NSString *authorizationEndpoint;
@@ -66,6 +68,7 @@
 // + (SOGoOpenIdSession *) OpenIdSessionWithToken: (NSString *) token;
 
 - (void) initialize;
+- (BOOL) sessionIsOK;
 - (WOResponse *) _performOpenIdRequest: (NSString *) endpoint
                         method: (NSString *) method
                        headers: (NSDictionary *) headers
@@ -79,7 +82,7 @@
 - (NSString *) logoutUrl;
 - (NSMutableDictionary *) fetchUserInfo;
 - (NSString *) login;
-- (BOOL) checkLogin: (NSString *) identifier;
+- (NSString *) checkLogin: (NSString *) identifier;
 
 
 @end
