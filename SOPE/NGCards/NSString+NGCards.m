@@ -45,19 +45,27 @@
     [foldedString appendString: self];
   else
     {
-      subStringRange = NSMakeRange (0, 75);
-      [foldedString appendFormat: @"%@\r\n",
-                    [self substringWithRange: subStringRange]];
-      subStringRange = NSMakeRange (75, 74);
+      //Check if the 75th chars is a 2*16bits chars, in this case, cut one char before
+      unichar c = [self characterAtIndex: 74];
+      int substringCut;
+      if (c >= 0xD800 && c <= 0xDBFF)
+        substringCut = 74;
+      else
+        substringCut = 75;
+      subStringRange = NSMakeRange (0, substringCut);
+      [foldedString appendFormat: @"%@\r\n", [self substringWithRange: subStringRange]];
+
+      subStringRange = NSMakeRange (substringCut, 74);
       while ((length - subStringRange.location) > 75)
         {
-          [foldedString appendFormat: @" %@\r\n",
-                        [self substringWithRange: subStringRange]];
-          subStringRange.location += 74;
+          c = [self characterAtIndex: (subStringRange.location+subStringRange.length-1)];
+          if (c >= 0xD800 && c <= 0xDBFF)
+            subStringRange.length--;
+          [foldedString appendFormat: @" %@\r\n", [self substringWithRange: subStringRange]];
+          subStringRange.location += subStringRange.length;
         }
       subStringRange.length = length - subStringRange.location;
-      [foldedString appendFormat: @" %@",
-                    [self substringWithRange: subStringRange]];
+      [foldedString appendFormat: @" %@", [self substringWithRange: subStringRange]];
     }
 
   return foldedString;
