@@ -53,7 +53,6 @@
       </md-button>
       <a class="md-icon-button md-button"
          label:aria-label="Day"
-         ng-disabled="true"
          ng-click="calendar.changeView($event, 'day')">
          <md-tooltip md-direction="bottom"><var:string label:value="Switch to day view"/></md-tooltip>
          <md-icon>view_day</md-icon>
@@ -72,6 +71,7 @@
       </a>
       <a class="md-icon-button md-button"
          label:aria-label="Multicolumn Day View"
+         ng-disabled="true"
          ng-click="calendar.changeView($event, 'multicolumnday')">
          <md-tooltip md-direction="bottom"><var:string label:value="Switch to multi-columns day view"/></md-tooltip>
          <md-icon>view_array</md-icon>
