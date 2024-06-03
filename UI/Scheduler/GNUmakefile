@@ -37,6 +37,7 @@ SchedulerUI_OBJC_FILES =		\
 	UIxAppointmentEditor.m		\
 	UIxTaskEditor.m			\
 	UIxRecurrenceEditor.m		\
+	UIxRecurrenceListEditor.m		\
 	UIxReminderEditor.m		\
 	UIxOccurenceEditor.m
 SchedulerUI_RESOURCE_FILES += \

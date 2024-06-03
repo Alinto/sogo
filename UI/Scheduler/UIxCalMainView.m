@@ -346,22 +346,6 @@
   return (view ? view : @"weekview");
 }
 
-- (NSArray *) repeatFrequencies
-{
-  NSArray *repeatFrequencies;
-
-  repeatFrequencies = [NSArray arrayWithObjects:
-                                 [NSArray arrayWithObjects: @"never", [self labelForKey: @"repeat_NEVER"], nil],
-                               [NSArray arrayWithObjects:  @"daily",[self labelForKey: @"repeat_DAILY"], nil],
-                               [NSArray arrayWithObjects: @"weekly",[self labelForKey: @"repeat_WEEKLY"],  nil],
-                               [NSArray arrayWithObjects: @"monthly",[self labelForKey: @"repeat_MONTHLY"],  nil],
-                               [NSArray arrayWithObjects: @"yearly", [self labelForKey: @"repeat_YEARLY"], nil],
-                               [NSArray arrayWithObjects: @"custom", [self labelForKey: @"repeat_CUSTOM"], nil],
-                               nil];
-
-  return repeatFrequencies;
-}
-
 - (BOOL) isCalendarSharingEnabled {
   BOOL result;
   SOGoSystemDefaults *sd;

@@ -133,6 +133,10 @@
           protectedBy = "View";
           pageName    = "UIxRecurrenceEditor";
         };
+        editListRecurrence = {
+          protectedBy = "View";
+          pageName    = "UIxRecurrenceListEditor";
+        };
         editReminder = {
           protectedBy = "View";
           pageName    = "UIxReminderEditor";

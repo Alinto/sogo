@@ -328,12 +328,6 @@
         this.component.repeat.month.type == 'bymonthday';
     };
 
-    this.frequencies = function () {
-      return _.filter($window.repeatFrequencies, function (frequency) {
-        return frequency[0] != 'custom' || vm.component.repeat.frequency == 'custom';
-      });
-    };
-
     this.changeFrequency = function () {
       if (this.component.repeat.frequency == 'custom')
         this.showRecurrenceEditor = true;
