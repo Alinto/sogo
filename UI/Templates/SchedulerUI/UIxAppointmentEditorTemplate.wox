@@ -7,7 +7,7 @@
   <md-dialog 
   flex="{{ editor.isFullscreen?    100 : 60 }}"
   flex-sm="{{ editor.isFullscreen? 100 : 80 }}">
-    <form name="eventForm" class="md-inline-form" ng-submit="editor.save(eventForm)">
+    <form name="eventForm" class="md-inline-form">
       <md-toolbar>
         <div class="md-toolbar-tools sg-no-transition">
           <md-icon class="material-icons sg-icon-toolbar-bg">event</md-icon>
@@ -318,6 +318,7 @@
           <var:string label:value="Reset"/>
         </md-button>
         <md-button class="md-primary" type="submit"
+                   ng-click="editor.save(eventForm)"
                    ng-disabled="eventForm.$invalid || eventForm.$submitted">
           <var:string label:value="Save"/>
         </md-button>
@@ -359,9 +360,9 @@
                    ng-click="editor.edit(eventForm)">
           <var:string label:value="Edit"/>
         </md-button>
-        <md-button class="md-warn" type="button"
+        <md-button class="md-warn" type="submit"
                    ng-click="editor.save(eventForm, { ignoreConflicts: true })"
-                   ng-disabled="editor.eventForm.$invalid">
+                   ng-disabled="eventForm.$invalid || eventForm.$submitted">
           <var:string label:value="Save"/>
         </md-button>
       </md-dialog-actions>
@@ -394,10 +395,10 @@
                    ng-click="editor.edit(eventForm)">
           <var:string label:value="Edit"/>
         </md-button>
-        <md-button class="md-warn" type="button"
+        <md-button class="md-warn" type="submit"
                    ng-show="editor.attendeeConflictError.unavailableAttendees"
                    ng-click="editor.save(eventForm, { removeAttendees: editor.attendeeConflictError.unavailableAttendees })"
-                   ng-disabled="editor.eventForm.$invalid">
+                   ng-disabled="eventForm.$invalid || eventForm.$submitted">
           <var:string label:value="Save"/>
         </md-button>
       </md-dialog-actions>
