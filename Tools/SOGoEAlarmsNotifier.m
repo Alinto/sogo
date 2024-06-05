@@ -171,13 +171,6 @@
   owner = [SOGoUser userWithLogin: ownerId];
   mailer = [SOGoMailer mailerWithDomainDefaults: [owner domainDefaults]];
 
-  if (!staticAuthenticator && [mailer requiresAuthentication])
-    {
-      fprintf (stderr, "Specify the file containing credentials to use for SMTP AUTH.\n"
-               "Use -h for help.\n");
-      return;
-    }
-
   localContext = [WOContext context];
   [localContext setActiveUser: owner];
   app = [[WOApplication alloc] initWithName: @"SOGo"];
@@ -278,6 +271,7 @@
                              withMetadata: metadata];
 
   max = [alarms count];
+  
   for (count = 0; count < max; count++)
     [self _processAlarm: [alarms objectAtIndex: count]
               withOwner: [[metadata objectAtIndex: count] objectForKey: @"owner"]
@@ -287,7 +281,7 @@
   // events or tasks for example). This will also delete any email
   // alarms that are no longer relevant
   max = [metadata count];
-
+  
   for (count = 0; count < max; count++)
     {
       d = [metadata objectAtIndex: count];
