@@ -1730,6 +1730,19 @@ default-character-set=utf8
 default-character-set=utf8
 ----
 
+MySQL SSL Connection
+^^^^^^^^^^^^^^^^^^^^
+
+Add the following settings in the `sogo.conf` file to enable SSL connection between SOGo and MySQL / MariaDB :
+
+----
+MySQL4SSLEnabled = YES;
+MySQL4SSLKeyPath = "/mysql_keys/client-key.pem";
+MySQL4SSLCertPath = "/mysql_keys/client-cert.pem";
+MySQL4SSLCaPath = "/mysql_keys/ca-cert.pem";
+----
+
+
 MySQL complete Unicode compliance
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
