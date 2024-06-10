@@ -44,6 +44,8 @@
 - (NSString *) startDate;
 - (NSString *) startTime;
 - (BOOL) isEndDateOnSameDay;
+- (BOOL) hasLocation;
+- (NSString *)location;
 
 @end
 

@@ -583,9 +583,19 @@
                                     [[person partStatWithDefault] lowercaseString], @"partstat", nil]];
     }
 
-  [d setObject: a  forKey: @"participants"];
+  [d setObject: a  forKey: @"participants"]; 
 
   return d;
+}
+
+- (BOOL) hasLocation {
+  return [self inEvent] != nil 
+          && [[self inEvent] location] != nil 
+          && [[[self inEvent] location] length] > 0;
+}
+
+- (NSString *) location {
+  return [[self inEvent] location];
 }
 
 @end /* UIxMailPartICalViewer */

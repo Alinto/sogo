@@ -264,6 +264,16 @@
           </div>
         </div>
 
+
+        <var:if condition="hasLocation">
+          <div class="pseudo-input-container">
+            <label class="pseudo-input-label"><var:string label:value="Location"/></label>
+            <div>
+              <var:string value="location"/>
+            </div>
+          </div>
+        </var:if>
+
         <!-- ATTENDEES -->
         <md-list ng-show="part.participants.length > 0">
           <div class="pseudo-input-container">
