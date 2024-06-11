@@ -483,7 +483,7 @@ static BOOL debugLeaks;
 
 - (void) checkIfDaemonHasToBeShutdown
 {
-  unsigned int vmem;
+  unsigned long long vmem;
 
   if (vMemSizeLimit > 0)
     {
