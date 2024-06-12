@@ -553,6 +553,12 @@
 
             <div layout="column" flex="100">
               <md-checkbox
+                  ng-model="app.preferences.settings.Calendar.InvitationNotificationsOnCalDavDisabled"
+                  ng-true-value="1"
+                  ng-false-value="0">
+                <var:string label:value="Disable e-mail notifications on CalDAV"/>
+              </md-checkbox>
+              <md-checkbox
                   ng-model="app.preferences.settings.Calendar.PreventInvitations"
                   ng-true-value="1"
                   ng-false-value="0">

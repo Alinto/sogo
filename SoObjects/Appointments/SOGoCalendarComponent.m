@@ -806,6 +806,7 @@
 
   ownerUser = [SOGoUser userWithLogin: owner];
   dd = [ownerUser domainDefaults];
+  
   if ([dd appointmentSendEMailNotifications] && [object isStillRelevant])
     {
       count = [attendees count];
@@ -1033,6 +1034,8 @@
 			    to: (iCalPerson *) recipient
 {
   SOGoDomainDefaults *dd;
+  SOGoUserSettings *settings;
+  BOOL canSendNotification, doNotSendNotificationOnCalDav;
 
   // We never send IMIP reply when the "initiator" is Outlook 2013/2016 over
   // the EAS protocol. That is because Outlook will always issue a SendMail command
@@ -1042,8 +1045,15 @@
   if ([[context objectForKey: @"DeviceType"] isEqualToString: @"WindowsOutlook15"])
     return;
 
+  canSendNotification = NO;
+  settings = [from userSettings];
+  doNotSendNotificationOnCalDav = ([settings objectForKey: @"Calendar"] 
+                                  && [[settings objectForKey: @"Calendar"] objectForKey: @"InvitationNotificationsOnCalDavDisabled"]
+                                  && 1 == [[[settings objectForKey: @"Calendar"] objectForKey: @"InvitationNotificationsOnCalDavDisabled"] intValue]);
+  canSendNotification = !doNotSendNotificationOnCalDav || !(doNotSendNotificationOnCalDav && [[context request] isSoWebDAVRequest]);
+  
   dd = [from domainDefaults];
-  if ([dd appointmentSendEMailNotifications] && [event isStillRelevant])
+  if ([dd appointmentSendEMailNotifications] && [event isStillRelevant] && canSendNotification)
     {
       // We first send to the real recipient (organizer)
       [self _sendIMIPReplyForEvent: event
