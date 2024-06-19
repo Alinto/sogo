@@ -228,8 +228,8 @@ static NSString *alarmsFolderURLString = nil;
       entity = [self _storeTableEntityForChannel: tc];
       qualifier = [[EOSQLQualifier alloc] initWithEntity: entity
                                          qualifierFormat:
-                                            @"c_path='%@' AND c_name='%@'",
-                                          path, cname];
+                                            @"c_path LIKE '%@%%' AND c_name='%@'",
+                                          [path asSafeSQLLikeString], cname];
       [qualifier autorelease];
 
       [context beginTransaction];
@@ -331,6 +331,7 @@ static NSString *alarmsFolderURLString = nil;
                          recurrenceId: (NSCalendarDate *) recId
                           alarmNumber: (NSNumber *) alarmNbr
                          andAlarmDate: (NSCalendarDate *) alarmDate
+                             external: (BOOL) isExternal
 {
   NSDictionary *record, *newRecord;
   NSException *error;
@@ -343,22 +344,41 @@ static NSString *alarmsFolderURLString = nil;
   if (tc)
     {
       context = [tc adaptorContext];
-      newRecord = [self _newRecordWithCName: cname
-                           inCalendarAtPath: path
-                                     forUID: uid
-                               recurrenceId: recId
-                                alarmNumber: alarmNbr
-                               andAlarmDate: alarmDate];
-      record = [self recordForEntryWithCName: cname
+      if (!isExternal)
+        newRecord = [self _newRecordWithCName: cname
+                            inCalendarAtPath: path
+                                      forUID: uid
+                                recurrenceId: recId
+                                  alarmNumber: alarmNbr
+                                andAlarmDate: alarmDate];
+      else
+        newRecord = [self _newRecordWithCName: cname
+                            inCalendarAtPath: [NSString stringWithFormat: @"EXTERNAL:%@", path]
+                                      forUID: uid
+                                recurrenceId: recId
+                                  alarmNumber: alarmNbr
+                                andAlarmDate: alarmDate];
+
+      if (!isExternal)
+        record = [self recordForEntryWithCName: cname
                             inCalendarAtPath: path];
+      else
+        record = [self recordForEntryWithCName: cname
+                            inCalendarAtPath: @"EXTERNAL:"];
       entity = [self _storeTableEntityForChannel: tc];
       [context beginTransaction];
       if (record)
         {
-          qualifier = [[EOSQLQualifier alloc] initWithEntity: entity
-                                             qualifierFormat:
-                                                @"c_path='%@' AND c_name='%@'",
-                                              path, cname];
+          if (!isExternal)
+            qualifier = [[EOSQLQualifier alloc] initWithEntity: entity
+                                              qualifierFormat:
+                                                  @"c_path='%@' AND c_name='%@'",
+                                                path, cname];
+          else
+            qualifier = [[EOSQLQualifier alloc] initWithEntity: entity
+                                              qualifierFormat:
+                                                  @"c_path LIKE 'EXTERNAL:%@%%' AND c_name='%@'",
+                                                [path asSafeSQLLikeString], cname];
           [qualifier autorelease];
           error = [tc updateRowX: newRecord describedByQualifier: qualifier];
         }
@@ -378,6 +398,7 @@ static NSString *alarmsFolderURLString = nil;
 
 - (void) deleteRecordForEntryWithCName: (NSString *) cname
                       inCalendarAtPath: (NSString *) path
+                              external: (BOOL) isExternal
 {
   EOAdaptorChannel *tc;
   EOAdaptorContext *context;
@@ -390,10 +411,17 @@ static NSString *alarmsFolderURLString = nil;
     {
       context = [tc adaptorContext];
       entity = [self _storeTableEntityForChannel: tc];
-      qualifier = [[EOSQLQualifier alloc] initWithEntity: entity
+      if (!isExternal)
+        qualifier = [[EOSQLQualifier alloc] initWithEntity: entity
                                          qualifierFormat:
-                                            @"c_path='%@' AND c_name='%@'",
+                                            @"c_path = '%@' AND c_name='%@'",
                                           path, cname];
+      else
+        qualifier = [[EOSQLQualifier alloc] initWithEntity: entity
+                                         qualifierFormat:
+                                            @"(c_path = '%@' OR c_path LIKE 'EXTERNAL:%%') AND c_name='%@'",
+                                            path, cname];
+                                            
       [qualifier autorelease];
       [context beginTransaction];
       error = [tc deleteRowsDescribedByQualifierX: qualifier];

@@ -52,6 +52,7 @@
 
 NSCalendarDate *iCalDistantFuture = nil;
 NSNumber *iCalDistantFutureNumber = nil;
+BOOL hasAttendeesAlarm; // As SOGo is single process, this shall not be an issue
 
 @implementation iCalEntityObject (SOGoExtensions)
 
@@ -286,6 +287,7 @@ NSNumber *iCalDistantFutureNumber = nil;
   reminderRelation = [alarm objectForKey: @"relation"];
   reminderEmailAttendees = [[alarm objectForKey: @"attendees"] boolValue];
   reminderEmailOrganizer = [[alarm objectForKey: @"organizer"] boolValue];
+  hasAttendeesAlarm = [[alarm objectForKey: @"attendees"] boolValue];
   anAlarm = [iCalAlarm alarmForEvent: self
                                owner: owner
                               action: reminderAction
@@ -688,7 +690,7 @@ NSNumber *iCalDistantFutureNumber = nil;
                      forContainer: (id) theContainer
 		  nameInContainer: (NSString *) nameInContainer
 {
-  NSCalendarDate *nextAlarmDate;
+  NSCalendarDate *nextAlarmDate, *nextAlarmDateExternal;
   GCSAlarmsFolder *af;
   SOGoUser *alarmOwner;
   NSString *path;
@@ -732,25 +734,29 @@ NSNumber *iCalDistantFutureNumber = nil;
                   || ([webstatus caseInsensitiveCompare: @"TRIGGERED"]
                       != NSOrderedSame))
                 nextAlarmDate = [anAlarm nextAlarmDate];
+                nextAlarmDateExternal = nextAlarmDate;
             }
 	  else if ((anAlarm = [self firstEmailAlarm]) && af)
 	    {
 	      nextAlarmDate = [anAlarm nextAlarmDate];
+        nextAlarmDateExternal = nextAlarmDate;
 	      email_alarm_number = [[self alarms] indexOfObject: anAlarm];
+
 
 	      // The email alarm is too old, let's just remove it
 	      if ([nextAlarmDate earlierDate: [NSDate date]] == nextAlarmDate ||
                   ![anAlarm userIsAttendee: alarmOwner])
-		nextAlarmDate = nil;
-	      else
-		{
-		  [af writeRecordForEntryWithCName: nameInContainer
-				  inCalendarAtPath: path
-					    forUID: [self uid]
-				      recurrenceId: nil
-				       alarmNumber: [NSNumber numberWithInt: email_alarm_number]
-				      andAlarmDate: nextAlarmDate];
-		}
+		      nextAlarmDate = nil;
+        else
+        {
+          [af writeRecordForEntryWithCName: nameInContainer
+              inCalendarAtPath: path
+                  forUID: [self uid]
+                  recurrenceId: nil
+                  alarmNumber: [NSNumber numberWithInt: email_alarm_number]
+                  andAlarmDate: nextAlarmDate
+                      external: NO];
+        }
 	    }
         }
       // Recurring event/task
@@ -841,6 +847,7 @@ NSNumber *iCalDistantFutureNumber = nil;
 
 			    {
 			      nextAlarmDate = [NSDate dateWithTimeIntervalSince1970: c_nextalarm];
+            nextAlarmDateExternal = nextAlarmDate;
 			      email_alarm_number = [[self alarms] indexOfObject: anAlarm];
 
                               if ([anAlarm userIsAttendee: alarmOwner])
@@ -849,7 +856,8 @@ NSNumber *iCalDistantFutureNumber = nil;
                                                           forUID: [self uid]
                                                     recurrenceId: [self recurrenceId]
                                                      alarmNumber: [NSNumber numberWithInt: email_alarm_number]
-                                                    andAlarmDate: nextAlarmDate];
+                                                    andAlarmDate: nextAlarmDate
+                                                        external: NO];
                               else
                                 nextAlarmDate = nil;
                             }
@@ -858,6 +866,56 @@ NSNumber *iCalDistantFutureNumber = nil;
                 } // for ( ... )
             } // if (theContainer)
         }
+
+
+        // Add attendees external email addresses to the alarm.
+        int i;
+        SOGoUserManager *um;
+        iCalPerson *currentAttendee, *organizer;
+        NSArray *elements;
+        NSMutableArray *externalAttendees;
+        iCalAlarm *alarm;
+        SOGoUser *organizerUser;
+
+        
+        alarm = [anAlarm parent];
+        organizer = [alarm organizer];
+        
+        if ([alarmOwner hasEmail: [organizer rfc822Email]]) {
+          if (hasAttendeesAlarm) {
+            externalAttendees = [[NSMutableArray alloc] init];
+            um = [SOGoUserManager sharedUserManager];
+            for (i = 0; i < [[alarm attendees] count]; i++) {
+              currentAttendee = [[alarm attendees] objectAtIndex: i];
+              elements = [um fetchContactsMatching: [currentAttendee rfc822Email] inDomain: [alarmOwner domain]];
+              if ([elements count] == 0) {
+                [externalAttendees addObject:[currentAttendee rfc822Email]];
+              }
+            }
+
+            if ([externalAttendees count] > 0) {
+              [af deleteRecordForEntryWithCName: nameInContainer
+                             inCalendarAtPath: [theContainer ocsPath] external: YES];
+              [af writeRecordForEntryWithCName: nameInContainer
+                  inCalendarAtPath: [NSString stringWithFormat:@"%@:%@", path, [externalAttendees componentsJoinedByString: @","]]
+                      forUID: [self uid]
+                      recurrenceId: nil
+                      alarmNumber: [NSNumber numberWithInt: email_alarm_number]
+                      andAlarmDate: nextAlarmDateExternal
+                      
+                          external: YES];
+            }
+            else
+                [af deleteRecordForEntryWithCName: nameInContainer
+                                 inCalendarAtPath: [theContainer ocsPath] external: YES];                        
+            [externalAttendees release];
+          } else {
+            [af deleteRecordForEntryWithCName: nameInContainer
+                             inCalendarAtPath: [theContainer ocsPath] external: YES];
+          }
+          
+        }
+        // End add attendees external email addresses to the alarm.
     }
 
   // Don't update c_nextalarm in the quick table if it's not an email alarm
@@ -872,8 +930,12 @@ NSNumber *iCalDistantFutureNumber = nil;
 
       // Delete old email alarms
       if (!nextAlarmDate && email_alarm_number >= 0)
-	[af deleteRecordForEntryWithCName: nameInContainer
-			 inCalendarAtPath: [theContainer ocsPath]];
+        if (hasAttendeesAlarm)
+          [af deleteRecordForEntryWithCName: nameInContainer
+              inCalendarAtPath: [theContainer ocsPath] external: NO];
+        else
+          [af deleteRecordForEntryWithCName: nameInContainer
+              inCalendarAtPath: [theContainer ocsPath] external: YES];
     }
 }
 

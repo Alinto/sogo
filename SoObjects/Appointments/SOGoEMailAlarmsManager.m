@@ -70,7 +70,7 @@
   af = [[GCSFolderManager defaultFolderManager] alarmsFolder];
   path = [[component container] ocsPath];
   [af deleteRecordForEntryWithCName: [component nameInContainer]
-                   inCalendarAtPath: path];
+                   inCalendarAtPath: path external: YES];
 }
 
 - (iCalCalendar *) _lookupCalendarMatchingRecord: (NSDictionary *) record
@@ -219,18 +219,57 @@
   for (count = 0; count < max; count++)
     {
       record = [records objectAtIndex: count];
-      alarm = [self _lookupAlarmMatchingRecord: record
+      
+      if (record && [record objectForKey: @"c_path"] && [[record objectForKey: @"c_path"] hasPrefix:@"EXTERNAL"]) {
+        alarm = [[iCalAlarm alloc] init];
+        // [alarm autorelease];
+      } else {
+        alarm = [self _lookupAlarmMatchingRecord: record
                                      withOwner: &owner
 				    withEntity: &entity];
+      }
       if (alarm)
         {
-	  container = [self _lookupContainerMatchingRecord: record];
-          [alarms addObject: alarm];
-	  [metadata addObject: [NSDictionary dictionaryWithObjectsAndKeys: owner, @"owner",
+          if (record && [record objectForKey: @"c_path"] && [[record objectForKey: @"c_path"] hasPrefix:@"EXTERNAL"]) {
+            NSString *path;
+            NSArray *parts;
+            NSMutableDictionary *mRecord;
+
+            mRecord = [NSMutableDictionary dictionaryWithDictionary: record];
+            parts = [[mRecord objectForKey: @"c_path"] componentsSeparatedByString:@":"];
+            path = [parts objectAtIndex: 1];
+            [mRecord setObject: path forKey: @"c_path"];
+            container = [self _lookupContainerMatchingRecord: mRecord];
+            [self _extractOwner: &owner
+                 fromPath: [mRecord objectForKey: @"c_path"]];
+
+            // alarm = [iCalAlarm alarmForEvent: self
+            //                    owner: owner
+            //                   action: reminderAction
+            //                     unit: reminderUnit
+            //                 quantity: reminderQuantity
+            //                reference: reminderReference
+            //         reminderRelation: reminderRelation
+            //           emailAttendees: reminderEmailAttendees
+            //           emailOrganizer: reminderEmailOrganizer];
+
+            [alarms addObject: alarm];
+            
+            [metadata addObject: [NSDictionary dictionaryWithObjectsAndKeys: owner, @"owner",
+					     mRecord, @"record",
+					     container, @"container",
+               [NSNumber numberWithBool: YES], @"isExternal",
+               [[parts objectAtIndex: 2] componentsSeparatedByString: @","], @"externalEmailList",
+					     nil]];
+          } else {
+            container = [self _lookupContainerMatchingRecord: record];
+                [alarms addObject: alarm];
+            [metadata addObject: [NSDictionary dictionaryWithObjectsAndKeys: owner, @"owner",
 					     record, @"record",
 					     container, @"container",
 					     entity, @"entity",
 					     nil]];
+          }
         }
     }
 

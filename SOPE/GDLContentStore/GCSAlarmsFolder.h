@@ -48,15 +48,17 @@
 - (NSArray *) recordsForEntriesFromDate: (NSCalendarDate *) fromDate
                                  toDate: (NSCalendarDate *) toDate;
 
-- (void) writeRecordForEntryWithCName: (NSString *) cname
-                     inCalendarAtPath: (NSString *) path
-                               forUID: (NSString *) uid
-                         recurrenceId: (NSCalendarDate *) recId
-                          alarmNumber: (NSNumber *) alarmNbr
-                         andAlarmDate: (NSCalendarDate *) alarmDate;
+- (void)writeRecordForEntryWithCName:(NSString *)cname
+                    inCalendarAtPath:(NSString *)path
+                              forUID:(NSString *)uid
+                        recurrenceId:(NSCalendarDate *)recId
+                         alarmNumber:(NSNumber *)alarmNbr
+                        andAlarmDate:(NSCalendarDate *)alarmDate
+                            external:(BOOL)isExternal;
 
-- (void) deleteRecordForEntryWithCName: (NSString *) cname
-                      inCalendarAtPath: (NSString *) path;
+- (void)deleteRecordForEntryWithCName:(NSString *)cname
+                     inCalendarAtPath:(NSString *)path
+                             external:(BOOL)isExternal;
 
 @end
 

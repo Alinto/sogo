@@ -23,6 +23,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSAutoreleasePool.h>
 
 #import <NGExtensions/NGHashMap.h>
 #import <NGExtensions/NGQuotedPrintableCoding.h>
@@ -148,6 +149,27 @@
         systemMessage: YES];
 }
 
+- (NSArray *) _buildInternalEmailsList: (NSArray *)metadata
+{
+  int i;
+  NSString *ownerId;
+  SOGoUser *owner;
+  NSMutableArray *results = [[NSMutableArray alloc] init];
+  [results autorelease];
+
+  for (i = 0 ; i < [metadata count] ; i++) {
+    ownerId = [[metadata objectAtIndex: i] objectForKey: @"owner"];
+    owner = [SOGoUser userWithLogin: ownerId];
+    if (owner
+        && [owner primaryIdentity] 
+        && [[owner primaryIdentity] objectForKey:@"email"]) {
+          [results addObject: [[[owner primaryIdentity] objectForKey:@"email"] lowercaseString]];
+    }
+  }
+  return results;
+}
+
+
 - (void) _processAlarm: (iCalAlarm *) alarm
              withOwner: (NSString *) ownerId
       andContainerPath: (NSString *) containerPath
@@ -167,6 +189,10 @@
   SOGoAppointmentFolders *folders;
   SOGoAppointmentFolder *folder;
   SOGoUserFolder *userFolder;
+
+  BOOL isOrganizer;
+  iCalPerson *person;
+  int i;
 
   owner = [SOGoUser userWithLogin: ownerId];
   mailer = [SOGoMailer mailerWithDomainDefaults: [owner domainDefaults]];
@@ -198,6 +224,15 @@
   [p setApt: [alarm parent]];
   [p setAttendees: [[alarm parent] attendees]];
 
+  if ([owner primaryIdentity] 
+      && [[owner primaryIdentity] objectForKey:@"email"] 
+      && [p organizer]
+      && [[p organizer] rfc822Email]
+      && [[[[owner primaryIdentity] objectForKey:@"email"] lowercaseString] isEqualToString: [[[p organizer] rfc822Email] lowercaseString]])
+    isOrganizer = YES;
+  else
+    isOrganizer = NO;
+  
   content = [[p getBody] dataUsingEncoding: NSUTF8StringEncoding];
   subject = [p getSubject];
 
@@ -228,6 +263,7 @@
   NSDictionary *d;
   NSMutableArray *metadata;
   NSString *credsFilename;
+  NSAutoreleasePool *pool;
   SOGoCredentialsFile *cf;
   SOGoEMailAlarmsManager *eaMgr;
   iCalEntityObject *entity;
@@ -259,6 +295,7 @@
   eaMgr = [NSClassFromString (@"SOGoEMailAlarmsManager")
                              sharedEMailAlarmsManager];
 
+  pool = [[NSAutoreleasePool alloc] init];
   metadata = [[NSMutableArray alloc] init];
   startDate = [NSCalendarDate calendarDate];
   toDate = [startDate addYear: 0 month: 0 day: 0
@@ -270,12 +307,14 @@
                                    toDate: toDate
                              withMetadata: metadata];
 
+
   max = [alarms count];
   
-  for (count = 0; count < max; count++)
+  for (count = 0; count < max; count++) {
     [self _processAlarm: [alarms objectAtIndex: count]
               withOwner: [[metadata objectAtIndex: count] objectForKey: @"owner"]
        andContainerPath: [[[metadata objectAtIndex: count] objectForKey: @"record"] objectForKey: @"c_path"]];
+  }
 
   // We now update the next alarm date (if any, for recurring
   // events or tasks for example). This will also delete any email
@@ -295,6 +334,7 @@
   fm = [GCSFolderManager defaultFolderManager];
   cm = [fm channelManager];
   [cm releaseAllChannels];
+  [pool release];
 
   return YES;
 }
