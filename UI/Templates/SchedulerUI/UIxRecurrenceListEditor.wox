@@ -14,7 +14,7 @@
       <var:foreach list="repeatFrequenciesKey" item="item">
           <md-option var:value="item"><var:string value="itemText"/></md-option>
       </var:foreach>
-      <md-option var:value="custom" ng-if="editor.component.repeat.frequency == 'custom'"><var:string value="repeat_CUSTOM"/></md-option>
+      <md-option value="custom" ng-if="editor.component.repeat.frequency == 'custom'"><var:string label:value="repeat_CUSTOM"/></md-option>
     </md-select>
   </md-input-container>
   <md-button type="button" class="sg-icon-button"
