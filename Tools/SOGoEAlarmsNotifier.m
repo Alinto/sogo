@@ -173,6 +173,7 @@
 - (void) _processAlarm: (iCalAlarm *) alarm
              withOwner: (NSString *) ownerId
       andContainerPath: (NSString *) containerPath
+externalEmailAddresses: (NSArray *) externalEmailAddresses
 {
   NGMutableHashMap *headers;
   NSArray *parts;
@@ -237,10 +238,15 @@
   subject = [p getSubject];
 
   headers = [self _headersForAlarm: alarm withOwner: owner withSubject: subject];
-  [self _sendMessageWithHeaders: headers
+  if (!externalEmailAddresses) {
+    [self _sendMessageWithHeaders: headers
                         content: content
                              to: [owner primaryIdentity]
                      withMailer: mailer];
+  } else {
+    
+  }
+  
 }
 
 - (void) usage
@@ -311,9 +317,15 @@
   max = [alarms count];
   
   for (count = 0; count < max; count++) {
-    [self _processAlarm: [alarms objectAtIndex: count]
+    if (![[[metadata objectAtIndex: count] objectForKey: @"isExternal"]  boolValue]) {
+      [self _processAlarm: [alarms objectAtIndex: count]
               withOwner: [[metadata objectAtIndex: count] objectForKey: @"owner"]
        andContainerPath: [[[metadata objectAtIndex: count] objectForKey: @"record"] objectForKey: @"c_path"]];
+    } else {
+      [self _processAlarmExternal: [alarms objectAtIndex: count]
+              withOwner: [[metadata objectAtIndex: count] objectForKey: @"owner"]
+       andContainerPath: [[[metadata objectAtIndex: count] objectForKey: @"record"] objectForKey: @"c_path"]];
+    }
   }
 
   // We now update the next alarm date (if any, for recurring
