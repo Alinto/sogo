@@ -191,15 +191,15 @@
     };
 
     this.defineSubjectAndSenderElements = function() {
-      if ($ctrl && $ctrl.message) {
+      if ($ctrl && $ctrl.message && !$ctrl.message.loading) {
         // Subject
         $ctrl.subjectElement.innerHTML = $ctrl.message.getHighlightSubject();
 
         // Sender or recipient when in Sent or Draft mailbox
         if ($ctrl.MailboxService.selectedFolder.isSentFolder || $ctrl.MailboxService.selectedFolder.isDraftsFolder)
-          $ctrl.senderElement.innerHTML = $ctrl.message.highlightSearchTerms($ctrl.message.$shortAddress('to', Preferences.defaults.SOGoMailDisplayFullEmail).encodeEntities());
+          $ctrl.senderElement.innerHTML = $ctrl.message.highlightSearchTerms($ctrl.message.$shortAddress('to', Preferences.defaults.SOGoMailDisplayFullEmail), true);
         else
-          $ctrl.senderElement.innerHTML = $ctrl.message.highlightSearchTerms($ctrl.message.$shortAddress('from', Preferences.defaults.SOGoMailDisplayFullEmail).encodeEntities());
+          $ctrl.senderElement.innerHTML = $ctrl.message.highlightSearchTerms($ctrl.message.$shortAddress('from', Preferences.defaults.SOGoMailDisplayFullEmail), true);
       }
     };
 
