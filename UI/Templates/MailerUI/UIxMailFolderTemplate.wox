@@ -512,13 +512,13 @@
               </div>
 
 
-              <md-checkbox
+              <!-- <md-checkbox
                             ng-model="dialogCtrl.mainController.searchForm.attachements"
                             ng-true-value="1"
                             ng-false-value="0"
                             label:aria-label="With attachments">
                 <var:string label:value="With attachments"/>
-              </md-checkbox>
+              </md-checkbox> -->
 
               <md-checkbox
                             ng-model="dialogCtrl.mainController.searchForm.favorite"
