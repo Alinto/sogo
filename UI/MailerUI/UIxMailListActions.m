@@ -531,8 +531,7 @@
                 searchString = [NSString stringWithFormat: @"(date >= (NSCalendarDate)\"%@\" AND date <= (NSCalendarDate)\"%@\")", dateFrom, dateTo];
               } else if ([searchBy isEqualToString: @"attachment"]) {
                 // Attachment
-                // Not possible with imap search, check in getUIDsInFolder method
-                // The attachments must be checked in headers
+                searchString = [NSString stringWithFormat: @"(text = 'attachment;') AND (text = 'filename')"];
               } else if ([searchBy isEqualToString: @"favorite"]) {
                 // Favorite
                 flaggedOnly = YES;
@@ -552,16 +551,15 @@
                       searchString = [NSString stringWithFormat: @"%@ OR", searchString];
                     }
                     
-                    searchString = [NSString stringWithFormat: @"%@ (subject doesContain: '%@' OR body doesContain: '%@')", 
-                    searchString, searchInput, searchInput];
+                    searchString = [NSString stringWithFormat: @"%@ (subject doesContain: '%@' OR body doesContain: '%@' OR text = 'filename=*%@*')", 
+                    searchString, searchInput, searchInput, searchInput];
                     j++;
                   }
                   searchString = [NSString stringWithFormat: @"%@)", searchString];
                 } else {
-                  searchString = [NSString stringWithFormat: @"(subject doesContain: '%@' OR body doesContain: '%@')", 
-                    searchInput, searchInput];
+                  searchString = [NSString stringWithFormat: @"(subject doesContain: '%@' OR body doesContain: '%@' OR text = 'filename=*%@*')", 
+                    searchInput, searchInput, searchInput];
                 }
-                
               } else if ([searchBy isEqualToString: @"not_contains"]) {
                 // Not contains
                 searchInput = [searchInput stringByReplacingOccurrencesOfString:@"'" withString:@"\\'"];
@@ -890,29 +888,6 @@
       r = NSMakeRange(0, count);
       headers = [self getHeadersForUIDs: [a subarrayWithRange: r]
                                inFolder: folder];
-
-      // This part is used to filter attachements when searching
-      // There is no way to filter only attachments when using imap SEARCH
-      if (onlyAttachments) {
-        tmpHeaders = [NSMutableArray arrayWithArray: headers];
-        tmpUids = [NSMutableArray arrayWithArray: uids];
-        
-        for (i = ([tmpHeaders count] - 1); i > 0; i--) {
-          // Search for no attachment
-          if (0 == [[[tmpHeaders objectAtIndex: i] objectAtIndex: 1] intValue]) {
-            uid = [[tmpHeaders objectAtIndex: i] objectAtIndex: 10]; // Uid
-            [tmpHeaders removeObjectAtIndex: i];
-
-            for (j = ([tmpUids count] - 1); j >= 0; j--) {
-              if ([uid isEqual: [tmpUids objectAtIndex: j]]) {
-                [tmpUids removeObjectAtIndex: j]; // -1 for header
-              }
-            }
-          }
-        }
-        headers = [tmpHeaders copy];
-        uids = [tmpUids copy];
-      }
 
       [data setObject: headers forKey: @"headers"];
     }
