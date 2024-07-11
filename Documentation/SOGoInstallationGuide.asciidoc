@@ -834,7 +834,7 @@ specified as an array of dictionaries.
 |Disable identity creation for users in preferences. If `YES`, users won't be able to add new identities and will allow to change only full name, signature and default identity. Default value is `NO`. Note : If this settings is set to `YES`, it will not be possible to crete auxiliary mail accounts.
 
 |S |SOGoURLEncryptionEnabled
-|Enable URL encryption to make SOGo GDPR compatible. Setting this parameter to `YES` will encrypt username in URL. The encryption data are cached to avoid high cpu usage, ig the value of thie parameter is changed, memcached server needs to be restarted. If the encryption is enabled, the DAV url will change. Default value is `NO`.
+|Enable URL encryption to make SOGo GDPR compatible. Setting this parameter to `YES` will encrypt username in URL. The encryption data are cached to avoid high cpu usage, if the value of thie parameter is changed, memcached server needs to be restarted. Default value is `NO`.
 
 |S |SOGoURLEncryptionPassphrase
 |Passphrase for `SOGoURLEncryptionEnabled`. The string must be 128 bits (16 characters). If this settings change, the cache server must be restarted, and the DAV url will change. Default value is `SOGoSuperSecret0`.
