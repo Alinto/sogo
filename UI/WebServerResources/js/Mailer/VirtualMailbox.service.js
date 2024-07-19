@@ -17,11 +17,12 @@
    * @desc The factory we'll use to register with Angular
    * @returns the VirtualMailbox constructor
    */
-  VirtualMailbox.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'Message', 'Mailbox', 'sgMailbox_PRELOAD', function($q, $timeout, $log, Settings, Resource, Mailbox, Message, PRELOAD) {
+  VirtualMailbox.$factory = ['$q', '$timeout', '$log', '$rootScope', 'sgSettings', 'Resource', 'Message', 'Mailbox', 'sgMailbox_PRELOAD', function ($q, $timeout, $log, $rootScope, Settings, Resource, Mailbox, Message, PRELOAD) {
     angular.extend(VirtualMailbox, {
       $q: $q,
       $timeout: $timeout,
       $log: $log,
+      $rootScope: $rootScope,
       $$resource: new Resource(Settings.activeUser('folderURL') + 'Mail', Settings.activeUser()),
       $Message: Message,
       selectedFolder: null,

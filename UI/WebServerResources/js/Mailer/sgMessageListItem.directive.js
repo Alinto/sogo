@@ -22,10 +22,10 @@
   /**
    * @ngInject
    */
-  sgMessageListItemController.$inject = ['$scope', '$element', 'Mailbox'];
-  function sgMessageListItemController($scope, $element, Mailbox) {
+  sgMessageListItemController.$inject = ['$scope', '$element', '$timeout', 'Mailbox'];
+  function sgMessageListItemController($scope, $element, $timeout, Mailbox) {
     var $ctrl = this;
-
+    var scrollPosition = 0;
 
     this.$onInit = function () {
       var watchedAttrs = ['uid', 'isread', 'isflagged', 'flags', 'loading'];
@@ -76,6 +76,28 @@
       else
         element.classList.add('ng-hide');
     };
+
+    // The following functions are used to store and restore the scroll position of the message list
+    // Position is stored and restored through the Mailbox service using broadcasting
+    function storeScrollPosition() {
+      if ($element.parent()[0] && $element.parent()[0].parentElement && $element.parent()[0].parentElement.parentElement)
+        scrollPosition = $element.parent()[0].parentElement.parentElement.scrollTop;
+    }
+
+    function restoreScrollPosition() {
+      $timeout(function () {
+        if ($element.parent()[0] && $element.parent()[0].parentElement && $element.parent()[0].parentElement.parentElement)
+          $element.parent()[0].parentElement.parentElement.scrollTop = scrollPosition;
+      }, 0);
+    }
+
+    $scope.$on('listRefreshed', function () {
+      restoreScrollPosition();
+    });
+
+    $scope.$on('beforeListRefresh', function () {
+      storeScrollPosition();
+    });
 
   }
 
