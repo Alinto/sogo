@@ -264,59 +264,61 @@
     {
       // We check if we see <meta ...> in which case, we substitute de charset= stuff.
       if (i < len-5)
-	{
-	  if ((*bytes == '<') &&
-	      (*(bytes+1) == 'm' || *(bytes+1) == 'M') &&
-	      (*(bytes+2) == 'e' || *(bytes+2) == 'E') &&
-	      (*(bytes+3) == 't' || *(bytes+3) == 'T') &&
-	      (*(bytes+4) == 'a' || *(bytes+4) == 'A') &&
-	      (*(bytes+5) == ' '))
-            in_meta = YES;
-	}
+      {
+        if ((*bytes == '<') &&
+            (*(bytes+1) == 'm' || *(bytes+1) == 'M') &&
+            (*(bytes+2) == 'e' || *(bytes+2) == 'E') &&
+            (*(bytes+3) == 't' || *(bytes+3) == 'T') &&
+            (*(bytes+4) == 'a' || *(bytes+4) == 'A') &&
+            (*(bytes+5) == ' '))
+                in_meta = YES;
+      }
 
       // We search for something like :
       //
       // <meta http-equiv="Content-Type" content="text/html; charset=Windows-1252">
       //
       if (in_meta && i < len-9)
-	{
-	  if ((*bytes == 'c' || *bytes == 'C') &&
-	      (*(bytes+1) == 'h' || *(bytes+1) == 'H') &&
-	      (*(bytes+2) == 'a' || *(bytes+2) == 'A') &&
-	      (*(bytes+3) == 'r' || *(bytes+3) == 'R') &&
-	      (*(bytes+4) == 's' || *(bytes+4) == 'S') &&
-	      (*(bytes+5) == 'e' || *(bytes+5) == 'E') &&
-	      (*(bytes+6) == 't' || *(bytes+6) == 'T') &&
-	      (*(bytes+7) == '='))
-	    {
-	      // We search until we find a '"' or a space
-	      j = 8;
-              found_delimiter = YES;
+      {
+        if ((*bytes == 'c' || *bytes == 'C') &&
+            (*(bytes+1) == 'h' || *(bytes+1) == 'H') &&
+            (*(bytes+2) == 'a' || *(bytes+2) == 'A') &&
+            (*(bytes+3) == 'r' || *(bytes+3) == 'R') &&
+            (*(bytes+4) == 's' || *(bytes+4) == 'S') &&
+            (*(bytes+5) == 'e' || *(bytes+5) == 'E') &&
+            (*(bytes+6) == 't' || *(bytes+6) == 'T') &&
+            (*(bytes+7) == '='))
+          {
+            // We search until we find a '"' or a space
+            j = 8;
+                  found_delimiter = YES;
 
-	      while (*(bytes+j) != ' ' && *(bytes+j) != '"' && *(bytes+j) != '\'')
-		{
-		  j++;
+            while (*(bytes+j) != ' ' && *(bytes+j) != '"' && *(bytes+j) != '\'')
+        {
+          j++;
 
-		  // We haven't found anything, let's return the data untouched
-		  if ((i+j) >= len)
+          // We haven't found anything, let's return the data untouched
+          if ((i+j) >= len)
+                        {
+                          in_meta = found_delimiter = NO;
+                          break;
+                        }
+        }
+                  
+                  if (found_delimiter)
                     {
+                      [d replaceBytesInRange: NSMakeRange(i, j)
+                                  withBytes: NULL
+                                      length: 0];
                       in_meta = found_delimiter = NO;
-                      break;
                     }
-		}
-
-              if (found_delimiter)
-                {
-                  [d replaceBytesInRange: NSMakeRange(i, j)
-                               withBytes: NULL
-                                  length: 0];
-                  in_meta = found_delimiter = NO;
-                }
-	    }
-	}
+          }
+      }
 
       bytes++;
       i++;
+
+      len = [d length];
     }
 
   /*
