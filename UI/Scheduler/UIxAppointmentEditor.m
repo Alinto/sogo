@@ -534,7 +534,8 @@
 - (id <WOActionResults>) saveAction
 {
   NSArray *removeAttendees;
-  NSDictionary *params;
+  NSMutableDictionary *params;
+  NSMutableArray *attachUrls;
   NSString *jsonResponse;
   NSException *ex;
   iCalEvent *event;
@@ -556,7 +557,7 @@
 
   ex = nil;
   request = [context request];
-  params = [[request contentAsString] objectFromJSONString];
+  params = [NSMutableDictionary dictionaryWithDictionary: [[request contentAsString] objectFromJSONString]];
   if (params == nil)
     {
       ex = [NSException exceptionWithName: @"JSONParsingException"
@@ -565,7 +566,16 @@
     }
   else
     {
+      if ([params objectForKey: @"attachUrls"])
+        attachUrls = [[NSMutableArray alloc] initWithArray: [params objectForKey: @"attachUrls"]];
+      else
+        attachUrls = [[NSMutableArray alloc] init];
+      
+      [attachUrls addObject: [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat: @"https://meet.jit.si/%@", [SOGoObject globallyUniqueObjectId]], @"value", nil]];
+      [params setObject: attachUrls forKey: @"attachUrls"];
       [self setAttributes: params];
+      [attachUrls release];
+
       forceSave = [[params objectForKey: @"ignoreConflicts"] boolValue];
       removeAttendees = [params objectForKey: @"removeAttendees"];
 
