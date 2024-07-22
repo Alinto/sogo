@@ -54,8 +54,8 @@
         <md-checkbox ng-model="editor.component.alarm.attendees"
                      ng-true-value="1"
                      ng-false-value="0"
-                     label:aria-label="Email Attendees">
-          <var:string label:value="Email Attendees"/>
+                     label:aria-label="Email Attendees (internal users)">
+          <var:string label:value="Email Attendees (internal users)"/>
         </md-checkbox>
       </div>
     </md-radio-group>

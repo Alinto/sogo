@@ -76,7 +76,7 @@
         <md-button class="md-icon-button"
                    ng-show="editor.component.attendees.length > 0"
                    ng-click="editor.newMessageWithAllRecipients($event)">
-          <md-icon label:aria-label="Email Attendees">mail</md-icon>
+          <md-icon label:aria-label="Email Attendees (internal users)">mail</md-icon>
         </md-button>
         <md-button class="md-icon-button" ng-click="editor.close()">
           <md-icon label:aria-label="Close">close</md-icon>
