@@ -350,8 +350,13 @@ static NSArray *tasksFields = nil;
       //NSLog(@"***[UIxCalListingActions _fixDates:] %@ = %@ (%i)", aDateField, aDate, daylightOffset);
       if (daylightOffset)
       {
-        aDate = [aDate dateByAddingYears: 0 months: 0 days: 0 hours: 0
-                                 minutes: 0 seconds: daylightOffset];
+        // If it is the end date and allday, we need to remove the offset
+        if ([fields[count * 2] isEqualToString: @"endDate"] && [[theRecord objectForKey: @"c_isallday"] boolValue])
+          aDate = [aDate dateByAddingYears: 0 months: 0 days: 0 hours: 0
+                                  minutes: 0 seconds: -1 * daylightOffset];
+        else
+          aDate = [aDate dateByAddingYears: 0 months: 0 days: 0 hours: 0
+                                  minutes: 0 seconds: daylightOffset];
         [theRecord setObject: aDate forKey: aDateField];
         aDateValue = [NSNumber numberWithInt: [aDate timeIntervalSince1970]];
         [theRecord setObject: aDateValue forKey: fields[count * 2 + 1]];
