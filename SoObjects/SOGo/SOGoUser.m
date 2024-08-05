@@ -1119,7 +1119,7 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
         tmpIdentities = [NSMutableArray array];
         for (identity in identities) {
           tmpIdentity = [NSMutableDictionary dictionaryWithDictionary: identity];
-          if ([tmpIdentity objectForKey: @"signature"] ) {
+          if ([tmpIdentity objectForKey: @"signature"] && [[tmpIdentity objectForKey: @"signature"] length] > 0) {
             // Add raw html embed class
             if ([[tmpIdentity objectForKey: @"signature"] rangeOfString:@"raw-html-embed"].location == NSNotFound
                 && [[[self userDefaults] mailComposeMessageType] isEqualToString: @"html"]
