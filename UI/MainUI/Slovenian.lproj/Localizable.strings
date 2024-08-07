@@ -113,17 +113,17 @@
 "Missing type parameter" = "Manjka parameter tipa";
 
 /* Password Recovery */
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password lost" = "Password lost";
-"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
-"Invalid secret question answer" = "Invalid secret question answer";
-"Next" = "Next";
-"Back" = "Back";
-"Please enter a new password below" = "Please enter a new password below";
-"A link will be sent to %{0}" = "A link will be sent to %{0}";
-"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
-"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
+"Secondary e-mail" = "Rezervni elektronski naslov";
+"Answer" = "Odgovor";
+"Password lost" = "Pozabljeno geslo";
+"No password recovery method has been defined for this user" = "Proces za ponastavitev gesla za tega uporabnika ni nastavljen";
+"Invalid secret question answer" = "Napačen odgovor na varnostno vprašanje";
+"Next" = "Naprej";
+"Back" = "Nazaj";
+"Please enter a new password below" = "Spodaj vnesite novo geslo";
+"A link will be sent to %{0}" = "Povezava bo poslana na %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "Povezava za ponastavitev gesla je bila poslana, Preverite sporočila v vašem rezervnem elektronskem naslovu in kliknite na poslano povezavo";
+"Invalid configuration for email password recovery" = "Napačna nastavitev za ponastavitev gesla";
 "Password recovery email in error" = "Password recovery email in error";
-"Password reset" = "Password reset";
-"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";
+"Password reset" = "Ponastavitev gesla";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Pozdravljen %{0},\nPoslana je bila zahteva za ponastavitev gesla!\n\nV kolikor niste zahtevali ponastavite gesla, prosim ignorirajte to sporočilo\n\nV kolikor ste vi zahtevali ponastavitev, prosim kliknite na povezavo za spremembo gesla: %{1}";

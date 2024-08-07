@@ -143,6 +143,23 @@
 "This mail is being sent from an unsecure network!" = "To sporočilo je bilo poslano iz ne varnega omrežja!";
 "Address Book" = "Imenik";
 "Search For" = "Išči za";
+"Contains" = "Contains";
+"Does not contains" = "Does not contains";
+"Advanced search" = "Advanced search";
+"Anytime" = "Anytime";
+"Last 7 days" = "Last 7 days";
+"Last 30 days" = "Last 30 days";
+"Last 6 month" = "Last 6 month";
+"Before" = "Before";
+"After" = "After";
+"Between" = "Between";
+"and" = "and";
+"With attachments" = "With attachments";
+"In favorites" = "In favorites";
+"Unseen only" = "Unseen only";
+"Show more" = "Show more";
+"Reset" = "Reset";
+"Message size" = "Message size";
 
 /* Popup "show" */
 "all"     = "vse";
@@ -239,6 +256,7 @@
 "Save As..." = "Shrani kot...";
 "Print Preview" = "Tiskaj predogled";
 "View Message Source" = "Poglej izvorno sporočilo";
+"View raw message" = "View raw message";
 
 /* Message view "more" menu: create an event from message */
 "Convert To Event" = "Spremeni v dogodek";
@@ -256,7 +274,7 @@
 "Download all attachments" = "Prenesi vse priloge";
 
 /* Filename prefix when downloading all attachments as a zip archive */
-"attachments" = "priloga";
+"attachments" = "priloge";
 
 "Print..." = "Tiskaj...";
 "Delete Message" = "Briši sporočilo";
@@ -387,7 +405,7 @@
 "Please specify a subject." = "Prosimo, navedite zadevo.";
 "error_missingsubject" = "Sporočilo nima zadeve. Si prepričan, da ga želiš poslati?";
 "error_missingrecipients" = "Prosim določi vsaj enega prejemnika.";
-"Send Anyway" = "Pošlji vseeno";
+"Send Anyway" = "Vseeno pošlji";
 "Error while saving the draft" = "Napaka pri shranjevanju osnutka";
 
 /* Error when emptying trash */
@@ -445,7 +463,7 @@
 "Copy messages" = "Kopiraj sporočila";
 "More messages options" = "Več možnosti sporočil";
 "Flag" = "Zastavica";
-"Unflag" = "Unflag";
+"Unflag" = "Odstrani zastavico";
 "Mark as Unread" = "Označi kot neprebrano";
 "Mark as Read" = "Označi kot prebrano";
 "Closing Window ..." = "Zapiram okno...";
@@ -459,7 +477,7 @@
 "Your email has been sent" = "Vaša pošta je bila poslana";
 "Folder compacted" = "Mapa je stisnjena";
 
-"More Options" = "More Options";
+"More Options" = "Več možnosti";
 
 "New draft" = "Nov osnutek";
 "Create new draft with this template" = "Ustvarite nov osnutek s to predlogo";
@@ -484,9 +502,6 @@
 
 /* Hotkey to write a new message */
 "hotkey_compose" = "w";
-
-/* Hotkey to mark selected message(s) as junk */
-"hotkey_junk" = "j";
 
 /* Hotkey to flag a message */
 "hotkey_flag" = "*";

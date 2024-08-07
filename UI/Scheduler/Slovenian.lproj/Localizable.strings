@@ -74,7 +74,7 @@
 "Last %@" = "Zadnji %@";
 
 /* Folders */
-"Personal calendar" = "Osebnik koledar";
+"Personal calendar" = "Osebni koledar";
 
 /* Misc */
 "OpenGroupware.org" = "OpenGroupware.org";
@@ -224,11 +224,11 @@
 "view_next31" = "Naslednjih 31 dni";
 "view_thismonth" = "Ta mesec";
 "view_thisyear" = "To leto";
-"view_last7" = "Last 7 days";
-"view_last14" = "Last 14 days";
-"view_last31" = "Last 31 days";
-"view_lastmonth" = "Last Month";
-"view_lastyear" = "Last Year";
+"view_last7" = "Zadnjih 7 dni";
+"view_last14" = "Zadnjih 14 dni";
+"view_last31" = "Zadnjih 31 dni";
+"view_lastmonth" = "Zadnji mesec";
+"view_lastyear" = "Zadnje leto";
 "view_future" = "Vsi prihodnji dogodki";
 "view_selectedday" = "Izbrani dan";
 "view_not_started" = "Nezačeta opravila";
@@ -377,7 +377,7 @@
 "Show an Alert" = "Prikaži opozorilo";
 "Send an E-mail" = "Pošlji e-pošto";
 "Email Organizer" = "Organizator e-pošte";
-"Email Attendees" = "E-poštni udeleženci";
+"Email Attendees (internal users)" = "Email Attendees (internal users)";
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
@@ -402,8 +402,8 @@
 "To" = "Za";
 
 /* dates */
-"DateFrom" = "From";
-"DateTo" = "To";
+"DateFrom" = "Od";
+"DateTo" = "Za";
 
 /* validation errors */
 validate_notitle           = "Naslov ni vpisan, nadaljujem?";
@@ -512,7 +512,7 @@ validate_untilbeforeend    = "Ponovitev se mora končati po prvi ponovitvi.";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Obstaja časovni konflikt med enim ali več udeleženci.\nŽeliš vseeno obdržati trenutne nastavitve?";
 "Would you like to remove them and send the invitation to the remaining attendees?"
-= "Would you like to remove them and send the invitation to the remaining attendees?";
+= "Ali jih želiš odstraniti in poslati povabilo preostalim udeležencem?";
 
 /* events list */
 "Due" = "Zaradi";
@@ -631,7 +631,7 @@ vtodo_class2 = "(Zaupno opravilo)";
 "Rename" = "Preimenuj";
 "Import Calendar" = "Uvoz koledarja";
 "Select an ICS file." = "Izberi ICS datoteko";
-"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "Podatki niso shranjeni. Ali želiš zapreti okno in izbrisati podatke ?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Uspešno ste se naročili na koledar";
