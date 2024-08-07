@@ -152,6 +152,7 @@
 "Contacts Names" = "Kişi İsimleri";
 "Duplicate name" = "İsmi çoğalt";
 "Calendar categories must have unique names." = "Takvim kategorileri farklı isimlerden oluşmalı.";
+"Disable e-mail notifications on CalDAV" = "Disable e-mail notifications on CalDAV";
 
 /* Default Calendar */
 "Default calendar" = "Varsayılan takvim";
