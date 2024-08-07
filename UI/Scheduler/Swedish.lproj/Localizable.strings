@@ -377,7 +377,7 @@
 "Show an Alert" = "Visa larmmeddelande";
 "Send an E-mail" = "Skicka ett meddelande";
 "Email Organizer" = "Skicka meddelande till arrangör";
-"Email Attendees" = "Skicka meddelande till deltagare";
+"Email Attendees (internal users)" = "Email Attendees (internal users)";
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
