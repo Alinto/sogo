@@ -47,3 +47,4 @@ reply_info = "Esta é uma resposta para um convite de um evento feito por si.";
 "OK" = "OK";
 "Comment" = "Comentário:";
 "Description" = "Descrição";
+"Location" = "Location";

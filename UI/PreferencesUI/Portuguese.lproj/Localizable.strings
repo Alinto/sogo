@@ -152,6 +152,7 @@
 "Contacts Names" = "Nomes dos Contactos";
 "Duplicate name" = "Duplicar nome";
 "Calendar categories must have unique names." = "As categorias do calendário têm de ter um nome único.";
+"Disable e-mail notifications on CalDAV" = "Disable e-mail notifications on CalDAV";
 
 /* Default Calendar */
 "Default calendar" = "Calendário por defeito";
@@ -231,11 +232,11 @@
 "Mail Account" = "Conta de Email";
 "New Mail Account" = "Nova conta de email";
 "Server Name" = "Nome do Servidor";
-"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
+"Outgoing Server Name (SMTP)" = "Nome do servidor de envio (SMTP)";
 "Smtp Auth" = "Smtp Auth";
 "Port" = "Porta";
 "Encryption" = "Encriptação";
-"Outgoing Encryption" = "Outgoing Encryption";
+"Outgoing Encryption" = "Encriptação de saída";
 "None" = "Nenhum";
 "User Name" = "Nome do Utilizador";
 "Full Name" = "Nome Completo";
