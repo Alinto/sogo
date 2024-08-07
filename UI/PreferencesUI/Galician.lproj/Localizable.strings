@@ -152,6 +152,7 @@
 "Contacts Names" = "Nomes de Contacto";
 "Duplicate name" = "Nome duplicado";
 "Calendar categories must have unique names." = "As categorías de calendario deben ter nomes únicos.";
+"Disable e-mail notifications on CalDAV" = "Disable e-mail notifications on CalDAV";
 
 /* Default Calendar */
 "Default calendar" = "Calendario por defecto";
@@ -204,8 +205,8 @@
 "Insert signature on new message" = "Inserir firma en mensaxe nova";
 "Insert signature on reply" = "Inserir firma na resposta";
 "Insert signature on forward" = "Inserir firma ao reenviar";
-"Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
-"Hide attachements for inline images" = "Hide attachements for inline images";
+"Show recipients or sender full email in mailboxes" = "Mostrar os destinatarios ou o remitente completo nas caixas de correos de correo";
+"Hide attachements for inline images" = "Ocultar arquivos adxuntos para imaxes en liña";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Tamaño de fonte por defecto.";
@@ -231,11 +232,11 @@
 "Mail Account" = "Conta de correo";
 "New Mail Account" = "Nova Conta de Correo";
 "Server Name" = "Nome de Servidor";
-"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
-"Smtp Auth" = "Smtp Auth";
+"Outgoing Server Name (SMTP)" = "Nome do servidor de saída (SMTP)";
+"Smtp Auth" = "Autenticación SMTP";
 "Port" = "Porto";
 "Encryption" = "Cifrado";
-"Outgoing Encryption" = "Outgoing Encryption";
+"Outgoing Encryption" = "Encriptación saínte";
 "None" = "Ningún";
 "User Name" = "Nome de usuario";
 "Full Name" = "Nome Completo";
