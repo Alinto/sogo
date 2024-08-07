@@ -152,6 +152,7 @@
 "Contacts Names" = "Kontaktu nosaukumi";
 "Duplicate name" = "Nosaukuma dublikāts";
 "Calendar categories must have unique names." = "Kalendāra kategorijām ir jābūt ar unikāliem nosaukumiem.";
+"Disable e-mail notifications on CalDAV" = "Disable e-mail notifications on CalDAV";
 
 /* Default Calendar */
 "Default calendar" = "Noklusējuma kalendārs";
