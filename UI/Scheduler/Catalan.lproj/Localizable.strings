@@ -377,7 +377,7 @@
 "Show an Alert" = "Mostrar un avís";
 "Send an E-mail" = "Enviar un correu";
 "Email Organizer" = "Correu a l'organitzador/a";
-"Email Attendees" = "Correu als assistents";
+"Email Attendees (internal users)" = "Email Attendees (internal users)";
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
