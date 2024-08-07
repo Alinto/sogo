@@ -143,6 +143,23 @@
 "This mail is being sent from an unsecure network!" = "Denne e-posten sendes fra en usikker nettverksforbindelse!";
 "Address Book" = "Adressebok";
 "Search For" = "Søk etter";
+"Contains" = "Inneholder";
+"Does not contains" = "Inneholder ikke";
+"Advanced search" = "Avansert søk";
+"Anytime" = "Når som helst";
+"Last 7 days" = "Siste 7 dager";
+"Last 30 days" = "Siste 30 dager";
+"Last 6 month" = "Siste 6 måneder";
+"Before" = "Før";
+"After" = "Etter";
+"Between" = "Mellom";
+"and" = "og";
+"With attachments" = "Med vedlegg";
+"In favorites" = "I favoritter";
+"Unseen only" = "Kun usett";
+"Show more" = "Vis mer";
+"Reset" = "Tilbakestill";
+"Message size" = "Meldingsstørrelse";
 
 /* Popup "show" */
 "all"     = "alle";
@@ -239,6 +256,7 @@
 "Save As..." = "Lagre som...";
 "Print Preview" = "Forhåndsvisning";
 "View Message Source" = "Vis meldingskilde";
+"View raw message" = "Vis opprinnelig melding";
 
 /* Message view "more" menu: create an event from message */
 "Convert To Event" = "Konverter til hendelse";
@@ -484,9 +502,6 @@
 
 /* Hotkey to write a new message */
 "hotkey_compose" = "w";
-
-/* Hotkey to mark selected message(s) as junk */
-"hotkey_junk" = "j";
 
 /* Hotkey to flag a message */
 "hotkey_flag" = "*";
