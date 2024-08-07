@@ -152,6 +152,7 @@
 "Contacts Names" = "Imena kontakata";
 "Duplicate name" = "Duplikat imena";
 "Calendar categories must have unique names." = "Kategorije kalendara moraju imati jedinstvena imena.";
+"Disable e-mail notifications on CalDAV" = "Disable e-mail notifications on CalDAV";
 
 /* Default Calendar */
 "Default calendar" = "Podrazumevani kalendar";

@@ -377,7 +377,7 @@
 "Show an Alert" = "Prikaži upozorenje";
 "Send an E-mail" = "Pošalji e-poštu";
 "Email Organizer" = "Pošalji epoštu organizatoru";
-"Email Attendees" = "Pošalji epoštu polaznicima";
+"Email Attendees (internal users)" = "Email Attendees (internal users)";
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
