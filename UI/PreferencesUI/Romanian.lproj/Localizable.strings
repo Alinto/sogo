@@ -152,6 +152,7 @@
 "Contacts Names" = "Numele Contactelor";
 "Duplicate name" = "Nume duplicat";
 "Calendar categories must have unique names." = "Categoriile calendarului trebuie sa aibă nume unice.";
+"Disable e-mail notifications on CalDAV" = "Disable e-mail notifications on CalDAV";
 
 /* Default Calendar */
 "Default calendar" = "Calendar implicit";
