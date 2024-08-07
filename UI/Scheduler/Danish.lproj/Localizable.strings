@@ -377,7 +377,7 @@
 "Show an Alert" = "Vis en alarm";
 "Send an E-mail" = "Send en e-mail";
 "Email Organizer" = "Email arrangør";
-"Email Attendees" = "E-mail deltagere";
+"Email Attendees (internal users)" = "E-mail-deltagere (interne brugere)";
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";

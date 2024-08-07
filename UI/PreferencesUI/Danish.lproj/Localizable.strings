@@ -152,6 +152,7 @@
 "Contacts Names" = "Kontaktnavne";
 "Duplicate name" = "Dubletnavn";
 "Calendar categories must have unique names." = "Kalenderkategorier skal have unikke navne";
+"Disable e-mail notifications on CalDAV" = "Deaktiver e-mail-meddelelser på CalDAV";
 
 /* Default Calendar */
 "Default calendar" = "Standard kalender";
@@ -205,7 +206,7 @@
 "Insert signature on reply" = "Indsæt signatur på svar";
 "Insert signature on forward" = "Indsæt signatur på videresend";
 "Show recipients or sender full email in mailboxes" = "Vis modtagere eller afsender fulde e-mail i postkasserne";
-"Hide attachements for inline images" = "Hide attachements for inline images";
+"Hide attachements for inline images" = "Skjul vedhæftet filer for indsatte billeder";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Standard skriftstørrelse";
@@ -231,11 +232,11 @@
 "Mail Account" = "E-mail konto";
 "New Mail Account" = "Ny mail-konto";
 "Server Name" = "Server Navn";
-"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
-"Smtp Auth" = "Smtp Auth";
+"Outgoing Server Name (SMTP)" = "Udgående Server Navn (SMTP)";
+"Smtp Auth" = "SMTP Auth";
 "Port" = "Port";
 "Encryption" = "Krypteret";
-"Outgoing Encryption" = "Outgoing Encryption";
+"Outgoing Encryption" = "Udgående kryptering";
 "None" = "Ingen";
 "User Name" = "Brugernavn";
 "Full Name" = "Fulde navn";
