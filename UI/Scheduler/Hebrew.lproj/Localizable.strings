@@ -377,7 +377,7 @@
 "Show an Alert" = "הצג התראה";
 "Send an E-mail" = "שליחת אימייל";
 "Email Organizer" = "מארגן אימיילים";
-"Email Attendees" = "שלח אימייל למשתתפים";
+"Email Attendees (internal users)" = "Email Attendees (internal users)";
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
