@@ -16,17 +16,17 @@
 "Authentication Failed" = "Fallo de autenticación";
 "Wrong username or password." = "Nombre de usuario o contraseña incorrectos.";
 "Retry" = "Reintentar";
-"Login failed due to unhandled error case:" = "Login failed due to unhandled error case:";
+"Login failed due to unhandled error case:" = "El inicio de sesión ha fallado debido a un error no gestionado:";
 "cookiesNotEnabled" = "No se puede conectar dado que su navegador no acepta cookies. Por favor, habilite las cookies en la configuración de su navegador y pruebe de nuevo.";
 "browserNotCompatible" = "Hemos detectado que éste sistema no soporta su versión del navegador. Recomendamos usar Firefox. Haga click en el siguiente enlace para descargar la versión más reciente de este navegador.";
 "alternativeBrowsers" = "Como alternativa, también puede usar uno se los siguientes navegadores compatibles: ";
 "alternativeBrowserSafari" = "Como alternativa, puede usar Safari.";
 
 /* 2FA */
-"Verification Code" = "Verification Code";
-"Enter the 6-digit verification code from your TOTP application." = "Enter the 6-digit verification code from your TOTP application.";
-"You provided an invalid TOTP key." = "You provided an invalid TOTP key.";
-"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application.";
+"Verification Code" = "Código de verificación";
+"Enter the 6-digit verification code from your TOTP application." = "Introduce el código de verificación de 6 dígitos de tu aplicación TOTP.";
+"You provided an invalid TOTP key." = "Ha proporcionado una clave TOTP no válida.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Se ha desactivado la autenticación de dos factores. Visita el módulo Preferencias para restaurar la autenticación de dos factores y reconfigura tu aplicación TOTP.";
 
 "Download" = "Descarga";
 "Language" = "Idioma";
@@ -45,7 +45,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
-"Galician" = "Galego";
+"Galician" = "Gallego";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -77,7 +77,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "Acerca de";
-"AboutBox" = "Developed by Inverse and Alinto, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
+"AboutBox" = "Desarrollado por Inverse y Alinto, SOGo es un servidor de trabajo en grupo con todas las funciones, centrado en la escalabilidad y la simplicidad.<br/><br/>\nSOGo proporciona una rica interfaz Web basada en AJAX y soporta múltiples clientes nativos mediante el uso de protocolos estándar como CalDAV y CardDAV.<br/><br/>\nSOGo se distribuye bajo la <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> versión 2 o posterior y partes se distribuyen bajo la GNU LGPL versión 2. Este es software libre: usted es libre de cambiarlo y redistribuirlo. NO EXISTE GARANTÍA, en la medida permitida por la ley.<br/><br/>\nConsulte <a href=\"http://www.sogo.nu/en/support/community.html\">esta página</a> para conocer las distintas opciones de soporte.\n";
 "Your account was locked due to too many failed attempts." = "Su cuenta ha sido bloqueada debido a un número excesivo de errores de conexión.";
 "Your account was locked due to an expired password." = "Su cuenta ha sido bloqueada debido a una contraseña caducada.";
 "Login failed due to unhandled error case" = "Conexión fallida debido a un error desconocido";
@@ -113,17 +113,17 @@
 "Missing type parameter" = "Falta el Criterio tipo";
 
 /* Password Recovery */
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password lost" = "Password lost";
-"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
-"Invalid secret question answer" = "Invalid secret question answer";
-"Next" = "Next";
-"Back" = "Back";
-"Please enter a new password below" = "Please enter a new password below";
-"A link will be sent to %{0}" = "A link will be sent to %{0}";
-"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
-"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
-"Password recovery email in error" = "Password recovery email in error";
-"Password reset" = "Password reset";
-"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";
+"Secondary e-mail" = "Correo secundario";
+"Answer" = "Respuesta";
+"Password lost" = "Contraseña olvidada";
+"No password recovery method has been defined for this user" = "No se ha definido ningún método de recuperación de contraseña para este usuario";
+"Invalid secret question answer" = "Respuesta no válida a la pregunta secreta";
+"Next" = "Siguiente";
+"Back" = "Atrás";
+"Please enter a new password below" = "Introduzca una nueva contraseña";
+"A link will be sent to %{0}" = "Se enviará un enlace a %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "Se ha enviado un enlace para restablecer la contraseña. Compruebe su buzón de correo de recuperación y haga clic en el enlace.";
+"Invalid configuration for email password recovery" = "Configuración no válida para la recuperación de contraseñas de correo electrónico";
+"Password recovery email in error" = "Error en el correo electrónico de recuperación de contraseña";
+"Password reset" = "Restablecer contraseña";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hola %{0},\nSe ha solicitado un cambio de contraseña.\n\nSi no lo has solicitado, ignora este mensaje.\n\nEn caso contrario, haz clic en este enlace para cambiar tu contraseña: %{1}";

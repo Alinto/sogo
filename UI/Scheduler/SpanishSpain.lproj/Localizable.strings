@@ -65,7 +65,7 @@
 "A total of %{0} events were imported in the calendar." = "Un total de %{0} eventos fueron importados al calendario.";
 "Compose E-Mail to All Attendees" = "Crear correo para todos los asistentes";
 "Compose E-Mail to Undecided Attendees" = "Crear correo para todos los asistentes indecisos";
-"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
+"Download iOS - MacOS configuration profile" = "Descargar el perfil de configuración iOS - macOS";
 
 /* Relative dates */
 "Yesterday" = "Ayer";
@@ -110,7 +110,7 @@
 "Name of the Calendar" = "Nombre del calendario";
 "new" = "Nuevo";
 "Print view" = "Vista previa";
-"Print" = "Print";
+"Print" = "Imprimir";
 "edit" = "Modificar";
 "delete" = "Borrar";
 "proposal" = "Propuesta";
@@ -151,7 +151,7 @@
 "Display events and tasks colors" = "Enseña colores de eventos y tareas";
 "Borders" = "Bordes";
 "Backgrounds" = "Fondos";
-"Page Format" = "Page Format";
+"Page Format" = "Formato de página";
 
 /* Appointments */
 "Appointment viewer" = "Visor de eventos";
@@ -224,11 +224,11 @@
 "view_next31" = "Próximos 31 días";
 "view_thismonth" = "Este mes";
 "view_thisyear" = "Este año";
-"view_last7" = "Last 7 days";
-"view_last14" = "Last 14 days";
-"view_last31" = "Last 31 days";
-"view_lastmonth" = "Last Month";
-"view_lastyear" = "Last Year";
+"view_last7" = "Últimos 7 días";
+"view_last14" = "Últimos 14 días";
+"view_last31" = "Últimos 31 días";
+"view_lastmonth" = "Último mes";
+"view_lastyear" = "Último año";
 "view_future" = "Todos los eventos futuros";
 "view_selectedday" = "Día seleccionado";
 "view_not_started" = "Tareas sin iniciar";
@@ -377,7 +377,7 @@
 "Show an Alert" = "Mostrar un alerta";
 "Send an E-mail" = "Enviar un correo";
 "Email Organizer" = "Enviar correo al organizador";
-"Email Attendees" = "Enviar correo a los asistentes";
+"Email Attendees (internal users)" = "Email Attendees (internal users)";
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
@@ -402,8 +402,8 @@
 "To" = "Para";
 
 /* dates */
-"DateFrom" = "From";
-"DateTo" = "To";
+"DateFrom" = "De";
+"DateTo" = "A";
 
 /* validation errors */
 validate_notitle           = "Sin título, ¿continuar?";
@@ -452,34 +452,34 @@ validate_untilbeforeend    = "La recurrencia debe terminar después de la primer
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "¿Está seguro/a que desea borrar el calendario \"%{0}\"?";
 "Are you sure you want to delete the selected components?"
-= "Are you sure you want to delete the selected components?";
+= "Esta seguro que desea eliminar los elementos seleccionados?";
 
 /* Participation role */
-"Role" = "Role";
+"Role" = "Rol";
 
 /* Participant role: participation is required */
 "Participant" = "Asistente";
 
 /* Participant role: participation is required */
-"req-participant" = "Participant";
+"req-participant" = "Participante";
 
 /* Participant role: participation is optional */
 "Optional Participant" = "Asistentes opcionales";
 
 /* Participant role: participation is optional */
-"opt-participant" = "Optional Participant";
+"opt-participant" = "Participante opcional";
 
 /* Participant role: participant is copied for information purposes only */
 "Non Participant" = "No Asistente";
 
 /* Participant role: participant is copied for information purposes only */
-"non-participant" = "Non Participant";
+"non-participant" = "No participante";
 
 /* Participant role: participant is chair of the calendar entity */
 "Chair" = "Presidente";
 
 /* Participant role: participant is chair of the calendar entity */
-"chair" = "Chair";
+"chair" = "Presidente";
 
 /* Participant status: needs action */
 "Needs action" = "Requiere intervención";
@@ -512,7 +512,7 @@ validate_untilbeforeend    = "La recurrencia debe terminar después de la primer
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Existe un conflicto de disponibilidad con uno o más asistentes.\n¿Quiere guardar ésta propuesta de todas formas?";
 "Would you like to remove them and send the invitation to the remaining attendees?"
-= "Would you like to remove them and send the invitation to the remaining attendees?";
+= "¿Desea eliminarlos y enviar la invitación al resto de participantes?";
 
 /* events list */
 "Due" = "Vencimiento";
@@ -566,7 +566,7 @@ vtodo_class2 = "(Tarea confidencial)";
 "CalDAV URL" = "URL CalDAV";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
-"Copy to clipboard" = "Copy to clipboard";
+"Copy to clipboard" = "Copiar al portapapeles";
 
 /* Error messages */
 "dayFieldInvalid" = "Por favor, especificar un valor númerico en el campo día superior o igual a 1.";
@@ -594,7 +594,7 @@ vtodo_class2 = "(Tarea confidencial)";
 "Move To" = "Mover a";
 "Copy To" = "Copiar a";
 "Subscriptions" = "Suscripciones";
-"Subscribe to a shared calendar" = "Subscribe to a shared calendar";
+"Subscribe to a shared calendar" = "Suscribirse a un calendario compartido";
 "Subscribe to a web calendar..." = "Subscribir a calendario Web...";
 "URL of the Calendar" = "URL del calendario";
 "Web Calendar" = "Calendario Web";
@@ -631,7 +631,7 @@ vtodo_class2 = "(Tarea confidencial)";
 "Rename" = "Renombrar";
 "Import Calendar" = "Importar Calendario";
 "Select an ICS file." = "Seleccionar un fichero iCalendar (.ics).";
-"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "Tienes datos modificados sin guardar. Quiere cerrar la ventana y perder los datos?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Suscripción al calendario Web con éxito";

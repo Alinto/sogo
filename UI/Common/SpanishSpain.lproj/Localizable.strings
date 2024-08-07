@@ -41,11 +41,11 @@
      = "Potencialmente cualquier usuario de Internet tendrá acceso a su libreta de dirección \"%{0}\", también si no tiene una cuenta en este sistema. ¿Es esta información adecuada para todo el Internet publico?";
 "Give Access" = "Permite Acceso";
 "Keep Private" = "Mantiene Privado";
-"Expand" = "Expand";
-"Reduce" = "Reduce";
+"Expand" = "Ampliar";
+"Reduce" = "Reducir";
 
 /* tooltip */
-"Refresh" = "Refresh";
+"Refresh" = "Actualizar";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -83,10 +83,10 @@
 
 /* generic messages */
 "Error" = "Error";
-"Success" = "Success";
+"Success" = "Éxito";
 
 /* confirmation dialog box */
-"Confirmation" = "Confirmation";
+"Confirmation" = "Confirmación";
 
 /* alarms */
 "Reminder" = "Recordatorio";
@@ -109,8 +109,8 @@
 "Personal" = "Personal";
 "To Do" = "Por hacer";
 "Later" = "Más tarde";
-"Forwarded" = "Forwarded";
-"Return Receipt Sent" = "Return Receipt Sent";
+"Forwarded" = "Reenviado";
+"Return Receipt Sent" = "Envío de acuse de recibo";
 "a2_Sunday" = "Do";
 "a2_Monday" = "Lu";
 "a2_Tuesday" = "Ma";
@@ -125,19 +125,19 @@
 "You cannot (un)subscribe to a folder that you own!" = "No es posible suscribirse a una carpeta que le pertenece.";
 
 /* SMIME Certificate field */
-"S/MIME Certificate" = "S/MIME Certificate";
-"Subject Name" = "Subject Name";
-"Issuer" = "Issuer";
-"streetAddress" = "Street";
-"stateOrProvinceName" = "State or Province";
-"localityName" = "Locality";
-"countryName" = "Country";
-"organizationName" = "Organization";
-"organizationalUnitName" = "Organizational Unit";
-"commonName" = "Common Name";
-"surname" = "Surname";
-"givenName" = "Given Name";
-"emailAddress" = "Email Address";
+"S/MIME Certificate" = "Certificado S/MIME";
+"Subject Name" = "Titular";
+"Issuer" = "Remitente";
+"streetAddress" = "Dirección";
+"stateOrProvinceName" = "Estado/Provincia";
+"localityName" = "Localidad";
+"countryName" = "País";
+"organizationName" = "Organización";
+"organizationalUnitName" = "Departamento/ Sección";
+"commonName" = "Dominio";
+"surname" = "Apellido";
+"givenName" = "Nombre";
+"emailAddress" = "Correo electrónico";
 
 
 /* Authentication username */
@@ -156,18 +156,18 @@
 "File size upload limit reached" = "Alcanzado el tamaño máximo del archivo";
 
 /* Generic server error */
-"An error occured, please try again." = "An error occured, please try again.";
+"An error occured, please try again." = "Se ha producido un error, inténtelo de nuevo.";
 
 /* Open datepicker */
-"Open Calendar" = "Open Calendar";
+"Open Calendar" = "Abrir calendario";
 
 /* Toggle visibility (ex: mail account in left navigation menu) */
 "Toggle visibility" = "Cambiar la visibilidad";
 
-"Keyboard Shortcuts" = "Keyboard Shortcuts";
+"Keyboard Shortcuts" = "Atajos del teclado";
 
 /* Aria label for avatar button to select and unselect an item */
-"Toggle item" = "Toggle item";
+"Toggle item" = "Activar elemento";
 
 /* Toggle multiple items at the same time (hotkeys cheatsheet) */
 "Toggle range of items" = "Cambiar el rango de elementos";
@@ -179,7 +179,7 @@
 "key_space" = "space";
 
 /* Delete key */
-"key_delete" = "delete";
+"key_delete" = "borrar";
 
 /* Shift and space key */
 "key_shift+space" = "Mayúsculas + espacio";
@@ -227,9 +227,9 @@
 "Move forward" = "Avanzar";
 
 /* Password Recovery */
-"passwordRecovery_Disabled" = "Disabled";
-"passwordRecovery_SecretQuestion" = "Secret question";
-"passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
-"passwordRecovery_SecretQuestion2" = "What was your first car ?";
-"passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
-"passwordRecovery_SecondaryEmail" = "Secondary E-mail";
+"passwordRecovery_Disabled" = "Desactivado";
+"passwordRecovery_SecretQuestion" = "Pregunta secreta";
+"passwordRecovery_SecretQuestion1" = "¿Cuál es el nombre de su primera mascota?";
+"passwordRecovery_SecretQuestion2" = "¿Cuál fue su primer coche?";
+"passwordRecovery_SecretQuestion3" = "¿Cuál es su película favorita?";
+"passwordRecovery_SecondaryEmail" = "Email secundario";

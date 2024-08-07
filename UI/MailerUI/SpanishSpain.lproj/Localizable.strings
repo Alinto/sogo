@@ -3,7 +3,7 @@
 /* Icon's label */
 "Create"      = "Crear";
 "Empty Trash" = "Vaciar papelera";
-"Empty Junk Folder" = "Empty Junk Folder";
+"Empty Junk Folder" = "Vaciar la carpeta de spam";
 "Delete"      = "Borrar";
 "Expunge"     = "Compactar";
 "Forward"     = "Reenviar";
@@ -79,7 +79,7 @@
 "Folder compacted" = "Carpeta compactada";
 
 /* Empty Junk Folder success message */
-"Junk folder emptied" = "Junk folder emptied";
+"Junk folder emptied" = "Vaciado de la carpeta de spam";
 
 /* Empty Trash success message */
 "Trash emptied" = "Basura vaciada";
@@ -88,7 +88,7 @@
 "Access rights to" = "Derechos de acceso a";
 "For user" = "Para usuario";
 "Any Authenticated User" = "Cualquier usuario autentificado";
-"View this folder" = "View this folder";
+"View this folder" = "Ver esta carpeta";
 "Read mails from this folder" = "Leer corrreo de esta carpeta";
 "Mark mails read and unread" = "Marcar correos como leídos y no leídos";
 "Modify the flags of the mails in this folder" = "Modificar los indicadores de los correos en esta carpeta";
@@ -127,7 +127,7 @@
 "Edit Draft..." = "Modificar borrador...";
 "Load Images" = "Cargar Imágenes";
 "Return Receipt" = "Acuse de Recibo";
-"Choose which identity to send this message from" = "Choose which identity to send this message from";
+"Choose which identity to send this message from" = "Elija la identidad con la que desea enviar el mensaje";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "El remitente de este mensaje ha pedido ser avisado cuando el mensaje ha sido leído. ¿Quiere notificar al remitente?";
 "Return Receipt (displayed) - %@"= "Acuse de Recibo (mostrado) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Este es un Acuse de Recibo del correo enviado a %@.\n\nNota: Este acuse de recibo sólo acredita que el mensaje se mostró en el ordenador del destinatario. No hay garantía de que el destinatario haya leído o comprendido el contenido del mensaje.";
@@ -143,6 +143,23 @@
 "This mail is being sent from an unsecure network!" = "Este mendaje es enviado desde una red no segura.";
 "Address Book" = "Libreta de direcciones";
 "Search For" = "Buscar";
+"Contains" = "Contains";
+"Does not contains" = "Does not contains";
+"Advanced search" = "Advanced search";
+"Anytime" = "Anytime";
+"Last 7 days" = "Last 7 days";
+"Last 30 days" = "Last 30 days";
+"Last 6 month" = "Last 6 month";
+"Before" = "Before";
+"After" = "After";
+"Between" = "Between";
+"and" = "and";
+"With attachments" = "With attachments";
+"In favorites" = "In favorites";
+"Unseen only" = "Unseen only";
+"Show more" = "Show more";
+"Reset" = "Reset";
+"Message size" = "Message size";
 
 /* Popup "show" */
 "all"     = "todo";
@@ -173,13 +190,13 @@
 "Untitled" = "Sin título";
 
 /* Filter option in messages list */
-"Show unread messages only" = "Show unread messages only";
+"Show unread messages only" = "Mostrar sólo los mensajes no leídos";
 
 /* Filter option in messages list */
-"Show flagged messages only" = "Show flagged messages only";
+"Show flagged messages only" = "Mostrar sólo mensajes marcados";
 
 /* Aria label for icon of labels */
-"Filtered by label" = "Filtered by label";
+"Filtered by label" = "Filtrados por etiqueta";
 
 /* Tree */
 "SentFolderName"   = "Enviados";
@@ -187,7 +204,7 @@
 "InboxFolderName"  = "Bandeja de entrada";
 "DraftsFolderName" = "Borradores";
 "JunkFolderName" = "Spam";
-"TemplatesFolderName" = "Templates";
+"TemplatesFolderName" = "Plantillas";
 "SieveFolderName"  = "Filtros";
 "Folders"          = "Carpetas"; /* title line */
 
@@ -196,7 +213,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Añadir a una libreta de direcciones...";
-"Successfully created card" = "Successfully created card";
+"Successfully created card" = "Tarjeta creada con éxito";
 "Compose Mail To" = "Crear mensaje para";
 "Create Filter From Message..." = "Create filtro a partir del mensaje...";
 
@@ -239,6 +256,7 @@
 "Save As..." = "Guardar como...";
 "Print Preview" = "Vista preliminar";
 "View Message Source" = "Ver formato original del mensaje";
+"View raw message" = "View raw message";
 
 /* Message view "more" menu: create an event from message */
 "Convert To Event" = "Convertir como evento";
@@ -247,10 +265,10 @@
 "Convert To Task" = "Convertir como tarea";
 
 /* Message view "more" menu: download message as an eml file */
-"Download message" = "Download message";
+"Download message" = "Descargar mensaje";
 
 /* Message view "more" menu: download message as a zip archive */
-"Download message (zip)" = "Download message (zip)";
+"Download message (zip)" = "Descargar mensaje (zip)";
 
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "Descargar todos los archivos adjuntos";
@@ -274,10 +292,10 @@
 "selected" = "seleccionado";
 
 /* Date formatting from one time to another time */
-"to_time" = "to";
+"to_time" = "para";
 
 /* Date formatting from one day to another day */
-"to_date" = "to";
+"to_date" = "para";
 
 /* Encrypted message notification */
 "This message is encrypted" = "Este mensaje está encriptado";
@@ -298,16 +316,16 @@
 "No certificate associated to account." = "El certificado no está asociado a ninguna cuenta.";
 
 /* Invalid S/MIME signature */
-"Digital signature is not valid" = "Digital signature is not valid";
+"Digital signature is not valid" = "Firma digital no válida";
 
 /* Valid S/MIME signature */
-"Message is signed" = "Message is signed";
+"Message is signed" = "Mensaje firmado";
 
 /* Valid S/MIME signature but common name not found */
-"Message is signed but the certificate doesn't match the sender email address" = "Message is signed but the certificate doesn't match the sender email address";
+"Message is signed but the certificate doesn't match the sender email address" = "El mensaje está firmado pero el certificado no coincide con la dirección de correo electrónico del remitente";
 
 /* Unknown error while validating message signature */
-"Digital signature is not valid" = "Digital signature is not valid";
+"Digital signature is not valid" = "Firma digital no válida";
 
 "This Folder" = "Esta carpeta";
 
@@ -343,7 +361,7 @@
 "Operation failed" = "Operación fallida";
 "Quota" = "Cuota";
 "quotasFormat" = "%{0}% de %{1} MB usados";
-"messageQuotasFormat" = "%{0}% of %{1} msgs";
+"messageQuotasFormat" = "%{0}% de %{1} msgs";
 "Unable to move/delete folder." = "No se puede mover/borrar la carpeta";
 
 /* Alternative operation when folder cannot be deleted */
@@ -391,10 +409,10 @@
 "Error while saving the draft" = "Error al guardar el borrador";
 
 /* Error when emptying trash */
-"Unable to empty the trash folder." = "Unable to empty the trash folder.";
+"Unable to empty the trash folder." = "No se puede vaciar la papelera.";
 
 /* Error when emptying junk folder */
-"Unable to empty the junk folder." = "Unable to empty the junk folder.";
+"Unable to empty the junk folder." = "No se puede vaciar la carpeta de spam.";
 
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Error al cargar el fichero \"%{0}\":";
@@ -410,9 +428,9 @@
 "cannot send message: (smtp) all recipients discarded" = "No se puede enviar el mensaje: (smtp) todos los destinatarios han sido descartados";
 "cannot send message (smtp) - recipients discarded" = "No se puede enviar el mensaje: (smtp) destinatarios descartados";
 "cannot send message: (smtp) error when connecting" = "No se puede enviar el mensaje: (smtp) error de conexión";
-"cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
-"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
-"cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
+"cannot sign email without certificate" = "El mensaje no se puede firmar porque no hay ningún certificado asociado a la cuenta de correo.";
+"cannot sign message because the certificate can't be read" = "El mensaje no puede ser firmado porque el certificado asociado a la cuenta de correo no se puede leer.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "El mensaje no se puede firmar porque la dirección del remitente no está incluida en el certificado asociado a la cuenta de correo.";
 
 /* Contacts list in mail editor */
 "Email" = "Correo";
@@ -433,7 +451,7 @@
 "Set as Trash" = "Marcar como borrado";
 
 /* Set the folder as the one holding the Templates */
-"Set as Templates" = "Set as Templates";
+"Set as Templates" = "Establecer como Plantillas";
 
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Marcar como Spam";
@@ -445,7 +463,7 @@
 "Copy messages" = "Copiar mensajes";
 "More messages options" = "Mas opciones de mensajes";
 "Flag" = "Añadir estrella";
-"Unflag" = "Unflag";
+"Unflag" = "Desmarcar";
 "Mark as Unread" = "Marcar como no leído";
 "Mark as Read" = "Marca como leído";
 "Closing Window ..." = "Cerrando ventana...";
@@ -459,19 +477,19 @@
 "Your email has been sent" = "El email ha sido enviado";
 "Folder compacted" = "Carpeta compactada";
 
-"More Options" = "More Options";
+"More Options" = "Más opciones";
 
-"New draft" = "New draft";
-"Create new draft with this template" = "Create new draft with this template";
+"New draft" = "Nuevo borrador";
+"Create new draft with this template" = "Crear un nuevo borrador con esta plantilla";
 
 /* Advanced search */
-"Enter Subject" = "Enter Subject";
-"Enter From" = "Enter From";
-"Enter To" = "Enter To";
-"Enter Cc" = "Enter Cc";
-"Enter Body" = "Enter Body";
-"match" = "match";
-"does not match" = "does not match";
+"Enter Subject" = "Introducir asunto";
+"Enter From" = "Introducir De";
+"Enter To" = "Introducir Para";
+"Enter Cc" = "Introducir Cc";
+"Enter Body" = "Introducir texto";
+"match" = "coincide";
+"does not match" = "no coincide";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Ámbito de búsqueda";
@@ -484,9 +502,6 @@
 
 /* Hotkey to write a new message */
 "hotkey_compose" = "w";
-
-/* Hotkey to mark selected message(s) as junk */
-"hotkey_junk" = "j";
 
 /* Hotkey to flag a message */
 "hotkey_flag" = "*";

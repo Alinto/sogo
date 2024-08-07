@@ -27,9 +27,9 @@
 "OfficePhone" = "Teléfono oficina";
 "Organization" = "Organización";
 "Work Phone" = "Teléfono trabajo";
-"Cell" = "Cell";
+"Cell" = "Celda";
 "Pager" = "Busca";
-"Pref" = "Pref";
+"Pref" = "Prefs";
 "Phone" = "Teléfono";
 "Phones" = "Teléfonos";
 "Postal" = "Código Postal";
@@ -49,88 +49,88 @@
 "Blind Carbon Copy (Bcc)" = "Con Copia Oculta (Bcc)";
 
 /* Search scope: name fields */
-"name" = "Name";
+"name" = "Nombre";
 
 /* Search scope: name fields */
-"c_cn" = "Name";
+"c_cn" = "Nombre";
 
 /* Search scope: secondary email field */
-"mozillanickname" = "Secondary email";
+"mozillanickname" = "Correo secundario";
 
 /* Search scope: screen name field */
-"nsaimid" = "Screen name";
+"nsaimid" = "Nombre en pantalla";
 
 /* Search scope: mail fields */
-"mail" = "Mail";
+"mail" = "Correo";
 
 /* Search scope: mail fields */
-"c_mail" = "Mail";
+"c_mail" = "Correo";
 
 /* Search scope: telephone field */
-"telephonenumber" = "Telephone";
+"telephonenumber" = "Teléfono";
 
 /* Search scope: telephone field */
-"homephone" = "Telephone";
+"homephone" = "Teléfono";
 
 /* Search scope: mobile field */
-"mobile" = "Mobile";
+"mobile" = "Móvil";
 
 /* Search scope: fax field */
 "facsimiletelephonenumber" = "Fax";
 
 /* Search scope: pager field */
-"pager" = "Pager";
+"pager" = "Localizador";
 
 /* Search scope: categories field */
-"c_categories" = "Categories";
+"c_categories" = "Categorias";
 
 /* Search scope: categories field */
-"vcardcategories" = "Categories";
+"vcardcategories" = "Categorias";
 
 /* Search scope: title field */
-"title" = "Title";
+"title" = "Cargo";
 
 /* Search scope: organization field */
-"c_o" = "Organization";
+"c_o" = "Organización";
 
 /* Search scope: organization field */
-"o" = "Organization";
+"o" = "Organización";
 
 /* Search scope: department field */
-"ou" = "Department";
+"ou" = "Departamento";
 
 /* Search scope: city field */
-"l" = "City";
+"l" = "Ciudad";
 
 /* Search scope: country field */
-"c" = "Country";
+"c" = "País";
 
 /* Search scope: home address field */
-"mozillahomestreet" = "Home Address";
+"mozillahomestreet" = "Domicilio particular";
 
 /* Search scope: state/province field */
-"st" = "State/Province";
+"st" = "Estado/Provincia";
 
 /* Search scope: home state/province field */
-"mozillahomestate" = "Home State/Province";
+"mozillahomestate" = "Provincia Natal";
 
 /* Search scope: zip/postal code field */
-"postalCode" = "Zip/Postal Code";
+"postalCode" = "Código Postal";
 
 /* Search scope: home zip/postal code field */
-"mozillahomepostalcode" = "Zip/Postal Code";
+"mozillahomepostalcode" = "Código Postal";
 
 /* Search scope: home country field */
-"mozillahomecountryname" = "Home Country";
+"mozillahomecountryname" = "País Natal";
 
 /* Search scope: home web page field */
-"mozillahomeurl" = "Home page";
+"mozillahomeurl" = "Pagina de inicio";
 
 /* Search scope: work web page field */
-"mozillaworkurl" = "Web page";
+"mozillaworkurl" = "Página web";
 
 /* Search scope: note field */
-"description" = "Note";
+"description" = "Nota";
 
 /* Subheader of empty addressbook */
 "No contact" = "No contacto";
@@ -193,7 +193,7 @@
 "Work" = "Trabajo";
 "Mobile" = "Móvil";
 "Pager" = "Busca";
-"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
+"Download iOS - MacOS configuration profile" = "Descargar el perfil de configuración iOS - macOS";
 
 /* categories */
 "contacts_category_labels" = "Colega, Competidor, Cliente, Amigo, Familia, Socio, Proveedor, Prensa, VIP";
@@ -222,7 +222,7 @@
 "New Addressbook..." = "Crear libreta de direcciones...";
 "Subscribe to an Addressbook..." = "Suscribir a una libreta de direcciones...";
 "Remove the selected Addressbook" = "Borrar libreta de direcciones seleccionada";
-"Subscribe to a shared contact" = "Subscribe to a shared addressbook";
+"Subscribe to a shared contact" = "Suscribirse a una libreta de direcciones compartida";
 "Search User" = "Buscar usuarios";
 "Name of the Address Book" = "Nombre de la libreta de direcciones";
 "Are you sure you want to delete the selected address book?"
@@ -244,10 +244,10 @@
 = "No puede suscribirse a esta carpeta.";
 
 /* security */
-"Security" = "Security";
-"Uninstall" = "Uninstall";
-"Error reading the card certificate." = "Error reading the card certificate.";
-"No certificate associated to card." = "No certificate associated to card.";
+"Security" = "Seguridad";
+"Uninstall" = "Desinstalar";
+"Error reading the card certificate." = "Error al leer el certificado de la tarjeta.";
+"No certificate associated to card." = "No hay un certificado asociado a la tarjeta.";
 
 /* acls */
 "Access rights to" = "Derechos de accesos a";
@@ -351,7 +351,7 @@
 "Synchronization" = "Sincronización";
 "Synchronize" = "Sincroniza";
 "Sucessfully subscribed to address book" = "Suscripción a la libreta de direcciones con éxito";
-"A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
+"A similar card already exists. Would you like to save it anyway?" = "Ya existe una tarjeta similar. ¿Quiere guardarla de todos modos?";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Ámbito de búsqueda";

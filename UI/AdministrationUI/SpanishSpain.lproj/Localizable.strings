@@ -10,7 +10,7 @@
 /* Modules descriptions */
 "ACLs_description" = "<p>El módulo administrativo de ACL (Listas de Control de Acceso por su siglas inglés) permite cambiar los ACLs de las Agendas y Libreta de Direcciones de cada usuario.</p><p>Para modificar los ACLs de las carpetas de un usuario, teclea el nombre de usuario en el campo de búsqueda arriba de la ventana y haz un doble-click sobre la carpeta deseada.</p>";
 "Name or Email" = "Nombre o Correo";
-"ACLs saved" = "ACLs saved";
+"ACLs saved" = "LCAs guardadas";
 /* Rights module: initial search message */
 "Start a search to edit the rights" = "Iniciar una búsqueda para modificar los derechos";
 /* Rights module: Empty search result */
@@ -25,7 +25,7 @@
 "No resource" = "No recursos";
 "Any Authenticated User" = "Cualquier Usuario Autenticado ";
 "Public Access" = "Acceso publico";
-"Save" = "Save";
-"Clear" = "Clear";
-"Message of the day" = "Message of the day";
-"Message of the day has been saved" = "Message of the day has been saved";
+"Save" = "Guardar";
+"Clear" = "Borrar";
+"Message of the day" = "Mensaje del día";
+"Message of the day has been saved" = "Se ha guardado el mensaje del día";

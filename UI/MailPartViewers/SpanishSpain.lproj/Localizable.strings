@@ -46,4 +46,5 @@ reply_info = "Esta es la respuesta a una invitación de evento hecha por Ud.";
 "Cancel" = "Cancelar";
 "OK" = "OK";
 "Comment" = "Comentario:";
-"Description" = "Description";
+"Description" = "Descripción";
+"Location" = "Location";
