@@ -152,6 +152,7 @@
 "Contacts Names" = "Контактілердің аттары";
 "Duplicate name" = "Атты қосарлау";
 "Calendar categories must have unique names." = "Күнтізбе санаттарының атаулары бірегей болуы тиіс.";
+"Disable e-mail notifications on CalDAV" = "Disable e-mail notifications on CalDAV";
 
 /* Default Calendar */
 "Default calendar" = "Әдепкі күнтізбе";
