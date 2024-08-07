@@ -47,3 +47,4 @@ reply_info = "Tämä on vastaus tapahtumakutsuusi.";
 "OK" = "OK";
 "Comment" = "Kommentti:";
 "Description" = "Description";
+"Location" = "Location";
