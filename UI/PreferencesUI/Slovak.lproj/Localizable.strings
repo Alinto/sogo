@@ -152,6 +152,7 @@
 "Contacts Names" = "Mená kontaktov";
 "Duplicate name" = "Duplicitné meno";
 "Calendar categories must have unique names." = "Kategórie kalendáru musia mať unikátne názvy.";
+"Disable e-mail notifications on CalDAV" = "Disable e-mail notifications on CalDAV";
 
 /* Default Calendar */
 "Default calendar" = "Predvolený kalendár";
