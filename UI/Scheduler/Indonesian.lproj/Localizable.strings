@@ -377,7 +377,7 @@
 "Show an Alert" = "Tampilkan  sebuah tanda";
 "Send an E-mail" = "Kirim sebuah email";
 "Email Organizer" = "Email Organisator ";
-"Email Attendees" = "Email Peserta";
+"Email Attendees (internal users)" = "Email Attendees (internal users)";
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";

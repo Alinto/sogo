@@ -152,6 +152,7 @@
 "Contacts Names" = "Nama kontak";
 "Duplicate name" = "Nama ganda";
 "Calendar categories must have unique names." = "Kategori kalender harus memiliki nama unik";
+"Disable e-mail notifications on CalDAV" = "Disable e-mail notifications on CalDAV";
 
 /* Default Calendar */
 "Default calendar" = "Kalender Default";

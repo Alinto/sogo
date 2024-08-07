@@ -143,6 +143,23 @@
 "This mail is being sent from an unsecure network!" = "Pesan ini sedang dikirim dari sebuah jaringan yang tidak aman";
 "Address Book" = "Buku Alamat";
 "Search For" = "Pencarian untuk";
+"Contains" = "Contains";
+"Does not contains" = "Does not contains";
+"Advanced search" = "Advanced search";
+"Anytime" = "Anytime";
+"Last 7 days" = "Last 7 days";
+"Last 30 days" = "Last 30 days";
+"Last 6 month" = "Last 6 month";
+"Before" = "Before";
+"After" = "After";
+"Between" = "Between";
+"and" = "and";
+"With attachments" = "With attachments";
+"In favorites" = "In favorites";
+"Unseen only" = "Unseen only";
+"Show more" = "Show more";
+"Reset" = "Reset";
+"Message size" = "Message size";
 
 /* Popup "show" */
 "all"     = "Semua";
@@ -239,6 +256,7 @@
 "Save As..." = "Simpan Sebagai";
 "Print Preview" = "Tinjauan cetak";
 "View Message Source" = "Tinjau sumber pesan";
+"View raw message" = "View raw message";
 
 /* Message view "more" menu: create an event from message */
 "Convert To Event" = "Mengkonversi ke acara";
@@ -484,9 +502,6 @@
 
 /* Hotkey to write a new message */
 "hotkey_compose" = "w";
-
-/* Hotkey to mark selected message(s) as junk */
-"hotkey_junk" = "j";
 
 /* Hotkey to flag a message */
 "hotkey_flag" = "*";
