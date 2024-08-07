@@ -377,7 +377,7 @@
 "Show an Alert" = "Показва предупреждение";
 "Send an E-mail" = "Изпраща имейл";
 "Email Organizer" = "Имейл на организатор";
-"Email Attendees" = "Имейл участници";
+"Email Attendees (internal users)" = "Email Attendees (internal users)";
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
