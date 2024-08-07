@@ -26,7 +26,7 @@
 "Verification Code" = "Ověřovací kód";
 "Enter the 6-digit verification code from your TOTP application." = "Zadejte 6-ti místný číselný ověřovací kód z Vaší aplikace Google Authenticator.";
 "You provided an invalid TOTP key." = "Zadali jste neplatný ověřovací kód z Google Authenticator.";
-"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Dvoufaktorová autentizace byla vypnuta. Pro její zapnutí otevřete Nastavení modulu a nakonfigurujte 2FA s Vaší TOTP aplikací";
 
 "Download" = "Stáhnout";
 "Language" = "Jazyk";
@@ -45,7 +45,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
-"Galician" = "Galego";
+"Galician" = "Galicijsky";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -77,7 +77,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "O aplikaci";
-"AboutBox" = "Developed by Inverse and Alinto, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
+"AboutBox" = "Vyvinuto společnostmi Inverse a Alinto, SOGo je plně-vybavený groupware server zaměřený na snadnou škálovatelnost a jednoduchou obsluhu.<br/><br/>\nSOGo přichází s kompletním AJAX-založeným Webovým rozhraním a podporuje mnoho nativních klientských aplikací pomocí standardních protokolů CalDAV a CardDAV.<br/><br/>\nSOGo je licencován pod <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> verze 2 (a pozdější) a některé části jsou distribuované pomocí licence GNU LGPL verze 2. Jedná se o svobodný software: je možné jej jakýmkoliv způsobem upravovat a redistribuovat. Neposkytujeme ŽÁDNOU ZÁRUKU, nad rámec stanovený zákonem.<br/><br/>\nNavštivte<a href=\"http://www.sogo.nu/en/support/community.html\">tuto stránku</a> pro možnosti podpory.";
 "Your account was locked due to too many failed attempts." = "Váš účet byl zablokován z důvodu mnoha neúspěšných pokusů o přihlášení.";
 "Your account was locked due to an expired password." = "Váš účet byl zablokován z důvodu expirovaného hesla.";
 "Login failed due to unhandled error case" = "Přihlášení selhalo z důvodu chyby";
@@ -113,17 +113,17 @@
 "Missing type parameter" = "Chybějící parametr typ";
 
 /* Password Recovery */
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password lost" = "Password lost";
-"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
-"Invalid secret question answer" = "Invalid secret question answer";
-"Next" = "Next";
-"Back" = "Back";
-"Please enter a new password below" = "Please enter a new password below";
-"A link will be sent to %{0}" = "A link will be sent to %{0}";
-"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
-"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
-"Password recovery email in error" = "Password recovery email in error";
-"Password reset" = "Password reset";
-"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";
+"Secondary e-mail" = "Sekundární e-mail";
+"Answer" = "Odpověď";
+"Password lost" = "Ztracené heslo";
+"No password recovery method has been defined for this user" = "Režim obnovení hesla nebyl tomuto uživateli nastaven";
+"Invalid secret question answer" = "Chybná odpověď na tajnou otázku";
+"Next" = "Další";
+"Back" = "Zpět";
+"Please enter a new password below" = "Vložte Vaše nové heslo";
+"A link will be sent to %{0}" = "Odkaz bude zaslán na %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "Link pro obnovení hesla byl odeslán, prosím zkontrolujte Vaši sekundární e-mailovou schránku a klikněte na link";
+"Invalid configuration for email password recovery" = "Chybné nastavení pro e-mailové obnovení hesla";
+"Password recovery email in error" = "Chybný e-mail pro obnovení hesla";
+"Password reset" = "Heslo obnoveno";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Dobrý den %{0},\nByl zaznamenán požadavek na změnu Vašeho hesla!\n\nPokud jste to nepožadovali, můžete tento e-mail klidně ignorovat.\n\nPokud ano, pokračujte kliknutím na tento odkaz: %{1}";

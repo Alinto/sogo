@@ -3,7 +3,7 @@
 /* Icon's label */
 "Create"      = "Vytvořit";
 "Empty Trash" = "Vyprázdnit koš";
-"Empty Junk Folder" = "Empty Junk Folder";
+"Empty Junk Folder" = "Vyprázdnit nevyžádanou poštu";
 "Delete"      = "Smazat";
 "Expunge"     = "Vyškrtnout";
 "Forward"     = "Přeposlat";
@@ -79,7 +79,7 @@
 "Folder compacted" = "Údržba složky byla provedena";
 
 /* Empty Junk Folder success message */
-"Junk folder emptied" = "Junk folder emptied";
+"Junk folder emptied" = "Nevyžádaná pošta promazána";
 
 /* Empty Trash success message */
 "Trash emptied" = "Koš vyprázdněn";
@@ -88,7 +88,7 @@
 "Access rights to" = "Přístupová práva k";
 "For user" = "Pro uživatele";
 "Any Authenticated User" = "Všichni ověření uživatelé";
-"View this folder" = "View this folder";
+"View this folder" = "Zobrazit tuto složku";
 "Read mails from this folder" = "Číst maily v této složce";
 "Mark mails read and unread" = "Označit maily jako přečtené a nepřečtené";
 "Modify the flags of the mails in this folder" = "Upravit mailové štítky v této složce";
@@ -143,6 +143,23 @@
 "This mail is being sent from an unsecure network!" = "Tento mail je odesílán z nezabezpečené sítě!";
 "Address Book" = "Adresář";
 "Search For" = "Hledat";
+"Contains" = "Contains";
+"Does not contains" = "Does not contains";
+"Advanced search" = "Advanced search";
+"Anytime" = "Anytime";
+"Last 7 days" = "Last 7 days";
+"Last 30 days" = "Last 30 days";
+"Last 6 month" = "Last 6 month";
+"Before" = "Before";
+"After" = "After";
+"Between" = "Between";
+"and" = "and";
+"With attachments" = "With attachments";
+"In favorites" = "In favorites";
+"Unseen only" = "Unseen only";
+"Show more" = "Show more";
+"Reset" = "Reset";
+"Message size" = "Message size";
 
 /* Popup "show" */
 "all"     = "všechny";
@@ -173,13 +190,13 @@
 "Untitled" = "Bez názvu";
 
 /* Filter option in messages list */
-"Show unread messages only" = "Show unread messages only";
+"Show unread messages only" = "Zobrazit pouze nepřečtené";
 
 /* Filter option in messages list */
-"Show flagged messages only" = "Show flagged messages only";
+"Show flagged messages only" = "Zobrazit pouze oštítkované zprávy";
 
 /* Aria label for icon of labels */
-"Filtered by label" = "Filtered by label";
+"Filtered by label" = "Filtr dle štítku";
 
 /* Tree */
 "SentFolderName"   = "Odeslaná pošta";
@@ -187,7 +204,7 @@
 "InboxFolderName"  = "Doručená pošta";
 "DraftsFolderName" = "Koncepty";
 "JunkFolderName" = "Nevyžádaná pošta";
-"TemplatesFolderName" = "Templates";
+"TemplatesFolderName" = "Šablony";
 "SieveFolderName"  = "Filtry";
 "Folders"          = "Složky"; /* title line */
 
@@ -239,6 +256,7 @@
 "Save As..." = "Uložit jako...";
 "Print Preview" = "Náhled tisku";
 "View Message Source" = "Zobrazit zdroj zprávy";
+"View raw message" = "View raw message";
 
 /* Message view "more" menu: create an event from message */
 "Convert To Event" = "Převést na událost";
@@ -304,7 +322,7 @@
 "Message is signed" = "Zpráva je podepsána";
 
 /* Valid S/MIME signature but common name not found */
-"Message is signed but the certificate doesn't match the sender email address" = "Message is signed but the certificate doesn't match the sender email address";
+"Message is signed but the certificate doesn't match the sender email address" = "Tato zpráva je podepsaná, ale certifikát se neshoduje s e-mailem odesílatele";
 
 /* Unknown error while validating message signature */
 "Digital signature is not valid" = "Elektronický podpis není validní";
@@ -344,7 +362,7 @@
 "Quota" = "Kvóta:";
 "quotasFormat" = "%{0}% využito z %{1} MB";
 "messageQuotasFormat" = "%{0}% z %{1} zpráv";
-"Unable to move/delete folder." = "Složku není možné přesunout/smazat.";
+"Unable to move/delete folder." = "Nelze přesunout/smazat složku.";
 
 /* Alternative operation when folder cannot be deleted */
 "The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
@@ -391,10 +409,10 @@
 "Error while saving the draft" = "Při uložení konceptu došlo k chybě";
 
 /* Error when emptying trash */
-"Unable to empty the trash folder." = "Unable to empty the trash folder.";
+"Unable to empty the trash folder." = "Nelze vyprázdnit koš.";
 
 /* Error when emptying junk folder */
-"Unable to empty the junk folder." = "Unable to empty the junk folder.";
+"Unable to empty the junk folder." = "Nelze vyprázdnit nevyžádanou poštu.";
 
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Při přenosu souboru \"%{0}\" došlo k chybě:";
@@ -410,9 +428,9 @@
 "cannot send message: (smtp) all recipients discarded" = "Zprávu nelze odeslat: adresy všech příjemců jsou neplatné.";
 "cannot send message (smtp) - recipients discarded" = "Zprávu nelze odeslat: následující adresy jsou neplatné";
 "cannot send message: (smtp) error when connecting" = "Zprávu nelze odeslat: při spojení se SMTP serverem došlo k chybě.";
-"cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
-"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
-"cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
+"cannot sign email without certificate" = "Tato zpráva nemůže být podepsaná, neboť k účtu není přiřazen žádný certifikát";
+"cannot sign message because the certificate can't be read" = "Tato zpráva nemůže být podepsaná, neboť přiřazený certifikát není možné načíst";
+"cannot sign message because the certificate doesn't include the specified sender address" = "Tato zpráva nemůže být podepsaná, neboť e-mail odesílatele není obsažen v certifikátu účtu";
 
 /* Contacts list in mail editor */
 "Email" = "E-mail";
@@ -433,7 +451,7 @@
 "Set as Trash" = "Nastavit jako Koš";
 
 /* Set the folder as the one holding the Templates */
-"Set as Templates" = "Set as Templates";
+"Set as Templates" = "Nastavit jako Šablony";
 
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Nastavit jako Nevyžádaná pošta";
@@ -445,7 +463,7 @@
 "Copy messages" = "Kopírovat zprávy";
 "More messages options" = "Další možnosti zpráv";
 "Flag" = "Oštítkovat";
-"Unflag" = "Unflag";
+"Unflag" = "Odstranit štítek";
 "Mark as Unread" = "Označit jako nepřečtené";
 "Mark as Read" = "Označit jako přečtené";
 "Closing Window ..." = "Zavření okna ...";
@@ -459,10 +477,10 @@
 "Your email has been sent" = "Vaše zpráva byla odeslána";
 "Folder compacted" = "Údržba složky byla provedena";
 
-"More Options" = "More Options";
+"More Options" = "Více nastavení";
 
-"New draft" = "New draft";
-"Create new draft with this template" = "Create new draft with this template";
+"New draft" = "Nový koncept";
+"Create new draft with this template" = "Vytvořit nový koncept z této šablony";
 
 /* Advanced search */
 "Enter Subject" = "Zadejte předmět";
@@ -484,9 +502,6 @@
 
 /* Hotkey to write a new message */
 "hotkey_compose" = "w";
-
-/* Hotkey to mark selected message(s) as junk */
-"hotkey_junk" = "j";
 
 /* Hotkey to flag a message */
 "hotkey_flag" = "*";

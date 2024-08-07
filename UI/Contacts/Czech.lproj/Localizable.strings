@@ -193,7 +193,7 @@
 "Work" = "Zaměstnání";
 "Mobile" = "Mobilní telefon";
 "Pager" = "Pager";
-"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
+"Download iOS - MacOS configuration profile" = "Stáhnout konfiguraci pro iOS - MacOS";
 
 /* categories */
 "contacts_category_labels" = "Kolega, Konkurent, Zákazník, Přítel, Rodina, Obchodní partner, Dodavatel, Tisk, VIP";
@@ -241,7 +241,7 @@
 "You cannot subscribe to a folder that you own!"
 = "Nemůžete se přihlásit k odebírání vlastní složky! ";
 "Unable to subscribe to that folder!"
-= "Nemůžete se přihlásit k odebírání této složky!";
+= "Nelze se přihlásit k odběru této složky.";
 
 /* security */
 "Security" = "Zabezpečení";

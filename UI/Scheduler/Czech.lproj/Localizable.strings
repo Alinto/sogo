@@ -38,7 +38,7 @@
 "Previous Month" = "Předchozí měsíc";
 "Next Month" = "Následující měsíc";
 /* Week number prefix */
-"W" = "W";
+"W" = "T";
 
 /* Year */
 "this year" = "letos";
@@ -65,7 +65,7 @@
 "A total of %{0} events were imported in the calendar." = "Do kalendáře bylo importováno %{0} událostí.";
 "Compose E-Mail to All Attendees" = "Vytvořit e-mail pro všechny účastníky";
 "Compose E-Mail to Undecided Attendees" = "Vytvořit e-mail pro nerozhodnuté účastníky";
-"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
+"Download iOS - MacOS configuration profile" = "Stáhnout konfiguraci pro iOS - MacOS";
 
 /* Relative dates */
 "Yesterday" = "Včera";
@@ -224,11 +224,11 @@
 "view_next31" = "Následujících 31 dní";
 "view_thismonth" = "Tento měsíc";
 "view_thisyear" = "Letos";
-"view_last7" = "Last 7 days";
-"view_last14" = "Last 14 days";
-"view_last31" = "Last 31 days";
-"view_lastmonth" = "Last Month";
-"view_lastyear" = "Last Year";
+"view_last7" = "Posledních 7 dní";
+"view_last14" = "Posledních 14 dní";
+"view_last31" = "Posledních 31 dní";
+"view_lastmonth" = "Poslední měsíc";
+"view_lastyear" = "Poslední rok";
 "view_future" = "Všechny budoucí události";
 "view_selectedday" = "Zvolený den";
 "view_not_started" = "Nezapočaté úkoly";
@@ -377,7 +377,7 @@
 "Show an Alert" = "Zobrazit výstrahu";
 "Send an E-mail" = "Poslat e-mail";
 "Email Organizer" = "E-mail organizátorovi";
-"Email Attendees" = "E-mail účastníkům";
+"Email Attendees (internal users)" = "Email Attendees (internal users)";
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
@@ -402,8 +402,8 @@
 "To" = "Do";
 
 /* dates */
-"DateFrom" = "From";
-"DateTo" = "To";
+"DateFrom" = "Od";
+"DateTo" = "Do";
 
 /* validation errors */
 validate_notitle           = "Název nebyl nastaven, pokračovat?";
@@ -512,7 +512,7 @@ validate_untilbeforeend    = "Opakování musí skončit po prvním výskytu.";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Mezi účastníky dochází k časovému konfliktu.\nPonecháte současné nastavení i přesto?";
 "Would you like to remove them and send the invitation to the remaining attendees?"
-= "Would you like to remove them and send the invitation to the remaining attendees?";
+= "Chtěli byste je odstranit a odeslat pozvánku zbývajícím účastníkům?";
 
 /* events list */
 "Due" = "Splnění";
@@ -566,7 +566,7 @@ vtodo_class2 = "(Důvěrný úkol)";
 "CalDAV URL" = "CalDAV URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
-"Copy to clipboard" = "Copy to clipboard";
+"Copy to clipboard" = "Zkopírovat do schránky";
 
 /* Error messages */
 "dayFieldInvalid" = "V políčku Dny zadejte číselnou hodnotu větší nebo rovnu 1.";
@@ -631,7 +631,7 @@ vtodo_class2 = "(Důvěrný úkol)";
 "Rename" = "Přejmenovat";
 "Import Calendar" = "Importovat kalendář";
 "Select an ICS file." = "Vybrat ICS soubor.";
-"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "Opravdu chcete zavřít dialog a ztratit tak neuložená data?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Přihlášení k odebírání kalendáře proběhlo úspěšně";

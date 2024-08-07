@@ -41,22 +41,22 @@
      = "Potenciálně kdokoliv v Internetu bude mít přístup k vašemu adresáři \"%{0}\", i když není uživatelem tohoto systému. Jsou tyto informace vhodné pro veřejný Internet?";
 "Give Access" = "Umožnit přístup";
 "Keep Private" = "Ponechat soukromým";
-"Expand" = "Expand";
-"Reduce" = "Reduce";
+"Expand" = "Rozbalit";
+"Reduce" = "Sbalit";
 
 /* tooltip */
-"Refresh" = "Refresh";
+"Refresh" = "Obnovit";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
-        = "Není možné se přihlásit k odebírání této složky!";
+        = "Nelze se přihlásit k odběru této složky!";
 "You cannot subscribe to a folder that you own!"
         = "Nemůžete se přihlásit k odebírání své vlastní složky!";
 "Unable to unsubscribe from that folder!"
-        = "Není možné se odhlásit z odebírání této složky!";
+        = "Nelze se odhlásit z odběru této složky!";
 "You cannot unsubscribe from a folder that you own!"
         = "Nemůžete se odhlásit z odebírání své vlastní složky!";
-"Unable to rename that folder!" = "Není možné tuto složku přejmenovat!";
+"Unable to rename that folder!" = "Nelze přejmenovat tuto složku!";
 "You have already subscribed to that folder!"
         = "Tuto složku již odebíráte!";
 "The user rights cannot be edited for this object!"
@@ -109,7 +109,7 @@
 "Personal" = "Osobní";
 "To Do" = "Třeba udělat";
 "Later" = "Později";
-"Forwarded" = "Forwarded";
+"Forwarded" = "Přeposláno";
 "Return Receipt Sent" = "Odesláno potvrzení o přečtení";
 "a2_Sunday" = "Ne";
 "a2_Monday" = "Po";
@@ -128,15 +128,15 @@
 "S/MIME Certificate" = "S/MIME Certifikát";
 "Subject Name" = "Jméno Subjektu";
 "Issuer" = "Vydavatel";
-"streetAddress" = "Street";
-"stateOrProvinceName" = "State or Province";
-"localityName" = "Locality";
+"streetAddress" = "Ulice";
+"stateOrProvinceName" = "Oblast";
+"localityName" = "Umístění";
 "countryName" = "Země";
 "organizationName" = "Organizace";
 "organizationalUnitName" = "Organizační jednotka";
 "commonName" = "Obecné Jméno";
-"surname" = "Surname";
-"givenName" = "Given Name";
+"surname" = "Příjmení";
+"givenName" = "Jméno";
 "emailAddress" = "E-mail";
 
 
@@ -227,9 +227,9 @@
 "Move forward" = "Posun vpřed";
 
 /* Password Recovery */
-"passwordRecovery_Disabled" = "Disabled";
-"passwordRecovery_SecretQuestion" = "Secret question";
-"passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
-"passwordRecovery_SecretQuestion2" = "What was your first car ?";
-"passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
-"passwordRecovery_SecondaryEmail" = "Secondary E-mail";
+"passwordRecovery_Disabled" = "Zakázáno";
+"passwordRecovery_SecretQuestion" = "Tajná otázka";
+"passwordRecovery_SecretQuestion1" = "Jaké je jméno Vašeho prvního mazlíčka?";
+"passwordRecovery_SecretQuestion2" = "Jaké bylo Vaše první auto?";
+"passwordRecovery_SecretQuestion3" = "Jaký je Váš oblíbený film?";
+"passwordRecovery_SecondaryEmail" = "Sekundární e-mail";

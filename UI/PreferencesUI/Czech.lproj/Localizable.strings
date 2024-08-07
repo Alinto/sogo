@@ -24,7 +24,7 @@
 "Vacation" = "Nepřítomnost";
 "Forward" = "Přeposílání";
 "Password" = "Heslo";
-"Notification" = "Notification";
+"Notification" = "Notifikace";
 "Categories" = "Kategorie";
 "Appointments invitations" = "Pozvání na schůzky";
 "Name" = "Jméno";
@@ -45,19 +45,19 @@
 "Add default email addresses" = "Přidat základní emailové adresy";
 "Days between responses" = "Počet dnů mezi odpověďmi";
 "Do not send responses to mailing lists" = "Neposílat odpovědi do konferencí";
-"Activation Constraints" = "Activation Constraints";
-"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences";
+"Activation Constraints" = "Omezení";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Nastavte si dny / hodiny a případně je zkombinujte se specifickými dny v týdnu, pro dosažení optimálního profilu Vaší dovolené";
 "Enable auto reply on" = "Zapnout odpovědi v nepřítomnosti";
 "First day of vacation" = "První den nepřítomnosti";
-"Disable auto reply after" = "Disable auto reply after";
+"Disable auto reply after" = "Vypnout odpověď v nepřítomnosti po";
 "Last day of vacation" = "Poslední den nepřítomnosti";
 "Enter date" = "Zadejte datum";
 /* Enable auto reply at this time of the day */
-"Enable auto reply at" = "Enable auto reply at";
-"Enter time" = "Enter time";
+"Enable auto reply at" = "Zapnout odpověď v nepřítomnosti v";
+"Enter time" = "Zadej čas";
 /* Disable auto reply at this time of the day */
-"Disable auto reply at" = "Disable auto reply at";
-"Enable auto reply on these days" = "Enable auto reply on these days";
+"Disable auto reply at" = "Vypnout odpověď v nepřítomnosti v";
+"Enable auto reply on these days" = "Zapnout odpověď v nepřítomnosti ve dnech";
 "Always send vacation message response" = "Vždy posílat zprávu v nepřítomnosti";
 "The vacation message is sent prior to apply your filters." = "Zpráva v nepřítomnosti je odeslána ještě před provedením Vašich filtrů.";
 "Discard incoming mails during vacation" = "Zrušit příjem pošty během nepřítomnosti";
@@ -70,8 +70,8 @@
 
 /* forward messages */
 "Forward incoming messages" = "Přeposílat příchozí zprávy";
-"Always forward" = "Always forward";
-"Incoming messages are forwarded prior to apply your filters." = "Incoming messages are forwarded prior to apply your filters.";
+"Always forward" = "Přeposílat vždy";
+"Incoming messages are forwarded prior to apply your filters." = "Zprávy je odesílány ještě před provedením Vašich filtrů.";
 "Keep a copy" = "Ponechat kopii";
 "Enter an email" = "Zadejte e-mail";
 "Add another email" = "Přidejte další e-mail";
@@ -82,9 +82,9 @@
 "You are not allowed to forward your messages to this domain:" = "Nemáte povoleno přeposílání Vašich zpráv na následující doménu:";
 
 /* notification */
-"Notify incoming messsages" = "Notify incoming messsages";
-"Notification Message Sent" = "Notification message sent";
-"Notification Message" = "Notification of new message on %{0}";
+"Notify incoming messsages" = "Notifikovat příchozí zprávy";
+"Notification Message Sent" = "Notifikovat odeslané zprávy";
+"Notification Message" = "Notifikovat odeslané zprávy v %{0}";
 
 /* d & t */
 "Time Zone" = "Časové pásmo";
@@ -152,6 +152,7 @@
 "Contacts Names" = "Jména kontaktů";
 "Duplicate name" = "Duplicitní jméno";
 "Calendar categories must have unique names." = "Kategorie kalendáře musí mít jedinečná jména.";
+"Disable e-mail notifications on CalDAV" = "Disable e-mail notifications on CalDAV";
 
 /* Default Calendar */
 "Default calendar" = "Výchozí kalendář";
@@ -201,11 +202,11 @@
 "Compose messages in" = "Vytvářet zprávy ve formátu";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Prostý text";
-"Insert signature on new message" = "Insert signature on new message";
-"Insert signature on reply" = "Insert signature on reply";
-"Insert signature on forward" = "Insert signature on forward";
-"Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
-"Hide attachements for inline images" = "Hide attachements for inline images";
+"Insert signature on new message" = "Vkládat podpis do nových zpráv";
+"Insert signature on reply" = "Vkládat podpis do odpovědí";
+"Insert signature on forward" = "Vkládat podpis do přeposlaných zpráv";
+"Show recipients or sender full email in mailboxes" = "Zobrazovat kompletní e-mailové adresy v poštovních složkách";
+"Hide attachements for inline images" = "Skrývat obrázky v textu";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Výchozí velikost písma";
@@ -215,10 +216,10 @@
 "displayremoteinlineimages_always" = "Vždy";
 "Auto save every" = "Automaticky uložit každých";
 "minutes" = "minut";
-"Automatically mark messages as read" = "Automatically mark messages as read";
-"Immediately on display" = "Immediately on display";
-"After displaying for" = "After displaying for";
-"seconds" = "seconds";
+"Automatically mark messages as read" = "Automaticky označovat zprávy jako přečtené";
+"Immediately on display" = "Ihned po zobrazení";
+"After displaying for" = "Po uplynutí";
+"seconds" = "vteřin";
 
 /* Contact */
 "Personal Address Book" = "Osobní kontakty";
@@ -231,11 +232,11 @@
 "Mail Account" = "Poštovní účet";
 "New Mail Account" = "Nový poštovní účet";
 "Server Name" = "Adresa serveru";
-"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
-"Smtp Auth" = "Smtp Auth";
+"Outgoing Server Name (SMTP)" = "Odesílací server (SMTP)";
+"Smtp Auth" = "Smtp Autentizace";
 "Port" = "Port";
 "Encryption" = "Zabezpečení spojení";
-"Outgoing Encryption" = "Outgoing Encryption";
+"Outgoing Encryption" = "Šifrování odesílaných zpráv";
 "None" = "Žádné";
 "User Name" = "Uživatelské jméno";
 "Full Name" = "Celé jméno";
@@ -262,7 +263,7 @@
 "Digitally sign the message by default" = "Vždy digitálně podepsat zprávu";
 "Always try to encrypt the message" = "Vždy zkusit zašifrovat zprávu";
 "An error occurred while importing the certificate. Verify your password." = "Při importu certifikátu došlo k chybě. Ověřte své heslo.";
-"Data too big. Please contact technical support." = "Data too big. Please contact technical support.";
+"Data too big. Please contact technical support." = "Příliš velká data. Prosím kontaktujte Vaše IT";
 
 /* Additional Parameters */
 "Additional Parameters" = "Dodatečné parametry";
@@ -273,11 +274,11 @@
 "Confirmation" = "Potvrzení";
 "Change" = "Změnit";
 "Passwords don't match" = "Hesla nejsou shodná";
-"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
-"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
-"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0} special symbols";
-"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimum je %{0} malých znaků";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimum je %{0} velkých písmen";
+"POLICY_MIN_DIGIT" = "Minimum je %{0} číslic";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum je %{0} speciálních znaků";
+"POLICY_MIN_LENGTH" = "Minimální délka je %{0} znaků";
 
 
 /* Event+task classifications */
@@ -325,7 +326,7 @@
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
-"Galician" = "Galego";
+"Galician" = "Galicijsky";
 "German" = "Deutsch";
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
@@ -422,7 +423,7 @@
 
 "Keep the message" = "Zprávu ponechej";
 "Forward the message to" = "Přepošli zprávu na";
-"Notify the message to" = "Notify the message to";
+"Notify the message to" = "Oznámení zprávy pro";
 
 /* Input field label of "forward" mail filter action */
 "Email" = "E-mailová adresa";
@@ -503,8 +504,8 @@
 "Enable two-factor authentication using a TOTP application" = "Povolit 2-fázové ověřování pomocí Google Authenticator";
 "You must enter this key into your TOTP application." = "Tento klíč musíte zadat do své aplikace Google Authenticator.";
 "If you do not and you log out you will not be able to login again." = "Pokud tak neučiníte a odhlásíte se, nebudete se moci znovu přihlásit.";
-"Enter TOTP verification code :" = "Enter TOTP verification code :";
-"Invalid TOTP verification code" = "Invalid TOTP verification code";
+"Enter TOTP verification code :" = "Vložte TOTP verifikační kód :";
+"Invalid TOTP verification code" = "Chybný TOTP verifikační kód";
 
 /* External Sieve scripts */
 "An external Sieve script is active" = "Je aktivní externí Sieve skript.";
@@ -512,9 +513,9 @@
 "Let SOGo handle everything" = "Nechat SOGo spravovat vše";
 
 /* Password Recovery */
-"Password recovery mode" = "Password recovery mode";
-"Question" = "Question";
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password recovery" = "Password recovery";
-"Password change" = "Password change";
+"Password recovery mode" = "Režim obnovení hesla";
+"Question" = "Dotaz";
+"Secondary e-mail" = "Sekundární e-mail";
+"Answer" = "Odpověď";
+"Password recovery" = "Obnovení hesla";
+"Password change" = "Změna hesla";
