@@ -377,7 +377,7 @@
 "Show an Alert" = "Rodyti įspėjimą";
 "Send an E-mail" = "Siųsti elektroninį paštą";
 "Email Organizer" = "Pašto organizatorius";
-"Email Attendees" = "Pašto dalyviai";
+"Email Attendees (internal users)" = "Email Attendees (internal users)";
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";

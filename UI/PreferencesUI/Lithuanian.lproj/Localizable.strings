@@ -152,6 +152,7 @@
 "Contacts Names" = "Kontaktų vardai";
 "Duplicate name" = "Pasikartojantis vardas";
 "Calendar categories must have unique names." = "Kalendoriaus kategorijos turi turėti unikalius pavadinimus.";
+"Disable e-mail notifications on CalDAV" = "Disable e-mail notifications on CalDAV";
 
 /* Default Calendar */
 "Default calendar" = "Numatytasis kalendorius";
