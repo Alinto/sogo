@@ -152,6 +152,7 @@
 "Contacts Names" = "Kapcsolatok nevei";
 "Duplicate name" = "Név kettőzése";
 "Calendar categories must have unique names." = "Naptár kategóriáknak egyedi névvel kell rendelkezniük.";
+"Disable e-mail notifications on CalDAV" = "Disable e-mail notifications on CalDAV";
 
 /* Default Calendar */
 "Default calendar" = "Alapértelmezett naptár";
