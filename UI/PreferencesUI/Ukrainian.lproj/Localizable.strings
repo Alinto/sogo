@@ -152,6 +152,7 @@
 "Contacts Names" = "Імена контактів";
 "Duplicate name" = "Дублювати ім'я";
 "Calendar categories must have unique names." = "Імена категорій календаря повинні бути унікальними.";
+"Disable e-mail notifications on CalDAV" = "Disable e-mail notifications on CalDAV";
 
 /* Default Calendar */
 "Default calendar" = "Календар за замовчуванням";
