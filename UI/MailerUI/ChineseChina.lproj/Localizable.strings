@@ -143,6 +143,23 @@
 "This mail is being sent from an unsecure network!" = "这个邮件发自不安全的网络！";
 "Address Book" = "通讯录";
 "Search For" = "搜索";
+"Contains" = "Contains";
+"Does not contains" = "Does not contains";
+"Advanced search" = "Advanced search";
+"Anytime" = "Anytime";
+"Last 7 days" = "Last 7 days";
+"Last 30 days" = "Last 30 days";
+"Last 6 month" = "Last 6 month";
+"Before" = "Before";
+"After" = "After";
+"Between" = "Between";
+"and" = "and";
+"With attachments" = "With attachments";
+"In favorites" = "In favorites";
+"Unseen only" = "Unseen only";
+"Show more" = "Show more";
+"Reset" = "Reset";
+"Message size" = "Message size";
 
 /* Popup "show" */
 "all"     = "全部";
@@ -239,6 +256,7 @@
 "Save As..." = "另存...";
 "Print Preview" = "打印预览";
 "View Message Source" = "查看邮件原文";
+"View raw message" = "View raw message";
 
 /* Message view "more" menu: create an event from message */
 "Convert To Event" = "转换成事件";
@@ -484,9 +502,6 @@
 
 /* Hotkey to write a new message */
 "hotkey_compose" = "w";
-
-/* Hotkey to mark selected message(s) as junk */
-"hotkey_junk" = "j";
 
 /* Hotkey to flag a message */
 "hotkey_flag" = "*";

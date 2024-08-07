@@ -377,7 +377,7 @@
 "Show an Alert" = "表示警告信息";
 "Send an E-mail" = "发送邮件";
 "Email Organizer" = "邮件部门";
-"Email Attendees" = "邮件参加者";
+"Email Attendees (internal users)" = "Email Attendees (internal users)";
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
