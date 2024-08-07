@@ -152,6 +152,7 @@
 "Contacts Names" = "Nomes de Contatos";
 "Duplicate name" = "Nome duplicado";
 "Calendar categories must have unique names." = "Categorias de calendário devem ter nomes exclusivos.";
+"Disable e-mail notifications on CalDAV" = "Disable e-mail notifications on CalDAV";
 
 /* Default Calendar */
 "Default calendar" = "Calendário Padrão";
@@ -205,7 +206,7 @@
 "Insert signature on reply" = "Inserir assinatura na resposta";
 "Insert signature on forward" = "Inserir assinatura ao encaminhar";
 "Show recipients or sender full email in mailboxes" = "Mostrar destinatários ou remetente do email completo nas caixas de correio";
-"Hide attachements for inline images" = "Hide attachements for inline images";
+"Hide attachements for inline images" = "Ocultar anexos de imagens embutidas";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Tamanho de fonte padrão";
@@ -231,11 +232,11 @@
 "Mail Account" = "Conta de Email";
 "New Mail Account" = "Nova conta de e-mail";
 "Server Name" = "Nome do Servidor";
-"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
-"Smtp Auth" = "Smtp Auth";
+"Outgoing Server Name (SMTP)" = "Nome do servidor de saída (SMTP)";
+"Smtp Auth" = "Autenticação SMTP";
 "Port" = "Porta";
 "Encryption" = "Encriptação";
-"Outgoing Encryption" = "Outgoing Encryption";
+"Outgoing Encryption" = "Criptografia de saída";
 "None" = "Nenhum";
 "User Name" = "Nome do Usuário";
 "Full Name" = "Nome Completo";
