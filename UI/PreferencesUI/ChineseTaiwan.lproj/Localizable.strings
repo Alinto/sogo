@@ -152,6 +152,7 @@
 "Contacts Names" = "連絡人姓名";
 "Duplicate name" = "Duplicate name";
 "Calendar categories must have unique names." = "Calendar categories must have unique names.";
+"Disable e-mail notifications on CalDAV" = "Disable e-mail notifications on CalDAV";
 
 /* Default Calendar */
 "Default calendar" = "預設行事曆";

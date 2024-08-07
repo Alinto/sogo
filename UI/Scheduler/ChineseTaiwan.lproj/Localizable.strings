@@ -377,7 +377,7 @@
 "Show an Alert" = "顯示提醒訊息";
 "Send an E-mail" = "寄送電子郵件";
 "Email Organizer" = "寄電子郵件給發起人";
-"Email Attendees" = "寄電子郵件給出席者";
+"Email Attendees (internal users)" = "Email Attendees (internal users)";
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
