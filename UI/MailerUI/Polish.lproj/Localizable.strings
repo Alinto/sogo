@@ -143,6 +143,23 @@
 "This mail is being sent from an unsecure network!" = "Ta wiadomość jest wysyłana z niezabezpieczonej sieci!";
 "Address Book" = "Książka adresowa";
 "Search For" = "Szukaj";
+"Contains" = "Zawiera";
+"Does not contains" = "Nie zawiera";
+"Advanced search" = "Wyszukiwanie zaawansowane";
+"Anytime" = "Kiedykolwiek";
+"Last 7 days" = "Ostatnie 7 dni";
+"Last 30 days" = "Ostatnie 30 dni";
+"Last 6 month" = "Ostatnie 6 miesięcy";
+"Before" = "Przed";
+"After" = "Po";
+"Between" = "Pomiędzy";
+"and" = "a";
+"With attachments" = "Z załącznikami";
+"In favorites" = "W ulubionych";
+"Unseen only" = "Tylko nieczytane";
+"Show more" = "Pokaż więcej";
+"Reset" = "Wyczyść";
+"Message size" = "Rozmiar wiadomości";
 
 /* Popup "show" */
 "all"     = "wszystkie";
@@ -239,6 +256,7 @@
 "Save As..." = "Zapisz jako";
 "Print Preview" = "Podgląd wydruku";
 "View Message Source" = "Pokaż źródło wiadomości";
+"View raw message" = "Pokaż źródło wiadomości";
 
 /* Message view "more" menu: create an event from message */
 "Convert To Event" = "Zamień na zdarzenie";
@@ -484,9 +502,6 @@
 
 /* Hotkey to write a new message */
 "hotkey_compose" = "w";
-
-/* Hotkey to mark selected message(s) as junk */
-"hotkey_junk" = "j";
 
 /* Hotkey to flag a message */
 "hotkey_flag" = "*";
