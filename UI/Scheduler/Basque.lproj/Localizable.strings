@@ -377,7 +377,7 @@
 "Show an Alert" = "Erakutsi alarmak";
 "Send an E-mail" = "Bidali mezua";
 "Email Organizer" = "Mezu-antolatzailea";
-"Email Attendees" = "Mezuen partaideak";
+"Email Attendees (internal users)" = "Email Attendees (internal users)";
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
