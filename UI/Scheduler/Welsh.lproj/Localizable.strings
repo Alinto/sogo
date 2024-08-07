@@ -377,7 +377,7 @@
 "Show an Alert" = "Dangos Rhybudd";
 "Send an E-mail" = "Anfon E-bost";
 "Email Organizer" = "E-bostio'r Trefnydd";
-"Email Attendees" = "E-bostio'r Mynychwyr";
+"Email Attendees (internal users)" = "Email Attendees (internal users)";
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
