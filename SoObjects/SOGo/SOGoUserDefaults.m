@@ -89,7 +89,7 @@ NSString *SOGoPasswordRecoverySecondaryEmail = @"SecondaryEmail";
       [ud setObject: @"text" forKey: @"SOGoMailComposeMessageType"];
     }
 
-  [ud setObject: [NSNumber numberWithUnsignedLongLong: [up getCDefaultsSize]] forKey: @"CDefaultsSize"]; // Add c_defaults field size
+  [ud setObject: [NSNumber numberWithUnsignedLongLong: (unsigned long long)[up getCDefaultsSize]] forKey: @"CDefaultsSize"]; // Add c_defaults field size
   
   return ud;
 }
@@ -634,12 +634,12 @@ NSString *SOGoPasswordRecoverySecondaryEmail = @"SecondaryEmail";
   return [self integerForKey: @"SOGoMailComposeFontSize"];
 }
 
-- (void) setMailDisplayFullEmail: (BOOL *) newValue
+- (void) setMailDisplayFullEmail: (BOOL) newValue
 {
   [self setBool: newValue forKey: @"SOGoMailDisplayFullEmail"];
 }
 
-- (BOOL *) mailDisplayFullEmail;
+- (BOOL) mailDisplayFullEmail;
 {
   return [self boolForKey: @"SOGoMailDisplayFullEmail"];
 }
