@@ -36,7 +36,7 @@
 {
   NSString *mailingMechanism;
   NSString *smtpServer;
-  BOOL *smtpMasterUserEnabled;
+  BOOL smtpMasterUserEnabled;
   NSString *smtpMasterUserUsername;
   NSString *smtpMasterUserPassword;
   NSString *authenticationType;
