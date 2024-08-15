@@ -1732,7 +1732,7 @@ default-character-set=utf8
 ----
 
 MariaDB/MySQL SSL Connection
-^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Add the following settings in the `sogo.conf` file to enable SSL connection 
 between SOGo and MariaDB/MySQL :
@@ -1759,7 +1759,7 @@ operations on the database system.
 
 Requirements:
 
-* MariaDB >= 
+* MariaDB >= 5.5
 * MySQL >= 5.5
 * SOGo >= 3.1.0
 
