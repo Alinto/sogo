@@ -844,6 +844,10 @@
       if (match)
         data[param] = decodeURIComponent(match[1]);
     });
+    if ('html' == Message.$Preferences.defaults.SOGoMailComposeMessageType && data.text && data.text.length > 0) {
+      data.text = data.text.replace(/(\r\n|\n|\r)/g, '<br/>');
+    }
+      
     // Other Recipients
     _.forEach(['cc', 'bcc'], function (param) {
       var re = new RegExp(param + '=([^&]+)');
