@@ -31,8 +31,6 @@
   NSString *fieldName;
 }
 
-- (unsigned long long)getCDefaultsSize;
-
 @end
 
 #endif /* SOGOSQLUSERPROFILE_H */

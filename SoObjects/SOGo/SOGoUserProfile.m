@@ -101,6 +101,7 @@
   return uid;
 }
 
+
 /* subclass methods */
 
 - (BOOL) storeJSONProfileInDB: (NSString *) jsonRepresentation
@@ -115,6 +116,15 @@
   [self subclassResponsibility: _cmd];
 
   return nil;
+}
+
+- (unsigned long long)getCDefaultsSize
+{
+  unsigned long long ret = 0;
+
+  [self subclassResponsibility: _cmd];
+
+  return ret;
 }
 
 /* operation */

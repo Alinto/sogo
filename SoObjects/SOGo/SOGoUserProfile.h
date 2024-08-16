@@ -64,6 +64,8 @@ typedef enum _SOGoUserProfileType {
 - (void) setUID: (NSString *) newUID;
 - (NSString *) uid;
 
+- (unsigned long long)getCDefaultsSize;
+
 /* value access */
 - (void) setValues: (NSDictionary *) theValues;
 - (NSDictionary *) values;
