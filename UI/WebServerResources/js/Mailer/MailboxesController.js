@@ -51,8 +51,6 @@
       });
 
       $rootScope.$on('resetMailAdvancedSearchPanel', function () {
-        vm.service.$virtualPath = false;
-        vm.service.$virtualMode = false;
         vm.reset();
       });
     };
