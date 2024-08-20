@@ -53,8 +53,8 @@
   /**
    * @ngInject
    */
-  sgMailboxListItemController.$inject = ['$scope', '$rootScope', '$element', '$state', '$timeout', '$mdToast', '$mdPanel', '$mdMedia', '$mdSidenav', 'sgConstant', 'Dialog', 'Mailbox', 'encodeUriFilter'];
-  function sgMailboxListItemController($scope, $rootScope, $element, $state, $timeout, $mdToast, $mdPanel, $mdMedia, $mdSidenav, sgConstant, Dialog, Mailbox, encodeUriFilter) {
+  sgMailboxListItemController.$inject = ['$scope', '$rootScope', '$element', '$state', '$timeout', '$mdToast', '$mdPanel', '$mdMedia', '$mdSidenav', 'sgConstant', 'Dialog', 'Mailbox', 'encodeUriFilter', '$window', 'Account'];
+  function sgMailboxListItemController($scope, $rootScope, $element, $state, $timeout, $mdToast, $mdPanel, $mdMedia, $mdSidenav, sgConstant, Dialog, Mailbox, encodeUriFilter, $window, Account) {
     var $ctrl = this;
 
 
@@ -87,13 +87,20 @@
       if (this.editMode || this.mailbox == Mailbox.selectedFolder || this.mailbox.isNoSelect())
         return;
       
-      this.mailbox.setHighlightWords([]);
-      if (Mailbox.$virtualMode) {
-        Mailbox.$virtualMode = false;
-        Mailbox.$virtualPath = false;
-        Mailbox.selectedFolder.$reset({ filter: true });
+      this.mailbox.setHighlightWords([]);  
+
+      if (Mailbox.selectedFolder) {
+        if (Mailbox.$virtualMode) {
+          Mailbox.$virtualMode = false;
+          Mailbox.$virtualPath = false;
+          $rootScope.$broadcast('resetMailAdvancedSearchPanel'); // Reset advanced search panel (broadcast event to MailboxesController)
+          if (Mailbox.selectedFolder.$mailboxes && Mailbox.selectedFolder.$mailboxes.length > 0) {
+            Mailbox.selectedFolder.$reset({ filter: true, unseenCount: Mailbox.selectedFolder.$mailboxes[0].unseenCount });
+          }
+        } else {
+          Mailbox.selectedFolder.$reset({ filter: true, unseenCount: Mailbox.selectedFolder.unseenCount });
+        }
       }
-      $rootScope.$broadcast('resetMailAdvancedSearchPanel'); // Reset advanced search panel (broadcast event to MailboxesController)
 
       this.accountController.selectFolder(this);
       if ($event) {

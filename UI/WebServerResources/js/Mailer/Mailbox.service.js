@@ -1033,11 +1033,17 @@
    */
   Mailbox.prototype.$reset = function(options) {
     var _this = this;
+    var account;
     angular.forEach(this.$shadowData, function(value, key) {
       delete _this[key];
     });
+    account = Object.assign({}, _this.$account)
     angular.extend(this, this.$shadowData);
     this.$shadowData = this.$omit();
+    this.account = account;
+    if (options && options.unseenCount) {
+      this.unseenCount = options.unseenCount;
+    }
     if (options && options.filter) {
       this.$messages = [];
       this.$visibleMessages = [];
