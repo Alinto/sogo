@@ -1742,9 +1742,12 @@ static NSArray *reminderValues = nil;
 - (id <WOActionResults>) saveAction
 {
   id <WOActionResults> results;
+  NSString *requestStr;
   id o, v;
 
-  o = [[[context request] contentAsString] objectFromJSONString];
+  requestStr = [[context request] contentAsString];
+  requestStr = [requestStr stringWithoutHTMLInjection: NO];
+  o = [requestStr objectFromJSONString];
   results = nil;
 
   // Proceed with data sanitization of the "defaults"
