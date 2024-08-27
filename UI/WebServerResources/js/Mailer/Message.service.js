@@ -525,6 +525,8 @@
       markInstance.mark(this.$mailbox.getHighlightWords());
       data = dom.innerHTML;
       dom.remove();
+    } else if (encodeEntities) {
+      data = data.encodeEntities();
     }
 
     return data;
