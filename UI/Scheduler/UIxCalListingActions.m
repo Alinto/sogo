@@ -351,7 +351,7 @@ static NSArray *tasksFields = nil;
       if (daylightOffset)
       {
         // If it is the end date and allday, we need to remove the offset
-        if ([fields[count * 2] isEqualToString: @"endDate"] && [[theRecord objectForKey: @"c_isallday"] boolValue])
+        if ([fields[count * 2] isEqualToString: @"endDate"] && [[theRecord objectForKey: @"c_isallday"] boolValue] && daylightOffset > 0)
           aDate = [aDate dateByAddingYears: 0 months: 0 days: 0 hours: 0
                                   minutes: 0 seconds: -1 * daylightOffset];
         else
