@@ -260,6 +260,9 @@
       config.htmlEmbed = {
         showPreviews: true
       };
+      config.mediaEmbed = {
+        providers: []
+      };
       config.image = {
         resizeUnit: "px",
         insert: {
