@@ -278,6 +278,9 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
   unichar *sanitizedChars, *start, *currentChar;
   BOOL inComment;
 
+  if (rawContent)
+    return;
+
   /**
    * Sanitize style
    *   - remove control characters
@@ -341,10 +344,11 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
             }
         }
     }
-  if (!inComment && currentChar > start)
+  if (!inComment && currentChar > start) {
+    if (*currentChar == '}' && *currentChar++ == '\000') currentChar++; // Add offset
     [sanitizedStyle appendString: [NSString stringWithCharacters: start
                                                length: (currentChar - start)]];
-
+  }
   /**
    * Parse sanitized style
    *   - remove at-rule definitions
@@ -384,8 +388,7 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
                     (*(currentChar-7) == 'p' || *(currentChar-7) == 'P') &&
                     (*(currentChar-8) == 'm' || *(currentChar-8) == 'M') &&
                     (*(currentChar-9) == 'i' || *(currentChar-9) == 'I') &&
-                    *(currentChar-10) == '!')
-                    && !rawContent)
+                    *(currentChar-10) == '!'))
                 {
                   length = (currentChar - start);
                   [declaration appendFormat: @"%@ !important;",
