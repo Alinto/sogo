@@ -157,7 +157,8 @@
                                  sg-email="::viewer.message.from[0].email"
                                  size="40">person</sg-avatar-image>
                 <div>
-                  <span ng-bind-html="::viewer.message.from[0].name"><!-- from --></span>
+                  <span ng-if="viewer.message.from[0].nameHighlighted" ng-bind-html="::viewer.message.from[0].nameHighlighted"><!-- from --></span>
+                  <span ng-if="!viewer.message.from[0].nameHighlighted" ng-bind-html="::viewer.message.from[0].name"><!-- from --></span>
                   <a href="#" class="md-caption"
                      ng-bind="::viewer.message.from[0].email"
                      ng-click="viewer.selectRecipient(viewer.message.from[0], $event)"><!-- from --></a>

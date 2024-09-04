@@ -551,8 +551,8 @@
   Message.prototype.getHighlightFrom = function () {
     var i = 0;
     for (i = 0; i < this.from.length; i++) {
-      this.from[i].full = this.highlightSearchTerms(this.from[i].full, false);
-      this.from[i].name = this.highlightSearchTerms(this.from[i].name, false);
+      this.from[i].fullHighlighted = this.highlightSearchTerms(this.from[i].full, false);
+      this.from[i].nameHighlighted = this.highlightSearchTerms(this.from[i].name, false);
     }
 
     return this.from;
