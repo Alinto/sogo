@@ -205,19 +205,7 @@
         <div class="sg-form-section"
              ng-show="editor.component.start">
           <div layout="row" layout-align="start center">
-            <md-input-container class="md-block md-flex">
-              <label><var:string label:value="Repeat"/></label>
-              <md-select ng-model="editor.component.repeat.frequency" ng-disabled="editor.component.occurrenceId">
-                <md-option ng-value="frequency[0]" ng-repeat="frequency in ::editor.frequencies()" ng-bind-html="frequency[1]"><!-- frequency --></md-option>
-              </md-select>
-            </md-input-container>
-            <md-button type="button" class="sg-icon-button"
-                       label:aria-label="repeat_CUSTOM"
-                       ng-disabled="editor.component.occurrenceId"
-                       ng-show="editor.component.repeat.frequency != 'never'"
-                       ng-click="editor.toggleRecurrenceEditor()">
-              <md-icon ng-class="{'md-rotate-45': editor.showRecurrenceEditor}">add</md-icon>
-            </md-button>
+            <var:component className="UIxRecurrenceListEditor" />
           </div>
           <div ng-show="editor.showRecurrenceEditor" flex-offset="5">
             <var:component className="UIxRecurrenceEditor" />
