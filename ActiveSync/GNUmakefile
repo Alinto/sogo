@@ -34,7 +34,7 @@ ActiveSync_RESOURCE_FILES +=		\
 ADDITIONAL_OBJCFLAGS += -Wno-deprecated-declarations
 ADDITIONAL_INCLUDE_DIRS += -I../SOPE/ -I../SoObjects/
 ADDITIONAL_LIB_DIRS += -L../SOPE/GDLContentStore/obj/ -L../SOPE/NGCards/obj/
-ADDITIONAL_INCLUDE_DIRS += -I/usr/include/libwbxml-1.0/
+ADDITIONAL_INCLUDE_DIRS += $(shell pkg-config --cflags libwbxml2)
 ADDITIONAL_LDFLAGS += -Wl,--no-as-needed -lwbxml2
 
 -include GNUmakefile.preamble
