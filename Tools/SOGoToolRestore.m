@@ -419,6 +419,7 @@
       max = [records count];
       for (count = 0; count < max; count++)
         {
+          version = 0;
           if (count > 0 && count%100 == 0)
             {
               DESTROY(pool);
@@ -428,7 +429,7 @@
           cName = [currentRecord objectForKey: @"c_name"];
           if (![existingRecords objectForKey: cName])
             {
-              NSLog (@"restoring record '%@'", cName);
+              NSLog (@"restoring record '%@' with version %d", cName, version);
               cContent = [currentRecord objectForKey: @"c_content"];
               [gcsFolder writeContent: cContent
                         fromComponent: [[self parsingClassForContent: cContent] parseSingleFromSource: cContent]
