@@ -22,7 +22,7 @@
       this.emailSeparatorKeys = Preferences.defaults.emailSeparatorKeys;
       if(this.preferences.defaults.Notification) {
         if (!this.preferences.defaults.Notification.notificationMessage)
-          this.preferences.defaults.Notification.notificationMessage = l('Notification Message', $window.defaultEmailAddresses);
+          this.preferences.defaults.Notification.notificationMessage = l('Notification Message', $window.defaultEmailAddresses[0]);
         this.preferences.defaults.Notification.notificationTranslated = l('Notification');
       }
       if (Preferences.defaults.SOGoMailAutoMarkAsReadMode == 'delay')

@@ -1243,12 +1243,10 @@ static NSString *sieveScriptName = @"sogo";
           if (v && [v length] > 0)
             {
               notify = @"if header :matches \"subject\" \"*\" {\r\n  set \"subject\" \"${1}\";\r\n}\r\n";
+              notify = [notify stringByAppendingString: @"if header :matches \"From\" \"*<*>\" {\r\n  set \"from\" \"${1} ${2}\";\r\n}\r\n"];
               notify = [notify stringByAppendingFormat: @"set :encodeurl \"body_param\" \"%@\";\r\n", message];
-              notify = [notify stringByAppendingFormat: @"notify :message \"%@: ${subject}\" \"mailto:%@?body=${body_param}\";\r\n", notificationTranslated, v];
+              notify = [notify stringByAppendingFormat: @"notify :message \"%@: '${subject}' from: ${from}\" \"mailto:%@?body=${body_param}\";\r\n", notificationTranslated, v];
 
-              // if (alwaysSend)
-              //   [script insertString: notify  atIndex: 0];
-              // else
               [script appendString: notify];
             }
         }
