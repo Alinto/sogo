@@ -722,12 +722,14 @@ static NSArray *infoKeys = nil;
 
               if ([[mime encoding] isEqualToString: @"base64"] && contentId) {
                 if ([text rangeOfString: contentId].location != NSNotFound) {
-                  lText = [text stringByReplacingOccurrencesOfString: contentId 
+                  if (nil != [[mime body] bytes]) {
+                    lText = [text stringByReplacingOccurrencesOfString: contentId 
                     withString: [NSString stringWithFormat: @"data:%@;base64,%@", 
                     [[mime contentType] stringValue], 
                     [NSString stringWithUTF8String: [[mime body] bytes]]]];
-                  [self setText: lText];
-                  [draft deleteAttachmentWithName: [draftFileAttachement objectForKey:@"filename"]];
+                    [self setText: lText];
+                    [draft deleteAttachmentWithName: [draftFileAttachement objectForKey:@"filename"]];
+                  }
                 } else {
                   // This is an attachment with no CID in message body
                   if ([draft inReplyTo]) {
