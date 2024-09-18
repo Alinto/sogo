@@ -33,6 +33,7 @@
 
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoSession.h>
+#import <SOGo/SOGoOpenIdSession.h>
 
 #import "SOGoTool.h"
 
@@ -59,6 +60,73 @@
      "The expire-sessions action should be configured as a cronjob.\n");
 }
 
+- (BOOL) expireUserOpenIdSessionOlderThan: (int) nbMinutes
+{
+    BOOL rc;
+  EOAdaptorChannel *channel;
+  GCSChannelManager *cm;
+  NSArray *attrs;
+  NSDictionary *qresult;
+  NSException *ex;
+  NSString *sql, *sessionsFolderURL, *sessionID;
+  NSURL *tableURL;
+  NSUserDefaults *ud;
+
+  unsigned int now, oldest;
+
+  rc = YES;
+  ud = [NSUserDefaults standardUserDefaults];
+  now = [[NSCalendarDate calendarDate] timeIntervalSince1970];
+  oldest = now - (nbMinutes * 60);
+  sessionID = nil;
+
+  sessionsFolderURL = [ud stringForKey: @"OCSOpenIdURL"];
+  if (!sessionsFolderURL)
+  {
+    if (verbose)
+      NSLog(@"Couldn't read OCSOpenIdURL");
+    return rc = NO;
+  }
+
+  tableURL = [[NSURL alloc] initWithString: sessionsFolderURL];
+  cm = [GCSChannelManager defaultChannelManager];
+  channel = [cm acquireOpenChannelForURL: tableURL];
+  if (!channel)
+  {
+    /* FIXME: nice error msg */
+    NSLog(@"Can't aquire channel");
+    return rc = NO;
+  }
+
+  sql = [NSString stringWithFormat: @"SELECT c_user_session FROM %@ WHERE c_access_token_expires_in <= %d",
+                  [tableURL gcsTableName], oldest];
+  ex = [channel evaluateExpressionX: sql]; 
+  if (ex)
+  {
+    NSLog(@"%@", [ex reason]);
+    [ex raise];
+    return rc = NO;
+  }
+
+  attrs = [channel describeResults: NO];
+  while ((qresult = [channel fetchAttributes: attrs withZone: NULL]))
+    {
+      sessionID = [qresult objectForKey: @"c_user_session"];
+      if (sessionID)
+        {
+          if (verbose)
+            NSLog(@"Removing session %@", sessionID);
+          [SOGoOpenIdSession deleteValueForSessionKey: sessionID];
+        }
+    }
+  [cm releaseChannel: channel  immediately: YES];
+
+  if (verbose && sessionID == nil)
+    NSLog(@"No session to remove on openId");
+
+  return rc;
+}
+
 - (BOOL) expireUserSessionOlderThan: (int) nbMinutes
 {
   BOOL rc;
@@ -67,7 +135,7 @@
   NSArray *attrs;
   NSDictionary *qresult;
   NSException *ex;
-  NSString *sql, *sessionsFolderURL, *sessionID;
+  NSString *sql, *sessionsFolderURL, *sessionID, *authType;
   NSURL *tableURL;
   NSUserDefaults *ud;
 
@@ -122,6 +190,13 @@
 
   if (verbose && sessionID == nil)
     NSLog(@"No session to remove");
+
+  //doing openid session if needed
+  authType = [ud stringForKey:@"SOGoAuthenticationType"];
+  if([authType isEqualToString: @"openid"])
+  {
+    [self expireUserOpenIdSessionOlderThan: nbMinutes];
+  }
 
   return rc;
 }
