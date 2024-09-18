@@ -288,16 +288,16 @@ static BOOL debugLeaks;
 
   e = [urlStrings objectEnumerator];
   while (ok && (tmp = [e nextObject]))
+  {
+    value = [defaults stringForKey: tmp];
+    if (value)
+      [self _checkTableWithCM: cm tableURL: value andType: tmp];
+    else
     {
-      value = [defaults stringForKey: tmp];
-      if (value)
-	  [self _checkTableWithCM: cm tableURL: value andType: tmp];
-      else
-	{
-	  [self errorWithFormat: @"No value specified for '%@'", tmp];
-	  ok = NO;
-	}
+      [self errorWithFormat: @"No value specified for '%@'", tmp];
+      ok = NO;
     }
+  }
 
   if (combined)
     {
@@ -322,9 +322,23 @@ static BOOL debugLeaks;
       
       // Create the email alarms table, if required
       if ([defaults enableEMailAlarms])
-	{
-	  [[fm alarmsFolder] createFolderIfNotExists];
-	}
+      {
+        [[fm alarmsFolder] createFolderIfNotExists];
+      }
+
+      //Create mandatory openId table, if used
+      if([[defaults authenticationType] isEqualToString: @"openid"])
+      {
+        value = [defaults stringForKey: @"OCSOpenIdURL"];
+        if (value)
+          [[fm openIdFolder] createFolderIfNotExists];
+        else
+        {
+          [self errorWithFormat: @"No value specified for 'OCSOpenIdURL' for auth mode %@", [defaults authenticationType]];
+          ok = NO;
+        }
+        
+      }
     }
 
   return ok;

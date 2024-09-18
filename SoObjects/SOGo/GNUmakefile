@@ -69,6 +69,7 @@ SOGo_HEADER_FILES = \
 	SOGoAuthenticator.h		\
 	SOGoSession.h			\
 	SOGoCASSession.h		\
+	SOGoOpenIdSession.h		\
 	SOGoDAVAuthenticator.h		\
 	SOGoProxyAuthenticator.h	\
 	SOGoStaticAuthenticator.h	\
@@ -161,6 +162,7 @@ SOGo_OBJC_FILES = \
 	\
 	SOGoSession.m			\
 	SOGoCASSession.m		\
+	SOGoOpenIdSession.m   \
 	SOGoDAVAuthenticator.m		\
 	SOGoProxyAuthenticator.m	\
 	SOGoStaticAuthenticator.m	\

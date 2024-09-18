@@ -42,6 +42,9 @@
 - (NSString *)createAdminFolderWithName:(NSString *)tableName;
 - (NSDictionary *)adminAttributeTypes;
 
+- (NSString *)createOpenIdFolderWithName:(NSString *)tableName;
+- (NSDictionary *)openIdAttributeTypes;
+
 - (NSString *) updateCPathInFolderInfo:(NSString *)tableName
 withCPath2:(NSString *)c_path2;
 

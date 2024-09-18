@@ -28,13 +28,14 @@ libGDLContentStore_HEADER_FILES +=		\
 	GCSAdminFolder.h			\
 	GCSContext.h				\
 	GCSFieldInfo.h				\
-	GCSFolder.h				\
+	GCSFolder.h				    \
 	GCSFolderManager.h			\
 	GCSFolderType.h				\
 	GCSChannelManager.h			\
+	GCSOpenIdFolder.h           \
 	GCSSessionsFolder.h			\
 	GCSSpecialQueries.h			\
-	GCSStringFormatter.h			\
+	GCSStringFormatter.h		\
 
 libGDLContentStore_OBJC_FILES +=		\
 	NSURL+GCS.m				\
@@ -45,13 +46,14 @@ libGDLContentStore_OBJC_FILES +=		\
 	GCSAdminFolder.m			\
 	GCSContext.m				\
 	GCSFieldInfo.m				\
-	GCSFolder.m				\
+	GCSFolder.m				    \
 	GCSFolderManager.m			\
 	GCSFolderType.m				\
 	GCSChannelManager.m			\
+	GCSOpenIdFolder.m           \
 	GCSSessionsFolder.m			\
 	GCSSpecialQueries.m			\
-	GCSStringFormatter.m			\
+	GCSStringFormatter.m	    \
 
 # framework support
 

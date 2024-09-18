@@ -35,6 +35,7 @@
 
 #import "SOGoCache.h"
 #import "SOGoCASSession.h"
+#import "SOGoOpenIdSession.h"
 #import "SOGoPermissions.h"
 #import "SOGoSession.h"
 #import "SOGoSystemDefaults.h"
@@ -133,7 +134,8 @@
      additionalInfo: (NSMutableDictionary **)_additionalInfo
            useCache: (BOOL) _useCache
 {
-  SOGoCASSession *session;
+  SOGoCASSession *casSession;
+  SOGoOpenIdSession * openIdSession;
   SOGoSystemDefaults *sd;
   NSString *authenticationType;
   BOOL rc;
@@ -143,12 +145,20 @@
   authenticationType = [sd authenticationType];
   if ([authenticationType isEqualToString: @"cas"])
     {
-      session = [SOGoCASSession CASSessionWithIdentifier: _pwd fromProxy: NO];
-      if (session)
-        rc = [[session login] isEqualToString: _login];
+      casSession = [SOGoCASSession CASSessionWithIdentifier: _pwd fromProxy: NO];
+      if (casSession)
+        rc = [[casSession login] isEqualToString: _login];
       else
         rc = NO;
     }
+  else if ([authenticationType isEqualToString: @"openid"])
+  {
+    openIdSession = [SOGoOpenIdSession OpenIdSessionWithToken: _pwd];
+    if (openIdSession)
+      rc = [[openIdSession login: _login] isEqualToString: _login];
+    else
+      rc = NO;
+  }
 #if defined(SAML2_CONFIG)
   else if ([authenticationType isEqualToString: @"saml2"])
     {
@@ -310,6 +320,15 @@
           if ([password length] || renew)
             [session updateCache];
         }
+      else if ([authType isEqualToString: @"openid"])
+      {
+        SOGoOpenIdSession* session;
+        NSString* currentToken;
+        //If the token has been refresh during the request, we need to use the new access_token
+        //as the one from the cookie is no more valid
+        session = [SOGoOpenIdSession OpenIdSessionWithToken: password];
+        password = [session getCurrentToken];
+      }
 #if defined(SAML2_CONFIG)
       else if ([authType isEqualToString: @"saml2"])
         {
@@ -434,6 +453,44 @@
   [authCookie setPath: [NSString stringWithFormat: @"/%@/", appName]];
   
   return authCookie;
+}
+
+- (NSArray *) getCookiesIfNeeded: (WOContext *)_ctx
+{
+  NSArray *listCookies = nil;
+  SOGoSystemDefaults *sd;
+  NSString *authType;
+
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  authType = [sd authenticationType];
+  if([authType isEqualToString:@"openid"] && [sd openIdEnableRefreshToken])
+  {
+    NSString *currentPassword, *newPassword, *username;
+    SOGoOpenIdSession *openIdSession;
+
+    WOCookie* newCookie;
+    currentPassword = [self passwordInContext: _ctx];
+    newPassword = [self imapPasswordInContext: _ctx forURL: nil forceRenew: NO];
+    if(currentPassword && newPassword && ![newPassword isEqualToString: currentPassword])
+    {
+      openIdSession = [SOGoOpenIdSession OpenIdSessionWithToken: newPassword];
+      if (openIdSession)
+        username = [openIdSession login: @""]; //Force to refresh the name
+      else
+        username = [[self userInContext: _ctx] login];
+      newCookie = [self cookieWithUsername: username
+                               andPassword: newPassword
+                                 inContext: _ctx];
+      listCookies = [[NSArray alloc] initWithObjects: newCookie, nil];
+      [listCookies autorelease];
+    }
+    if(listCookies && [listCookies isKindOfClass:[NSArray class]] && [listCookies count] > 0)
+      return listCookies;
+    else
+      return nil;
+  }
+  else
+    return nil;
 }
 
 @end /* SOGoWebAuthenticator */
