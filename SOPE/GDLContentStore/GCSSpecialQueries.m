@@ -95,6 +95,21 @@
   return nil;
 }
 
+- (NSString *) createOpenIdFolderWithName: (NSString *) tableName
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
+- (NSDictionary *) openIdAttributeTypes
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
+
 - (NSString *) createFolderTableWithName: (NSString *) tableName
 {
   [self subclassResponsibility: _cmd];
@@ -190,6 +205,38 @@
       types = [NSMutableDictionary new];
       [types setObject: @"varchar" forKey: @"c_key"];
       [types setObject: @"varchar" forKey: @"c_content"];
+    }
+
+  return types;
+}
+
+- (NSString *) createOpenIdFolderWithName: (NSString *) tableName
+{
+  static NSString *sqlFolderFormat
+    = (@"CREATE TABLE %@ (" 
+       @" c_user_session VARCHAR(4096) NOT NULL,"
+       @" c_old_session VARCHAR(4096) NULL,"
+       @" c_session_started INT4 NOT NULL,"
+       @" c_refresh_token VARCHAR(4096) NULL,"
+       @" c_access_token_expires_in INT4 NOT NULL,"
+       @" c_refresh_token_expires_in INT4 NULL)");
+
+  return [NSString stringWithFormat: sqlFolderFormat, tableName];
+}
+
+- (NSDictionary *) openIdAttributeTypes
+{
+  static NSMutableDictionary *types = nil;
+
+  if (!types)
+    {
+      types = [NSMutableDictionary new];
+      [types setObject: @"varchar" forKey: @"c_user_session"];
+      [types setObject: @"varchar" forKey: @"c_old_session"];
+      [types setObject: @"int" forKey: @"c_session_started"];
+      [types setObject: @"varchar" forKey: @"c_refresh_token"];
+      [types setObject: @"int" forKey: @"c_access_token_expires_in"];
+      [types setObject: @"int" forKey: @"c_refresh_token_expires_in"];
     }
 
   return types;
@@ -324,6 +371,38 @@
   return types;
 }
 
+- (NSString *) createOpenIdFolderWithName: (NSString *) tableName
+{
+  static NSString *sqlFolderFormat
+    = (@"CREATE TABLE %@ (" 
+       @" c_user_session VARCHAR(4096) NOT NULL,"
+       @" c_old_session VARCHAR(4096) NULL,"
+       @" c_session_started INT4 NOT NULL,"
+       @" c_refresh_token VARCHAR(4096) NULL,"
+       @" c_access_token_expires_in INT4 NOT NULL,"
+       @" c_refresh_token_expires_in INT4 NULL)");
+
+  return [NSString stringWithFormat: sqlFolderFormat, tableName];
+}
+
+- (NSDictionary *) openIdAttributeTypes
+{
+  static NSMutableDictionary *types = nil;
+
+  if (!types)
+    {
+      types = [NSMutableDictionary new];
+      [types setObject: @"varchar" forKey: @"c_user_session"];
+      [types setObject: @"varchar" forKey: @"c_old_session"];
+      [types setObject: @"int" forKey: @"c_session_started"];
+      [types setObject: @"varchar" forKey: @"c_refresh_token"];
+      [types setObject: @"int" forKey: @"c_access_token_expires_in"];
+      [types setObject: @"int" forKey: @"c_refresh_token_expires_in"];
+    }
+
+  return types;
+}
+
 - (NSString *) createFolderTableWithName: (NSString *) tableName
 {
   static NSString *sqlFolderFormat
@@ -448,6 +527,38 @@
       types = [NSMutableDictionary new];
       [types setObject: @"varchar2" forKey: @"c_key"];
       [types setObject: @"varchar2" forKey: @"c_content"];
+    }
+
+  return types;
+}
+
+- (NSString *) createOpenIdFolderWithName: (NSString *) tableName
+{
+  static NSString *sqlFolderFormat
+    = (@"CREATE TABLE %@ (" 
+       @" c_user_session VARCHAR2(4096) NOT NULL,"
+       @" c_old_session VARCHAR2(4096) NULL,"
+       @" c_session_started INTEGER NOT NULL,"
+       @" c_refresh_token VARCHAR2(4096) NULL,"
+       @" c_access_token_expires_in INTEGER NOT NULL,"
+       @" c_refresh_token_expires_in INTEGER NULL)");
+
+  return [NSString stringWithFormat: sqlFolderFormat, tableName];
+}
+
+- (NSDictionary *) openIdAttributeTypes
+{
+  static NSMutableDictionary *types = nil;
+
+  if (!types)
+    {
+      types = [NSMutableDictionary new];
+      [types setObject: @"varchar2" forKey: @"c_user_session"];
+      [types setObject: @"varchar2" forKey: @"c_old_session"];
+      [types setObject: @"integer" forKey: @"c_session_started"];
+      [types setObject: @"varchar2" forKey: @"c_refresh_token"];
+      [types setObject: @"integer" forKey: @"c_access_token_expires_in"];
+      [types setObject: @"integer" forKey: @"c_refresh_token_expires_in"];
     }
 
   return types;

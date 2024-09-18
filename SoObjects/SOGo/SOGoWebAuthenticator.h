@@ -56,6 +56,8 @@
                       andPassword: (NSString *) password
                         inContext: (WOContext *) context;
 
+- (NSArray *)getCookiesIfNeeded: (WOContext *)_ctx;
+
 @end
 
 #endif /* _SOGOWEBAUTHENTICATOR_H_ */

@@ -17,6 +17,7 @@ SOGo_LIBRARIES_DEPEND_UPON += \
         -Wl,--no-as-needed \
 	-L../../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)/ \
 	-lmemcached		\
+	-lcurl \
 	-lGDLAccess		\
 	-lNGObjWeb		\
 	-lNGCards		\

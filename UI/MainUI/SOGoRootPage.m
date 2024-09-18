@@ -40,6 +40,7 @@
 #import <SOGo/SOGoBuild.h>
 #import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoCASSession.h>
+#import <SOGo/SOGoOpenIdSession.h>
 #if defined(SAML2_CONFIG)
 #import <SOGo/SOGoSAML2Session.h>
 #endif /* SAML2_ENABLE */
@@ -441,42 +442,42 @@ static const NSString *kJwtKey = @"jwt";
   if ([login isEqualToString: @"anonymous"])
     login = nil;
   if (!login)
+  {
+    rq = [context request];
+    ticket = [rq formValueForKey: @"ticket"];
+    if ([ticket length])
     {
-      rq = [context request];
-      ticket = [rq formValueForKey: @"ticket"];
-      if ([ticket length])
-        {
-          casSession = [SOGoCASSession CASSessionWithTicket: ticket
-                                                  fromProxy: NO];
-          login = [casSession login];
-          if ([login length])
-            {
-              auth = [[WOApplication application]
-                       authenticatorInContext: context];
-              casCookie = [auth cookieWithUsername: login
-                                       andPassword: [casSession identifier]
-                                         inContext: context];
-              [casSession updateCache];
-              newLocation = [rq cookieValueForKey: @"cas-location"];
-              /* login callback, we expire the "cas-location" cookie, created
-                 below */
-              casLocationCookie = [self _authLocationCookie: YES
-                                                   withName: @"cas-location"];
-            }
-        }
-      else
-        {
-          /* anonymous and no ticket, possibly a logout request from CAS
-           * See: https://wiki.jasig.org/display/CASUM/Single+Sign+Out
-           */
-          logoutRequest = [rq formValueForKey: @"logoutRequest"];
-          if ([logoutRequest length])
-            {
-              [SOGoCASSession handleLogoutRequest: logoutRequest];
-              return [self responseWithStatus: 200];
-            }
-        }
+      casSession = [SOGoCASSession CASSessionWithTicket: ticket
+                                              fromProxy: NO];
+      login = [casSession login];
+      if ([login length])
+      {
+        auth = [[WOApplication application]
+                  authenticatorInContext: context];
+        casCookie = [auth cookieWithUsername: login
+                                  andPassword: [casSession identifier]
+                                    inContext: context];
+        [casSession updateCache];
+        newLocation = [rq cookieValueForKey: @"cas-location"];
+        /* login callback, we expire the "cas-location" cookie, created
+            below */
+        casLocationCookie = [self _authLocationCookie: YES
+                                              withName: @"cas-location"];
+      }
     }
+    else
+      {
+        /* anonymous and no ticket, possibly a logout request from CAS
+          * See: https://wiki.jasig.org/display/CASUM/Single+Sign+Out
+          */
+        logoutRequest = [rq formValueForKey: @"logoutRequest"];
+        if ([logoutRequest length])
+          {
+            [SOGoCASSession handleLogoutRequest: logoutRequest];
+            return [self responseWithStatus: 200];
+          }
+      }
+  }
   else
     ticket = nil;
 
@@ -508,6 +509,115 @@ static const NSString *kJwtKey = @"jwt";
   if (casLocationCookie)
     [response addCookie: casLocationCookie];
 
+  return response;
+}
+
+- (id <WOActionResults>) _openidDefaultAction
+{
+  WOResponse *response;
+  NSString *login, *redirectLocation, *serverUrl;
+  NSString *sessionState, *code, *refreshTokenValue;
+  NSURL *newLocation, *oldLocation;
+  NSDictionary *formValues;
+  SOGoUser *loggedInUser;
+  WOCookie *openIdCookie, *openIdCookieLocation, *openIdRefreshCookie;
+  WORequest *rq;
+  SOGoWebAuthenticator *auth;
+  SOGoOpenIdSession *openIdSession;
+  id value;
+
+  openIdCookie = nil;
+  openIdCookieLocation = nil;
+  openIdRefreshCookie = nil;
+  newLocation = nil;
+
+  openIdSession = [SOGoOpenIdSession OpenIdSession];
+
+  if(![openIdSession sessionIsOk])
+  {
+    return [NSException exceptionWithHTTPStatus: 502 /* Bad OpenId Configuration */
+                                       reason: [NSString stringWithFormat: @"OpenId server not found or has unexpected behavior, contact your admin."]];
+  }
+
+  login = [[context activeUser] login];
+  rq = [context request];
+  if ([login isEqualToString: @"anonymous"])
+    login = nil;
+  if (!login)
+  {
+    //You get here if you nerver been logged in or if you token is expired
+    serverUrl = [[context serverURL] absoluteString];
+    redirectLocation = [NSString stringWithFormat: @"%@/%@/", serverUrl, [rq applicationName]];
+    NSLog(@"ServerUrl %@ and redirect: %@", serverUrl, redirectLocation);
+    if((formValues = [rq formValues]) && [formValues objectForKey: @"code"])
+    {
+      //You get here if this is the callback of openid after you logged in
+
+      //NOT MANDATORY
+      // value = [formValues objectForKey: @"session_state"];
+      // if ([value isKindOfClass: [NSArray class]])
+      //   sessionState = [value lastObject];
+      // else
+      //   sessionState = value;
+      value = [formValues objectForKey: @"code"];
+      if ([value isKindOfClass: [NSArray class]])
+        code = [value lastObject];
+      else
+        code = value;
+      [openIdSession fetchToken: code redirect: redirectLocation];
+      login = [openIdSession login: @""];
+      if ([login length])
+      {
+        auth = [[WOApplication application] authenticatorInContext: context];
+        openIdCookie = [auth cookieWithUsername: login
+                                  andPassword: [openIdSession getToken]
+                                    inContext: context];
+      }
+      newLocation = [rq cookieValueForKey: @"openid-location"];
+      openIdCookieLocation = [self _authLocationCookie: YES withName: @"openid-location"];
+    }
+    // else if((formValues = [rq formValues]) && [formValues objectForKey: @"action"])
+    // {
+    //   value = [formValues objectForKey: @"action"];
+    //   if ([value isKindOfClass: [NSArray class]])
+    //     code = [value lastObject];
+    //   else
+    //     code = value;
+    //   if([code isEqualToString:@"redirect"])
+    //   {
+    //     //this action onlye serve to make a redirection to openId server after a GET request
+    //     newLocation = [openIdSession loginUrl: redirectLocation];
+    //   }
+    //}
+    else
+    {
+      // //You get here the first time you access sogo, it redirect to last location
+      // if([[rq method] isEqualToString: @"POST"])
+      //   //To avoid making a redirection to openid server after a post request, we first redirect to a get method
+      //   newLocation = [NSString stringWithFormat: @"%@?action=redirect", redirectLocation];
+      // else
+        newLocation = [openIdSession loginUrl: redirectLocation];
+      openIdCookieLocation = [self _authLocationCookie: NO withName: @"openid-location"];
+    }
+  }
+  else
+  {
+    if (!newLocation)
+    {
+      oldLocation = [[self clientObject] baseURLInContext: context];
+      newLocation = [NSString stringWithFormat: @"%@%@", oldLocation, [login stringByEscapingURL]];
+    }
+
+    loggedInUser = [SOGoUser userWithLogin: login];
+    [self _checkAutoReloadWebCalendars: loggedInUser];
+  }
+
+  response = [self redirectToLocation: newLocation];
+  if (openIdCookie)
+    [response addCookie: openIdCookie];
+  if (openIdCookieLocation)
+    [response addCookie: openIdCookieLocation];
+  //[response setStatus: 303];
   return response;
 }
 
@@ -578,16 +688,13 @@ static const NSString *kJwtKey = @"jwt";
                                               [[SOGoUser getEncryptedUsernameIfNeeded:login request: [context request]] stringByEscapingURL]]];
     }
   else
-    {
-      oldLocation = [[context request] uri];
-      if ([context clientObject]
-          && ![oldLocation hasSuffix: @"/"]
-          && ![oldLocation hasSuffix: @"/view"])
-        response = [self redirectToLocation:
-                           [NSString stringWithFormat: @"%@/", oldLocation]];
-      else
-        response = self;
-    }
+  {
+    oldLocation = [[context request] uri];
+    if ([context clientObject] && ![oldLocation hasSuffix: @"/"] && ![oldLocation hasSuffix: @"/view"])
+      response = [self redirectToLocation: [NSString stringWithFormat: @"%@/", oldLocation]];
+    else
+      response = self;
+  }
 
   return response;
 }
@@ -601,6 +708,8 @@ static const NSString *kJwtKey = @"jwt";
                          authenticationType];
   if ([authenticationType isEqualToString: @"cas"])
     result = [self _casDefaultAction];
+  else if ([authenticationType isEqualToString: @"openid"])
+    result = [self _openidDefaultAction];
 #if defined(SAML2_CONFIG)
   else if ([authenticationType isEqualToString: @"saml2"])
     result = [self _saml2DefaultAction];

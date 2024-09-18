@@ -507,6 +507,11 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return [self boolForKey: @"SOGoEASDebugEnabled"];
 }
 
+- (BOOL) openIdDebugEnabled
+{
+  return [self boolForKey: @"SOGoOpenIDDebugEnabled"];
+}
+
 - (BOOL) tnefDecoderDebugEnabled
 {
   return [self boolForKey: @"SOGoTnefDecoderDebugEnabled"];
@@ -577,6 +582,14 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
   return [[self stringForKey: @"SOGoAuthenticationType"] lowercaseString];
 }
 
+- (BOOL) isSsoUsed
+{
+  NSString* authType;
+  authType = [self authenticationType];
+
+  return ([authType isEqualToString: @"cas"] || [authType isEqualToString: @"saml2"] || [authType isEqualToString: @"openid"]);
+}
+
 - (NSString *) davAuthenticationType
 {
   return [[self stringForKey: @"SOGoDAVAuthenticationType"] lowercaseString];
@@ -590,6 +603,61 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
 - (BOOL) CASLogoutEnabled
 {
   return [self boolForKey: @"SOGoCASLogoutEnabled"];
+}
+
+/* OpenId Support */
+- (NSString *) openIdConfigUrl
+{
+  return [self stringForKey: @"SOGoOpenIdConfigUrl"];
+}
+
+- (NSString *) openIdScope
+{
+  return [self stringForKey: @"SOGoOpenIdScope"];
+}
+
+- (NSString *) openIdClient
+{
+  return [self stringForKey: @"SOGoOpenIdClient"];
+}
+
+- (NSString *) openIdClientSecret
+{
+  return [self stringForKey: @"SOGoOpenIdClientSecret"];
+}
+
+- (NSString *) openIdEmailParam
+{
+  NSString *emailParam;
+  emailParam = [self stringForKey: @"SOGoOpenIdEmailParam"];
+  if(!emailParam)
+    emailParam = @"email";
+  return emailParam;
+}
+
+- (BOOL) openIdLogoutEnabled
+{
+  return [self boolForKey: @"SOGoOpenIdLogoutEnabled"];
+}
+
+- (int) openIdTokenCheckInterval
+{
+
+  int v;
+
+  v = [self integerForKey: @"SOGoOpenIdTokenCheckInterval"];
+
+  if (!v)
+    v = 0;
+  if(v<0)
+    v = 0;
+
+  return v;
+}
+
+- (BOOL) openIdEnableRefreshToken
+{
+  return [self boolForKey: @"SOGoOpenIdEnableRefreshToken"];
 }
 
 /* SAML2 support */

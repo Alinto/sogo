@@ -165,6 +165,16 @@ CREATE TABLE sogo_admin (
 	PRIMARY KEY (c_key)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
+CREATE TABLE sogo_opend_id (
+	c_user_session              varchar(4096) NOT NULL,
+	c_old_session              varchar(4096) DEFAULT '',
+	c_session_started           int(11)       NOT NULL,
+	c_refresh_token             varchar(4096) DEFAULT '',
+	c_access_token_expires_in    int(11)       NOT NULL,
+	c_refresh_token_expires_in  int(11)       DEFAULT NULL,
+	PRIMARY KEY (c_user_session)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+
 CREATE TABLE sogo_user_profile (
 	c_uid      varchar(255) NOT NULL,
 	c_defaults longtext,
