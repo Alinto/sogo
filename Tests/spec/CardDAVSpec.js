@@ -106,7 +106,7 @@ describe('CardDAV extensions', function() {
     expect(response[0].status)
       .withContext(`HTTP status code of MKCOL`)
       .toEqual(405)
-  }, config.timeout || 10000)
+  })
 
   // CARDDAV:addressbook-query Report
   // https://datatracker.ietf.org/doc/html/rfc6352#section-8.6
@@ -170,7 +170,7 @@ describe('CardDAV extensions', function() {
     expect(utility.componentsAreEqual(response[0].props.addressData, cards[name]))
       .withContext(`Returned vCard matches ${name}`)
       .toBe(true)
-  }, config.timeout || 10000)
+  })
 
   // CARDDAV:addressbook-query Report
   // https://datatracker.ietf.org/doc/html/rfc6352#section-8.6
@@ -236,7 +236,7 @@ describe('CardDAV extensions', function() {
     expect(emails)
       .withContext(`Returned vCard has email of ${config.attendee1_username} (${config.attendee1})`)
       .toContain(config.attendee1)
-  }, config.timeout || 10000) // increase timeout for this long test
+  }) // increase timeout for this long test
 
   // CARDDAV:addressbook-multiget Report
   // https://datatracker.ietf.org/doc/html/rfc6352#section-8.7
@@ -270,5 +270,5 @@ describe('CardDAV extensions', function() {
         .withContext(`Cards returned in addressbook-multiget`)
         .toBe(true)
     }
-  }, config.timeout || 10000)
+  })
 })

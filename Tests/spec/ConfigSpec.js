@@ -38,5 +38,5 @@ describe('config tests', function() {
         .toBeUndefined()
       userHash[user] = true
     }
-  }, config.timeout || 10000)
+  })
 })

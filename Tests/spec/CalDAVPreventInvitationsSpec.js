@@ -136,7 +136,7 @@ describe('PreventInvitations', function() {
       .toBe(0)
     await _addAttendee()
     await _verifyEvent()
-  }, config.timeout || 10000)
+  })
 
   it(`Enable, refuse the invitation`, async function() {
     // Second, enable PreventInviation and refuse it
@@ -148,7 +148,7 @@ describe('PreventInvitations', function() {
       .toBe(1)
     await _addAttendee(409)
     await _verifyEvent(404)
-  }, config.timeout || 10000)
+  })
 
   it(`Enable, update whitelist, accept the invitation`, async function() {
     // First, add the Organiser to the Attendee's whitelist
@@ -165,5 +165,5 @@ describe('PreventInvitations', function() {
     // Second, try again to invite, it should work
     await _addAttendee()
     await _verifyEvent()
-  }, config.timeout || 10000)
+  })
 })

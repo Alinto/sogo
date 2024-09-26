@@ -214,33 +214,33 @@ END:VCARD`
 
   it("'view' only", async function() {
     await _testRights({ v: true })
-  }, config.timeout || 10000)
+  })
 
   it("'edit' only", async function() {
     await _testRights({ e: true })
-  }, config.timeout || 10000)
+  })
 
   it("'create' only", async function() {
     await _testRights({ c: true })
-  }, config.timeout || 10000)
+  })
 
   it("'delete' only", async function() {
     await _testRights({ d: true })
-  }, config.timeout || 10000)
+  })
 
   it("'create', 'delete'", async function() {
     await _testRights({ c: true, d: true })
-  }, config.timeout || 10000)
+  })
 
   it("'view', 'delete'", async function() {
     await _testRights({ v: true, d: true })
-  }, config.timeout || 10000)
+  })
 
   it("'edit', 'create'", async function() {
     await _testRights({ c: true, e: true })
-  }, config.timeout || 10000)
+  })
 
   it("'edit', 'delete'", async function() {
     await _testRights({ d: true, e: true })
-  }, config.timeout || 10000)
+  })
 })

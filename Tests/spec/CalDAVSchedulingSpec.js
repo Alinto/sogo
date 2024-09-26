@@ -167,7 +167,7 @@ describe('CalDAV Scheduling', function() {
     expect(veventAttendee.getFirstProperty('uid').getFirstValue())
       .withContext(`UID in organizer's calendar and attendees's calendar are identical`)
       .toBe(vevent.getFirstProperty('uid').getFirstValue())
-  }, config.timeout || 10000)
+  })
 
   it('Remove attendee after event creation', async function() {
     const icsName = 'test-remove-attendee.ics'
@@ -217,7 +217,7 @@ describe('CalDAV Scheduling', function() {
 
     // 6. verify that the attendee doesn't have the event anymore
     await _getEvent(webdavAttendee1, attendee1Calendar, icsName, 404)
-  }, config.timeout || 10000)
+  })
 
   it('try to overbook a resource', async function() {
     const icsName = 'test-no-overbook.ics'
@@ -264,7 +264,7 @@ describe('CalDAV Scheduling', function() {
 
     // put the event - should trigger a 409
     await _putEvent(webdav, userCalendar, obIcsName, vcalendar, 409)
-  }, config.timeout || 10000)
+  })
 
   it('try to overbook a resource - multiplebookings=0', async function() {
     const icsName = 'test-can-overbook.ics'
@@ -311,7 +311,7 @@ describe('CalDAV Scheduling', function() {
 
     // put the event - should be fine since we can overbook this one
     await _putEvent(webdav, userCalendar, obIcsName, vcalendar)
-  }, config.timeout || 10000)
+  })
 
   it('Resource booking overlap detection - bug #1837', async function() {
     // There used to be some problems with recurring events and resources booking
@@ -412,7 +412,7 @@ describe('CalDAV Scheduling', function() {
     vevent.addProperty(utility.createDateTimeProperty('dtend', nenddate))
     vevent.updatePropertyWithValue('uid', 'recurring - nooverlap')
     await _putEvent(webdav, userCalendar, overlapRecurringIcsName, vcalendarNoOverlap, 409)
-  }, config.timeout || 10000)
+  })
 
   it('RRULE exception invitation dance', async function() {
     // This workflow is based on what lightning 1.2.1 does
@@ -545,7 +545,7 @@ describe('CalDAV Scheduling', function() {
     vcalendarOrganizer.removeSubcomponent(veventException)
     await _putEvent(webdav, userCalendar, icsName, vcalendarOrganizer, 204)
     await _getEvent(webdavAttendee1, attendee1Calendar, icsName, 404)
-  }, config.timeout || 10000)
+  })
 
   it ('RRULE invitation delete exdate dance', async function() {
     // Workflow:
@@ -662,7 +662,7 @@ describe('CalDAV Scheduling', function() {
     expect(attendee.getParameter('partstat'))
       .withContext('Partstat of attendee is declined for the exception')
       .toBe('DECLINED')
-  }, config.timeout || 10000)
+  })
 
   it('iCal organizer is attendee - bug #1839', async function() {
     const icsName = 'test-organizer-is-attendee.ics'
@@ -713,7 +713,7 @@ describe('CalDAV Scheduling', function() {
         .withContext(`Organizer is not an attendee`)
         .not.toBe(user.email)
     }
-  }, config.timeout || 10000)
+  })
 
   it('PUT 2 events with the same UID - bug #1853', async function () {
     const icsName = 'test-same-uid.ics'
@@ -735,7 +735,7 @@ describe('CalDAV Scheduling', function() {
 
     // PUT the same event with a new filename - should trigger a 409
     await _putEvent(webdav, userCalendar, conflictIcsName, vcalendar, 409)
-  }, config.timeout || 10000)
+  })
 
   it('invitation delegation', async function () {
     const icsName = 'test-delegation.ics'
@@ -937,5 +937,5 @@ describe('CalDAV Scheduling', function() {
 
     vcalendarInvitationAttendee = await _getEvent(webdavAttendee1, attendee1Calendar, icsName, 404)
     vcalendarInvitationDelegate = await _getEvent(webdavAttendee1Delegate, attendee1DelegateCalendar, icsName, 404)
-  }, config.timeout || 10000) // increase timeout for this long test
+  }) // increase timeout for this long test
 })

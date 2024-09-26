@@ -24,7 +24,7 @@ describe('read and set calendar properties', function() {
     expect(response[0].status)
       .withContext(`HTTP status code of MKCALENDAR`)
       .toEqual(405)
-  }, config.timeout || 10000)
+  })
 
   // CalDAVPropertiesTest
 
@@ -40,7 +40,7 @@ describe('read and set calendar properties', function() {
       expect(Object.keys(prop.scheduleCalendarTransp).includes('opaque'))
       .withContext('schedule-calendar-transp is "opaque" on new')
       .toBeTrue()
-  }, config.timeout || 10000)
+  })
 
   it("proppatch", async function() {
     let newValueNode
@@ -69,7 +69,7 @@ describe('read and set calendar properties', function() {
     expect(results[0].status)
     .withContext(`Setting transparency to ${newValueNode} is successful`)
     .toBe(207)
-  }, config.timeout || 10000)
+  })
 
   it("calendar-query", async function() {
     const filename = `new.ics`
@@ -129,5 +129,5 @@ END:VCALENDAR`
     expect(utility.componentsAreEqual(response[0].props.calendarData, event))
       .withContext(`Returned vCalendar matches ${filename}`)
       .toBe(true)
-  }, config.timeout || 10000)
+  })
 })

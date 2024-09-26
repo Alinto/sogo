@@ -135,7 +135,7 @@ describe('Apple iCal', function() {
         .withContext(`DAV header includes class ${davClass}`)
         .toBeTrue()
     }
-  }, config.timeout || 10000)
+  })
 
   it(`calendar-proxy as used from iCal`, async function() {
     let membership, perm, users, proxyFor
@@ -179,7 +179,7 @@ describe('Apple iCal', function() {
         expect(proxyFor).toContain(`/SOGo/dav/${owner}/`)
       }
     }
-  }, config.timeout || 10000)
+  })
 
   it('calendar-proxy as used from SOGo', async function() {
     const personalResource = `/SOGo/dav/${config.username}/Calendar/personal/`
@@ -233,5 +233,5 @@ describe('Apple iCal', function() {
       .toBe(0)
 
     await webdav_su.deleteObject(otherResource)
-  }, config.timeout || 10000) // increase timeout for this long test
+  }) // increase timeout for this long test
 })

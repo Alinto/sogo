@@ -15,21 +15,21 @@ describe('public access', function() {
     expect(status)
       .withContext('/SOGo/so/public must not be accessible')
       .toBe(404)
-  }, config.timeout || 10000)
+  })
 
   it("access to /SOGo/public", async function() {
     const [{ status }] = await webdav_anon.options('/SOGo/public')
     expect(status)
       .withContext('/SOGo/public must not be accessible')
       .toBe(404)
-  }, config.timeout || 10000)
+  })
 
   it("access to non-public resource", async function() {
     const [{ status }] = await webdav_anon.options(`/SOGo/dav/${config.username}`)
     expect(status)
       .withContext('DAV non-public resources should request authentication')
       .toBe(401)
-  }, config.timeout || 10000)
+  })
 
   it("access to public resource", async function() {
     const [{ status }] = await webdav_anon.options('/SOGo/dav/public')
@@ -39,5 +39,5 @@ describe('public access', function() {
     expect(status)
       .withContext('DAV public resources must be accessible')
       .toBe(200)
-  }, config.timeout || 10000)
+  })
 })

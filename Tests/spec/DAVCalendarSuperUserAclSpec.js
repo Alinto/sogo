@@ -115,6 +115,6 @@ END:VCALENDAR`
     // 4. Delete
     const response = await webdav_su.deleteObject(resource)
     expect(response.status).toBe(204)
-  }, config.timeout || 10000)
+  })
 
 })

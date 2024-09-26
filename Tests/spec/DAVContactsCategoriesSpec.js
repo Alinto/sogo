@@ -68,5 +68,5 @@ describe('contacts categories', function() {
       .toContain('Toto')
     expect(results)
       .toContain('Cuicui')
-  }, config.timeout || 10000)
+  })
 })
