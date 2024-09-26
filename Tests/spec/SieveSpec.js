@@ -6,6 +6,10 @@ import ManageSieve from '../lib/ManageSieve'
 
 let prefs, webdav, utility, manageSieve, user
 
+beforeAll(function () {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = config.timeout || 10000;
+});
+
 describe('Sieve', function() {
 
   async function _getSogoSieveScript() {

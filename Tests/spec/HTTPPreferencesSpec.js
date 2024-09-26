@@ -3,6 +3,10 @@ import Preferences from '../lib/Preferences'
 
 const prefs = new Preferences(config.username, config.password)
 
+beforeAll(function () {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = config.timeout || 10000;
+});
+
 describe('preferences', function() {
 
   // preferencesTest

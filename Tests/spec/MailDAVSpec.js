@@ -152,6 +152,10 @@ let msg3Size = 720
 let webdav, utility
 let user, resource, mailboxesList
 
+beforeAll(function () {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = config.timeout || 10000;
+});
+
 // DAVMailCollectionTest
 
 describe('MailDAV', function() {

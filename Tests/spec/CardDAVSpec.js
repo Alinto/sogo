@@ -70,6 +70,10 @@ X-AIM:pseudo aim
 END:VCARD`
 }
 
+beforeAll(function () {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = config.timeout || 10000;
+});
+
 describe('CardDAV extensions', function() {
   const webdav = new WebDAV(config.username, config.password)
   const webdav_su = new WebDAV(config.superuser, config.superuser_password)
@@ -232,7 +236,7 @@ describe('CardDAV extensions', function() {
     expect(emails)
       .withContext(`Returned vCard has email of ${config.attendee1_username} (${config.attendee1})`)
       .toContain(config.attendee1)
-  }, 10000) // increase timeout for this long test
+  }) // increase timeout for this long test
 
   // CARDDAV:addressbook-multiget Report
   // https://datatracker.ietf.org/doc/html/rfc6352#section-8.7

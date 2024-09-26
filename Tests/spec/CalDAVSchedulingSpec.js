@@ -3,6 +3,10 @@ import WebDAV from '../lib/WebDAV'
 import TestUtility from '../lib/utilities'
 import ICAL from 'ical.js'
 
+beforeAll(function () {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = config.timeout || 10000;
+});
+
 describe('CalDAV Scheduling', function() {
   const webdav = new WebDAV(config.username, config.password)
   const webdav_su = new WebDAV(config.superuser, config.superuser_password)
@@ -933,5 +937,5 @@ describe('CalDAV Scheduling', function() {
 
     vcalendarInvitationAttendee = await _getEvent(webdavAttendee1, attendee1Calendar, icsName, 404)
     vcalendarInvitationDelegate = await _getEvent(webdavAttendee1Delegate, attendee1DelegateCalendar, icsName, 404)
-  }, 10000) // increase timeout for this long test
+  }) // increase timeout for this long test
 })

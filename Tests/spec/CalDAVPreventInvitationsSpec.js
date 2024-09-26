@@ -13,6 +13,10 @@ let utility, user, attendee1, attendee1Delegate
 let userCalendar, attendee1Calendar, attendee1DelegateCalendar
 let icsName, icsList, vcalendar
 
+beforeAll(function () {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = config.timeout || 10000;
+});
+
 describe('PreventInvitations', function() {
 
   const _getEvent = async function(client, calendarName, filename, expectedCode = 200) {

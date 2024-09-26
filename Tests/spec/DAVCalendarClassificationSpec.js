@@ -1,6 +1,10 @@
 import config from '../lib/config'
 import { default as WebDAV, DAVInverse } from '../lib/WebDAV'
 
+beforeAll(function () {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = config.timeout || 10000;
+});
+
 describe('calendar classification', function() {
   const webdav = new WebDAV(config.username, config.password)
 
@@ -35,7 +39,7 @@ describe('calendar classification', function() {
       expect(status)
           .withContext('Setting an invalid classification')
           .toBe(403)
-    })
+  })
 
   it('setting a valid classification', async function() {
     for (let component of ['events', 'tasks']) {
