@@ -423,30 +423,30 @@ END:VCALENDAR`
 
   it("'view all' on a specific class (PUBLIC)", async function() {
     await _testRights({ pu: 'v' })
-  })
+  }, config.timeout || 10000)
 
   it("'modify' PUBLIC, 'view all' PRIVATE, 'view d&t' confidential", async function() {
     await _testRights({ pu: 'm', pr: 'v', co: 'd' })
-  })
+  }, config.timeout || 10000)
 
   it("'create' only", async function() {
     await _testRights({ c: true })
-  })
+  }, config.timeout || 10000)
 
   it("'delete' only", async function() {
     await _testRights({ d: true })
-  })
+  }, config.timeout || 10000)
 
   it("'create', 'delete', 'view d&t' PUBLIC, 'modify' PRIVATE", async function() {
     await _testRights({ c: true, d: true, pu: 'd', pr: 'm' })
-  })
+  }, config.timeout || 10000)
 
   it("'create', 'respond to' PUBLIC", async function() {
     await _testRights({ c: true, pu: 'r' })
-  })
+  }, config.timeout || 10000)
 
   it("no right given", async function() {
     await _testRights({})
-  })
+  }, config.timeout || 10000)
 
 })

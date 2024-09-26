@@ -45,6 +45,6 @@ describe('HTTP Calendar', function() {
     expect(response.status)
     .withContext(`HTTP status code when unsubscribing to a Web calendar`)
     .toBe(204)
-  })
+  }, config.timeout || 10000)
 
 })

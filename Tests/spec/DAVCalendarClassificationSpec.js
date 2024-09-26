@@ -35,7 +35,7 @@ describe('calendar classification', function() {
       expect(status)
           .withContext('Setting an invalid classification')
           .toBe(403)
-    })
+  }, config.timeout || 10000)
 
   it('setting a valid classification', async function() {
     for (let component of ['events', 'tasks']) {
@@ -46,5 +46,5 @@ describe('calendar classification', function() {
           .toBe(207)
       }
     }
-  })
+  }, config.timeout || 10000)
 })

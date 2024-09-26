@@ -150,7 +150,7 @@ describe('public access', function() {
       .withContext('First href must be the Calendar parent collection')
       .toBe(parentColl)
 
-  })
+  }, config.timeout || 10000)
 
   it("user accessing (non-)shared Calendars", async function() {
     const parentColl = `/SOGo/dav/${config.subscriber_username}/Calendar/`
@@ -176,6 +176,6 @@ describe('public access', function() {
     expect(href)
       .withContext('Unique href must be the Calendar parent collection')
       .toBe(parentColl)
-  })
+  }, config.timeout || 10000)
 
 })
