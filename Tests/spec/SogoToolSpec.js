@@ -5,6 +5,10 @@ const os = require('os')
 const path = require('path')
 const { execSync } = require('child_process')
 
+beforeAll(function () {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = config.timeout || 10000;
+});
+
 describe('sogo-tool tests', function() {
   let tmpdir, isRoot
 

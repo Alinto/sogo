@@ -3,6 +3,10 @@ import WebDAV from '../lib/WebDAV'
 
 let webdav, resource
 
+beforeAll(function () {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = config.timeout || 10000;
+});
+
 describe('HTTP Calendar', function() {
 
   beforeAll(async function() {

@@ -1,6 +1,10 @@
 import config from '../lib/config'
 import WebDAV from '../lib/WebDAV'
 
+beforeAll(function () {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = config.timeout || 10000;
+});
+
 describe('public access', function() {
   const webdav_anon = new WebDAV()
 

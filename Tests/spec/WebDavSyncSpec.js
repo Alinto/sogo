@@ -3,6 +3,10 @@ import WebDAV from '../lib/WebDAV'
 import { DAVNamespace, DAVNamespaceShorthandMap } from 'tsdav'
 import convert from 'xml-js'
 
+beforeAll(function () {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = config.timeout || 10000;
+});
+
 describe('webdav sync', function() {
   const webdav = new WebDAV(config.username, config.password)
   const webdav_su = new WebDAV(config.superuser, config.superuser_password)

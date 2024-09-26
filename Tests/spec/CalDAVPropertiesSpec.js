@@ -2,6 +2,10 @@ import config from '../lib/config'
 import WebDAV from '../lib/WebDAV'
 import TestUtility from '../lib/utilities'
 
+beforeAll(function () {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = config.timeout || 10000;
+});
+
 describe('read and set calendar properties', function() {
   const webdav = new WebDAV(config.username, config.password)
   const utility = new TestUtility(webdav)

@@ -3,6 +3,10 @@ import WebDAV from '../lib/WebDAV'
 import TestUtility from '../lib/utilities'
 import ICAL from 'ical.js'
 
+beforeAll(function () {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = config.timeout || 10000;
+});
+
 describe('CalDAV Scheduling', function() {
   const webdav = new WebDAV(config.username, config.password)
   const webdav_su = new WebDAV(config.superuser, config.superuser_password)

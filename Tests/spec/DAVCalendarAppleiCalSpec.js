@@ -10,6 +10,10 @@ import TestUtility from '../lib/utilities'
  * additional calendars.
  */
 
+beforeAll(function () {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = config.timeout || 10000;
+});
+
 describe('Apple iCal', function() {
   const webdav = new WebDAV(config.username, config.password)
   const webdav_su = new WebDAV(config.superuser, config.superuser_password)

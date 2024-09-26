@@ -1,5 +1,9 @@
 import config from '../lib/config'
 
+beforeAll(function () {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = config.timeout || 10000;
+});
+
 describe('config tests', function() {
 
   it('required configuration parameters', async function() {
