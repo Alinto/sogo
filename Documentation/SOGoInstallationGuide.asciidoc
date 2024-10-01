@@ -806,6 +806,16 @@ Default value is `YES`, or enabled.
 authentication and global address books. Multiple sources can be
 specified as an array of dictionaries.
 
+|S |SOGoForbidUnknownDomainsAuth
+|Boolean. If set to `YES`, prevent user that try to connect with an unknown domain.
+The known domains are set in parameter `SOGoDomainAllowed` and/or the domains listed in a <<multi-domains-configuration, Multi-domains Configuration>>. Default value is `NO`.
+
+Obiously, if your users can connect without specifying a domain, let this parameter to `NO`.
+
+|S |SOGoDomainAllowed
+|Parameter used to define which domains SOGo should allowed during a connection request. This parameter is an array of strings.
+
+
 |S |SOGoPasswordRecoveryEnabled
 |Boolean enable password recovery with secret question or secondary e-mail. Default value is `NO`.
 
@@ -2823,6 +2833,8 @@ like this:
     );
 }
 ----
+
+[[multi-domains-configuration]]
 
 Multi-domains Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~

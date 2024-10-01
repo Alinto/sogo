@@ -607,10 +607,48 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
         {
           *_domain = [username substringFromIndex: r.location+1];
 
-          if (![[[SOGoSystemDefaults sharedSystemDefaults] domainIds] containsObject: *_domain])
+          if (![[sd domainIds] containsObject: *_domain])
             *_domain = nil;
         }
     }
+  
+  // If the domains is unknwon we reject the auth
+  if([sd forbidUnknownDomainsAuth])
+  {
+    NSArray *domainsAllowed, *domainsKnown;
+    NSString *userDomain;
+    NSRange  r;
+    BOOL allowed = NO;
+    if(!*_domain)
+    {
+      r = [username rangeOfString: @"@"];
+      if(r.location != NSNotFound)
+        userDomain = [username substringFromIndex: r.location+1];
+      else
+        userDomain = nil;
+    }
+    else
+      userDomain = *_domain;
+
+    if(!userDomain)
+    {
+      [self errorWithFormat: @"User attempt to login without domain"];
+      return allowed;
+    }
+
+
+    if((domainsAllowed = [sd domainsAllowed]) && [domainsAllowed containsObject: userDomain])
+      allowed = YES;
+    if((domainsKnown = [sd domainIds]) && [domainsKnown containsObject: userDomain])
+      allowed = YES;
+
+    if([domainsKnown length] == 0 && [domainsAllowed length] == 0)
+      [self errorWithFormat: @"SOGoForbidUnknownDomainsAuth is set but sogo don't know any domains"];
+    else if(!allowed)
+      [self errorWithFormat: @"User domain is unknown or not allowed: %@", userDomain];
+    
+    return allowed;
+  }
 
   // We check the fail count per user in memcache (per server). If the
   // fail count reaches X in Y minutes, we deny immediately the

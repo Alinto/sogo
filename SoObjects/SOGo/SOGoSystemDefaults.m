@@ -258,12 +258,23 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
 
 - (NSArray *) domainIds
 {
-  return [[self dictionaryForKey: @"domains"] allKeys];
+  NSDictionary *domains = [self dictionaryForKey: @"domains"];
+  return [domains allKeys];
 }
 
 - (BOOL) enableDomainBasedUID
 {
   return [self boolForKey: @"SOGoEnableDomainBasedUID"];
+}
+
+- (BOOL) forbidUnknownDomainsAuth
+{
+  return [self boolForKey: @"SOGoForbidUnknownDomainsAuth"];
+}
+
+- (NSArray *) domainsAllowed
+{
+  return [NSMutableArray arrayWithArray: [self stringArrayForKey: @"SOGoDomainAllowed"]];
 }
 
 - (NSArray *) loginDomains

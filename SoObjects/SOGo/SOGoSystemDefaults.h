@@ -36,6 +36,8 @@ static const NSString *kDisableSharingCalendar = @"Calendar";
 + (SOGoSystemDefaults *) sharedSystemDefaults;
 
 - (NSArray *) domainIds;
+- (BOOL) forbidUnknownDomainsAuth;
+- (NSArray *) domainsAllowed;
 - (BOOL) enableDomainBasedUID;
 - (NSArray *) loginDomains;
 - (NSArray *) visibleDomainsForDomain: (NSString *) domain;
