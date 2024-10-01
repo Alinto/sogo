@@ -73,6 +73,11 @@ ifeq ($(DIST_CODENAME), noble)
 MFA_CONFIG=--enable-mfa
 endif
 
+# All other cases
+ifeq ($(MFA_CONFIG),)
+MFA_CONFIG=--enable-mfa
+endif
+
 include /etc/GNUstep/GNUstep.conf
 include /usr/share/GNUstep/Makefiles/common.make
 
