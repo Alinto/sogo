@@ -1,11 +1,11 @@
-"Inviting the following persons is prohibited:" = "Bu kişileri davet etmek engellenmiş:";
-"Personal Calendar" = "Kişisel Takvim";
+"Inviting the following persons is prohibited:" = "Bu kişilerin davet edilmesi engellenmiş:";
+"Personal Calendar" = "Kişisel takvim";
 vevent_class0 = "(Herkese açık etkinlik)";
 vevent_class1 = "(Kişisel etkinlik)";
 vevent_class2 = "(Gizli etkinlik)";
 
 vtodo_class0 = "(Herkese açık görev)";
-vtodo_class1 = "(Özel görev)";
+vtodo_class1 = "(Kişisel görev)";
 vtodo_class2 = "(Gizli görev)";
 
 /* Receipts */
@@ -15,9 +15,9 @@ vtodo_class2 = "(Gizli görev)";
 "The task \"%{Summary}\" was created" = "\"%{Summary}\" görevi oluşturuldu";
 "The task \"%{Summary}\" was deleted" = "\"%{Summary}\" görevi silindi";
 "The task \"%{Summary}\" was updated" = "\"%{Summary}\" görevi güncellendi";
-"The following attendees(s) were notified" = "Şu katılımcı(lar) bilgilendirildi";
+"The following attendees(s) were notified" = "Şu katılımcılar bilgilendirildi";
 "The following attendees(s) were added" = "Şu katılımcılar eklendi";
-"The following attendees(s) were removed" = "Şu katılımcı(lar) çıkarıldı";
+"The following attendees(s) were removed" = "Şu katılımcılar çıkarıldı";
 
 /* IMIP messages */
 "calendar_label" = "Takvim";
@@ -25,7 +25,7 @@ vtodo_class2 = "(Gizli görev)";
 "endDate_label" = "Bitiş";
 "time_label" = "Saat";
 "to_label" = "alıcı";
-"due_label" = "Kapanış Tarihi";
+"due_label" = "Bitiş tarihi";
 "location_label" = "Konum";
 "summary_label" = "Özet";
 "comment_label" = "Açıklama";
@@ -33,39 +33,39 @@ vtodo_class2 = "(Gizli görev)";
 "attendee_label" = "Katılımcı";
 
 /* Invitation */
-"Event Invitation: \"%{Summary}\"" = "Etkinlik Daveti: \"%{Summary}\"";
+"Event Invitation: \"%{Summary}\"" = "Etkinlik daveti: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(%{SentBy} tarafından gönderildi) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}sizi %{Summary} etkinliğine davet etti.\n\nBaşlangıç: %{StartDate}\nBitiş: %{EndDate}\nAçıklama: %{Description}";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} sizi %{Summary} etkinliğine davet etti.\n\nBaşlangıç Tarihi: %{StartDate} saat %{StartTime}\nBitiş Tarihi: %{EndDate} saat %{EndTime}\nAçıklama: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}sizi %{Summary} etkinliğine davet etti.\n\nBaşlangıç Tarihi: %{StartDate}\nBitiş Tarihi: %{EndDate}\nAçıklama: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}sizi %{Summary} etkinliğine davet etti.\n\nBaşlangıç Tarihi: %{StartDate} saat %{StartTime}\nBitiş Tarihi: %{EndDate} saat %{EndTime}\nAçıklama: %{Description}";
 
 /* Deletion */
-"Event Cancelled: \"%{Summary}\"" = "Etkinlik İptal Edildi: \"%{Summary}\"";
+"Event Cancelled: \"%{Summary}\"" = "Etkinlik iptal edildi: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText} şu etkiliği iptal etti: %{Summary}.\n\nBaşlangıç: %{StartDate}\nBitiş: %{EndDate}\nAçıklama: %{Description}";
+= "%{Organizer} %{SentByText}şu etkiliği iptal etti: %{Summary}.\n\nBaşlangıç Tarihi: %{StartDate}\nBitiş Tarihi: %{EndDate}\nAçıklama: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText} %{Summary} etkinliğini iptal etti.\n\nBaşlangıç Tarihi: %{StartDate} saat %{StartTime}\nBitiş Tarihi: %{EndDate} saat %{EndTime}\nAçıklama: %{Description}";
+= "%{Organizer} %{SentByText}şu etkinliği iptal etti: %{Summary}.\n\nBaşlangıç Tarihi: %{StartDate} saat %{StartTime}\nBitiş Tarihi: %{EndDate} saat %{EndTime}\nAçıklama: %{Description}";
 
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
-= "%{OldStartDate} tarihindeki \"%{Summary}\" çalışması değişti";
+= "%{OldStartDate} tarihindeki \"%{Summary}\" randevusu değişti";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
-= " %{OldStartDate} tarihli ve %{OldStartTime} başlangıç saatli \"%{Summary}\" çalışması değiştirildi";
+= " %{OldStartDate} tarihinde %{OldStartTime} başlangıç saatindeki \"%{Summary}\" randevusu değiştirildi";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
-= "\"%{Summary}\" buluşmasının şu özellikleri değişti:";
+= "\"%{Summary}\" randevusunun şu özellikleri değişti:";
 "Please accept or decline those changes."
-= "Lütfen şu değişikleri onaylayın veya reddedin.";
+= "Lütfen şu değişikleri kabul edin veya reddedin.";
 
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Davet kabul edildi: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Davet reddedildi: \"%{Summary}\"";
-"Delegated invitation: \"%{Summary}\"" = "Vekalet edilen davet: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Temsilci atanan davet: \"%{Summary}\"";
 "Not yet decided on invitation: \"%{Summary}\"" = "Davet hakkında henüz karar verilmedi: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}etkinlik davetinizi kabul etti.";
 "%{Attendee} %{SentByText}has declined your event invitation."
 = "%{Attendee} %{SentByText}davetinizi reddetti.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
-= "%{Attendee} %{SentByText} tarafından %{Delegate} davetine vekil olarak atandı.";
+= "%{Attendee} %{SentByText}tarafından %{Delegate} davetine temsilci olarak atandı.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}henüz etkinlik davetinizle ilgili kararını vermedi.";
 
@@ -74,9 +74,9 @@ vtodo_class2 = "(Gizli görev)";
 
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Kaynağa ulaşılamıyor: \"%{Cn} %{SystemEmail}\"";
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "\"%{Cn} %{SystemEmail}\" kaynağı için maksimum eş-zamanlı kayıt adedine (%{NumberOfSimultaneousBookings}) ulaşıldı. Çakışan  \"%{EventTitle}\" etkinlik, %{StartDate} tarihinde başlıyor.";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "\"%{Cn} %{SystemEmail}\" kaynağı için en fazla eşzamanlı kayıt sayısına (%{NumberOfSimultaneousBookings}) ulaşıldı. Çakışan  \"%{EventTitle}\" etkinlik, %{StartDate} tarihinde başlıyor.";
 
 /* Participation role */
-"Your participation is required to this event" = "Bu etkinliğe katılımınız gereklidir";
-"Your participation is optional to this event" = "Bu etkinliğe katılımınız isteğe bağlıdır";
-"Your participation is not required to this event" = "Bu etkinliğe katılımınız gerekli değildir";
+"Your participation is required to this event" = "Bu etkinliğe katılmanız zorunlu";
+"Your participation is optional to this event" = "Bu etkinliğe katılmanız isteğe bağlı";
+"Your participation is not required to this event" = "Bu etkinliğe katılmanız zorunlu değil";

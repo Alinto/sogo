@@ -3,81 +3,81 @@
 /* toolbars */
 "Save" = "Kaydet";
 "Close" = "Kapat";
-"Edit User Rights" = "Kullanıcı Yetkilerini Düzenle";
-"Home" = "Ana Sayfa";
+"Edit User Rights" = "Kullanıcı izinlerini düzenle";
+"Home" = "Giriş";
 "Calendar" = "Takvim";
-"Address Book"  = "Adres Defteri";
+"Address Book"  = "Adres defteri";
 "Mail" = "E-posta";
-"Preferences" = "Tercihler";
+"Preferences" = "Ayarlar";
 "Administration" = "Yönetim";
 "Disconnect" = "Bağlantıyı kes";
-"Toggle Menu" = "Menüde Geçiş Yap";
-"Right Administration" = "Yetki Yönetimi";
-"Log Console (dev.)" = "Günlük Konsolu (gelişt.)";
+"Toggle Menu" = "Menüyü aç/kapat";
+"Right Administration" = "İzin yönetimi";
+"Log Console (dev.)" = "Günlük konsolu (geliştirici)";
 "User" = "Kullanıcı";
-"Vacation message is enabled" = "Tatil mesajı etkinleştirildi";
+"Vacation message is enabled" = "Tatil iletisi açıldı";
 "Help" = "Yardım";
-"noJavascriptError" = "SOGo'yu çalıştırmak için Javascript gereklidir. Lütfen internet gezgininizde Javascript özelliğinin bulunup, etkinleştirilmiş olduğundan emin olun. ";
-"noJavascriptRetry" = "Yeniden Deneyin";
+"noJavascriptError" = "SOGo çalıştırmak için JavaScript gereklidir. Lütfen İnternet tarayıcınızda JavaScript özelliğinin bulunduğundan ve etkinleştirilmiş olduğundan emin olun. ";
+"noJavascriptRetry" = "Yeniden dene";
 "Owner" = "Sahip";
-"Publish the Free/Busy information" = "Serbest/Meşgul bilgisini yayımla";
+"Publish the Free/Busy information" = "Serbest/Meşgul bilgisini yayınla";
 "Add..." = "Ekle...";
 "Remove" = "Kaldır";
-"Subscribe User" = "Kullanıcıya Abone Ol";
+"Subscribe User" = "Kullanıcıya abone ol";
 "Any Authenticated User" = "Kimliği doğrulanan her kullanıcı";
-"Public Access" = "Herkese Açık Erişim";
+"Public Access" = "Herkese açık erişim";
 "Any user not listed above" = "Aşağıdaki listede bulanmayan her kullanıcı";
-"Anybody accessing this resource from the public area" = "Bu kaynağa genel alandan ulaşan herkes";
-"Sorry, the user rights can not be configured for that object." = "Üzgünüz, bu öge için kullanıcı yetkileri ayarlanamaz.";
+"Anybody accessing this resource from the public area" = "Bu kaynağa herkese açık alandan ulaşan herkes";
+"Sorry, the user rights can not be configured for that object." = "Ne yazık ki, bu öge için kullanıcı izinleri ayarlanamaz.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
-     = "Bu ağda hesabı bulunan her kullanıcı \"%{0}\" e-posta klasörünüze erişebilecek. Hepsine güvenebileceğinize emin misiniz?";
+     = "Bu ağda hesabı bulunan her kullanıcı \"%{0}\" e-posta klasörünüze erişebilecek. Hepsine güvenebileceğinizden emin misiniz?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
-     = "Bu ağda hesabı olan her kullanıcı \"%{0}\" takviminize erişebilecek. Hepsine güvenebileceğinize emin misiniz?";
+     = "Bu ağda hesabı olan her kullanıcı \"%{0}\" takviminize erişebilecek. Hepsine güvenebileceğinizden emin misiniz?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Potansiyel olarak internetteki herkes, bu ağ üzerinde bir hesapları olmasa bile \"%{0}\" takviminize erişebilecek. Bu bilgi genel internet erişimi için uygun mu?";
+     = "Potansiyel olarak İnternet üzerindeki herkes, bu ağ üzerinde bir hesapları olmasa bile \"%{0}\" takviminize erişebilecek. Bu bilgi herkese açık İnternet erişimine uygun mu?";
 "Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
-     = "Bu ağda hesabı olan her kullanıcı \"%{0}\" adres defterinize erişebilecek. Hepsine güvenebileceğinize emin misiniz?";
+     = "Bu ağda hesabı olan her kullanıcı \"%{0}\" adres defterinize erişebilecek. Hepsine güvenebileceğinizden emin misiniz?";
 "Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Potansiyel olarak internetteki herkes, bu ağ üzerinde bir hesapları olmasa bile \"%{0}\" adres defterinize erişebilecek. Bu bilgi genel internet erişimi için uygun mu?";
-"Give Access" = "Erişim İzni Ver";
-"Keep Private" = "Özel Tut";
+     = "Potansiyel olarak İnternet üzerindeki herkes, bu ağ üzerinde bir hesapları olmasa bile \"%{0}\" adres defterinize erişebilecek. Bu bilgi herkese açık İnternet erişimine uygun mu?";
+"Give Access" = "Erişim izni ver";
+"Keep Private" = "Özel tut";
 "Expand" = "Genişlet";
 "Reduce" = "Azalt";
 
 /* tooltip */
-"Refresh" = "Refresh";
+"Refresh" = "Yenile";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
-        = "Bu klasöre üye olunamıyor!";
+        = "Bu klasöre abone olunamadı!";
 "You cannot subscribe to a folder that you own!"
-        = "Kendi klasörünüze üye olamazsınız!";
+        = "Kendi klasörünüze abone olamazsınız!";
 "Unable to unsubscribe from that folder!"
-        = "Bu klasörden üyelik kaldırılamıyor!";
+        = "Bu klasörün aboneli kaldırılamadı!";
 "You cannot unsubscribe from a folder that you own!"
-        = "Kendinize ait bir klasörden üyelik kaldıramazsınız!";
-"Unable to rename that folder!" = "Bu klasörün adı değiştirilemiyor!";
+        = "Kendi klasörünüzün aboneliğinden ayrılamazsınız!";
+"Unable to rename that folder!" = "Bu klasörün adı değiştirilemedi!";
 "You have already subscribed to that folder!"
-        = "Bu klasöre zaten üyesiniz!";
+        = "Bu klasöre zaten abonesiniz!";
 "The user rights cannot be edited for this object!"
-        = "Bu ögenin kullanıcı yetkileri düzenlenemez!";
-"A folder by that name already exists." = "Bu isimde başka bir klasör var.";
+        = "Bu ögenin kullanıcı izinleri düzenlenemedi!";
+"A folder by that name already exists." = "Aynı adlı başka bir klasör var.";
 "You cannot create a list in a shared address book."
         = "Paylaşılan bir adres defterinde liste oluşturamazsınız!";
 "Warning" = "Uyarı";
-"Can't contact server" = "Sunucuya erişirken bir hata oluştu. Lütfen, daha sonra tekrar deneyin.";
+"Can't contact server" = "Sunucuya erişilirken bir sorun çıktı. Lütfen bir süre sonra yeniden deneyin.";
 "You are not allowed to access this module or this system. Please contact your system administrator."
-= "Bu modül veya sisteme erişim yetkiniz yok. Lütfen, sistem yöneticisiyle iletişime geçin.";
+= "Bu modül veya sisteme erişme izniniz yok. Lütfen sistem yöneticisiyle görüşün.";
 "You don't have the required privileges to perform the operation."
-= "Bu işlemi gerçekleştirmek için gereken yetkilere sahip değilsiniz.";
-"noEmailForDelegation" = "Davetinize vekil atayacağınız kişinin adresini belirtmelisiniz.";
-"delegate is organizer" = "Vekil edilen kişi etkinliği düzenleyen kişidir. Lütfen başka bir vekil belirleyin.";
-"delegate is a participant" = "Vekil edilen kişi zaten bu etkinliğe katılıyor.";
-"delegate is a group" = "Belirtilen adres bir gruba denk geliyor. Sadece bir kişiyi vekil tayin edebilirsiniz.";
+= "Bu işlemi yapmak için gerekli izniniz yok.";
+"noEmailForDelegation" = "Davetinize temsilci olarak atayacağınız kişinin adresini belirtmelisiniz.";
+"delegate is organizer" = "Temsilci olarak atanacak kişi etkinliği düzenleyen kişi. Lütfen başka bir temsilci belirleyin.";
+"delegate is a participant" = "Temsilci olarak atanan kişi zaten bu etkinliğe katılıyor.";
+"delegate is a group" = "Belirtilen adres bir grup adresi. Yalnızca gerçek bir kişiyi temsilci olarak atayabilirsiniz.";
 
 /* common buttons */
 "OK" = "Tamam";
-"Cancel" = "İptal et";
+"Cancel" = "İptal";
 "Yes" = "Evet";
 "No" = "Hayır";
 
@@ -91,10 +91,10 @@
 /* alarms */
 "Reminder" = "Hatırlatıcı";
 "Start" = "Başlangıç";
-"Due Date" = "Bitiş";
+"Due Date" = "Bitiş tarihi";
 "Location" = "Konum";
 "Snooze" = "Ertele";
-"Snooze for " = "Şu kadar ertele";
+"Snooze for " = "Şu süreyle ertele";
 "5 minutes" = "5 dakika";
 "10 minutes" = "10 dakika";
 "15 minutes" = "15 dakika";
@@ -107,10 +107,10 @@
 "Important" = "Önemli";
 "Work" = "İş";
 "Personal" = "Kişisel";
-"To Do" = "Yapılacak İşler";
-"Later" = "Daha Sonra";
-"Forwarded" = "Forwarded";
-"Return Receipt Sent" = "Alındı Raporu Gönderilidi";
+"To Do" = "Yapılacak işler";
+"Later" = "Daha sonra";
+"Forwarded" = "İletilmiş";
+"Return Receipt Sent" = "Alındı bildirimi gönderildi";
 "a2_Sunday" = "Pzr";
 "a2_Monday" = "Pts";
 "a2_Tuesday" = "Sal";
@@ -118,59 +118,59 @@
 "a2_Thursday" = "Per";
 "a2_Friday" = "Cum";
 "a2_Saturday" = "Cts";
-"Access Rights" = "Erişim Yetkileri";
-"Add User" = "Kullanıcı Ekle";
+"Access Rights" = "Erişim izinleri";
+"Add User" = "Kullanıcı ekle";
 "Loading" = "Yükleniyor";
 "No such user." = "Böyle bir kullanıcı yok.";
-"You cannot (un)subscribe to a folder that you own!" = "Kendinize ait bir klasöre üye olamaz (üyeliğinizi kaldıramazsınız)!";
+"You cannot (un)subscribe to a folder that you own!" = "Kendi klasörünüze abone olamaz ya da ayrılamazsınız!";
 
 /* SMIME Certificate field */
-"S/MIME Certificate" = "S/MIME Sertifikası";
-"Subject Name" = "Konu Başlığı";
+"S/MIME Certificate" = "S/MIME sertifikası";
+"Subject Name" = "Konu başlığı";
 "Issuer" = "Yayınlayan";
 "streetAddress" = "Sokak";
-"stateOrProvinceName" = "Eyalet ya da il";
+"stateOrProvinceName" = "İl ya da bölge";
 "localityName" = "Yerellik";
 "countryName" = "Ülke";
-"organizationName" = "Organizasyon";
-"organizationalUnitName" = "Organizasyon Birimi";
-"commonName" = "Yaygın İsim";
+"organizationName" = "Kuruluş";
+"organizationalUnitName" = "Kuruluş birimi";
+"commonName" = "Yaygın ad";
 "surname" = "Soyad";
 "givenName" = "Ad";
-"emailAddress" = "E-posta Adresi";
+"emailAddress" = "E-posta adresi";
 
 
 /* Authentication username */
-"Username" = "Kullanıcı Adı";
+"Username" = "Kullanıcı adı";
 
 /* Authentication password */
-"Password" = "Şifre";
+"Password" = "Parola";
 
 /* Authentication failed */
-"Wrong username or password." = "Kullanıcı adı ya da şifre yanlış.";
+"Wrong username or password." = "Kullanıcı adı veya parola yanlış.";
 
 /* Error message displayed bellow search field when the search string has less than the required number of characters */
-"Enter at least %{minimumSearchLength} characters" = "En az %{minimumSearchLength} karakter girin";
+"Enter at least %{minimumSearchLength} characters" = "En az %{minimumSearchLength} karakter yazın";
 
 /* Error message displayed when a file upload exceeds WOMaxUploadSize */
-"File size upload limit reached" = "Dosya yükleme üst sınırı aşıldı";
+"File size upload limit reached" = "Yüklenebilecek dosya boyutu sınırı aşıldı";
 
 /* Generic server error */
-"An error occured, please try again." = "Bir hatayla karşılaşıldı, lütfen tekrar deneyin.";
+"An error occured, please try again." = "Bir sorun çıktı. Lütfen yeniden deneyin.";
 
 /* Open datepicker */
-"Open Calendar" = "Takvimi Aç";
+"Open Calendar" = "Takvimi aç";
 
 /* Toggle visibility (ex: mail account in left navigation menu) */
-"Toggle visibility" = "Görünürlüğü değiştir";
+"Toggle visibility" = "Görünürlüğü aç/kapat";
 
 "Keyboard Shortcuts" = "Klavye kısayolları";
 
 /* Aria label for avatar button to select and unselect an item */
-"Toggle item" = "Öğeyi değiştir";
+"Toggle item" = "Ögeyi aç/kapat";
 
 /* Toggle multiple items at the same time (hotkeys cheatsheet) */
-"Toggle range of items" = "Öğeler arasında geçiş yap";
+"Toggle range of items" = "Öge aralıklarını aç/kapat";
 
 /* Question mark shows list of hotkeys */
 "Show or hide this help" = "Bu yardımı gizle veya göster";
@@ -209,16 +209,16 @@
 "hotkey_search" = "s";
 
 /* Hotkey description to select next list item */
-"View next item" = "Sonraki öğe";
+"View next item" = "Sonraki öge";
 
 /* Hotkey description to select previous list item */
-"View previous item" = "Önceki öğe";
+"View previous item" = "Önceki öge";
 
 /* Hotkey description to add next list item to selection */
-"Add next item to selection" = "Sonraki öğeyi seçime ekle";
+"Add next item to selection" = "Sonraki ögeyi seçime ekle";
 
 /* Hotkey description to add previous list item to selection */
-"Add previous item to selection" = "Önceki öğeyi seçime ekle";
+"Add previous item to selection" = "Önceki ögeyi seçime ekle";
 
 /* Hotkey description to move backward in current view */
 "Move backward" = "Geriye taşı";
@@ -227,9 +227,9 @@
 "Move forward" = "İleriye taşı";
 
 /* Password Recovery */
-"passwordRecovery_Disabled" = "Disabled";
-"passwordRecovery_SecretQuestion" = "Secret question";
-"passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
-"passwordRecovery_SecretQuestion2" = "What was your first car ?";
-"passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
-"passwordRecovery_SecondaryEmail" = "Secondary E-mail";
+"passwordRecovery_Disabled" = "Devre dışı";
+"passwordRecovery_SecretQuestion" = "Kişisel soru";
+"passwordRecovery_SecretQuestion1" = "İlk evcil hayvanınızın adı neydi?";
+"passwordRecovery_SecretQuestion2" = "İlk otomobiliniz neydi?";
+"passwordRecovery_SecretQuestion3" = "En beğendiğiniz film hangisi?";
+"passwordRecovery_SecondaryEmail" = "İkincil e-posta";

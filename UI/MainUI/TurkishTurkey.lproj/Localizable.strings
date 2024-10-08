@@ -1,9 +1,9 @@
 /* this file is in UTF-8 format! */
 
 "title" = "SOGo";
-"Username" = "Kullanıcı Adı";
-"Password" = "Şifre";
-"Domain" = "Alan adı";
+"Username" = "Kullanıcı adı";
+"Password" = "Parola";
+"Domain" = "Etki alanı";
 "Remember username" = "Kullanıcı adını hatırla";
 "Connect" = "Bağlan";
 
@@ -13,24 +13,24 @@
 /* Appears when authentication succeeds */
 "Welcome" = "Hoş geldiniz";
 
-"Authentication Failed" = "Kullanıcı Doğrulanamadı";
-"Wrong username or password." = "Kullanıcı adı veya şifre yanlış.";
-"Retry" = "Tekrar deneyin";
-"Login failed due to unhandled error case:" = "İşlenmeyen hata nedeniyle oturum açma başarısız oldu:";
-"cookiesNotEnabled" = "Giriş yapamıyorsunuz, çünkü tarayıcınızdaki çerezler engellenmiş. Lütfen tarayıcınızın ayarlarında çerezleri etkinleştirip, tekrar deneyin.";
-"browserNotCompatible" = "Tarayıcı sürümünüzün bu sitede henüz desteklenmediğini tespit ettik.  Tavsiyemiz Firefox kullanmanız. Bu tarayıcının son sürümünü indirmek için aşağıdaki bağlantıya tıklayın.";
+"Authentication Failed" = "Kullanıcı doğrulanamadı";
+"Wrong username or password." = "Kullanıcı adı veya parola yanlış.";
+"Retry" = "Yeniden deneyin";
+"Login failed due to unhandled error case:" = "İşlenmedi hatası nedeniyle giriş yapılamadı:";
+"cookiesNotEnabled" = "Giriş yapamıyorsunuz, çünkü tarayıcınızdaki çerezler engellenmiş. Lütfen tarayıcınızın ayarlarında çerezleri etkinleştirip yeniden deneyin.";
+"browserNotCompatible" = "Tarayıcı sürümünüzün bu sitede henüz desteklenmediğini fark ettik. Firefox kullanmanızı öneririz. Bu tarayıcının son sürümünü indirmek için aşağıdaki bağlantıya tıklayın.";
 "alternativeBrowsers" = "Diğer bir seçenek olarak, aşağıdaki uyumlu tarayıcıları da kullanabilirsiniz";
 "alternativeBrowserSafari" = "Diğer bir seçenek olarak, Safari de kullanabilirsiniz.";
 
 /* 2FA */
-"Verification Code" = "Doğrulama Kodu";
-"Enter the 6-digit verification code from your TOTP application." = "TOTP uygulamanızdan 6 haneli doğrulama kodunu girin.";
-"You provided an invalid TOTP key." = "Geçersiz bir TOTP anahtarı sağladınız.";
-"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "İki faktörlü kimlik doğrulama devre dışı bırakıldı. İki faktörlü kimlik doğrulamayı geri yüklemek ve TOTP uygulamanızı yeniden yapılandırmak için Tercihler modülünü ziyaret edin.";
+"Verification Code" = "Doğrulama kodu";
+"Enter the 6-digit verification code from your TOTP application." = "Tek kullanımlık parola uygulamanızdaki 6 haneli doğrulama kodunu yazın.";
+"You provided an invalid TOTP key." = "Yazdığınız tek kullanımlık parola kodu geçersiz.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "İki adımlı doğrulama kapatıldı. İki adımlı doğrulamayı açmak ve tek kullanımlık parola uygulamanızı yeniden yapılandırmak için ayarlar modülüne gidin.";
 
 "Download" = "İndir";
 "Language" = "Dil";
-"choose" = "Seçin ...";
+"choose" = "Seçin...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Bosnian" = "Bosanski";
@@ -77,34 +77,34 @@
 "Welsh" = "Cymraeg";
 
 "About" = "Hakkında";
-"AboutBox" = "Developed by Inverse and Alinto, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
+"AboutBox" = "Inverse ve Alinto tarafından geliştirilen SOGo tüm özellikleri kapsayan, kolay kullanılam ve ölçeklenebilen bir groupware sunucusudur.<br/><br/>\nSOGo zengin AJAX temelli bir İnternet arayüzü sunar, CalDAV ve CardDAV gibi standart iletişim kuralları ile çoklu doğal istemcileri destekler.<br/><br/>\nSOGo <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> 2. sürüm veya üstündeki bir lisans altında ve parçaları GNU LGPL 2. sürüm lisansı altında dağıtılmaktadır. Bu bir ücretsiz yazılımdır. Bu yazılımı değiştirebilir ve yeniden dağıtabilirsiniz. Yasaların izin verdiği ölçüde bir GARANTİSİ YOKTUR.<br/><br/>\nÇeşitli destek seçenekleri için <a href=\"http://www.sogo.nu/en/support/community.html\">bu sayfaya</a> bakabilirsiniz.";
 "Your account was locked due to too many failed attempts." = "Çok fazla başarısız giriş denemesi nedeniyle hesabınız kitlendi.";
-"Your account was locked due to an expired password." = "Süresi dolan şifreniz nedeniyle hesabınız kitlendi.";
-"Login failed due to unhandled error case" = "Belirlenemeyen bir hata nedeniyle girişiniz başarısız oldu";
-"Change your Password" = "Şifrenizi Değiştirin";
-"The password was changed successfully." = "Şifre başarıyla değiştirildi.";
-"Your password has expired, please enter a new one below" = "Şifrenizin süresi doldu, lütfen aşağıya yeni bir şifre girin";
-"Password must not be empty." = "Şifre boş olmamalı.";
-"The passwords do not match. Please try again." = "Şifreler eşleşmiyor. Lütfen tekrar deneyin.";
-"Password Grace Period" = "Şifre Geçerlilik Süresi";
-"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Hesabınızın kitlenmesine %{0} giriş kaldı. Lütfen şifrenizi tercih panosundan değiştirin.";
-"Password about to expire" = "Şifrenizin süresi dolmak üzere";
-"Your password is going to expire in %{0} %{1}." = "Şifreniz %{0} %{1} içinde dolacak.";
+"Your account was locked due to an expired password." = "Hesabınız parolanızın süresi dolduğu için kilitlendi.";
+"Login failed due to unhandled error case" = "Belirlenemeyen bir sorun nedeniyle giriş yapılamadı";
+"Change your Password" = "Parolanızı değiştirin";
+"The password was changed successfully." = "Parola değiştirildi.";
+"Your password has expired, please enter a new one below" = "Parolanızın süresi dolmuş. Lütfen aşağıya yeni bir parola yazın";
+"Password must not be empty." = "Parola boş olamaz.";
+"The passwords do not match. Please try again." = "Parola ile onayı aynı değil. Lütfen yeniden deneyin.";
+"Password Grace Period" = "Parola geçerlilik süresi";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Hesabınızın kilitlenmesine %{0} giriş kaldı. Lütfen ayarlar penceresinden parolanızı değiştirin.";
+"Password about to expire" = "Parolanızın süresi dolmak üzere";
+"Your password is going to expire in %{0} %{1}." = "Parolanızın süresi %{0} %{1} içinde dolacak.";
 "days" = "gün";
 "hours" = "saat";
 "minutes" = "dakika";
 "seconds" = "saniye";
-"Password change failed" = "Şifre değiştirme başarısız";
-"Password change failed - Permission denied" = "Şifre değiştirme başarısız - İzin verilmedi";
-"Password change failed - Insufficient password quality" = "Şifre değiştirme başarısız - yetersiz şifre kalitesi";
-"Password change failed - Password is too short" = "Şifre değiştirme başarısız - Şifre çok kısa";
-"Password change failed - Password is too young" = "Şifre değiştirme başarısız - Şifre çok yeni";
-"Password change failed - Password is in history" = "Şifre değiştirme başarısız - Şifre geçmişte kullanılmış";
-"Unhandled policy error: %{0}" = "Telafi edilemeyen yöntem hatası: %{0}";
-"Unhandled error response" = "Telafi edilemeyen hata yanıtı";
-"Password change is not supported." = "Şifre değiştirme desteklenmiyor.";
-"Unhandled HTTP error code: %{0}" = "Telafi edilemeyen HTTP hata kodu: %{0}";
-"New password" = "Yeni şifre";
+"Password change failed" = "Parola değiştirilemedi";
+"Password change failed - Permission denied" = "Parola değiştirilemedi. Yeterli izniniz yok";
+"Password change failed - Insufficient password quality" = "Parola değiştirilemedi. Parola gerekli koşulları karşılamıyor";
+"Password change failed - Password is too short" = "Parola değiştirilemedi. Parola çok kısa";
+"Password change failed - Password is too young" = "Parola değiştirilemedi. Parola çok zayıf";
+"Password change failed - Password is in history" = "Parola değiştirilemedi. Parola daha önce kullanılmış";
+"Unhandled policy error: %{0}" = "İşlenmedi ilke hatası: %{0}";
+"Unhandled error response" = "İşlenmedi hatası yanıtı";
+"Password change is not supported." = "Parolanın değiştirilmesi desteklenmiyor.";
+"Unhandled HTTP error code: %{0}" = "İşlenmedi HTTP hata kodu: %{0}";
+"New password" = "Yeni parola";
 "Confirmation" = "Onay";
 "Cancel" = "İptal";
 "Please wait..." = "Lütfen bekleyin...";
@@ -113,17 +113,17 @@
 "Missing type parameter" = "Eksik tür niteliği";
 
 /* Password Recovery */
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password lost" = "Password lost";
-"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
-"Invalid secret question answer" = "Invalid secret question answer";
-"Next" = "Next";
-"Back" = "Back";
-"Please enter a new password below" = "Please enter a new password below";
-"A link will be sent to %{0}" = "A link will be sent to %{0}";
-"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
-"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
-"Password recovery email in error" = "Password recovery email in error";
-"Password reset" = "Password reset";
-"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";
+"Secondary e-mail" = "İkincil e-posta";
+"Answer" = "Yanıt";
+"Password lost" = "Parola unutma";
+"No password recovery method has been defined for this user" = "Bu kullanıcı için bir parola kurtarma yöntemi tanımlanmamış";
+"Invalid secret question answer" = "Kişisel sorunun yanıtı geçersiz";
+"Next" = "İleri";
+"Back" = "Geri";
+"Please enter a new password below" = "Lütfen aşağıya bir parola yazın";
+"A link will be sent to %{0}" = "%{0} adresine bir bağlantı gönderilecek";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "Bir parola sıfırlama bağlantısı gönderildi. Lütfen kurtarma e-posta adresinizi kontrol edin ve bağlantıya tıklayın";
+"Invalid configuration for email password recovery" = "E-posta ile parola kurtarma yapılandırması geçersiz";
+"Password recovery email in error" = "Parola kurtarma e-postası sorunu";
+"Password reset" = "Parolayı sıfırla";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Merhaba %{0},\nParolanızı değiştirme isteğinde bulunuldu!\n\nBu isteği siz yapmadıysanız bu e-postayı yok sayabilirsiniz.\n\nSiz yaptıysanız lütfen parolanızı değiştirmek için bu bağlantıya tıklayın: %{1}";

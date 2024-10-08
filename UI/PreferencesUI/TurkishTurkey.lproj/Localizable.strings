@@ -1,13 +1,13 @@
 /* toolbar */
 "Save and Close" = "Kaydet ve Kapat";
 "Close" = "Kapat";
-"Preferences saved" = "Tercihler kaydedildi";
+"Preferences saved" = "Ayarlar kaydedildi";
 
 /* Unsaved changes confirmation dialog title */
-"Unsaved Changes" = "Kaydedilmemiş Değişiklikler";
+"Unsaved Changes" = "Kaydedilmemiş değişiklikler";
 
 /* Unsaved changes confirmation dialog text */
-"Do you want to save your changes made to the configuration?" = "Yapılandırmadaki değişikliklerinizi kaydetmek istiyor musunuz?";
+"Do you want to save your changes made to the configuration?" = "Yapılandırma değişikliklerinizi kaydetmek istiyor musunuz?";
 
 /* Unsaved changes confirmation dialog button */
 "Save" = "Kaydet";
@@ -17,23 +17,23 @@
 
 /* tabs */
 "General" = "Genel";
-"Calendar Options" = "Takvim Seçenekleri";
-"Contacts Options" = "Adres Seçenekleri";
-"Mail Options" = "E-posta Seçenekleri";
-"IMAP Accounts" = "IMAP Hesapları";
+"Calendar Options" = "Takvim ayarları";
+"Contacts Options" = "Kişi ayarları";
+"Mail Options" = "E-posta ayarları";
+"IMAP Accounts" = "IMAP hesapları";
 "Vacation" = "Tatil";
 "Forward" = "İlet";
-"Password" = "Şifre";
-"Notification" = "Notification";
+"Password" = "Parola";
+"Notification" = "Bildirim";
 "Categories" = "Kategoriler";
 "Appointments invitations" = "Randevu davetleri";
-"Name" = "Tam İsim";
+"Name" = "Tam ad";
 "Color" = "Renk";
 "Add" = "Ekle";
 "Delete" = "Sil";
 
 /* contacts categories */
-"contacts_category_labels" = "Meslektaş, Rakip, Müşteri, Arkadaş, Aile, İş Ortağı, Tedarikçi, Basın, VIP";
+"contacts_category_labels" = "Meslektaş, Rakip, Müşteri, Arkadaş, Aile, İş ortağı, Tedarikçi, Basın, VIP";
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Otomatik tatil yanıtını etkinleştir";
@@ -45,23 +45,23 @@
 "Add default email addresses" = "Varsayılan e-posta adresi ekle";
 "Days between responses" = "Yanıt gün sayısı";
 "Do not send responses to mailing lists" = "E-posta listelerine yanıt gönderme";
-"Activation Constraints" = "Aktivasyon Kısıtlamaları";
-"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences";
-"Enable auto reply on" = "Otomatik yanıtın etkinleştirme tarihi";
+"Activation Constraints" = "Etkinleştirme kısıtlamaları";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Gün ve saat aralıklarını bağımsız olarak özelleştirin ve isteğe bağlı olarak bunları belirli hafta içi günleriyle birleştirerek tatil süzgeçlerini isteğinize göre ayarlayın";
+"Enable auto reply on" = "Otomatik yanıtın açılacağı tarih";
 "First day of vacation" = "Tatilin ilk günü";
-"Disable auto reply after" = "Disable auto reply after";
+"Disable auto reply after" = "Otomatik yanıt şu süre sonunda kapatılsın";
 "Last day of vacation" = "Tatilin son günü";
-"Enter date" = "Tarih girin";
+"Enter date" = "Tarih yazın";
 /* Enable auto reply at this time of the day */
-"Enable auto reply at" = "Otomatik yanıtı etkinleştir";
-"Enter time" = "Saat girin";
+"Enable auto reply at" = "Otomatik yanıtı aç";
+"Enter time" = "Saat yazın";
 /* Disable auto reply at this time of the day */
-"Disable auto reply at" = "Otomatik yanıtı devre dışı bırak";
-"Enable auto reply on these days" = "Bu günlerde otomatik yanıtı etkinleştir";
-"Always send vacation message response" = "Her zaman tatil yanıtı iletisi gönder";
-"The vacation message is sent prior to apply your filters." = "Tatil mesajı filtrelerinizi uygulamadan önce gönderilir.";
+"Disable auto reply at" = "Otomatik yanıtı kapat";
+"Enable auto reply on these days" = "Otomatik yanıt şu günlerde açılsın";
+"Always send vacation message response" = "Tatil yanıtı iletisi her zaman gönderilsin";
+"The vacation message is sent prior to apply your filters." = "Tatil iletisi süzgeçleriniz uygulanmadan önce gönderilir.";
 "Discard incoming mails during vacation" = "Tatildeyken gelen iletileri sil";
-"The vacation message is sent but incoming messages are not delivered to your inbox." = "Tatil mesajı gönderilir ancak gelen mesajlar gelen kutunuza teslim edilmez.";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Tatil iletisi gönderilir ancak gelen iletiler gelen kutunuza teslim edilmez.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Lütfen otomatik yanıtı etkinleştireceğiniz e-posta adreslerini ve yanıt iletinizi belirleyin.";
 "Your vacation message must not end with a single dot on a line." = "Tatil yanıtlama iletiniz bir satırda tek nokta olarak bitmemeli.";
@@ -71,28 +71,28 @@
 /* forward messages */
 "Forward incoming messages" = "Gelen e-postaları iletirken";
 "Always forward" = "Her zaman ilet";
-"Incoming messages are forwarded prior to apply your filters." = "Gelen mesajlar, filtrelerinizi uygulamadan önce iletilir.";
+"Incoming messages are forwarded prior to apply your filters." = "Gelen iletiler, süzgeçleriniz uygulanmadan önce iletilir.";
 "Keep a copy" = "Bir kopyasını sakla";
-"Enter an email" = "Bir e-posta girin";
+"Enter an email" = "Bir e-posta adresi yazın";
 "Add another email" = "Başka bir e-posta ekle";
 "Please specify an address to which you want to forward your messages."
 = "Lütfen e-postaların iletileceği adresi beilrtin.";
-"You are not allowed to forward your messages to an external email address." = "E-postalarınızı sistem dışındaki bir adrese iletmezsiniz.";
-"You are not allowed to forward your messages to an internal email address." = "E-postalarınızı sistemdeki bir başka adrese iletmezsiniz.";
-"You are not allowed to forward your messages to this domain:" = "İletilerinizi bu alana yönlendirme izniniz yok:";
+"You are not allowed to forward your messages to an external email address." = "E-postalarınızı sistem dışındaki bir adrese iletemezsiniz.";
+"You are not allowed to forward your messages to an internal email address." = "E-postalarınızı sistemdeki bir başka adrese iletemezsiniz.";
+"You are not allowed to forward your messages to this domain:" = "İletilerinizi bu etki alanına yönlendirme izniniz yok:";
 
 /* notification */
-"Notify incoming messsages" = "Notify incoming messsages";
-"Notification Message Sent" = "Notification message sent";
-"Notification Message" = "Notification of new message on %{0}";
+"Notify incoming messsages" = "Gelen iletiler bildirilsin";
+"Notification Message Sent" = "Bildirim iletisi gönderildi";
+"Notification Message" = "%{0} üzerine yeni ileti geldi bildirimi";
 
 /* d & t */
-"Time Zone" = "Zaman Dilimi";
-"Short Date Format" = "Kısa Tarih Biçimi";
-"Long Date Format" = "Uzun Tarih Biçimi";
-"Time Format" = "Tarih Biçimi";
+"Time Zone" = "Saat dilimi";
+"Short Date Format" = "Kısa tarih biçimi";
+"Long Date Format" = "Uzun tarih biçimi";
+"Time Format" = "Saat biçimi";
 "default" = "Varsayılan";
-"Default Module" = "Varsayılan Modül";
+"Default Module" = "Varsayılan modül";
 "Save" = "Kaydet";
 "shortDateFmt_0" = "%d-%b-%y";
 "shortDateFmt_1" = "%d-%m-%y";
@@ -138,25 +138,25 @@
 "Day start time" = "Gün başlangıç saati";
 "Day end time" = "Gün bitiş saati";
 "Day start time must be prior to day end time." = "Gün başlangıç saati, gün bitiş saatinden önce olmalı.";
-"Week days to display" = "Gösterilen günler";
-"Show time as busy outside working hours" = "Mesai dışındaki saatleri meşgul olarak göster";
+"Week days to display" = "Gösterilecek günler";
+"Show time as busy outside working hours" = "Çalışma dışındaki saatler meşgul olarak görünsün";
 "First week of year" = "Yılın ilk haftası";
-"Enable reminders for Calendar items" = "Takvim ögeleri için hatırlatıcıları etkinleştir";
-"Play a sound when a reminder comes due" = "Hatırlatma zamanı geldiğinde sesli olarak uyar";
+"Enable reminders for Calendar items" = "Takvim ögelerinde hatırlatıcılar kullanılsın";
+"Play a sound when a reminder comes due" = "Hatırlatma zamanında sesli uyarı verilsin";
 "Default reminder" = "Varsayılan hatırlatma süresi";
-"firstWeekOfYear_January1" = "1 Ocak'da başlar";
+"firstWeekOfYear_January1" = "1 Ocak tarihinde başlar";
 "firstWeekOfYear_First4DayWeek" = "İlk 4-günlük haftadır";
 "firstWeekOfYear_FirstFullWeek" = "İlk tam haftadır";
 "Prevent from being invited to appointments" = "Çalışma daveti almayı engelle";
 "White list for appointment invitations" = "Çalışma davetleri beyaz listesi";
-"Contacts Names" = "Kişi İsimleri";
-"Duplicate name" = "İsmi çoğalt";
-"Calendar categories must have unique names." = "Takvim kategorileri farklı isimlerden oluşmalı.";
-"Disable e-mail notifications on CalDAV" = "Disable e-mail notifications on CalDAV";
+"Contacts Names" = "Kişi adları";
+"Duplicate name" = "Adı çoğalt";
+"Calendar categories must have unique names." = "Takvim kategorileri farklı adlardan oluşmalı.";
+"Disable e-mail notifications on CalDAV" = "CalDAV üzerinde e-posta bildirimlerini kapat";
 
 /* Default Calendar */
 "Default calendar" = "Varsayılan takvim";
-"selectedCalendar" = "Seçili takvim";
+"selectedCalendar" = "Seçilmiş takvim";
 "personalCalendar" = "Kişisel takvim";
 "firstCalendar" = "İlk etkin takvim";
 "reminder_NONE" = "Hatırlatıcı yok";
@@ -176,142 +176,142 @@
 /* Mailer */
 "Labels" = "Etiketler";
 "Label" = "Etiket";
-"IMAP Label" = "IMAP Etiketi";
+"IMAP Label" = "IMAP etiketi";
 "Invalid label" = "Boşluk ve şu karakterleri kullanmayın ( ) { } % * \" \\";
 "Duplicate label" = "Etiketi çoğalt";
-"IMAP labels must have unique names." = "IMAP etiketleri farklı isimlerden oluşmalı.";
+"IMAP labels must have unique names." = "IMAP etiketlerinin adları farklı olmalı.";
 "New label" = "Yeni etiket";
-"Show subscribed mailboxes only" = "Sadece üye olunan e-posta klasörlerini göster";
-"Synchronize only default mail folders (EAS)" = "Sadece varsayılan e-posta klasörlerini eşitle (EAS)";
-"Fetch count of unseen messages for all mailboxes" = "Tüm posta kutuları için görünmeyen mesajların sayısını getir";
-"Sort messages by threads" = "İletileri diziler halinde sırala";
-"Always open mail composer" = "E-posta düzenleyicisini her zaman aç";
-"Inside current window" = "Mevcut pencerenin içinde";
+"Show subscribed mailboxes only" = "Yalnızca abone olunmuş e-posta klasörleri görüntülensin";
+"Synchronize only default mail folders (EAS)" = "Yalnızca varsayılan e-posta klasörleri eşitlensin (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Tüm e-posta kutuları için görünmeyen iletilerin sayısı alınsın";
+"Sort messages by threads" = "İletiler konuya göre gruplansın";
+"Always open mail composer" = "Her zaman e-posta düzenleyici açılsın";
+"Inside current window" = "Geçerli pencerede";
 "In a popup window" = "Yeni pencerede";
-"When sending mail, add unknown recipients to my" = "Gönderilen iletide bulunan yeni kişileri, aşağıdaki defterime ekle";
-"Address Book" = "Adres Defteri";
-"Forward messages" = "Başkasına İletilen e-postayı";
+"When sending mail, add unknown recipients to my" = "Gönderilen iletide bulunan yeni kişiler, aşağıdaki defterime eklensin";
+"Address Book" = "Adres defteri";
+"Forward messages" = "İleti iletilirken";
 "messageforward_inline" = "Satır içi";
-"messageforward_attached" = "Ek Olarak";
-"When replying to a message" = "İletiyi yanıtlarken";
-"replyplacement_above" = "Yanıtımı asıl yazının üzerinde başlat";
-"replyplacement_below" = "Yanıtımı asıl yazının altında başlat";
-"And place my signature" = "Ve imzamı";
-"signatureplacement_above" = "yanıtımın altına yerleştir";
-"signatureplacement_below" = "asıl yazının altına yerleştir";
-"Compose messages in" = "İleti formatı";
+"messageforward_attached" = "Ek olarak";
+"When replying to a message" = "İleti yanıtlanırken";
+"replyplacement_above" = "Yanıtım asıl yazının üzerinden başlasın";
+"replyplacement_below" = "Yanıtım asıl yazının altından başlasın";
+"And place my signature" = "Ve imzam";
+"signatureplacement_above" = "yanıtımın altına yerleştirilsin";
+"signatureplacement_below" = "asıl yazının altına yerleştirilsin";
+"Compose messages in" = "İleti biçimi";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Düz metin";
-"Insert signature on new message" = "Insert signature on new message";
-"Insert signature on reply" = "Insert signature on reply";
-"Insert signature on forward" = "Insert signature on forward";
-"Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
-"Hide attachements for inline images" = "Hide attachements for inline images";
+"Insert signature on new message" = "İmza yeni iletilere eklensin";
+"Insert signature on reply" = "İmza yanıtlara eklensin";
+"Insert signature on forward" = "İmza iletilen e-postalara eklensin";
+"Show recipients or sender full email in mailboxes" = "E-posta kutularında alıcıların ya da göndericinin tam adı görüntülensin";
+"Hide attachements for inline images" = "Satır içi görsellerde ek dosyalar gizlensin";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Varsayılan yazı büyüklüğü";
 
-"Display remote inline images" = "Asılları dışarıda olup ileti içinde bağlantıları bulunan resimleri göster";
+"Display remote inline images" = "Asılları dışarıda olup ileti içinde bağlantıları bulunan görseller görüntülensin";
 "displayremoteinlineimages_never" = "Asla";
 "displayremoteinlineimages_always" = "Her zaman";
 "Auto save every" = "Yazılan iletinin otomatik kaydedilme aralığı";
 "minutes" = "dakika";
-"Automatically mark messages as read" = "Mesajları otomatik olarak okundu olarak işaretle";
+"Automatically mark messages as read" = "İletiler otomatik olarak okunmuş olarak işaretlensin";
 "Immediately on display" = "Görüldüğü anda";
 "After displaying for" = "Görüldükten sonra";
 "seconds" = "saniye";
 
 /* Contact */
-"Personal Address Book" = "Kişisel Adres Defteri";
-"Collected Address Book" = "Otomatik Eklenen Adresler";
+"Personal Address Book" = "Kişisel adres defteri";
+"Collected Address Book" = "Otomatik eklenen adresler";
 "Contact categories must have unique names." = "Kişi kategorilerinin benzersiz adları olmalıdır.";
 
 /* IMAP Accounts */
 "Settings" = "Ayarlar";
 "Security" = "Güvenlik";
-"Mail Account" = "E-posta Hesabı";
-"New Mail Account" = "Yeni E-posta Hesabı";
-"Server Name" = "Sunucu Adı";
-"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
-"Smtp Auth" = "Smtp Auth";
-"Port" = "Port";
+"Mail Account" = "E-posta hesabı";
+"New Mail Account" = "Yeni e-posta hesabı";
+"Server Name" = "Sunucu adı";
+"Outgoing Server Name (SMTP)" = "Giden sunucu adı (SMTP)";
+"Smtp Auth" = "SMTP kimlik doğrulaması";
+"Port" = "Bağlantı noktası";
 "Encryption" = "Şifreleme";
-"Outgoing Encryption" = "Outgoing Encryption";
+"Outgoing Encryption" = "Giden şifreleme";
 "None" = "Hiç biri";
-"User Name" = "Kullanıcı Adı";
+"User Name" = "Kullanıcı adı";
 "Full Name" = "Ad Soyad";
 "Email" = "E-posta";
-"Reply To Email" = "İletiyi Yanıtla";
+"Reply To Email" = "İletiyi yanıtla";
 "Signature" = "İmza";
 "Identities" = "Kimlikler";
-"Always use the default identity when replying to messages" = "Mesajları yanıtlarken her zaman varsayılan kimliği kullanın";
-"Default Identity" = "Varsayılan Kimlik";
-"New Identity" = "Yeni Kimlik";
+"Always use the default identity when replying to messages" = "İletiler yanıtlanırken her zaman varsayılan kimlik kullanılsın";
+"Default Identity" = "Varsayılan kimlik";
+"New Identity" = "Yeni kimlik";
 "(Click to create)" = "(Oluşturmak için tıklayın)";
-"Please enter your signature below" = "Lütfen aşağıya imzanızı yazın";
-"Please specify a valid sender address." = "Lütfen geçeril bir gönderici adresi belirtin.";
-"Please specify a valid reply-to address." = "Lütfen geçeril bir yanıt adresi belirtin.";
+"Please enter your signature below" = "Lütfen imzanızı aşağıya yazın";
+"Please specify a valid sender address." = "Lütfen geçerli bir gönderici adresi belirtin.";
+"Please specify a valid reply-to address." = "Lütfen geçerli bir yanıt adresi belirtin.";
 "Specify a hostname other than the local host" = "Yerel sunucu adından farklı bir sunucu adı belirtin";
 
-"No certificate installed" = "Yüklü sertifika yok";
+"No certificate installed" = "Herhangi bir sertifika kurulmamış";
 "The SSL certificate must use the PKCS#12 (PFX) format." = "SSL sertifikası, PKCS # 12 (PFX) biçimini kullanmalıdır.";
 "Uninstall" = "Kaldır";
-"Choose PKCS12 Certificate .." = "PKCS12 Sertifikasını Seçin ..";
-"Certificate Import Password" = "Sertifika İçeri Alma Parolası";
+"Choose PKCS12 Certificate .." = "PKCS12 sertifikasını seçin...";
+"Certificate Import Password" = "Sertifika içe aktarma parolası";
 "Upload" = "Yükle";
 "When composing a message" = "İleti yazarken";
-"Digitally sign the message by default" = "İletiyi öntanımlı olarak sayısal olarak imzala";
-"Always try to encrypt the message" = "Her zaman iletiyi şifrelemeyi dene";
-"An error occurred while importing the certificate. Verify your password." = "Sertifika içe aktarılırken bir hata oluştu. Şifrenizi doğrulayın.";
-"Data too big. Please contact technical support." = "Data too big. Please contact technical support.";
+"Digitally sign the message by default" = "İleti varsayılan olarak sayısal imzalansın";
+"Always try to encrypt the message" = "İleti her zaman şifrelenmeye çalışılsın";
+"An error occurred while importing the certificate. Verify your password." = "Sertifika içe aktarılırken bir sorun çıktı. Parolanızı doğrulayın.";
+"Data too big. Please contact technical support." = "Veri çok büyük. Lütfen teknik destek ekibiyle görüşün.";
 
 /* Additional Parameters */
-"Additional Parameters" = "Diğer Özellikler";
+"Additional Parameters" = "Diğer özellikler";
 
 /* password */
-"Current password" = "Mevcut şifre";
-"New password" = "Yeni Şifre";
+"Current password" = "Geçerli parola";
+"New password" = "Yeni parola";
 "Confirmation" = "Onay";
 "Change" = "Değiştir";
-"Passwords don't match" = "Şifreler eşleşmiyor";
-"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
-"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
-"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0} special symbols";
-"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+"Passwords don't match" = "Parola ile onayı aynı değil";
+"POLICY_MIN_LOWERCASE_LETTER" = "En az %{0} küçük harf";
+"POLICY_MIN_UPPERCASE_LETTER" = "En az %{0} büyük harf";
+"POLICY_MIN_DIGIT" = "En az %{0} rakam";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "En az %{0} özel simge";
+"POLICY_MIN_LENGTH" = "En az %{0} karakter uzunluğunda";
 
 
 /* Event+task classifications */
 "Default events classification" = "Varsayılan etkinlik sınıflandırması";
 "Default tasks classification" = "Varsayılan görev sınıflandırması";
-"PUBLIC_item" = "Herkese Açık";
+"PUBLIC_item" = "Herkese açık";
 "CONFIDENTIAL_item" = "Gizli";
 "PRIVATE_item" = "Özel";
 
 /* Event+task categories */
-"Calendar Category" = "Takvim Kategorisi";
-"Add Calendar Category" = "Takvim Kategorisi Ekle";
-"New category" = "Yeni Kategori";
+"Calendar Category" = "Takvim kategorisi";
+"Add Calendar Category" = "Takvim kategorisi ekle";
+"New category" = "Yeni kategori";
 "Reset to defaults" = "Varsayılanlara sıfırla";
-"Remove Calendar Category" = "Takvim Kategorisi Çıkar";
-"Contact Category" = "Kişi Kategorisi";
-"Add Contact Category" = "Kişi Kategorisi Ekle";
-"Remove Contact Category" = "Kişi Kategorisi Çıkar";
+"Remove Calendar Category" = "Takvim kategorisini kaldır";
+"Contact Category" = "Kişi kategorisi";
+"Add Contact Category" = "Kişi kategorisi ekle";
+"Remove Contact Category" = "Kişi kategorisini kaldır";
 "category_none" = "Hiç biri";
 "calendar_category_labels" = "Yıl dönümü,Doğum günü,İş,Aramalar,Müşteriler,Rakip,Müşteri,Favoriler,Takip et,Hediyelik eşya,Tatiller,Fikirler,Toplantı,Sorunlar,Çeşitli,Kişisel,Projeler,Bayram,Durum,Tedarikçi,Seyahat,Tatil";
 
 /* Default module */
 "Calendar" = "Takvim";
-"Contacts" = "Adres Defteri";
+"Contacts" = "Adres defteri";
 "Mail" = "E-posta";
 "Last" = "Son kullanılan";
-"Default Module " = "Varsayılan Açılış Modülü";
-"SOGo Version" = "SOGo Sürümü";
+"Default Module " = "Varsayılan açılış modülü";
+"SOGo Version" = "SOGo sürümü";
 
 /* Confirmation asked when changing the language */
-"Save preferences and reload page now?" = "Tercihler kaydedilip ve sayfa tazelensin mi?";
+"Save preferences and reload page now?" = "Ayarlar kaydedilip sayfa yenilensin mi?";
 "Language" = "Dil";
-"choose" = "Seçin ...";
+"choose" = "Seçin...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Bosnian" = "Bosanski";
@@ -366,64 +366,64 @@
 "refreshview_every_20_minutes" = "Her 20 dakikada bir";
 "refreshview_every_30_minutes" = "Her 30 dakikada bir";
 "refreshview_once_per_hour" = "Saatte bir";
-"Enable Desktop Notifications" = "Masaüstü Bildirimlerini Etkinleştir";
+"Enable Desktop Notifications" = "Masaüstü bildirimlerini aç";
 
 /* Return receipts */
-"When I receive a request for a return receipt" = "Alındı bildirim isteği aldığımda";
+"When I receive a request for a return receipt" = "Alındı bildirimi isteği aldığımda";
 "Never send a return receipt" = "Asla alındı bildirimi gönderme";
 "Allow return receipts for some messages" = "Aşağıdaki koşullarda alındı bildirimi gönder";
-"If I'm not in the To or Cc of the message" = "Gelen iletinin alıcı veya karbon kopya alanında değilsem";
-"If the sender is outside my domain" = "Eğer gönderen adresi alan adımın dışında ise";
-"In all other cases" = "Diğer her koşulda";
+"If I'm not in the To or Cc of the message" = "Gelen iletinin alıcı veya kopya alanında değilsem";
+"If the sender is outside my domain" = "Gönderici adresi etki alanımın dışında ise";
+"In all other cases" = "Diğer her durumda";
 "Never send" = "Asla gönderme";
 "Always send" = "Her zaman gönder";
 "Ask me" = "Bana sor";
 
 /* Filters - UIxPreferences */
-"Filters" = "Filtreler";
+"Filters" = "Süzgeçler";
 "Active" = "Etkin";
-"Move Up" = "Yukarı Taşı";
-"Move Down" = "Aşağı Taşı";
-"Connection error" = "Bağlantı hatası";
+"Move Up" = "Yukarı taşı";
+"Move Down" = "Aşağı taşı";
+"Connection error" = "Bağlantı sorunu";
 "Service temporarily unavailable" = "Hizmet geçici olarak kullanılamıyor";
 
 /* Aria label for filter enable checkbox */
-"Enable filter" = "Filtreleri etkinleştir";
+"Enable filter" = "Süzgeci etkinleştir";
 
 /* Filters - UIxFilterEditor */
-"Filter name" = "Süzgeçin adı";
+"Filter name" = "Süzgecin adı";
 /* Button label */
 "Add a condition" = "Bir koşul ekle";
 /* Button label */
-"Add an action" = "Bir eylem ekle";
-"For incoming messages that" = "Gelen mesajlar için";
-"match all of the following rules" = "aşağıdaki kuralların hepsiyle eşleşiyorsa";
-"match any of the following rules" = "aşağıdaki kurallardan sadece biriyle eşleşiyorsa";
+"Add an action" = "Bir işlem ekle";
+"For incoming messages that" = "Gelen iletiler için";
+"match all of the following rules" = "aşağıdaki kuralların tümüyle eşleşiyorsa";
+"match any of the following rules" = "aşağıdaki kurallardan yalnızca biriyle eşleşiyorsa";
 "match all messages" = "her ileti için";
-"Perform these actions" = "Şu eylemleri gerçekleştir";
-"Untitled Filter" = "Başlıksız Filtre";
+"Perform these actions" = "Şu işlemleri gerçekleştir";
+"Untitled Filter" = "Adlandırılmamış süzgeç";
 "Subject" = "Konu";
-"From" = "Gönderen";
+"From" = "Gönderici";
 "To" = "Alıcı";
-"Cc" = "Karbon Kopya";
-"To or Cc" = "Alıcı veya Karbon Kopya";
+"Cc" = "Kopya";
+"To or Cc" = "Alıcı veya Kopya";
 "Size (Kb)" = "Boyut (Kb)";
 "Header" = "Başlık";
-"Body" = "Gövde";
-"Flag the message with" = "İletiye şu bayrağı ekle";
+"Body" = "İçerik";
+"Flag the message with" = "İletiye şununla yıldız ekle";
 
 /* Select field label of "flag message" mail filter action */
-"Flag" = "Bayrak";
+"Flag" = "Yıldız";
 
 "Discard the message" = "İletiyi reddet";
-"File the message in" = "Mesajı içerisinde dosyalayın";
+"File the message in" = "İleti şurada dosyalansın";
 
 /* Select field label of "file message" mail filter action */
-"Mailbox" = "Posta Kutusu";
+"Mailbox" = "E-posta kutusu";
 
 "Keep the message" = "İletiyi sakla";
-"Forward the message to" = "E-posta şu adrese ilet";
-"Notify the message to" = "Notify the message to";
+"Forward the message to" = "İletiyi şu adrese ilet";
+"Notify the message to" = "İletiyi şuraya bildir";
 
 /* Input field label of "forward" mail filter action */
 "Email" = "E-posta";
@@ -434,17 +434,17 @@
 "Message" = "İleti";
 
 "Send a vacation message" = "Tatil iletisi gönder";
-"Stop processing filter rules" = "Süzgeç kurallarını işlenmeyi durdur";
-"is under" = "küçükse";
-"is over" = "büyükse";
+"Stop processing filter rules" = "Süzgeç kurallarını işlemeyi durdur";
+"is under" = "şundan küçükse";
+"is over" = "şundan büyükse";
 "is" = "şuna eşitse";
 "is not" = "şuna eşit değilse";
 "contains" = "şunu içeriyorsa";
 "does not contain" = "şunu içermiyorsa";
 "matches" = "şununla eşleşiyorsa";
 "does not match" = "şununla eşleşmiyorsa";
-"matches regex" = "şu regex kuralıyla eşleşiyorsa";
-"does not match regex" = "şu regex kuralıyla eşleşmiyorsa";
+"matches regex" = "şu kurallı ifade ile eşleşiyorsa";
+"does not match regex" = "şu kurallı ifadeyle eşleşmiyorsa";
 /* Placeholder for the value field of a condition */
 "Value" = "Değer";
 "Seen" = "Görülmüş";
@@ -452,48 +452,48 @@
 "Answered" = "Yanıtlanmış";
 "Flagged" = "Yıldızlı";
 "Junk" = "İstenmeyen";
-"Not Junk" = "İstenen";
+"Not Junk" = "İstenmeyen değil";
 
 /* Password policy */
-"The password was changed successfully." = "Şifre başarıyla değiştirildi.";
-"Password must not be empty." = "Şifre boş olamaz.";
-"The passwords do not match. Please try again." = "Şifreler eşleşmiyor. Lütfen tekrar deneyin.";
-"Password change failed" = "Şifre değiştirme başarısız";
-"Password change failed - Permission denied" = "Şifre değiştirme başarısız - İzin düzeyi yetersiz";
-"Password change failed - Insufficient password quality" = "Şifre değiştirme başarısız - şifre gerekli şartları karşılamıyor";
-"Password change failed - Password is too short" = "Şifre değiştirme başarısız - Şifre çok kısa";
-"Password change failed - Password is too young" = "Şifre değiştirme başarısız - Şifre çok yetersiz";
-"Password change failed - Password is in history" = "Şifre değiştirme başarısız - Şifre daha önceden kullanılmış";
-"Unhandled policy error: %{0}" = "İşlenmeyen yöntem hatası: %{0}";
-"Unhandled error response" = "İşlenmeyen hata yanıtı";
-"Password change is not supported." = "Şifre değiştirme desteklenmiyor.";
-"Unhandled HTTP error code: %{0}" = "İşlenmeyen HTTP hata kodu: %{0}";
+"The password was changed successfully." = "Parola değiştirildi.";
+"Password must not be empty." = "Parola boş olamaz.";
+"The passwords do not match. Please try again." = "Parola ile onayı aynı değil. Lütfen yeniden deneyin.";
+"Password change failed" = "Parola değiştirilemedi";
+"Password change failed - Permission denied" = "Parola değiştirilemedi. Yeterli izniniz yok";
+"Password change failed - Insufficient password quality" = "Parola değiştirilemedi. Parola gerekli koşulları karşılamıyor";
+"Password change failed - Password is too short" = "Parola değiştirilemedi. Parola çok kısa";
+"Password change failed - Password is too young" = "Parola değiştirilemedi. Parola çok zayıf";
+"Password change failed - Password is in history" = "Parola değiştirilemedi. Parola daha önce kullanılmış";
+"Unhandled policy error: %{0}" = "İşlenmedi ilke hatası: %{0}";
+"Unhandled error response" = "İşlenmedi hatası yanıtı";
+"Password change is not supported." = "Parola değiştirme desteklenmiyor.";
+"Unhandled HTTP error code: %{0}" = "İşlenmedi HTTP hata kodu: %{0}";
 "Cancel" = "İptal";
 "Invitations" = "Davetler";
-"Edit Filter" = "Filtreyi düzenle";
-"Delete Filter" = "Filtreyi Sil";
-"Create Filter" = "Yeni Filtre";
-"Delete Label" = "Bayrağı Sil";
-"Create Label" = "Yeni Etiket";
+"Edit Filter" = "Süzgeci düzenle";
+"Delete Filter" = "Süzgeci sil";
+"Create Filter" = "Yeni süzgeç";
+"Delete Label" = "Etiketi sil";
+"Create Label" = "Yeni etiket";
 "Accounts" = "Hesaplar";
-"Edit Account" = "Hesabı Düzenle";
-"Delete Account" = "Hesabı Sil";
-"Create Account" = "Hesap Oluştur";
-"Account Name" = "Hesap Adı";
+"Edit Account" = "Hesabı düzenle";
+"Delete Account" = "Hesabı sil";
+"Create Account" = "Hesap oluştur";
+"Account Name" = "Hesap adı";
 "SSL" = "SSL";
 "TLS" = "TLS";
 
 /* Avatars */
-"Use Gravatar" = "Gravatar Kullan";
-"Alternate Avatar" = "Alternatif Avatar";
+"Use Gravatar" = "Gravatar kullanılsın";
+"Alternate Avatar" = "Alternatif avatar";
 "none" =  "Hiç biri";
-"identicon" = "Profil İkonu";
+"identicon" = "Profil simgesi";
 "monsterid" = "Canavar";
 "wavatar" = "Wavatar";
 "retro" = "Retro";
 
 /* Animation Level */
-"Animation Level" = "Animasyon Seviyesi";
+"Animation Level" = "Canlandırma düzeyi";
 /* Normal Animation Mode */
 "animation_NORMAL" = "Normal";
 /* Limited Animation Mode */
@@ -501,21 +501,21 @@
 "animation_NONE" = "Yok";
 
 /* 2FA */
-"Enable two-factor authentication using a TOTP application" = "Bir TOTP uygulaması kullanarak iki faktörlü kimlik doğrulamayı etkinleştirin";
-"You must enter this key into your TOTP application." = "Bu anahtarı TOTP uygulamanıza girmelisiniz";
-"If you do not and you log out you will not be able to login again." = "Bunu yapmazsanız ve çıkış yaparsanız tekrar giriş yapamazsınız.";
-"Enter TOTP verification code :" = "Enter TOTP verification code :";
-"Invalid TOTP verification code" = "Invalid TOTP verification code";
+"Enable two-factor authentication using a TOTP application" = "Bir tek kullanımlık parola uygulaması ile iki adımlı doğrulamayı açın";
+"You must enter this key into your TOTP application." = "Bu anahtarı tek kullanımlık parola uygulamanıza yazmalısınız";
+"If you do not and you log out you will not be able to login again." = "Bunu yapmadan çıkış yaparsanız yeniden giriş yapamazsınız.";
+"Enter TOTP verification code :" = "Tek kullanımlık parola doğrulama kodunu yazın:";
+"Invalid TOTP verification code" = "Tek kullanımlık parola doğrulama kodu geçersiz";
 
 /* External Sieve scripts */
-"An external Sieve script is active" = "Harici bir Sieve komut dosyası etkin";
-"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve, e-posta filtreleme için kullanılabilecek bir programlama dilidir. SOGo'nun filtrelerinizi, tatil ve yönlendirme ayarlarınızı yönetmesine izin verirseniz, aktif komut dosyanız devre dışı bırakılır.";
+"An external Sieve script is active" = "Bir dış Sieve betiği kullanılıyor";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve, e-postaları süzmek için kullanılabilecek bir programlama dilidir. Süzgeçlerinizin, tatil ve yönlendirme ayarlarınızın SoGo tarafından yönetilmesine izin verirseniz, etkin betiğiniz kullanımdan kaldırılır.";
 "Let SOGo handle everything" = "Bırakın her şeyi SOGo halletsin";
 
 /* Password Recovery */
-"Password recovery mode" = "Password recovery mode";
-"Question" = "Question";
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password recovery" = "Password recovery";
-"Password change" = "Password change";
+"Password recovery mode" = "Parola kurtarma kipi";
+"Question" = "Soru";
+"Secondary e-mail" = "İkincil e-posta";
+"Answer" = "Yanıt";
+"Password recovery" = "Parola kurtarma";
+"Password change" = "Parola değiştir";
