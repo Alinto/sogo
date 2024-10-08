@@ -152,7 +152,7 @@
 "Contacts Names" = "Імена контактів";
 "Duplicate name" = "Дублювати ім'я";
 "Calendar categories must have unique names." = "Імена категорій календаря повинні бути унікальними.";
-"Disable e-mail notifications on CalDAV" = "Disable e-mail notifications on CalDAV";
+"Disable e-mail notifications on CalDAV" = "Вимкнути сповіщення електронною поштою на CalDAV";
 
 /* Default Calendar */
 "Default calendar" = "Календар за замовчуванням";
@@ -206,7 +206,7 @@
 "Insert signature on reply" = "Вставляти підпис у відповідь";
 "Insert signature on forward" = "Вставляти підпис при переадресації";
 "Show recipients or sender full email in mailboxes" = "Показувати повну електронну пошту одержувачів або відправника в поштових скриньках";
-"Hide attachements for inline images" = "Hide attachements for inline images";
+"Hide attachements for inline images" = "Приховати вкладення для вбудованих зображень";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Розмір шрифта за замовчуванням";
@@ -232,11 +232,11 @@
 "Mail Account" = "Обліковий запис";
 "New Mail Account" = "Новий обліковий запис";
 "Server Name" = "Ім’я сервера";
-"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
-"Smtp Auth" = "Smtp Auth";
+"Outgoing Server Name (SMTP)" = "Ім'я вихідного сервера (SMTP)";
+"Smtp Auth" = "Аутентифікація SMTP";
 "Port" = "Порт";
 "Encryption" = "Шифрування";
-"Outgoing Encryption" = "Outgoing Encryption";
+"Outgoing Encryption" = "Шифрування вихідних повідомлень";
 "None" = "Відсутнє";
 "User Name" = "Ім’я користувача";
 "Full Name" = "Повне ім’я";
