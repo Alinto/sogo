@@ -256,7 +256,7 @@
 "Save As..." = "Speichern unter...";
 "Print Preview" = "Druckvorschau";
 "View Message Source" = "Nachrichten-Quelltext";
-"View raw message" = "Quelltext anzeigen";
+"View raw message" = "Nachricht unverändert anzeigen";
 
 /* Message view "more" menu: create an event from message */
 "Convert To Event" = "In Termin umwandeln";
