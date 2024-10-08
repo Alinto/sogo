@@ -143,23 +143,23 @@
 "This mail is being sent from an unsecure network!" = "Este email está a ser enviado por uma rede não segura!";
 "Address Book" = "Livro de Endereços";
 "Search For" = "Procurar Por";
-"Contains" = "Contains";
-"Does not contains" = "Does not contains";
-"Advanced search" = "Advanced search";
-"Anytime" = "Anytime";
-"Last 7 days" = "Last 7 days";
-"Last 30 days" = "Last 30 days";
-"Last 6 month" = "Last 6 month";
-"Before" = "Before";
-"After" = "After";
-"Between" = "Between";
-"and" = "and";
-"With attachments" = "With attachments";
-"In favorites" = "In favorites";
-"Unseen only" = "Unseen only";
-"Show more" = "Show more";
-"Reset" = "Reset";
-"Message size" = "Message size";
+"Contains" = "Contém";
+"Does not contains" = "Não contém";
+"Advanced search" = "Procura avançada";
+"Anytime" = "Em qualquer altura";
+"Last 7 days" = "Últimos 7 dias";
+"Last 30 days" = "Últimos 30 dias";
+"Last 6 month" = "Últimos 6 meses";
+"Before" = "Antes";
+"After" = "Depois";
+"Between" = "Entre";
+"and" = "e";
+"With attachments" = "Com anexos";
+"In favorites" = "Nos favoritos";
+"Unseen only" = "Só não lidas";
+"Show more" = "Mostrar mais";
+"Reset" = "Repor";
+"Message size" = "Tamanho da mensagem";
 
 /* Popup "show" */
 "all"     = "todos";
@@ -256,7 +256,7 @@
 "Save As..." = "Guardar Como...";
 "Print Preview" = "Pré-visualizar Impressão";
 "View Message Source" = "Ver Código-Fonte da Mensagem";
-"View raw message" = "View raw message";
+"View raw message" = "Ver mensagem em bruto";
 
 /* Message view "more" menu: create an event from message */
 "Convert To Event" = "Converter para Evento";

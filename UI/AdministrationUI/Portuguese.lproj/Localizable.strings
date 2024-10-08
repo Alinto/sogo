@@ -12,14 +12,14 @@
 "Name or Email" = "Nome ou Email";
 "ACLs saved" = "ACLs guardadas";
 /* Rights module: initial search message */
-"Start a search to edit the rights" = "Começar uma pesquisa para editar os direitos";
+"Start a search to edit the rights" = "Começar uma pesquisa para editar as permissões";
 /* Rights module: Empty search result */
 "No matching user" = "Utilizador não encontrado";
 /* Rights module: no selection */
 "No resource selected" = "Nenhum recurso selecionado";
 "Add User" = "Adicionar Utilizador";
 "Subscribe User" = "Subscrever Utilizador";
-"Rights" = "Direitos";
+"Rights" = "Permissões";
 "Search Users" = "Procurar Utilizadores";
 "users found" = "utilizadores encontrados";
 "No resource" = "Nenhum recurso";

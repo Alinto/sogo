@@ -250,7 +250,7 @@
 "No certificate associated to card." = "Nenhum certificado associado ao cartão de visita.";
 
 /* acls */
-"Access rights to" = "Direitos de acesso para";
+"Access rights to" = "Permissões de acesso para";
 "For user" = "Para o utilizador";
 "Any Authenticated User" = "Qualquer utilizador autenticado";
 "Public Access" = "Acesso Publico";

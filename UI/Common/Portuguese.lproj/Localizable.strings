@@ -3,7 +3,7 @@
 /* toolbars */
 "Save" = "Guardar";
 "Close" = "Fechar";
-"Edit User Rights" = "Editar direitos do utilizador";
+"Edit User Rights" = "Editar permissões do utilizador";
 "Home" = "Início";
 "Calendar" = "Calendário";
 "Address Book"  = "Contactos";
@@ -28,7 +28,7 @@
 "Public Access" = "Acesso Público";
 "Any user not listed above" = "Qualquer utilizador não listado acima";
 "Anybody accessing this resource from the public area" = "Qualquer um a aceder a este recurso da área pública";
-"Sorry, the user rights can not be configured for that object." = "Desculpe, os direitos do utilizador não podem ser modificados para este objeto.";
+"Sorry, the user rights can not be configured for that object." = "Desculpe, as permissões do utilizador não podem ser modificadas para este objeto.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Qualquer utilizador com uma conta neste sistema será capaz de aceder à sua caixa de correio \"% {0}\". Tem a certeza que confia em todos?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
@@ -60,7 +60,7 @@
 "You have already subscribed to that folder!"
         = "Já subscreveu essa pasta!";
 "The user rights cannot be edited for this object!"
-        = "Os direitos do utilizador não podem ser editados para este objeto!";
+        = "As permissões do utilizador não podem ser editadas para este objeto!";
 "A folder by that name already exists." = "Uma pasta com esse nome já existe.";
 "You cannot create a list in a shared address book."
         = "Não pode criar uma lista num livro de endereços partilhado";
@@ -118,7 +118,7 @@
 "a2_Thursday" = "Qu";
 "a2_Friday" = "Se";
 "a2_Saturday" = "Sa";
-"Access Rights" = "Direitos de Acesso";
+"Access Rights" = "Permissões de Acesso";
 "Add User" = "Adicionar Utilizador";
 "Loading" = "A carregar";
 "No such user." = "Utilizador não existe";
