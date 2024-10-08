@@ -143,23 +143,23 @@
 "This mail is being sent from an unsecure network!" = "Это письмо было отправлено из небезопасной сети!";
 "Address Book" = "Адресная книга";
 "Search For" = "Что искать";
-"Contains" = "Contains";
-"Does not contains" = "Does not contains";
-"Advanced search" = "Advanced search";
-"Anytime" = "Anytime";
-"Last 7 days" = "Last 7 days";
-"Last 30 days" = "Last 30 days";
-"Last 6 month" = "Last 6 month";
-"Before" = "Before";
-"After" = "After";
-"Between" = "Between";
-"and" = "and";
-"With attachments" = "With attachments";
-"In favorites" = "In favorites";
-"Unseen only" = "Unseen only";
-"Show more" = "Show more";
-"Reset" = "Reset";
-"Message size" = "Message size";
+"Contains" = "Содержит";
+"Does not contains" = "Не содержит";
+"Advanced search" = "Расширенный поиск";
+"Anytime" = "Любое время";
+"Last 7 days" = "Последние 7 дней";
+"Last 30 days" = "Последние 30 дней";
+"Last 6 month" = "Последние 6 месяцев";
+"Before" = "До";
+"After" = "После";
+"Between" = "Между";
+"and" = "и";
+"With attachments" = "С вложениями";
+"In favorites" = "В избранном";
+"Unseen only" = "Только непросмотренные";
+"Show more" = "Показать еще";
+"Reset" = "Сброс";
+"Message size" = "Размер сообщения";
 
 /* Popup "show" */
 "all"     = "все";
@@ -256,7 +256,7 @@
 "Save As..." = "Сохранить как...";
 "Print Preview" = "Печатать с предпросмотром";
 "View Message Source" = "Просмотр исходного текста";
-"View raw message" = "View raw message";
+"View raw message" = "Просмотр исходного сообщения";
 
 /* Message view "more" menu: create an event from message */
 "Convert To Event" = "Преобразовать в Событие";
