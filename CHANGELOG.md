@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.11.1](https://github.com/Alinto/sogo/compare/SOGo-5.11.0...SOGo-5.11.1) (2024-10-08)
+
+
+### Enhancements
+
+* **login:** add parameters to prevent uneccesary connection request when the domain is unknown ([56598d1](https://github.com/Alinto/sogo/commit/56598d1e3777265ebb09fa19e7a719f673aaee40))
+* **sieve:** add from on notificatons ([1c20c1e](https://github.com/Alinto/sogo/commit/1c20c1ead3094ca109a5334fdf33726a0e638365))
+* **build:** Use pkgconfig to compute cflags for wbxml2 instead of hardcoding them. Thanks to [jmallach](https://github.com/jmallach)
+
+### Regression Fixes
+* **calendar:** Fix regression on repeat task ([2a17449](https://github.com/Alinto/sogo/commit/2a1744998c0023f3cbaddd6ee90275ee1baf6cc3))
+* **mail:** Add an option in Preferences to display full email instead of name alone in mailboxes. Fix issue caused by advanced search. ([fa2caf9](https://github.com/Alinto/sogo/commit/fa2caf902666367e247850ce9da82737b5ec6bbb))
+
+### Bug Fixes
+
+* **calendar:** Fix all day recurring event displayed on 2 days when a DST change occurs at the endDate ([2f75a7f](https://github.com/Alinto/sogo/commit/2f75a7fb1b57cbb4d98ec1596fe5b3d98cdd0934))
+* **ckeditor5:** prevent ckeditor5 to preview media ([2dd1097](https://github.com/Alinto/sogo/commit/2dd10970a4e0cbe8f2e8a9c0241d139d4ce006fa))
+* **mail:** Fix assertion when there is an empty image in the mail. Fixes [#6035](https://bugs.sogo.nu/view.php?id=6035). ([59d48cb](https://github.com/Alinto/sogo/commit/59d48cb38285ab019013972baa3e5269b6188a5e))
+* **mail:** Fix highlighsearch html rendering on subject ([0cbd082](https://github.com/Alinto/sogo/commit/0cbd082c1d48c70d87e58a8bb8ae05183676e2a1))
+* **mail:** Fix HTML mail rendering issue ([41a0f8d](https://github.com/Alinto/sogo/commit/41a0f8d9afc3a9d29f26c4109620252a82002ae4))
+* **mail:** Fix issue where mailto: links are badly formatted when html composing ([86446a0](https://github.com/Alinto/sogo/commit/86446a059ce70adf103c27768040e52087000812))
+* **mail:** Fix issue where unread counter is invalid when whanging folder. Fixes [#6001](https://bugs.sogo.nu/view.php?id=6001). ([1f6bbc1](https://github.com/Alinto/sogo/commit/1f6bbc1044e8c4f715b96b1b95bfb0eef888e7a3) [91a2490](https://github.com/Alinto/sogo/commit/91a249009b4a700b0a2b335450b32a73985b8dd1))
+* **mail:** improve algo to fetch imap folders for mail view ([68f4fc1](https://github.com/Alinto/sogo/commit/68f4fc134312bc28031e2be0167c117f67c6f0b8))
+* **security:** Prevent user to add html script in its preferences ([a7023bc](https://github.com/Alinto/sogo/commit/a7023bce1642ec1fd25fe68f0541407d78f321a0))
+* **sogo-tool:** prevent a bug when restoring two events with same id ([84fe91c](https://github.com/Alinto/sogo/commit/84fe91c29c24440980df4311d0ae0835337f1ec4))
+* **tests:** Add timeout on all async tests ([64f1788](https://github.com/Alinto/sogo/commit/64f17880c739e9feef8ce69ed221d83586b773a1))
+
+
+### Localization
+
+* **de:** Update German translations ([592f35b](https://github.com/Alinto/sogo/commit/592f35bbec2823e72f1790c8b629c485f3e5500d))
+* **pt_BR:** Update BrazilianPortuguese translations ([1d3b502](https://github.com/Alinto/sogo/commit/1d3b502bc78f50c9038027036036c6d37d7fe340))
+* **pt:** Update Portuguese translations ([a4de357](https://github.com/Alinto/sogo/commit/a4de35748babced2f385046d97055fec8d80e667))
+* **ru:** Update Russian translations ([78ea981](https://github.com/Alinto/sogo/commit/78ea981e7f4254a8353e276c309fe54443bdd090))
+* **tr_TR:** Update TurkishTurkey translations ([41aecca](https://github.com/Alinto/sogo/commit/41aecca692f93134c6dd0d535ed7479182f7fd23))
+* **uk:** Update Ukrainian translations ([80a7689](https://github.com/Alinto/sogo/commit/80a76895dd59402e884d0226f59bd8edd7e8a9c1))
+
 ## [5.11.0](https://github.com/Alinto/sogo/compare/SOGo-5.10.0...SOGo-5.11.0) (2024-08-07)
 
 
