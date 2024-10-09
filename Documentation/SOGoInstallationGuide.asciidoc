@@ -70,7 +70,7 @@ Assumptions
 SOGo reuses many components in an infrastructure. Thus, it requires the
 following:
 
-* Database server (MySQL, PostgreSQL or Oracle)
+* Database server (MariaDB, MySQL, PostgreSQL or Oracle)
 * LDAP server (OpenLDAP, Novell eDirectory, Microsoft Active Directory
 and others) 
 * SMTP server (Postfix, Sendmail and others)
@@ -265,8 +265,8 @@ This will install SOGo and its dependencies such as GNUstep, the SOPE
 packages and memcached. Once the base packages are installed, you need
 to install the proper database connector suitable for your environment.
 You need to install `sope49-gdl1-postgresql` for the PostgreSQL database
-system, `sope49-gdl1-mysql` for MySQL or `sope49-gdl1-oracle` for Oracle.
-The installation command will thus look like this:
+system, `sope49-gdl1-mysql` for MariaDB/MySQL or `sope49-gdl1-oracle` 
+for Oracle. The installation command will thus look like this:
 
  yum install sope49-gdl1-postgresql
 
@@ -1586,7 +1586,7 @@ appointments, tasks and contacts information. It also uses the database
 system to store personal preferences of SOGo users. In this guide, we
 assume you use PostgreSQL so commands provided the create the database
 are related to this application. However, other database servers are
-supported, such as MySQL and Oracle.
+supported, such as MariaDB, MySQL and Oracle.
 
 First, make sure that your PostgreSQL server has TCP/IP connections
 support enabled.
@@ -1651,7 +1651,7 @@ The following table describes the parameters that were set:
 |Parameter used to set the database URL so that SOGo can retrieve user
 profiles.
 
-For MySQL, set the database URL to something like:
+For MariaDB/MySQL, set the database URL to something like:
 `mysql://sogo:sogo@127.0.0.1:3306/sogo/sogo_user_profile`.
 
 |S |OCSFolderInfoURL
@@ -1725,7 +1725,8 @@ In addition to the seven tables described above, two other tables get
 created in the database: `sogo_quick_appointment` and `sogo_quick_contact`
 which store calendar and contact information.
 
-If you're using MySQL, make sure in your `my.cnf` file you have:
+If you're using MariaDB/MySQL, make sure in your `my.cnf` file you 
+have:
 
 ----
 [mysqld]
@@ -1740,10 +1741,11 @@ default-character-set=utf8
 default-character-set=utf8
 ----
 
-MySQL SSL Connection
-^^^^^^^^^^^^^^^^^^^^
+MariaDB/MySQL SSL Connection
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Add the following settings in the `sogo.conf` file to enable SSL connection between SOGo and MySQL / MariaDB :
+Add the following settings in the `sogo.conf` file to enable SSL connection 
+between SOGo and MariaDB/MySQL :
 
 ----
 MySQL4SSLEnabled = YES;
@@ -1753,12 +1755,13 @@ MySQL4SSLCaPath = "/mysql_keys/ca-cert.pem";
 ----
 
 
-MySQL complete Unicode compliance
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+MariaDB/MySQL complete Unicode compliance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-By default MySQL only supports a subset of UTF-8, meaning that characters such
-as emoji are not handled properly.  Some extra steps at installation can be
-undertaken to leverage full Unicode support under MySQL.
+By default MariaDB/MySQL only supports a subset of UTF-8, meaning that 
+characters such as emoji are not handled properly.  Some extra steps at 
+installation can be undertaken to leverage full Unicode support under 
+MariaDB/MySQL.
 
 IMPORTANT: Switching to complete Unicode compliance on an already-deployed SOGo
 is out of scope of this document, as it would typically involve delicate manual
@@ -1766,10 +1769,11 @@ operations on the database system.
 
 Requirements:
 
+* MariaDB >= 5.5
 * MySQL >= 5.5
 * SOGo >= 3.1.0
 
-Strongly suggested MySQL configuration settings (innodb* parameters are
+Strongly suggested MariaDB/MySQL configuration settings (innodb* parameters are
 mandatory *only* for versions lower than 8.0):
 
 ----
@@ -1789,8 +1793,8 @@ innodb_large_prefix            = TRUE       # MySQL < 8.0 only
 ----
 
 CAUTION: Changing InnoDB parameters on an already deployed database server can
-cause severe data loss.  Do not blindly edit MySQL parameters without reading
-and understanding the implication of such changes.
+cause severe data loss.  Do not blindly edit MariaDB/MySQL parameters without 
+reading and understanding the implication of such changes.
 
 A parameter must be added to `sogo.conf` to turn on complete Unicode
 compliance:
@@ -1810,8 +1814,8 @@ a command such as:
 mysql -hHOST -uUSER -p -D SOGO < Scripts/mysql-utf8mb4.sql
 ----
 
-Where `HOST`, `USER` and `SOGO` are your MySQL host, username and database name
-respectively.
+Where `HOST`, `USER` and `SOGO` are your MariaDB/MySQL host, username and 
+database name respectively.
 
 Once SOGo is running, you can test correctness by creating an event such as
 “Lunch with &#127829; and fries” and seeing it properly displayed in the SOGo
@@ -1859,11 +1863,12 @@ they have the same name as popular LDAP attributes (such as `givenName`,
 
 |userPasswordPolicy
 
-|An array of dictionaries that define regular expressions used to determine whether a new password
- is valid.
+|An array of dictionaries that define regular expressions used to determine 
+whether a new password is valid.
 
-Each dictionary must contain the key "regex" associated to a string representing a regular
-expression. It can also contain the key "label" to briefly describe the constraint to the user. Example:
+Each dictionary must contain the key "regex" associated to a string 
+representing a regular expression. It can also contain the key "label" to 
+briefly describe the constraint to the user. Example:
 
 ----
 userPasswordPolicy = (
@@ -3229,9 +3234,9 @@ instructions. On the SOGo side, _SOGoEnablePublicAccess_ must be set to
 need to adjust the word size of your IMAP server. In Dovecot, the parameter
 to increase is "imap_max_line_length" while under Cyrus IMAP Server, the
 parameter is "maxword". We suggest a buffer of 2MB.
-* If you are using MySQL, make sure you set "max_allowed_packet" to a large value
-since the EAS cache size can be large for mailboxes with thousands of messages.
-A 64M or even 128M value is recommended.
+* If you are using MariaDB/MySQL, make sure you set "max_allowed_packet" to a 
+large value since the EAS cache size can be large for mailboxes with thousands 
+of messages. A 64M or even 128M value is recommended.
 
 In order to use the SOGo ActiveSync support code in production
 environments, you need to get a proper usage license from Microsoft.
