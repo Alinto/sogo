@@ -643,11 +643,15 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
       allowed = YES;
 
     if([domainsKnown length] == 0 && [domainsAllowed length] == 0)
+    {
       [self errorWithFormat: @"SOGoForbidUnknownDomainsAuth is set but sogo don't know any domains"];
+      return NO;
+    }
     else if(!allowed)
+    {
       [self errorWithFormat: @"User domain is unknown or not allowed: %@", userDomain];
-    
-    return allowed;
+      return NO;
+    }
   }
 
   // We check the fail count per user in memcache (per server). If the
