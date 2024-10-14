@@ -102,6 +102,8 @@
       pid = getpid();
       rndm = random();
     }
+  if(pid<255)
+    pid+=255; //Because of a native spamassassin rule -> header TVD_RATWARE_MSGID_01 rule on message-id like '<XX-' are suspicious.(Message-ID =~ /<[a-z0-9]{2}-/)
   sequence++;
   f = [[NSDate date] timeIntervalSince1970];
 
