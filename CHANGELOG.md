@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.11.2](https://github.com/Alinto/sogo/compare/SOGo-5.11.1...SOGo-5.11.2) (2024-10-15)
+
+
+### Bug Fixes
+
+* **mail:** modify the message-id to not start by XX- that trigger a native spamassassin rule ([1d8ee80](https://github.com/Alinto/sogo/commit/1d8ee80c394382d26e50457cda9f9292b0f4f63b))
+* **security:** fix a security issue introduced in 5.11.1 with parameter SOGoForbidUnknownDomainsAuth ([04a9a87](https://github.com/Alinto/sogo/commit/04a9a8773dfb30dcc86c6146eed175a9a115f6b2))
+
 ## [5.11.1](https://github.com/Alinto/sogo/compare/SOGo-5.11.0...SOGo-5.11.1) (2024-10-08)
 
 
