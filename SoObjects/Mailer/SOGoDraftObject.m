@@ -291,6 +291,7 @@ static NSString    *userAgent      = nil;
     {
       [headers setObject: @"true"  forKey: @"receipt"];
       [headers setObject: receipt forKey: @"Disposition-Notification-To"];
+      [headers setObject: receipt forKey: @"Return-Receipt-To"];
     }
   else
     {
@@ -302,12 +303,14 @@ static NSString    *userAgent      = nil;
           if (pureSender)
             {
               [headers setObject: pureSender forKey: @"Disposition-Notification-To"];
+              [headers setObject: pureSender forKey: @"Return-Receipt-To"];
             }
         }
       else
         {
           [headers removeObjectForKey: @"receipt"];
           [headers removeObjectForKey: @"Disposition-Notification-To"];
+          [headers removeObjectForKey: @"Return-Receipt-To"];
         }
     }
 }
@@ -1042,8 +1045,10 @@ static NSString    *userAgent      = nil;
   if ([priority isNotEmpty] && [priority isKindOfClass: [NSString class]])
     [info setObject: (NSString*)priority forKey: @"X-Priority"];
   receipt = [h objectForKey: @"disposition-notification-to"];
-  if ([receipt isNotEmpty] && [receipt isKindOfClass: [NSString class]])
+  if ([receipt isNotEmpty] && [receipt isKindOfClass: [NSString class]]) {
     [info setObject: (NSString*)receipt forKey: @"Disposition-Notification-To"];
+    [info setObject: (NSString*)receipt forKey: @"Return-Receipt-To"];
+  }
 
   ud = [[context activeUser] userDefaults];
 
@@ -1893,6 +1898,8 @@ static NSString    *userAgent      = nil;
     [map setObject: s forKey: @"X-Priority"];
   if ([(s = [headers objectForKey: @"Disposition-Notification-To"]) length] > 0)
     [map setObject: s forKey: @"Disposition-Notification-To"];
+  if ([(s = [headers objectForKey: @"Return-Receipt-To"]) length] > 0)
+    [map setObject: s forKey: @"Return-Receipt-To"];
 
   [self _addHeaders: _headers toHeaderMap: map];
 
