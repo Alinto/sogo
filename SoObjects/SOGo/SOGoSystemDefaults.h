@@ -140,6 +140,8 @@ NSComparisonResult languageSort(id el1, id el2, void *context);
 - (BOOL)isURLEncryptionEnabled;
 - (NSString *)urlEncryptionPassphrase;
 
+- (NSString *)urlCreateAccount;
+
 @end
 
 #endif /* SOGOSYSTEMDEFAULTS_H */

@@ -928,4 +928,9 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
   return disableExport;
 }
 
+- (NSString *)urlCreateAccount
+{
+  return [self stringForKey: @"SOGoURLCreateAccount"];
+}
+
 @end
