@@ -815,6 +815,8 @@ Obiously, if your users can connect without specifying a domain, let this parame
 |S |SOGoDomainAllowed
 |Parameter used to define which domains SOGo should allowed during a connection request. This parameter is an array of strings.
 
+|S |SOGoURLCreateAccount
+|Add a link below the login form and set the link using the value of this setting.
 
 |S |SOGoPasswordRecoveryEnabled
 |Boolean enable password recovery with secret question or secondary e-mail. Default value is `NO`.
