@@ -267,4 +267,8 @@
   return ret;
 }
 
+- (NSString *) applicationName {
+  return @"SOGo";
+}
+
 @end
