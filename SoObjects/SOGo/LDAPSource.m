@@ -2306,7 +2306,7 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
 
 - (NSArray *) membersForGroupWithUID: (NSString *) uid
 {
-  NSMutableArray *dns, *uids;
+  NSMutableArray *dns, *uids, *userLogins;
   NSString *dn, *login;
   SOGoUserManager *um;
   NSDictionary *d, *contactInfos;
@@ -2327,6 +2327,7 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
       members = [NSMutableArray new];
       uids = [NSMutableArray array];
       dns = [NSMutableArray array];
+      userLogins = [NSMutableArray array];
 
       // We check if it's a static group
       // Fetch "members" - we get DNs
@@ -2358,6 +2359,12 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
               pool = [NSAutoreleasePool new];
               dn = [dns objectAtIndex: i];
               login = [um getLoginForDN: [dn lowercaseString]];
+              if([userLogins containsObject: login])
+              {
+                [pool release];
+                continue; //user alrady fetch
+              }
+              [userLogins addObject: login];
               user = [SOGoUser userWithLogin: login  roles: nil];
               if (user)
                 {
@@ -2385,6 +2392,12 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
             {
               pool = [NSAutoreleasePool new];
               login = [uids objectAtIndex: i];
+              if([userLogins containsObject: login])
+              {
+                [pool release];
+                continue; //user alrady fetch
+              }
+              [userLogins addObject: login];
               user = [SOGoUser userWithLogin: login  roles: nil];
               if (user)
                 {
