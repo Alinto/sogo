@@ -1093,24 +1093,29 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
   domain = nil;
   infos = nil;
 
+  //Try to get the domain from the uid
+  r = [uid rangeOfString: @"@" options: NSBackwardsSearch];
+  if (r.location != NSNotFound)
+  {
+    // The domain is probably appended to the username;
+    // make sure it is a defined domain in the configuration.
+    domain = [uid substringFromIndex: (r.location + r.length)];
+    if ([self isDomainDefined: domain])
+      username = [uid substringToIndex: r.location];
+    else
+      domain = nil;
+  }
+  
   sd = [SOGoSystemDefaults sharedSystemDefaults];
-  if ([sd enableDomainBasedUID])
-    {
-      r = [uid rangeOfString: @"@" options: NSBackwardsSearch];
-      if (r.location != NSNotFound)
-        {
-          // The domain is probably appended to the username;
-          // make sure it is a defined domain in the configuration.
-          domain = [uid substringFromIndex: (r.location + r.length)];
-          if ([self isDomainDefined: domain])
-            username = [uid substringToIndex: r.location];
-          else
-            domain = nil;
-        }
-      if (domain != nil)
-        infos = [self contactInfosForUserWithUIDorEmail: username
+  if (domain != nil)
+  {
+    if ([sd enableDomainBasedUID])
+      infos = [self contactInfosForUserWithUIDorEmail: username
                                                inDomain: domain];
-    }
+    else
+      infos = [self contactInfosForUserWithUIDorEmail: uid
+                                               inDomain: domain];
+  }
 
   if (infos == nil)
     // If the user was not found using the domain or if no domain was detected,
