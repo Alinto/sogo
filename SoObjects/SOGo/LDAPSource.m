@@ -2364,7 +2364,8 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
                 [pool release];
                 continue; //user alrady fetch
               }
-              [userLogins addObject: login];
+              if(login != nil)
+                [userLogins addObject: login];
               user = [SOGoUser userWithLogin: login  roles: nil];
               if (user)
                 {
@@ -2397,7 +2398,8 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
                 [pool release];
                 continue; //user alrady fetch
               }
-              [userLogins addObject: login];
+              if(login != nil)
+                [userLogins addObject: login];
               user = [SOGoUser userWithLogin: login  roles: nil];
               if (user)
                 {
