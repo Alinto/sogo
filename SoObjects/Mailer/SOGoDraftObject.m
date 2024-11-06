@@ -993,7 +993,6 @@ static NSString    *userAgent      = nil;
   [self _fileAttachmentsFromPart: [m body] onlyImages: onlyImages];
 }
 
-
 //
 //
 //
@@ -1022,7 +1021,7 @@ static NSString    *userAgent      = nil;
 
   addresses = [NSMutableArray array];
   [self _addEMailsOfAddresses: [sourceEnvelope from] toArray: addresses];
-  if ([addresses count])
+  if ([addresses count] > 0)
     [info setObject: [addresses objectAtIndex: 0] forKey: @"from"];
   addresses = [NSMutableArray array];
   [self _addEMailsOfAddresses: [sourceEnvelope to] toArray: addresses];
@@ -1038,7 +1037,7 @@ static NSString    *userAgent      = nil;
   addresses = [NSMutableArray array];
   [self _addEMailsOfAddresses: [sourceEnvelope replyTo] toArray: addresses];
   if ([addresses count] > 0)
-    [info setObject: addresses forKey: @"replyTo"];
+    [info setObject: [addresses objectAtIndex: 0] forKey: @"replyTo"];
 
   h = [sourceMail mailHeaders];
   priority = [h objectForKey: @"x-priority"];

@@ -132,6 +132,8 @@
   drafts = [account draftsFolderInContext: context];
   newMail = [drafts newDraft];
   [newMail fetchMailForEditing: co];
+  if ([co isInTemplatesFolder])
+    [newMail save];
   [newMail storeInfo];
 
   accountName = [account nameInContainer];
