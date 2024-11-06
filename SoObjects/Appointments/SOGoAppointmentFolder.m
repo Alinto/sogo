@@ -1130,26 +1130,28 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   delta = [masterEndDate timeIntervalSinceDate: [master startDate]];
   recurrenceIdRange = [NGCalendarDateRange calendarDateRangeWithStartDate: recurrenceId
                                                                   endDate: [recurrenceId dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds: delta]];
-  recordIndex = [self _indexOfRecordMatchingDate: recurrenceId inArray: ma];
-  if ([dateRange doesIntersectWithDateRange: recurrenceIdRange] && recordIndex == -1) {
-    [self warnWithFormat:
-                @"missing exception record for recurrence-id %@ (uid %@), ma = %@, dr = %@, rir = %@",
-              recurrenceId, [component uid], ma, dateRange, recurrenceIdRange];
-  }
-  if ([dateRange doesIntersectWithDateRange: recurrenceIdRange] && recordIndex != -1)
+  if ([dateRange doesIntersectWithDateRange: recurrenceIdRange])
     {
       // The recurrence exception intersects with the date range;
       // find the occurence and replace it with the new record
-      if ([dateRange containsDate: [component startDate]] ||
-            (endDate && [dateRange containsDate: endDate]))
-          {
-            // We must pass nil to :container here in order to avoid re-entrancy issues.
-            newRecord = [self _fixupRecord: [component quickRecordFromContent: nil  container: nil  nameInContainer: nil]];
-            [ma replaceObjectAtIndex: recordIndex withObject: newRecord];
-          }
-        else
-          // The range doesn't cover the exception; remove it from the records
-          [ma removeObjectAtIndex: recordIndex];
+      recordIndex = [self _indexOfRecordMatchingDate: recurrenceId inArray: ma];
+      if (recordIndex > -1)
+        {
+          if ([dateRange containsDate: [component startDate]] ||
+              (endDate && [dateRange containsDate: endDate]))
+            {
+              // We must pass nil to :container here in order to avoid re-entrancy issues.
+              newRecord = [self _fixupRecord: [component quickRecordFromContent: nil  container: nil  nameInContainer: nil]];
+              [ma replaceObjectAtIndex: recordIndex withObject: newRecord];
+            }
+          else
+            // The range doesn't cover the exception; remove it from the records
+            [ma removeObjectAtIndex: recordIndex];
+        }
+      else
+        [self errorWithFormat:
+                @"missing exception record for recurrence-id %@ (uid %@)",
+              recurrenceId, [component uid]];
     }
   else
     {
