@@ -452,6 +452,10 @@ md-dialog md-dialog-actions.sg-mail-editor-attachments {
   .sogo-raw-html-embed .raw-html-embed__preview-placeholder {
     display: none !important;
   }
+
+  .ck-content p {
+    margin: revert;
+  }
 }
 
 // Search highlight
