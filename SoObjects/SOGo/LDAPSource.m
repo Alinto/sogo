@@ -1429,12 +1429,13 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   NSMutableArray *contacts;
   EOQualifier *qualifier;
   unsigned int i;
+  NSMutableString *s;
   NSString *sortAttribute;
   BOOL sortReverse;
 
   contacts = [NSMutableArray array];
 
-  if(theDomain)
+  if(theDomain != nil && [theDomain length] > 0)
   {
     if ([_baseDN rangeOfString: @"%d"].location != NSNotFound)
     {
@@ -2300,8 +2301,7 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
   NSRange r;
 
   r = [theLogin rangeOfString: @"@"];
-  if (r.location != NSNotFound &&
-      [_pristineBaseDN rangeOfString: @"%d"].location != NSNotFound)
+  if (r.location != NSNotFound && [_pristineBaseDN rangeOfString: @"%d"].location != NSNotFound)
     {
       s = [NSMutableString stringWithString: _pristineBaseDN];
       [s replaceOccurrencesOfString: @"%d"  withString: [theLogin substringFromIndex: r.location+1]  options: 0  range: NSMakeRange(0, [s length])];
