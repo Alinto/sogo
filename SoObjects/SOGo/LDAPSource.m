@@ -1434,6 +1434,16 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 
   contacts = [NSMutableArray array];
 
+  if(theDomain)
+  {
+    if ([_baseDN rangeOfString: @"%d"].location != NSNotFound)
+    {
+      s = [NSMutableString stringWithString: _baseDN];
+      [s replaceOccurrencesOfString: @"%d"  withString: theDomain  options: 0  range: NSMakeRange(0, [s length])];
+      ASSIGN(_baseDN, s);
+    }
+  }
+
   if ([match length] > 0 || !_listRequiresDot)
     {
       ldapConnection = [self _ldapConnection];
