@@ -1312,4 +1312,10 @@
   Mailbox.prototype.getHighlightWords = function () {
     return this.$highlightWords;
   };
+
+  /* TODO */
+  Mailbox.prototype.cleanMailbox = function () {
+    Mailbox.$$resource.post(this.id, 'cleanMailbox');
+  };
+  
 })();

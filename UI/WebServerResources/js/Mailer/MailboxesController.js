@@ -53,6 +53,10 @@
       $rootScope.$on('resetMailAdvancedSearchPanel', function () {
         vm.reset();
       });
+
+      $rootScope.$on('showRemoveOldEmailsPanel', function (e, d) {
+        vm.showRemoveOldEmailsPanel(d.folder);
+      });
     };
 
 
@@ -446,6 +450,41 @@
             });
         });
     };
+
+    this.showRemoveOldEmailsPanel = function (folder) {
+        // Close sidenav on small devices
+        if (!$mdMedia(sgConstant['gt-md']))
+          $mdSidenav('left').close();
+
+        $mdDialog.show({
+          template: document.getElementById('removeOldEmails').innerHTML,
+          parent: angular.element(document.body),
+          controller: function () {
+            var dialogCtrl = this;
+
+            this.$onInit = function () {
+              // Pass main controller
+              this.mainController = vm;
+              this.folder = folder;
+              this.folderName = folder.$displayName;
+            };
+
+            dialogCtrl.closeDialog = function () {
+              $mdDialog.hide();
+            };
+           
+            dialogCtrl.apply = function () {
+              console.log(this.mailbox);
+              this.folder.cleanMailbox();
+              // $mdDialog.hide();
+            };
+          },
+          controllerAs: 'dialogCtrl',
+          clickOutsideToClose: false,
+          escapeToClose: false,
+        });
+    };
+
 
     this.delegate = function(account) {
       $mdDialog.show({

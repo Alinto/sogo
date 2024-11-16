@@ -46,6 +46,8 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
 
+#import <EOControl/EOQualifier.h>
+
 #import "UIxMailFolderActions.h"
 
 @implementation UIxMailFolderActions
@@ -1296,6 +1298,22 @@
 - (WOResponse *) markMessagesAsNotJunkAction
 {
   return [self _markMessagesAsJunkOrNotJunk: NO];
+}
+
+- (WOResponse *) cleanMailboxAction
+{
+  NSString *searchString;
+  EOQualifier *searchQualifier;
+
+  searchString = [NSString stringWithFormat: @"(date >= (NSCalendarDate)\"%@\")", @"2020-01-12"];
+  searchQualifier = [EOQualifier qualifierWithQualifierFormat: searchString];
+
+  id foo;
+  foo = [[self clientObject] fetchUIDsMatchingQualifier: searchQualifier
+                            sortOrdering: @"date"
+                                threaded: NO];
+
+  return [self responseWithStatus: 200];
 }
 
 @end

@@ -514,3 +514,6 @@
 
 /* Hotkey to forward to a message */
 "hotkey_forward" = "f";
+
+/* Email deletion */
+"Removal of old emails..." = "Suppression des anciens emails...";

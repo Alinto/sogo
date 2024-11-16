@@ -271,6 +271,14 @@
           });
         };
 
+        this.removeOldEmails = function () {
+          // Close sidenav on small devices
+          if (!$mdMedia(sgConstant['gt-md']))
+            $mdSidenav('left').close();
+
+          $rootScope.$broadcast('showRemoveOldEmailsPanel', {folder: this.folder}); // Show remove old emails panel (broadcast event to MailboxesController)
+        };
+
         this.emptyJunkFolder = function() {
           return this.emptyFolder(l('Junk folder emptied'));
         };

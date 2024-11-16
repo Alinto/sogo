@@ -632,4 +632,63 @@
       </md-dialog-actions>
     </md-dialog>
   </script>
+  <!-- Remove old emails -->
+  <script type="text/ng-template" id="removeOldEmails">
+    <md-dialog flex="50" flex-sm="80" flex-xs="100">
+      <!-- Toolbar -->
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <div class="md-title">Manage Folders</div>
+          <md-button class="md-icon-button" ng-click="dialogCtrl.closeDialog()">
+            <md-icon aria-label="Close dialog">close</md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+
+      <!-- Dialog Content -->
+      <md-dialog-content class="md-dialog-content">
+        <div class="md-dialog-content">
+          <!-- Folder Name Input -->
+          <md-input-container class="md-block">
+            <label>Folder</label>
+            <input type="text" class="sg-readonly" ng-model="dialogCtrl.folderName" readonly="true" />
+          </md-input-container>
+
+          <!-- Checkboxes -->
+          <md-input-container class="md-block">
+            <md-checkbox ng-model="dialogCtrl.form.moveToTrash" aria-label="Move emails to trash">
+              Move emails to trash
+            </md-checkbox>
+          </md-input-container>
+
+          <md-input-container class="md-block">
+            <md-checkbox ng-model="dialogCtrl.form.applyToSubfolders" aria-label="Apply to subfolders">
+              Apply to subfolders
+            </md-checkbox>
+          </md-input-container>
+
+          <!-- Dropdown List -->
+          <md-input-container class="md-block">
+            <label>Filter Emails</label>
+            <md-select ng-model="dialogCtrl.form.filterDuration">
+              <md-option value="3m">≥ 3 months</md-option>
+              <md-option value="6m">≥ 6 months</md-option>
+              <md-option value="9m">≥ 9 months</md-option>
+              <md-option value="1y">≥ 1 year</md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+      </md-dialog-content>
+
+      <!-- Dialog Actions -->
+      <md-dialog-actions>
+        <md-button class="md-warn" ng-click="dialogCtrl.closeDialog()">
+          Cancel
+        </md-button>
+        <md-button class="md-primary" ng-click="dialogCtrl.apply()">
+          Apply
+        </md-button>
+      </md-dialog-actions>
+    </md-dialog>
+  </script>
 </container>
