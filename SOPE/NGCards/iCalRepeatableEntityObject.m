@@ -464,7 +464,8 @@ lastPossibleRecurrenceStartDateUsingFirstInstanceCalendarDateRange: (NGCalendarD
         }
     }
 
-  if ([self hasRecurrenceDates])
+  //If there are recurrence rules and we have no date yet, its means it's infinite and rdates shouldn't be count as last dates.
+  if ([self hasRecurrenceDates] && !([self hasRecurrenceRules] && !date))
     {
       NSEnumerator *rDates;
 
