@@ -457,7 +457,7 @@
           $mdSidenav('left').close();
 
         $mdDialog.show({
-          template: document.getElementById('CleanMailbox').innerHTML,
+          template: document.getElementById('cleanMailbox').innerHTML,
           parent: angular.element(document.body),
           controller: function () {
             var dialogCtrl = this;

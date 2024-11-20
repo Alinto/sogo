@@ -633,7 +633,7 @@
     </md-dialog>
   </script>
   <!-- Remove old emails -->
-  <script type="text/ng-template" id="CleanMailbox">
+  <script type="text/ng-template" id="cleanMailbox">
     <md-dialog flex="50" flex-sm="80" flex-xs="100">
       <!-- Toolbar -->
       <md-toolbar>
