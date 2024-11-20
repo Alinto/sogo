@@ -933,4 +933,9 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
   return [self stringForKey: @"SOGoURLCreateAccount"];
 }
 
+- (BOOL) disableMailCleaning
+{
+  return [self boolForKey: @"SOGoDisableMailCleaning"];
+}
+
 @end

@@ -378,14 +378,21 @@ static NSString *inboxFolderName = @"INBOX";
   return folders;
 }
 
-//
-//
-//
-- (NSArray *) allFolderPaths: (SOGoMailListingMode) theListingMode
+- (NSArray *) allFolderPaths: (SOGoMailListingMode) theListingMode 
 {
-  NSMutableArray *folderPaths, *namespaces;
+  return [self allFolderPaths: theListingMode onlyRoot: NO];
+}
+
+//
+//
+//
+- (NSArray *) allFolderPaths: (SOGoMailListingMode) theListingMode onlyRoot: (BOOL) onlyRoot
+{
+  NSMutableArray *folderPaths, *namespaces, *filteredFolders;
   NSArray *folders, *mainFolders;
   NSString *namespace;
+  NSString *folder;
+  NSUInteger slashCount;
 
   BOOL subscribedOnly;
   int count, max;
@@ -401,10 +408,10 @@ static NSString *inboxFolderName = @"INBOX";
 				   onlySubscribedFolders: YES];
       max = [folders count];
       for (count = 0; count < max; count++)
-	{
-	  [subscribedFolders setObject: [NSNull null]
-				forKey: [folders objectAtIndex: count]];
-	}
+      {
+        [subscribedFolders setObject: [NSNull null]
+            forKey: [folders objectAtIndex: count]];
+      }
       [[self imap4Connection] flushFolderHierarchyCache];
     }
 
@@ -418,6 +425,17 @@ static NSString *inboxFolderName = @"INBOX";
 		    nil] stringsWithFormat: @"/%@"];
   folders = [[self imap4Connection] allFoldersForURL: [self imap4URL]
 			       onlySubscribedFolders: subscribedOnly];
+  if (onlyRoot) {
+    filteredFolders = [[NSMutableArray alloc] init];
+    for (folder in folders) {
+        slashCount = [[folder componentsSeparatedByString:@"/"] count] - 1;
+        if (slashCount <= 1) {
+            [filteredFolders addObject: folder];
+        }
+    }
+    folders = [NSArray arrayWithArray: filteredFolders];
+    [filteredFolders release];
+  }
   folderPaths = [folders mutableCopy];
   [folderPaths autorelease];
 

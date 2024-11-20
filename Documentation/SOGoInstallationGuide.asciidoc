@@ -431,7 +431,7 @@ See `memcached_servers_parse(3)` for details on the syntax.
 
 |S |SOGoCacheCleanupInterval
 |Parameter used to set the expiration (in seconds) of each object in the
-cache.
+cache. Default value is `NO`.
 
 Defaults to `300`.
 
@@ -1677,6 +1677,9 @@ URL could be set to something like:
 `postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_alarms_folder`
 
 See the "EMail reminders" section in this document for more information.
+
+|S |SOGoDisableMailCleaning
+|Parameter used to disable the feature 'remove mails older than X days' introduced in 5.12
 
 |S |SOGoDisableOrganizerEventCheck
 |Parameter used to disable organizer's calendar event check

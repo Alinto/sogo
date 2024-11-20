@@ -69,6 +69,13 @@
 		      <var:string label:value="New Folder..."/>
 		    </md-button>
 		  </md-menu-item>
+      <var:if condition="isCleanMailboxEnabled">
+        <md-menu-item>
+          <md-button type="button" ng-click="app.showCleanMailboxPanel(null, account)">
+            <var:string label:value="Clean mailbox"/>...
+          </md-button>
+        </md-menu-item>
+      </var:if>
 		  <md-menu-item ng-show="::account.id == 0">
 		    <md-button
 			label:aria-label="Search"
@@ -179,11 +186,13 @@
             <var:string label:value="Compact"/>
           </md-button>
         </md-menu-item>
-        <md-menu-item>
-          <md-button type="button" ng-click="$menuCtrl.removeOldEmails()">
-            <var:string label:value="Removal of old emails ..."/>
-          </md-button>
-        </md-menu-item>
+        <var:if condition="isCleanMailboxEnabled">
+          <md-menu-item ng-show="::($menuCtrl.folder.type != 'trash')">
+            <md-button type="button" ng-click="$menuCtrl.cleanMailbox()">
+              <var:string label:value="Clean folder"/>...
+            </md-button>
+          </md-menu-item>
+        </var:if>
         <md-menu-item ng-show="::$menuCtrl.folder.$isEditable">
           <md-button type="button" ng-click="$menuCtrl.confirmDelete()">
             <var:string label:value="Delete"/>

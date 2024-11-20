@@ -1313,9 +1313,20 @@
     return this.$highlightWords;
   };
 
-  /* TODO */
-  Mailbox.prototype.cleanMailbox = function () {
-    Mailbox.$$resource.post(this.id, 'cleanMailbox');
+  /**
+   * @function cleanMailbox
+   * @memberof Mailbox.prototype
+   * @desc Cleans up the mailbox by applying the specified parameters. 
+   *       This can include operations such as moving emails to trash, 
+   *       filtering emails based on a duration, and applying actions to subfolders.
+   * @param {Object} parameters - An object containing the parameters for cleaning the mailbox.
+   * @param {boolean} [parameters.applyToSubfolders=false] - Whether to apply the cleaning operation to subfolders.
+   * @param {boolean} [parameters.moveToTrash=false] - Whether to move the emails to the trash folder.
+   * @param {string|null} [parameters.filterDuration=null] - A duration filter (e.g., "3m", "6m") to select emails older than the specified duration.
+   * @returns {Promise} A promise that resolves when the cleaning operation is completed, or rejects with an error if the operation fails.
+   */
+  Mailbox.prototype.cleanMailbox = function (parameters) {
+    return parameters.folders.length > 0 ? Mailbox.$$resource.post(this.id.split("/")[0], 'cleanMailbox', parameters) : Mailbox.$$resource.post(this.id, 'cleanMailbox', parameters);
   };
   
 })();

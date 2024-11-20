@@ -422,6 +422,11 @@
           protectedBy = "View";
           pageName = "UIxMailUserDelegationEditor";
         };
+        cleanMailbox = {
+          protectedBy = "View";
+          actionClass = "UIxMailFolderActions";
+          actionName = "cleanMailbox";
+        };
         addDelegate = {
           protectedBy = "View";
           actionClass = "UIxMailAccountActions";
