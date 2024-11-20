@@ -632,4 +632,87 @@
       </md-dialog-actions>
     </md-dialog>
   </script>
+  <!-- Remove old emails -->
+  <script type="text/ng-template" id="cleanMailbox">
+    <md-dialog flex="50" flex-sm="80" flex-xs="100">
+      <!-- Toolbar -->
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <md-icon class="material-icons sg-icon-toolbar-bg">delete</md-icon>
+          <div class="pseudo-input-container md-flex" ng-if="::!dialogCtrl.isMailbox">
+            <var:string label:value="Clean folder"/>
+          </div>
+          <div class="pseudo-input-container md-flex" ng-if="::dialogCtrl.isMailbox">
+            <var:string label:value="Clean mailbox"/>
+          </div>
+          <md-button class="md-icon-button" ng-click="dialogCtrl.closeDialog()">
+            <md-icon aria-label="Close dialog">close</md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+
+      <!-- Dialog Content -->
+      <md-dialog-content class="md-dialog-content">
+        <div class="md-dialog-content">
+          <h4>
+            {{ dialogCtrl.name }}
+          </h4>
+
+          <md-input-container class="md-block">
+            <md-checkbox ng-model="dialogCtrl.form.permanentlyDelete" label:aria-label="Delete permanently (do not use trash)">
+                <var:string label:value="Delete permanently (do not use trash)"/>
+            </md-checkbox>
+          </md-input-container>
+
+          <md-input-container class="md-block">
+            <md-checkbox ng-model="dialogCtrl.form.applyToSubfolders" label:aria-label="Apply to subfolders">
+              <var:string label:value="Apply to subfolders"/>
+            </md-checkbox>
+          </md-input-container>
+
+          <md-input-container class="md-block">
+            <label><var:string label:value="Delete e-mails older than"/></label>
+            <md-select ng-model="dialogCtrl.form.filterDuration">
+              <md-option value="3m"><var:string label:value="3 months"/></md-option>
+              <md-option value="6m"><var:string label:value="6 months"/></md-option>
+              <md-option value="9m"><var:string label:value="9 months"/></md-option>
+              <md-option value="1y"><var:string label:value="1 year"/></md-option>
+              <md-option value="custom"><var:string label:value="Custom"/></md-option>
+            </md-select>
+          </md-input-container>
+
+          <md-input-container class="md-block" ng-show="['custom'].indexOf(dialogCtrl.form.filterDuration) != -1">
+          <label><var:string label:value="Date"/></label>
+            <md-datepicker class="md-text" 
+                ng-model="dialogCtrl.form.filterDurationDate"
+                md-hide-icons="calendar"
+                md-max-date="dialogCtrl.maxDate"
+                ng-change="dialogCtrl.mainController.changeDate()">
+              </md-datepicker>
+          </md-input-container>
+
+          <md-input-container class="md-block" ng-show="dialogCtrl.isWarningDisplayed()">
+            <md-checkbox ng-model="dialogCtrl.form.confirmDelete" label:aria-label="You are about to permanently delete some messages. Are you sure you want to proceed with this action?">
+              <span class="clean-mailbox-warn"><var:string label:value="You are about to permanently delete some messages. Are you sure you want to proceed with this action?" /></span>
+            </md-checkbox>
+          </md-input-container>
+        </div>
+      </md-dialog-content>
+
+      <!-- Dialog Actions -->
+      <md-dialog-actions>
+        <md-button class="md-warn" ng-click="dialogCtrl.closeDialog()">
+          <var:string label:value="Cancel" />
+        </md-button>
+        <div class="sg-progress-linear-bottom"
+                     ng-show="dialogCtrl.isLoading()">
+                  <md-progress-linear class="md-accent"
+                                      md-mode="indeterminate"><!-- progress --></md-progress-linear>
+                </div>
+        <md-button class="md-primary" ng-disabled="dialogCtrl.isApplyDisabled()" ng-click="dialogCtrl.apply()">
+          <var:string label:value="Apply" />
+        </md-button>
+      </md-dialog-actions>
+    </md-dialog>
+  </script>
 </container>

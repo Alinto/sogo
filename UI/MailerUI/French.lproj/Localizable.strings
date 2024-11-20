@@ -514,3 +514,18 @@
 
 /* Hotkey to forward to a message */
 "hotkey_forward" = "f";
+
+/* Email deletion */
+"Clean folder" = "Nettoyer le dossier";
+"Clean mailbox" = "Nettoyer la boite mail";
+"Delete permanently (do not use trash)" = "Supprimer définitivement (ne pas utiliser la corbeille)";
+"Apply to subfolders" = "Appliquer aux sous-dossiers";
+"Delete e-mails older than" = "Supprimer les e-mails plus vieux de";
+"3 months" = "3 mois";
+"6 months" = "6 mois";
+"9 months" = "9 mois";
+"1 year" = "1 an";
+"Custom" = "Personnalisé";
+"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "Vous êtes sur le point de supprimer définitivement certains messages. Êtes-vous certain de vouloir effectuer cette action ?";
+"Apply" = "Appliquer";
+"%{0} message(s) deleted" = "%{0} message(s) supprimés";

@@ -21,6 +21,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
+#import <Foundation/Foundation.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
@@ -45,6 +46,8 @@
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
+
+#import <EOControl/EOQualifier.h>
 
 #import "UIxMailFolderActions.h"
 
@@ -1296,6 +1299,127 @@
 - (WOResponse *) markMessagesAsNotJunkAction
 {
   return [self _markMessagesAsJunkOrNotJunk: NO];
+}
+
+- (BOOL)isDateStringValid: (NSString *)dateString {
+  NSString *dateRegex = @"^\\d{4}-\\d{2}-\\d{2}$";
+  NSPredicate *dateTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", dateRegex];
+  return [dateTest evaluateWithObject:dateString];
+}
+
+- (void) cleanFolderWithFolder: (SOGoMailFolder *)folder 
+                 withQualifier: (EOQualifier *)qualifier 
+                     recursive: (BOOL)isRecursive 
+               withTrashFolder: (BOOL)useTrashFolder 
+                     exception: (NSException **)exception 
+                       counter: (NSUInteger *)counter {
+  NSArray *results, *subfolders;
+  NSUInteger i;
+  SOGoMailFolder *newFolder;
+  NSString *folderName;
+  NSException *e;
+
+  results = [folder fetchUIDsMatchingQualifier: qualifier
+                            sortOrdering: @"REVERSE DATE"
+                                threaded: NO];
+
+  if (results && [results count] > 0) {
+    e = [folder deleteUIDs: results
+	      useTrashFolder: &useTrashFolder
+	       	   inContext: [self context]];
+    [folder expunge];
+    [self logWithFormat: @"Removed %d messages in %@ (%@)", [results count], [folder nameInContainer], results];
+    *counter += [results count];
+    if (e) {
+      [self errorWithFormat: @"Error while cleaning mailbox : %@", e];
+      *exception = e;
+    }
+  }
+
+  if (isRecursive) {
+    subfolders = [folder subfolders];
+    for (i = 0 ; i < [subfolders count] ; i++) {
+      folderName = [NSString stringWithFormat:@"%@/%@", [folder nameInContainer], [subfolders objectAtIndex: i]];
+      newFolder = [[SOGoMailFolder alloc] initWithName: folderName inContainer: [folder container]];
+      [self cleanFolderWithFolder: newFolder
+                    withQualifier: qualifier 
+                        recursive: isRecursive
+                  withTrashFolder: useTrashFolder
+                        exception: exception
+                          counter: counter];
+      [newFolder release];
+    }
+  }
+}
+
+- (WOResponse *) cleanMailboxAction
+{
+  NSDictionary *jsonRequest, *jsonResponse;
+  WORequest *request;
+  NSString *searchString, *folderName;
+  EOQualifier *searchQualifier;
+  BOOL isRecursive, useTrashFolder;
+  NSException *exception;
+  SOGoMailFolder *folder;
+  SOGoMailAccount *account;
+  NSUInteger i, counter;
+  NSArray *folderNames;
+
+  request = [[self context] request];
+  jsonRequest = [[request contentAsString] objectFromJSONString];
+
+  if ([[SOGoSystemDefaults sharedSystemDefaults] disableMailCleaning])
+    return [self responseWithStatus: 401];
+
+  if (![self isDateStringValid: [jsonRequest objectForKey: @"date"]]) {
+    [self errorWithFormat: @"Error while cleaning mailbox, invalid date : %@", [jsonRequest objectForKey: @"date"]];
+    return [self responseWithStatus: 502];
+  }
+
+  searchString = [NSString stringWithFormat: @"(NOT (flags = 'deleted') AND (DATE <= (NSCalendarDate)\"%@\"))", [jsonRequest objectForKey: @"date"]];
+  searchQualifier = [EOQualifier qualifierWithQualifierFormat: searchString];
+  isRecursive = [[jsonRequest objectForKey: @"applyToSubfolders"] boolValue];
+  useTrashFolder = ![[jsonRequest objectForKey: @"permanentlyDelete"] boolValue];
+  counter = 0;
+  exception = nil;
+
+  if ([[self clientObject] isKindOfClass: [SOGoMailFolder class]]) {
+    folder = [self clientObject];
+    [self cleanFolderWithFolder: folder
+                withQualifier: searchQualifier
+                    recursive: isRecursive
+              withTrashFolder: useTrashFolder
+                    exception: &exception
+                      counter: &counter];
+  } else if ([[self clientObject] isKindOfClass: [SOGoMailAccount class]]) {
+    account = [self clientObject];
+    folderNames = [account allFolderPaths: SOGoMailStandardListing onlyRoot: YES];
+    for (i = 0 ; i < [folderNames count] ; i ++) {
+      folderName = [folderNames objectAtIndex: i];
+      if ([folderName hasPrefix:@"/"]) {
+          folderName = [folderName substringFromIndex:1];
+      }
+      folder = [account folderWithTraversal: folderName andClassName: nil];
+      // Disable clean for trash folder
+      if (![folderName isEqualToString: [account trashFolderNameInContext: [self context]]])
+        [self cleanFolderWithFolder: folder
+                  withQualifier: searchQualifier
+                      recursive: isRecursive
+                withTrashFolder: useTrashFolder
+                      exception: &exception
+                        counter: &counter];
+    }
+    
+    [[account imap4Connection] flushMailCaches];
+  }
+
+  if (exception) {
+    return [self responseWithStatus: 500];
+  }
+
+  jsonResponse = [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: counter]
+                                                         forKey: @"nbMessageDeleted"];
+  return [self responseWithStatus: 200 andJSONRepresentation: jsonResponse];
 }
 
 @end

@@ -53,6 +53,10 @@
       $rootScope.$on('resetMailAdvancedSearchPanel', function () {
         vm.reset();
       });
+
+      $rootScope.$on('showCleanMailboxPanel', function (e, d) {
+        vm.showCleanMailboxPanel(d.folder, d.account);
+      });
     };
 
 
@@ -446,6 +450,128 @@
             });
         });
     };
+
+    this.showCleanMailboxPanel = function (folder, account) {
+        // Close sidenav on small devices
+        if (!$mdMedia(sgConstant['gt-md']))
+          $mdSidenav('left').close();
+
+        $mdDialog.show({
+          template: document.getElementById('cleanMailbox').innerHTML,
+          parent: angular.element(document.body),
+          controller: function () {
+            var dialogCtrl = this;
+
+            this.$onInit = function () {
+              this.mainController = vm;
+              this.folder = folder;
+              this.isMailbox = (folder ? false : true);
+              this.name = folder ? folder.$displayName : account.name;
+              this.loading = false;
+              this.date = null;
+              this.form = {
+                filterDuration: "3m",
+                permanentlyDelete: false,
+                confirmDelete: false,
+                filterDurationDate: null
+              };
+
+              var today = new Date();
+              var maxDate = new Date(today);
+              maxDate.setMonth(today.getMonth() - 3);
+              this.maxDate = maxDate;
+            };
+
+            dialogCtrl.closeDialog = function () {
+              $mdDialog.hide();
+            };
+
+            dialogCtrl.isLoading = function () {
+              return this.loading;
+            }
+
+            dialogCtrl.isWarningDisplayed = function () {
+              return (this.form && this.form.permanentlyDelete);
+            }
+
+            dialogCtrl.isApplyDisabled = function () {
+              return !(!this.loading 
+                && (!this.form.permanentlyDelete || (this.form.permanentlyDelete && this.form.confirmDelete))
+                && (this.form.filterDuration != 'custom' || (this.form.filterDuration == 'custom' && this.form.filterDurationDate))
+              );
+            }
+
+            dialogCtrl.apply = function () {
+              var folders = [];
+              var i;
+              if (account) {
+                for (i = 0; i < account.$mailboxes.length ; i++) {
+                  folders.push(account.$mailboxes[i].id);
+                }
+                this.folder = account.$mailboxes[0];
+              }
+              var date = '';
+              var durationMonth = 12;
+              var date = new Date();
+              switch (this.form.filterDuration) {
+                case '3m':
+                    durationMonth = 3;
+                    date.setMonth(date.getMonth() - durationMonth);
+                  break;
+                case '6m':
+                  durationMonth = 6;
+                  date.setMonth(date.getMonth() - durationMonth);
+                  break;
+                case '9m':
+                  durationMonth = 9;
+                  date.setMonth(date.getMonth() - durationMonth);
+                  break;
+                case '1y':
+                  durationMonth = 12;
+                  date.setMonth(date.getMonth() - durationMonth);
+                  break;
+                case 'custom':
+                  date = this.form.filterDurationDate;
+                  break;
+              }
+              var year = date.getFullYear();
+              var month = String(date.getMonth() + 1).padStart(2, '0');
+              var day = String(date.getDate()).padStart(2, '0');
+              this.date = `${year}-${month}-${day}`;
+              this.folder.cleanMailbox({
+                'applyToSubfolders': (this.form && this.form.applyToSubfolders) ? this.form.applyToSubfolders : false,
+                'permanentlyDelete': (this.form && this.form.permanentlyDelete) ? this.form.permanentlyDelete : false,
+                'date': this.date,
+                'folders': folders
+              }).then(function (data) {
+                dialogCtrl.loading = true;
+                Mailbox.selectedFolder.$filter({
+                  "sort": "date",
+                  "asc": false,
+                  "match": "OR"
+                }).then(function () {
+                  $state.go('mail.account.mailbox', { accountId: vm.accounts[0].id, mailboxId: encodeUriFilter(Mailbox.selectedFolder.path) });
+                  dialogCtrl.loading = false;
+                  $mdDialog.hide();
+
+                  $mdToast.show(
+                  $mdToast.simple()
+                      .textContent(l('%{0} message(s) deleted', data.nbMessageDeleted))
+                    .position(sgConstant.toastPosition)
+                    .hideDelay(2000));
+                });
+              }).catch(function () {
+                dialogCtrl.loading = false;
+                $mdDialog.hide();
+              });
+            };
+          },
+          controllerAs: 'dialogCtrl',
+          clickOutsideToClose: false,
+          escapeToClose: false,
+        });
+    };
+
 
     this.delegate = function(account) {
       $mdDialog.show({

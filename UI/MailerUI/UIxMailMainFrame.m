@@ -611,6 +611,17 @@
   return result;
 }
 
+- (BOOL) isCleanMailboxEnabled {
+  BOOL result;
+  SOGoSystemDefaults *sd;
+
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+
+  result = ![sd disableMailCleaning];
+
+  return result;
+}
+
 @end /* UIxMailMainFrame */
 
 @interface UIxMailFolderTemplate : UIxComponent

@@ -142,6 +142,8 @@ NSComparisonResult languageSort(id el1, id el2, void *context);
 
 - (NSString *)urlCreateAccount;
 
+- (BOOL)disableMailCleaning;
+
 @end
 
 #endif /* SOGOSYSTEMDEFAULTS_H */

@@ -49,6 +49,11 @@
           actionClass = "UIxMailFolderActions";
           actionName = "expunge";
         };
+        cleanMailbox = {
+          protectedBy = "View";
+          actionClass = "UIxMailFolderActions";
+          actionName = "cleanMailbox";
+        };
         createFolder = {
           protectedBy = "View";
           actionClass = "UIxMailFolderActions";
@@ -416,6 +421,11 @@
         delegation = {
           protectedBy = "View";
           pageName = "UIxMailUserDelegationEditor";
+        };
+        cleanMailbox = {
+          protectedBy = "View";
+          actionClass = "UIxMailFolderActions";
+          actionName = "cleanMailbox";
         };
         addDelegate = {
           protectedBy = "View";

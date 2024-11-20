@@ -104,6 +104,7 @@ typedef enum {
 - (NSArray *) toManyRelationshipKeysWithNamespaces: (BOOL) withNSs;
 
 - (NSArray *) allFolderPaths: (SOGoMailListingMode) theListingMode;
+- (NSArray *) allFolderPaths: (SOGoMailListingMode) theListingMode onlyRoot: (BOOL) onlyRoot;
 - (NSArray *) allFoldersMetadata: (SOGoMailListingMode) theListingMode;
 
 - (NSDictionary *) imapFolderGUIDs;

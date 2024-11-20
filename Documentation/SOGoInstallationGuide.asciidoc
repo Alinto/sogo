@@ -1678,6 +1678,9 @@ URL could be set to something like:
 
 See the "EMail reminders" section in this document for more information.
 
+|S |SOGoDisableMailCleaning
+|Parameter used to disable the feature 'remove mails older than X days' introduced in 5.12. Default value is `NO`.
+
 |S |SOGoDisableOrganizerEventCheck
 |Parameter used to disable organizer's calendar event check
 
