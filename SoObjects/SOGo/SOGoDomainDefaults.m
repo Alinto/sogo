@@ -267,6 +267,18 @@
   return [self stringForKey: @"SOGoVacationFooterTemplateFile"];
 }
 
+- (BOOL) vacationAllowZeroDays
+{
+  id o;
+
+  o = [self stringForKey: @"SOGoVacationAllowZeroDays"];
+
+  if (o)
+    return [o boolValue];
+
+  return NO;
+}
+
 - (NSString *) mailingMechanism
 {
   NSString *mailingMechanism;

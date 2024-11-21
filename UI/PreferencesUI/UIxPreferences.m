@@ -1000,12 +1000,16 @@ static NSArray *reminderValues = nil;
 //
 - (NSArray *) daysBetweenResponsesList
 {
-  static NSArray *daysBetweenResponses = nil;
+  static NSMutableArray *daysBetweenResponses = nil;
 
   if (!daysBetweenResponses)
     {
-      daysBetweenResponses = [NSArray arrayWithObjects: @"1", @"2", @"3",
+      daysBetweenResponses = [NSMutableArray arrayWithObjects: @"1", @"2", @"3",
                                       @"5", @"7", @"14", @"21", @"30", nil];
+      if ([[user domainDefaults] vacationAllowZeroDays])
+        {
+          [daysBetweenResponses insertObject:@"0" atIndex:0];
+        }
       [daysBetweenResponses retain];
     }
 

@@ -60,6 +60,7 @@
 - (NSString *) vacationDefaultSubject;
 - (NSString *) vacationHeaderTemplateFile;
 - (NSString *) vacationFooterTemplateFile;
+- (BOOL) vacationAllowZeroDays;
 - (NSString *) mailingMechanism;
 - (NSString *) smtpServer;
 - (BOOL)smtpMasterUserEnabled;

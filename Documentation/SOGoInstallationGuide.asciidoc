@@ -2430,6 +2430,16 @@ appended to the user's vacation message. For example:
 
 See `SOGoVacationHeaderTemplateFile` for available template variables.
 
+|D |SOGoVacationAllowZeroDays
+|Parameter used to enable an option of 0 for the vacation days setting.
+A value of 0 means that auto response mails are sent for every incoming mail.
+
+This option has to be supported by the IMAP host
+(see https://doc.dovecot.org/2.3/settings/pigeonhole-ext/vacation/#pigeonhole_setting-sieve_vacation_min_period
+for instructions regarding Dovecot/Pigeonhole).
+
+Defaults to `NO` when unset.
+
 |D |SOGoForwardEnabled
 |Parameter used to activate the edition from the preferences window of a
 forwarding email address. Requires Sieve script support on the IMAP
