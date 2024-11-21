@@ -1016,8 +1016,8 @@ static NSString *sieveScriptName = @"sogo";
             text = [NSString stringWithFormat: @"%@%@", text, [templateFile textForUser: user]];
         }
 
-      if (days == 0)
-        days = 7;
+      if (days <= 0)
+        days = [dd vacationAllowZeroDays] ? 0 : 7;
 
       vacation_script = [NSMutableString string];
 
