@@ -87,9 +87,14 @@
                 <md-icon label:aria-label="Subject">{{ mailbox.sortedBy('subject') ? 'check' : null }}</md-icon> <var:string label:value="Subject"/>
               </md-button>
             </md-menu-item>
-            <md-menu-item>
+            <md-menu-item ng-if="!mailbox.selectedFolder.isSentFolder">
               <md-button ng-click="mailbox.sort('from')">
                 <md-icon label:aria-label="From">{{ mailbox.sortedBy('from') ? 'check' : null }}</md-icon> <var:string label:value="From"/>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item ng-if="mailbox.selectedFolder.isSentFolder">
+              <md-button ng-click="mailbox.sort('to')">
+                <md-icon label:aria-label="To">{{ mailbox.sortedBy('to') ? 'check' : null }}</md-icon> <var:string label:value="To"/>
               </md-button>
             </md-menu-item>
             <md-menu-item>
@@ -143,7 +148,8 @@
         </md-input-container>
         <md-input-container flex="25">
           <md-select label:aria-label="Search scope">
-            <md-option value="subject_or_from" selected="selected"><var:string label:value="Subject or Sender"/></md-option>
+            <md-option value="subject_or_from" selected="selected" ng-if="!mailbox.selectedFolder.isSentFolder"><var:string label:value="Subject or Sender"/></md-option>
+            <md-option value="subject_or_to" selected="selected" ng-if="mailbox.selectedFolder.isSentFolder"><var:string label:value="Subject or Recipient"/></md-option>
             <md-option value="subject"><var:string label:value="Subject"/></md-option>
             <md-option value="from"><var:string label:value="Sender"/></md-option>
             <md-option value="to_or_cc"><var:string label:value="To or Cc"/></md-option>

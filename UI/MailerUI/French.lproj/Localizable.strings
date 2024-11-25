@@ -171,6 +171,7 @@
 /* MailListView */
 "Sender" = "Expéditeur";
 "Subject or Sender" = "Sujet ou expéditeur";
+"Subject or Recipient" = "Sujet ou destinataire";
 "To or Cc" = "Pour ou Copie à";
 "Entire Message" = "Message Complet";
 "Date"          = "Date";
