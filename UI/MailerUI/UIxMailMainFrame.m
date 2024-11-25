@@ -617,7 +617,7 @@
 
   sd = [SOGoSystemDefaults sharedSystemDefaults];
 
-  result = ![sd disableMailCleaning];
+  result = [sd enableMailCleaning];
 
   return result;
 }
