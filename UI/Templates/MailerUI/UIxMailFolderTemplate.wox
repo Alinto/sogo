@@ -271,7 +271,7 @@
                               <md-button class="sg-no-wrap"
                                          aria-label="{{folder.$displayName}}"
                                          ng-disabled="::(mailbox.service.selectedFolder.id == folder.id)"
-                                         ng-click="mailbox.moveSelectedMessages(folder.id)">
+                                         ng-click="mailbox.moveSelectedMessages(folder.id, null)">
                                 <span ng-class="::('sg-child-level-' + folder.level)"
                                       ng-bind="folder.$displayName"><!-- mailbox name --></span>
                               </md-button>
