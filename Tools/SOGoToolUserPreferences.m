@@ -259,7 +259,7 @@ typedef enum
             break;
 
           case UserPreferencesSet:
-            if (max > 4)
+            if (![arguments containsObject: @"-f"])
             {
               /* value specified on command line */
               value = [sanitizedArguments objectAtIndex: 4];
