@@ -149,12 +149,20 @@
                        perr == passwordPolicyConfig.PolicyChangeAfterReset) {
                 response = {
                   passwordexpired: 1,
+                  userPolicies: data.additionalInfos.userPolicies,
                   url: redirectUrl(username, domain)
                 };
               }
               else if (perr == passwordPolicyConfig.PolicyChangeAfterReset) {
                 response = {
                   passwordexpired: 1,
+                  userPolicies: data.additionalInfos.userPolicies,
+                  url: redirectUrl(username, domain)
+                };
+              } else if (perr == passwordPolicyConfig.PolicyInsufficientPasswordQuality) {
+                response = {
+                  passwordexpired: 2,
+                  userPolicies: data.additionalInfos.userPolicies,
                   url: redirectUrl(username, domain)
                 };
               }

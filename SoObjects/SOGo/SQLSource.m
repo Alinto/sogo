@@ -245,6 +245,20 @@
   return result;
 }
 
+- (BOOL) checkLogin: (NSString *) _login
+           password: (NSString *) _pwd
+               perr: (SOGoPasswordPolicyError *) _perr
+             expire: (int *) _expire
+              grace: (int *) _grace
+{
+  return [self checkLogin: _login
+                 password: _pwd
+                     perr: _perr
+                   expire: _perr
+                    grace: _grace
+  disablepasswordPolicyCheck: NO];
+}
+
 //
 // SQL sources don't support right now all the password policy
 // stuff supported by OpenLDAP (and others). If we want to support
@@ -256,6 +270,7 @@
                perr: (SOGoPasswordPolicyError *) _perr
              expire: (int *) _expire
               grace: (int *) _grace
+  disablepasswordPolicyCheck: (BOOL) _disablepasswordPolicyCheck
 {
   EOAdaptorChannel *channel;
   EOQualifier *qualifier;
@@ -335,8 +350,67 @@
   else
     [self errorWithFormat:@"failed to acquire channel for URL: %@",
           [_viewURL absoluteString]];
+  
+  if (YES == rc && !_disablepasswordPolicyCheck) {
+    [self checkPasswordPolicyWithPassword:_pwd perr: _perr];
+  }
 
   return rc;
+}
+
+/**
+ * Validates a given password against the configured user password policies.
+ *
+ * This method checks if the provided password complies with all defined 
+ * password policies for the user. Each policy is expected to include 
+ * a regular expression (`regex`) that the password must match.
+ * 
+ * If the password violates any policy, the method sets an appropriate error
+ * in the `perr` parameter and stops further validation.
+ *
+ * @param password the password to validate.
+ * @param perr will be set to indicate a policy violation, if the password
+ *             does not meet the required standards. Possible values include:
+ *             `PolicyInsufficientPasswordQuality` for insufficient complexity.
+ * @return YES if the password satisfies all policies, NO otherwise.
+ *
+ * @note This method assumes that `_userPasswordPolicy` is an array of dictionaries,
+ *       where each dictionary represents a password policy with at least a "regex" key.
+ * @warning If a policy does not include a "regex" key, an error will be logged, and
+ *          the method will continue to the next policy.
+ */
+- (BOOL) checkPasswordPolicyWithPassword: (NSString *)password perr: (SOGoPasswordPolicyError *)perr
+{
+  BOOL isPolicyOk;
+  NSDictionary *policy;
+  NSEnumerator *policies;
+  NSRange match;
+  NSString *regex;
+
+  isPolicyOk = YES;
+
+  if ([_userPasswordPolicy count])
+  {
+    policies = [_userPasswordPolicy objectEnumerator];
+    while (isPolicyOk && (policy = [policies nextObject]))
+      {
+        regex = [policy objectForKey: @"regex"];
+        if (regex)
+          {
+            match = [password rangeOfString: regex options: NSRegularExpressionSearch];
+            isPolicyOk = isPolicyOk && match.length > 0;
+            if (match.length == 0)
+              {
+                // [self errorWithFormat: @"Password not conform to policy %@ (%@)", regex, [policy objectForKey: @"label"]];
+                *perr = PolicyInsufficientPasswordQuality;
+              }
+          }
+        else
+          [self errorWithFormat: @"Invalid password policy (missing regex): %@", policy];
+      }
+  }
+
+  return isPolicyOk;
 }
 
 /**
@@ -357,11 +431,8 @@
   BOOL didChange, isOldPwdOk, isPolicyOk;
   EOAdaptorChannel *channel;
   GCSChannelManager *cm;
-  NSDictionary *policy;
-  NSEnumerator *policies;
   NSException *ex;
-  NSRange match;
-  NSString *sqlstr, *regex;
+  NSString *sqlstr;
 
   *perr = -1;
   isOldPwdOk = NO;
@@ -369,30 +440,11 @@
   didChange = NO;
 
   // Verify current password
-  isOldPwdOk = [self checkLogin:login password:oldPassword perr:perr expire:0 grace:0];
+  isOldPwdOk = [self checkLogin:login password:oldPassword perr:perr expire:0 grace:0 disablepasswordPolicyCheck: YES];
 
   if (isOldPwdOk || passwordRecovery)
     {
-      if ([_userPasswordPolicy count])
-        {
-          policies = [_userPasswordPolicy objectEnumerator];
-          while (isPolicyOk && (policy = [policies nextObject]))
-            {
-              regex = [policy objectForKey: @"regex"];
-              if (regex)
-                {
-                  match = [newPassword rangeOfString: regex options: NSRegularExpressionSearch];
-                  isPolicyOk = isPolicyOk && match.length > 0;
-                  if (match.length == 0)
-                    {
-                      // [self errorWithFormat: @"Password not conform to policy %@ (%@)", regex, [policy objectForKey: @"label"]];
-                      *perr = PolicyInsufficientPasswordQuality;
-                    }
-                }
-              else
-                [self errorWithFormat: @"Invalid password policy (missing regex): %@", policy];
-            }
-        }
+      isPolicyOk = [self checkPasswordPolicyWithPassword:newPassword perr: perr];
     }
 
   if ((isOldPwdOk || passwordRecovery) && isPolicyOk)

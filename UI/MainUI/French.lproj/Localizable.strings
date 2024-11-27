@@ -85,6 +85,7 @@
 "Change your Password" = "Changez votre mot de passe";
 "The password was changed successfully." = "Votre mot de passe a bien été changé.";
 "Your password has expired, please enter a new one below" = "Votre mot de passe est expiré, veuillez entrer un nouveau mot de passe";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Votre mot de passe est trop faible. Veuillez choisir un mot de passe plus sécurisé pour renforcer votre protection";
 "Password must not be empty." = "Le mot de passe ne doit pas être vide.";
 "The passwords do not match. Please try again." = "Les mots de passe ne sont pas identiques. Essayez de nouveau.";
 "Password Grace Period" = "Période de grâce pour le mot de passe";
@@ -128,3 +129,10 @@
 "Password recovery email in error" = "Erreur lors de l'envoi de l'email de récupération";
 "Password reset" = "Réinitialisation de mot de passe";
 "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Bonjour %{0},\nUne demande de changement de mot de passe a été initiée.\n\nSi vous n'êtes pas à l'origine de cet e-mail, n'en tenez pas compte.\n\nSi vous en êtes bien à l'origine, veuillez cliquer sur le lien ci-dessous pour modifier votre mot de passe: %{1}";
+
+/* Password */
+"POLICY_MIN_LOWERCASE_LETTER" = "Au moins %{0} lettre(s) minuscule(s)";
+"POLICY_MIN_UPPERCASE_LETTER" = "Au moins %{0} lettre(s) majuscule(s)";
+"POLICY_MIN_DIGIT" = "Au moins %{0} chiffre(s)";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Au moins %{0} caractère(s) special(aux)";
+"POLICY_MIN_LENGTH" = "Longueur d'au moins %{0} caractère(s)";

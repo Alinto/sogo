@@ -213,17 +213,18 @@
                 <!-- Password policy: Password is expired / password recovery-->
                 <div layout="column" layout-align="center center"
                     ng-switch-when="passwordchange">
-                  <md-icon class="md-accent md-hue-1 sg-icon--large" ng-if="!app.isInPasswordRecoveryMode()">watch_later</md-icon>
-                  <md-icon class="md-accent md-hue-1 sg-icon--large" ng-if="app.isInPasswordRecoveryMode()">vpn_key</md-icon>
+                  <md-icon class="md-accent md-hue-1 sg-icon--large" ng-if="!(app.isInPasswordRecoveryMode() || app.isPasswordExpiredSecurity())">watch_later</md-icon>
+                  <md-icon class="md-accent md-hue-1 sg-icon--large" ng-if="app.isInPasswordRecoveryMode() || app.isPasswordExpiredSecurity()">vpn_key</md-icon>
                   <div class="md-default-theme md-accent md-hue-1 md-fg md-padding" ng-if="!app.isInPasswordRecoveryMode()">
-                    <var:string label:value="Your password has expired, please enter a new one below"/>
+                    <span ng-if="!app.isPasswordExpiredSecurity()"><var:string label:value="Your password has expired, please enter a new one below"/></span>
+                    <span ng-if="app.isPasswordExpiredSecurity()"><var:string label:value="Your password is too weak. Please choose a stronger password to enhance your security"/></span>
                   </div>
                   <div class="md-default-theme md-accent md-hue-1 md-fg md-padding" ng-if="app.isInPasswordRecoveryMode()">
                     <var:string label:value="Please enter a new password below"/>
                   </div>
                   <div flex="100">
                     <div layout="row" layout-xs="column">
-                    <md-input-container class="md-block" flex="flex" ng-if="!app.isInPasswordRecoveryMode()">
+                    <md-input-container class="md-block" flex="flex" ng-if="!(app.isInPasswordRecoveryMode())">
                         <label><var:string label:value="Current password"/>
                         </label>
                         <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.oldPassword"/>
@@ -232,6 +233,13 @@
                         <label><var:string label:value="New password"/>
                         </label>
                         <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.newPassword"/>
+                        <div class="sg-hint">
+                          <ul class="sg-padded">
+                            <li ng-repeat="item in app.passwordPolicy">
+                              {{ item.label }}
+                            </li>
+                          </ul>
+                        </div>
                       </md-input-container>
                       <md-input-container class="md-block" flex="flex">
                         <label><var:string label:value="Confirmation"/>

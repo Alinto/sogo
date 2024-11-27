@@ -102,7 +102,8 @@
                    domain: &domain
                      perr: &perr
                    expire: &expire
-                    grace: &grace];
+                    grace: &grace
+           additionalInfo: nil];
 }
 
 - (BOOL) checkLogin: (NSString *) _login
@@ -111,6 +112,7 @@
                perr: (SOGoPasswordPolicyError *) _perr
              expire: (int *) _expire
               grace: (int *) _grace
+     additionalInfo: (NSMutableDictionary **)_additionalInfo
 {
   return [self checkLogin: _login
                  password: _pwd
@@ -118,6 +120,7 @@
                      perr: _perr
                    expire: _expire
                     grace: _grace
+           additionalInfo: _additionalInfo
                  useCache: YES];
 }
 
@@ -127,6 +130,7 @@
                perr: (SOGoPasswordPolicyError *) _perr
              expire: (int *) _expire
               grace: (int *) _grace
+     additionalInfo: (NSMutableDictionary **)_additionalInfo
            useCache: (BOOL) _useCache
 {
   SOGoCASSession *session;
@@ -164,6 +168,7 @@
                                                     perr: _perr
                                                   expire: _expire
                                                    grace: _grace
+                                          additionalInfo: _additionalInfo
                                                 useCache: _useCache];
   
   //[self logWithFormat: @"Checked login with ppolicy enabled: %d %d %d", *_perr, *_expire, *_grace];
@@ -250,7 +255,8 @@
                  domain: &domain
                    perr: &perr
                  expire: &expire
-                  grace: &grace])
+                  grace: &grace
+         additionalInfo: nil])
     return nil;
   
   if (domain && [login rangeOfString: @"@"].location == NSNotFound)

@@ -502,6 +502,7 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
                       perr: (SOGoPasswordPolicyError *) perr
                     expire: (int *) expire
                      grace: (int *) grace
+            additionalInfo: (NSMutableDictionary **)_additionalInfo
 {
   NSObject <SOGoSource> *sogoSource;
   NSEnumerator *authIDs;
@@ -520,8 +521,11 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
                                   perr: perr
                                 expire: expire
                                  grace: grace];
+      if ([sogoSource userPasswordPolicy] && [[sogoSource userPasswordPolicy] count] > 0) {
+        [*_additionalInfo setObject:[sogoSource userPasswordPolicy] forKey:@"userPolicies"];
+      }
     }
-
+    
   if (checkOK && *domain == nil)
     {
       SOGoSystemDefaults *sd = [SOGoSystemDefaults sharedSystemDefaults];
@@ -554,6 +558,7 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
                perr: (SOGoPasswordPolicyError *) _perr
              expire: (int *) _expire
               grace: (int *) _grace
+     additionalInfo:(NSMutableDictionary **)_additionalInfo
 {
   return [self checkLogin: _login
                    password: _pwd
@@ -561,6 +566,7 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
                    perr: _perr
                    expire: _expire
                    grace: _grace
+          additionalInfo: _additionalInfo
                    useCache: YES];
 }
 
@@ -573,6 +579,7 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
                perr: (SOGoPasswordPolicyError *) _perr
              expire: (int *) _expire
               grace: (int *) _grace
+     additionalInfo: (NSMutableDictionary **)_additionalInfo
            useCache: (BOOL) useCache
 {
   NSString *dictPassword, *username, *jsonUser;
@@ -726,7 +733,8 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
                             domain: _domain
                               perr: _perr
                             expire: _expire
-                             grace: _grace])
+                             grace: _grace
+                    additionalInfo: _additionalInfo])
     {
       checkOK = YES;
       if (!currentUser)

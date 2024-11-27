@@ -88,6 +88,7 @@ See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for v
 "Change your Password" = "Change your Password";
 "The password was changed successfully." = "The password was changed successfully.";
 "Your password has expired, please enter a new one below" = "Your password has expired, please enter a new one below";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
 "Password must not be empty." = "Password must not be empty.";
 "The passwords do not match. Please try again." = "The passwords do not match. Please try again.";
 "Password Grace Period" = "Password Grace Period";
@@ -131,3 +132,10 @@ See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for v
 "Password recovery email in error" = "Password recovery email in error";
 "Password reset" = "Password reset";
 "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";
+
+/* Password */
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
+"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0} special symbols";
+"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
