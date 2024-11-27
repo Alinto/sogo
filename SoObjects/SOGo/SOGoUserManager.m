@@ -521,7 +521,7 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
                                   perr: perr
                                 expire: expire
                                  grace: grace];
-      if ([sogoSource userPasswordPolicy] && [[sogoSource userPasswordPolicy] count] > 0) {
+      if (_additionalInfo && *_additionalInfo && [sogoSource userPasswordPolicy] && [[sogoSource userPasswordPolicy] count] > 0) {
         [*_additionalInfo setObject:[sogoSource userPasswordPolicy] forKey:@"userPolicies"];
       }
     }
