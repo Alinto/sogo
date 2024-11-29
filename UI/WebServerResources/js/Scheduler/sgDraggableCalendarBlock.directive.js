@@ -525,7 +525,7 @@
             this.currentEventCoordinates.dayNumber += deltaDays;
           }
 
-          $log.debug('event coordinates ' + JSON.stringify(this.currentEventCoordinates));
+          //$log.debug('event coordinates ' + JSON.stringify(this.currentEventCoordinates));
           $rootScope.$emit('calendar:drag');
         },
 

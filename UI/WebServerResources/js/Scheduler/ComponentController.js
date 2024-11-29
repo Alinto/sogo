@@ -543,6 +543,7 @@
       this.adjustEndTime();
       this.changeAlarmRelation(form);
       this.addAttendee(this.searchText).then(function () {
+        vm.adjustStartTime();
         if (form.$valid) {
           vm.component.$save(options)
             .then(function(data) {
