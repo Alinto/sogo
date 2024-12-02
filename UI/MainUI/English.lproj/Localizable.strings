@@ -88,6 +88,7 @@ See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for v
 "Change your Password" = "Change your Password";
 "The password was changed successfully." = "The password was changed successfully.";
 "Your password has expired, please enter a new one below" = "Your password has expired, please enter a new one below";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
 "Password must not be empty." = "Password must not be empty.";
 "The passwords do not match. Please try again." = "The passwords do not match. Please try again.";
 "Password Grace Period" = "Password Grace Period";
