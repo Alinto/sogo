@@ -219,7 +219,7 @@ static const NSString *kJwtKey = @"jwt";
     if ([*additionalLoginInformations objectForKey:@"userPolicies"]) {
       translations = [[NSMutableDictionary alloc] init];
       for (policy in [*additionalLoginInformations objectForKey:@"userPolicies"]) {
-        [translations setObject:[self labelForKey: [policy objectForKey:@"label"]] forKey: [policy objectForKey:@"label"]];
+        [translations setObject:[self commonLabelForKey: [policy objectForKey:@"label"]] forKey: [policy objectForKey:@"label"]];
       }
       [*additionalLoginInformations setObject:[SOGoPasswordPolicy createPasswordPolicyLabels: [*additionalLoginInformations objectForKey:@"userPolicies"] withTranslations: translations] 
                     forKey:@"userPolicies"];

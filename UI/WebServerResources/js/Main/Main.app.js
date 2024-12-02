@@ -69,7 +69,6 @@
             vm.passwordRecovery.passwordRecoveryEnabled = true;
 
             vm.loginState = 'passwordchange';
-            vm.showLogin = false;
             rippleDo('loginContent');
           }
 
@@ -300,9 +299,9 @@
     };
 
     this.isInPasswordRecoveryMode = function () {
-      return (("SecretQuestion" == this.passwordRecovery.passwordRecoveryMode ||
-        "SecondaryEmail" == this.passwordRecovery.passwordRecoveryMode) &&
-        this.passwordRecovery.passwordRecoveryToken) ? true : false;
+      return (("SecretQuestion" == this.passwordRecovery.passwordRecoveryMode) ||
+        ("SecondaryEmail" == this.passwordRecovery.passwordRecoveryMode &&
+        this.passwordRecovery.passwordRecoveryToken)) ? true : false;
     };
 
     this.passwordRecoveryAbort = function () {
