@@ -1044,6 +1044,7 @@
     this.account = account;
     if (options && options.unseenCount) {
       this.unseenCount = options.unseenCount;
+      delete options["unseenCount"];
     }
     if (options && options.filter) {
       this.$messages = [];
