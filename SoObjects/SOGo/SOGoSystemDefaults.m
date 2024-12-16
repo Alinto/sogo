@@ -262,10 +262,54 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return [domains allKeys];
 }
 
-- (BOOL) loginUsernameFirst
+- (BOOL) doesLoginTypeByDomain
 {
-  return [self boolForKey: @"SOGoLoginUsernameFirst"];
+  return ([self dictionaryForKey: @"SOGoLoginTypeByDomain"] != nil);
 }
+
+- (NSString *) getLoginTypeForDomain: (NSString*) _domain
+{
+  NSDictionary *domains, *config;
+  NSString *type;
+  domains = [self dictionaryForKey: @"SOGoLoginTypeByDomain"];
+  if([domains objectForKey: _domain])
+  {
+    config = [domains objectForKey: _domain];
+  }
+  else if([domains objectForKey: @"login_default"])
+  {
+    config = [domains objectForKey: @"login_default"];
+  }
+  else
+    return nil;
+
+  if((type = [config objectForKey: @"type"]))
+  {
+    return type;
+  }
+  else
+    return nil;
+}
+
+- (NSString *) getLoginConfigForDomain: (NSDictionary*) _domain
+{
+  NSDictionary *domains, *config;
+  domains = [self dictionaryForKey: @"SOGoLoginTypeByDomain"];
+  if([domains objectForKey: _domain])
+  {
+    config = [domains objectForKey: _domain];
+  }
+  else if([domains objectForKey: @"login_default"])
+  {
+    config = [domains objectForKey: @"login_default"];
+  }
+  
+  if(config)
+    return config;
+  else
+    return nil;
+}
+
 
 - (BOOL) enableDomainBasedUID
 {

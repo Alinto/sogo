@@ -71,7 +71,9 @@
 
 + (BOOL) checkUserConfig;
 + (SOGoOpenIdSession *) OpenIdSession: (NSString *) _domain;
++ (SOGoOpenIdSession *) OpenIdSessionWithConfig: (NSDictionary *) _config;
 + (SOGoOpenIdSession *) OpenIdSessionWithToken: (NSString *) token domain: (NSString *) _domain;
++ (SOGoOpenIdSession *) OpenIdSessionWithTokenAndConfig: (NSString *) token config: (NSDictionary *) _config;
 + (void) deleteValueForSessionKey: (NSString *) theSessionKey;
 
 - (void) initialize;

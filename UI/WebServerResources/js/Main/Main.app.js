@@ -20,6 +20,8 @@
         domain: null,
         rememberLogin: angular.isDefined($window.cookieUsername) && $window.cookieUsername.length > 0
       };
+      if($window.loginHint)
+        this.creds.username = $window.loginHint;
       // Send selected language only if user has changed it
       if (/\blanguage=/.test($window.location.search))
         this.creds.language = $window.language;

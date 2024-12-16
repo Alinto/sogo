@@ -631,9 +631,7 @@ static const NSString *kJwtKey = @"jwt";
         //add the domain cookie to get it after the redirect
         domainCookie = [self _domainCookie: NO withDomain: _domain];
       }
-      //newLocation = [openIdSession loginUrl: redirectLocation];
-      newLocation = @"openid_redirect";
-      newLocation = [newLocation stringByAppendingFormat: @"?domain=%@", _domain];
+      newLocation = [openIdSession loginUrl: redirectLocation];
       openIdCookieLocation = [self _authLocationCookie: NO withName: @"openid-location"];
     }
   }
@@ -721,13 +719,11 @@ static const NSString *kJwtKey = @"jwt";
     login = nil;
 
   if (login)
-    {
-      oldLocation = [[self clientObject] baseURLInContext: context];
-      response
-	= [self redirectToLocation: [NSString stringWithFormat: @"%@%@",
-					      oldLocation,
-                                              [[SOGoUser getEncryptedUsernameIfNeeded:login request: [context request]] stringByEscapingURL]]];
-    }
+  {
+    oldLocation = [[self clientObject] baseURLInContext: context];
+    response = [self redirectToLocation: [NSString stringWithFormat: @"%@%@",  oldLocation,
+                  [[SOGoUser getEncryptedUsernameIfNeeded:login request: [context request]] stringByEscapingURL]]];
+  }
   else
   {
     oldLocation = [[context request] uri];
@@ -744,10 +740,8 @@ static const NSString *kJwtKey = @"jwt";
 {
   WOResponse *response;
   WORequest *request;
-  //SOGoUserDefaults *ud;
-  //SOGoUserSettings *us;
   NSDictionary *params;
-  NSString *username, *language, *domain;
+  NSString *username, *language, *domain, *type, *serverUrl, *redirectLocation;
   NSRange r;
 
   request = [context request];
@@ -760,63 +754,81 @@ static const NSString *kJwtKey = @"jwt";
   if (r.location != NSNotFound)
   {
     domain = [username substringFromIndex: r.location+1];
+    type = [[SOGoSystemDefaults sharedSystemDefaults] getLoginTypeForDomain: domain];
+    if(type != nil)
+    {
+      if([type isEqualToString: @"plain"])
+      {
+        //Only reload the page with the name
+        serverUrl = [[context serverURL] absoluteString];
+        redirectLocation = [NSString stringWithFormat: @"%@/%@?login=%@", serverUrl, [request applicationName], username];
+        response = [self redirectToLocation: [NSString stringWithFormat: @"%@/", redirectLocation]];
+      }
+      else if([type isEqualToString: @"openid"])
+      {
+        SOGoOpenIdSession *openIdSession;
+        WOCookie *domainCookie, *openIdCookieLocation;
 
-    //Lot of rework here to make authentification type a domain parameter but for now we will only get the domain and ask the poc proxy
-    // response = [self _openidDefaultAction: domain];
-    response = [self responseWithStatus: 200 andJSONRepresentation: 
-                  [NSDictionary dictionaryWithObjectsAndKeys: @"https://login.microsoftonline.com/3a948ef1-a497-40ee-9c3c-69d64c39a5e9/oauth2/v2.0/authorize?scope=openid profile email offline_access&response_type=code&client_id=a05ff5e8-8944-4a95-a5b2-8ae34473f9c6&redirect_uri=http://127.0.0.1/SOGo", @"redirect", nil]];
+        //With openId, the user will be redirected to the openid server for login
+        //With set the fomain in a cookie to know it after the openid does the callbacl
+        serverUrl = [[context serverURL] absoluteString];
+        redirectLocation = [NSString stringWithFormat: @"%@/%@/", serverUrl, [request applicationName]];
+
+        openIdSession = [SOGoOpenIdSession OpenIdSession: domain];
+
+        domainCookie = [self _domainCookie: NO withDomain: domain];
+        openIdCookieLocation = [self _authLocationCookie: NO withName: @"openid-location"];
+
+        response = [self responseWithStatus: 200 andJSONRepresentation:
+          [NSDictionary dictionaryWithObjectsAndKeys: [openIdSession loginUrl: redirectLocation], @"redirect", nil]];
+        [response addCookie: domainCookie];
+        [response addCookie: openIdCookieLocation];
+      }
+      else if([type isEqualToString: @"cas"] || [type isEqualToString: @"saml2"])
+      {
+        [self logWithFormat: @"Unsupported type for now: %@", type];
+        response = [self responseWithStatus: 400
+                              andString: @"Domain Authentication type not supported"];
+      }
+      else
+      {
+        [self logWithFormat: @"Unknown type: %@", type];
+        response = [self responseWithStatus: 400
+                              andString: @"Unknwon Authentication type"];
+      }
+    }
+    else
+    {
+      [self logWithFormat: @"Auth type for Domain given is not set or there is no default value: %@", domain];
+      response = [self responseWithStatus: 400
+                              andString: @"Domain unknown"];
+    }
+
   }
   else
   {
-    [self logWithFormat: @"Domain is requireds but not found for user recovery exception for user %@", username];
+    [self logWithFormat: @"Domain is required but not found for user recovery exception for user %@", username];
     response = [self responseWithStatus: 400
-                              andString: @"Password recovery email in error"];
+                              andString: @"Domain needed in the login"];
   }
 
   return response;
 }
 
-- (WOResponse *) openIdRedirectAction
-{
-  WOResponse *response;
-  WORequest *request;
-  //SOGoUserDefaults *ud;
-  //SOGoUserSettings *us;
-  SOGoOpenIdSession *openIdSession;
-  NSDictionary *params;
-  NSString *redirectLocation, *serverUrl, *_domain, *newLocation;
-  NSRange r;
-
-  NSLog(@"openIdRedirect YEAH");
-
-  request = [context request];
-  serverUrl = [[context serverURL] absoluteString];
-  redirectLocation = [NSString stringWithFormat: @"%@/%@/", serverUrl, [request applicationName]];
-
-  _domain = [request formValueForKey: @"domain"];
-  NSLog(@"openIdRedirect: GET DOMAIN %@", _domain);
-
-  openIdSession = [SOGoOpenIdSession OpenIdSession: _domain];
-  newLocation = [openIdSession loginUrl: redirectLocation];
-
-  response = [self redirectToLocation: newLocation];
-
-  return response;
-}
 
 - (id <WOActionResults>) defaultAction
 {
-  NSString *authenticationType, *loginDomain;
+  NSString *authenticationType, *loginDomain, *type;
   SOGoSystemDefaults* sd;
   id <WOActionResults> result;
 
   loginDomain = nil;
   sd = [SOGoSystemDefaults sharedSystemDefaults];
-  if([sd loginUsernameFirst])
+  if([sd doesLoginTypeByDomain])
   {
     NSString *login;
     //In this mode sogo will ask the mail of the user before doing any authentication
-    //CHeck if a user is already logged in
+    //Check if a user is already logged in
 
     login = [[context activeUser] login];
     if ([login isEqualToString: @"anonymous"])
@@ -831,26 +843,58 @@ static const NSString *kJwtKey = @"jwt";
       if (r.location != NSNotFound)
       {
         loginDomain = [login substringFromIndex: r.location+1];
+        type = [sd getLoginTypeForDomain: loginDomain];
+        if(type)
+        {
+          if([type isEqualToString: @"plain"])
+          {
+            result = [self _standardDefaultAction];
+          }
+          else if([type isEqualToString: @"openid"])
+          {
+            result = [self _openidDefaultAction: loginDomain];
+          }
+          else if([type isEqualToString: @"cas"] || [type isEqualToString: @"saml2"])
+          {
+            [self logWithFormat: @"Unsupported type for now: %@", type];
+            result = [self responseWithStatus: 400
+                                  andString: @"Domain Authentication type not supported"];
+          }
+          else
+          {
+            [self logWithFormat: @"Unknown type: %@", type];
+            result = [self responseWithStatus: 400
+                                  andString: @"Unknwon Authentication type"];
+          }
+        }
+        else
+        {
+          [self logWithFormat: @"Auth type for Domain given is not set or there is no default value: %@", loginDomain];
+          result = [self responseWithStatus: 400
+                                  andString: @"Domain unknown"];
+        }
       }
       else
       {
         loginDomain = nil;
+        result = [self _standardDefaultAction];
       }
     }
   }
+  else {
+    authenticationType = [sd authenticationType];
 
-  authenticationType = [sd  authenticationType];
-
-  if ([authenticationType isEqualToString: @"cas"])
-    result = [self _casDefaultAction];
-  else if ([authenticationType isEqualToString: @"openid"])
-    result = [self _openidDefaultAction: loginDomain];
-#if defined(SAML2_CONFIG)
-  else if ([authenticationType isEqualToString: @"saml2"])
-    result = [self _saml2DefaultAction];
-#endif /* SAML2_CONFIG */
-  else
-    result = [self _standardDefaultAction];
+    if ([authenticationType isEqualToString: @"cas"])
+      result = [self _casDefaultAction];
+    else if ([authenticationType isEqualToString: @"openid"])
+      result = [self _openidDefaultAction: loginDomain];
+    #if defined(SAML2_CONFIG)
+    else if ([authenticationType isEqualToString: @"saml2"])
+      result = [self _saml2DefaultAction];
+    #endif /* SAML2_CONFIG */
+    else
+      result = [self _standardDefaultAction];
+  }
 
   return result;
 }
@@ -882,12 +926,83 @@ static const NSString *kJwtKey = @"jwt";
 
 - (BOOL) doLoginUsernameFirst
 {
-  return [[SOGoSystemDefaults sharedSystemDefaults] loginUsernameFirst];
+  return [[SOGoSystemDefaults sharedSystemDefaults] doesLoginTypeByDomain];
 }
 
 - (BOOL) doFullLogin
 {
-  return ![self doLoginUsernameFirst];
+  //Either we directly do the full login (meaning the user inputs its username and password)
+  //Or we do it in two times:
+  //phase 1: user types its username first -> only show the username input
+  //phase 2: user types its password -> show all inputs
+  //In phase 2, the username will be in the query at key "login"
+  if([self doLoginUsernameFirst]){
+    WORequest *rq;
+    BOOL hasLogin;
+    NSDictionary *formValues;
+
+    rq = [context request];
+    hasLogin = ((formValues=[rq formValues]) && [formValues objectForKey: @"login"]);
+    return hasLogin;
+  }
+
+  return YES;
+}
+
+- (BOOL) hasLoginHint
+{
+  id value;
+  WORequest *rq;
+  NSString* login;
+  NSDictionary *formValues;
+
+  login = nil;
+
+  rq = [context request];
+  if((formValues=[rq formValues]) && (value=[formValues objectForKey: @"login"]));
+    if ([value isKindOfClass: [NSArray class]])
+      login = [value lastObject];
+    else
+      login = value;
+  return login!=nil;
+}
+
+- (BOOL) noLoginHint
+{
+  id value;
+  WORequest *rq;
+  NSString* login;
+  NSDictionary *formValues;
+
+  login = nil;
+
+  rq = [context request];
+  if((formValues=[rq formValues]) && (value=[formValues objectForKey: @"login"]));
+    if ([value isKindOfClass: [NSArray class]])
+      login = [value lastObject];
+    else
+      login = value;
+  return login==nil;
+}
+
+- (NSString *) getLoginHint
+{
+  id value;
+  WORequest *rq;
+  NSString* login;
+  NSDictionary *formValues;
+
+  login = @"";
+
+  rq = [context request];
+  if((formValues=[rq formValues]) && (value=[formValues objectForKey: @"login"]))
+  {
+    if ([value isKindOfClass: [NSArray class]])
+      login = [value lastObject];
+    else
+      login = value;
+  }
+  return login;
 }
 
 - (BOOL) hasPasswordRecovery

@@ -12,6 +12,7 @@
   <script type="text/javascript">
     var cookieUsername = <var:string var:value="cookieUsername.doubleQuotedString" const:escapeHTML="NO"/>;
     var language = '<var:string var:value="language" const:escapeHTML="NO"/>';
+    var loginHint = '<var:string var:value="getLoginHint" const:escapeHTML="NO"/>'
   </script>
 
   <!--
@@ -62,7 +63,7 @@
                       <md-icon>person</md-icon>
                       <input autocorrect="off" autocapitalize="off" type="text" ng-model="app.creds.username" ng-required="true" ng-change="app.usernameChanged()" ng-blur="app.retrievePasswordRecoveryEnabled()" />
                     </md-input-container>
-                    
+
                     <md-input-container class="md-block">
                       <label><var:string label:value="Password"/></label>
                       <md-icon>vpn_key</md-icon>

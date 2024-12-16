@@ -55,32 +55,59 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
   return ([sd openIdConfigUrl] && [sd openIdScope]  && [sd openIdClient]  && [sd openIdClientSecret]);
 }
 
+- (void) initializeWithConfig: (NSDictionary *) _config
+{
+  if([_config objectForKey: @"SOGoOpenIdConfigUrl"] &&
+      [_config objectForKey: @"SOGoOpenIdScope"] &&
+      [_config objectForKey: @"SOGoOpenIdClient"] &&
+      [_config objectForKey: @"SOGoOpenIdClientSecret"])
+  {
+    openIdConfigUrl          = [_config objectForKey: @"SOGoOpenIdConfigUrl"];
+    openIdScope              = [_config objectForKey: @"SOGoOpenIdScope"];
+    openIdClient             = [_config objectForKey: @"SOGoOpenIdClient"];
+    openIdClientSecret       = [_config objectForKey: @"SOGoOpenIdClientSecret"];
+    openIdEmailParam         = [_config objectForKey: @"SOGoOpenIdEmailParam"];
+    openIdEnableRefreshToken = [_config objectForKey: @"SOGoOpenIdEnableRefreshToken"];
+    userTokenInterval        = [_config objectForKey: @"SOGoOpenIdTokenCheckInterval"];
+    [self _loadSessionFromCache: forDomain];
+
+    if(cacheUpdateNeeded)
+    {
+      [self fecthConfiguration: forDomain];
+    }
+  }
+  else
+  {
+    [self errorWithFormat: @"Missing parameters from sogo.conf"];
+  }
+}
+
 - (void) initialize: (NSString*) _domain
 {
   SOGoSystemDefaults *sd;
-
-  // //From sogo.conf
-  // openIdConfigUrl = nil;
-  // openIdScope = nil;
-  // openIdClient = nil;
-  // openIdClientSecret = nil;
-
-  // //From request to well-known/configuration
-  // //SHoud be ste in sogo.cong in case of oauth
-  // authorizationEndpoint = nil;
-  // tokenEndpoint = nil;
-  // introspectionEndpoint = nil;
-  // userinfoEndpoint = nil;
-  // endSessionEndpoint = nil;
-  // revocationEndpoint = nil;
-
-  // //Access token
-  // accessToken = nil;
+  NSDictionary *config;
+  NSString *type;
 
   sd = [SOGoSystemDefaults sharedSystemDefaults];
   SOGoOpenIDDebugEnabled = [sd openIdDebugEnabled];
   openIdSessionIsOK = NO;
-  if ([[self class] checkUserConfig])
+
+  //Check if there is a root config or config per domain
+  if(_domain != nil && [sd doesLoginTypeByDomain])
+  {
+    forDomain = _domain;
+    type = [sd getLoginTypeForDomain: _domain];
+    if(type != nil && [type isEqualToString: @"openid"])
+    {
+      config = [sd getLoginConfigForDomain];
+      [[self class] initializeWithConfig: config];
+    }
+    else
+    {
+      [self errorWithFormat: @"Missing parameters from sogo.conf"];
+    }
+  }
+  else if ([[self class] checkUserConfig])
   {
     openIdConfigUrl          = [sd openIdConfigUrl];
     openIdScope              = [sd openIdScope];
@@ -146,9 +173,7 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
                                         userInfo: nil];
     [request autorelease];
     [httpConnection sendRequest: request];
-    NSLog(@"READ RESPONSE!!!!!!");
     response = [httpConnection readResponse];
-    NSLog(@"RESPONSE GOTTEN!!!!!!");
     status = [response status];
     if(status >= 200 && status <500 && status != 404)
       return response;
@@ -241,6 +266,17 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
   return newSession;
 }
 
++ (SOGoOpenIdSession *) OpenIdSessionWithConfig: (NSDictionary *) _config
+{
+  SOGoOpenIdSession *newSession;
+
+  newSession = [self new];
+  [newSession autorelease];
+  [newSession initializeWithConfig: _config];
+
+  return newSession;
+}
+
 + (SOGoOpenIdSession *) OpenIdSessionWithToken: (NSString *) token domain: (NSString *) _domain
 {
   SOGoOpenIdSession *newSession;
@@ -258,6 +294,25 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
 
   return newSession;
 }
+
++ (SOGoOpenIdSession *) OpenIdSessionWithTokenAndConfig: (NSString *) token config: (NSDictionary *) _config
+{
+  SOGoOpenIdSession *newSession;
+
+  if (token)
+    {
+      newSession = [self new];
+      [newSession autorelease];
+      [newSession initializeWithConfig: _config];
+      
+      [newSession setAccessToken: token];
+    }
+  else
+    newSession = nil;
+
+  return newSession;
+}
+
 
 - (BOOL) sessionIsOk
 {
