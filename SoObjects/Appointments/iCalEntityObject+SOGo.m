@@ -379,7 +379,7 @@ NSNumber *iCalDistantFutureNumber = nil;
   currentAttendee = [attendees nextObject];
   while (!isAttendee
 	 && currentAttendee)
-    if ([user hasEmail: [currentAttendee rfc822Email]])
+    if ([user hasEmail: [currentAttendee rfc822Email]] && ![self isOrganizer:[currentAttendee rfc822Email]]) // Exclude organizer if in attendees
       isAttendee = YES;
     else
       currentAttendee = [attendees nextObject];
