@@ -1760,7 +1760,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 {
   NSCalendarDate *now, *rc;
 
-  if (davCalendarStartTimeLimit > 0 && ![[context activeUser] isSuperUser])
+  if ([[context request] isSoWebDAVRequest] && davCalendarStartTimeLimit > 0 && ![[context activeUser] isSuperUser])
     {
       now = [NSCalendarDate date];
       rc = [now addTimeInterval: -davTimeLimitSeconds];
