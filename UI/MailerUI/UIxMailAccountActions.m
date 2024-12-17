@@ -27,6 +27,7 @@
 
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSAutoreleasePool.h>
 
 #import <NGHttp/NGHttpRequest.h>
 
@@ -60,11 +61,72 @@
 
 @implementation UIxMailAccountActions
 
+- (NSArray *)sortChildrenRecursively: (NSArray *)children {
+    NSInteger i, j;
+    NSMutableArray *sortedArray;
+    NSArray *unsortedChildren, *sortedChildren;
+    NSDictionary *child;
+    NSMutableDictionary *mutableChild;
+    NSString *name1, *name2;
+
+    if (nil == children || 0 == [children count]) {
+        return children;
+    }
+
+    sortedArray = [NSMutableArray array];
+
+    for (child in children) {
+        unsortedChildren = [child objectForKey:@"children"];
+        sortedChildren = [self sortChildrenRecursively:unsortedChildren];
+        mutableChild = [child mutableCopy];
+        [mutableChild setObject:sortedChildren forKey:@"children"];
+        [sortedArray addObject:mutableChild];
+    }
+
+    for (i = 0; i < [sortedArray count] - 1; i++) {
+        for (j = i + 1; j < [sortedArray count]; j++) {
+            name1 = [[sortedArray objectAtIndex:i] objectForKey:@"name"];
+            name2 = [[sortedArray objectAtIndex:j] objectForKey:@"name"];
+            if ([name1 compare:name2 options:NSCaseInsensitiveSearch] == NSOrderedDescending) {
+                [sortedArray exchangeObjectAtIndex:i withObjectAtIndex:j];
+            }
+        }
+    }
+
+    return sortedArray;
+}
+
+- (NSDictionary *)sortMailboxesRecursively: (NSDictionary *)data {
+    NSArray *mailboxes, *mailboxChildren, *sortedMailboxChildren;
+    NSMutableDictionary *sortedData, *mutableMailbox;
+    NSMutableArray *sortedMailboxes;
+    NSDictionary *mailbox;
+
+    mailboxes = [data objectForKey:@"mailboxes"];
+    sortedData = [data mutableCopy];
+    
+    sortedMailboxes = [NSMutableArray array];
+    for (mailbox in mailboxes) {
+        mutableMailbox = [mailbox mutableCopy];
+        
+        mailboxChildren = [mailbox objectForKey:@"children"];
+        sortedMailboxChildren = [self sortChildrenRecursively:mailboxChildren];
+        
+        [mutableMailbox setObject:sortedMailboxChildren forKey:@"children"];
+        [sortedMailboxes addObject:mutableMailbox];
+    }
+    
+    [sortedData setObject:sortedMailboxes forKey:@"mailboxes"];
+    
+    return sortedData;
+}
+
 - (WOResponse *) listMailboxesAction
 {
   SOGoMailAccount *co;
   NSArray *folders;
   NSDictionary *data;
+  NSAutoreleasePool *pool;
 
   co = [self clientObject];
 
@@ -74,6 +136,9 @@
                          folders, @"mailboxes",
                        [co getInboxQuota], @"quotas",
                        nil];
+  pool = [[NSAutoreleasePool alloc] init];
+  data = [self sortMailboxesRecursively: data];
+  DESTROY(pool);
 
   return [self responseWithStatus: 200
 	    andJSONRepresentation: data];
