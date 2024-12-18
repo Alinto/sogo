@@ -953,7 +953,10 @@ static BOOL debugSoParts       = NO;
             body = [NSData data];
 
           currentAttachment = [NSMutableDictionary dictionaryWithDictionary: currentInfo];
-          [currentAttachment setObject: body forKey: @"body"];
+          if (body)
+            [currentAttachment setObject: body forKey: @"body"];
+          else
+            [self errorWithFormat: @"Failed add attachement %@, empty body - failed to decode : %@", currentPath, currentInfo];
           [attachments addObject: currentAttachment];
 	}
     }
