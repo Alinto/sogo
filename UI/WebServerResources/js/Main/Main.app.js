@@ -198,7 +198,7 @@
 
     this.changeLanguage = function ($event) {
       // Reload page
-      $window.location.href = ApplicationBaseURL + 'login?language=' + this.creds.language;
+      $window.location.href = ApplicationBaseURL + 'changeLanguage?language=' + this.creds.language;
     };
 
     this.canChangePassword = function (form) {
