@@ -761,8 +761,10 @@ static const NSString *kJwtKey = @"jwt";
       {
         //Only reload the page with the name
         serverUrl = [[context serverURL] absoluteString];
-        redirectLocation = [NSString stringWithFormat: @"%@/%@?login=%@", serverUrl, [request applicationName], username];
-        response = [self redirectToLocation: [NSString stringWithFormat: @"%@/", redirectLocation]];
+        redirectLocation = [NSString stringWithFormat: @"%@/%@/login?hint=%@", serverUrl, [request applicationName], username];
+        // response = [self redirectToLocation: [NSString stringWithFormat: @"%@/", redirectLocation]];
+        response = [self responseWithStatus: 200 andJSONRepresentation:
+          [NSDictionary dictionaryWithObjectsAndKeys: redirectLocation, @"redirect", nil]];
       }
       else if([type isEqualToString: @"openid"])
       {
@@ -942,48 +944,18 @@ static const NSString *kJwtKey = @"jwt";
     NSDictionary *formValues;
 
     rq = [context request];
-    hasLogin = ((formValues=[rq formValues]) && [formValues objectForKey: @"login"]);
+    hasLogin = ((formValues=[rq formValues]) && [formValues objectForKey: @"hint"]);
     return hasLogin;
   }
 
   return YES;
 }
 
-- (BOOL) hasLoginHint
+- (BOOL) doPartialLogin
 {
-  id value;
-  WORequest *rq;
-  NSString* login;
-  NSDictionary *formValues;
-
-  login = nil;
-
-  rq = [context request];
-  if((formValues=[rq formValues]) && (value=[formValues objectForKey: @"login"]));
-    if ([value isKindOfClass: [NSArray class]])
-      login = [value lastObject];
-    else
-      login = value;
-  return login!=nil;
+  return ![self doFullLogin];
 }
 
-- (BOOL) noLoginHint
-{
-  id value;
-  WORequest *rq;
-  NSString* login;
-  NSDictionary *formValues;
-
-  login = nil;
-
-  rq = [context request];
-  if((formValues=[rq formValues]) && (value=[formValues objectForKey: @"login"]));
-    if ([value isKindOfClass: [NSArray class]])
-      login = [value lastObject];
-    else
-      login = value;
-  return login==nil;
-}
 
 - (NSString *) getLoginHint
 {
@@ -995,7 +967,7 @@ static const NSString *kJwtKey = @"jwt";
   login = @"";
 
   rq = [context request];
-  if((formValues=[rq formValues]) && (value=[formValues objectForKey: @"login"]))
+  if((formValues=[rq formValues]) && (value=[formValues objectForKey: @"hint"]))
   {
     if ([value isKindOfClass: [NSArray class]])
       login = [value lastObject];
@@ -1368,8 +1340,7 @@ static const NSString *kJwtKey = @"jwt";
   message = [[request contentAsString] objectFromJSONString];
   username = [message objectForKey: @"userName"];
   domain = [message objectForKey: @"domain"];
-  if ([[SOGoSystemDefaults sharedSystemDefaults]
-                             isPasswordRecoveryEnabled]) {
+  if ([[SOGoSystemDefaults sharedSystemDefaults] isPasswordRecoveryEnabled]) {
       // If no domain, try to retrieve domain from username
       if (nil != domain && domain != [NSNull null]) {
         domainName = domain;

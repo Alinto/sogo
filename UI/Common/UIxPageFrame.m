@@ -488,14 +488,6 @@
 	  && [user isSuperUser]);
 }
 
-- (BOOL) usesCASAuthentication
-{
-  SOGoSystemDefaults *sd;
-
-  sd = [SOGoSystemDefaults sharedSystemDefaults];
-
-  return [[sd authenticationType] isEqualToString: @"cas"];
-}
 
 - (BOOL) usesOpenIdAuthentication
 {
@@ -546,19 +538,32 @@
   BOOL canLogoff;
   id auth;
   SOGoSystemDefaults *sd;
-  NSString *authType;
+  NSString *authType, *login, *loginDomain;
+  NSRange r;
 
   auth = [[self clientObject] authenticatorInContext: context];
   if ([auth respondsToSelector: @selector (cookieNameInContext:)])
     {
+
       sd = [SOGoSystemDefaults sharedSystemDefaults];
-      authType = [sd authenticationType];
+
+      login = [[context activeUser] login];
+      r = [login rangeOfString: @"@"];
+      if (r.location != NSNotFound)
+        loginDomain = [login substringFromIndex: r.location+1];
+      else
+        loginDomain = nil;
+      if(loginDomain && [sd doesLoginTypeByDomain])
+        authType = [sd getLoginTypeForDomain: loginDomain];
+      else
+        authType = [sd authenticationType];
+
       if ([authType isEqualToString: @"cas"])
 	      canLogoff = [sd CASLogoutEnabled];
       else if ([authType isEqualToString: @"saml2"])
 	      canLogoff = [sd SAML2LogoutEnabled];
       else if ([authType isEqualToString: @"openid"])
-	      canLogoff = [sd openIdLogoutEnabled];
+	      canLogoff = [sd openIdLogoutEnabled: loginDomain];
       else
 	      canLogoff = [[auth cookieNameInContext: context] length] > 0;
     }

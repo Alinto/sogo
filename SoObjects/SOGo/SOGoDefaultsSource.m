@@ -164,6 +164,29 @@ static Class NSStringKlass = Nil;
   return value;
 }
 
+- (BOOL) boolForKey: (NSString *) key andDict: (NSDictionary*) _dict
+{
+  id boolForKey;
+  BOOL value;
+
+  boolForKey = [_dict objectForKey: key];
+  if (boolForKey)
+    {
+      if ([boolForKey respondsToSelector: @selector (boolValue)])
+        value = [boolForKey boolValue];
+      else
+        {
+          [self warnWithFormat: @"expected a boolean for '%@' (ignored)",
+                key];
+          value = NO;
+        }
+    }
+  else
+    value = NO;
+
+  return value;
+}
+
 - (void) setFloat: (float) value
 	   forKey: (NSString *) key
 {

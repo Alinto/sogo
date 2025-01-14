@@ -139,7 +139,7 @@
 {
   NGImap4ConnectionManager *manager;
   NGImap4Connection *newConnection;
-  NSString *password;
+  NSString *password, *domain;
   NGInternetSocketAddress *host;
   SOGoSystemDefaults *sd;
   BOOL usesSSO;
@@ -152,12 +152,15 @@
   host = [NGInternetSocketAddress addressWithPort:0 onHost:[[self imap4URL] host]];
 
   sd = [SOGoSystemDefaults sharedSystemDefaults];
-  usesSSO = [sd isSsoUsed];
+
+  domain = [[[self context] activeUser] loginDomain];
+  usesSSO = [sd isSsoUsed: domain];
 
   if (![[[self mailAccountFolder] nameInContainer] isEqualToString: @"0"] &&
       usesSSO &&
       [host isLocalhost])
     {
+      //
       [self errorWithFormat: @"Trying to use localhost for additional IMAP account - aborting."];
       return nil;
     }

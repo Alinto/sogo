@@ -327,17 +327,9 @@ static BOOL debugLeaks;
       }
 
       //Create mandatory openId table, if used
-      if([[defaults authenticationType] isEqualToString: @"openid"])
+      if([defaults hasOpenIdType])
       {
-        value = [defaults stringForKey: @"OCSOpenIdURL"];
-        if (value)
-          [[fm openIdFolder] createFolderIfNotExists];
-        else
-        {
-          [self errorWithFormat: @"No value specified for 'OCSOpenIdURL' for auth mode %@", [defaults authenticationType]];
-          ok = NO;
-        }
-        
+        [[fm openIdFolder] createFolderIfNotExists];
       }
     }
 

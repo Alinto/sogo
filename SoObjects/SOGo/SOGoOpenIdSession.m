@@ -57,6 +57,8 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
 
 - (void) initializeWithConfig: (NSDictionary *) _config
 {
+  SOGoSystemDefaults *sd;
+
   if([_config objectForKey: @"SOGoOpenIdConfigUrl"] &&
       [_config objectForKey: @"SOGoOpenIdScope"] &&
       [_config objectForKey: @"SOGoOpenIdClient"] &&
@@ -67,7 +69,7 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
     openIdClient             = [_config objectForKey: @"SOGoOpenIdClient"];
     openIdClientSecret       = [_config objectForKey: @"SOGoOpenIdClientSecret"];
     openIdEmailParam         = [_config objectForKey: @"SOGoOpenIdEmailParam"];
-    openIdEnableRefreshToken = [_config objectForKey: @"SOGoOpenIdEnableRefreshToken"];
+    openIdEnableRefreshToken = [sd boolForKey: @"SOGoOpenIdEnableRefreshToken" andDict: _config];
     userTokenInterval        = [_config objectForKey: @"SOGoOpenIdTokenCheckInterval"];
     [self _loadSessionFromCache: forDomain];
 
@@ -99,8 +101,8 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
     type = [sd getLoginTypeForDomain: _domain];
     if(type != nil && [type isEqualToString: @"openid"])
     {
-      config = [sd getLoginConfigForDomain];
-      [[self class] initializeWithConfig: config];
+      config = [sd getLoginConfigForDomain: _domain];
+      [self initializeWithConfig: config];
     }
     else
     {

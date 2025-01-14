@@ -77,6 +77,7 @@
 + (void) deleteValueForSessionKey: (NSString *) theSessionKey;
 
 - (void) initialize;
+- (void) initializeWithConfig: (NSDictionary *) _config;
 - (BOOL) sessionIsOK;
 - (WOResponse *) _performOpenIdRequest: (NSString *) endpoint
                         method: (NSString *) method

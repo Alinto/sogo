@@ -377,7 +377,7 @@
 
               </div>
             </var:if>
-            <var:if condition="doLoginUsernameFirst">
+            <var:if condition="doPartialLogin">
               <div id="login" class="sg-login-content md-padding">
                 <form name="loginForm" layout="column"
                       ng-cloak="ng-cloak"

@@ -92,7 +92,7 @@ NSComparisonResult languageSort(id el1, id el2, void *context);
 - (NSString *) loginSuffix;
 
 - (NSString *) authenticationType;
-- (BOOL) isSsoUsed;
+- (BOOL) isSsoUsed: (NSString *) domain;
 - (NSString *) davAuthenticationType;
 
 - (NSString *) CASServiceURL;
@@ -104,7 +104,7 @@ NSComparisonResult languageSort(id el1, id el2, void *context);
 - (NSString *) openIdClientSecret;
 - (NSString *) openIdEmailParam;
 - (BOOL) openIdEnableRefreshToken;
-- (BOOL) openIdLogoutEnabled;
+- (BOOL) openIdLogoutEnabled: (NSString *) _domain;
 - (int) openIdTokenCheckInterval;
 
 - (NSString *) SAML2PrivateKeyLocation;
