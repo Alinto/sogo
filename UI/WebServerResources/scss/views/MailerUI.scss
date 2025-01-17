@@ -456,6 +456,10 @@ md-dialog md-dialog-actions.sg-mail-editor-attachments {
   .ck-content p {
     margin: revert;
   }
+
+  .ck-sticky-panel__content {
+    border: 0 !important;
+  }
 }
 
 // Search highlight

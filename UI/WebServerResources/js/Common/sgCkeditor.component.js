@@ -230,6 +230,7 @@
       };
 
       config = vm.config ? angular.merge(sgCkeditorConfig.config, vm.config) : sgCkeditorConfig.config;
+      config.licenseKey = "GPL";
 
       if (!config.toolbar) {
         config.toolbar = {
