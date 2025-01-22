@@ -1093,30 +1093,37 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
   domain = nil;
   infos = nil;
 
+  //Try to get the domain from the uid
+  r = [uid rangeOfString: @"@" options: NSBackwardsSearch];
+  if (r.location != NSNotFound)
+  {
+    // The domain is probably appended to the username;
+    // make sure it is a defined domain in the configuration.
+    domain = [uid substringFromIndex: (r.location + r.length)];
+    if ([self isDomainDefined: domain])
+      username = [uid substringToIndex: r.location];
+    else
+      domain = nil;
+  }
+  
   sd = [SOGoSystemDefaults sharedSystemDefaults];
-  if ([sd enableDomainBasedUID])
-    {
-      r = [uid rangeOfString: @"@" options: NSBackwardsSearch];
-      if (r.location != NSNotFound)
-        {
-          // The domain is probably appended to the username;
-          // make sure it is a defined domain in the configuration.
-          domain = [uid substringFromIndex: (r.location + r.length)];
-          if ([self isDomainDefined: domain])
-            username = [uid substringToIndex: r.location];
-          else
-            domain = nil;
-        }
-      if (domain != nil)
-        infos = [self contactInfosForUserWithUIDorEmail: username
+  if (domain != nil)
+  {
+    if ([sd enableDomainBasedUID])
+      infos = [self contactInfosForUserWithUIDorEmail: username
                                                inDomain: domain];
-    }
+    else
+      infos = [self contactInfosForUserWithUIDorEmail: uid
+                                               inDomain: domain];
+  }
 
   if (infos == nil)
+  {
     // If the user was not found using the domain or if no domain was detected,
     // search using the original uid.
     infos = [self contactInfosForUserWithUIDorEmail: uid
                                            inDomain: nil];
+  }
 
   return infos;
 }
@@ -1145,8 +1152,7 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
 
       if ([currentUser isKindOfClass: NSNullK])
         currentUser = nil;
-      else if (!([currentUser objectForKey: @"emails"]
-                 && [currentUser objectForKey: @"cn"]))
+      else if (!([currentUser objectForKey: @"emails"] && [currentUser objectForKey: @"cn"]))
         {
           // We make sure that we either have no occurence of a cache entry or
           // that we have an occurence with only a cached password. In the
@@ -1163,6 +1169,19 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
             }
           else
             newUser = NO;
+
+          if(!domain)
+          {
+            //No domain provided is there one?
+            NSRange r;
+            r = [uid rangeOfString: @"@" options: NSBackwardsSearch];
+            if (r.location != NSNotFound)
+            {
+              domain = [uid substringFromIndex: (r.location + r.length)];
+              if (![self isDomainDefined: domain])
+                domain = nil;
+            }
+          }
           [self _fillContactInfosForUser: currentUser
                           withUIDorEmail: aUID
                                 inDomain: domain];
