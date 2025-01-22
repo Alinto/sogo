@@ -1437,9 +1437,9 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 
   if(theDomain != nil && [theDomain length] > 0)
   {
-    if ([_baseDN rangeOfString: @"%d"].location != NSNotFound)
+    if ([_pristineBaseDN rangeOfString: @"%d"].location != NSNotFound)
     {
-      s = [NSMutableString stringWithString: _baseDN];
+      s = [NSMutableString stringWithString: _pristineBaseDN];
       [s replaceOccurrencesOfString: @"%d"  withString: theDomain  options: 0  range: NSMakeRange(0, [s length])];
       ASSIGN(_baseDN, s);
     }
