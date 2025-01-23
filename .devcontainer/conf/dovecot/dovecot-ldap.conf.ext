@@ -1,0 +1,9 @@
+hosts = openldap:389
+dn = cn=admin,dc=example,dc=org
+dnpass = password
+debug_level = -1
+auth_bind = yes
+ldap_version = 3
+base = ou=users,dc=example,dc=org
+user_filter = (&(objectClass=posixAccount)(uid=%u))
+user_filter = (|(uid=%u)(mail=%u))

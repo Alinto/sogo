@@ -1,0 +1,17 @@
+passdb {
+  driver = ldap
+
+  # Path for LDAP configuration file, see example-config/dovecot-ldap.conf.ext
+  args = /etc/dovecot/dovecot-ldap.conf.ext
+}
+
+userdb {
+  driver = ldap
+  args = /etc/dovecot/dovecot-ldap.conf.ext
+  
+  # Default fields can be used to specify defaults that LDAP may override
+  #default_fields = home=/home/virtual/%u
+}
+
+mail_gid = 8
+

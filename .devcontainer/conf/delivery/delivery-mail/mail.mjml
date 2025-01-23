@@ -1,0 +1,200 @@
+<mjml>
+  <mj-head>
+    <mj-attributes>
+      <mj-body background-color="#F2F2F2" />
+      <mj-wrapper padding="20px" background-color="#ffffff" />
+      <mj-divider padding="20px" width="30px" border-width="3px" border-color="#555" />
+      <mj-text padding="0" align="left" font-family="Helvetica, Arial, sans-serif" color="#333" line-height="18px" />
+      <mj-button background-color="#ea5967" color="white" font-size="16px" border-radius="5px"
+        font-family="Helvetica, Arial, sans-serif" />
+      <mj-class name="section-mute" padding="0 20px" />
+      <mj-class name="title" inline="inline" align="center" font-weight="700" font-size="36px" line-height="60px"
+        color="#555" />
+      <mj-class name="subtitle" inline="inline" align="left" font-weight="400" font-size="14px"
+        text-transform="uppercase" line-height="40x" color="#56b04c" />
+      <mj-class name="subtitle-mute" inline="inline" align="left" font-weight="400" font-size="18px" line-height="40x"
+        color="#666" padding-top="20px" />
+      <mj-class name="indent" padding-left="10%" />
+    </mj-attributes>
+    <mj-style inline="inline">
+      a { text-decoration: none; } ul { list-style: circle; }
+    </mj-style>
+    <mj-preview>Minor release, but many bug fixes. Download it now!</mj-preview>
+  </mj-head>
+  <mj-body>
+    <mj-section></mj-section>
+    <mj-section background-color="#56b04c">
+      <mj-column>
+        <mj-text color="#72d46a" padding-left="20px" font-weight="100">NEW RELEASE</mj-text>
+      </mj-column>
+      <mj-column>
+        <mj-image align="right" src="https://www.sogo.nu/img/sogo.white.png" width="85px" />
+      </mj-column>
+    </mj-section>
+    <mj-wrapper>
+      <mj-section>
+        <mj-column>
+          <mj-text align="center" color="#666">ANNOUNCEMENT</mj-text>
+          <mj-text mj-class="title">SOGo v5.8.3</mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-section padding-top="0">
+        <mj-column>
+          <mj-text align="center" padding-bottom="20px">The Alinto Team is pleased to announce the immediate
+            availability of SOGo version 5.8.3.<br />This is a minor release of SOGo which focuses on various
+            enhancements and improved stability over previous versions.</mj-text>
+          <mj-text align="center" color="#666" font-size="18px" line-height="24px">--</mj-text>
+          <mj-text mj-class="subtitle">Enhancements</mj-text>
+          <mj-text>
+            <ul>
+              <li><b>calendar:</b> Add week number on month view. Fixes <a href="https://bugs.sogo.nu/view.php?id=4457">#4457</a>. (<a href="https://github.com/Alinto/sogo/commit/96639b70a05cc3646939f8d2e078c6896cfc6af5">96639b7</a>)</li>
+              <li><b>mail:</b> Add autolink from ckeditor. Fixes <a href="https://bugs.sogo.nu/view.php?id=5749">#5749</a> (<a href="https://github.com/Alinto/sogo/commit/810cd1235f37a3dd25e5294b0c6c28bb379ba9a7">810cd12</a>)</li>
+              <li><b>preferences:</b> Add SOGoCreateIdentitiesDisabled domain option which disables identity creation for users in preferences (<a href="https://github.com/Alinto/sogo/commit/af6202bee6fe647f178a98ef784f98eeaaacd592">af6202b</a> <a href="https://github.com/Alinto/sogo/commit/a14f9a7b7991271727b8837a253c0ce9c154e012">a14f9a7</a>)</li>
+      </ul>
+          </mj-text>
+          <mj-text mj-class="subtitle">Bug Fixes</mj-text>
+          <mj-text>
+            <ul>
+        <li><b>activesync:</b> Wrong decoding emails in Outlook via EAS. Force utf-8 when contnet-type is different than html part. Original fix from tfu. Fixes <a href="https://bugs.sogo.nu/view.php?id=5664">#5664</a> (<a href="https://github.com/Alinto/sogo/commit/39ab482b7f1a9206528a3e9fdb229b3b4e276baf">39ab482</a>)</li>
+              <li><b>calendar:</b> Fix Web Calendar (ics) subscription with authentication between SOGo instances not possible after upgrading from 5.7.0 to 5.8.2. Fixes <a href="https://bugs.sogo.nu/view.php?id=5753">#5753</a> (<a href="https://github.com/Alinto/sogo/commit/dd60e016c6c7f9a19b831804d55b6d39321d4a2a">dd60e01</a>)</li>
+              <li><b>calendar:</b> Rework confirmation box when dismissing calendar event edition with background click, only if the event is in edition. Rework of <a href="https://bugs.sogo.nu/view.php?id=5585">#5585</a>. Closes <a href="https://bugs.sogo.nu/view.php?id=5720">#5720</a>. (<a href="https://github.com/Alinto/sogo/commit/4fc61a28d529add9b879449a6c64a9d32ead3cab">4fc61a2</a> <a href="https://github.com/Alinto/sogo/commit/6ccd22b511783d5f14d5af047e38791f3849d08e">6ccd22b</a> <a href="https://github.com/Alinto/sogo/commit/46215aca87350cca0d608040e90b8187268f2f08">46215ac</a>)</li>
+              <li><b>core:</b> Add  . , : ; + = special characters in password policy (<a href="https://github.com/Alinto/sogo/commit/2f36fa55fe5f4e8136198a0f26dd8b4254b43433">2f36fa5</a> <a href="https://github.com/Alinto/sogo/commit/a5d4715e7693097b2d38a700f5e71db4aade0b02">a5d4715</a>)</li>
+              <li><b>eas:</b> Fix error 500 when SOGoCacheCleanup triggered cleanup with shibboleth 4.2.1. Fore refresh ticket in iFrame in this case (<a href="https://github.com/Alinto/sogo/commit/7b711eabb346e7197c94880c8bfe264e0e3b6f0f">7b711ea</a> <a href="https://github.com/Alinto/sogo/commit/5500ce7085a1c45a6858483b89fda5867f2aef36">5500ce7</a>)</li>
+              <li><b>js:</b> Fix display of body message when 'to' field is not filled in. Closes <a href="https://bugs.sogo.nu/view.php?id=5721">#5721</a> (<a href="https://github.com/Alinto/sogo/commit/6acb245fec44bfc0bb7cf8b5b37dfd56b62089c5">6acb245</a>)</li>
+              <li><b>js:</b> Fix JavaScript error when send mail from Addressbook. Fixes <a href="https://bugs.sogo.nu/view.php?id=5750">#5750</a>. (<a href="https://github.com/Alinto/sogo/commit/3b0fbdd4f4584a010195daab9fa64c617e093c76">3b0fbdd</a>)</li>
+              <li><b>mail:</b> Fix images in attachements when replying to a mail. Fixes <a href="https://bugs.sogo.nu/view.php?id=5731">#5731</a> (<a href="https://github.com/Alinto/sogo/commit/dbd4e20c344666a01cfb1fa5dfdd5547a59f0520">dbd4e20</a>)</li>
+              <li><b>mail:</b> Fix invalid forward template when replying. Closes <a href="https://bugs.sogo.nu/view.php?id=5726">#5726</a> (<a href="https://github.com/Alinto/sogo/commit/d49ef4047a5c7f51850cf6e49cb3465b0dc7ac91">d49ef40</a>)</li>
+              <li><b>mail:</b> Removed attachements of images when replying to a mail. As the image is inline, the attachement shall be removed. (<a href="https://github.com/Alinto/sogo/commit/0edd3f757fc07aabd4270b393677cea6ff4a8ed6">0edd3f7</a>)</li>
+      </ul>
+          </mj-text>
+          <mj-text mj-class="subtitle">Localization</mj-text>
+          <mj-text>
+            <ul>
+              <li><b>ar:</b> Update Arabic translations (<a href="https://github.com/Alinto/sogo/commit/2c0b59fa71551ccac690f603e0ca3bfdbe308798">2c0b59f</a>)</li>
+              <li><b>base:</b> Fix the meaning of 'Disable auto reply on' (<a href="https://github.com/Alinto/sogo/commit/861dea8efa3699928e7f4a7194efd802ff889944">861dea8</a>)</li>
+              <li><b>bg_BG:</b> Update Bulgarian translations (<a href="https://github.com/Alinto/sogo/commit/b6c7521f144b54645cf97c6f3592908b8b05bf9a">b6c7521</a>)</li>
+              <li><b>bs_BA:</b> Update Bosnian translations (<a href="https://github.com/Alinto/sogo/commit/76dcd4f6aa82fd634b3fc58b960fdf5461b94e75">76dcd4f</a>)</li>
+              <li><b>ca:</b> Update Catalan translations (<a href="https://github.com/Alinto/sogo/commit/87f778d01c573d5cb9b8d428283b048afb0124b2">87f778d</a>)</li>
+              <li><b>cs:</b> Update Czech translations (<a href="https://github.com/Alinto/sogo/commit/e5dc0408ce20faf9f3092a717331447f1311b437">e5dc040</a>)</li>
+              <li><b>cy:</b> Update Welsh translations (<a href="https://github.com/Alinto/sogo/commit/5f47fc7bcb98af998deefb1433f9d03674c8cf65">5f47fc7</a>)</li>
+              <li><b>da_DK:</b> Update Danish translations (<a href="https://github.com/Alinto/sogo/commit/ad47aec62e7199ed8efdca5f93289484b9427ac7">ad47aec</a>)</li>
+              <li><b>de:</b> Update German translations (<a href="https://github.com/Alinto/sogo/commit/973a0efa6c654496a3f6acd0f25ba310350ba121">973a0ef</a>)</li>
+              <li><b>en:</b> Fix the meaning of 'Disable auto reply on' (<a href="https://github.com/Alinto/sogo/commit/d43de46a5a1977d3c5f6be9e39b6dc3eb0da92a5">d43de46</a>)</li>
+              <li><b>es_AR:</b> Update SpanishArgentina translations (<a href="https://github.com/Alinto/sogo/commit/ccf4872347133f71ad0babdbb3c64d82efd861f1">ccf4872</a>)</li>
+              <li><b>es_ES:</b> Update SpanishSpain translations (<a href="https://github.com/Alinto/sogo/commit/2b7552a5a9237a0a4646f6567e0698402903f785">2b7552a</a>)</li>
+              <li><b>eu:</b> Update Basque translations (<a href="https://github.com/Alinto/sogo/commit/fb5fa0c63d892885c2aa33798fa88df1822c3818">fb5fa0c</a>)</li>
+              <li><b>fi:</b> Update Finnish translations (<a href="https://github.com/Alinto/sogo/commit/33427ac00bdb262c55c102c30a9a1c45f9757c02">33427ac</a>)</li>
+              <li><b>fr:</b> Update French translations (<a href="https://github.com/Alinto/sogo/commit/0f06c576f60d77ba21593340cc1409a926d05a25">0f06c57</a> <a href="https://github.com/Alinto/sogo/commit/fd7bdd8393883f284b4103508df5f8f4662b384d">fd7bdd8</a> <a href="https://github.com/Alinto/sogo/commit/dc8c1c10ed4f20bca4e0fe53fff847533683592d">dc8c1c1</a>)</li>
+              <li><b>he:</b> Update Hebrew translations (<a href="https://github.com/Alinto/sogo/commit/b8c5d8f4a85511da8ac475ccab9e87a48cff9a39">b8c5d8f</a>)</li>
+              <li><b>hr_HR:</b> Update Croatian translations (<a href="https://github.com/Alinto/sogo/commit/b706d1b41fa0c007199ceff96e5e703833ec3f42">b706d1b</a>)</li>
+              <li><b>hu:</b> Update Hungarian translations (<a href="https://github.com/Alinto/sogo/commit/a8f2a3749aa171a4d484bcb56e45c0a5c1037078">a8f2a37</a>)</li>
+              <li><b>id_ID:</b> Update Indonesian translations (<a href="https://github.com/Alinto/sogo/commit/aa43c5bf31f87f9bf759b473496867a25b6b95e6">aa43c5b</a>)</li>
+              <li><b>is:</b> Update Icelandic translations (<a href="https://github.com/Alinto/sogo/commit/7f7f2246214037742c324e7266b4469b2227f999">7f7f224</a>)</li>
+              <li><b>it:</b> Update Italian translations (<a href="https://github.com/Alinto/sogo/commit/97b69af241b6a67555e9a1e34b9c404064882d76">97b69af</a>)</li>
+              <li><b>ja:</b> Update Japanese translations (<a href="https://github.com/Alinto/sogo/commit/8d842ccfb4b84517b24bf04a9d9bef57d09d9896">8d842cc</a>)</li>
+              <li><b>kk:</b> Update Kazakh translations (<a href="https://github.com/Alinto/sogo/commit/f3bdda516e0a729697a4f5fbe13b89cf390c8763">f3bdda5</a> <a href="https://github.com/Alinto/sogo/commit/0fcf113c168d70bd9f77b7c5afbd0954bbad4a62">0fcf113</a> <a href="https://github.com/Alinto/sogo/commit/29bda6b9457e237093a76bec4d2701540b38c4c7">29bda6b</a> <a href="https://github.com/Alinto/sogo/commit/d1ad970864998face2b4b7ade49648c548e85d70">d1ad970</a> <a href="https://github.com/Alinto/sogo/commit/b61bde90720851bc397861b06fe57fb6f454e43e">b61bde9</a>)</li>
+              <li><b>lt:</b> Update Lithuanian translations (<a href="https://github.com/Alinto/sogo/commit/07a01e3fdd7bb0102fe9c99b7ded407f74b2e52f">07a01e3</a>)</li>
+              <li><b>lv:</b> Update Latvian translations (<a href="https://github.com/Alinto/sogo/commit/56e040c6d5bdbc6aa2c0c47b3939ecaeba28cc89">56e040c</a>)</li>
+              <li><b>mk_MK:</b> Update Macedonian translations (<a href="https://github.com/Alinto/sogo/commit/d4a2d6b6f4c9b1d4f885a1fa239417d72e850fd2">d4a2d6b</a>)</li>
+              <li><b>nb_NO:</b> Update NorwegianBokmal translations (<a href="https://github.com/Alinto/sogo/commit/e8f507d7b90ffb85030193bb9659c7925a791077">e8f507d</a>)</li>
+              <li><b>nl:</b> Update Dutch translations (<a href="https://github.com/Alinto/sogo/commit/42b9a037252540d9662a85b1a4fa923721156c23">42b9a03</a>)</li>
+              <li><b>nn_NO:</b> Update NorwegianNynorsk translations (<a href="https://github.com/Alinto/sogo/commit/3e9329690200849a944c36f57a11af5f4a199411">3e93296</a>)</li>
+              <li><b>pl:</b> Update Polish translations (<a href="https://github.com/Alinto/sogo/commit/51817fc6b41498ecccc73205ec8ebdca18194516">51817fc</a>)</li>
+              <li><b>pt_BR:</b> Update BrazilianPortuguese translations (<a href="https://github.com/Alinto/sogo/commit/818332edd661d2d9394977fa5fa86f9fb9dcd326">818332e</a>)</li>
+              <li><b>pt:</b> Update Portuguese translations (<a href="https://github.com/Alinto/sogo/commit/6bb781b531ad109d11ddb4406bd9c71b23dedc5b">6bb781b</a>)</li>
+              <li><b>ro_RO:</b> Update Romanian translations (<a href="https://github.com/Alinto/sogo/commit/7be8e644a9f461f818e3d55e145f9f0cae8a54d7">7be8e64</a>)</li>
+              <li><b>ru:</b> Date specific Russian from and to translations (<a href="https://github.com/Alinto/sogo/commit/d1401e3bfc7cc569b333d74cafed76335e123273">d1401e3</a>)</li>
+              <li><b>ru:</b> Update Russian translations (<a href="https://github.com/Alinto/sogo/commit/239016fdc28923595e1287c80010a0ce098537c6">239016f</a>)</li>
+              <li><b>sk:</b> Update Slovak translations (<a href="https://github.com/Alinto/sogo/commit/1ea3f009bb164a676b5e54baa1438a1648ebf406">1ea3f00</a>)</li>
+              <li><b>sl_SI:</b> Update Slovenian translations (<a href="https://github.com/Alinto/sogo/commit/17fca79bb0c320a3f4c099eacce50de66c762131">17fca79</a>)</li>
+              <li><b>sr_ME@latin:</b> Update Montenegrin translations (<a href="https://github.com/Alinto/sogo/commit/d5bf149f7a753d554e92635665af3301f0c6a2ca">d5bf149</a>)</li>
+              <li><b>sr@latin:</b> Update SerbianLatin translations (<a href="https://github.com/Alinto/sogo/commit/b1f6d20e9f9fbf5239c369f660968f9d99ed12a3">b1f6d20</a>)</li>
+              <li><b>sr:</b> Update Serbian translations (<a href="https://github.com/Alinto/sogo/commit/b4e315b1d82328026558e597105e675b830bb028">b4e315b</a>)</li>
+              <li><b>sv:</b> Update Swedish translations (<a href="https://github.com/Alinto/sogo/commit/af96d2b5c4c6aec7de764ce83baaaed6493e1a33">af96d2b</a>)</li>
+              <li><b>tr_TR:</b> Update TurkishTurkey translations (<a href="https://github.com/Alinto/sogo/commit/d8a214601415643693782a192e92dbc5b65246b4">d8a2146</a>)</li>
+              <li><b>uk:</b> Update Ukrainian translations (<a href="https://github.com/Alinto/sogo/commit/6655f06cc0592216ab521ccec5fff8da1fd31626">6655f06</a>)</li>
+              <li><b>zh_CN:</b> Update ChineseChina translations (<a href="https://github.com/Alinto/sogo/commit/0b4fddc23293c550a0462c397252ad48b9938acb">0b4fddc</a>)</li>
+              <li><b>zh_TW:</b> Update ChineseTaiwan translations (<a href="https://github.com/Alinto/sogo/commit/0a2d702c69f2af8c91c188f12dce07e565967569">0a2d702</a>)</li>
+      </ul>
+          </mj-text>
+          <mj-text padding-top="10px">See the <a
+              href="https://bugs.sogo.nu/changelog_page.php?version_id=253">closed tickets</a> for this release and
+            the complete <a href="https://github.com/Alinto/sogo/compare/SOGo-5.8.2...SOGo-5.8.3">change log</a>.
+          </mj-text>
+          <mj-button padding-top="40px" padding-bottom="0" href="https://www.sogo.nu/download.html#/v5">Download
+          </mj-button>
+          <mj-text align="center" padding-top="10px"><a
+              href="https://www.sogo.nu/files/docs/SOGoInstallationGuide.html#_upgrading">Upgrade Instructions &gt; </a>
+          </mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
+    <mj-section mj-class="section-mute">
+      <mj-column>
+        <mj-text mj-class="subtitle-mute">What is SOGo</mj-text>
+        <mj-text mj-class="indent">
+          <p>SOGo is a free and modern scalable groupware server. It offers shared calendars, address books and emails
+            through your favorite Web browser or by using a native client such as Mozilla Thunderbird and Lightning,
+            Apple Calendar and Address Book (Mac OS X and iOS) and Microsoft Outlook.</p>
+          <p>SOGo is standard-compliant and supports CalDAV, CardDAV and reuses existing IMAP, SMTP and database servers
+            - making the solution easy to deploy and interoperable with many applications.</p>
+          <p>SOGo features:</p>
+          <ul>
+            <li>Scalable architecture suitable for deployments from dozen to many thousand users</li>
+            <li>Rich, responsible Web-based interface aligned with Google Material Design guidelines</li>
+            <li>Improved integration with Mozilla Thunderbird and Lightning by using the SOGo Connector and the SOGo
+              Integrator</li>
+            <li>Two-way synchronization support with any Microsoft ActiveSync-capable device (Apple iOS, Android,
+              Windows Phone, BlackBerry 10) or Outlook 2013/2016/365 </li>
+            <li>Excellent native integration with Apple software (OS X and iOS) and Android-based devices</li>
+          </ul>
+          <p>and many more! SOGo and our connectors are completely free.</p>
+        </mj-text>
+        <mj-button align="center" background-color="#F2F2F2" color="#666" border="1px solid #333" border-radius="5px"
+          href="https://demo.sogo.nu/SOGo">Try Online</mj-button>
+      </mj-column>
+    </mj-section>
+    <mj-section mj-class="section-mute">
+      <mj-column>
+        <mj-text align="center" padding="10px 10%">Available accounts: <b>sogo1</b>, <b>sogo2</b> and
+          <b>sogo3</b>.<br />Their password is <b>sogo</b>.</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section mj-class="section-mute">
+      <mj-column>
+        <mj-text mj-class="subtitle-mute">Helping</mj-text>
+        <mj-text mj-class="indent">
+          <p>SOGo is a collaborative effort in order to create the best Free and Open Source groupware solution.</p>
+          <p>There are multiple ways you can contribute to the project:</p>
+          <ul>
+            <li>Documentation reviews, enhancements and translations</li>
+            <li>Write test cases - if you know Python, join in!</li>
+            <li>Feature requests or by sharing your ideas</li>
+            <li>Participate to the discussion in mailing lists</li>
+            <li>Patches for <a href="https://bugs.sogo.nu/">bugs or enhancements</a></li>
+            <li>Provide new <a href="https://github.com/Alinto/sogo#translations">translations</a></li>
+          </ul>
+          <p>Feel free to send us your questions. You can also post them to the SOGo <a
+              href="https://mailing.sogo.nu/sympa/info/users">mailing list</a>.</p>
+        </mj-text>
+        <mj-text mj-class="subtitle-mute">Getting Support</mj-text>
+        <mj-text mj-class="indent">
+          <p>For any questions, do not hesitate to contact us by writing to <a
+              href="mailto:support@sogo.nu">support@sogo.nu</a></p>
+          <p>Customer support packages for SOGo are also <a href="https://www.sogo.nu/support.html#/commercial">available</a>.
+          </p>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-social color="#666" icon-size="30px" mode="horizontal">
+          <mj-social-element name="twitter" href="https://twitter.com/scalableogo"></mj-social-element>
+          <mj-social-element name="linkedin" href="https://www.linkedin.com/groups/4164805/"></mj-social-element>
+          <mj-social-element name="github" src="https://www.mailjet.com/images/theme/v1/icons/ico-social/github.png"
+            background-color="#333" href="https://github.com/Alinto/sogo/"></mj-social-element>
+        </mj-social>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
