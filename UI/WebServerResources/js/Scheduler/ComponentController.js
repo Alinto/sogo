@@ -313,6 +313,12 @@
       focus('attachUrl_' + i);
     };
 
+    this.addJitsiUrl = function () {
+      var jitsiUrl = "https://meet.jit.si/SOGo_meeting/" + crypto.randomUUID();
+      var i = this.component.addAttachUrl(jitsiUrl);
+      focus('attachUrl_' + i);
+    };
+
     this.toggleRecurrenceEditor = function () {
       this.showRecurrenceEditor = !this.showRecurrenceEditor;
       this.component.$hasCustomRepeat = this.showRecurrenceEditor;

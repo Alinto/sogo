@@ -120,6 +120,19 @@
               label:aria-label="Send Appointment Notifications">
             <var:string label:value="Send Appointment Notifications"/>
           </md-checkbox>
+          <!-- create jitsi link-->
+          <var:if condition="showJitsiLinkCreation">
+            <div layout="row" ng-if="!editor.component.hasJitsiUrl()" layout-align="start center">
+              <md-button class="md-icon-button" type="button" ng-click="editor.addJitsiUrl($event)">
+                <md-icon>add_circle</md-icon>
+              </md-button>
+              <label class="button-label">
+                <var:string label:value="Create Jitsi meeting"/>
+              </label>
+            </div>
+          </var:if>
+
+
           <!-- attach urls -->
           <div ng-repeat="attach in editor.component.attachUrls">
             <div layout="row" layout-align="start center">

@@ -441,6 +441,11 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return [self boolForKey: @"SOGoCalendarDAVAccessEnabled"];
 }
 
+- (BOOL) isCalendarJitsiLinkEnabled
+{
+  return [self boolForKey: @"SOGoCalendarEnableJitsiLink"];
+}
+
 - (BOOL) isAddressBookDAVAccessEnabled
 {
   return [self boolForKey: @"SOGoAddressBookDAVAccessEnabled"];

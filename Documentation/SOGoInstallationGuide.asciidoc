@@ -477,6 +477,13 @@ example.
 
 Defaults to `YES` when unset.
 
+|S |SOGoCalendarEnableJitsiLink
+|Parameter allowing users to create Jitsi link when creating an event.
+Be aware that a least one of the attendees will need an account from a
+platform that Jitsi supports: Google, Facebook or Github
+
+Defaults to `NO` when unset.
+
 |S |SOGoSAML2PrivateKeyLocation
 |The location of the SSL private key file on the filesystem that is used
 by SOGo to sign and encrypt communications with the SAML2 identity
