@@ -148,19 +148,15 @@ gidNumber: 1000
 homeDirectory: /home/res-nolimit
 
 # readers, users, example.org
-dn: cn=readers,ou=users,dc=example,dc=org
-cn: readers
+dn: uid=readers,ou=users,dc=example,dc=org
+objectClass: extensibleObject
 objectClass: groupOfNames
-member: cn=sogo,ou=users,dc=example,dc=org
-#member: cn=sogo-build-tests,ou=users,dc=example,dc=org
-member: cn=cyrus,ou=users,dc=example,dc=org
-member: cn=sogo-tests1,ou=users,dc=example,dc=org
-member: cn=sogo-tests2,ou=users,dc=example,dc=org
-member: cn=sogo-tests3,ou=users,dc=example,dc=org
-member: cn=sogo-tests4,ou=users,dc=example,dc=org
-member: cn=res,ou=users,dc=example,dc=org
-member: cn=res-nolimit,ou=users,dc=example,dc=org
-member: cn=sogo-tests-super,ou=users,dc=example,dc=org
+cn: readers
+mail: readers@example.org
+member: uid=sogo-tests1,ou=users,dc=example,dc=org
+member: uid=sogo-tests2,ou=users,dc=example,dc=org
+member: uid=sogo-tests3,ou=users,dc=example,dc=org
+
 
 # search result
 search: 2

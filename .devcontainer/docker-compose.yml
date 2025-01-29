@@ -1,13 +1,13 @@
 services:
   memcached:
     image: memcached:1.6
-    container_name: memcached
+    container_name: sogo_memcached
     restart: unless-stopped
   httpd:
     build:
       context: ./conf/httpd/
       dockerfile: Dockerfile
-    container_name: httpd
+    container_name: sogo_httpd
     restart: unless-stopped
     depends_on:
       - sogo
@@ -18,9 +18,9 @@ services:
       - ./conf/httpd/ssl:/ssl
       - ./conf/httpd/CanadaHolidays.ics:/usr/local/apache2/htdocs/CanadaHolidays.ics
       - sogo-static-files:/usr/local/lib/GNUstep
-  mariadb_sogo:
+  mariadb:
     image: mariadb:11
-    container_name: mariadb
+    container_name: sogo_mariadb
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: password
@@ -30,22 +30,9 @@ services:
     volumes:
       - sogo-mariadb:/var/lib/mysql
       - ./conf/db/mysql.sql:/docker-entrypoint-initdb.d/init-sogo.sql
-  postgres_sogo:
-    image: postgres:12
-    container_name: postgres_sogo
-    restart: unless-stopped
-    environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-    ports:
-      - 5432:5432
-    volumes:
-      - sogo-postgres:/var/lib/postgresql/data
-      - ./conf/db/postgres.sql:/docker-entrypoint-initdb.d/init-sogo.sql
   openldap:
     image: bitnami/openldap:2.5
-    container_name: openldap
+    container_name: sogo_openldap
     restart: unless-stopped
     ports:
      - "389:389"
@@ -64,7 +51,7 @@ services:
     build:
       context: ./conf/dovecot/
       dockerfile: Dockerfile
-    container_name: dovecot
+    container_name: sogo_dovecot
     restart: unless-stopped
     depends_on:
       - openldap
@@ -80,7 +67,7 @@ services:
     build:
       context: ./conf/postfix/
       dockerfile: Dockerfile
-    container_name: postfix
+    container_name: sogo_postfix
     restart: unless-stopped
     ports:
       - "25:25"
@@ -89,7 +76,7 @@ services:
       - openldap
     entrypoint: /entrypoint.sh
   sogo:
-    container_name: sogo
+    container_name: sogo_dev
     restart: unless-stopped
     tty: true
     build:
@@ -104,8 +91,7 @@ services:
     depends_on:
       - openldap
       - memcached
-      - mariadb_sogo
-      - postgres_sogo
+      - mariadb
       - imapd
       - smtpd
     volumes:

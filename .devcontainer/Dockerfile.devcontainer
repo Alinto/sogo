@@ -128,21 +128,10 @@ RUN useradd sogo-tests1 && \
     useradd sogo-tests2 && \
     useradd sogo-tests3 && \
     useradd sogo-tests-super
+
 # Tests
 RUN npm i -g xunit-viewer
 
-# Delivery
-RUN cd /sbin/ && curl -o- https://raw.githubusercontent.com/transifex/cli/master/install.sh | bash
-RUN apt-get install -y --no-install-recommends file gcc glib-2.0 libemail-sender-perl ruby
-COPY .devcontainer/conf/sogo/common.sh /sbin/
-COPY .devcontainer/conf/delivery/vzic /vzic
-COPY .devcontainer/conf/delivery/delivery-mail /delivery-mail
-COPY .devcontainer/conf/delivery/tx2utf8 /sbin
-RUN cd /delivery-mail && npm init -y && npm install mjml
-COPY .devcontainer/conf/delivery/package_commit_all_trads.sh /sbin/
-RUN chmod +x /sbin/tx2utf8 /sbin/package_commit_all_trads.sh
-RUN npm i -g standard-version
-RUN gem install asciidoctor-pdf
 
 # SOGo
 RUN apt-get clean && apt-get install -y --no-install-recommends wget && cd /tmp && \
@@ -152,14 +141,6 @@ RUN apt-get clean && apt-get install -y --no-install-recommends wget && cd /tmp 
     mkdir /etc/sogo
 COPY .devcontainer/conf/sogo/sogo.conf /etc/sogo/
 ADD .devcontainer/conf/sogo/sogo.conf /etc/sogo/sogo-base.conf
-ADD .devcontainer/conf/sogo/sogo-integration-tests/sogo-tests-mysql.conf /etc/sogo/
-ADD .devcontainer/conf/sogo/sogo-integration-tests/sogo-tests-postgresql.conf /etc/sogo/
-ADD .devcontainer/conf/sogo/sogo-integration-tests/sogo-tests-mysql-ldap.conf /etc/sogo/
-ADD .devcontainer/conf/sogo/sogo-integration-tests/sogo-tests-postgresql-ldap.conf /etc/sogo/
-ADD .devcontainer/conf/sogo/sogo-integration-tests/sogo-tests-mysql-combined.conf /etc/sogo/
-ADD .devcontainer/conf/sogo/sogo-integration-tests/sogo-tests-postgresql-combined.conf /etc/sogo/
-ADD .devcontainer/conf/sogo/sogo-integration-tests/sogo-tests-mysql-ldap-combined.conf /etc/sogo/
-ADD .devcontainer/conf/sogo/sogo-integration-tests/sogo-tests-postgresql-ldap-combined.conf /etc/sogo/ 
 
 # Clean
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* 
