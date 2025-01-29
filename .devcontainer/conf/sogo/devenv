@@ -5,8 +5,8 @@ SRC_SOGO=/src/SOGo/
 
 source /include/common.sh $SRC_SOPE $SRC_SOGO
 
-options="h:b:ba:br:d:t:B"
-long_options="help,build,build-all,build-resources,debug,test,break"
+options="h:b:ba:br:d"
+long_options="help,build,build-all,build-resources,debug"
 parsed_options=$(getopt -o $options -l $long_options)
 
 # Check for errors in parsing
@@ -29,8 +29,6 @@ help() {
     echo -e "-ba, --build-all\tClean, build sogo and sope"
     echo -e "-br, --build-resources\tBuild only sogo JS/CSS resources"
     echo -e "-d, --debug\t\tStart sogo in debug with gdb"
-    echo -e "-B, --break\t\tBreak gdb (add breakpoint)"
-    echo -e "-t, --test\t\tRun integration tests"
     echo "${normal}"
 }
 
@@ -114,10 +112,6 @@ debug() {
     su -s /bin/bash - sogo -c "gdb --args /usr/local/sbin/sogod -WOUseWatchDog NO -WONoDetach YES -WOPort 0.0.0.0:50000 -WOWorkersCount 1 -WOPidFile /var/run/sogo/sogo.pid"
 }
 
-gdb_break() {
-    kill -TRAP $(ps -aux | grep sogod | grep sogo | grep -v gdb | head -1 | cut -f6 -d' ')
-}
-
 # Process the options
 while true; do
     case "$1" in
@@ -135,14 +129,6 @@ while true; do
             ;;
         -d|--debug)
             debug
-            exit 0
-            ;;
-        -B|--break)
-            gdb_break
-            exit 0
-            ;;
-        -t|--test)
-            test
             exit 0
             ;;
         -h|--help)
