@@ -132,7 +132,17 @@
 
 - (NGImap4ConnectionManager *) mailManager
 {
-  return [NGImap4ConnectionManager defaultConnectionManager];
+  SOGoSystemDefaults *sd;
+  NSString *imapAuthMech, *domain;
+
+  domain = [[[self context] activeUser] loginDomain];
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if([sd doesLoginTypeByDomain])
+    imapAuthMech = [sd getImapAuthMechForDomain: domain];
+  else
+    imapAuthMech = nil;
+
+  return [NGImap4ConnectionManager defaultConnectionManager: imapAuthMech];
 }
 
 - (NGImap4Connection *) _createIMAP4Connection
@@ -230,19 +240,17 @@
       login = [[[self context] activeUser] login];
 
       if (!login)
-	login = [[[[self container] context] activeUser] login];
+	      login = [[[[self container] context] activeUser] login];
 
-      cacheKey = [NSString stringWithFormat: @"%@+%@",
-			   login,
-			   [[self mailAccountFolder] nameInContainer]];
+      cacheKey = [NSString stringWithFormat: @"%@+%@", login, [[self mailAccountFolder] nameInContainer]];
       imap4 = [sogoCache imap4ConnectionForKey: cacheKey];
       if (!imap4)
-        {
-          imap4 = [self _createIMAP4Connection];
-	  [sogoCache registerIMAP4Connection: imap4
-				      forKey: cacheKey];
-        }
-      [imap4 retain];
+      {
+        imap4 = [self _createIMAP4Connection];
+        [sogoCache registerIMAP4Connection: imap4
+                                    forKey: cacheKey];
+      }
+    [imap4 retain];
     }
 
    // Connection broken, try to reconnect

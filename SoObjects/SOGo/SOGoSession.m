@@ -247,12 +247,20 @@
 			      usingKey: theKey];
   
   r = [decodedValue rangeOfString: @":"];
-  *theLogin = [decodedValue substringToIndex: r.location];
-  *thePassword = [decodedValue substringFromIndex: r.location+1];
+  if (r.location != NSNotFound) 
+  {
+    *theLogin = [decodedValue substringToIndex: r.location];
+    *thePassword = [decodedValue substringFromIndex: r.location+1];
+  }
+  else
+  {
+    *theLogin = nil;
+    *thePassword = nil;
+  }
   *theDomain = nil;
-  
+
   sd = [SOGoSystemDefaults sharedSystemDefaults];
-  if ([sd enableDomainBasedUID])
+  if (*theLogin &&[sd enableDomainBasedUID])
     {
       r = [*theLogin rangeOfString: @"@" options: NSBackwardsSearch];
       if (r.location != NSNotFound)

@@ -39,6 +39,8 @@ static const NSString *kDisableSharingCalendar = @"Calendar";
 - (BOOL) doesLoginTypeByDomain;
 - (NSString *) getLoginTypeForDomain: (NSString*) _domain;
 - (NSString *) getLoginConfigForDomain: (NSDictionary*) _domain;
+- (NSString *) getImapAuthMechForDomain: (NSString*) _domain;
+- (NSString *) getSmtpAuthMechForDomain: (NSString*) _domain;
 - (BOOL) forbidUnknownDomainsAuth;
 - (NSArray *) domainsAllowed;
 - (BOOL) enableDomainBasedUID;

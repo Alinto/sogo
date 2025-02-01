@@ -587,6 +587,7 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
   sd = [SOGoSystemDefaults sharedSystemDefaults];
 
   username = _login;
+  NSLog(@"D login are %@", _login);
 
   if (*_domain && ![*_domain isKindOfClass: NSNullK])
     {

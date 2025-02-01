@@ -138,6 +138,13 @@
   BOOL rc;
 
   sd = [SOGoSystemDefaults sharedSystemDefaults];
+  
+  NSLog(@"B Credentials are %@", _login);
+  //Basic check
+  if(!_login)
+    return NO;
+  if(_login && [_login length] == 0)
+    return NO;
 
   loginDomain = nil;
   if(*_domain == nil || [*_domain length] == 0)
@@ -149,6 +156,8 @@
         loginDomain = [_login substringFromIndex: r.location+1];
       }
   }
+  if(loginDomain)
+    NSLog(@"C domain are %@", loginDomain);
 
   if([sd doesLoginTypeByDomain])
     authenticationType = [sd getLoginTypeForDomain: loginDomain];
@@ -264,12 +273,15 @@
   
   sessionKey = [creds objectAtIndex:1];
   
+  NSLog(@"AAAA decodevalue for");
   [SOGoSession decodeValue: [SOGoSession valueForSessionKey: sessionKey]
                   usingKey: userKey
                      login: &login
                     domain: &domain
                   password: &pwd];
   
+  NSLog(@"A Credentials are %@", login);
+
   if (![self checkLogin: login
                password: pwd
                  domain: &domain
@@ -482,7 +494,7 @@
   SOGoUser *user;
 
   user = [self userInContext: _ctx];
-  login = [user loginInDomain];
+  login = [user loginDomain];
   r = [login rangeOfString: @"@"];
   if (r.location != NSNotFound)
     loginDomain = [login substringFromIndex: r.location+1];

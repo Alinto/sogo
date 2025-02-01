@@ -293,6 +293,64 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
     return nil;
 }
 
+- (NSString *) getImapAuthMechForDomain: (NSString*) _domain
+{
+  NSDictionary *domains, *config;
+  NSString *type;
+
+  if(![self doesLoginTypeByDomain])
+    return nil;
+
+  domains = [self dictionaryForKey: @"SOGoLoginTypeByDomain"];
+
+  if([domains objectForKey: _domain])
+  {
+    config = [domains objectForKey: _domain];
+  }
+  else if([domains objectForKey: @"login_default"])
+  {
+    config = [domains objectForKey: @"login_default"];
+  }
+  else
+    return nil;
+
+  if((type = [config objectForKey: @"imapAuthMech"]))
+  {
+    return type;
+  }
+  else
+    return nil;
+}
+
+- (NSString *) getSmtpAuthMechForDomain: (NSString*) _domain
+{
+  NSDictionary *domains, *config;
+  NSString *type;
+  
+  if(![self doesLoginTypeByDomain])
+    return nil;
+
+  domains = [self dictionaryForKey: @"SOGoLoginTypeByDomain"];
+
+  if([domains objectForKey: _domain])
+  {
+    config = [domains objectForKey: _domain];
+  }
+  else if([domains objectForKey: @"login_default"])
+  {
+    config = [domains objectForKey: @"login_default"];
+  }
+  else
+    return nil;
+
+  if((type = [config objectForKey: @"smtpAuthMech"]))
+  {
+    return type;
+  }
+  else
+    return nil;
+}
+
 - (NSString *) getLoginConfigForDomain: (NSDictionary*) _domain
 {
   NSDictionary *domains, *config;
