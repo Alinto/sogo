@@ -848,8 +848,11 @@
       return false;
     }
     else {
+      var jitsiBaseUrl = "https://meet.jit.si";
+      if(Component.$Preferences.defaults && Component.$Preferences.defaults.SOGoCalendarJitsiBaseUrl)
+        jitsiBaseUrl = Component.$Preferences.defaults.SOGoCalendarJitsiBaseUrl;
       for (var i = 0; i < this.attachUrls.length; i++) {
-        if (this.attachUrls[i].value.includes("meet.jit.si")) {
+        if (this.attachUrls[i].value.includes(jitsiBaseUrl)) {
           return true;
         }
       }

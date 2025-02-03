@@ -147,6 +147,7 @@ static SoProduct *preferencesProduct = nil;
   NSMutableDictionary *values, *account, *vacation;
   SOGoUserDefaults *defaults;
   SOGoDomainDefaults *domainDefaults;
+  SOGoSystemDefaults *sd;
   NSMutableArray *accounts;
   NSDictionary *calendarCategoryLabels, *contactsCategoriesLabels, *vacationOptions;
 
@@ -333,6 +334,13 @@ static SoProduct *preferencesProduct = nil;
           [defaults setCalendarCategoriesColors: colors];
         }
     }
+  // Add the jisti link if needed
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if([sd isCalendarJitsiLinkEnabled])
+  {
+    if (![[defaults source] objectForKey: @"SOGoCalendarJitsiBaseUrl"])
+      [[defaults source] setObject: [domainDefaults calendarJistiBaseUrl] forKey: @"SOGoCalendarJitsiBaseUrl"];
+  }
 
   //
   // Default Contacts preferences

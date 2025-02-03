@@ -232,6 +232,7 @@
       this.showAttendeesEditor = this.component.attendees && this.component.attendees.length;
       this.isFullscreen = (typeof screen.orientation !== 'undefined' && screen.orientation && 'portrait-primary' == screen.orientation.type);
       this.originalModalCancel = $mdDialog.cancel;
+      this.preferences = Preferences;
 
       if (this.component.type == 'appointment') {
         this.component.initAttendees();
@@ -314,7 +315,10 @@
     };
 
     this.addJitsiUrl = function () {
-      var jitsiUrl = "https://meet.jit.si/SOGo_meeting/" + crypto.randomUUID();
+      var jitsiBaseUrl = "https://meet.jit.si";
+      if(this.preferences.defaults && this.preferences.defaults.SOGoCalendarJitsiBaseUrl)
+        jitsiBaseUrl = this.preferences.defaults.SOGoCalendarJitsiBaseUrl;
+      var jitsiUrl = jitsiBaseUrl + "/SOGo_meeting/" + crypto.randomUUID();
       var i = this.component.addAttachUrl(jitsiUrl);
       focus('attachUrl_' + i);
     };
