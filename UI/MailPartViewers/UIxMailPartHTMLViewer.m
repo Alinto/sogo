@@ -521,7 +521,25 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
                     {
                       /* [resultPart appendString:
                          @"src=\"/SOGo.woa/WebServerResources/empty.gif\""]; */
-                      name = @"unsafe-src";
+                      
+                      //Check if the image is base64 ant not url
+                      NSUInteger i, c;
+                      BOOL isBase64 = NO;
+                      for (i = 0, c = [_attributes count]; i < c; i++) {
+                        NSString *type, *value;
+                        type = [_attributes nameAtIndex:i];
+                        if ([type isEqualToString:@"src"])
+                        {
+                          value = [_attributes valueAtIndex:i];
+                          if([value length] > 4 && [[value substringToIndex: 4] isEqualToString:@"data"])
+                          {
+                            isBase64 = YES;
+                            break;
+                          }
+                        }
+                      }
+                      if(!isBase64)
+                        name = @"unsafe-src";
                     }
                   else
                     skipAttribute = YES;
