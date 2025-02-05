@@ -115,9 +115,10 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
    * enforce the following order of precedence.
    * First match wins
    *   1. Command line arguments
-   *   2. .GNUstepDefaults
-   *   3. /etc/sogo/{debconf,sogo}.conf
-   *   4. SOGoDefaults.plist
+   *   2. File from $SOGO_EXTRA_CONFIG_FILE
+   *   3. .GNUstepDefaults
+   *   4. /etc/sogo/{debconf,sogo}.conf
+   *   5. SOGoDefaults.plist
    *
    * The default standardUserDefaults search list is as follows:
    *   GSPrimaryDomain
@@ -145,7 +146,7 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   NSBundle *bundle;
   NSString *confFiles[] = {@"/etc/sogo/debconf.conf",
                            @"/etc/sogo/sogo.conf"};
-  NSString *filename, *redirectURL;
+  NSString *filename, *redirectURL, *envFile;
   NSUInteger count;
 
   logger = [SOGoStartupLogger sharedLogger];
@@ -164,6 +165,12 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
    *  in "/etc" */
   for (count = 0; count < sizeof(confFiles)/sizeof(confFiles[0]); count++)
     _injectConfigurationFromFile (configFromFiles, confFiles[count], logger);
+
+  /* Fill/Override configuration with configuration stored in the extra
+   *  config file */
+  envFile = [[[NSProcessInfo processInfo] environment] objectForKey:@"SOGO_EXTRA_CONFIG_FILE"];
+  if (envFile)
+    _injectConfigurationFromFile (configFromFiles, envFile, logger);
 
   /* This dance is required to let other appplications (sogo-tool) use
    * options from the sogod domain while preserving the order of precedence
