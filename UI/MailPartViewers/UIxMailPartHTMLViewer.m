@@ -85,6 +85,7 @@ _xmlCharsetForCharset (NSString *charset)
     { @"windows-1255", XML_CHAR_ENCODING_ERROR}, // unsupported, will trigger windows-1255 -> utf8 conversion
     { @"windows-1256", XML_CHAR_ENCODING_ERROR}, // unsupported, will trigger windows-1255 -> utf8 conversion
     { @"windows-1257", XML_CHAR_ENCODING_ERROR}, // unsupported, will trigger windows-1257 -> utf8 conversion
+    { @"windows-874", XML_CHAR_ENCODING_ERROR},  // unsupported, will trigger windows-874 -> utf8 conversion
     { @"gb2312", XML_CHAR_ENCODING_ERROR},       // unsupported, will trigger gb2312 -> utf8 conversion
     { @"gbk", XML_CHAR_ENCODING_ERROR},          // unsupported, will trigger gb2312 -> utf8 conversion
     { @"gb18030", XML_CHAR_ENCODING_ERROR},      // unsupported, will trigger gb2312 -> utf8 conversion
@@ -521,7 +522,25 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
                     {
                       /* [resultPart appendString:
                          @"src=\"/SOGo.woa/WebServerResources/empty.gif\""]; */
-                      name = @"unsafe-src";
+                      
+                      //Check if the image is base64 ant not url
+                      NSUInteger i, c;
+                      BOOL isBase64 = NO;
+                      for (i = 0, c = [_attributes count]; i < c; i++) {
+                        NSString *type, *value;
+                        type = [_attributes nameAtIndex:i];
+                        if ([type isEqualToString:@"src"])
+                        {
+                          value = [_attributes valueAtIndex:i];
+                          if([value length] > 4 && [[value substringToIndex: 4] isEqualToString:@"data"])
+                          {
+                            isBase64 = YES;
+                            break;
+                          }
+                        }
+                      }
+                      if(!isBase64)
+                        name = @"unsafe-src";
                     }
                   else
                     skipAttribute = YES;

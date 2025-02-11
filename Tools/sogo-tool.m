@@ -114,8 +114,7 @@
           if (count < max)
             {
               max -= count;
-              toolArguments = [arguments
-                                subarrayWithRange: NSMakeRange (count, max)];
+              toolArguments = [arguments subarrayWithRange: NSMakeRange (count, max)];
               [toolArguments retain];
             }
         }

@@ -831,9 +831,34 @@
    * @param {number} index - the URL index in the list of attach URLs
    */
   Component.prototype.deleteAttachUrl = function(index) {
+
     if (index > -1 && this.attachUrls.length > index) {
       this.attachUrls.splice(index, 1);
     }
+  };
+
+  /**
+   * @function hasJitsiUrl
+   * @memberof Component.prototype
+   * @desc Check if the there is a jisti url
+   * @returns true if there is a jisti url
+   */
+  Component.prototype.hasJitsiUrl = function() {
+    if (angular.isUndefined(this.attachUrls)) {
+      return false;
+    }
+    else {
+      var jitsiBaseUrl = "https://meet.jit.si";
+      if(Component.$Preferences.defaults && Component.$Preferences.defaults.SOGoCalendarJitsiBaseUrl)
+        jitsiBaseUrl = Component.$Preferences.defaults.SOGoCalendarJitsiBaseUrl;
+      for (var i = 0; i < this.attachUrls.length; i++) {
+        if (this.attachUrls[i].value.includes(jitsiBaseUrl)) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   };
 
   /**

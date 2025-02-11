@@ -466,6 +466,11 @@
   return sort;
 }
 
+- (NSString *)sanitizeFilterString:(NSString *)str
+{
+  return [str stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+}
+
 - (EOQualifier *) searchQualifier
 {
   EOQualifier *qualifier, *notDeleted, *searchQualifier;
@@ -498,8 +503,8 @@
         for (i = 0; i < max; i++)
         {
           filter = [filters objectAtIndex:i];
-          searchBy = [filter objectForKey: @"searchBy"];
-          searchInput = [filter objectForKey: @"searchInput"];
+          searchBy = [self sanitizeFilterString: [filter objectForKey: @"searchBy"]];
+          searchInput = [self sanitizeFilterString:[filter objectForKey: @"searchInput"]];
           
           if (searchBy && searchInput)
             {

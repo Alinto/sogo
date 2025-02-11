@@ -1531,6 +1531,11 @@ static NSArray *childRecordFields = nil;
   return valid;
 }
 
+- (NSCalendarDate *) _getMaxStartDate
+{
+  return nil;
+}
+
 /**
    DAV:sync-collection Report
    https://datatracker.ietf.org/doc/html/rfc6578#section-3.2
@@ -1559,9 +1564,10 @@ static NSArray *childRecordFields = nil;
       propElement = [(NGDOMNodeWithChildren *) documentElement
                        firstElementWithTag: @"prop" inNamespace: XMLNS_WEBDAV];
       properties = [self parseDAVRequestedProperties: propElement];
+
       records = [self syncTokenFieldsWithProperties: properties
                                   matchingSyncToken: syncToken
-                                           fromDate: nil
+                                           fromDate: [self _getMaxStartDate]
                                         initialLoad: NO];
 
       [self _appendComponentProperties: [properties allKeys]

@@ -230,6 +230,7 @@
       };
 
       config = vm.config ? angular.merge(sgCkeditorConfig.config, vm.config) : sgCkeditorConfig.config;
+      config.licenseKey = "GPL";
 
       if (!config.toolbar) {
         config.toolbar = {
@@ -257,6 +258,27 @@
           }
         ]
       };
+      config.fontFamily = {
+        supportAllValues: true,
+        style: {
+          element: 'span',
+          attributes: {
+            style: 'font-family'
+          }
+        }
+      };
+
+      config.fontSize = {
+        options: ['10px', '12px', '14px', '16px', '18px', '20px', '24px'],
+        supportAllValues: true,
+        style: {
+          element: 'span',
+          attributes: {
+            style: 'font-size'
+          }
+        }
+      };
+
       config.htmlEmbed = {
         showPreviews: true
       };

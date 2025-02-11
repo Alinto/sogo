@@ -441,6 +441,11 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return [self boolForKey: @"SOGoCalendarDAVAccessEnabled"];
 }
 
+- (BOOL) isCalendarJitsiLinkEnabled
+{
+  return [self boolForKey: @"SOGoCalendarEnableJitsiLink"];
+}
+
 - (BOOL) isAddressBookDAVAccessEnabled
 {
   return [self boolForKey: @"SOGoAddressBookDAVAccessEnabled"];
@@ -933,9 +938,9 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
   return [self stringForKey: @"SOGoURLCreateAccount"];
 }
 
-- (BOOL) disableMailCleaning
+- (BOOL) enableMailCleaning
 {
-  return [self boolForKey: @"SOGoDisableMailCleaning"];
+  return [self boolForKey: @"SOGoEnableMailCleaning"];
 }
 
 @end

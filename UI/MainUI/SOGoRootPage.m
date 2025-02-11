@@ -52,6 +52,7 @@
 #import <SOGo/SOGoEmptyAuthenticator.h>
 #import <SOGo/SOGoMailer.h>
 #import <SOGo/SOGoAdmin.h>
+#import <SOGo/SOGoPasswordPolicy.h>
 
 #if defined(MFA_CONFIG)
 #include <liboath/oath.h>
@@ -167,14 +168,23 @@ static const NSString *kJwtKey = @"jwt";
 //
 //
 //
-- (WOResponse *) _responseWithLDAPPolicyError: (int) error
+- (WOResponse *) _responseWithLDAPPolicyError: (int) error additionalInfos: (NSDictionary *) additionalInfos
 {
   NSDictionary *jsonError;
 
-  jsonError = [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: error]
-                                          forKey: @"LDAPPasswordPolicyError"];
-  return [self responseWithStatus: 403
-            andJSONRepresentation: jsonError];
+  if (additionalInfos) {
+    jsonError = [NSDictionary dictionaryWithObjectsAndKeys:
+                 [NSNumber numberWithInt:error], @"LDAPPasswordPolicyError",
+                 additionalInfos, @"additionalInfos",
+                 nil];
+  } else {
+    jsonError = [NSDictionary dictionaryWithObjectsAndKeys:
+                 [NSNumber numberWithInt:error], @"LDAPPasswordPolicyError",
+                 nil];
+  }
+
+  return [self responseWithStatus:403
+            andJSONRepresentation:jsonError];
 }
 
 - (void) _checkAutoReloadWebCalendars: (SOGoUser *) loggedInUser
@@ -200,6 +210,27 @@ static const NSString *kJwtKey = @"jwt";
 //
 //
 //
+- (void)translateAdditionalLoginInformations:(NSMutableDictionary **)additionalLoginInformations
+{
+  NSDictionary *policy;
+  NSMutableDictionary *translations;
+
+  if (additionalLoginInformations && *additionalLoginInformations) {
+    if ([*additionalLoginInformations objectForKey:@"userPolicies"]) {
+      translations = [[NSMutableDictionary alloc] init];
+      for (policy in [*additionalLoginInformations objectForKey:@"userPolicies"]) {
+        [translations setObject:[self commonLabelForKey: [policy objectForKey:@"label"]] forKey: [policy objectForKey:@"label"]];
+      }
+      [*additionalLoginInformations setObject:[SOGoPasswordPolicy createPasswordPolicyLabels: [*additionalLoginInformations objectForKey:@"userPolicies"] withTranslations: translations] 
+                    forKey:@"userPolicies"];
+      [translations release];
+    }
+  }
+}
+
+//
+//
+//
 - (WOResponse *) connectAction
 {
   WOResponse *response;
@@ -210,6 +241,7 @@ static const NSString *kJwtKey = @"jwt";
   SOGoUserSettings *us;
   SOGoUser *loggedInUser;
   NSDictionary *params;
+  NSMutableDictionary *additionalLoginInformations;
   NSString *username, *password, *language, *domain, *remoteHost;
   NSArray *supportedLanguages, *creds;
 
@@ -223,6 +255,7 @@ static const NSString *kJwtKey = @"jwt";
   auth = [[WOApplication application] authenticatorInContext: context];
   request = [context request];
   params = [[request contentAsString] objectFromJSONString];
+  additionalLoginInformations = [[NSMutableDictionary alloc] init];
 
   username = [params objectForKey: @"userName"];
   password = [params objectForKey: @"password"];
@@ -232,9 +265,11 @@ static const NSString *kJwtKey = @"jwt";
   /* this will always be set to something more or less useful by
    * [WOHttpTransaction applyAdaptorHeadersWithHttpRequest] */
   remoteHost = [request headerForKey:@"x-webobjects-remote-host"];
+  b = [auth checkLogin: username password: password domain: &domain
+		 perr: &err expire: &expire grace: &grace additionalInfo: &additionalLoginInformations useCache: NO];
+  [self translateAdditionalLoginInformations: &additionalLoginInformations];
 
-  if ((b = [auth checkLogin: username password: password domain: &domain
-		 perr: &err expire: &expire grace: &grace useCache: NO])
+  if (b
       && (err == PolicyNoError)
       // no password policy
       && ((expire < 0 && grace < 0)     // no password policy or everything is alright
@@ -334,7 +369,7 @@ static const NSString *kJwtKey = @"jwt";
 #endif
       
       if ([us objectForKey: @"ForceResetPassword"]) {
-        response = [self _responseWithLDAPPolicyError: PolicyPasswordExpired];
+        response = [self _responseWithLDAPPolicyError: PolicyPasswordExpired additionalInfos: additionalLoginInformations];
       } else {
         [self _checkAutoReloadWebCalendars: loggedInUser];
 
@@ -377,13 +412,15 @@ static const NSString *kJwtKey = @"jwt";
       [self logWithFormat: @"Login from '%@' for user '%@' might not have worked - password policy: %d  grace: %d  expire: %d  bound: %d",
             remoteHost, username, err, grace, expire, b];
 
-      response = [self _responseWithLDAPPolicyError: err];
+      response = [self _responseWithLDAPPolicyError: err additionalInfos: additionalLoginInformations];
     }
 
   if (rememberLogin)
     [response addCookie: [self _cookieWithUsername: [params objectForKey: @"userName"]]];
   else
     [response addCookie: [self _cookieWithUsername: nil]];
+
+  [additionalLoginInformations release];
 
   return response;
 }
@@ -808,7 +845,7 @@ static const NSString *kJwtKey = @"jwt";
           }
         }
       else
-        response = [self _responseWithLDAPPolicyError: error];
+        response = [self _responseWithLDAPPolicyError: error additionalInfos: nil];
     }
 
   return response;
@@ -1071,5 +1108,6 @@ static const NSString *kJwtKey = @"jwt";
   return [[SOGoSystemDefaults sharedSystemDefaults]
                               urlCreateAccount];
 }
+
 
 @end /* SOGoRootPage */

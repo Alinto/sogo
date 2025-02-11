@@ -75,6 +75,53 @@
             <md-tooltip md-direction="bottom"><var:string label:value="Delete selected message or folder"/></md-tooltip>
             <md-icon>delete</md-icon>
           </md-button>
+          
+          <md-menu>
+            <md-button class="sg-icon-button" label:aria-label="Move To"
+                      ng-click="$mdMenu.open($event)">
+              <md-tooltip md-direction="bottom"><var:string label:value="Move To"/></md-tooltip>
+              <md-icon>call_split</md-icon>
+            </md-button>
+            <md-menu-content width="4">          
+              <md-menu-item>
+              <md-menu>
+                  <md-button label:aria-label="Move To" ng-click="$mdMenu.open($event)">
+                    <var:string label:value="Move To"/>
+                  </md-button>
+                  <md-menu-content width="4">
+                    <div ng-repeat="account in ::mailbox.accounts track by account.id">
+                      <md-menu-item>
+                        <md-menu>
+                          <md-button class="md-primary"
+                                    aria-label="{{ ::account.name }}"
+                                    ng-click="$mdMenu.open($event)"
+                                    ng-bind="::account.name"><!-- account name --></md-button>
+                          <md-menu-content class="md-dense" width="4">
+                            <div ng-repeat="folder in
+                                            account.$flattenMailboxes({ all: true })
+                                            track by folder.path">
+                              <md-menu-item>
+                                <md-button class="sg-no-wrap"
+                                          aria-label="{{folder.$displayName}}"
+                                          ng-disabled="::(mailbox.service.selectedFolder.id == folder.id)"
+                                          ng-click="mailbox.moveSelectedMessages(folder.id, viewer.message)">
+                                  <span ng-class="::('sg-child-level-' + folder.level)"
+                                        ng-bind="folder.$displayName"><!-- mailbox name --></span>
+                                </md-button>
+                              </md-menu-item>
+                            </div>
+                          </md-menu-content>
+                        </md-menu>
+                      </md-menu-item>
+                    </div>
+                  </md-menu-content>
+                </md-menu>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>
+
+
+
           <md-button class="sg-icon-button hide show-gt-md" label:aria-label="'Open in New Mail Window'.asSafeJSString"
                      ng-hide="::isPopup"
                      ng-click="viewer.openInPopup()">

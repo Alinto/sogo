@@ -405,6 +405,7 @@
       this.$highlightWords = [];
       filters.forEach(filter => {
         if ("subject_or_from" == filter.searchBy
+          || "subject_or_to" == filter.searchBy
           || "contains" == filter.searchBy
           || "body" == filter.searchBy
           || "from" == filter.searchBy
@@ -1043,6 +1044,7 @@
     this.account = account;
     if (options && options.unseenCount) {
       this.unseenCount = options.unseenCount;
+      delete options["unseenCount"];
     }
     if (options && options.filter) {
       this.$messages = [];

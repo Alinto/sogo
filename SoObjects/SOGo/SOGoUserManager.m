@@ -502,6 +502,7 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
                       perr: (SOGoPasswordPolicyError *) perr
                     expire: (int *) expire
                      grace: (int *) grace
+            additionalInfo: (NSMutableDictionary **)_additionalInfo
 {
   NSObject <SOGoSource> *sogoSource;
   NSEnumerator *authIDs;
@@ -520,8 +521,11 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
                                   perr: perr
                                 expire: expire
                                  grace: grace];
+      if (_additionalInfo && *_additionalInfo && [sogoSource userPasswordPolicy] && [[sogoSource userPasswordPolicy] count] > 0) {
+        [*_additionalInfo setObject:[sogoSource userPasswordPolicy] forKey:@"userPolicies"];
+      }
     }
-
+    
   if (checkOK && *domain == nil)
     {
       SOGoSystemDefaults *sd = [SOGoSystemDefaults sharedSystemDefaults];
@@ -554,6 +558,7 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
                perr: (SOGoPasswordPolicyError *) _perr
              expire: (int *) _expire
               grace: (int *) _grace
+     additionalInfo:(NSMutableDictionary **)_additionalInfo
 {
   return [self checkLogin: _login
                    password: _pwd
@@ -561,6 +566,7 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
                    perr: _perr
                    expire: _expire
                    grace: _grace
+          additionalInfo: _additionalInfo
                    useCache: YES];
 }
 
@@ -573,6 +579,7 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
                perr: (SOGoPasswordPolicyError *) _perr
              expire: (int *) _expire
               grace: (int *) _grace
+     additionalInfo: (NSMutableDictionary **)_additionalInfo
            useCache: (BOOL) useCache
 {
   NSString *dictPassword, *username, *jsonUser;
@@ -726,7 +733,8 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
                             domain: _domain
                               perr: _perr
                             expire: _expire
-                             grace: _grace])
+                             grace: _grace
+                    additionalInfo: _additionalInfo])
     {
       checkOK = YES;
       if (!currentUser)
@@ -1085,30 +1093,37 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
   domain = nil;
   infos = nil;
 
+  //Try to get the domain from the uid
+  r = [uid rangeOfString: @"@" options: NSBackwardsSearch];
+  if (r.location != NSNotFound)
+  {
+    // The domain is probably appended to the username;
+    // make sure it is a defined domain in the configuration.
+    domain = [uid substringFromIndex: (r.location + r.length)];
+    if ([self isDomainDefined: domain])
+      username = [uid substringToIndex: r.location];
+    else
+      domain = nil;
+  }
+  
   sd = [SOGoSystemDefaults sharedSystemDefaults];
-  if ([sd enableDomainBasedUID])
-    {
-      r = [uid rangeOfString: @"@" options: NSBackwardsSearch];
-      if (r.location != NSNotFound)
-        {
-          // The domain is probably appended to the username;
-          // make sure it is a defined domain in the configuration.
-          domain = [uid substringFromIndex: (r.location + r.length)];
-          if ([self isDomainDefined: domain])
-            username = [uid substringToIndex: r.location];
-          else
-            domain = nil;
-        }
-      if (domain != nil)
-        infos = [self contactInfosForUserWithUIDorEmail: username
+  if (domain != nil)
+  {
+    if ([sd enableDomainBasedUID])
+      infos = [self contactInfosForUserWithUIDorEmail: username
                                                inDomain: domain];
-    }
+    else
+      infos = [self contactInfosForUserWithUIDorEmail: uid
+                                               inDomain: domain];
+  }
 
   if (infos == nil)
+  {
     // If the user was not found using the domain or if no domain was detected,
     // search using the original uid.
     infos = [self contactInfosForUserWithUIDorEmail: uid
                                            inDomain: nil];
+  }
 
   return infos;
 }
@@ -1137,8 +1152,7 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
 
       if ([currentUser isKindOfClass: NSNullK])
         currentUser = nil;
-      else if (!([currentUser objectForKey: @"emails"]
-                 && [currentUser objectForKey: @"cn"]))
+      else if (!([currentUser objectForKey: @"emails"] && [currentUser objectForKey: @"cn"]))
         {
           // We make sure that we either have no occurence of a cache entry or
           // that we have an occurence with only a cached password. In the
@@ -1155,6 +1169,19 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
             }
           else
             newUser = NO;
+
+          if(!domain)
+          {
+            //No domain provided is there one?
+            NSRange r;
+            r = [uid rangeOfString: @"@" options: NSBackwardsSearch];
+            if (r.location != NSNotFound)
+            {
+              domain = [uid substringFromIndex: (r.location + r.length)];
+              if (![self isDomainDefined: domain])
+                domain = nil;
+            }
+          }
           [self _fillContactInfosForUser: currentUser
                           withUIDorEmail: aUID
                                 inDomain: domain];
@@ -1332,8 +1359,7 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
 - (NSArray *) fetchContactsMatching: (NSString *) filter
                            inDomain: (NSString *) domain
 {
-  return [self
-           _fetchEntriesInSources: [self addressBookSourceIDsInDomain: domain]
+  return [self _fetchEntriesInSources: [self addressBookSourceIDsInDomain: domain]
                          matching: filter
                          inDomain: domain];
 }

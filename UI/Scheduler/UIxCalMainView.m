@@ -517,7 +517,15 @@
 @interface UIxAppointmentEditorTemplate : UIxComponentEditorTemplate
 @end
 
+
 @implementation UIxAppointmentEditorTemplate
+
+- (BOOL) showJitsiLinkCreation
+{
+  SOGoSystemDefaults *sd;
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  return [sd isCalendarJitsiLinkEnabled];
+}
 @end
 
 /* Task Editor */

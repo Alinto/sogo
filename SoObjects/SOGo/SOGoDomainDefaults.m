@@ -169,6 +169,16 @@
   return [self stringArrayForKey: @"SOGoCalendarDefaultRoles"];
 }
 
+- (NSString *) calendarJistiBaseUrl
+{
+  NSString *jitsiBaseUrl;
+  jitsiBaseUrl = [self stringForKey: @"SOGoCalendarJitsiBaseUrl"];
+  if(!jitsiBaseUrl)
+    jitsiBaseUrl = @"https://meet.jit.si";
+
+  return jitsiBaseUrl;
+}
+
 - (NSArray *) contactsDefaultRoles
 {
   return [self stringArrayForKey: @"SOGoContactsDefaultRoles"];

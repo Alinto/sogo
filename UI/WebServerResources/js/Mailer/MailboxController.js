@@ -589,9 +589,12 @@
         });
     };
 
-    this.moveSelectedMessages = function(dstFolder) {
+    this.moveSelectedMessages = function(dstFolder, message) {
       var moveSelectedMessage = vm.selectedFolder.hasSelectedMessage();
       var selectedMessages = vm.selectedFolder.selectedMessages();
+      if (message) {
+        selectedMessages.push(message);
+      }
       var count = vm.selectedFolder.selectedCount();
       if (_.size(selectedMessages) > 0)
         vm.selectedFolder.$moveMessages(selectedMessages, '/' + dstFolder).then(function(index) {

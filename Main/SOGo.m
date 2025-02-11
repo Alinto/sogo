@@ -374,8 +374,10 @@ static BOOL debugLeaks;
 
   request = [_ctx request];
   login = [SOGoUser getDecryptedUsernameIfNeeded: _key request: request];
-
-  user = [SOGoUser userWithLogin: login roles: nil];
+  if([login isEqualToString: @"changeLanguage"])
+    user = nil;
+  else
+    user = [SOGoUser userWithLogin: login roles: nil];
   if (user)
     userFolder = [$(@"SOGoUserFolder") objectWithName: login
                                           inContainer: self];

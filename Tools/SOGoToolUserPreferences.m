@@ -68,6 +68,7 @@ typedef enum
       "  -p credentialFile    Specify the file containing the sieve admin credentials\n"
       "                       The file should contain a single line:\n"
       "                         username:password\n"
+      "  -F                   force the activation of the sieve script in case external scripts. Must be the las targument after -p credentialsFile"
       "  Examples:\n"
       "       sogo-tool user-preferences get defaults janedoe SOGoLanguage\n"
       "       sogo-tool user-preferences unset settings janedoe Mail\n"
@@ -144,9 +145,19 @@ typedef enum
       account = [folder lookupName: @"0" inContext: localContext acquire: NO];
       [account setContext: localContext];
 
-      error = [account updateFiltersWithUsername: authname
-                                     andPassword: authpwd
-                                 forceActivation: NO];
+      if([[arguments lastObject] isEqualToString: @"-F"])
+      {
+        error = [account updateFiltersWithUsername: authname
+                                      andPassword: authpwd
+                                  forceActivation: YES];
+      }
+      else
+      {
+        error = [account updateFiltersWithUsername: authname
+                                      andPassword: authpwd
+                                  forceActivation: NO];
+      }
+
       if (error)
         return NO;
     }
@@ -248,7 +259,7 @@ typedef enum
             break;
 
           case UserPreferencesSet:
-            if (max > 4)
+            if (![arguments containsObject: @"-f"])
             {
               /* value specified on command line */
               value = [sanitizedArguments objectAtIndex: 4];

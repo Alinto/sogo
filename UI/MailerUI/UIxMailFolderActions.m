@@ -1368,7 +1368,7 @@
   request = [[self context] request];
   jsonRequest = [[request contentAsString] objectFromJSONString];
 
-  if ([[SOGoSystemDefaults sharedSystemDefaults] disableMailCleaning])
+  if (![[SOGoSystemDefaults sharedSystemDefaults] enableMailCleaning])
     return [self responseWithStatus: 401];
 
   if (![self isDateStringValid: [jsonRequest objectForKey: @"date"]]) {
@@ -1401,7 +1401,8 @@
       }
       folder = [account folderWithTraversal: folderName andClassName: nil];
       // Disable clean for trash folder
-      if (![folderName isEqualToString: [account trashFolderNameInContext: [self context]]])
+      if (![folderName isEqualToString: [account trashFolderNameInContext: [self context]]]
+          && ![folderName isEqualToString: [account templatesFolderNameInContext: [self context]]])
         [self cleanFolderWithFolder: folder
                   withQualifier: searchQualifier
                       recursive: isRecursive

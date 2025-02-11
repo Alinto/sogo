@@ -1381,6 +1381,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
           // Calculate the occurrences for the given range
           records = [NSMutableArray array];
+
           ranges = [NSMutableArray arrayWithArray:
                               [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: recurrenceRange
                                                                  firstInstanceCalendarDateRange: firstRange
@@ -1446,7 +1447,16 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   max = [_records count];
   ma = [NSMutableArray arrayWithCapacity: max];
 
-  _r = [NGCalendarDateRange calendarDateRangeWithStartDate: [_r startDate]
+  NSCalendarDate *originalDate = [_r startDate];
+
+  // Adjust the start date to the beginning of the day to ensure it intersects with events where the new event starts after an existing event’s start time.
+  _r = [NGCalendarDateRange calendarDateRangeWithStartDate:[NSCalendarDate dateWithYear:originalDate.yearOfCommonEra
+                                                           month:originalDate.monthOfYear
+                                                             day:originalDate.dayOfMonth
+                                                            hour:0
+                                                          minute:0
+                                                          second:0
+                                                        timeZone:originalDate.timeZone]
                                                    endDate: [_r endDate]];
 
   for (count = 0; count < max; count++)
@@ -1760,7 +1770,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 {
   NSCalendarDate *now, *rc;
 
-  if (davCalendarStartTimeLimit > 0 && ![[context activeUser] isSuperUser])
+  if ([[context request] isSoWebDAVRequest] && davCalendarStartTimeLimit > 0 && ![[context activeUser] isSuperUser])
     {
       now = [NSCalendarDate date];
       rc = [now addTimeInterval: -davTimeLimitSeconds];

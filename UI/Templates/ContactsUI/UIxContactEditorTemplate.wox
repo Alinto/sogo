@@ -495,7 +495,7 @@
                 </md-autocomplete>
                 <md-chip-template>
                     <div class="sg-tile-content">
-                      {{$chip.c_cn}}
+                      {{$chip.c_cn || $chip.email}}
                     </div>
                 </md-chip-template>
               </md-chips>

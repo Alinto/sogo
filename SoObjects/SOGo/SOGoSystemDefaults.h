@@ -55,6 +55,7 @@ static const NSString *kDisableSharingCalendar = @"Calendar";
 
 - (BOOL) isWebAccessEnabled;
 - (BOOL) isCalendarDAVAccessEnabled;
+- (BOOL) isCalendarJitsiLinkEnabled;
 - (BOOL) isAddressBookDAVAccessEnabled;
 
 - (BOOL) enableEMailAlarms;
@@ -142,7 +143,7 @@ NSComparisonResult languageSort(id el1, id el2, void *context);
 
 - (NSString *)urlCreateAccount;
 
-- (BOOL)disableMailCleaning;
+- (BOOL)enableMailCleaning;
 
 @end
 

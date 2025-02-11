@@ -477,6 +477,19 @@ example.
 
 Defaults to `YES` when unset.
 
+|S |SOGoCalendarEnableJitsiLink
+|Parameter allowing users to create Jitsi link when creating an event.
+Be aware that a least one of the attendees will need an account from a
+platform that Jitsi supports: Google, Facebook or Github
+
+Defaults to `NO` when unset.
+
+|D |SOGoCalendarJitsiBaseUrl
+|Only used if SOGoCalendarEnableJitsiLink is set to YES. String for the URL of
+the jitsi server used for creating the meeting link.
+
+Defaults to `https://meet.jit.si` when unset.
+
 |S |SOGoSAML2PrivateKeyLocation
 |The location of the SSL private key file on the filesystem that is used
 by SOGo to sign and encrypt communications with the SAML2 identity
@@ -1678,8 +1691,8 @@ URL could be set to something like:
 
 See the "EMail reminders" section in this document for more information.
 
-|S |SOGoDisableMailCleaning
-|Parameter used to disable the feature 'remove mails older than X days' introduced in 5.12. Default value is `NO`.
+|S |SOGoEnableMailCleaning
+|Parameter used to enable cleaning folders and mailbox (remove mail older than X days). Default value is `NO`.
 
 |S |SOGoDisableOrganizerEventCheck
 |Parameter used to disable organizer's calendar event check
@@ -3964,7 +3977,7 @@ _Defaults_ stores all parameters that can be found in Preferences panel. So it g
 autoreply to many others options.
 
 
- user-preferences get|set|unset defaults|settings user key [value|-f filename] [-p credentialFile]
+ user-preferences get|set|unset defaults|settings user key [value|-f filename] [-p credentialFile [-F]]
 
 * First argument is the action *get*, *set* or *unset*
 * Second argument is parameter type *settings* or *defaults* 
@@ -3972,7 +3985,8 @@ autoreply to many others options.
 * Fourth argument *key* is the name of the parameters where to make the action
 * If the action is *set*, you should provide either *value* as fifth argument or a file with the value inside with *-f* filename/path
 * If the action is *set* or *unset* and the *key* concerns a sieve script (filter, vacation, forward...), you
-should provide a credential file, a one-line file that contains "username:password" of an admin account of your imap/sieve server.
+should provide a credential file, a one-line file that contains "username:password" of an admin account of your imap/sieve server. If you
+want t oforce the sieve script activation add -F after.
 
 As there is a lot of parameters, this documentation will not go into details for each one. To know what are 
 the key names and their value you should got to your database in table defined by _SOGoProfileURL_ in your sogo.conf.
@@ -4001,7 +4015,7 @@ sogo-tool user-preferences unset defaults user1 Forward -p /etc/sogo/cred
 
 *set* action:
 ----
-sogo-tool user-preferences set defaults user1 Forward '{"forwardAddress":["sogo-tests2@sogo.alinto"],"enabled":1,"keepCopy":0}' -p cred
+sogo-tool user-preferences set defaults user1 Forward '{"forwardAddress":["sogo-tests2@sogo.alinto"],"enabled":1,"keepCopy":0}' -p cred -F
 ----
 or create a json file which contains _{"forwardAddress":["sogo-tests2@sogo.alinto"],"enabled":1,"keepCopy":0}_ then:
 ----

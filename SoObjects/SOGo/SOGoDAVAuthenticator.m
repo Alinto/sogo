@@ -65,7 +65,8 @@
               domain: &domain
                 perr: &perr
               expire: &expire
-               grace: &grace]
+               grace: &grace
+      additionalInfo: nil]
         && perr == PolicyNoError);
         
   if (!rc)

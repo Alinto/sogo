@@ -1,6 +1,6 @@
 /* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 /* JavaScript for MainUI (SOGoRootPage) */
-(function() {
+(function () {
   'use strict';
 
   angular.module('SOGo.MainUI', ['SOGo.Common', 'SOGo.Authentication']);
@@ -9,8 +9,8 @@
   /**
    * @ngInject
    */
-  LoginController.$inject = ['$scope', '$window', '$timeout', 'Dialog', '$mdDialog', 'Authentication', 'sgFocus', 'sgRippleClick'];
-  function LoginController($scope, $window, $timeout, Dialog, $mdDialog, Authentication, focus, rippleDo) {
+  LoginController.$inject = ['$scope', '$window', '$timeout', 'Dialog', '$mdDialog', 'Authentication', 'sgFocus', 'sgRippleClick', 'sgConstant', '$mdToast'];
+  function LoginController($scope, $window, $timeout, Dialog, $mdDialog, Authentication, focus, rippleDo, sgConstant, $mdToast) {
     var vm = this;
 
     this.$onInit = function () {
@@ -69,10 +69,9 @@
             vm.passwordRecovery.passwordRecoveryEnabled = true;
 
             vm.loginState = 'passwordchange';
-            vm.showLogin = false;
             rippleDo('loginContent');
           }
-          
+
         } else {
           vm.retrievePasswordRecoveryEnabled();
         }
@@ -83,14 +82,14 @@
             el.parentElement.classList.add("md-input-has-value");
           });
         }
-       }, 100);
-      
+      }, 100);
+
     };
 
-    this.login = function() {
+    this.login = function () {
       vm.loginState = 'authenticating';
       Authentication.login(vm.creds)
-        .then(function(data) {
+        .then(function (data) {
 
           if (data.totpmissingkey) {
             vm.loginState = 'totpcode';
@@ -107,11 +106,11 @@
             vm.url = data.url;
 
             // Let the user see the succesfull message before reloading the page
-            $timeout(function() {
+            $timeout(function () {
               vm.continueLogin();
             }, 1000);
           }
-        }, function(msg) {
+        }, function (msg) {
           vm.loginState = 'error';
 
           if (msg.error) {
@@ -122,21 +121,22 @@
             vm.loginState = 'passwordwillexpire';
             vm.cn = msg.cn;
             vm.url = msg.url;
+            vm.passwordPolicy = msg.userPolicies ? msg.userPolicies : [];
             vm.errorMessage = l('You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog.', msg.grace);
           }
           else if (msg.expire > 0) {
             // Password will soon expire
             var value, string;
             if (msg.expire > 86400) {
-              value = Math.round(msg.expire/86400);
+              value = Math.round(msg.expire / 86400);
               string = l("days");
             }
             else if (msg.expire > 3600) {
-              value = Math.round(msg.expire/3600);
+              value = Math.round(msg.expire / 3600);
               string = l("hours");
             }
             else if (msg.expire > 60) {
-              value = Math.round(msg.expire/60);
+              value = Math.round(msg.expire / 60);
               string = l("minutes");
             }
             else {
@@ -148,34 +148,40 @@
             vm.url = msg.url;
             vm.errorMessage = l('Your password is going to expire in %{0} %{1}.', value, string);
           }
-          else if (msg.passwordexpired) {
+          else if (msg.passwordexpired && msg.passwordexpired == 2) {
             vm.loginState = 'passwordchange';
+            vm.passwordPolicy = msg.userPolicies ? msg.userPolicies : [];
             vm.url = msg.url;
+            vm.passwordexpired = msg.passwordexpired;
+          } else if (msg.passwordexpired) {
+            vm.loginState = 'passwordchange';
+            vm.passwordPolicy = msg.userPolicies ? msg.userPolicies : [];
+            vm.url = msg.url;
+            vm.passwordexpired = msg.passwordexpired;
           }
 
         });
       return false;
     };
 
-    this.restoreLogin = function() {
-      vm.showLogin = false;
+    this.restoreLogin = function () {
       if ('SecretQuestion' === vm.passwordRecovery.passwordRecoveryMode) {
         rippleDo('loginContent');
-        vm.passwordRecoveryInfo();
+        vm.passwordRecoveryAbort();
       } else {
         delete vm.creds.verificationCode;
         vm.passwordRecoveryAbort();
       }
     };
 
-    this.continueLogin = function() {
+    this.continueLogin = function () {
       if ($window.location.href === vm.url)
         $window.location.reload(true);
       else
         $window.location.href = vm.url;
     };
 
-    this.showAbout = function($event) {
+    this.showAbout = function ($event) {
       $mdDialog.show({
         targetEvent: $event,
         templateUrl: 'aboutBox.html',
@@ -184,24 +190,20 @@
       });
       AboutDialogController.$inject = ['$mdDialog'];
       function AboutDialogController($mdDialog) {
-        this.closeDialog = function() {
+        this.closeDialog = function () {
           $mdDialog.hide();
         };
       }
     };
 
-    this.changeLanguage = function($event) {
+    this.changeLanguage = function ($event) {
       // Reload page
-      $window.location.href = ApplicationBaseURL + 'login?language=' + this.creds.language;
+      $window.location.href = ApplicationBaseURL + 'changeLanguage?language=' + this.creds.language;
     };
 
-    this.hello = function (form) {
-      return !true;
-    }
-
-    this.canChangePassword = function(form) {
+    this.canChangePassword = function (form) {
       if (this.passwords.newPasswordConfirmation && this.passwords.newPasswordConfirmation.length &&
-          this.passwords.newPassword != this.passwords.newPasswordConfirmation) {
+        this.passwords.newPassword != this.passwords.newPasswordConfirmation) {
         form.newPasswordConfirmation.$setValidity('newPasswordMismatch', false);
         return false;
       }
@@ -209,25 +211,29 @@
         form.newPasswordConfirmation.$setValidity('newPasswordMismatch', true);
       }
       if (this.passwords.newPassword && this.passwords.newPassword.length > 0 &&
-          this.passwords.newPasswordConfirmation && this.passwords.newPasswordConfirmation.length &&
-          this.passwords.newPassword == this.passwords.newPasswordConfirmation &&
-          ((this.isInPasswordRecoveryMode()) || 
-          (!this.loginState && this.passwords.oldPassword && this.passwords.oldPassword.length > 0) || 
+        this.passwords.newPasswordConfirmation && this.passwords.newPasswordConfirmation.length &&
+        this.passwords.newPassword == this.passwords.newPasswordConfirmation &&
+        ((this.isInPasswordRecoveryMode()) ||
+          (!this.loginState && this.passwords.oldPassword && this.passwords.oldPassword.length > 0) ||
           ('passwordchange' == this.loginState && this.passwords.oldPassword && this.passwords.oldPassword.length > 0)
-          )) 
+        ))
         return true;
 
       return false;
     };
 
-    this.changePassword = function() {
-      Authentication.changePassword(this.creds.username, this.creds.domain, this.passwords.newPassword, this.passwords.oldPassword, this.passwordRecovery.passwordRecoveryToken).then(function(data) {
+    this.changePassword = function () {
+      Authentication.changePassword(this.creds.username, this.creds.domain, this.passwords.newPassword, this.passwords.oldPassword, this.passwordRecovery.passwordRecoveryToken).then(function (data) {
         vm.loginState = 'message';
         vm.url = data.url;
         vm.errorMessage = l('The password was changed successfully.');
-      }, function(msg) {
-        vm.loginState = 'error';
-        vm.errorMessage = msg;
+      }, function (msg) {
+        $mdToast.show(
+          $mdToast.simple()
+            .textContent(msg)
+            .position(sgConstant.toastPosition)
+            .hideDelay(2000)
+        );
       });
     };
 
@@ -260,38 +266,42 @@
         , this.passwordRecovery.passwordRecoveryMailDomain).then(function () {
           vm.loginState = 'sendrecoverymail';
           vm.passwordRecovery.showLoader = false;
-      }, function (msg) {
-        vm.loginState = 'error';
-        vm.errorMessage = msg;
+        }, function (msg) {
+          vm.loginState = 'error';
+          vm.errorMessage = msg;
           vm.passwordRecovery.showLoader = false;
-      });
+        });
     };
 
     this.passwordRecoveryCheck = function () {
       vm.passwordRecovery.showLoader = true;
       Authentication.passwordRecoveryCheck(this.creds.username, this.creds.domain
-                                          , this.passwordRecovery.passwordRecoveryMode
-                                          , this.passwordRecovery.passwordRecoveryQuestionKey
-                                          , this.passwordRecovery.passwordRecoveryQuestionAnswer
-                                          , this.passwordRecovery.passwordRecoveryMailDomain).then(function (token) {
-        if ("SecretQuestion" == vm.passwordRecovery.passwordRecoveryMode) {
-          vm.passwordRecovery.passwordRecoveryToken = token;
-          vm.loginState = 'passwordchange';
-        } else if ("SecondaryEmail" == vm.passwordRecovery.passwordRecoveryMode) {
-          vm.loginState = 'sendrecoverymail';
-        }
-        vm.passwordRecovery.showLoader = false;
-      }, function (msg) {
-        vm.loginState = 'error';
-        vm.errorMessage = msg;
-        vm.passwordRecovery.showLoader = false;
-      });
+        , this.passwordRecovery.passwordRecoveryMode
+        , this.passwordRecovery.passwordRecoveryQuestionKey
+        , this.passwordRecovery.passwordRecoveryQuestionAnswer
+        , this.passwordRecovery.passwordRecoveryMailDomain).then(function (token) {
+          if ("SecretQuestion" == vm.passwordRecovery.passwordRecoveryMode) {
+            vm.passwordRecovery.passwordRecoveryToken = token;
+            vm.loginState = 'passwordchange';
+          } else if ("SecondaryEmail" == vm.passwordRecovery.passwordRecoveryMode) {
+            vm.loginState = 'sendrecoverymail';
+          }
+          vm.passwordRecovery.showLoader = false;
+        }, function (msg) {
+          vm.loginState = 'error';
+          vm.errorMessage = msg;
+          vm.passwordRecovery.showLoader = false;
+        });
+    };
+
+    this.isPasswordExpiredSecurity = function () {
+      return (this.passwordexpired && 2 === this.passwordexpired);
     };
 
     this.isInPasswordRecoveryMode = function () {
-      return (("SecretQuestion" == this.passwordRecovery.passwordRecoveryMode ||
-        "SecondaryEmail" == this.passwordRecovery.passwordRecoveryMode) &&
-        this.passwordRecovery.passwordRecoveryToken) ? true : false;
+      return (("SecretQuestion" == this.passwordRecovery.passwordRecoveryMode) ||
+        ("SecondaryEmail" == this.passwordRecovery.passwordRecoveryMode &&
+        this.passwordRecovery.passwordRecoveryToken)) ? true : false;
     };
 
     this.passwordRecoveryAbort = function () {

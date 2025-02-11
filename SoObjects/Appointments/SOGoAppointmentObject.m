@@ -1859,7 +1859,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
     // Retrieve this occurence ID.
     recurrenceId = [occurence recurrenceId];
 
-  if ([occurence userIsAttendee: ownerUser] && !activeUserIsOwner)
+  if ([occurence userIsAttendee: ownerUser])
     {
       // The current user deletes the occurence; let the organizer know that
       // the user has declined this occurence.
