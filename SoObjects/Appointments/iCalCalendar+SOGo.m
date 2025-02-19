@@ -25,6 +25,7 @@
 #import <Foundation/NSString.h>
 
 #import <NGCards/iCalEvent.h>
+#import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalRepeatableEntityObject.h>
 
 #import "iCalCalendar+SOGo.h"
@@ -97,7 +98,29 @@
   elements = [self allObjects];
   count = [elements count];
   if (count)
+  {
     element = [elements objectAtIndex: 0];
+    if(count >1)
+    {
+      //If there more than one event, it may because there is the main reccurent event and some exceptions with reccurenceId
+      //It's important to fetch the "main" vevent and not the other.
+      NSEnumerator *elementEnum;
+      NSCalendarDate *recurrenceId;
+      CardGroup *elem;
+      elementEnum = [elements objectEnumerator];
+      while((elem = [elementEnum nextObject]))
+      {
+        recurrenceId = [(iCalDateTime *) [elem uniqueChildWithTag: @"recurrence-id"] dateTime];
+        if(recurrenceId)
+          continue;
+        else
+        {
+          element = elem;
+          break;
+        }
+      }
+    }
+  }
   else
     {
       //NSLog(@"ERROR: given calendar contains no elements: %@", self);

@@ -170,60 +170,95 @@
 
   emailEvent = [self _emailEvent];
   if (emailEvent)
+  {
+    *eventObject = [self _eventObjectWithUID: [emailEvent uid]];
+    if ([*eventObject isNew])
     {
-      *eventObject = [self _eventObjectWithUID: [emailEvent uid]];
-      if ([*eventObject isNew])
-	{
-	  chosenEvent = emailEvent;
-	  [*eventObject saveCalendar: [emailEvent parent]];
-	}
-      else
-	{
-	  if ([emailEvent recurrenceId])
-	    {
-	      // Event attached to email is not complete -- retrieve it
-	      // from the database.
-	      NSString *recurrenceTime;
-
-	      recurrenceTime = [NSString stringWithFormat: @"%f", 
-					 [[emailEvent recurrenceId] timeIntervalSince1970]];
-	      calendarEvent = (iCalEvent *)[*eventObject lookupOccurrence: recurrenceTime];
-	    }
-	  else
-	    calendarEvent = (iCalEvent *) [*eventObject component: NO  secure: NO];
-	  
-	  if (calendarEvent != nil)
-	    {
-	      // Calendar event still exists -- verify which of the calendar
-	      // and email events is the most recent. We must also update
-	      // the event (or recurrence-id) with the email's content, otherwise
-	      // we would never get major properties updates
-	      if ([calendarEvent compare: emailEvent] == NSOrderedAscending)
-		{
-		  iCalCalendar *parent;
-		  
-		  parent = [calendarEvent parent];
-		  [parent removeChild: calendarEvent];
-		  [parent addChild: emailEvent];
-		  [*eventObject saveCalendar: parent];
-		  [*eventObject flush];
-		  chosenEvent = emailEvent;
-		}
-	      else
-		{
-		  chosenEvent = calendarEvent;
-		  if (![[[chosenEvent parent] method] length])
-		    [[chosenEvent parent] setMethod: [[emailEvent parent] method]];
-		}
-	    }
-	  else
-	    chosenEvent = emailEvent;
-	}
-
-      organizer = [chosenEvent organizer];
-      if (![[organizer rfc822Email] length])
-	[self _fixOrganizerInEvent: chosenEvent];
+      chosenEvent = emailEvent;
+      [*eventObject saveCalendar: [emailEvent parent]];
     }
+    else
+	  {
+      if ([emailEvent recurrenceId])
+      {
+        // Event attached to email is not complete -- retrieve it
+        // from the database.
+        NSString *recurrenceTime;
+
+        recurrenceTime = [NSString stringWithFormat: @"%f", 
+            [[emailEvent recurrenceId] timeIntervalSince1970]];
+        calendarEvent = (iCalEvent *)[*eventObject lookupOccurrence: recurrenceTime];
+      }
+      else
+        calendarEvent = (iCalEvent *) [*eventObject component: NO  secure: NO];
+      
+      if (calendarEvent != nil)
+      {
+          // Calendar event still exists -- verify which of the calendar
+          // and email events is the most recent. We must also update
+          // the event (or recurrence-id) with the email's content, otherwise
+          // we would never get major properties updates
+        if ([calendarEvent compare: emailEvent] == NSOrderedAscending)
+        {
+          iCalCalendar *parent;
+          parent = [calendarEvent parent];
+
+          //careful, sogo vcalendar objets for reccurent event needs to have the main event first, then all the vevent with reccurence-id
+          if(![emailEvent hasRecurrenceRules] || [emailEvent recurrenceId])
+          {
+            [parent removeChild: calendarEvent];
+            [parent addChild: emailEvent];
+          }
+          else
+          {
+            //The main recurrent event has been changed, put it first and also change all the exception with the correct reccurence-id
+            NSMutableArray *childrenNew;
+            NSEnumerator *childrenOldEnum, *childrenNewEnum;
+            iCalEvent *child;
+            NSCalendarDate *oldStartDate, *newStartDate, *recId;
+            NSTimeInterval interval;
+
+            oldStartDate = [calendarEvent startDate];
+            newStartDate = [emailEvent startDate];
+            interval = [newStartDate timeIntervalSinceDate: oldStartDate];
+
+            [parent removeChild: calendarEvent];
+            childrenNew = [NSMutableArray array];
+            childrenOldEnum = [[parent childrenWithTag:@"vevent"] objectEnumerator];
+            while((child = [childrenOldEnum nextObject]))
+            {
+              [parent removeChild: child];
+              if((recId = [child recurrenceId]))
+                [child setRecurrenceId: [recId dateByAddingTimeInterval: interval]];
+              [childrenNew addObject: child];
+            }
+            [parent addChild: emailEvent];
+            childrenNewEnum = [childrenNew objectEnumerator];
+            while((child = [childrenNewEnum nextObject]))
+            {
+              [parent addChild: child];
+            }
+          }
+
+          [*eventObject saveCalendar: parent];
+          [*eventObject flush];
+          chosenEvent = emailEvent;
+        }
+        else
+        {
+          chosenEvent = calendarEvent;
+          if (![[[chosenEvent parent] method] length])
+            [[chosenEvent parent] setMethod: [[emailEvent parent] method]];
+        }
+      }
+      else
+        chosenEvent = emailEvent;
+	  }
+
+    organizer = [chosenEvent organizer];
+    if (![[organizer rfc822Email] length])
+	    [self _fixOrganizerInEvent: chosenEvent];
+  }
   else
     chosenEvent = nil;
   
