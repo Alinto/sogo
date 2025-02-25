@@ -301,6 +301,19 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
   return [self _fetchFieldForUser: @"c_domain"];
 }
 
+- (NSString *) loginDomain
+{
+    NSRange r;
+    NSString *domain = nil;
+    r = [self->login rangeOfString: @"@"];
+    if (r.location != NSNotFound)
+    {
+        domain = [self->login substringFromIndex: r.location+1];
+    }
+    return domain;
+}
+
+
 - (id <SOGoSource>) authenticationSource
 {
   NSString *sourceID;

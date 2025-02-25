@@ -637,7 +637,8 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
     auth = [NSString stringWithFormat: @"Bearer %@", self->accessToken];
     if(self->forDomain != nil && [self->forDomain length] > 0)
       headers = [NSDictionary dictionaryWithObjectsAndKeys: @"application/x-www-form-urlencoded", @"content-type",
-                                                                self->forDomain, @"sogo-user-domain", nil];
+                                                                self->forDomain, @"sogo-user-domain",
+                                                                auth, @"authorization", nil];
     else
       headers = [NSDictionary dictionaryWithObject: auth forKey: @"authorization"];
 
