@@ -1099,8 +1099,9 @@ static const NSString *kJwtKey = @"jwt";
 
 - (BOOL) hasUrlCreateAccount
 {
-  return ([[SOGoSystemDefaults sharedSystemDefaults]
-                              urlCreateAccount] != nil);
+  NSString *url;
+  url = [[SOGoSystemDefaults sharedSystemDefaults] urlCreateAccount];
+  return (url != nil && [url length] > 0);
 }
 
 - (NSString *) urlCreateAccount
