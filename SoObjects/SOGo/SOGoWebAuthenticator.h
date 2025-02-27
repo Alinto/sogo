@@ -27,6 +27,7 @@
 #import "SOGoConstants.h"
 
 @class NSString;
+@class NSMutableDictionary;
 
 @class WOContext;
 @class WOCookie;
