@@ -332,6 +332,16 @@
   return password;
 }
 
+- (NSString *) smtpPasswordInContext: (WOContext *) context
+                              forURL: (NSURL *) server
+{
+  NSString *password;
+
+  password = [self imapPasswordInContext: context forURL: server forceRenew:NO];
+
+  return password;
+}
+
 /* create SOGoUser */
 
 - (SOGoUser *) userWithLogin: (NSString *) login
