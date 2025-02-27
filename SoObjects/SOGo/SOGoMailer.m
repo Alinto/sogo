@@ -265,7 +265,7 @@
                       inContext: (WOContext *) woContext
                   systemMessage: (BOOL) isSystemMessage
 {
-  NSString *currentTo, *login, *password;
+  NSString *currentTo, *login, *password, *encryption, *protocol, *server;
   NSString * smtpAuthMethod;
   NSDictionary *currentAcount;
   NSMutableArray *toErrors;
@@ -319,7 +319,12 @@
                         getExternalLoginForUID: [[authenticator userInContext: woContext] loginInDomain]
                                       inDomain: [[authenticator userInContext: woContext] domain]];
 
-            password = [authenticator passwordInContext: woContext];
+            encryption = [currentAcount objectForKey: @"encryption"];
+            protocol = @"imap";
+            if ([encryption isEqualToString: @"ssl"] || [encryption isEqualToString: @"tls"])
+              protocol = @"imaps";
+            server = [NSString stringWithFormat: @"%@://%@", protocol, [currentAcount objectForKey: @"serverName"]];
+            password = [authenticator smtpPasswordInContext: woContext forURL: server];
           }
 
 
