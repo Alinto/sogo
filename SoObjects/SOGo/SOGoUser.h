@@ -91,6 +91,7 @@
 
 /* properties */
 - (NSString *) domain;
+- (NSString *) loginDomain;
 - (id <SOGoSource>) authenticationSource;
 
 - (NSArray *) allEmails;
