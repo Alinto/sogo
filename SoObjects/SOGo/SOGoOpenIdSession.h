@@ -25,6 +25,7 @@
    https://openid.net/developers/how-connect-works/ */
 
 #import <NGObjWeb/WOResponse.h>
+#import <SOGo/SOGoObject.h>
 
 
 @class NSString;
@@ -33,7 +34,7 @@
 @class NSJSONSerialization;
 
 
-@interface SOGoOpenIdSession : NSObject
+@interface SOGoOpenIdSession : SOGoObject
 {
   //For cache
   BOOL cacheUpdateNeeded;
@@ -47,6 +48,9 @@
   NSString *openIdClientSecret;
   NSString *openIdEmailParam;
   BOOL openIdEnableRefreshToken;
+
+  NSString *forDomain;
+
 
   //From request to well-known/configuration
   NSString *authorizationEndpoint;
@@ -66,16 +70,20 @@
 }
 
 + (BOOL) checkUserConfig;
-+ (SOGoOpenIdSession *) OpenIdSession;
++ (SOGoOpenIdSession *) OpenIdSession: (NSString *) _domain;
++ (SOGoOpenIdSession *) OpenIdSessionWithConfig: (NSDictionary *) _config;
++ (SOGoOpenIdSession *) OpenIdSessionWithToken: (NSString *) token domain: (NSString *) _domain;
++ (SOGoOpenIdSession *) OpenIdSessionWithTokenAndConfig: (NSString *) token config: (NSDictionary *) _config;
 + (void) deleteValueForSessionKey: (NSString *) theSessionKey;
 
 - (void) initialize;
+- (void) initializeWithConfig: (NSDictionary *) _config;
 - (BOOL) sessionIsOK;
 - (WOResponse *) _performOpenIdRequest: (NSString *) endpoint
                         method: (NSString *) method
                        headers: (NSDictionary *) headers
                           body: (NSData *) body;
-- (NSMutableDictionary *) fecthConfiguration;
+- (NSMutableDictionary *) fecthConfiguration: (NSString *) _domain;
 - (void) setAccessToken;
 - (NSString *) getRefreshToken; 
 - (NSString *) getToken;
