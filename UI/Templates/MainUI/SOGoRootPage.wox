@@ -163,7 +163,7 @@
                     <md-input-container class="md-block">
                       <label><var:string label:value="Verification Code"/></label>
                       <md-icon>lock</md-icon>
-                      <input type="number" autocomplete="off"
+                      <input  type="text" inputmode="numeric" autocomplete="off"
                             ng-pattern="app.verificationCodePattern"
                             ng-model="app.creds.verificationCode"
                             ng-required="app.loginState == 'totpcode'"
