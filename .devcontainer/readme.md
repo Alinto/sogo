@@ -17,7 +17,9 @@ Simply clone the source code of the SOGo repo and open id with Visual Code Studi
 When it's all build, go to http://127.0.0.1/SOGo. You have 3 users to login with:
 `sogo-tests1`, `sogo-tests2`, `sogo-tests3` with all the same password `sogo`
 
-You can only send mail and receive mail within the domain `example.org`
+You can only send mail and receive mail among those three users.
+
+**If you have troubles, you may need to build sogo once, see the next section for that.**
 
 ## How to work on SOGo
 
