@@ -683,6 +683,32 @@ static memcached_st *handle = NULL;
     }
 }
 
+
+// OpenId support
+
+- (NSString *) openIdSessionFromServer: (NSString *) endpoint
+{
+  return [self valueForKey: [NSString stringWithFormat: @"openId:%@", endpoint]];
+}
+
+- (void) setOpenIdSession: (NSString *) openIdSession
+         forServer: (NSString *) endpoint
+{
+  [self setValue: openIdSession
+          forKey: [NSString stringWithFormat: @"openId:%@", endpoint]];
+}
+
+- (NSString *) userOpendIdSessionFromServer: (NSString *) identifier
+{
+  return [self valueForKey: [NSString stringWithFormat: @"userOpenId:%@", identifier]];
+}
+- (void) setUserOpendIdSessionFromServer: (NSString *) identifier
+                  nextCheckAfter: (NSString *) nextCheck
+{
+    [self setValue: nextCheck
+          forKey: [NSString stringWithFormat: @"userOpenId:%@", identifier]];
+}
+
 //
 // SAML2 support
 //

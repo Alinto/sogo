@@ -31,7 +31,7 @@
 */
 
 @class NSString, NSArray, NSURL, NSDictionary, NSException;
-@class GCSChannelManager, GCSAlarmsFolder, GCSAdminFolder, GCSFolder, GCSFolderType, GCSSessionsFolder;
+@class GCSChannelManager, GCSAlarmsFolder, GCSAdminFolder, GCSFolder, GCSFolderType, GCSSessionsFolder, GCSOpenIdFolder;
 
 @interface GCSFolderManager : NSObject
 {
@@ -91,6 +91,9 @@
 
 /* admin */
 - (GCSAdminFolder *)adminFolder;
+
+/* openid */
+- (GCSOpenIdFolder *) openIdFolder;
 
 /* folder types */
 

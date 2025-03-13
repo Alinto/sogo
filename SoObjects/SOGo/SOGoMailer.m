@@ -266,6 +266,7 @@
                   systemMessage: (BOOL) isSystemMessage
 {
   NSString *currentTo, *login, *password;
+  NSString * smtpAuthMethod;
   NSDictionary *currentAcount;
   NSMutableArray *toErrors;
   NSEnumerator *addresses;
@@ -288,7 +289,9 @@
   currentAcount = [[user mailAccounts] objectAtIndex: userId];
 
   //Check if we do an smtp authentication
-  doSmtpAuth = [authenticationType isEqualToString: @"plain"] && ![authenticator isKindOfClass: [SOGoEmptyAuthenticator class]];
+  smtpAuthMethod = authenticationType;
+  doSmtpAuth = ([smtpAuthMethod isEqualToString: @"plain"] || [smtpAuthMethod isEqualToString: @"xoauth2"]) 
+                                            && ![authenticator isKindOfClass: [SOGoEmptyAuthenticator class]];
   if(!doSmtpAuth && userId > 0)
   {
     doSmtpAuth = [currentAcount objectForKey: @"smtpAuth"] ? [[currentAcount objectForKey: @"smtpAuth"] boolValue] : NO;
@@ -304,6 +307,7 @@
           {
             login = [currentAcount objectForKey: @"userName"];
             password = [currentAcount objectForKey: @"password"];
+            smtpAuthMethod = "plain"; //Only support plain for auxiliary account
           }
           else
           {
@@ -322,8 +326,9 @@
           if (isSystemMessage 
               && ![[[SOGoUserManager sharedUserManager] getEmailForUID: [[authenticator userInContext: woContext] loginInDomain]] isEqualToString: sender] 
               && smtpMasterUserEnabled) {
-            if (![client plainAuthenticateUser: smtpMasterUserUsername
-                                   withPassword: smtpMasterUserPassword]) {
+            if (![client authenticateUser: smtpMasterUserUsername
+                                  withPassword: smtpMasterUserPassword
+                                    withMethod: smtpAuthMethod]) {
               result = [NSException exceptionWithHTTPStatus: 500
                                                    reason: @"cannot send message:"
                                   @" (smtp) authentication failure"];
@@ -334,8 +339,9 @@
           {
             if ([login length] == 0
               || [login isEqualToString: @"anonymous"]
-              || ![client plainAuthenticateUser: login
-                                   withPassword: password])
+              || ![client authenticateUser: login
+                                   withPassword: password
+                                     withMethod: smtpAuthMethod])
               result = [NSException exceptionWithHTTPStatus: 500
                                                     reason: @"cannot send message:"
                                     @" (smtp) authentication failure"];

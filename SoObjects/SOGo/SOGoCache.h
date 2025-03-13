@@ -119,6 +119,13 @@
 
 - (void) removeCASSessionWithTicket: (NSString *) ticket;
 
+// OpenId Support
+- (NSString *) openIdSessionFromServer: (NSString *) endpoint;
+- (void) setOpenIdSession: (NSString *) openIdSession
+         forServer: (NSString *) endpoint;
+- (NSString *) userOpendIdSessionFromServer: (NSString *) endpoint;
+- (void) setUserOpendIdSessionFromServer: (NSString *) endpoint
+                          nextCheckAfter: (NSString *) nextCheck;
 //
 // SAML2 support
 //
