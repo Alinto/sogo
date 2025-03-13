@@ -23,6 +23,9 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSObject+Logs.h>
 
+#import <SOGo/SOGoUser.h>
+
+
 #import <GDLContentStore/GCSOpenIdFolder.h>
 #import <GDLContentStore/GCSFolderManager.h>
 
@@ -52,32 +55,73 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
   return ([sd openIdConfigUrl] && [sd openIdScope]  && [sd openIdClient]  && [sd openIdClientSecret]);
 }
 
-- (void) initialize
+- (void) initializeWithConfig: (NSDictionary *) _config
 {
   SOGoSystemDefaults *sd;
+  id refreshTokenBool, domainInfo;
 
-  // //From sogo.conf
-  // openIdConfigUrl = nil;
-  // openIdScope = nil;
-  // openIdClient = nil;
-  // openIdClientSecret = nil;
+  if([_config objectForKey: @"SOGoOpenIdConfigUrl"] &&
+      [_config objectForKey: @"SOGoOpenIdScope"] &&
+      [_config objectForKey: @"SOGoOpenIdClient"] &&
+      [_config objectForKey: @"SOGoOpenIdClientSecret"])
+  {
+    openIdConfigUrl          = [_config objectForKey: @"SOGoOpenIdConfigUrl"];
+    openIdScope              = [_config objectForKey: @"SOGoOpenIdScope"];
+    openIdClient             = [_config objectForKey: @"SOGoOpenIdClient"];
+    openIdClientSecret       = [_config objectForKey: @"SOGoOpenIdClientSecret"];
+    openIdEmailParam         = [_config objectForKey: @"SOGoOpenIdEmailParam"];
 
-  // //From request to well-known/configuration
-  // //SHoud be ste in sogo.cong in case of oauth
-  // authorizationEndpoint = nil;
-  // tokenEndpoint = nil;
-  // introspectionEndpoint = nil;
-  // userinfoEndpoint = nil;
-  // endSessionEndpoint = nil;
-  // revocationEndpoint = nil;
+    openIdEnableRefreshToken = NO;
+    refreshTokenBool = [_config objectForKey: @"SOGoOpenIdEnableRefreshToken"];
+    if (refreshTokenBool && [refreshTokenBool respondsToSelector: @selector (boolValue)])
+        openIdEnableRefreshToken = [refreshTokenBool boolValue];
 
-  // //Access token
-  // accessToken = nil;
+    sendDomainInfo = NO;
+    domainInfo = [_config objectForKey: @"SOGoOpenIdSendDomainInfo"];
+    if (domainInfo && [domainInfo respondsToSelector: @selector (boolValue)])
+        sendDomainInfo = [domainInfo boolValue];
+
+      
+    userTokenInterval        = [_config objectForKey: @"SOGoOpenIdTokenCheckInterval"];
+    [self _loadSessionFromCache: forDomain];
+
+    if(cacheUpdateNeeded)
+    {
+      [self fecthConfiguration: forDomain];
+    }
+  }
+  else
+  {
+    [self errorWithFormat: @"Missing parameters from sogo.conf"];
+  }
+}
+
+- (void) initialize: (NSString*) _domain
+{
+  SOGoSystemDefaults *sd;
+  NSDictionary *config;
+  NSString *type;
 
   sd = [SOGoSystemDefaults sharedSystemDefaults];
   SOGoOpenIDDebugEnabled = [sd openIdDebugEnabled];
   openIdSessionIsOK = NO;
-  if ([[self class] checkUserConfig])
+
+  //Check if there is a root config or config per domain
+  if(_domain != nil && [sd doesLoginTypeByDomain])
+  {
+    forDomain = _domain;
+    type = [sd getLoginTypeForDomain: _domain];
+    if(type != nil && [type isEqualToString: @"openid"])
+    {
+      config = [sd getLoginConfigForDomain: _domain];
+      [self initializeWithConfig: config];
+    }
+    else
+    {
+      [self errorWithFormat: @"Missing parameters from sogo.conf"];
+    }
+  }
+  else if ([[self class] checkUserConfig])
   {
     openIdConfigUrl          = [sd openIdConfigUrl];
     openIdScope              = [sd openIdScope];
@@ -86,12 +130,14 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
     openIdEmailParam         = [sd openIdEmailParam];
     openIdEnableRefreshToken = [sd openIdEnableRefreshToken];
     userTokenInterval        = [sd openIdTokenCheckInterval];
+    sendDomainInfo           = [sd openIdSendDomainInfo];
+    forDomain = _domain;
 
-    [self _loadSessionFromCache];
+    [self _loadSessionFromCache: _domain];
 
     if(cacheUpdateNeeded)
     {
-      [self fecthConfiguration];
+      [self fecthConfiguration: _domain];
     }
       
   }
@@ -100,6 +146,7 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
     [self errorWithFormat: @"Missing parameters from sogo.conf"];
   }
 }
+
 
 - (WOResponse *) _performOpenIdRequest: (NSString *) endpoint
                         method: (NSString *) method
@@ -112,16 +159,16 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
   WOResponse *response;
   WOHTTPConnection *httpConnection;
   
-
+  
   url = [NSURL URLWithString: endpoint];
   if (url)
   {
     if(SOGoOpenIDDebugEnabled)
     {
-      NSLog(@"OpenId perform request: %@ %@", method, [endpoint hostlessURL]);
+      NSLog(@"OpenId perform request: %@ %@", method, endpoint);
       NSLog(@"OpenId perform request, headers %@", headers);
-      if(body)
-        NSLog(@"OpenId perform request: content %@", [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
+      // if(body)
+      //   NSLog(@"OpenId perform request: content %@", [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
     }
       
     httpConnection = [[WOHTTPConnection alloc] initWithURL: url];
@@ -156,13 +203,13 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
   }
 }
 
-- (NSMutableDictionary *) fecthConfiguration
+- (NSMutableDictionary *) fecthConfiguration: (NSString*) _domain
 {
-  NSString *location, *content;
+  NSString *content;
   WOResponse * response;
   NSUInteger status;
   NSMutableDictionary *result;
-  NSDictionary *config;
+  NSDictionary *config, *headers;
   NSURL *url;
 
   result = [NSMutableDictionary dictionary];
@@ -171,9 +218,14 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
   url = [NSURL URLWithString: self->openIdConfigUrl ];
   if (url)
   {
+    if(self->sendDomainInfo && _domain != nil && [_domain length] > 0)
+      headers = [NSDictionary dictionaryWithObject: _domain forKey: @"sogo-user-domain"];
+    else
+      headers = nil;
+
     response = [self _performOpenIdRequest: self->openIdConfigUrl 
                       method: @"GET"
-                      headers: nil
+                      headers: headers
                         body: nil];
 
     if (response)
@@ -185,12 +237,17 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
         config = [content objectFromJSONString];
         self->authorizationEndpoint = [config objectForKey: @"authorization_endpoint"];
         self->tokenEndpoint         = [config objectForKey: @"token_endpoint"];
-        self->introspectionEndpoint = [config objectForKey: @"introspection_endpoint"];
         self->userinfoEndpoint      = [config objectForKey: @"userinfo_endpoint"];
         self->endSessionEndpoint    = [config objectForKey: @"end_session_endpoint"];
-        self->revocationEndpoint    = [config objectForKey: @"revocation_endpoint"];
+
+        //Optionnals?
+        if([config objectForKey: @"introspection_endpoint"])
+          self->introspectionEndpoint = [config objectForKey: @"introspection_endpoint"];
+        if([config objectForKey: @"revocation_endpoint"])
+          self->revocationEndpoint    = [config objectForKey: @"revocation_endpoint"];
+
         openIdSessionIsOK = YES;
-        [self _saveSessionToCache];
+        [self _saveSessionToCache: _domain];
       }
       else
       {
@@ -206,18 +263,29 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
   return result;
 }
 
-+ (SOGoOpenIdSession *) OpenIdSession
++ (SOGoOpenIdSession *) OpenIdSession: (NSString *) _domain
 {
   SOGoOpenIdSession *newSession;
 
   newSession = [self new];
   [newSession autorelease];
-  [newSession initialize];
+  [newSession initialize: _domain];
 
   return newSession;
 }
 
-+ (SOGoOpenIdSession *) OpenIdSessionWithToken: (NSString *) token
++ (SOGoOpenIdSession *) OpenIdSessionWithConfig: (NSDictionary *) _config
+{
+  SOGoOpenIdSession *newSession;
+
+  newSession = [self new];
+  [newSession autorelease];
+  [newSession initializeWithConfig: _config];
+
+  return newSession;
+}
+
++ (SOGoOpenIdSession *) OpenIdSessionWithToken: (NSString *) token domain: (NSString *) _domain
 {
   SOGoOpenIdSession *newSession;
 
@@ -225,7 +293,7 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
     {
       newSession = [self new];
       [newSession autorelease];
-      [newSession initialize];
+      [newSession initialize: _domain];
       
       [newSession setAccessToken: token];
     }
@@ -235,52 +303,90 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
   return newSession;
 }
 
++ (SOGoOpenIdSession *) OpenIdSessionWithTokenAndConfig: (NSString *) token config: (NSDictionary *) _config
+{
+  SOGoOpenIdSession *newSession;
+
+  if (token)
+    {
+      newSession = [self new];
+      [newSession autorelease];
+      [newSession initializeWithConfig: _config];
+      
+      [newSession setAccessToken: token];
+    }
+  else
+    newSession = nil;
+
+  return newSession;
+}
+
+
 - (BOOL) sessionIsOk
 {
   return self->openIdSessionIsOK;
 }
 
-- (void) _loadSessionFromCache
+- (void) _loadSessionFromCache: (NSString*) _domain
 {
   SOGoCache *cache;
-  NSString *jsonSession;
+  NSString *jsonSession, *cacheKey;
   NSDictionary *sessionDict;
 
+  if(_domain != nil && [_domain length] > 0)
+    cacheKey = [self->openIdConfigUrl stringByAppendingFormat: @":%@", _domain];
+  else
+    cacheKey = self->openIdConfigUrl;
+
   cache = [SOGoCache sharedCache];
-  jsonSession = [cache openIdSessionFromServer: self->openIdConfigUrl];
+  jsonSession = [cache openIdSessionFromServer: cacheKey];
   if ([jsonSession length])
   {
     sessionDict = [jsonSession objectFromJSONString];
     ASSIGN (authorizationEndpoint, [sessionDict objectForKey: @"authorization_endpoint"]);
     ASSIGN (tokenEndpoint, [sessionDict objectForKey: @"token_endpoint"]);
-    ASSIGN (introspectionEndpoint, [sessionDict objectForKey: @"introspection_endpoint"]);
     ASSIGN (userinfoEndpoint, [sessionDict objectForKey: @"userinfo_endpoint"]);
     ASSIGN (endSessionEndpoint, [sessionDict objectForKey: @"end_session_endpoint"]);
-    ASSIGN (revocationEndpoint, [sessionDict objectForKey: @"revocation_endpoint"]);
+
+    //Optionnals?
+    if([sessionDict objectForKey: @"introspection_endpoint"])
+      ASSIGN (introspectionEndpoint, [sessionDict objectForKey: @"introspection_endpoint"]);
+    if([sessionDict objectForKey: @"revocation_endpoint"])
+      ASSIGN (revocationEndpoint, [sessionDict objectForKey: @"revocation_endpoint"]);
     openIdSessionIsOK = YES;
   }
   else
     cacheUpdateNeeded = YES;
 }
 
-- (void) _saveSessionToCache
+- (void) _saveSessionToCache: (NSString*) _domain
 {
   SOGoCache *cache;
-  NSString *jsonSession;
+  NSString *jsonSession, *cacheKey;
   NSMutableDictionary *sessionDict;
 
   cache = [SOGoCache sharedCache];
   sessionDict = [NSMutableDictionary dictionary];
   [sessionDict setObject: authorizationEndpoint forKey: @"authorization_endpoint"];
   [sessionDict setObject: tokenEndpoint forKey: @"token_endpoint"];
-  [sessionDict setObject: introspectionEndpoint forKey: @"introspection_endpoint"];
   [sessionDict setObject: userinfoEndpoint forKey: @"userinfo_endpoint"];
   [sessionDict setObject: endSessionEndpoint forKey: @"end_session_endpoint"];
-  [sessionDict setObject: revocationEndpoint forKey: @"revocation_endpoint"];
+
+  //Optionnals?
+  if(introspectionEndpoint)
+    [sessionDict setObject: introspectionEndpoint forKey: @"introspection_endpoint"];
+  if(revocationEndpoint)
+    [sessionDict setObject: revocationEndpoint forKey: @"revocation_endpoint"];
 
   jsonSession = [sessionDict jsonRepresentation];
+
+  if(_domain != nil && [_domain length] > 0)
+    cacheKey = [self->openIdConfigUrl stringByAppendingFormat: @":%@", _domain];
+  else
+    cacheKey = self->openIdConfigUrl;
+
   [cache setOpenIdSession: jsonSession
-         forServer: self->openIdConfigUrl];
+                forServer: cacheKey];
 }
 
 
@@ -332,6 +438,8 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
   logUrl = [logUrl stringByAppendingString: @"&response_type=code"];
   logUrl = [logUrl stringByAppendingFormat: @"&client_id=%@", self->openIdClient];
   logUrl = [logUrl stringByAppendingFormat: @"&redirect_uri=%@", oldLocation];
+  if(self->forDomain != nil && [self->forDomain length] > 0)
+    logUrl = [logUrl stringByAppendingFormat: @"&sogo_domain=%@", forDomain];
   // logurl = [self->logurl stringByAppendingFormat: @"&state=%@", state];
 
   return logUrl;
@@ -397,7 +505,11 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
     form = [form stringByAppendingFormat: @"&client_secret=%@", self->openIdClientSecret];
     form = [form stringByAppendingFormat: @"&client_id=%@", self->openIdClient];
 
-    headers = [NSDictionary dictionaryWithObject: @"application/x-www-form-urlencoded"  forKey: @"content-type"];
+    if(self->sendDomainInfo && self->forDomain != nil && [self->forDomain length] > 0)
+      headers = [NSDictionary dictionaryWithObjectsAndKeys: @"application/x-www-form-urlencoded", @"content-type",
+                                                                self->forDomain, @"sogo-user-domain", nil];
+    else
+      headers = [NSDictionary dictionaryWithObject: @"application/x-www-form-urlencoded"  forKey: @"content-type"];
     
     response = [self _performOpenIdRequest: location
                       method: @"POST"
@@ -467,7 +579,11 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
     form = [form stringByAppendingFormat: @"&client_secret=%@", self->openIdClientSecret];
     form = [form stringByAppendingFormat: @"&client_id=%@", self->openIdClient];
 
-    headers = [NSDictionary dictionaryWithObject: @"application/x-www-form-urlencoded"  forKey: @"content-type"];
+    if(self->sendDomainInfo && self->forDomain != nil && [self->forDomain length] > 0)
+      headers = [NSDictionary dictionaryWithObjectsAndKeys: @"application/x-www-form-urlencoded", @"content-type",
+                                                                self->forDomain, @"sogo-user-domain", nil];
+    else
+      headers = [NSDictionary dictionaryWithObject: @"application/x-www-form-urlencoded"  forKey: @"content-type"];
     
     response = [self _performOpenIdRequest: location
                       method: @"POST"
@@ -525,7 +641,13 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
   if (url)
   {
     auth = [NSString stringWithFormat: @"Bearer %@", self->accessToken];
-    headers = [NSDictionary dictionaryWithObject: auth forKey: @"authorization"];
+    if(self->sendDomainInfo && self->forDomain != nil && [self->forDomain length] > 0)
+      headers = [NSDictionary dictionaryWithObjectsAndKeys: @"application/x-www-form-urlencoded", @"content-type",
+                                                                self->forDomain, @"sogo-user-domain",
+                                                                auth, @"authorization", nil];
+    else
+      headers = [NSDictionary dictionaryWithObjectsAndKeys: @"application/x-www-form-urlencoded", @"content-type",
+                                                                auth, @"authorization", nil];
 
     response = [self _performOpenIdRequest: location
                        method: @"GET"
@@ -646,7 +768,7 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
   return @"anonymous";
 }
 
-- (BOOL) login: (NSString *) email
+- (NSString *) login: (NSString *) email
 {
   //Check if we need to fetch userinfo
   if(self->userTokenInterval > 0 && [self _loadUserFromCache: email])

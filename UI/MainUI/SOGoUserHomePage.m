@@ -420,26 +420,38 @@
 
 - (NSString *) _logoutRedirectURL
 {
-  NSString *redirectURL;
+  NSString *redirectURL, *login, *loginDomain, *authType;
   SOGoSystemDefaults *sd;
   id container;
+  NSRange r;
+
+
+  login = [[context activeUser] login];
+  r = [login rangeOfString: @"@"];
+  if (r.location != NSNotFound)
+    loginDomain = [login substringFromIndex: r.location+1];
+  else
+    loginDomain = nil;
 
   sd = [SOGoSystemDefaults sharedSystemDefaults];
-  if ([[sd authenticationType] isEqualToString: @"cas"])
-    {
-      redirectURL = [SOGoCASSession CASURLWithAction: @"logout"
-                                       andParameters: nil];
-    }
-  else if ([[sd authenticationType] isEqualToString: @"openid"])
+  if(loginDomain && [sd doesLoginTypeByDomain])
+    authType = [sd getLoginTypeForDomain: loginDomain];
+  else
+    authType = [sd authenticationType];
+
+  if ([authType isEqualToString: @"cas"])
+  {
+    redirectURL = [SOGoCASSession CASURLWithAction: @"logout"
+                                      andParameters: nil];
+  }
+  else if ([authType isEqualToString: @"openid"])
   {
     SOGoOpenIdSession* session;
-    session = [SOGoOpenIdSession OpenIdSession];
+    session = [SOGoOpenIdSession OpenIdSession: loginDomain];
     redirectURL = [session logoutUrl];
-    //delete openid session in database
-    
   }
 #if defined(SAML2_CONFIG)
-  else if ([[sd authenticationType] isEqualToString: @"saml2"])
+  else if ([authType isEqualToString: @"saml2"])
     {
       NSString *username, *password, *domain, *value;
       SOGoSAML2Session *saml2Session;

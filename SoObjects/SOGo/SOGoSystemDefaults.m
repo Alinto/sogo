@@ -262,6 +262,143 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return [domains allKeys];
 }
 
+- (BOOL) doesLoginTypeByDomain
+{
+  return ([self dictionaryForKey: @"SOGoLoginTypeByDomain"] != nil);
+}
+
+- (NSString *) getLoginTypeForDomain: (NSString*) _domain
+{
+  NSDictionary *domains, *config;
+  NSString *type;
+  if(![self doesLoginTypeByDomain])
+    return nil;
+  domains = [self dictionaryForKey: @"SOGoLoginTypeByDomain"];
+  if([domains objectForKey: _domain])
+  {
+    config = [domains objectForKey: _domain];
+  }
+  else if([domains objectForKey: @"login_default"])
+  {
+    config = [domains objectForKey: @"login_default"];
+  }
+  else
+    return nil;
+
+  if((type = [config objectForKey: @"type"]))
+  {
+    return type;
+  }
+  else
+    return nil;
+}
+
+- (NSString *) getImapAuthMechForDomain: (NSString*) _domain
+{
+  NSDictionary *domains, *config;
+  NSString *type;
+
+  if(![self doesLoginTypeByDomain])
+    return nil;
+
+  domains = [self dictionaryForKey: @"SOGoLoginTypeByDomain"];
+
+  if([domains objectForKey: _domain])
+  {
+    config = [domains objectForKey: _domain];
+  }
+  else if([domains objectForKey: @"login_default"])
+  {
+    config = [domains objectForKey: @"login_default"];
+  }
+  else
+    return nil;
+
+  if((type = [config objectForKey: @"imapAuthMech"]))
+  {
+    return type;
+  }
+  else
+    return nil;
+}
+
+- (NSString *) getSmtpAuthMechForDomain: (NSString*) _domain
+{
+  NSDictionary *domains, *config;
+  NSString *type;
+  
+  if(![self doesLoginTypeByDomain])
+    return nil;
+
+  domains = [self dictionaryForKey: @"SOGoLoginTypeByDomain"];
+
+  if([domains objectForKey: _domain])
+  {
+    config = [domains objectForKey: _domain];
+  }
+  else if([domains objectForKey: @"login_default"])
+  {
+    config = [domains objectForKey: @"login_default"];
+  }
+  else
+    return nil;
+
+  if((type = [config objectForKey: @"smtpAuthMech"]))
+  {
+    return type;
+  }
+  else
+    return nil;
+}
+
+- (NSString *) getLoginConfigForDomain: (NSDictionary*) _domain
+{
+  NSDictionary *domains, *config;
+  if(![self doesLoginTypeByDomain])
+    return nil;
+  domains = [self dictionaryForKey: @"SOGoLoginTypeByDomain"];
+  if([domains objectForKey: _domain])
+  {
+    config = [domains objectForKey: _domain];
+  }
+  else if([domains objectForKey: @"login_default"])
+  {
+    config = [domains objectForKey: @"login_default"];
+  }
+  
+  if(config)
+    return config;
+  else
+    return nil;
+}
+
+- (BOOL) hasOpenIdType
+{
+  if([self doesLoginTypeByDomain])
+  {
+    NSDictionary *domainsConfig;
+    NSEnumerator *e; 
+    NSString *domain, *type;
+    if(![self doesLoginTypeByDomain])
+      return NO;
+    domainsConfig = [self dictionaryForKey: @"SOGoLoginTypeByDomain"];
+    e = [domainsConfig keyEnumerator];
+    while((domain = [e nextObject]))
+    {
+      if((type = [[domainsConfig objectForKey: domain] objectForKey: @"type"]))
+      {
+        if([type isEqualToString: @"openid"])
+          return YES;
+      }
+    }
+    return NO;
+  }
+  else
+    return [[self authenticationType] isEqualToString: @"openid"];
+
+}
+
+
 - (BOOL) enableDomainBasedUID
 {
   return [self boolForKey: @"SOGoEnableDomainBasedUID"];
@@ -587,11 +724,13 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
   return [[self stringForKey: @"SOGoAuthenticationType"] lowercaseString];
 }
 
-- (BOOL) isSsoUsed
+- (BOOL) isSsoUsed: (NSString *) domain
 {
   NSString* authType;
-  authType = [self authenticationType];
 
+  authType = [self getLoginTypeForDomain: domain];
+  if(!authType)
+    authType = [self authenticationType];
   return ([authType isEqualToString: @"cas"] || [authType isEqualToString: @"saml2"] || [authType isEqualToString: @"openid"]);
 }
 
@@ -640,9 +779,26 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
   return emailParam;
 }
 
-- (BOOL) openIdLogoutEnabled
+- (BOOL) openIdLogoutEnabled: (NSString *) _domain
 {
+  if(_domain && [self doesLoginTypeByDomain])
+  {
+    NSDictionary *config;
+    NSString *type;
+    id value;
+    if((config = [self getLoginConfigForDomain: _domain]))
+    {
+      if((type = [config objectForKey: @"type"]) && [type isEqualToString:@"openid"])
+        return [self boolForKey: @"SOGoOpenIdLogoutEnabled" andDict: config];
+    }
+    return NO;
+  }
   return [self boolForKey: @"SOGoOpenIdLogoutEnabled"];
+}
+
+- (BOOL) openIdSendDomainInfo
+{
+  return [self boolForKey: @"SOGoOpenIdSendDomainInfo"];
 }
 
 - (int) openIdTokenCheckInterval

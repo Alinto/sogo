@@ -1559,6 +1559,81 @@ SOGoIMAPCASServiceName should be set to the actual imap service name
 expected by pam_cas, otherwise it will fail to authenticate incoming
 connection properly.
 
+
+Authenticating using OPENID
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+SOGo natively supports OPENID authentication. For activating OpenId authentication you need first to make sure that
+_SOGoAuthenticationType_ is set to `openid`,
+_SOGoXSRFValidationEnabled_ is set to `NO` and set the following parameters:
+
+[cols="^4,46,50a"]
+|=======================================================================
+|S |OCSOpenIdURL
+|Parameter used to set the database URL for openID session.
+
+For MariaDB/MySQL, set the database URL to something like: mysql://sogo:sogo@127.0.0.1:3306/sogo/sogo_openid.
+
+
+|S |SOGoOpenIdConfigUrl
+|Parameter used to specify the endpoint of OpenID Provider Configuration, mandatory. For example:
+https://myopenid.net/.well-known/openid-configuration
+
+|S |SOGoOpenIdClient
+|Name of your openid client, mandatory.
+
+|S |SOGoOpenIdClientSecret
+|Secret of your openid client, mandatory
+
+|S |SOGoOpenIdScope
+|Scope or your openid client, mandatory. List of words space separated like this:
+"openid profile email"
+
+|S |SOGoOpenIdEmailParam
+|Name of the parameter from user profile that contains the mail/uid.
+
+Defaults to `email` when unset.
+
+|S |SOGoOpenIdEnableRefreshToken
+|Set to `YES` to Enable the mechanism of refresh token if provided. You may have to configure
+and/or add a value to your scope for it to work.
+
+Defaults to `NO` when unset.
+
+|S |SOGoOpenIdTokenCheckInterval
+|Number of seconds before sogo check again the user's access token validity.
+This is to prevent sogo to do too much request to the openid server.
+
+Defaults to `0` when unset.
+
+|S |SOGoOpenIdLogoutEnabled
+|Allow user to end their openId with the webmail. Meaning that will disconnect them from
+the others applicaitons as well.
+
+Defaults to `NO` when unset.
+|=======================================================================
+
+
+The tricky part shows up for the imap and smtp sever. SOGo doesn't know the password
+of the user and only have its access token. A new auth mechanism has been implemented,
+the https://developers.google.com/gmail/imap/xoauth2-protocol#initial_client_response[xoauth2]
+
+You can set it with the parameter _NGImap4AuthMechanism_ and/or _SOGoSMTPAuthenticationType_
+
+*With dovecot:* +
+Dovecot natively supports xoauth2 and can be figured as such: https://doc.dovecot.org/2.3/configuration_manual/authentication/oauth2/
+
+*With cyrus:* +
+Cyrus doesn't support xoauth2 mechanism and pluggins or homemade solutions must be found. +
+_Please note, as Alinto uses dovecot, we didn't investigate cyrus' case. If one member of the community
+finds a solution, we will be happy to update this documentation._
+
+As you can see, a new database table is used for handling openid session. The table is automaticcaly created when _OCSOpenIdURL_ is set.
+If the user quits the webmail without logging out or trough another application,
+the session will stays in the table and be useless. That's why a new sogo-tool command has been added to clean this table.
+You can put it in a cron to do that periodicly. +
+See _<<sogo-tool-clean-openid-sessions,sogo-tool clean-openid-sessions>>_.
+
 Authenticating using SAML2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -2113,8 +2188,7 @@ To disable TLS verification for localhost domains, add
 
 |D |SOGoSMTPAuthenticationType
 |Activate SMTP authentication and specifies which type is in use.
-Current, only `PLAIN` is supported and other values will cause
-the authentication to fail.
+Current, Are supported `PLAIN` and 'xoauth2' for openid.
 
 |D |SOGoSMTPMasterUserEnabled
 |Enable specific SMTP user account for system e-mails (notifications, reminders, ...). Default is `NO`.
@@ -2297,6 +2371,7 @@ SASL mechanism. Using `AUTHENTICATE` instead of `LOGIN` is also necessary
 to enable UTF-8 characters in users' passwords. To enable simple use of
 `AUTHENTICATE` for this purpose, set this setting to `plain`. Please note 
 that this feature might be limited at this time.
+Now support `xoauth2` mechanism when using openid. Be sure you imap server undesrtands this mechanism.
 
 |D |NGImap4ConnectionGroupIdPrefix
 |Prefix to prepend to names in IMAP ACL transactions, to indicate the
@@ -3628,6 +3703,22 @@ Example:
 ----
 sogo-tool checkup user1
 sogo-tool checkup -d user1
+----
+
+
+[[sogo-tool-clean-openid-sessions]]
+
+sogo-tool clean-openid-sessions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Obviously only usefull if you have set SOGo with openId authentication.
+Will clean all expired openId sessions from the database.
+
+ sogo-tool clean-openid-sessions
+
+Example:
+----
+sogo-tool clean-openid-sessions
 ----
 
 sogo-tool cleanup

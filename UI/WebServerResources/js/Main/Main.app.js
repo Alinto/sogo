@@ -20,6 +20,8 @@
         domain: null,
         rememberLogin: angular.isDefined($window.cookieUsername) && $window.cookieUsername.length > 0
       };
+      if($window.loginHint)
+        this.creds.username = $window.loginHint;
       // Send selected language only if user has changed it
       if (/\blanguage=/.test($window.location.search))
         this.creds.language = $window.language;
@@ -158,6 +160,64 @@
             vm.passwordPolicy = msg.userPolicies ? msg.userPolicies : [];
             vm.url = msg.url;
             vm.passwordexpired = msg.passwordexpired;
+          }
+
+        });
+      return false;
+    };
+
+    this.loginName = function() {
+      vm.loginState = 'authenticating';
+      Authentication.loginName(vm.creds)
+        .then(function(data) {
+            vm.loginState = 'logged';
+            vm.cn = data.cn;
+            vm.url = data.url;
+
+            // Let the user see the succesfull message before reloading the page
+            $timeout(function() {
+              vm.continueLogin();
+            }, 1000);
+        }, function(msg) {
+          vm.loginState = 'error';
+
+          if (msg.error) {
+            vm.errorMessage = msg.error;
+          }
+          else if (msg.grace > 0) {
+            // Password is expired, grace logins limit is not yet reached
+            vm.loginState = 'passwordwillexpire';
+            vm.cn = msg.cn;
+            vm.url = msg.url;
+            vm.errorMessage = l('You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog.', msg.grace);
+          }
+          else if (msg.expire > 0) {
+            // Password will soon expire
+            var value, string;
+            if (msg.expire > 86400) {
+              value = Math.round(msg.expire/86400);
+              string = l("days");
+            }
+            else if (msg.expire > 3600) {
+              value = Math.round(msg.expire/3600);
+              string = l("hours");
+            }
+            else if (msg.expire > 60) {
+              value = Math.round(msg.expire/60);
+              string = l("minutes");
+            }
+            else {
+              value = msg.expire;
+              string = l("seconds");
+            }
+            vm.loginState = 'passwordwillexpire';
+            vm.cn = msg.cn;
+            vm.url = msg.url;
+            vm.errorMessage = l('Your password is going to expire in %{0} %{1}.', value, string);
+          }
+          else if (msg.passwordexpired) {
+            vm.loginState = 'passwordchange';
+            vm.url = msg.url;
           }
 
         });

@@ -178,6 +178,45 @@
           return d.promise;
         }, // login: function(data) { ...
 
+        loginName: function(data) {
+          var d = $q.defer(),
+              username = data.username,
+              language;
+
+          if (data.language && data.language != 'WONoSelectionString') {
+            language = data.language;
+          }
+
+          $http({
+            method: 'POST',
+            url: '/SOGo/connectName?userName='+username,
+            // data: JSON.stringify({userName: username}),
+            data: {userName: username},
+            // headers: {
+            //  //'Content-Type': undefined
+            //  //'Content-Type': "application/x-www-form-urlencoded"
+            //   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8'
+            // }
+          }).then(function(response) {
+            var data = response.data;
+            // Make sure browser's cookies are enabled
+            if (navigator && !navigator.cookieEnabled) {
+              d.reject({error: l('cookiesNotEnabled')});
+            }
+            else {
+                if(data.redirect) {
+                  //Redirection in case of openID
+                  d.resolve({ url: data.redirect });
+                }
+            }
+          }, function(error) {
+            var response, perr, data = error.data;
+
+            d.reject(response);
+          });
+          return d.promise;
+        },
+
         changePassword: function(userName, domain, newPassword, oldPassword, token) {
           var d = $q.defer(),
               xsrfCookie = $cookies.get('XSRF-TOKEN');

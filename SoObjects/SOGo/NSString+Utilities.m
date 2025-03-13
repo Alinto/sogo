@@ -80,7 +80,10 @@ static int cssEscapingCount;
     {
       hostR = [self rangeOfString: @"://"];
       locationR = [[self substringFromIndex: (hostR.location + hostR.length)] rangeOfString: @"/"];
-      newURL = [self substringFromIndex: (hostR.location + hostR.length + locationR.location)];
+      if(locationR.location != NSNotFound)
+        newURL = [self substringFromIndex: (hostR.location + hostR.length + locationR.location)];
+      else
+        newURL = @"";
     }
 
   return newURL;

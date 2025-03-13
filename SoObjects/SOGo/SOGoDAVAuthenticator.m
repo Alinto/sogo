@@ -141,6 +141,7 @@
   return password;
 }
 
+
 /* create SOGoUser */
 
 - (SOGoUser *) userInContext: (WOContext *)_ctx
