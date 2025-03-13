@@ -89,35 +89,30 @@
                       </md-input-container>
                     </div>
 
-                    <!-- DOMAINS SELECT -->
-                    <var:if condition="hasLoginDomains">
-                      <div layout="row" layout-align="start end">
-                        <md-icon>domain</md-icon>
-                              <md-input-container class="md-flex">
-                                <md-select class="md-flex" ng-model="app.creds.domain" label:placeholder="choose" ng-change="app.retrievePasswordRecoveryEnabled()">
-                                  <var:foreach list="loginDomains" item="item">
-                                    <md-option var:value="item">
-                                      <var:string value="item"/>
-                                    </md-option>
-                                  </var:foreach>
-                                </md-select>
-                              </md-input-container>
-                            </div>
-                    </var:if>
-                    
-                    <div layout="row" layout-align="center center">
-                      <md-switch class="md-accent md-hue-2"
-                                ng-model="app.creds.rememberLogin"
-                                label:arial-label="Remember username">
-                        <var:string label:value="Remember username"/>
-                      </md-switch>
-                    </div>
-                    <var:if condition="hasUrlCreateAccount">
-                      <div layout="row" layout-align="center center">
-                        <a var:href="urlCreateAccount" target="_blank" class="create-account-link"><var:string label:value="Create an account"/></a>
-                      </div>
-                    </var:if>
+                  <!-- DOMAINS SELECT -->
+                  <var:if condition="hasLoginDomains">
+                    <div layout="row" layout-align="start end">
+                      <md-icon>domain</md-icon>
+                            <md-input-container class="md-flex">
+                              <md-select class="md-flex" ng-model="app.creds.domain" label:placeholder="choose" ng-change="app.retrievePasswordRecoveryEnabled()">
+                                <var:foreach list="loginDomains" item="item">
+                                  <md-option var:value="item">
+                                    <var:string value="item"/>
+                                  </md-option>
+                                </var:foreach>
+                              </md-select>
+                            </md-input-container>
+                          </div>
+                  </var:if>
+                  
+                  <div layout="row" layout-align="center center">
+                    <md-switch class="md-accent md-hue-2"
+                              ng-model="app.creds.rememberLogin"
+                              label:arial-label="Remember username">
+                      <var:string label:value="Remember username"/>
+                    </md-switch>
                   </div>
+                </div>
 
                   <!-- Password recovery -->
                   <div layout="row" layout-align="center center" ng-if="app.passwordRecovery.passwordRecoveryEnabled">

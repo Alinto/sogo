@@ -6,7 +6,6 @@
 "Domain" = "Domain";
 "Remember username" = "Remember username";
 "Connect" = "Connect";
-"Create an account" = "Create an account";
 
 /* Appears while authentication is in progress */
 "Authenticating" = "Authenticating";

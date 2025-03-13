@@ -1452,18 +1452,4 @@ static const NSString *kJwtKey = @"jwt";
   return [[SOGoAdmin sharedInstance] getMotd] && [[[SOGoAdmin sharedInstance] getMotd] length] > 1;
 }
 
-- (BOOL) hasUrlCreateAccount
-{
-  NSString *url;
-  url = [[SOGoSystemDefaults sharedSystemDefaults] urlCreateAccount];
-  return (url != nil && [url length] > 0);
-}
-
-- (NSString *) urlCreateAccount
-{
-  return [[SOGoSystemDefaults sharedSystemDefaults]
-                              urlCreateAccount];
-}
-
-
 @end /* SOGoRootPage */
