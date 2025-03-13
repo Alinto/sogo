@@ -1,0 +1,166 @@
+# extended LDIF
+#
+# LDAPv3
+# base <dc=example,dc=org> with scope subtree
+# filter: (objectclass=*)
+# requesting: ALL
+#
+
+# example.org
+dn: dc=example,dc=org
+objectClass: dcObject
+objectClass: organization
+dc: example
+o: example
+
+# users, example.org
+dn: ou=users,dc=example,dc=org
+objectClass: organizationalUnit
+ou: users
+
+dn: ou=groups,dc=example,dc=org
+objectClass: organizationalUnit
+ou: groups
+
+dn: uid=sogo,ou=users,dc=example,dc=org
+uid: sogo
+cn: Sogo
+sn: Sogo
+mail: sogo@example.org
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+userPassword:: c29nbw==
+uidNumber: 1000
+gidNumber: 1000
+homeDirectory: /home/sogo
+
+dn: uid=cyrus,ou=users,dc=example,dc=org
+uid: cyrus
+cn: cyrus
+sn: cyrus
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+userPassword:: c29nbw==
+uidNumber: 1000
+gidNumber: 1000
+homeDirectory: /home/cyrus
+
+dn: uid=sogo-tests1,ou=users,dc=example,dc=org
+uid: sogo-tests1
+cn: Dude
+sn: Love
+givenName: Dude
+homePhone: +1 (123) 456-7890
+l: Vladivostok
+telephoneNumber: +1 (120) 987-6543
+mail: sogo-tests1@example.org
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+userPassword:: c29nbw==
+uidNumber: 1000
+gidNumber: 1000
+homeDirectory: /home/sogo-tests1
+
+dn: uid=sogo-tests2,ou=users,dc=example,dc=org
+uid: sogo-tests2
+cn: Hewill
+sn: Crashit
+givenName: Hewill
+homePhone: +1 (123) 456-7890
+l: Vladivostok
+telephoneNumber: +1 (120) 987-6543
+mail: sogo-tests2@example.org
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+userPassword:: c29nbw==
+uidNumber: 1000
+gidNumber: 1000
+homeDirectory: /home/sogo-tests2
+
+dn: uid=sogo-tests3,ou=users,dc=example,dc=org
+uid: sogo-tests3
+cn: Ithas
+sn: Exploded
+givenName: Ithas
+homePhone: +1 (123) 456-7890
+l: Vladivostok
+telephoneNumber: +1 (120) 987-6543
+mail: sogo-tests3@example.org
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+userPassword:: c29nbw==
+uidNumber: 1000
+gidNumber: 1000
+homeDirectory: /home/sogo-tests3
+
+dn: uid=sogo-tests-super,ou=users,dc=example,dc=org
+uid: sogo-tests-super
+cn: John Doe
+sn: Doe
+givenName: John
+homePhone: +1 (123) 456-7890
+l: Vladivostok
+telephoneNumber: +1 (120) 987-6543
+mail: sogo-tests-super@example.org
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+userPassword:: c29nbw==
+uidNumber: 1000
+gidNumber: 1000
+homeDirectory: /home/sogo-tests-super
+
+dn: uid=res,ou=users,dc=example,dc=org
+uid: res
+cn: resource No Overbook
+sn: source
+departmentNumber: 1
+description: location
+givenName: res
+mail: res@example.org
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+userPassword:: c29nbw==
+uidNumber: 1000
+gidNumber: 1000
+homeDirectory: /home/res
+
+dn: uid=res-nolimit,ou=users,dc=example,dc=org
+uid: res-nolimit
+cn: resource Overbook
+sn: source
+departmentNumber: 0
+description: location
+givenName: res-nolimit
+mail: res-nolimit@example.org
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+userPassword:: c29nbw==
+uidNumber: 1000
+gidNumber: 1000
+homeDirectory: /home/res-nolimit
+
+# readers, users, example.org
+dn: uid=readers,ou=users,dc=example,dc=org
+objectClass: extensibleObject
+objectClass: groupOfNames
+cn: readers
+mail: readers@example.org
+member: uid=sogo-tests1,ou=users,dc=example,dc=org
+member: uid=sogo-tests2,ou=users,dc=example,dc=org
+member: uid=sogo-tests3,ou=users,dc=example,dc=org
+
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 14
+# numEntries: 13

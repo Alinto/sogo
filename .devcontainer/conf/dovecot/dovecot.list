@@ -1,0 +1,1 @@
+deb [signed-by=/etc/apt/keyrings/dovecot.gpg] http://repo.dovecot.org/ce-2.3.21.1/debian/bullseye bullseye main

@@ -1,0 +1,108 @@
+services:
+  memcached:
+    image: memcached:1.6
+    container_name: sogo_memcached
+    restart: unless-stopped
+  httpd:
+    build:
+      context: ./conf/httpd/
+      dockerfile: Dockerfile
+    container_name: sogo_httpd
+    restart: unless-stopped
+    depends_on:
+      - sogo
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./conf/httpd/ssl:/ssl
+      - ./conf/httpd/CanadaHolidays.ics:/usr/local/apache2/htdocs/CanadaHolidays.ics
+      - sogo-static-files:/usr/local/lib/GNUstep
+  mariadb:
+    image: mariadb:11
+    container_name: sogo_mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: db
+    ports:
+      - 3307:3306
+    volumes:
+      - sogo-mariadb:/var/lib/mysql
+      - ./conf/db/mysql.sql:/docker-entrypoint-initdb.d/init-sogo.sql
+  openldap:
+    image: bitnami/openldap:2.5
+    container_name: sogo_openldap
+    restart: unless-stopped
+    ports:
+     - "389:389"
+    environment:
+      LDAP_PORT_NUMBER: 389
+      LDAP_ADMIN_USERNAME: "admin"
+      LDAP_ADMIN_PASSWORD: "password"
+      LDAP_BIND_PASSWORD: "password"
+      LDAP_ROOT: "dc=example,dc=org"
+      LDAP_ADMIN_DN: "cn=admin,dc=example,dc=org"
+      LDAP_CUSTOM_LDIF_DIR: "/ldifs"
+      #BITNAMI_DEBUG: true
+    volumes:
+      - ./conf/ldap/users.ldif:/ldifs/users.ldif # User data
+  imapd: # Dovecot
+    build:
+      context: ./conf/dovecot/
+      dockerfile: Dockerfile
+    container_name: sogo_dovecot
+    restart: unless-stopped
+    depends_on:
+      - openldap
+    ports:
+      - "143:143"
+      - "993:993"
+      - "4190:4190"
+      - "24:24"
+    volumes:
+      - sogo-mail-data:/var/mail
+      - sogo-sieve-data:/var/sieve
+  smtpd: # Postfix
+    build:
+      context: ./conf/postfix/
+      dockerfile: Dockerfile
+    container_name: sogo_postfix
+    restart: unless-stopped
+    ports:
+      - "25:25"
+    depends_on:
+      - imapd
+      - openldap
+    entrypoint: /entrypoint.sh
+  sogo:
+    container_name: sogo_dev
+    restart: unless-stopped
+    tty: true
+    build:
+      context: ../
+      dockerfile: .devcontainer/Dockerfile.devcontainer
+    ports:
+      - 50000:50000
+    cap_add:
+      - SYS_PTRACE
+      - NET_ADMIN
+      - NET_RAW
+    depends_on:
+      - openldap
+      - memcached
+      - mariadb
+      - imapd
+      - smtpd
+    volumes:
+      - ..:/workspace
+      - sogo-static-files:/usr/local/lib/GNUstep
+      - ./conf/sogo/sogo.conf:/etc/sogo/sogo.conf
+      # - /path/to/sope_folder:/src/SOPE # Uncomment this line if you want to mount SOPE source code
+
+volumes:
+  sogo-mariadb:
+  sogo-postgres:
+  sogo-mail-data:
+  sogo-sieve-data:
+  sogo-static-files:

@@ -27,6 +27,10 @@ The source code of the SOGo Connector extension for Thunderbird 78+ can be obtai
 
 Please refer to the [FAQ](https://sogo.nu/support.html#/faq) for [compilation instructions](https://sogo.nu/support/faq/how-do-i-compile-sogo.html).
 
+## Dev Container
+
+A dev container is available to use, read more there [read more there](.devcontainer/readme.md)
+
 ## Translations
 
 SOGo and its associated components are available in various languages. The following list describes the official translations alongside their maintainers:

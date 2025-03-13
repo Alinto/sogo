@@ -1,0 +1,163 @@
+FROM ubuntu:noble
+
+# The standard user with which vscode-server will be executed
+ARG USERNAME=sogo
+ARG USER_ID=1000 GROUP_ID=1000
+
+ENV CONTAINER_USERNAME=${USERNAME}
+
+# rename user ubuntu to ${USERNAME}
+RUN usermod -l ${CONTAINER_USERNAME} ubuntu && groupmod -n ${CONTAINER_USERNAME} ubuntu
+
+RUN apt-get update && apt-get install -y sudo \
+    && usermod -aG sudo ${CONTAINER_USERNAME} \
+    && echo ${CONTAINER_USERNAME} ALL=\(ALL\) NOPASSWD:ALL > /etc/sudoers.d/${CONTAINER_USERNAME} \
+    && chmod 0440 /etc/sudoers.d/${CONTAINER_USERNAME}
+
+# Ensure sudo group users are not asked for a password
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/${CONTAINER_USERNAME} && chmod 0440 /etc/sudoers.d/${CONTAINER_USERNAME}
+
+ENV WORKSPACE=/workspace
+RUN mkdir -p ${WORKSPACE} && chown -R ${CONTAINER_USERNAME}:${CONTAINER_USERNAME} ${WORKSPACE}
+
+RUN apt-get clean && apt-get update --allow-unauthenticated --allow-insecure-repositories \
+    && apt-get install -y --fix-missing git cmake libexpat-dev curl telnet nano
+
+
+WORKDIR /tmp/build
+
+RUN mkdir -p /src/libwbxml && mkdir -p /tmp/build/libwbxml
+RUN git clone https://github.com/libwbxml/libwbxml.git /src/libwbxml/
+RUN cmake -B/tmp/build/libwbxml -DCMAKE_INSTALL_PREFIX=$prefix /src/libwbxml && cd /tmp/build/libwbxml && make && make install
+# For backward compatibility
+
+WORKDIR ${WORKSPACE}
+
+RUN ln -s /include/libwbxml-1.1 /usr/include/libwbxml-1.0
+RUN ln -s /include/libwbxml-1.1 /usr/include/libwbxml
+RUN ln -s /include/libwbxml-1.1 /usr/include/libwbxml-1.1
+
+# download, prepare & compile
+RUN echo "Download SOPE sources" \
+    && git clone https://github.com/Alinto/sope.git /src/SOPE \
+    && echo "install required packages" \
+    && apt-get update \
+    && apt-get upgrade --allow-unauthenticated -qy \
+    && DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get install --allow-unauthenticated -qy --no-install-recommends \
+    gnustep-make \
+    gnustep-base-runtime \
+    libgnustep-base-dev \
+    pkg-config \
+    make \
+    gobjc \
+    g++ \
+    gdb gdbserver \
+    vim \
+    liblasso3-dev \
+    python-is-python3 \
+    libz-dev \
+    zlib1g-dev \
+    libpq-dev \
+    libmysqlclient-dev \
+    libcurl4-openssl-dev \
+    libsodium-dev \
+    libxml2-dev \
+    libssl-dev \
+    libldap2-dev \
+    libzip-dev \
+    mariadb-client \
+    postgresql-client \
+    tmpreaper \
+    python3-m2crypto \
+    python3-simplejson \
+    python3-vobject \
+    python3-dateutil \
+    postgresql-server-dev-all \
+    libmemcached-dev \
+    libcurl4-openssl-dev \
+    tzdata \
+    libytnef0 \
+    libytnef0-dev \
+    liboath-dev \
+    sudo \
+    lsof \
+    systemd \
+    tcpdump \
+    jq libxml2-utils
+
+RUN echo "compiling sope" \
+    && cd /src/SOPE  \
+    && ./configure --with-gnustep --enable-debug --disable-strip  \
+    && make  \
+    && make install
+
+# copy sogo local sources
+COPY / /src/SOGo
+RUN chown -R ${CONTAINER_USERNAME}:${CONTAINER_USERNAME} /src/SOGo
+
+# install sogo
+RUN echo "compiling sogo"
+
+# RUN chmod +x /src/SOGo/configure
+WORKDIR /src/SOGo
+RUN ./configure --enable-debug --disable-strip --enable-mfa 
+RUN make  
+RUN make install 
+RUN echo "register sogo library" 
+RUN echo "/usr/local/lib/sogo" > /etc/ld.so.conf.d/sogo.conf  
+RUN ldconfig 
+RUN echo "create directories and enforce permissions" 
+RUN install -o sogo -g sogo -m 755 -d /var/run/sogo  
+RUN install -o sogo -g sogo -m 750 -d /var/spool/sogo
+RUN install -o sogo -g sogo -m 750 -d /var/log/sogo 
+
+WORKDIR ${WORKSPACE}
+
+# Copy the binary file into /usr/local/bin
+COPY .devcontainer/conf/sogo/compile_sogo.sh /usr/local/bin/compile_sogo.sh
+# Set the appropriate permissions
+RUN chmod +x /usr/local/bin/compile_sogo.sh
+
+# Install nodejs
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+RUN apt install -qy nodejs \
+    && npm i -g grunt
+
+# Users
+RUN useradd sogo-tests1 && \
+    useradd sogo-tests2 && \
+    useradd sogo-tests3 && \
+    useradd sogo-tests-super
+
+# Tests
+RUN npm i -g xunit-viewer
+
+
+# SOGo
+RUN apt-get clean && apt-get install -y --no-install-recommends wget && cd /tmp && \
+    wget https://raw.githubusercontent.com/Alinto/sogo/master/packaging/debian/sogo.init && \
+    ln -s /usr/local/sbin/sogod /usr/sbin/sogod && \
+    mv sogo.init /etc/init.d/sogod && chmod +x /etc/init.d/sogod && \
+    mkdir /etc/sogo
+COPY .devcontainer/conf/sogo/sogo.conf /etc/sogo/
+ADD .devcontainer/conf/sogo/sogo.conf /etc/sogo/sogo-base.conf
+
+# Clean
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* 
+
+# Dev env script
+ADD .devcontainer/conf/sogo/devenv /usr/sbin/
+ADD .devcontainer/conf/sogo/common.sh /include/
+RUN chmod +x /usr/sbin/devenv
+RUN chmod +x /include/common.sh
+
+# Interface the environment
+EXPOSE 50000 50001
+
+# Entrypoint
+ADD .devcontainer/conf/sogo/entrypoint.sh /
+RUN chmod +x /entrypoint.sh
+
+USER ${CONTAINER_USERNAME}
+
+ENTRYPOINT ["/entrypoint.sh"]

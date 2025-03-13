@@ -1,0 +1,147 @@
+#!/bin/bash
+
+SRC_SOPE=/src/SOPE/
+SRC_SOGO=/src/SOGo/
+
+source /include/common.sh $SRC_SOPE $SRC_SOGO
+
+options="h:b:ba:br:d"
+long_options="help,build,build-all,build-resources,debug"
+parsed_options=$(getopt -o $options -l $long_options)
+
+# Check for errors in parsing
+if [ $? -ne 0 ]; then
+    exit 1
+fi
+
+# Evaluate the parsed options
+#eval set -- "$parsed_options"
+
+help() {
+    echo "${green} ----------------------"
+    echo "|    ${bold}SOGo   Dev env${normal}${green}    |"
+    echo " ----------------------"
+    echo
+    echo "${normal}Options are :${cyan}"
+    
+    echo -e "-h, --help\t\tShow help"
+    echo -e "-b, --build\t\tBuild sogo app"
+    echo -e "-ba, --build-all\tClean, build sogo and sope"
+    echo -e "-br, --build-resources\tBuild only sogo JS/CSS resources"
+    echo -e "-d, --debug\t\tStart sogo in debug with gdb"
+    echo "${normal}"
+}
+
+ssl_fix() {
+    if [[ -z "${LD_PRELOAD}" ]]; then
+        LIBSSL_LOCATION=$(find / -type f -name "libssl.so.*" -print -quit);echo "LD_PRELOAD=$LIBSSL_LOCATION" >> /etc/default/sogo
+        echo "LD_LIBRARY_PATH=/usr/local/lib/sogo:/usr/local/lib:$LD_LIBRARY_PATH" >> /etc/default/sogo
+        export LD_PRELOAD=$LIBSSL_LOCATION
+    else
+        echo "LD_PRELOAD=$LD_PRELOAD" >> /etc/default/sogo
+        echo "LD_LIBRARY_PATH=/usr/local/lib/sogo:/usr/local/lib:$LD_LIBRARY_PATH" >> /etc/default/sogo
+        export LD_PRELOAD=$LD_PRELOAD
+    fi
+}
+
+build_resources() {
+    cd $SRC_SOGO
+    npm config set loglevel=error
+    git config --global --add safe.directory '*'
+    cd UI/WebServerResources
+    make dev
+    make install
+}
+
+build_sogo() {
+    service sogod stop
+    ssl_fix
+    cd $SRC_SOGO
+    cd ActiveSync
+    make && make install
+    cd ..
+    ./configure --enable-saml2 --enable-debug --disable-strip --enable-mfa
+    make
+    make install
+    build_resources
+    RC=$?
+    if [ $RC -ne 0 ]; then
+        exit $RC
+    fi
+    if [ -z "$1" ]
+    then
+        service sogod start
+    fi
+}
+
+build_all() {
+    service sogod stop
+    cd $SRC_SOPE
+    make clean
+    ./configure --with-gnustep --enable-debug --disable-strip 
+    make
+    make install
+    cd $SRC_SOGO
+    cd ActiveSync
+    make clean
+    cd ..
+    make clean
+    build_sogo
+    RC=$?
+    if [ $RC -ne 0 ]; then
+        exit $RC
+    fi
+}
+
+debug() {
+    build_sogo "norestart"
+    echo "${magenta}================"
+    echo "GDB reminders :"
+    echo " * run : Run app (set breakpoints before)"
+    echo " * break SOGo.m:494 : Add breakpoint example"
+    echo " * c : continue"
+    echo " * n : next"
+    echo " * list 504 : show lines around"
+    echo " * p var : print variable 'var'"
+    echo " * po var : print object 'var'"
+    echo " * bt : Show stacktrace"
+    echo " * bt full : Show stacktrace with all vars"
+    echo "================${normal}"
+    echo ""
+
+    su -s /bin/bash - sogo -c "gdb --args /usr/local/sbin/sogod -WOUseWatchDog NO -WONoDetach YES -WOPort 0.0.0.0:50000 -WOWorkersCount 1 -WOPidFile /var/run/sogo/sogo.pid"
+}
+
+# Process the options
+while true; do
+    case "$1" in
+        -b|--build)
+            build_sogo
+            exit 0
+            ;;
+        -ba|--build-all)
+            build_all
+            exit 0
+            ;;
+        -br|--build-resources)
+            build_resources
+            exit 0
+            ;;
+        -d|--debug)
+            debug
+            exit 0
+            ;;
+        -h|--help)
+            help
+            exit 0
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            help
+            exit 1
+            ;;
+    esac
+done
