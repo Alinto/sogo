@@ -28,6 +28,7 @@
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoTextTemplateFile.h>
 
@@ -697,8 +698,11 @@ static NSString *sieveScriptName = @"sogo";
   NSDictionary *result;
   NSString *login, *authname, *password;
   SOGoDomainDefaults *dd;
+  SOGoSystemDefaults *sd;
   NGSieveClient *client;
   NSString *sieveServer, *sieveScheme, *sieveQuery, *imapServer;
+  NSString *imapAuthMech, *userDomain;
+  NSRange r;
   NSURL *url, *cUrl;
   int sievePort;
   BOOL connected;
@@ -773,7 +777,20 @@ static NSString *sieveScriptName = @"sogo";
   url = [NSURL URLWithString: [NSString stringWithFormat: @"%@://%@:%d%@",
                                sieveScheme, sieveServer, sievePort, sieveQuery]];
 
-  client = [[NGSieveClient alloc] initWithURL: url];
+  //In case of differrent auth method for different domain, check it
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  imapAuthMech = nil;
+  if([sd doesLoginTypeByDomain])
+  {
+    r = [theUsername rangeOfString: @"@"];
+    if (r.location != NSNotFound)
+    {
+      userDomain = [theUsername substringFromIndex: r.location+1];
+      imapAuthMech = [sd getImapAuthMechForDomain: userDomain];
+    }
+  }
+
+  client = [[NGSieveClient alloc] initWithURL: url andAuthMech: imapAuthMech];
 
   if (!client) {
     [self errorWithFormat: @"Sieve connection failed on %@", [url description]];

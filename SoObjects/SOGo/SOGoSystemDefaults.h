@@ -36,6 +36,11 @@ static const NSString *kDisableSharingCalendar = @"Calendar";
 + (SOGoSystemDefaults *) sharedSystemDefaults;
 
 - (NSArray *) domainIds;
+- (BOOL) doesLoginTypeByDomain;
+- (NSString *) getLoginTypeForDomain: (NSString*) _domain;
+- (NSString *) getLoginConfigForDomain: (NSDictionary*) _domain;
+- (NSString *) getImapAuthMechForDomain: (NSString*) _domain;
+- (NSString *) getSmtpAuthMechForDomain: (NSString*) _domain;
 - (BOOL) forbidUnknownDomainsAuth;
 - (NSArray *) domainsAllowed;
 - (BOOL) enableDomainBasedUID;
@@ -90,7 +95,7 @@ NSComparisonResult languageSort(id el1, id el2, void *context);
 - (NSString *) loginSuffix;
 
 - (NSString *) authenticationType;
-- (BOOL) isSsoUsed;
+- (BOOL) isSsoUsed: (NSString *) domain;
 - (NSString *) davAuthenticationType;
 
 - (NSString *) CASServiceURL;
@@ -102,8 +107,9 @@ NSComparisonResult languageSort(id el1, id el2, void *context);
 - (NSString *) openIdClientSecret;
 - (NSString *) openIdEmailParam;
 - (BOOL) openIdEnableRefreshToken;
-- (BOOL) openIdLogoutEnabled;
+- (BOOL) openIdLogoutEnabled: (NSString *) _domain;
 - (int) openIdTokenCheckInterval;
+- (BOOL) openIdSendDomainInfo;
 
 - (NSString *) SAML2PrivateKeyLocation;
 - (NSString *) SAML2CertificateLocation;

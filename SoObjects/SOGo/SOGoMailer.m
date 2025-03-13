@@ -31,6 +31,7 @@
 #import "NSString+Utilities.h"
 #import "SOGoStaticAuthenticator.h"
 #import "SOGoEmptyAuthenticator.h"
+#import "SOGoWebAuthenticator.h"
 #import "SOGoSystemDefaults.h"
 #import "SOGoUser.h"
 #import "SOGoUserManager.h"
@@ -265,7 +266,7 @@
                       inContext: (WOContext *) woContext
                   systemMessage: (BOOL) isSystemMessage
 {
-  NSString *currentTo, *login, *password;
+  NSString *currentTo, *login, *password, *encryption, *protocol, *server;
   NSString * smtpAuthMethod;
   NSDictionary *currentAcount;
   NSMutableArray *toErrors;
@@ -274,6 +275,7 @@
   NSException *result;
   NSURL * smtpUrl;
   SOGoUser* user;
+  SOGoSystemDefaults *sd;
   BOOL doSmtpAuth;
 
   result = nil;
@@ -295,6 +297,22 @@
   if(!doSmtpAuth && userId > 0)
   {
     doSmtpAuth = [currentAcount objectForKey: @"smtpAuth"] ? [[currentAcount objectForKey: @"smtpAuth"] boolValue] : NO;
+  }
+
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if(userId == 0 && [sd doesLoginTypeByDomain] && [authenticator isKindOfClass: [SOGoWebAuthenticator class]])
+  {
+    //Check if the authentication depends on the domain, only for webmail requets not for dav...
+    NSString *username, *_domain;
+    NSRange r;
+
+    username = [currentAcount objectForKey: @"userName"];
+    r = [username rangeOfString: @"@"];
+    if (r.location != NSNotFound)
+    {
+      _domain = [username substringFromIndex: r.location+1];
+      smtpAuthMethod = [sd getSmtpAuthMechForDomain: _domain];
+    }
   }
 
   NS_DURING
@@ -319,7 +337,18 @@
                         getExternalLoginForUID: [[authenticator userInContext: woContext] loginInDomain]
                                       inDomain: [[authenticator userInContext: woContext] domain]];
 
-            password = [authenticator passwordInContext: woContext];
+            encryption = [currentAcount objectForKey: @"encryption"];
+            protocol = @"imap";
+            if ([encryption isEqualToString: @"ssl"] || [encryption isEqualToString: @"tls"])
+              protocol = @"imaps";
+            server = [NSString stringWithFormat: @"%@://%@", protocol, [currentAcount objectForKey: @"serverName"]];
+            if([authenticator isKindOfClass: [SOGoWebAuthenticator class]])
+              password = [authenticator smtpPasswordInContext: woContext forURL: server];
+            else
+            {
+              password = [authenticator passwordInContext: woContext];
+              smtpAuthMethod = @"plain"; //is a dav or activesync request, only support plain method
+            }
           }
 
 

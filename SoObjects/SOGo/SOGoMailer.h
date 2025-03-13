@@ -25,6 +25,7 @@
 @class NSArray;
 @class NSException;
 @class NSString;
+@class NSDictionary;
 
 @class WOContext;
 @class SOGoDomainDefaults;

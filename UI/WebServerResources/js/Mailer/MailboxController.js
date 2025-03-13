@@ -210,9 +210,7 @@
       }
       url = url.join('/');
       popupWindow = $window.open(url, wId,
-                                 ["width=680",
-                                  "height=520",
-                                  "resizable=1",
+                                 ["resizable=1",
                                   "scrollbars=1",
                                   "toolbar=0",
                                   "location=0",

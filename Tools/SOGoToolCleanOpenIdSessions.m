@@ -1,4 +1,4 @@
-/* SOGoToolExpireUserSessions.m - this file is part of SOGo
+/* SOGoToolCleanOpenIdSessions.m - this file is part of SOGo
  *
  * Copyright (C) 2012-2021 Inverse inc.
  *
@@ -37,30 +37,29 @@
 
 #import "SOGoTool.h"
 
-@interface SOGoToolExpireUserSessions : SOGoTool
+@interface SOGoToolCleanOpenIdSessions : SOGoTool
 @end
 
-@implementation SOGoToolExpireUserSessions
+@implementation SOGoToolCleanOpenIdSessions
 
 + (NSString *) command
 {
-  return @"expire-sessions";
+  return @"clean-openid-sessions";
 }
 
 + (NSString *) description
 {
-  return @"expires user sessions without activity for specified number of minutes";
+  return @"clean user openid sessions that are expired";
 }
 
 - (void) usage
 {
-  fprintf (stderr, "expire-sessions [nbMinutes]\n\n"
-	   "       nbMinutes       Number of minutes of inactivity after which a user session will be expired\n"
+  fprintf (stderr, "clean-openid-sessions\n\n"
 	   "\n"
-     "The expire-sessions action should be configured as a cronjob.\n");
+     "The clean-openid-sessions action should be configured as a cronjob.\n");
 }
 
-- (BOOL) expireUserSessionOlderThan: (int) nbMinutes
+- (BOOL) cleanExpiredOpenIdSession
 {
   BOOL rc;
   EOAdaptorChannel *channel;
@@ -72,19 +71,18 @@
   NSURL *tableURL;
   NSUserDefaults *ud;
 
-  unsigned int now, oldest;
+  unsigned int now;
 
   rc = YES;
   ud = [NSUserDefaults standardUserDefaults];
   now = [[NSCalendarDate calendarDate] timeIntervalSince1970];
-  oldest = now - (nbMinutes * 60);
   sessionID = nil;
 
-  sessionsFolderURL = [ud stringForKey: @"OCSSessionsFolderURL"];
+  sessionsFolderURL = [ud stringForKey: @"OCSOpenIdURL"];
   if (!sessionsFolderURL)
   {
     if (verbose)
-      NSLog(@"Couldn't read OCSSessionsFolderURL");
+      NSLog(@"Couldn't read OCSOpenIdURL");
     return rc = NO;
   }
 
@@ -94,12 +92,12 @@
   if (!channel)
   {
     /* FIXME: nice error msg */
-    NSLog(@"Can't aquire channel");
+    NSLog(@"Can't acquire channel");
     return rc = NO;
   }
 
-  sql = [NSString stringWithFormat: @"SELECT c_id FROM %@ WHERE c_lastseen <= %d",
-                  [tableURL gcsTableName], oldest];
+  sql = [NSString stringWithFormat: @"SELECT c_user_session FROM %@ WHERE c_access_token_expires_in <= %d AND c_refresh_token_expires_in <= %d",
+                  [tableURL gcsTableName], now, now];
   ex = [channel evaluateExpressionX: sql]; 
   if (ex)
   {
@@ -111,18 +109,18 @@
   attrs = [channel describeResults: NO];
   while ((qresult = [channel fetchAttributes: attrs withZone: NULL]))
     {
-      sessionID = [qresult objectForKey: @"c_id"];
+      sessionID = [qresult objectForKey: @"c_user_session"];
       if (sessionID)
         {
           if (verbose)
             NSLog(@"Removing session %@", sessionID);
-          [SOGoSession deleteValueForSessionKey: sessionID];
+          [SOGoOpenIdSession deleteValueForSessionKey: sessionID];
         }
     }
   [cm releaseChannel: channel  immediately: YES];
 
   if (verbose && sessionID == nil)
-    NSLog(@"No session to remove");
+    NSLog(@"No session to remove on openId table");
 
   return rc;
 }
@@ -130,31 +128,9 @@
 - (BOOL) run
 {
   BOOL rc;
-  int sessionExpireMinutes = -1;
 
-  rc = NO;
+  rc = [self cleanExpiredOpenIdSession];
 
-  if ([arguments count])
-  {
-    sessionExpireMinutes = [[arguments objectAtIndex: 0] intValue];
-  }
-
-  NSLog(@"Remove all sessions older than %d min", sessionExpireMinutes);
-
-  if (sessionExpireMinutes == 0 && ![[arguments objectAtIndex: 0] isEqualToString:@"0"])
-  {
-    //If the input is not a number intValue return 0 so we check that's really the case
-    [self usage];
-  }
-  else if (sessionExpireMinutes >= 0)
-  {
-    rc = [self expireUserSessionOlderThan: sessionExpireMinutes];
-  }
-  else
-  {
-    [self usage];
-  }
-  
   return rc;
 }
 

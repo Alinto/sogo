@@ -21,6 +21,7 @@ $(SOGO_TOOL)_OBJC_FILES += \
 	SOGoToolRemoveDoubles.m \
 	SOGoToolRenameUser.m \
 	SOGoToolCheckupUser.m \
+	SOGoToolCleanOpenIdSessions.m \
 	SOGoToolCleanupUser.m \
 	SOGoToolRestore.m \
 	SOGoToolCreateFolder.m \

@@ -62,6 +62,7 @@ extern NSString *SOGoDefaultsSourceUnmutableSource;
 
 - (void) setBool: (BOOL) value forKey: (NSString *) key;
 - (BOOL) boolForKey: (NSString *) key;
+- (BOOL) boolForKey: (NSString *) key andDict: (NSDictionary*) _dict;
 
 - (void) setFloat: (float) value forKey: (NSString *) key;
 - (float) floatForKey: (NSString *) key;

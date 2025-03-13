@@ -138,11 +138,33 @@
   SOGoOpenIdSession * openIdSession;
   SOGoSystemDefaults *sd;
   NSString *authenticationType;
+  NSString* loginDomain;
   BOOL rc;
 
   sd = [SOGoSystemDefaults sharedSystemDefaults];
+  
+  //Basic check
+  if(!_login)
+    return NO;
+  if(_login && [_login length] == 0)
+    return NO;
 
-  authenticationType = [sd authenticationType];
+  loginDomain = nil;
+  if(*_domain == nil || [*_domain length] == 0)
+  {
+      NSRange r;
+      r = [_login rangeOfString: @"@"];
+      if (r.location != NSNotFound)
+      {
+        loginDomain = [_login substringFromIndex: r.location+1];
+      }
+  }
+
+  if([sd doesLoginTypeByDomain])
+    authenticationType = [sd getLoginTypeForDomain: loginDomain];
+  else
+    authenticationType = [sd authenticationType];
+
   if ([authenticationType isEqualToString: @"cas"])
     {
       casSession = [SOGoCASSession CASSessionWithIdentifier: _pwd fromProxy: NO];
@@ -153,7 +175,7 @@
     }
   else if ([authenticationType isEqualToString: @"openid"])
   {
-    openIdSession = [SOGoOpenIdSession OpenIdSessionWithToken: _pwd];
+    openIdSession = [SOGoOpenIdSession OpenIdSessionWithToken: _pwd domain: loginDomain];
     if (openIdSession)
       rc = [[openIdSession login: _login] isEqualToString: _login];
     else
@@ -180,7 +202,6 @@
                                                    grace: _grace
                                           additionalInfo: _additionalInfo
                                                 useCache: _useCache];
-  
   //[self logWithFormat: @"Checked login with ppolicy enabled: %d %d %d", *_perr, *_expire, *_grace];
   
   // It's important to return the real value here. The callee will handle
@@ -259,7 +280,8 @@
                      login: &login
                     domain: &domain
                   password: &pwd];
-  
+
+
   if (![self checkLogin: login
                password: pwd
                  domain: &domain
@@ -282,32 +304,42 @@
 {
   NSString *authType, *password;
   SOGoSystemDefaults *sd;
+  SOGoUser *user;
+  NSRange r;
+  NSString *loginDomain, *login;
  
   password = [self passwordInContext: context];
   if ([password length])
     {
+      user = [self userInContext: context];
+      login = [user loginInDomain];
+      r = [login rangeOfString: @"@"];
+      if (r.location != NSNotFound)
+        loginDomain = [login substringFromIndex: r.location+1];
+      else
+        loginDomain = nil;
+
       sd = [SOGoSystemDefaults sharedSystemDefaults];
-      authType = [sd authenticationType];
+      if([sd doesLoginTypeByDomain])
+        authType = [sd getLoginTypeForDomain: loginDomain];
+      else
+        authType = [sd authenticationType];
+
       if ([authType isEqualToString: @"cas"])
         {
           SOGoCASSession *session;
-          SOGoUser *user;
           NSString *service, *scheme;
 
           session = [SOGoCASSession CASSessionWithIdentifier: password
                                                    fromProxy: NO];
-
-          user = [self userInContext: context];
           // Try configured CAS service name first
           service = [[user domainDefaults] imapCASServiceName];
           if (!service)
             {
               // We must NOT assume the scheme exists
               scheme = [server scheme];
-
               if (!scheme)
                 scheme = @"imap";
-
               service = [NSString stringWithFormat: @"%@://%@",
                          scheme, [server host]];
             }
@@ -316,17 +348,16 @@
             [session invalidateTicketForService: service];
 
           password = [session ticketForService: service];
-
           if ([password length] || renew)
             [session updateCache];
         }
       else if ([authType isEqualToString: @"openid"])
       {
         SOGoOpenIdSession* session;
-        NSString* currentToken;
+
         //If the token has been refresh during the request, we need to use the new access_token
         //as the one from the cookie is no more valid
-        session = [SOGoOpenIdSession OpenIdSessionWithToken: password];
+        session = [SOGoOpenIdSession OpenIdSessionWithToken: password domain: loginDomain];
         password = [session getCurrentToken];
       }
 #if defined(SAML2_CONFIG)
@@ -347,6 +378,16 @@
         }
 #endif
     }
+
+  return password;
+}
+
+- (NSString *) smtpPasswordInContext: (WOContext *) context
+                              forURL: (NSURL *) server
+{
+  NSString *password;
+
+  password = [self imapPasswordInContext: context forURL: server forceRenew:NO];
 
   return password;
 }
@@ -459,21 +500,36 @@
 {
   NSArray *listCookies = nil;
   SOGoSystemDefaults *sd;
-  NSString *authType;
+  NSString *authType, *username, *login, *loginDomain;
+  NSRange r;
+  SOGoUser *user;
+
+  user = [self userInContext: _ctx];
+  login = [user loginDomain];
+  r = [login rangeOfString: @"@"];
+  if (r.location != NSNotFound)
+    loginDomain = [login substringFromIndex: r.location+1];
+  else
+    loginDomain = nil;
 
   sd = [SOGoSystemDefaults sharedSystemDefaults];
-  authType = [sd authenticationType];
+  if(loginDomain && [sd doesLoginTypeByDomain])
+    authType = [sd getLoginTypeForDomain: loginDomain];
+  else
+    authType = [sd authenticationType];
   if([authType isEqualToString:@"openid"] && [sd openIdEnableRefreshToken])
   {
-    NSString *currentPassword, *newPassword, *username;
+    NSString *currentPassword, *newPassword;
     SOGoOpenIdSession *openIdSession;
-
     WOCookie* newCookie;
+
+
     currentPassword = [self passwordInContext: _ctx];
     newPassword = [self imapPasswordInContext: _ctx forURL: nil forceRenew: NO];
     if(currentPassword && newPassword && ![newPassword isEqualToString: currentPassword])
     {
-      openIdSession = [SOGoOpenIdSession OpenIdSessionWithToken: newPassword];
+
+      openIdSession = [SOGoOpenIdSession OpenIdSessionWithToken: newPassword domain: loginDomain];
       if (openIdSession)
         username = [openIdSession login: @""]; //Force to refresh the name
       else
