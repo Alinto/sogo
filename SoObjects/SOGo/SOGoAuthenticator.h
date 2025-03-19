@@ -32,6 +32,9 @@
 
 - (NSString *) passwordInContext: (WOContext *) context;
 - (SOGoUser *) userInContext: (WOContext *) context;
+/* To set additionnal cookies (override in subclasses !)*/
+- (NSArray *)getCookiesIfNeeded: (WOContext *)_ctx;
+
 - (NSString *) imapPasswordInContext: (WOContext *) context
                               forURL: (NSURL *) server
                           forceRenew: (BOOL) renew;

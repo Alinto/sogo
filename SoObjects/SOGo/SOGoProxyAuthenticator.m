@@ -103,6 +103,12 @@
   return user;
 }
 
+- (NSArray *)getCookiesIfNeeded: (WOContext *)_ctx
+{
+  //Needs to be override by children if needed
+  return nil;
+}
+
 #warning the DAV authenticator is pretty similar to this one. We should enable \
   the use of the former for Basic auth type through some defaults.
 - (NSString *) passwordInContext: (WOContext *) context

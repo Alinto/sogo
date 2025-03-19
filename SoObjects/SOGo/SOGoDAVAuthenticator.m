@@ -86,6 +86,12 @@
   return rc;
 }
 
+- (NSArray *)getCookiesIfNeeded: (WOContext *)_ctx
+{
+  //Needs to be override by children if needed
+  return nil;
+}
+
 - (NSString *) passwordInContext: (WOContext *) context
 {
   NSString *auth, *password;

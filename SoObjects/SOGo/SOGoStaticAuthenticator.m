@@ -72,6 +72,12 @@
   return nil;
 }
 
+- (NSArray *)getCookiesIfNeeded: (WOContext *)_ctx
+{
+  //Needs to be override by children if needed
+  return nil;
+}
+
 - (NSString *) username
 {
   return _username;
