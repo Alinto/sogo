@@ -1,12 +1,12 @@
 "Inviting the following persons is prohibited:" = "次の人々の招待は禁止されています:";
 "Personal Calendar" = "個人用カレンダー";
 vevent_class0 = "(公開イベント)";
-vevent_class1 = "(非公開イベント)";
-vevent_class2 = "(機密イベント)";
+vevent_class1 = "(プライベートの予定)";
+vevent_class2 = "(日時のみ公開の予定)";
 
 vtodo_class0 = "(公開タスク)";
-vtodo_class1 = "(非公開タスク)";
-vtodo_class2 = "(機密タスク)";
+vtodo_class1 = "(プライベートのタスク)";
+vtodo_class2 = "(日時のみ公開のタスク)";
 
 /* Receipts */
 "The event \"%{Summary}\" was created" = "イベント\"%{Summary}\"を作成しました";

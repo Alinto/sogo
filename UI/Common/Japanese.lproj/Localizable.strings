@@ -15,16 +15,16 @@
 "Right Administration" = "権限の管理";
 "Log Console (dev.)" = "ログコンソール (開発)";
 "User" = "ユーザー";
-"Vacation message is enabled" = "休暇メッセージが有効です。";
+"Vacation message is enabled" = "休暇メッセージが有効です";
 "Help" = "ヘルプ";
-"noJavascriptError" = "SOGoの動作にはJavascriptが必要です。ブラウザーで利用可能で、有効に設定されていることを確認してください。";
+"noJavascriptError" = "SOGoの動作にはJavascriptが必要です。ブラウザーで利用可能で、有効になっていることを確認してください。";
 "noJavascriptRetry" = "再試行";
 "Owner" = "所有者";
 "Publish the Free/Busy information" = "予定の有無の情報を公開";
 "Add..." = "追加...";
 "Remove" = "削除";
 "Subscribe User" = "ユーザーの登録";
-"Any Authenticated User" = "認証済みの任意のユーザー";
+"Any Authenticated User" = "すべての認証済みユーザー";
 "Public Access" = "公開アクセス";
 "Any user not listed above" = "上にリストされていないすべてのユーザー";
 "Anybody accessing this resource from the public area" = "このリソースに公開領域からアクセスできるユーザー";
@@ -40,7 +40,7 @@
 "Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
      = "このシステムにアカウントを持っていなくても、あなたのアドレス帳\"%{0}\"をインターネット上の誰もが潜在的にアクセスできるようになります。これはインターネットで公開するのに適した情報ですか?";
 "Give Access" = "アクセスを許可";
-"Keep Private" = "非公開のまま";
+"Keep Private" = "プライベートのまま";
 "Expand" = "Expand";
 "Reduce" = "Reduce";
 
@@ -233,3 +233,10 @@
 "passwordRecovery_SecretQuestion2" = "What was your first car ?";
 "passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
 "passwordRecovery_SecondaryEmail" = "Secondary E-mail";
+
+/* Password */
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
+"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0} special symbols";
+"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";

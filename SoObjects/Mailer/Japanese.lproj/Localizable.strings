@@ -1,5 +1,5 @@
 "OtherUsersFolderName"   = "他のユーザー";
-"SharedFoldersName" = "共有フォルダ";
+"SharedFoldersName" = "共有フォルダー";
 
-"Report: Marked messages as junk" = "Report: Marked messages as junk";
-"Report: Marked messages as not junk" = "Report: Marked messages as not junk";
+"Report: Marked messages as junk" = "報告: メッセージに迷惑マークを付けました";
+"Report: Marked messages as not junk" = "報告: メッセージから迷惑マークを外しました";

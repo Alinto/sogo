@@ -251,8 +251,8 @@
 
 /* acls */
 "Access rights to" = "アクセス権";
-"For user" = "ユーザ向け";
-"Any Authenticated User" = "認証済みの任意のユーザー";
+"For user" = "ユーザー";
+"Any Authenticated User" = "すべての認証済みユーザー";
 "Public Access" = "公開アクセス";
 "This person can add cards to this addressbook."
 = "この人は私のカレンダーからオブジェクトを削除できます。";

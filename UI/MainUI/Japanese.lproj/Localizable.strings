@@ -84,6 +84,7 @@
 "Change your Password" = "パスワードを変更";
 "The password was changed successfully." = "パスワードを変更しました。";
 "Your password has expired, please enter a new one below" = "パスワードの期限が切れています、以下から新しいパスワードを入力してください";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
 "Password must not be empty." = "空のパスワードは使用できません。";
 "The passwords do not match. Please try again." = "パスワードが一致しません。再度試してください。";
 "Password Grace Period" = "パスワードの猶予期間";
@@ -118,8 +119,8 @@
 "Password lost" = "Password lost";
 "No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
 "Invalid secret question answer" = "Invalid secret question answer";
-"Next" = "Next";
-"Back" = "Back";
+"Next" = "次へ";
+"Back" = "戻る";
 "Please enter a new password below" = "Please enter a new password below";
 "A link will be sent to %{0}" = "A link will be sent to %{0}";
 "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";

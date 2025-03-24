@@ -9,8 +9,8 @@
 "Go to today" = "今日の日付に移動";
 "Switch to day view" = "日表示に切り替え";
 "Switch to week view" = "週表示に切り替え";
-"Switch to month view" = "月表示に切り替";
-"Switch to multi-columns day view" = "複数列日表示に切り替え";
+"Switch to month view" = "月表示に切り替え";
+"Switch to multi-columns day view" = "複数列の日表示に切り替え";
 "Reload all calendars" = "すべてのカレンダーを再読み込み";
 
 /* Tabs */
@@ -63,9 +63,9 @@
 "An error occurred while importing calendar." = "カレンダーのインポート中にエラーが発生しました。";
 "No event was imported." = "インポートしたイベントはありません。";
 "A total of %{0} events were imported in the calendar." = "合計で%{0}件のイベントをカレンダーにインポートしました。";
-"Compose E-Mail to All Attendees" = "すべての出席者にメールを作成";
-"Compose E-Mail to Undecided Attendees" = "出席が未定の参加者にメールを作成";
-"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
+"Compose E-Mail to All Attendees" = "参加者全員にメールを作成";
+"Compose E-Mail to Undecided Attendees" = "出欠未定の参加者にメールを作成";
+"Download iOS - MacOS configuration profile" = "iOS - MacOSの構成プロファイルをダウンロード";
 
 /* Relative dates */
 "Yesterday" = "昨日";
@@ -82,66 +82,67 @@
 
 /* acls */
 "Access rights to" = "アクセス権の割り当て:";
-"For user" = "ユーザ向け";
+"For user" = "ユーザー";
 "Any Authenticated User" = "すべての認証済みユーザー";
 "Public Access" = "公開アクセス";
 "label_Public" = "公開";
-"label_Private" = "非公開";
-"label_Confidential" = "秘密";
+"label_Private" = "プライベート";
+"label_Confidential" = "日時のみ公開";
 "label_Viewer" = "すべて表示";
 "label_DAndTViewer" = "日付と時刻を表示";
-"label_Modifier" = "修正";
-"label_Responder" = "次に対応";
+"label_Modifier" = "編集";
+"label_Responder" = "対応";
 "label_None" = "なし";
 "View All" = "すべて表示";
 "View the Date & Time" = "日付と時刻を表示";
-"Modify" = "修正";
-"Respond To" = "次に対応";
+"Modify" = "編集";
+"Respond To" = "対応";
 "None" = "なし";
 "This person can create objects in my calendar."
-= "この人は私のカレンダーにオブジェクトを作成できます。";
+= "この人物は私のカレンダーにオブジェクトを作成できます。";
 "This person can erase objects from my calendar."
-= "この人は私のカレンダーからオブジェクトを削除できます。";
+= "この人物は私のカレンダーからオブジェクトを削除できます。";
 
 /* Button Titles */
-"Subscribe to a Calendar..." = "カレンダーを登録...";
-"Remove the selected Calendar" = "選択したカレンダーを削除";
+"Subscribe to a Calendar..." = "カレンダーを購読...";
+"Remove the selected Calendar" = "選択したカレンダーを購読解除";
 "New calendar" = "新しいカレンダー";
-"Name of the Calendar" = "カレンダーの名前";
+"Name of the Calendar" = "カレンダー名";
 "new" = "新規";
 "Print view" = "印刷表示";
-"Print" = "Print";
+"Print" = "印刷";
 "edit" = "編集";
 "delete" = "削除";
 "proposal" = "提案";
 "Save and Close" = "保存して閉じる";
 "Close" = "閉じる";
-"Invite Attendees" = "出席者を招待";
+"Invite Attendees" = "参加者を招待";
+"Create Jitsi Meeting" = "Create Jitsi Meeting";
 "Attach" = "添付";
 "Update" = "更新";
 "Cancel" = "キャンセル";
 "Reset" = "リセット";
 "Save" = "保存";
-"show_rejected_apts" = "拒否された予定を表示";
-"hide_rejected_apts" = "拒否された予定を隠す";
+"show_rejected_apts" = "辞退された予定を表示";
+"hide_rejected_apts" = "辞退された予定を非表示";
 
 /* Schedule */
 "Schedule" = "予定表";
 "No appointments found" = "予定はありません";
-"Meetings proposed by you" = "あなたが提案している会合";
-"Meetings proposed to you" = "あなたに提案されている会合";
+"Meetings proposed by you" = "あなたが提案しているミーティング";
+"Meetings proposed to you" = "あなたに提案されているミーティング";
 "sched_startDateFormat" = "%m/%d %H:%M";
-"action" = "行動";
-"accept" = "受諾";
+"action" = "アクション";
+"accept" = "承諾";
 "decline" = "辞退";
-"more attendees" = "さらなる出席者";
-"Hide already accepted and rejected appointments" = "既に受諾または拒否した予定を隠す";
+"more attendees" = "その他の参加者";
+"Hide already accepted and rejected appointments" = "既に承諾または拒否した予定を非表示";
 "Show already accepted and rejected appointments" = "既に受諾または拒否した予定を表示";
 
 /* Print view */
 "LIST" = "リスト";
 "Print Settings" = "印刷の設定";
-"Title" = "題名";
+"Title" = "件名";
 "Layout" = "レイアウト";
 "What to Print" = "印刷の対象";
 "Options" = "オプション";
@@ -174,7 +175,7 @@
 "Categories" = "カテゴリ";
 "Classification" = "分類";
 "Duration" = "期間";
-"Attendees" = "出席者";
+"Attendees" = "参加者";
 "Resources" = "リソース";
 "Organizer" = "主催者";
 "Description" = "説明";
@@ -188,19 +189,19 @@
 "You are invited to participate" = "あなたは参加者として招待されました";
 "Target" = "ターゲット";
 "attributes" = "属性";
-"attendees" = "出席者";
+"attendees" = "参加者";
 "delegated from" = "委任元";
 
 /* checkbox title */
-"is private" = "は非公開";
+"is private" = "はプライベート";
 
 /* classification */
 "Public" = "公開";
-"Private" = "非公開";
+"Private" = "プライベート";
 
 /* text used in overviews and tooltips */
 "empty title" = "無題";
-"private appointment" = "非公開の予定";
+"private appointment" = "プライベートのアポイント";
 "Change..." = "変更...";
 
 /* Appointments (participation state) */
@@ -238,13 +239,13 @@
 "Title, category or location" = "タイトル、カテゴリ、場所";
 "Entire content" = "内容全体";
 "Search" = "検索";
-"Search attendees" = "出席者を検索";
+"Search attendees" = "参加者を検索";
 "Search resources" = "リソースを検索";
 "Search appointments" = "予定を検索";
 "All day Event" = "終日のイベント";
 "check for conflicts" = "競合を検査";
 "URL" = "URL";
-"newAttendee" = "出席者を追加";
+"newAttendee" = "参加者を追加";
 
 /* calendar modes */
 "Overview" = "概要";
@@ -266,16 +267,16 @@
 
 /* access classes (privacy) */
 "PUBLIC_vevent" = "公開のイベント";
-"CONFIDENTIAL_vevent" = "秘密のイベント";
-"PRIVATE_vevent" = "非公開のイベント";
+"CONFIDENTIAL_vevent" = "日時のみ公開の予定";
+"PRIVATE_vevent" = "プライベートの予定";
 "PUBLIC_vtodo" = "公開のタスク";
-"CONFIDENTIAL_vtodo" = "秘密のタスク";
-"PRIVATE_vtodo" = "非公開のタスク";
+"CONFIDENTIAL_vtodo" = "日時のみ公開のタスク";
+"PRIVATE_vtodo" = "プライベートのタスク";
 
 /* status type */
 "status_" = "無指定";
 "status_NOT-SPECIFIED" = "無指定";
-"status_TENTATIVE" = "暫定";
+"status_TENTATIVE" = "未確定";
 "status_CONFIRMED" = "確認済み";
 "status_CANCELLED" = "取り止め済み";
 "status_NEEDS-ACTION" = "行動が必要";
@@ -491,7 +492,7 @@ validate_untilbeforeend    = "繰り返し日は最初に設定した予定の�
 "Declined" = "辞退済み";
 
 /* Participant status: tentatively accepted */
-"Tentative" = "暫定";
+"Tentative" = "未確定";
 
 "Free" = "空き";
 "Busy" = "予定あり";
@@ -516,16 +517,16 @@ validate_untilbeforeend    = "繰り返し日は最初に設定した予定の�
 
 /* events list */
 "Due" = "期日";
-"(Private Event)" = "(非公開のイベント)";
+"(Private Event)" = "(プライベートの予定)";
 vevent_class0 = "(公開のイベント)";
-vevent_class1 = "(非公開のイベント)";
-vevent_class2 = "(機密のイベント)";
+vevent_class1 = "(プライベートの予定)";
+vevent_class2 = "(日時のみ公開の予定)";
 
 /* tasks list */
 "Descending Order" = "降順";
 vtodo_class0 = "(公開のタスク)";
-vtodo_class1 = "(非公開のタスク)";
-vtodo_class2 = "(機密のタスク)";
+vtodo_class1 = "(プライベートのタスク)";
+vtodo_class2 = "(日時のみ公開のタスク)";
 "closeThisWindowMessage" = "ありがとうございます!  このウィンドウまたは表示を閉じても構いません。";
 "Multicolumn Day View" = "複数日表示";
 "Please select an event or a task." = "イベントまたはタスクを選択してください。";
@@ -611,7 +612,7 @@ vtodo_class2 = "(機密のタスク)";
 "Delegated to" = "委任先";
 "Keep sending me updates" = "更新時にメッセージを送信";
 "OK" = "OK";
-"Confidential" = "秘密";
+"Confidential" = "日時のみ公開";
 "Enable" = "有効化";
 "Filter" = "フィルター";
 "Sort" = "並べ替え";
