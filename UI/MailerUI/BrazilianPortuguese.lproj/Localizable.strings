@@ -171,6 +171,7 @@
 /* MailListView */
 "Sender" = "Remetente";
 "Subject or Sender" = "Assunto ou Remetente";
+"Subject or Recipient" = "Assunto ou destinatário";
 "To or Cc" = "Para ou Cc";
 "Entire Message" = "Mensagem Inteira";
 "Date"          = "Data";
@@ -514,3 +515,18 @@
 
 /* Hotkey to forward to a message */
 "hotkey_forward" = "f";
+
+/* Email deletion */
+"Clean folder" = "Limpar pasta";
+"Clean mailbox" = "Limpar caixa de correio";
+"Delete permanently (do not use trash)" = "Apagar permanentemente (não enviar para a lixeira)";
+"Apply to subfolders" = "Aplicar às sub-pastas";
+"Delete e-mails older than" = "Apagar emails mais antigos que";
+"3 months" = "3 meses";
+"6 months" = "6 meses";
+"9 months" = "9 meses";
+"1 year" = "1 ano";
+"Custom" = "Personalizado";
+"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "Você está prestes a excluir permanentemente algumas mensagens. Tem certeza de que deseja prosseguir com esta ação?";
+"Apply" = "Aplicar";
+"%{0} message(s) deleted" = "%{0} mensagem(ns) apagada(s)";

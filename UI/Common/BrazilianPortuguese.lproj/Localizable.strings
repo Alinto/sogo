@@ -233,3 +233,10 @@
 "passwordRecovery_SecretQuestion2" = "Qual foi o seu primeiro carro?";
 "passwordRecovery_SecretQuestion3" = "Qual é o seu filme favorito ?";
 "passwordRecovery_SecondaryEmail" = "E-mail secundário";
+
+/* Password */
+"POLICY_MIN_LOWERCASE_LETTER" = "Mínimo de %{0} letra(s) minúscula(s)";
+"POLICY_MIN_UPPERCASE_LETTER" = "Mínimo de %{0} letra(s) maiúscula(s)";
+"POLICY_MIN_DIGIT" = "Mínimo de %{0} dígito(s)";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Mínimo de %{0} símbolos especiais";
+"POLICY_MIN_LENGTH" = "Comprimento mínimo de %{0} caracteres";
