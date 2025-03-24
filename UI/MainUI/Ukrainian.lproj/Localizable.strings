@@ -84,6 +84,7 @@
 "Change your Password" = "Змініть Ваш пароль";
 "The password was changed successfully." = "Пароль успішно змінено.";
 "Your password has expired, please enter a new one below" = "Закінчився термін дії Вашого пароля, будь ласка, введіть новий нижче";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
 "Password must not be empty." = "Пароль не може бути порожнім.";
 "The passwords do not match. Please try again." = "Паролі не співпадають. Будь ласка, спробуйте ще раз.";
 "Password Grace Period" = "Термін дії пароля";
