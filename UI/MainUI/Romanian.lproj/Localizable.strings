@@ -84,6 +84,7 @@
 "Change your Password" = "Schimbați-vă parola";
 "The password was changed successfully." = "Parola a fost schimbată.";
 "Your password has expired, please enter a new one below" = "Parola a expirat, vă rugăm să introduceți una nouă mai jos";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
 "Password must not be empty." = "Parola nu poate fi goală.";
 "The passwords do not match. Please try again." = "Parola nu se potriveste. Vă rugăm să încercați din nou.";
 "Password Grace Period" = "Perioada de grație parolă";
