@@ -84,6 +84,7 @@
 "Change your Password" = "Változtassa meg jelszavát";
 "The password was changed successfully." = "A jelszó megváltoztatása sikeres.";
 "Your password has expired, please enter a new one below" = "A jelszava lejárt, kérem adjon meg egy újat";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
 "Password must not be empty." = "A jelszó nem lehet üres.";
 "The passwords do not match. Please try again." = "Jelszavak nem egyeznek meg, kérem próbálja meg újra.";
 "Password Grace Period" = "Jelszóváltoztatás türelmi időszak";
