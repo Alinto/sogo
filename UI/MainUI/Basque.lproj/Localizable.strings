@@ -84,6 +84,7 @@
 "Change your Password" = "Aldatu zure pasahitza";
 "The password was changed successfully." = "Pasahitza ondo aldatu da.";
 "Your password has expired, please enter a new one below" = "Zure pasahitza iraungita dago, mesedez sartu pasahitz berria";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
 "Password must not be empty." = "Pasahitza ezin da hutsa izan.";
 "The passwords do not match. Please try again." = "Pasahaitzak ez datoz bat. Mesedez, saiatu berriz.";
 "Password Grace Period" = "Pasahitzaren graziazko aldia";
