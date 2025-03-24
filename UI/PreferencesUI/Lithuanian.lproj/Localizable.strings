@@ -274,11 +274,6 @@
 "Confirmation" = "Patvirtinimas";
 "Change" = "Pakeisti";
 "Passwords don't match" = "Slaptažodžiai nesutampa";
-"POLICY_MIN_LOWERCASE_LETTER" = "Mažiausiai %{0} mažosios raidės";
-"POLICY_MIN_UPPERCASE_LETTER" = "Mažiausiai %{0} didžiosios raidės";
-"POLICY_MIN_DIGIT" = "Mažiausiai %{0} skaičius(-ai)";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Mažiausiai %{0} specialiųjų simbolių";
-"POLICY_MIN_LENGTH" = "Mažiausias simbolių skaičius %{0}";
 
 
 /* Event+task classifications */

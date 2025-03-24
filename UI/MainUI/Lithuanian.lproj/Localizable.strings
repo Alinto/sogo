@@ -84,6 +84,7 @@
 "Change your Password" = "Pakeisti slaptažodį";
 "The password was changed successfully." = "Slaptažodis sėkmingai pakeistas.";
 "Your password has expired, please enter a new one below" = "Jūsų slaptažodžio galiojimo laikas baigėsi, žemiau prašome įvesti naują slaptažodį";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
 "Password must not be empty." = "Slaptažodis negali būti tuščias.";
 "The passwords do not match. Please try again." = "Slaptažodžiai nesutampa. Prašome pabandyti dar kartą.";
 "Password Grace Period" = "Slaptažodžio galiojimo laikas";
