@@ -274,11 +274,6 @@
 "Confirmation" = "Confirmação";
 "Change" = "Alterar";
 "Passwords don't match" = "As palavra-passe não são idênticas";
-"POLICY_MIN_LOWERCASE_LETTER" = "Mínimo de %{0} letras minúsculas";
-"POLICY_MIN_UPPERCASE_LETTER" = "Mínimo de %{0} letras maiúsculas";
-"POLICY_MIN_DIGIT" = "Mínimo de %{0} números";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Mínimo de %{0} símbolos especiais ";
-"POLICY_MIN_LENGTH" = "Comprimento mínimo: %{0}";
 
 
 /* Event+task classifications */
