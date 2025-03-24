@@ -84,6 +84,7 @@
 "Change your Password" = "Cambie o seu contrasinal";
 "The password was changed successfully." = "O contrasinal cambiouse correctamente.";
 "Your password has expired, please enter a new one below" = "O seu contrasinal caducou, por favor, introduza un novo abaixo";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
 "Password must not be empty." = "O contrasinal non pode estar baleiro.";
 "The passwords do not match. Please try again." = "O contrasinal non é igual. Por favor, ténteo de novo.";
 "Password Grace Period" = "Período de graza de contrasinal";
