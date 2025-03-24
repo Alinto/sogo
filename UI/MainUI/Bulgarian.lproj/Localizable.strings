@@ -84,6 +84,7 @@
 "Change your Password" = "Смяна на парола";
 "The password was changed successfully." = "Паролата беше сменена успешно.";
 "Your password has expired, please enter a new one below" = "Паролата Ви изтече, моля въведете новата долу";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
 "Password must not be empty." = "Паролата не може да бъде празна.";
 "The passwords do not match. Please try again." = "Паролите не съответстват. Моля, опитайте пак.";
 "Password Grace Period" = "Парола - гратисен период";
