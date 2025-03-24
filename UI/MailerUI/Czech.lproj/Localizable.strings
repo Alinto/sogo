@@ -143,23 +143,23 @@
 "This mail is being sent from an unsecure network!" = "Tento mail je odesílán z nezabezpečené sítě!";
 "Address Book" = "Adresář";
 "Search For" = "Hledat";
-"Contains" = "Contains";
-"Does not contains" = "Does not contains";
-"Advanced search" = "Advanced search";
-"Anytime" = "Anytime";
-"Last 7 days" = "Last 7 days";
-"Last 30 days" = "Last 30 days";
-"Last 6 month" = "Last 6 month";
-"Before" = "Before";
-"After" = "After";
-"Between" = "Between";
-"and" = "and";
-"With attachments" = "With attachments";
-"In favorites" = "In favorites";
-"Unseen only" = "Unseen only";
-"Show more" = "Show more";
+"Contains" = "Obsahuje";
+"Does not contains" = "Neobsahuje";
+"Advanced search" = "Rozšířené hledání";
+"Anytime" = "Kdykoliv";
+"Last 7 days" = "Posledních 7 dní";
+"Last 30 days" = "Posledních 30 dní";
+"Last 6 month" = "Posledních 6 měsíců";
+"Before" = "Před";
+"After" = "Po";
+"Between" = "Mezi";
+"and" = "a";
+"With attachments" = "S přílohami";
+"In favorites" = "V oblíbených";
+"Unseen only" = "Pouze nepřečtené";
+"Show more" = "Zobrazit více";
 "Reset" = "Reset";
-"Message size" = "Message size";
+"Message size" = "Velikost zprávy";
 
 /* Popup "show" */
 "all"     = "všechny";
@@ -171,6 +171,7 @@
 /* MailListView */
 "Sender" = "Odesílatel";
 "Subject or Sender" = "Předmět nebo Odesílatel";
+"Subject or Recipient" = "Subject or Recipient";
 "To or Cc" = "Komu nebo Kopie";
 "Entire Message" = "Celá zpráva";
 "Date"          = "Datum";
@@ -256,7 +257,7 @@
 "Save As..." = "Uložit jako...";
 "Print Preview" = "Náhled tisku";
 "View Message Source" = "Zobrazit zdroj zprávy";
-"View raw message" = "View raw message";
+"View raw message" = "Zobrazit zdroj zprávy";
 
 /* Message view "more" menu: create an event from message */
 "Convert To Event" = "Převést na událost";
@@ -514,3 +515,18 @@
 
 /* Hotkey to forward to a message */
 "hotkey_forward" = "f";
+
+/* Email deletion */
+"Clean folder" = "Clean folder";
+"Clean mailbox" = "Clean mailbox";
+"Delete permanently (do not use trash)" = "Delete permanently (do not use trash)";
+"Apply to subfolders" = "Apply to subfolders";
+"Delete e-mails older than" = "Delete e-mails older than";
+"3 months" = "3 months";
+"6 months" = "6 months";
+"9 months" = "9 months";
+"1 year" = "1 year";
+"Custom" = "Custom";
+"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "You are about to permanently delete some messages. Are you sure you want to proceed with this action?";
+"Apply" = "Apply";
+"%{0} message(s) deleted" = "%{0} message(s) deleted";

@@ -152,7 +152,7 @@
 "Contacts Names" = "Jména kontaktů";
 "Duplicate name" = "Duplicitní jméno";
 "Calendar categories must have unique names." = "Kategorie kalendáře musí mít jedinečná jména.";
-"Disable e-mail notifications on CalDAV" = "Disable e-mail notifications on CalDAV";
+"Disable e-mail notifications on CalDAV" = "Vypnout e-mailové notifikace na CalDAV";
 
 /* Default Calendar */
 "Default calendar" = "Výchozí kalendář";
@@ -274,11 +274,6 @@
 "Confirmation" = "Potvrzení";
 "Change" = "Změnit";
 "Passwords don't match" = "Hesla nejsou shodná";
-"POLICY_MIN_LOWERCASE_LETTER" = "Minimum je %{0} malých znaků";
-"POLICY_MIN_UPPERCASE_LETTER" = "Minimum je %{0} velkých písmen";
-"POLICY_MIN_DIGIT" = "Minimum je %{0} číslic";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum je %{0} speciálních znaků";
-"POLICY_MIN_LENGTH" = "Minimální délka je %{0} znaků";
 
 
 /* Event+task classifications */
