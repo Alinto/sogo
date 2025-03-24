@@ -84,6 +84,7 @@
 "Change your Password" = "Newid Cyfrinair";
 "The password was changed successfully." = "Cafodd y cyfrinair ei newid yn llwyddiannus.";
 "Your password has expired, please enter a new one below" = "Mae eich cyfrinair wedi dod i ben. Rhowch un newydd isod.";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
 "Password must not be empty." = "Rhaid rhoi rhywbeth fel cyfrinair.";
 "The passwords do not match. Please try again." = "Doedd y ddau gyfrinair ddim yr un peth. Rhowch gynnig arall arni.";
 "Password Grace Period" = "Cyfnod Ychwanegol Cyfrinair";
