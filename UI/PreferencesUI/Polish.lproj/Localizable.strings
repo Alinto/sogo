@@ -274,11 +274,6 @@
 "Confirmation" = "Potwierdzenie";
 "Change" = "Zmiana";
 "Passwords don't match" = "Hasła nie są takie same";
-"POLICY_MIN_LOWERCASE_LETTER" = "Co najmniej %{0} małych liter";
-"POLICY_MIN_UPPERCASE_LETTER" = "Co najmniej %{0} dużych liter";
-"POLICY_MIN_DIGIT" = "Co najmniej %{0} cyfr";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Co najmniej %{0} znaków specjalnych";
-"POLICY_MIN_LENGTH" = "Długość co najmniej %{0} znaków";
 
 
 /* Event+task classifications */
