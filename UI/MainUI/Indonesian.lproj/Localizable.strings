@@ -84,6 +84,7 @@
 "Change your Password" = "Ubah sandi anda";
 "The password was changed successfully." = "Sandi telah berhasil dirubah";
 "Your password has expired, please enter a new one below" = "Kata Sandi anda kadaluarsa, silahkan masukan yang baru di bawah";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
 "Password must not be empty." = "Kata sandi tidak boleh kosong";
 "The passwords do not match. Please try again." = "Kata sandi tidak cocok. Silahkan coba lagi.";
 "Password Grace Period" = "Masa Tenggang Password";
