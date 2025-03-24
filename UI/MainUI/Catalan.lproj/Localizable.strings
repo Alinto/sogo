@@ -84,6 +84,7 @@
 "Change your Password" = "Canvieu la contrasenya";
 "The password was changed successfully." = "La contrasenya s'ha canviat correctament";
 "Your password has expired, please enter a new one below" = "La contrasenya ha caducat; introduïu-ne una nova";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
 "Password must not be empty." = "Heu d'escriure la contrasenya.";
 "The passwords do not match. Please try again." = "Les contrasenyes no coincideixen. Torneu-ho a intentar.";
 "Password Grace Period" = "Període de validesa de la contrasenya";
