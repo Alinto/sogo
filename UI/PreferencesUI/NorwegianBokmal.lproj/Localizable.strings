@@ -274,11 +274,6 @@
 "Confirmation" = "Bekreft";
 "Change" = "Endre";
 "Passwords don't match" = "Passordene er ikke like ";
-"POLICY_MIN_LOWERCASE_LETTER" = "Minst %{0} liten bokstav";
-"POLICY_MIN_UPPERCASE_LETTER" = "Minst %{0} stor bokstav";
-"POLICY_MIN_DIGIT" = "Minst %{0} tall ";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Minst %{0} spesialtegn";
-"POLICY_MIN_LENGTH" = "Minimum %{0} karakterer ";
 
 
 /* Event+task classifications */
