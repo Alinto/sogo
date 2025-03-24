@@ -84,6 +84,7 @@
 "Change your Password" = "Mainīt paroli";
 "The password was changed successfully." = "Parole sekmīgi nomainīta.";
 "Your password has expired, please enter a new one below" = "Jūsu paroles derīguma termiņš ir beidzies, lūdzu, ievadiet jaunu";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
 "Password must not be empty." = "Parole nedrīkst būt tukša.";
 "The passwords do not match. Please try again." = "Paroles nesakrīt. Lūdzu, mēģiniet vēlreiz.";
 "Password Grace Period" = "Paroles derīguma periods";
