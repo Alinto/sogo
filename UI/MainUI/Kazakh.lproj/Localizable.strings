@@ -84,6 +84,7 @@
 "Change your Password" = "Пароліңізді өзгертіңіз";
 "The password was changed successfully." = "Пароль ойдағыдай өзгертілді.";
 "Your password has expired, please enter a new one below" = "Сіздің пароліңіз ескірді, төменге жаңасын енгізіңіз";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
 "Password must not be empty." = "Пароль бос болмауы керек.";
 "The passwords do not match. Please try again." = "Парольдер сәйкес келмейді. Тағы қайталап көріңіз.";
 "Password Grace Period" = "Пароль жарамдылығының жеңілдікті кезеңі";
