@@ -274,11 +274,6 @@
 "Confirmation" = "Bestätigung";
 "Change" = "Ändern";
 "Passwords don't match" = "Die Passwörter stimmen nicht überein";
-"POLICY_MIN_LOWERCASE_LETTER" = "Mindestens %{0} Kleinbuchstaben";
-"POLICY_MIN_UPPERCASE_LETTER" = "Mindestens %{0} Großbuchstaben";
-"POLICY_MIN_DIGIT" = "Mindestens %{0} Ziffern";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Mindestens %{0} Sonderzeichen";
-"POLICY_MIN_LENGTH" = "Mindestlänge %{0} Zeichen";
 
 
 /* Event+task classifications */
