@@ -41,11 +41,11 @@
      = "网络上的任何人都可以访问您的通讯录 \"%{0}\", 即使非本系统账户。是否确定在网络上公开此通讯录？";
 "Give Access" = "授权访问";
 "Keep Private" = "保留私用";
-"Expand" = "Expand";
+"Expand" = "展开";
 "Reduce" = "Reduce";
 
 /* tooltip */
-"Refresh" = "Refresh";
+"Refresh" = "刷新";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -125,7 +125,7 @@
 "You cannot (un)subscribe to a folder that you own!" = "不能订阅(退订)自己的目录";
 
 /* SMIME Certificate field */
-"S/MIME Certificate" = "S/MIME Certificate";
+"S/MIME Certificate" = "S/MIME 证书";
 "Subject Name" = "Subject Name";
 "Issuer" = "Issuer";
 "streetAddress" = "Street";
@@ -137,7 +137,7 @@
 "commonName" = "Common Name";
 "surname" = "Surname";
 "givenName" = "Given Name";
-"emailAddress" = "Email Address";
+"emailAddress" = "邮箱地址";
 
 
 /* Authentication username */
@@ -156,7 +156,7 @@
 "File size upload limit reached" = "已到达文件大小上传上限";
 
 /* Generic server error */
-"An error occured, please try again." = "An error occured, please try again.";
+"An error occured, please try again." = "发生错误，请再次尝试";
 
 /* Open datepicker */
 "Open Calendar" = "Open Calendar";
@@ -179,7 +179,7 @@
 "key_space" = "空格";
 
 /* Delete key */
-"key_delete" = "delete";
+"key_delete" = "删除";
 
 /* Shift and space key */
 "key_shift+space" = "shift + 空格";
@@ -228,8 +228,15 @@
 
 /* Password Recovery */
 "passwordRecovery_Disabled" = "Disabled";
-"passwordRecovery_SecretQuestion" = "Secret question";
+"passwordRecovery_SecretQuestion" = "密保问题";
 "passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
 "passwordRecovery_SecretQuestion2" = "What was your first car ?";
 "passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
-"passwordRecovery_SecondaryEmail" = "Secondary E-mail";
+"passwordRecovery_SecondaryEmail" = "备用邮箱";
+
+/* Password */
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
+"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0} special symbols";
+"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";

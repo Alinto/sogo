@@ -3,7 +3,7 @@
 /* Icon's label */
 "Create"      = "新建";
 "Empty Trash" = "清空回收站";
-"Empty Junk Folder" = "Empty Junk Folder";
+"Empty Junk Folder" = "清空垃圾邮件";
 "Delete"      = "删除";
 "Expunge"     = "清空";
 "Forward"     = "转发";
@@ -127,7 +127,7 @@
 "Edit Draft..." = "编辑草稿...";
 "Load Images" = "加载图片";
 "Return Receipt" = "回复回执";
-"Choose which identity to send this message from" = "Choose which identity to send this message from";
+"Choose which identity to send this message from" = "选择发件人地址";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "此消息的发件人要求当你阅读该消息时得到通知。你是否希望通知发件人？";
 "Return Receipt (displayed) - %@"= "回复回执(已标示)- %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "这是你发送邮件给 %@ 的回执。\n\n附注: 回执只通知邮件已收到， 并不保证收件人已经阅读内容。 ";
@@ -143,13 +143,13 @@
 "This mail is being sent from an unsecure network!" = "这个邮件发自不安全的网络！";
 "Address Book" = "通讯录";
 "Search For" = "搜索";
-"Contains" = "Contains";
-"Does not contains" = "Does not contains";
-"Advanced search" = "Advanced search";
+"Contains" = "包含";
+"Does not contains" = "不包含";
+"Advanced search" = "高级搜索";
 "Anytime" = "Anytime";
-"Last 7 days" = "Last 7 days";
-"Last 30 days" = "Last 30 days";
-"Last 6 month" = "Last 6 month";
+"Last 7 days" = "最近7天";
+"Last 30 days" = "最近30天";
+"Last 6 month" = "最近6个月";
 "Before" = "Before";
 "After" = "After";
 "Between" = "Between";
@@ -171,6 +171,7 @@
 /* MailListView */
 "Sender" = "发件人";
 "Subject or Sender" = "主题或发件人";
+"Subject or Recipient" = "Subject or Recipient";
 "To or Cc" = "收件人或抄送人";
 "Entire Message" = "全部内容";
 "Date"          = "日期";
@@ -451,7 +452,7 @@
 "Set as Trash" = "设为放入回收站";
 
 /* Set the folder as the one holding the Templates */
-"Set as Templates" = "Set as Templates";
+"Set as Templates" = "设置为模板";
 
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "设为垃圾邮件";
@@ -479,7 +480,7 @@
 
 "More Options" = "More Options";
 
-"New draft" = "New draft";
+"New draft" = "新建草稿";
 "Create new draft with this template" = "Create new draft with this template";
 
 /* Advanced search */
@@ -514,3 +515,18 @@
 
 /* Hotkey to forward to a message */
 "hotkey_forward" = "f";
+
+/* Email deletion */
+"Clean folder" = "Clean folder";
+"Clean mailbox" = "Clean mailbox";
+"Delete permanently (do not use trash)" = "Delete permanently (do not use trash)";
+"Apply to subfolders" = "Apply to subfolders";
+"Delete e-mails older than" = "Delete e-mails older than";
+"3 months" = "3 months";
+"6 months" = "6 months";
+"9 months" = "9 months";
+"1 year" = "1 year";
+"Custom" = "Custom";
+"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "You are about to permanently delete some messages. Are you sure you want to proceed with this action?";
+"Apply" = "Apply";
+"%{0} message(s) deleted" = "%{0} message(s) deleted";
