@@ -274,11 +274,6 @@
 "Confirmation" = "Onay";
 "Change" = "Değiştir";
 "Passwords don't match" = "Parola ile onayı aynı değil";
-"POLICY_MIN_LOWERCASE_LETTER" = "En az %{0} küçük harf";
-"POLICY_MIN_UPPERCASE_LETTER" = "En az %{0} büyük harf";
-"POLICY_MIN_DIGIT" = "En az %{0} rakam";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "En az %{0} özel simge";
-"POLICY_MIN_LENGTH" = "En az %{0} karakter uzunluğunda";
 
 
 /* Event+task classifications */
