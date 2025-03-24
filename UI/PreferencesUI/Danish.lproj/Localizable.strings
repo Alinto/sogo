@@ -274,11 +274,6 @@
 "Confirmation" = "Bekræftelse";
 "Change" = "Skift";
 "Passwords don't match" = "Adgangskoder stemmer ikke overens";
-"POLICY_MIN_LOWERCASE_LETTER" = "Minimum på %{0} små bogstaver";
-"POLICY_MIN_UPPERCASE_LETTER" = "Minimum på %{0} store bogstaver";
-"POLICY_MIN_DIGIT" = "Minimum på %{0} ciffer";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Mindst %{0} specielle tegn";
-"POLICY_MIN_LENGTH" = "Minimumlængde på %{0} tegn";
 
 
 /* Event+task classifications */

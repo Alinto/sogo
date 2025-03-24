@@ -233,3 +233,10 @@
 "passwordRecovery_SecretQuestion2" = "Hvad var din første bil?";
 "passwordRecovery_SecretQuestion3" = "Hvad er din yndlings film?";
 "passwordRecovery_SecondaryEmail" = "Sekundær E-mail";
+
+/* Password */
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimum %{0} lille bogstav";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimum %{0} stort bogstav";
+"POLICY_MIN_DIGIT" = "Minimum %{0} tal";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum %{0} specialtegn";
+"POLICY_MIN_LENGTH" = "Minimum længde på %{0} tegn";

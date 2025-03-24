@@ -84,6 +84,7 @@
 "Change your Password" = "Skift din adgangskode";
 "The password was changed successfully." = "Adgangskoden er ændret.";
 "Your password has expired, please enter a new one below" = "Din adgangskode er udløbet, indtast venligst et nyt nedenfor";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Din adgangskode er for svag. Vælg venligst en stærkere adgangskode for at forbedre din sikkerhed.";
 "Password must not be empty." = "Adgangskode må ikke være tomt.";
 "The passwords do not match. Please try again." = "De indtastede adgangskoder stemmer ikke overens. Prøv venligst igen.";
 "Password Grace Period" = "Adgangskodens varighed";

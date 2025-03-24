@@ -171,6 +171,7 @@
 /* MailListView */
 "Sender" = "Afsender";
 "Subject or Sender" = "Emne eller afsender";
+"Subject or Recipient" = "Emne eller modtager";
 "To or Cc" = "Til eller Cc";
 "Entire Message" = "Hele beskeden";
 "Date"          = "Dato";
@@ -514,3 +515,18 @@
 
 /* Hotkey to forward to a message */
 "hotkey_forward" = "f";
+
+/* Email deletion */
+"Clean folder" = "Ryd mappe";
+"Clean mailbox" = "Ryd postkasse";
+"Delete permanently (do not use trash)" = "Slet permanent (brug ikke papirkurv)";
+"Apply to subfolders" = "Anvend på undermapper";
+"Delete e-mails older than" = "Slet e-mails ældre end";
+"3 months" = "3 måneder";
+"6 months" = "6 måneder";
+"9 months" = "9 måneder";
+"1 year" = "1 år";
+"Custom" = "Brugerdefineret";
+"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "Du er ved at slette nogle beskeder permanent. Er du sikker på, at du vil fortsætte med denne handling?";
+"Apply" = "Anvend";
+"%{0} message(s) deleted" = "%{0} besked(er) slettet";
