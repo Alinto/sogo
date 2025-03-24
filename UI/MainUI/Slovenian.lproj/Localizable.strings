@@ -84,6 +84,7 @@
 "Change your Password" = "Spremeni tvoje geslo";
 "The password was changed successfully." = "Geslo je uspešno spremenjeno.";
 "Your password has expired, please enter a new one below" = "Tvoje geslo je poteklo, prosim vnesi spodaj novo";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
 "Password must not be empty." = "Geslo ne sem biti prazno.";
 "The passwords do not match. Please try again." = "Gesli se ne ujemata. Prosim poskusi ponovno.";
 "Password Grace Period" = "Geslo z odlogom";
