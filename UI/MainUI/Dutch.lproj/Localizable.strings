@@ -84,6 +84,7 @@
 "Change your Password" = "Verander uw wachtwoord";
 "The password was changed successfully." = "Het wachtwoord is met succes veranderd.";
 "Your password has expired, please enter a new one below" = "Uw wachtwoord is verlopen, vul hieronder een nieuw wachtwoord in";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
 "Password must not be empty." = "Wachtwoord mag niet leeg zijn.";
 "The passwords do not match. Please try again." = "De wachtwoorden komen niet overeen. Probeer het opnieuw.";
 "Password Grace Period" = "Wachtwoord-respijtperiode";
