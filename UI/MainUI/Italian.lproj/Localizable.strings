@@ -84,6 +84,7 @@
 "Change your Password" = "Cambia la tua password";
 "The password was changed successfully." = "La password è stata cambiata con successo.";
 "Your password has expired, please enter a new one below" = "La tua password è scaduta, prego inserire la nuova password qui sotto";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
 "Password must not be empty." = "La password non può essere vuota.";
 "The passwords do not match. Please try again." = "Le password non coincidono. Prego riprovare.";
 "Password Grace Period" = "Periodo di tolleranza password";
