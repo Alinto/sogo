@@ -84,6 +84,7 @@
 "Change your Password" = "تغيير كلمة السر الخاصة بك";
 "The password was changed successfully." = "تم تغيير كلمة المرور بنجاح.";
 "Your password has expired, please enter a new one below" = "كلمة السر الخاصة بك قد انتهت صلاحيتها، الرجاء إدخال واحدة جديدة فيما يلي";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
 "Password must not be empty." = "كلمة السر يجب ان لا تكون فارغة.";
 "The passwords do not match. Please try again." = "كلمات المرور لا تتطابق. يرجى المحاولة مرة أخرى.";
 "Password Grace Period" = "فترة السماح لكلمة السر ";
