@@ -84,6 +84,7 @@
 "Change your Password" = "Сменете ја вашата лозинка";
 "The password was changed successfully." = "Лозинката е успешно сменета.";
 "Your password has expired, please enter a new one below" = "Вашата лозинка е истечена. Ве молам да внесете нова";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
 "Password must not be empty." = "Лозинката не може да биде празна.";
 "The passwords do not match. Please try again." = "Лозинките не се исти. Обидете се повторно.";
 "Password Grace Period" = "Грејс период на лозинката";
