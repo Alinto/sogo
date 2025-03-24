@@ -274,11 +274,6 @@
 "Confirmation" = "Повтор нового пароля";
 "Change" = "Изменить";
 "Passwords don't match" = "Пароли не совпадают";
-"POLICY_MIN_LOWERCASE_LETTER" = "Минимум %{0} строчных букв";
-"POLICY_MIN_UPPERCASE_LETTER" = "Минимум %{0} заглавных букв";
-"POLICY_MIN_DIGIT" = "Минимум %{0} цифр";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Минимум %{0} специальных символов";
-"POLICY_MIN_LENGTH" = "Минимальная длина %{0} символов";
 
 
 /* Event+task classifications */
