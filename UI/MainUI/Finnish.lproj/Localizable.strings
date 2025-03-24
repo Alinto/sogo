@@ -84,6 +84,7 @@
 "Change your Password" = "Vaihda salasana";
 "The password was changed successfully." = "Salasana on vaihdettu onnistuneesti.";
 "Your password has expired, please enter a new one below" = "Salasanasi on vanhentunut, ole hyvä ja anna uusi";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
 "Password must not be empty." = "Salasana ei saa olla tyhjä.";
 "The passwords do not match. Please try again." = "Salasanat eivät täsmää. Ole hyvä ja yrita uudelleen.";
 "Password Grace Period" = "Salasanan vaihtoaika";
