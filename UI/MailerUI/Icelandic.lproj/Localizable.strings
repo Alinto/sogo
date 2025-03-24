@@ -171,6 +171,7 @@
 /* MailListView */
 "Sender" = "Sendandi";
 "Subject or Sender" = "Efni eða viðtakandi";
+"Subject or Recipient" = "Subject or Recipient";
 "To or Cc" = "Til eða afrit";
 "Entire Message" = "Allur pósturinn";
 "Date"          = "Dagsetning";
@@ -514,3 +515,18 @@
 
 /* Hotkey to forward to a message */
 "hotkey_forward" = "f";
+
+/* Email deletion */
+"Clean folder" = "Clean folder";
+"Clean mailbox" = "Clean mailbox";
+"Delete permanently (do not use trash)" = "Delete permanently (do not use trash)";
+"Apply to subfolders" = "Apply to subfolders";
+"Delete e-mails older than" = "Delete e-mails older than";
+"3 months" = "3 months";
+"6 months" = "6 months";
+"9 months" = "9 months";
+"1 year" = "1 year";
+"Custom" = "Custom";
+"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "You are about to permanently delete some messages. Are you sure you want to proceed with this action?";
+"Apply" = "Apply";
+"%{0} message(s) deleted" = "%{0} message(s) deleted";
