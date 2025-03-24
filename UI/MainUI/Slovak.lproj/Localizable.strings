@@ -84,6 +84,7 @@
 "Change your Password" = "Zmeniť heslo";
 "The password was changed successfully." = "Vaše heslo bolo zmené.";
 "Your password has expired, please enter a new one below" = "Vaše heslo vypršalo, zadajte, prosím, nižšie nové.";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
 "Password must not be empty." = "Heslo nesmie byť prázdne.";
 "The passwords do not match. Please try again." = "Heslá sa nezhodujú. Skúste to znova.";
 "Password Grace Period" = "Doba platnosti hesla";
