@@ -291,6 +291,11 @@ unsigned char GetRruleMonthNum(unsigned char a, unsigned char b) {
   partName = nil;
   data = [self fetchBLOB];
 
+  if((int)[data length] < sizeof(DWORD)) {
+    NSLog(@"TNEF: ERROR try to decode empty data where it should'nt");
+    return;
+  }
+    
   memcpy(&signature, [data bytes], sizeof(DWORD));
   if (TNEFCheckForSignature(signature) == 0)
     {
