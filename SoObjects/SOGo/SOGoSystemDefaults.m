@@ -1030,7 +1030,7 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
     v = 10;
   }
   else {
-    NSLog(@"EASLOG: SOGoInternalSyncInterval found, value is %@", v);
+    NSLog(@"EASLOG: SOGoInternalSyncInterval found, value is %d", v);
   }
 
   return v;

@@ -2476,17 +2476,17 @@ void handle_eas_terminate(int signum)
   defaultInterval = [defaults maximumPingInterval];
   internalInterval = [defaults internalSyncInterval];
   sleepInterval = (internalInterval < 5) ? 5 : internalInterval;
-  NSLog(@"EASLOG: processPing, defaults found defaultInterval: %@, internalInterval: %@, sleepInterval: %@", defaultInterval, internalInterval, sleepInterval);
+  NSLog(@"EASLOG: processPing, defaults found defaultInterval: %d, internalInterval: %d, sleepInterval: %d", defaultInterval, internalInterval, sleepInterval);
 
   if (theDocumentElement)
   {
     heartbeatInterval = [[[(id)[theDocumentElement getElementsByTagName: @"HeartbeatInterval"] lastObject] textValue] intValue];
-    NSLog(@"EASLOG: processPing, heartbeatInterval found in document: %@", heartbeatInterval);
+    NSLog(@"EASLOG: processPing, heartbeatInterval found in document: %d", heartbeatInterval);
   }
   else
   {
     heartbeatInterval = defaultInterval;
-    NSLog(@"EASLOG: processPing, heartbeatInterval NOT found in document: %@", heartbeatInterval);
+    NSLog(@"EASLOG: processPing, heartbeatInterval NOT found in document: %d", heartbeatInterval);
   }
 
   if (heartbeatInterval > defaultInterval || heartbeatInterval == 0)
@@ -2616,7 +2616,7 @@ void handle_eas_terminate(int signum)
             {
               // We check if we must break the current ping request since an other ping request
               // has just arrived.
-              NSLog(@"EASLOG: processPing, while loop for changes start. total_sleep: %@, internalInterval: %@", total_sleep, internalInterval);
+              NSLog(@"EASLOG: processPing, while loop for changes start. total_sleep: %d, internalInterval: %d", total_sleep, internalInterval);
               pingRequestInCache = [[self globalMetadataForDevice] objectForKey: @"PingRequest"];
               if (pingRequestInCache && ![pingRequestInCache isEqualToString: processIdentifier])
                 {
