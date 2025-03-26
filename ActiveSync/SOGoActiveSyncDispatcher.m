@@ -2501,7 +2501,7 @@ void handle_eas_terminate(int signum)
 
     status = 1;
   }
-  NSLog(@"EASLOG: processPing, heartbeatInterval final value: %@", heartbeatInterval);
+  NSLog(@"EASLOG: processPing, heartbeatInterval final value: %d", heartbeatInterval);
 
   // We build the list of folders to "ping". When the payload is empty, we use the list
   // of "cached" folders.
