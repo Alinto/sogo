@@ -1025,7 +1025,13 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
   v = [self integerForKey: @"SOGoInternalSyncInterval"];
 
   if (!v)
+  {
+    NSLog(@"EASLOG: SOGoInternalSyncInterval didn't find value in conf, go with default 10");
     v = 10;
+  }
+  else {
+    NSLog(@"EASLOG: SOGoInternalSyncInterval found, value is %@", v);
+  }
 
   return v;
 }

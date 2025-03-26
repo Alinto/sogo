@@ -2471,28 +2471,37 @@ void handle_eas_terminate(int signum)
   [[o properties] setObject: processIdentifier forKey: @"PingRequest"];
   [o save];
 
+  NSLog(@"EASLOG: processPing, load defaults");
   defaults = [SOGoSystemDefaults sharedSystemDefaults];
   defaultInterval = [defaults maximumPingInterval];
   internalInterval = [defaults internalSyncInterval];
   sleepInterval = (internalInterval < 5) ? 5 : internalInterval;
+  NSLog(@"EASLOG: processPing, defaults found defaultInterval: %@, internalInterval: %@, sleepInterval: %@", defaultInterval, internalInterval, sleepInterval);
 
   if (theDocumentElement)
+  {
     heartbeatInterval = [[[(id)[theDocumentElement getElementsByTagName: @"HeartbeatInterval"] lastObject] textValue] intValue];
+    NSLog(@"EASLOG: processPing, heartbeatInterval found in document: %@", heartbeatInterval);
+  }
   else
+  {
     heartbeatInterval = defaultInterval;
+    NSLog(@"EASLOG: processPing, heartbeatInterval NOT found in document: %@", heartbeatInterval);
+  }
 
   if (heartbeatInterval > defaultInterval || heartbeatInterval == 0)
-    {
-      heartbeatInterval = defaultInterval;
-      status = 5;
-    }
+  {
+    heartbeatInterval = defaultInterval;
+    status = 5;
+  }
   else
-    {
-      if (heartbeatInterval < internalInterval)
-        heartbeatInterval = internalInterval;
+  {
+    if (heartbeatInterval < internalInterval)
+      heartbeatInterval = internalInterval;
 
-      status = 1;
-    }
+    status = 1;
+  }
+  NSLog(@"EASLOG: processPing, heartbeatInterval final value: %@", heartbeatInterval);
 
   // We build the list of folders to "ping". When the payload is empty, we use the list
   // of "cached" folders.
@@ -2607,6 +2616,7 @@ void handle_eas_terminate(int signum)
             {
               // We check if we must break the current ping request since an other ping request
               // has just arrived.
+              NSLog(@"EASLOG: processPing, while loop for changes start. total_sleep: %@, internalInterval: %@", total_sleep, internalInterval);
               pingRequestInCache = [[self globalMetadataForDevice] objectForKey: @"PingRequest"];
               if (pingRequestInCache && ![pingRequestInCache isEqualToString: processIdentifier])
                 {
