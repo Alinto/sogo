@@ -79,6 +79,7 @@
 - (BOOL) foldersSendEMailNotifications;
 - (NSArray *) calendarDefaultRoles;
 - (NSString *) calendarJistiBaseUrl;
+- (NSString *) calendarJitsiRoomPrefix;
 - (NSArray *) contactsDefaultRoles;
 - (NSArray *) refreshViewIntervals;
 - (NSString *) subscriptionFolderFormat;

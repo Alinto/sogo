@@ -316,9 +316,12 @@
 
     this.addJitsiUrl = function () {
       var jitsiBaseUrl = "https://meet.jit.si";
+      var jitsiRoomPrefix = "SOGo_meeting/";
       if(this.preferences.defaults && this.preferences.defaults.SOGoCalendarJitsiBaseUrl)
         jitsiBaseUrl = this.preferences.defaults.SOGoCalendarJitsiBaseUrl;
-      var jitsiUrl = jitsiBaseUrl + "/SOGo_meeting/" + crypto.randomUUID();
+      if(this.preferences.defaults && this.preferences.defaults.SOGoCalendarJitsiRoomPrefix)
+        jitsiRoomPrefix = this.preferences.defaults.SOGoCalendarJitsiRoomPrefix;
+      var jitsiUrl = jitsiBaseUrl + "/" + jitsiRoomPrefix + crypto.randomUUID();
       var i = this.component.addAttachUrl(jitsiUrl);
       focus('attachUrl_' + i);
     };

@@ -340,6 +340,8 @@ static SoProduct *preferencesProduct = nil;
   {
     if (![[defaults source] objectForKey: @"SOGoCalendarJitsiBaseUrl"])
       [[defaults source] setObject: [domainDefaults calendarJistiBaseUrl] forKey: @"SOGoCalendarJitsiBaseUrl"];
+    if (![[defaults source] objectForKey: @"SOGoCalendarJitsiRoomPrefix"])
+      [[defaults source] setObject: [domainDefaults calendarJitsiRoomPrefix] forKey: @"SOGoCalendarJitsiRoomPrefix"];
   }
 
   //
