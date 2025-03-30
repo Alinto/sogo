@@ -179,6 +179,16 @@
   return jitsiBaseUrl;
 }
 
+- (NSString *) calendarJitsiRoomPrefix
+{
+  NSString *jitsiRoomPrefix;
+  jitsiRoomPrefix = [self stringForKey: @"SOGoCalendarJitsiRoomPrefix"];
+  if(!jitsiRoomPrefix)
+    jitsiRoomPrefix = @"SOGo_meeting/";
+
+  return jitsiRoomPrefix;
+}
+
 - (NSArray *) contactsDefaultRoles
 {
   return [self stringArrayForKey: @"SOGoContactsDefaultRoles"];

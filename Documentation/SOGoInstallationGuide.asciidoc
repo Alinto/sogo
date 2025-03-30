@@ -490,6 +490,12 @@ the jitsi server used for creating the meeting link.
 
 Defaults to `https://meet.jit.si` when unset.
 
+|D |SOGoCalendarJitsiRoomPrefix
+|Only used if SOGoCalendarEnableJitsiLink is set to YES. The string for
+the Jitsi room prefix used for creating the meeting link.
+
+Defaults to `SOGo_meeting/` when unset.
+
 |S |SOGoSAML2PrivateKeyLocation
 |The location of the SSL private key file on the filesystem that is used
 by SOGo to sign and encrypt communications with the SAML2 identity
