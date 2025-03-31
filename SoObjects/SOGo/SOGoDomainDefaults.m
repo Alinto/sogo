@@ -169,7 +169,7 @@
   return [self stringArrayForKey: @"SOGoCalendarDefaultRoles"];
 }
 
-- (NSString *) calendarJistiBaseUrl
+- (NSString *) calendarJitsiBaseUrl
 {
   NSString *jitsiBaseUrl;
   jitsiBaseUrl = [self stringForKey: @"SOGoCalendarJitsiBaseUrl"];
