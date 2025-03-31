@@ -334,12 +334,12 @@ static SoProduct *preferencesProduct = nil;
           [defaults setCalendarCategoriesColors: colors];
         }
     }
-  // Add the jisti link if needed
+  // Add the jitsi link if needed
   sd = [SOGoSystemDefaults sharedSystemDefaults];
   if([sd isCalendarJitsiLinkEnabled])
   {
     if (![[defaults source] objectForKey: @"SOGoCalendarJitsiBaseUrl"])
-      [[defaults source] setObject: [domainDefaults calendarJistiBaseUrl] forKey: @"SOGoCalendarJitsiBaseUrl"];
+      [[defaults source] setObject: [domainDefaults calendarJitsiBaseUrl] forKey: @"SOGoCalendarJitsiBaseUrl"];
     if (![[defaults source] objectForKey: @"SOGoCalendarJitsiRoomPrefix"])
       [[defaults source] setObject: [domainDefaults calendarJitsiRoomPrefix] forKey: @"SOGoCalendarJitsiRoomPrefix"];
   }

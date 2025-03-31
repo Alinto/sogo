@@ -78,7 +78,7 @@
 - (BOOL) appointmentSendEMailNotifications;
 - (BOOL) foldersSendEMailNotifications;
 - (NSArray *) calendarDefaultRoles;
-- (NSString *) calendarJistiBaseUrl;
+- (NSString *) calendarJitsiBaseUrl;
 - (NSString *) calendarJitsiRoomPrefix;
 - (NSArray *) contactsDefaultRoles;
 - (NSArray *) refreshViewIntervals;

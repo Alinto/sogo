@@ -840,8 +840,8 @@
   /**
    * @function hasJitsiUrl
    * @memberof Component.prototype
-   * @desc Check if the there is a jisti url
-   * @returns true if there is a jisti url
+   * @desc Check if the there is a jitsi url
+   * @returns true if there is a jitsi url
    */
   Component.prototype.hasJitsiUrl = function() {
     if (angular.isUndefined(this.attachUrls)) {
