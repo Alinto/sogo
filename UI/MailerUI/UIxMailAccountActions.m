@@ -62,7 +62,7 @@
 @implementation UIxMailAccountActions
 
 - (NSArray *)sortChildrenRecursively: (NSArray *)children {
-    NSInteger i, j;
+    NSInteger i, j, nbSpecial;
     NSMutableArray *sortedArray;
     NSArray *unsortedChildren, *sortedChildren;
     NSDictionary *child;
@@ -75,15 +75,18 @@
 
     sortedArray = [NSMutableArray array];
 
+    nbSpecial = 0;
     for (child in children) {
         unsortedChildren = [child objectForKey:@"children"];
         sortedChildren = [self sortChildrenRecursively:unsortedChildren];
         mutableChild = [child mutableCopy];
         [mutableChild setObject:sortedChildren forKey:@"children"];
         [sortedArray addObject:mutableChild];
+        if(![[mutableChild objectForKey:@"type"] isEqualToString: @"folder"])
+          nbSpecial++;
     }
 
-    for (i = 0; i < [sortedArray count] - 1; i++) {
+    for (i = nbSpecial; i < [sortedArray count] - 1; i++) {
         for (j = i + 1; j < [sortedArray count]; j++) {
             name1 = [[sortedArray objectAtIndex:i] objectForKey:@"name"];
             name2 = [[sortedArray objectAtIndex:j] objectForKey:@"name"];
