@@ -325,7 +325,7 @@
           {
             login = [currentAcount objectForKey: @"userName"];
             password = [currentAcount objectForKey: @"password"];
-            smtpAuthMethod = "plain"; //Only support plain for auxiliary account
+            smtpAuthMethod = @"plain"; //Only support plain for auxiliary account
           }
           else
           {
