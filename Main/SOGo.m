@@ -383,7 +383,12 @@ static BOOL debugLeaks;
   if([login isEqualToString: @"changeLanguage"])
     user = nil;
   else
+  {
+    //Here the user is expected to be name or name@domain.com
+    //However iOS 18.4 sanitize the caldav url and put %40 instead of @
+    login = [login stringByReplacingOccurrencesOfString: @"%40" withString: @"@"];
     user = [SOGoUser userWithLogin: login roles: nil];
+  }
   if (user)
     userFolder = [$(@"SOGoUserFolder") objectWithName: login
                                           inContainer: self];
@@ -451,7 +456,7 @@ static BOOL debugLeaks;
             {
               obj = [self lookupUser: _key inContext: _ctx];
               if (!obj && ![_key isEqualToString: @"public"])
-		obj = [self lookupUser: @"anonymous" inContext: _ctx];
+		              obj = [self lookupUser: @"anonymous" inContext: _ctx];
             }
        }
     }
