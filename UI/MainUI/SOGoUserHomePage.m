@@ -92,7 +92,8 @@
   // We check if we must write the Sieve scripts to the server
   // upon first login if no user preferences are found, and the SOGo
   // admin has defined SOGoSieveFilters in the domain or system settings
-  if ([dd sieveScriptsEnabled] && [[[ud source] values] count] == 0 &&
+  //count = 1 because values will be {CDefaultsSize = 16777215; } in this case.
+  if ([dd sieveScriptsEnabled] && [[[ud source] values] count] == 1 &&
       ((filters = [[dd source] objectForKey: @"SOGoSieveFilters"]) || (filters = [[sd source] objectForKey: @"SOGoSieveFilters"])))
     {
       SOGoMailAccount *account;
