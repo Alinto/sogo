@@ -372,6 +372,7 @@
 {
   NSCalendarDate *aptStartDate, *aptEndDate, *allDayStartDate;
   NSInteger offset, nbrDays;
+  NSString *owner;
   NSTimeZone *timeZone;
   iCalDateTime *startDate;
   iCalTimeZone *tz;
@@ -454,6 +455,16 @@
             }
         }
     }
+
+  //To make an ics conforme with outlook live (bouh), valarm must be the last element of vevent
+  //Try to set it here
+  o = [data objectForKey: @"alarm"];
+  if ([o isKindOfClass: [NSDictionary class]])
+    {
+      owner = [data objectForKey: @"owner"];
+      [self _setAlarm: o forOwner: owner];
+    }
+
 }
 
 - (iCalTimeZone *) adjustInContext: (WOContext *) context
