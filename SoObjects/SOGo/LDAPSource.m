@@ -784,6 +784,8 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 
   didChange = NO;
 
+  [self updateBaseDNFromLogin: login];
+
   NS_DURING
     if ([login length] > 0)
       {
