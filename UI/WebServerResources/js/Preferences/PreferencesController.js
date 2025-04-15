@@ -427,20 +427,6 @@
         }
       }
 
-      // We check if we're allowed or not to notify based on the domain defaults
-      if (this.preferences.defaults.Notification && this.preferences.defaults.Notification.enabled &&
-        this.preferences.defaults.Notification.notificationAddress) {
-      addresses = this.preferences.defaults.Notification.notificationAddress;
-      try {
-        for (i = 0; i < addresses.length; i++) {
-          validateForwardAddress(addresses[i]);
-        }
-      } catch (err) {
-        Dialog.alert(l('Error'), err);
-        sendForm = false;
-      }
-    }
-
       // IMAP labels must be unique
       if (this.preferences.defaults.SOGoMailLabelsColorsKeys.length !=
           this.preferences.defaults.SOGoMailLabelsColorsValues.length ||
