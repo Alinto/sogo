@@ -19,6 +19,7 @@
  */
 
 #import <Foundation/NSValue.h>
+#import <Foundation/NSURL.h>
 
 #import <NGCards/iCalToDo.h>
 #import <NGCards/iCalTrigger.h>
@@ -596,6 +597,7 @@ static NSArray *reminderValues = nil;
   NSMutableArray *attachUrls;
   NSArray *values;
   NSString *attachUrl;
+  NSURL *url;
   NSUInteger count, max;
 
   values = [component attach];
@@ -613,12 +615,19 @@ static NSArray *reminderValues = nil;
   else
     attachUrls = nil;
 
+  url = [component url];
+  if(url && attachUrls)
+    [attachUrls addObject: [NSDictionary dictionaryWithObject: [url absoluteString] forKey: @"value"]];
+  else
+    attachUrls = [NSArray arrayWithObjects: [NSDictionary dictionaryWithObject: [url absoluteString] forKey: @"value"], nil];
+
   return attachUrls;
 }
 
 - (void) setAttributes: (NSDictionary *) data
 {
   NSArray *values;
+  NSURL *url;
   NSCalendarDate *now;
   NSMutableArray *attachUrls;
   NSMutableDictionary *dataWithOwner;
@@ -648,18 +657,26 @@ static NSArray *reminderValues = nil;
 
   [self _handleOrganizer];
 
+  //Be careful. The way sogo works, it only uses the property ATTACH for the url.
+  //But the other property URL, in the ics, will also be seen as an ATTACH in the UI.
+  //To avoid having both ATTACH and URL with the same uri, check the presence and value of URL first.
   if ([[data objectForKey: @"attachUrls"] isKindOfClass: [NSArray class]])
     {
       values = [component childrenWithTag: @"attach"];
       [component removeChildren: values];
       values = [data objectForKey: @"attachUrls"];
+
+      url = [component url];
       attachUrls = [NSMutableArray arrayWithCapacity: [values count]];
       for (i = 0; i < [values count]; i++)
         {
           o = [values objectAtIndex: i];
           if ([o isKindOfClass: [NSDictionary class]])
             {
-              [attachUrls addObject: [o objectForKey: @"value"]];
+              if(url && [[url absoluteString] isEqualToString: [o objectForKey: @"value"]])
+                continue; //this uri is already in URL property
+              else
+                [attachUrls addObject: [o objectForKey: @"value"]];
             }
         }
     }
