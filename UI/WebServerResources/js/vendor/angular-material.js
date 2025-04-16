@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.2.4
+ * v1.2.5
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -1055,7 +1055,7 @@ var nextUniqueId = 0, isIos, isAndroid, isFirefox;
 // Support material-tools builds.
 if (window.navigator) {
   var userAgent = window.navigator.userAgent || window.navigator.vendor || window.opera;
-  isIos = userAgent.match(/ipad|iphone|ipod/i);
+  isIos = /ipad|iphone|ipod/i.test(navigator.userAgent) && (!/os (\d+)_/i.test(navigator.userAgent) || parseInt(navigator.userAgent.match(/os (\d+)_/i)[1], 10) < 18); // disable for iOS 18 and upper
   isAndroid = userAgent.match(/android/i);
   isFirefox = userAgent.match(/(firefox|minefield)/i);
 }
@@ -39663,4 +39663,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.2.4"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.2.5"}};
