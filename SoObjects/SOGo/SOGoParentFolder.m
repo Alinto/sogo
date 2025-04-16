@@ -569,7 +569,10 @@ static SoSecurityManager *sm = nil;
   isPropfind = [requestMethod isEqualToString: @"PROPFIND"];
 
   error = [self initSubFolders];
-  if (error && isPropfind)
+  if(error)
+  {
+    [self errorWithFormat: @"a database error occured when inititializing the subFolders: %@", [error reason]];
+    if(isPropfind)
     {
       /* We exceptionnally raise the exception here because doPROPFIND: will
 	 not care for errors in its response from toManyRelationShipKeys,
@@ -577,10 +580,16 @@ static SoSecurityManager *sm = nil;
 	 SOGo extensions. */
       [error raise];
     }
+  }
 
   error = [self initSubscribedSubFolders];
-  if (error && isPropfind)
-    [error raise];
+  if (error)
+  {
+    [self errorWithFormat: @"a database error occured when subscribing to subfolders: %@", [error reason]];
+    if(isPropfind)
+      [error raise];
+  }
+    
 
   ma = [NSMutableArray arrayWithArray: [subFolders allValues]];
   if ([subscribedSubFolders count])
