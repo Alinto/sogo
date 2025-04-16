@@ -1055,7 +1055,7 @@ var nextUniqueId = 0, isIos, isAndroid, isFirefox;
 // Support material-tools builds.
 if (window.navigator) {
   var userAgent = window.navigator.userAgent || window.navigator.vendor || window.opera;
-  isIos = false;//userAgent.match(/ipad|iphone|ipod/i);
+  isIos = userAgent.match(/ipad|iphone|ipod/i);
   isAndroid = userAgent.match(/android/i);
   isFirefox = userAgent.match(/(firefox|minefield)/i);
 }
@@ -17364,7 +17364,7 @@ angular.module('material.components.datepicker', [
   var CALENDAR_PANE_WIDTH = 360;
 
   /** Used for checking whether the current user agent is on iOS or Android. */
-  var IS_MOBILE_REGEX = false;///ipad|iphone|ipod|android/i;
+  var IS_MOBILE_REGEX = /ipad|iphone|ipod|android/i;
 
   /**
    * Controller for md-datepicker.
