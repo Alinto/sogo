@@ -304,7 +304,7 @@
 "SOGo Version" = "SOGoバージョン";
 
 /* Confirmation asked when changing the language */
-"Save preferences and reload page now?" = "ユーザー設定を保存してページを再読み込みしますか？ / Save preferences and reload page now?";
+"Save preferences and reload page now?" = "ユーザー設定を保存してページを再読み込みしますか？ / Save preferences and reload page now? (Yes -> はい)";
 "Language" = "言語";
 "choose" = "選択...";
 "Arabic" = "العربية";
