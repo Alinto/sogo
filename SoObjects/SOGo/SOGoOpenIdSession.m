@@ -238,7 +238,9 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
         self->authorizationEndpoint = [config objectForKey: @"authorization_endpoint"];
         self->tokenEndpoint         = [config objectForKey: @"token_endpoint"];
         self->userinfoEndpoint      = [config objectForKey: @"userinfo_endpoint"];
-        self->endSessionEndpoint    = [config objectForKey: @"end_session_endpoint"];
+
+        if([config objectForKey: @"end_session_endpoint"]) 
+          self->endSessionEndpoint    = [config objectForKey: @"end_session_endpoint"];
 
         //Optionnals?
         if([config objectForKey: @"introspection_endpoint"])
@@ -346,7 +348,8 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
     ASSIGN (authorizationEndpoint, [sessionDict objectForKey: @"authorization_endpoint"]);
     ASSIGN (tokenEndpoint, [sessionDict objectForKey: @"token_endpoint"]);
     ASSIGN (userinfoEndpoint, [sessionDict objectForKey: @"userinfo_endpoint"]);
-    ASSIGN (endSessionEndpoint, [sessionDict objectForKey: @"end_session_endpoint"]);
+    if([sessionDict objectForKey: @"end_session_endpoint"])
+      ASSIGN (endSessionEndpoint, [sessionDict objectForKey: @"end_session_endpoint"]);
 
     //Optionnals?
     if([sessionDict objectForKey: @"introspection_endpoint"])
@@ -370,7 +373,8 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
   [sessionDict setObject: authorizationEndpoint forKey: @"authorization_endpoint"];
   [sessionDict setObject: tokenEndpoint forKey: @"token_endpoint"];
   [sessionDict setObject: userinfoEndpoint forKey: @"userinfo_endpoint"];
-  [sessionDict setObject: endSessionEndpoint forKey: @"end_session_endpoint"];
+  if(endSessionEndpoint)
+    [sessionDict setObject: endSessionEndpoint forKey: @"end_session_endpoint"];
 
   //Optionnals?
   if(introspectionEndpoint)

@@ -1612,7 +1612,7 @@ Defaults to `0` when unset.
 
 |S |SOGoOpenIdLogoutEnabled
 |Allow user to end their openId with the webmail. Meaning that will disconnect them from
-the others applicaitons as well.
+the others applicaitons as well. The openid server must have a end_session_endpoint.
 
 Defaults to `NO` when unset.
 |=======================================================================
