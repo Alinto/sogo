@@ -447,9 +447,9 @@
   }
   else if ([authType isEqualToString: @"openid"])
   {
-    SOGoOpenIdSession* session;
-    session = [SOGoOpenIdSession OpenIdSession: loginDomain];
-    redirectURL = [session logoutUrl];
+    SOGoOpenIdSession* sessionOidc;
+    sessionOidc = [SOGoOpenIdSession OpenIdSession: loginDomain];
+    redirectURL = [sessionOidc logoutUrl];
   }
 #if defined(SAML2_CONFIG)
   else if ([authType isEqualToString: @"saml2"])

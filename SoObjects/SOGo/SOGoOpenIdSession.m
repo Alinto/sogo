@@ -18,6 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSProcessInfo.h>
+
 #import <NGObjWeb/WOHTTPConnection.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
@@ -435,6 +437,12 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
          nextCheckAfter: nextCheck];
 }
 
+
+-(NSString *) _random_state
+{
+    return [[[NSProcessInfo processInfo] globallyUniqueString] asSHA1String];;
+}
+
 - (NSString*) loginUrl: (NSString *) oldLocation
 {
   NSString* logUrl;
@@ -442,6 +450,7 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
   logUrl = [logUrl stringByAppendingString: @"&response_type=code"];
   logUrl = [logUrl stringByAppendingFormat: @"&client_id=%@", self->openIdClient];
   logUrl = [logUrl stringByAppendingFormat: @"&redirect_uri=%@", oldLocation];
+  logUrl = [logUrl stringByAppendingFormat: @"&state=%@", [self _random_state]];
   if(self->forDomain != nil && [self->forDomain length] > 0)
     logUrl = [logUrl stringByAppendingFormat: @"&sogo_domain=%@", forDomain];
   // logurl = [self->logurl stringByAppendingFormat: @"&state=%@", state];
