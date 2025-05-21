@@ -218,7 +218,7 @@
        @" c_old_session VARCHAR(4096) NULL,"
        @" c_session_started INT4 NOT NULL,"
        @" c_refresh_token VARCHAR(4096) NULL,"
-       @" c_access_token_expires_in INT4 NOT NULL,"
+       @" c_access_token_expires_in INT4 NULL,"
        @" c_refresh_token_expires_in INT4 NULL)");
 
   return [NSString stringWithFormat: sqlFolderFormat, tableName];
@@ -379,7 +379,7 @@
        @" c_old_session VARCHAR(4096) NULL,"
        @" c_session_started INT4 NOT NULL,"
        @" c_refresh_token VARCHAR(4096) NULL,"
-       @" c_access_token_expires_in INT4 NOT NULL,"
+       @" c_access_token_expires_in INT4 NULL,"
        @" c_refresh_token_expires_in INT4 NULL)");
 
   return [NSString stringWithFormat: sqlFolderFormat, tableName];
@@ -540,7 +540,7 @@
        @" c_old_session VARCHAR2(4096) NULL,"
        @" c_session_started INTEGER NOT NULL,"
        @" c_refresh_token VARCHAR2(4096) NULL,"
-       @" c_access_token_expires_in INTEGER NOT NULL,"
+       @" c_access_token_expires_in INTEGER NULL,"
        @" c_refresh_token_expires_in INTEGER NULL)");
 
   return [NSString stringWithFormat: sqlFolderFormat, tableName];
