@@ -11,6 +11,7 @@ API_OBJC_FILES =			\
 	SOGoAPIProduct.m		\
 	SOGoAPI.m               \
 	SOGoAPIVersion.m        \
+	SOGoAPIUserFolder.m     \
 	SOGoAPIDispatcher.m
 
 API_RESOURCE_FILES +=		\

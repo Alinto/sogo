@@ -24,8 +24,12 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSArray.h>
 
+@class WOContext;
+
 @interface SOGoAPI : NSObject
 - (NSArray *) methodAllowed;
-- (NSDictionary *) action;
+- (BOOL) needAuth;
+- (NSArray *) paramNeeded;
+- (NSDictionary *) action: (WOContext*) ctx withParam: (NSDictionary *) param;
 
 @end

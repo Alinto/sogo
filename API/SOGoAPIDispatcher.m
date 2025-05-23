@@ -41,6 +41,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOCoreApplication.h>
+#import <NGObjWeb/SoHTTPAuthenticator.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalEvent.h>
@@ -60,7 +61,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/NSDictionary+DAV.h>
 #import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoCacheGCSObject.h>
-#import <SOGo/SOGoDAVAuthenticator.h>
 #import <SOGo/SOGoMailer.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
@@ -73,6 +73,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoPermissions.h>
+
 
 void handle_api_terminate(int signum)
 {
@@ -161,7 +162,49 @@ void handle_api_terminate(int signum)
   return action;
 }
 
+- (NSDictionary *) _authBasicCheck: (NSString *) auth
+{
+  NSDictionary *user;
+  NSRange rng;
+  NSString *decodeCred, *domain, *login, *pwd;
+  SOGoUserManager *lm;
+  SOGoPasswordPolicyError perr;
+  int expire, grace;
+  BOOL rc;
 
+  user = nil;
+
+  decodeCred = [[auth substringFromIndex:5] stringByTrimmingLeadWhiteSpaces];
+  decodeCred = [decodeCred stringByDecodingBase64];
+
+  rng = [decodeCred rangeOfString:@":"];
+  login = [decodeCred substringToIndex:rng.location];
+  pwd   = [decodeCred substringFromIndex:(rng.location + rng.length)];
+
+  domain = nil;
+  perr = PolicyNoError;
+  rc = ([[SOGoUserManager sharedUserManager]
+          checkLogin: [login stringByReplacingString: @"%40"
+                                          withString: @"@"]
+            password: pwd
+              domain: &domain
+                perr: &perr
+              expire: &expire
+                grace: &grace
+      additionalInfo: nil]
+        && perr == PolicyNoError);
+  
+  if(rc)
+  {
+    //Fecth user info
+    lm = [SOGoUserManager sharedUserManager];
+    user = [lm contactInfosForUserWithUIDorEmail: login];
+  }
+  else
+   user = nil;
+
+  return user;
+}
 
 - (NSException *) dispatchRequest: (WORequest*) theRequest
                        inResponse: (WOResponse*) theResponse
@@ -171,7 +214,8 @@ void handle_api_terminate(int signum)
   id activeUser;
   NSString *method, *action, *error;
   NSDictionary *form;
-  NSMutableDictionary *ret;
+  NSArray *paramNeeded;
+  NSMutableDictionary *paramInjected, *ret;
   NSBundle *bundle;
   id classAction;
   Class clazz;
@@ -180,8 +224,6 @@ void handle_api_terminate(int signum)
   pool = [[NSAutoreleasePool alloc] init];
   ASSIGN(context, theContext);
 
-  activeUser = [context activeUser];
-
   //Get the api action, check it
   action = [self _getActionFromUri: [theRequest uri]];
   if(!action)
@@ -189,6 +231,8 @@ void handle_api_terminate(int signum)
     error = [NSString stringWithFormat: @"No actions found for request to API: %@", [theRequest uri]];
     [self errorWithFormat: error];
     [self _sendAPIErrorResponse: theResponse withMessage: error withStatus: 400];
+    RELEASE(context);
+    RELEASE(pool);
     return nil;
   }
 
@@ -200,6 +244,8 @@ void handle_api_terminate(int signum)
     error = [NSString stringWithFormat: @"No backend API found for action: %@", action];
     [self errorWithFormat: error];
     [self _sendAPIErrorResponse: theResponse withMessage: error withStatus: 400];
+    RELEASE(context);
+    RELEASE(pool);
     return nil;
   }
 
@@ -213,21 +259,126 @@ void handle_api_terminate(int signum)
     error = [NSString stringWithFormat: @"Can't alloc and init class: %@", classAction];
     [self errorWithFormat: error];
     [self _sendAPIErrorResponse: theResponse withMessage: error withStatus: 500];
+    RELEASE(context);
+    RELEASE(pool);
+    return nil;
   }
   NS_ENDHANDLER;
   
-
-  //Check user auth
-
-
   //Check method
+  method = [theRequest method];
+  if(![[classAction methodAllowed] containsObject: method])
+  {
+    error = [NSString stringWithFormat: @"Method %@ not allowed for action %@", method, action];
+    [self errorWithFormat: error];
+    [self _sendAPIErrorResponse: theResponse withMessage: error withStatus: 400];
+    RELEASE(context);
+    RELEASE(pool);
+    return nil;
+  }
 
 
+  paramInjected = [NSMutableDictionary dictionary];
   //Check parameters
+  if((paramNeeded = [classAction paramNeeded]) && [paramNeeded count] >= 1)
+  {
+    NSDictionary* formAndQuery = [theRequest formValues];
+    for(NSString *param in paramNeeded)
+    {
+      id value;
+      if((value = [formAndQuery objectForKey: param]))
+      {
+        NSString* trueValue;
+        if ([value isKindOfClass: [NSArray class]])
+          trueValue = [value lastObject];
+        else
+          trueValue = value;
+        [paramInjected setObject: trueValue forKey: param];
+      }
+      else
+      {
+        error = [NSString stringWithFormat: @"Missing param %@ for action %@", param, action];
+        [self errorWithFormat: error];
+        [self _sendAPIErrorResponse: theResponse withMessage: error withStatus: 400];
+        RELEASE(context);
+        RELEASE(pool);
+        return nil;
+      }
+    }
+  }
 
+  if([classAction needAuth])
+  {
+    if(debugOn)
+      [self logWithFormat: @"Check auth for action %@", action];
+    //check auth
+    NSString *auth = [theRequest headerForKey: @"authorization"];
+    if(auth)
+    {
+      NSDictionary* user;
+      if([[auth lowercaseString] hasPrefix: @"basic"])
+      {
+        //basic auth
+        user = [self _authBasicCheck: auth];
+      }
+      else if([[auth lowercaseString] hasPrefix: @"bearer"])
+      {
+        //openid auth
+
+      }
+      else
+      {
+        error = [NSString stringWithFormat: @"Authorization method incorrect: %@ for action %@", auth, action];
+        [self errorWithFormat: error];
+        [self _sendAPIErrorResponse: theResponse withMessage: error withStatus: 401];
+        RELEASE(context);
+        RELEASE(pool);
+        return nil;
+      }
+
+      //add current user in paramInjected
+      if(user){
+        if(debugOn)
+          [self logWithFormat: @"User authenticated %@", user];
+        [paramInjected setObject: user forKey: @"user"];
+      }
+      else
+      {
+        error = [NSString stringWithFormat: @"User wrong login or not found for action %@", action];
+        [self errorWithFormat: error];
+        [self _sendAPIErrorResponse: theResponse withMessage: error withStatus: 401];
+        RELEASE(context);
+        RELEASE(pool);
+        return nil;
+      }
+    }
+    else
+    {
+      error = [NSString stringWithFormat: @"No authorization header found for action %@", action];
+      [self errorWithFormat: error];
+      [self _sendAPIErrorResponse: theResponse withMessage: error withStatus: 401];
+      RELEASE(context);
+      RELEASE(pool);
+      return nil;
+    }
+  }
 
   //Execute action
-  ret = [classAction action];
+  NS_DURING
+  {
+    ret = [classAction action: context withParam: paramInjected];
+  }
+  NS_HANDLER
+  {
+    error = [NSString stringWithFormat: @"Internal error during: %@", action];
+    [self errorWithFormat: error];
+    [self _sendAPIErrorResponse: theResponse withMessage: error withStatus: 500];
+    RELEASE(context);
+    RELEASE(pool);
+    return nil;
+  }
+  NS_ENDHANDLER;
+  
 
   //Make the response
   [theResponse setContent: [ret jsonRepresentation]];

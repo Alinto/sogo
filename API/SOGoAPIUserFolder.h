@@ -27,7 +27,7 @@
 
 @class WOContext;
 
-@interface SOGoAPIVersion : SOGoAPI
+@interface SOGoAPIUserFolder : SOGoAPI
 - (NSArray *) methodAllowed;
 - (NSDictionary *) action: (WOContext*) ctx withParam: (NSDictionary *) param;
 @end

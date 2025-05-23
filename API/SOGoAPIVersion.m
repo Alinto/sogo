@@ -19,7 +19,13 @@
   [super dealloc];
 }
 
-- (NSDictionary *) action {
+- (BOOL) needAuth
+{
+  return NO;
+}
+
+- (NSDictionary *) action: (WOContext*) ctx withParam: (NSDictionary *) param
+{
 NSDictionary* result;
 
 result = [[NSDictionary alloc] initWithObjectsAndKeys:

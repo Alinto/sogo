@@ -27,7 +27,17 @@
   return result;
 }
 
-- (NSDictionary *) action
+- (BOOL) needAuth
+{
+  return YES;
+}
+
+- (NSArray *) paramNeeded
+{
+  return nil;
+}
+
+- (NSDictionary *) action: (WOContext*) ctx withParam: (NSDictionary *) param
 {
   NSDictionary* result;
 
