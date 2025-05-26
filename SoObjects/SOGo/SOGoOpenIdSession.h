@@ -33,6 +33,22 @@
 @class NSURL;
 @class NSJSONSerialization;
 
+size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer);
+
+@interface SimpleOpenIdResponse: NSObject
+{
+  unsigned int status;
+  NSString    *content;
+}
+
+- (id)initWithResponse: (NSString *)_data andStatus:(unsigned int )_status;
+
+- (void)setStatus:(unsigned int)_status;
+- (unsigned int)status;
+- (void)setContent:(NSString *)_data;
+- (NSString *)contentString;
+
+@end
 
 @interface SOGoOpenIdSession : SOGoObject
 {
@@ -47,6 +63,7 @@
   NSString *openIdClient;
   NSString *openIdClientSecret;
   NSString *openIdEmailParam;
+  NSString *openIdHttpVersion;
   BOOL openIdEnableRefreshToken;
   BOOL sendDomainInfo;
 
@@ -80,7 +97,7 @@
 - (void) initialize;
 - (void) initializeWithConfig: (NSDictionary *) _config;
 - (BOOL) sessionIsOK;
-- (WOResponse *) _performOpenIdRequest: (NSString *) endpoint
+- (SimpleOpenIdResponse *) _performOpenIdRequest: (NSString *) endpoint
                         method: (NSString *) method
                        headers: (NSDictionary *) headers
                           body: (NSData *) body;
