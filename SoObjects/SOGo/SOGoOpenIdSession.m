@@ -34,7 +34,8 @@
 #import <GDLContentStore/GCSFolderManager.h>
 
 #import "NSDictionary+Utilities.h"
-#import "NSString+Utilities.h"
+#import <SOGo/NSString+Utilities.h>
+#import <SOGo/NSString+Crypto.h>
 #import "SOGoCache.h"
 #import "SOGoSystemDefaults.h"
 
@@ -62,10 +63,11 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
   return self;
 }
 
-- (id)initWithResponse: (NSString *)_data andStatus:(unsigned int )_status{
+- (id)initWithResponse: (NSString *)_data andHeaders: (NSString *)_headers andStatus:(unsigned int )_status{
   if ((self = [self init])) {
     [self setStatus: _status];
     [self setContent: _data];
+    [self setHeaders: _headers];
   }
   return self;
 }
@@ -92,6 +94,33 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
   if(self->content)
     return self->content;
   return nil;
+}
+
+- (void)setHeaders:(NSString *)_data
+{
+  self->headers = _data;
+}
+
+- (NSString *)headers
+{
+  if(self->headers)
+    return self->headers;
+  return nil;
+}
+
+- (NSString*)description {
+    NSString *co, *hd;
+    unsigned int st;
+    st = 0;
+    co = @"nil";
+    hd = @"nil";
+    if(self->status)
+      st = self->status;
+    if(self->headers)
+      hd = self->headers;
+    if(self->content)
+      co = self->content;
+    return [NSString stringWithFormat: @"<SimpleOpenIdResponse> <status: %d>, <headers: %@>, <content: %@>", st, hd, co];
 }
 
 @end
@@ -269,13 +298,13 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
                           body: (NSData *) body
 {
   NSURL *url;
-  NSMutableData *buffer;
+  NSMutableData *buffer, *buffHeaders;
   SimpleOpenIdResponse *response;
   
   CURL *curl;
   struct curl_slist *headerlist=NULL;
   NSUInteger status;
-  NSString *content;
+  NSString *content, *headerResp;
   CURLcode rc;
   char error[CURL_ERROR_SIZE];
 
@@ -327,8 +356,11 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
 
     buffer = [NSMutableData data];
+    buffHeaders = [NSMutableData data];
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curl_body_function);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, buffer);
+    curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, curl_body_function);
+    curl_easy_setopt(curl, CURLOPT_HEADERDATA, buffHeaders);
     curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, &error);
 
     // Perform SOAP request
@@ -338,7 +370,10 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
       curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &status);
 
       response = [SimpleOpenIdResponse alloc];
-      response = [response initWithResponse: nil andStatus: status];
+      headerResp = [[NSString alloc] initWithData: buffHeaders
+                                        encoding: NSUTF8StringEncoding];
+
+      response = [response initWithResponse: nil andHeaders: headerResp andStatus: status];
 
       if(status >= 200 && status <500 && status != 404)
       {
@@ -348,6 +383,9 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
           content = [[NSString alloc] initWithData: buffer
                                           encoding: NSISOLatin1StringEncoding];
         [response setContent: content];
+
+        if(SOGoOpenIDDebugEnabled)
+          NSLog(@"OpenId perform request: response is: %@", response);
 
         return [response autorelease];
       }
@@ -870,7 +908,7 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
         }
         else
         {
-          [self logWithFormat: @"Error during fetching the token (status %d), response: %@", status, response];
+          [self logWithFormat: @"Error detching userinfo (status %d), response: %@", status, response];
           [result setObject: @"http-error" forKey: @"error"];
         }
     }
