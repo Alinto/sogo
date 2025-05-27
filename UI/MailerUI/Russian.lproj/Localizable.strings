@@ -293,10 +293,10 @@
 "selected" = "выбран";
 
 /* Date formatting from one time to another time */
-"to_time" = "в";
+"to_time" = "до";
 
 /* Date formatting from one day to another day */
-"to_date" = "в";
+"to_date" = "по";
 
 /* Encrypted message notification */
 "This message is encrypted" = "Это сообщение зашифровано";
