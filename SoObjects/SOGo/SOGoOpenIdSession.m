@@ -236,62 +236,6 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
   }
 }
 
-
-// - (WOResponse *) _performOpenIdRequest: (NSString *) endpoint
-//                         method: (NSString *) method
-//                        headers: (NSDictionary *) headers
-//                           body: (NSData *) body
-// {
-//   NSURL *url;
-//   NSUInteger status;
-//   WORequest *request;
-//   WOResponse *response;
-//   WOHTTPConnection *httpConnection;
-  
-  
-//   url = [NSURL URLWithString: endpoint];
-//   if (url)
-//   {
-//     if(SOGoOpenIDDebugEnabled)
-//     {
-//       NSLog(@"OpenId perform request: %@ %@", method, endpoint);
-//       NSLog(@"OpenId perform request, headers %@", headers);
-//       // if(body)
-//       //   NSLog(@"OpenId perform request: content %@", [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
-//     }
-      
-//     httpConnection = [[WOHTTPConnection alloc] initWithURL: url];
-//     [httpConnection autorelease];
-
-//     request = [[WORequest alloc] initWithMethod: method
-//                                             uri: [endpoint hostlessURL]
-//                                     httpVersion: self->openIdHttpVersion
-//                                         headers: headers content: body
-//                                         userInfo: nil];
-//     [request autorelease];
-//     [httpConnection sendRequest: request];
-//     response = [httpConnection readResponse];
-//     status = [response status];
-//     if(status >= 200 && status <500 && status != 404)
-//       return response;
-//     else if (status == 404)
-//     {
-//       [self errorWithFormat: @"OpenID endpoint not found (404): %@", endpoint];
-//       return nil; 
-//     }
-//     else
-//     {
-//       [self errorWithFormat: @"OpenID server internal error during %@: %@", endpoint, response];
-//       return nil;
-//     }
-//   }
-//   else
-//   {
-//     [self errorWithFormat: @"OpenID can't handle endpoint (not a url): '%@'", endpoint];
-//     return nil;
-//   }
-// }
-
 - (SimpleOpenIdResponse *) _performOpenIdRequest: (NSString *) endpoint
                         method: (NSString *) method
                        headers: (NSDictionary *) headers
@@ -332,6 +276,15 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
     //add form
     if(body)
     {
+      //Trick because sometimes NSData bytes don't add the \0 at the end and junk character may be added
+      const char *myBodyTmp = (const char*)[body bytes];
+      char myBody[[body length]+1];
+      strncpy(myBody, myBodyTmp, [body length]);
+      myBody[[body length]]='\0';
+
+      if(SOGoOpenIDDebugEnabled)
+        NSLog(@"OpenId perform request, body %s", myBody);
+
       curl_easy_setopt(curl, CURLOPT_POST, 1);
       curl_easy_setopt(curl, CURLOPT_POSTFIELDS, [body bytes]);
     }
@@ -734,7 +687,7 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
                                                                 self->forDomain, @"sogo-user-domain", nil];
     else
       headers = [NSDictionary dictionaryWithObject: @"application/x-www-form-urlencoded"  forKey: @"content-type"];
-    
+
     response = [self _performOpenIdRequest: location
                       method: @"POST"
                       headers: headers
@@ -908,7 +861,7 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
         }
         else
         {
-          [self logWithFormat: @"Error detching userinfo (status %d), response: %@", status, response];
+          [self logWithFormat: @"Error fetching userInfo (status %d), response: %@", status, response];
           [result setObject: @"http-error" forKey: @"error"];
         }
     }
