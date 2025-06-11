@@ -193,6 +193,9 @@ should apply to all supported operating systems.
 Software Downloads
 ~~~~~~~~~~~~~~~~~~
 
+**In order to access the community build, go to https://www.sogo.nu/download.html[SOGo website]
+and select "Development (nightly builds)" at the bottom of the page.**
+
 [NOTE]
 In order to access the production builds, you need a proper support contract
 from https://sogo.nu/support/index_new.html#support-plans[Alinto]. Continue
