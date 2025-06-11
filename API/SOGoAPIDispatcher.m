@@ -31,48 +31,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "SOGoAPIDispatcher.h"
 
 #import <Foundation/NSAutoreleasePool.h>
-#import <Foundation/NSProcessInfo.h>
-#import <Foundation/NSTimeZone.h>
-#import <Foundation/NSURL.h>
-#import <Foundation/NSValue.h>
-
 #import <NGObjWeb/NSException+HTTP.h>
-#import <NGObjWeb/SoPermissions.h>
-#import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOCoreApplication.h>
-#import <NGObjWeb/SoHTTPAuthenticator.h>
-
-#import <NGCards/iCalCalendar.h>
-#import <NGCards/iCalEvent.h>
-#import <NGCards/iCalAlarm.h>
-#import <NGCards/iCalPerson.h>
-
-#import <NGExtensions/NGBase64Coding.h>
-
-#import <NGExtensions/NSCalendarDate+misc.h>
-#import <NGExtensions/NGCalendarDateRange.h>
-#import <NGExtensions/NGHashMap.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSString+Encoding.h>
-
-#import <SOGo/NSArray+DAV.h>
-#import <SOGo/NSDictionary+DAV.h>
-#import <SOGo/SOGoCache.h>
-#import <SOGo/SOGoCacheGCSObject.h>
-#import <SOGo/SOGoMailer.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserManager.h>
-#import <SOGo/GCSSpecialQueries+SOGoCacheObject.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/WOResponse+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
-#import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoOpenIdSession.h>
 
 
 void handle_api_terminate(int signum)
@@ -206,6 +179,39 @@ void handle_api_terminate(int signum)
   return user;
 }
 
+- (NSDictionary *) _authOpenId: (NSString *) auth withDomain: (NSString *) domain
+{
+  NSDictionary *user;
+  NSString *token, *login;
+  SOGoOpenIdSession *openIdSession;
+  SOGoUserManager *lm;
+
+  user = nil;
+  token = [[auth substringFromIndex:6] stringByTrimmingLeadWhiteSpaces];
+
+  openIdSession = [SOGoOpenIdSession OpenIdSession: domain];
+  if(![openIdSession sessionIsOk])
+  {
+    [self errorWithFormat: @"API - OpenId server not found or has unexpected behavior, contact your admin."];
+    return nil;
+  }
+
+  [openIdSession setAccessToken: token];
+  login = [openIdSession login: @""];
+  
+  if(login && ![login isEqualToString: @"anonymous"])
+  {
+    //Fecth user info
+    lm = [SOGoUserManager sharedUserManager];
+    user = [lm contactInfosForUserWithUIDorEmail: login];
+  }
+  else
+   user = nil;
+
+  return user;
+}
+
+
 - (NSException *) dispatchRequest: (WORequest*) theRequest
                        inResponse: (WOResponse*) theResponse
                           context: (id) theContext
@@ -323,8 +329,9 @@ void handle_api_terminate(int signum)
       }
       else if([[auth lowercaseString] hasPrefix: @"bearer"])
       {
-        //openid auth
-
+        //openid auth, we may need to know the user-domain to know which openid server to fetch
+        NSString *domain = [theRequest headerForKey: @"user-domain"];
+        user = [self _authOpenId: auth withDomain: domain];
       }
       else
       {

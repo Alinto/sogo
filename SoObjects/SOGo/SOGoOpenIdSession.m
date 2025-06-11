@@ -54,6 +54,13 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
     return NO;
   }
   sd = [SOGoSystemDefaults sharedSystemDefaults];
+
+  if(![[sd authenticationType] isEqualToString: @"openid"])
+  {
+    [self errorWithFormat: @"Sogo SOGoAuthenticationType is not openid"];
+    return NO;
+  }
+
   return ([sd openIdConfigUrl] && [sd openIdScope]  && [sd openIdClient]  && [sd openIdClientSecret]);
 }
 
@@ -120,7 +127,7 @@ static BOOL SOGoOpenIDDebugEnabled = YES;
     }
     else
     {
-      [self errorWithFormat: @"Missing parameters from sogo.conf"];
+      [self errorWithFormat: @"LoginTypebyDOmain - Openid not found or missing parameters for domain", _domain];
     }
   }
   else if ([[self class] checkUserConfig])
