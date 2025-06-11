@@ -45,7 +45,7 @@
   NSMutableArray *ranges;
   NSArray *byMonth;
   NSCalendarDate *firStart, *lastDate, *rStart, *rEnd, *until, *referenceDate, *rTemp;
-  NSInteger *hoursOfOffset;
+  NSInteger hoursOfOffset;
   iCalMonthlyRecurrenceCalculator *monthlyCalc;
   unsigned j, yearIdxInRange, numberOfYearsInRange, count, interval, monthDiff;
   int diff, repeatCount, currentMonth, origNbDaysInMonth;

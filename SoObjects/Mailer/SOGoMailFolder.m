@@ -104,10 +104,11 @@ static NSComparisonResult _compareFetchResultsByMODSEQ (id entry1, id entry2, vo
   return [modseq1 compare: modseq2];
 }
 
-static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSDictionary *uids)
+static NSComparisonResult _compareFetchResultsByUID (id entry1, id entry2, void *uidsp)
 {
   NSString *uid1, *uid2;
   NSUInteger pos1, pos2;
+  NSDictionary *uids=(NSDictionary*)uidsp;
 
   uid1 = [entry1 objectForKey: @"uid"];
   uid2 = [entry2 objectForKey: @"uid"];

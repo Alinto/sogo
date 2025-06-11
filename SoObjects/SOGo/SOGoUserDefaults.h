@@ -156,8 +156,8 @@ extern NSString *SOGoPasswordRecoverySecondaryEmail;
 - (void) setMailComposeFontSize: (int) newValue;
 - (int) mailComposeFontSize;
 
-- (void) setMailDisplayFullEmail: (BOOL *) newValue;
-- (BOOL *) mailDisplayFullEmail;
+- (void) setMailDisplayFullEmail: (BOOL) newValue;
+- (BOOL) mailDisplayFullEmail;
 
 - (void) setMailDisplayRemoteInlineImages: (NSString *) newValue;
 - (NSString *) mailDisplayRemoteInlineImages;
