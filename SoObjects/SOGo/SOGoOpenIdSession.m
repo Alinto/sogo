@@ -291,7 +291,7 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
         NSLog(@"OpenId perform request, myBody %s", myBody);
 
       curl_easy_setopt(curl, CURLOPT_POST, 1);
-      curl_easy_setopt(curl, CURLOPT_POSTFIELDS, myBody);
+      curl_easy_setopt(curl, CURLOPT_COPYPOSTFIELDS, myBody);
     }
     
     //add headers
