@@ -264,6 +264,8 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
     NSLog(@"OpenId perform request: %@ %@", method, endpoint);
     NSLog(@"OpenId perform request, headers %@", headers);
   }
+  if(SOGoOpenIDDebugEnabled)
+    NSLog(@"OpenId perform request, body raw %@", body);
 
   curl_global_init(CURL_GLOBAL_SSL);
   curl = curl_easy_init();
@@ -283,7 +285,10 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
       myBody[[body length]]='\0';
 
       if(SOGoOpenIDDebugEnabled)
-        NSLog(@"OpenId perform request, body %s", myBody);
+        NSLog(@"OpenId perform request, myBodyTmp %s", myBodyTmp);
+
+      if(SOGoOpenIDDebugEnabled)
+        NSLog(@"OpenId perform request, myBody %s", myBody);
 
       curl_easy_setopt(curl, CURLOPT_POST, 1);
       curl_easy_setopt(curl, CURLOPT_POSTFIELDS, [body bytes]);
@@ -687,6 +692,9 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
                                                                 self->forDomain, @"sogo-user-domain", nil];
     else
       headers = [NSDictionary dictionaryWithObject: @"application/x-www-form-urlencoded"  forKey: @"content-type"];
+
+    if(SOGoOpenIDDebugEnabled)
+      NSLog(@"OpenId fetch token, form %@", form);
 
     response = [self _performOpenIdRequest: location
                       method: @"POST"
