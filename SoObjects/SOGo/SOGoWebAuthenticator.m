@@ -53,7 +53,7 @@
    about the same. The length is prior to bas64 encoding, so we must calculate
    a 33-36% increase.
  */
-#define COOKIE_USERKEY_LEN    2048
+#define COOKIE_USERKEY_LEN    2096
 
 @implementation SOGoWebAuthenticator
 

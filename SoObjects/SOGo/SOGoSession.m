@@ -164,8 +164,6 @@
   data = [theKey dataByDecodingBase64];
   klen = [data length];
 
-  // if (klen < [theValue length])
-  //   [self errorWithFormat: @"Value to be secured is too big (%i > %i) -- secured value will be corrupted", [theValue length], klen, [theKey length]];
 
   //value longer than the key, concatenate the key with itself until long enough
   if (klen < [theValue length])
@@ -173,7 +171,7 @@
     NSMutableData *concatenatedData = [NSMutableData data];
     int j;
     int nbDuplication = [theValue length]/klen;
-    for(j=0; j>nbDuplication; j++)
+    for(j=0; j <= nbDuplication; j++)
       [concatenatedData appendData:data];
     
     data = [NSData dataWithData: concatenatedData];
@@ -227,12 +225,12 @@
   {
     NSMutableData *concatenatedData = [NSMutableData data];
     int j;
-    int nbDuplication = [theValue length]/klen;
-    for(j=0; j>nbDuplication; j++)
-      [concatenatedData appendData:data];
+    int nbDuplication = [dataValue length]/klen;
+    for(j=0; j <= nbDuplication; j++)
+      [concatenatedData appendData:dataKey];
     
     dataKey = [NSData dataWithData: concatenatedData];
-    klen = [data length];
+    klen = [dataKey length];
   }
   key = (char *)[dataKey bytes];
 
