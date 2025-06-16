@@ -162,11 +162,25 @@
 
   // Get the key length and its bytes
   data = [theKey dataByDecodingBase64];
-  key = (char *)[data bytes];
   klen = [data length];
 
+  // if (klen < [theValue length])
+  //   [self errorWithFormat: @"Value to be secured is too big (%i > %i) -- secured value will be corrupted", [theValue length], klen, [theKey length]];
+
+  //value longer than the key, concatenate the key with itself until long enough
   if (klen < [theValue length])
-    [self errorWithFormat: @"Value to be secured is too big (%i > %i) -- secured value will be corrupted", [theValue length], klen, [theKey length]];
+  {
+    NSMutableData *concatenatedData = [NSMutableData data];
+    int j;
+    int nbDuplication = [theValue length]/klen;
+    for(j=0; j>nbDuplication; j++)
+      [concatenatedData appendData:data];
+    
+    data = [NSData dataWithData: concatenatedData];
+    klen = [data length];
+  }
+
+  key = (char *)[data bytes];
 
   // Get the key - padding it with 0 with key length
   pass = (char *) calloc(klen, sizeof(char));
@@ -201,13 +215,26 @@
 
   // Get the key length and its bytes
   dataKey = [theKey dataByDecodingBase64];
-  key = (char *)[dataKey bytes];
   klen = [dataKey length];
 
   // Get the secured value length and its bytes
   dataValue = [theValue dataByDecodingBase64];
   value = (char *)[dataValue bytes];
   vlen = [dataValue length];
+
+  //If the key is shorer than the value, duplicate it with itself.
+  if(klen < vlen)
+  {
+    NSMutableData *concatenatedData = [NSMutableData data];
+    int j;
+    int nbDuplication = [theValue length]/klen;
+    for(j=0; j>nbDuplication; j++)
+      [concatenatedData appendData:data];
+    
+    dataKey = [NSData dataWithData: concatenatedData];
+    klen = [data length];
+  }
+  key = (char *)[dataKey bytes];
 
   // Target buffer
   buf = (char *) calloc(klen, sizeof(char));
