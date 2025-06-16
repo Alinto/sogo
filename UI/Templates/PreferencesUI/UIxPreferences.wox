@@ -748,7 +748,7 @@
               </div>
             </div>
 
-            <div class="hide-xs" layout="row" layout-align="start center" flex="50">
+            <div layout="row" layout-align="start center" flex="50" flex-xs="100">
               <md-checkbox
                   class="md-align-top-left"
                   ng-model="app.preferences.defaults.SOGoMailComposeWindowEnabled"
@@ -756,7 +756,7 @@
                 <!-- SOGoMailComposeWindow -->
               </md-checkbox>
 
-              <md-input-container class="md-block md-flex hide-xs">
+              <md-input-container class="md-block md-flex">
                 <label><var:string label:value="Always open mail composer"/></label>
                 <md-select
                     ng-disabled="!app.preferences.defaults.SOGoMailComposeWindowEnabled"
