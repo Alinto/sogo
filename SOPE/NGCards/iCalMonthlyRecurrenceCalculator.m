@@ -185,7 +185,7 @@ static inline unsigned iCalDoWForNSDoW (int dow)
   // TODO: check whether this is OK for multiday-events!
   NSMutableArray *ranges;
   NSTimeZone     *timeZone;
-  NSCalendarDate *eventStartDate, *rStart, *rEnd, *until, *referenceDate;
+  NSCalendarDate *eventStartDate, *eventEndDate, *rStart, *rEnd, *untilStart, *untilEnd, *referenceDate;
   int            eventDayOfMonth;
   unsigned       monthIdxInRange, numberOfMonthsInRange, interval, repeatCount;
   int            diff, count;
@@ -199,12 +199,14 @@ static inline unsigned iCalDoWForNSDoW (int dow)
   iCalByDayMask *byDayMask;
   
   eventStartDate  = [firstRange startDate];
+  eventEndDate  = [firstRange endDate];
   eventDayOfMonth = [eventStartDate dayOfMonth];
   timeZone        = [eventStartDate timeZone];
   rStart          = [_r startDate];
   rEnd            = [_r endDate];
   interval        = [rrule repeatInterval];
-  until           = nil;
+  untilStart      = nil;
+  untilEnd        = nil;
   repeatCount     = [rrule repeatCount];
   byMonth         = [rrule byMonth];
   byMonthDay      = [rrule byMonthDay];
@@ -218,24 +220,27 @@ static inline unsigned iCalDoWForNSDoW (int dow)
 	{
 	  // When there's no BYxxx mask, we can find the date of the last
 	  // occurrence.
-	  until = [eventStartDate dateByAddingYears: 0
+	  untilStart = [eventStartDate dateByAddingYears: 0
 					     months: (interval * (repeatCount - 1))
 					       days: 0];
+    untilEnd = [eventEndDate dateByAddingYears: 0
+            months: (interval * (repeatCount - 1))
+              days: 0];
 	}
       else
 	{
-	  until = [rrule untilDate];
+	  untilStart = [rrule untilDate];
 	}
     }
 
-  if (until != nil)
+  if (untilStart != nil)
     {
-      if ([until compare: rStart] == NSOrderedAscending)
+      if ([untilEnd compare: rStart] == NSOrderedAscending)
 	// Range starts after last occurrence
 	return nil;
-      if ([until compare: rEnd] == NSOrderedAscending)
+      if ([untilStart compare: rEnd] == NSOrderedAscending)
 	// Range ends after last occurence; adjust end date
-	rEnd = until;
+	rEnd = untilStart;
     }
   
   if (byMonth && [byMonth count] > 0)
@@ -441,7 +446,7 @@ static inline unsigned iCalDoWForNSDoW (int dow)
 
         start = [cursor dateByAddingYears: 0 months: 0 days: (dom - 1)];
         doCont = [self _addInstanceWithStartDate: start
-                                       limitDate: until
+                                       limitDate: untilStart
                                       limitRange: _r
                                          toArray: ranges];
         //NSLog(@"*** MONTHLY [%i/%i] adding %@%@ (count = %i)", dom, numDaysInMonth, start, (doCont?@"":@" .. NOT!"), count);

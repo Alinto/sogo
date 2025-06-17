@@ -64,7 +64,7 @@
 - (NSArray *) recurrenceRangesWithinCalendarDateRange: (NGCalendarDateRange *) _r
 {
   NSMutableArray *ranges;
-  NSCalendarDate *firStart, *startDate, *endDate, *currentStartDate, *currentEndDate;
+  NSCalendarDate *firStart, *firEnd, *startDate, *endDate, *currentStartDate, *currentEndDate;
   long i, repeatCount, count;
   unsigned interval;
   iCalByDayMask *dayMask;
@@ -73,6 +73,7 @@
   //[self logWithFormat: @"Recurrence rule is %@", rrule];
 
   firStart = [firstRange startDate];
+  firEnd = [firstRange endDate];
   startDate = [_r startDate];
   endDate = [_r endDate];
   dayMask = nil;
@@ -95,31 +96,35 @@
   // If rule is bound, check the bounds
   if (![rrule isInfinite])
     {
-      NSCalendarDate *until, *lastDate;
+      NSCalendarDate *until, *lastStartDate, *lastEndDate;
 
-      lastDate = nil;
+      lastStartDate = nil;
+      lastEndDate = nil;
       until = [rrule untilDate];
       if (until)
-        lastDate = until;
+        lastStartDate = until;
       else
         {
           repeatCount = [rrule repeatCount];
           if (dayMask == nil)
             // When there's no BYxxx mask, we can find the date of the last
             // occurrence.
-            lastDate = [firStart dateByAddingYears: 0 months: 0
+            lastStartDate = [firStart dateByAddingYears: 0 months: 0
+                                              days: (interval
+                                                     * (repeatCount - 1) * 7)];
+            lastEndDate = [firEnd dateByAddingYears: 0 months: 0
                                               days: (interval
                                                      * (repeatCount - 1) * 7)];
         }
 
-      if (lastDate != nil)
+      if (lastStartDate != nil && lastEndDate != nil)
         {
-          if ([lastDate compare: startDate] == NSOrderedAscending)
+          if ([lastEndDate compare: startDate] == NSOrderedAscending)
             // Range starts after last occurrence
             return nil;
-          if ([lastDate compare: endDate] == NSOrderedAscending)
+          if ([lastStartDate compare: endDate] == NSOrderedAscending)
             // Range ends after last occurence; adjust end date
-            endDate = [lastDate addTimeInterval: [firstRange duration]];
+            endDate = [lastStartDate addTimeInterval: [firstRange duration]];
         }
     }
 
