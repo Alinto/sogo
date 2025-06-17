@@ -33,6 +33,9 @@
 
 #import "NSObject+Utilities.h"
 
+static NSMutableDictionary *translationCache = nil;
+
+
 @implementation NSObject (SOGoObjectUtilities)
 
 - (NSString *) jsonRepresentation
@@ -101,19 +104,28 @@
   if (!bundle)
     bundle = [NSBundle mainBundle];
   languages = [[self _languagesForLabelsInContext: context] objectEnumerator];
+  
+  if(!translationCache)
+    translationCache = [NSMutableDictionary new];
 
   while (!label && (language = [languages nextObject]))
     {
-      paths = [bundle pathsForResourcesOfType: @"strings"
-		      inDirectory: [NSString stringWithFormat: @"%@.lproj",
-					     language]
+      if (![translationCache objectForKey: language]) {
+        paths = [bundle pathsForResourcesOfType: @"strings"
+          inDirectory: [NSString stringWithFormat: @"%@.lproj",
+                        language]
 		      forLocalization: language];
-      if ([paths count] > 0)
-	{
-	  strings = [NSDictionary
-		      dictionaryFromStringsFile: [paths objectAtIndex: 0]];
-	  label = [strings objectForKey: key];
-	}
+        if ([paths count] > 0)
+	      {
+	        strings = [NSDictionary
+		                 dictionaryFromStringsFile: [paths objectAtIndex: 0]];
+	        [translationCache setObject: strings forKey: language];
+	        label = [strings objectForKey: key];
+	      }
+	    } else {
+	      strings = [translationCache objectForKey: language]; 
+	      label = [strings objectForKey: key];
+	    }
     }
   if (!label)
     label = key;
