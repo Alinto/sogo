@@ -496,6 +496,7 @@ static NSString *sieveScriptName = @"sogo";
 }
 
 - (NSString *) _extractSieveAction: (NSDictionary *) action
+                         withReq: (NSMutableDictionary *) req
                          delimiter: (NSString *) delimiter
 {
   NSString *sieveAction, *method, *requirement, *argument, *flag, *mailbox;
@@ -548,7 +549,9 @@ static NSString *sieveScriptName = @"sogo";
               {
                 argument = [NSString stringWithFormat: @"mailto:%@", argument];
                 sieveAction = [NSString stringWithFormat: @"%@ %@",
-                                        method, [argument asSieveQuotedString]];     
+                                        method, [argument asSieveQuotedString]];  
+                [req addObjectUniquely: @"enotify"];
+                [req addObjectUniquely: @"variables"];   
               }                                   
               else if ([method isEqualToString: @"reject"])
                 sieveAction = [NSString stringWithFormat: @"%@ %@",
@@ -575,6 +578,7 @@ static NSString *sieveScriptName = @"sogo";
 }
 
 - (NSArray *) _extractSieveActions: (NSArray *) actions
+                         withReq: (NSMutableDictionary *) req
                          delimiter: (NSString *) delimiter
 {
   NSMutableArray *sieveActions;
@@ -586,6 +590,7 @@ static NSString *sieveScriptName = @"sogo";
   for (count = 0; !scriptError && count < max; count++)
     {
       sieveAction = [self _extractSieveAction: [actions objectAtIndex: count]
+                                    withReq: req
                                     delimiter: delimiter];
       if (!scriptError)
         [sieveActions addObject: sieveAction];
@@ -595,6 +600,7 @@ static NSString *sieveScriptName = @"sogo";
 }
 
 - (NSString *) _convertScriptToSieve: (NSDictionary *) newScript
+                           withReq: (NSMutableDictionary *) req
                            delimiter: (NSString *) delimiter
 {
   NSMutableString *sieveText;
@@ -624,6 +630,7 @@ static NSString *sieveScriptName = @"sogo";
         scriptError = [NSString stringWithFormat: @"Bad test: %@", match];
     }
   sieveActions = [self _extractSieveActions: [newScript objectForKey: @"actions"]
+                                  withReq: req
                                   delimiter: delimiter];
   if ([sieveActions count])
     [sieveText appendFormat: @"    %@;\r\n",
@@ -660,6 +667,7 @@ static NSString *sieveScriptName = @"sogo";
           if ([[currentScript objectForKey: @"active"] boolValue])
             {
               sieveText = [self _convertScriptToSieve: currentScript
+                                            withReq: newRequirements
                                             delimiter: delimiter];
               [sieveScript appendString: sieveText];
             }
