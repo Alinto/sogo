@@ -303,8 +303,8 @@ static NSString *openIdFolderURLString = nil;
     newRecord = [NSDictionary dictionaryWithObjectsAndKeys: _user_session, @"c_user_session",
                       _old_session, @"c_old_session",
                       [NSNumber numberWithInt:now], @"c_session_started",
-                      _refresh_token, @"c_refresh_token",
                       [NSNumber numberWithInt:nowExpire] , @"c_access_token_expires_in",
+                      _refresh_token, @"c_refresh_token",
                       [NSNumber numberWithInt:nowRefreshExpire] , @"c_refresh_token_expires_in",
                       nil];
     record = [self recordForSession: _user_session useOldSession: NO];

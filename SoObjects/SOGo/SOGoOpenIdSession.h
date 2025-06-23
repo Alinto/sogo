@@ -33,6 +33,25 @@
 @class NSURL;
 @class NSJSONSerialization;
 
+size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer);
+
+@interface SimpleOpenIdResponse: NSObject
+{
+  unsigned int status;
+  NSString    *content;
+  NSString    *headers;
+}
+
+- (id)initWithResponse: (NSString *)_data andHeaders: (NSString *)_headers andStatus:(unsigned int )_status;
+
+- (void)setStatus:(unsigned int)_status;
+- (unsigned int)status;
+- (void)setContent:(NSString *)_data;
+- (NSString *)contentString;
+- (void)setHearders:(NSString *)_data;
+- (NSString *)headers;
+
+@end
 
 @interface SOGoOpenIdSession : SOGoObject
 {
@@ -47,6 +66,7 @@
   NSString *openIdClient;
   NSString *openIdClientSecret;
   NSString *openIdEmailParam;
+  NSString *openIdHttpVersion;
   BOOL openIdEnableRefreshToken;
   BOOL sendDomainInfo;
 
@@ -80,12 +100,12 @@
 - (void) initialize;
 - (void) initializeWithConfig: (NSDictionary *) _config;
 - (BOOL) sessionIsOK;
-- (WOResponse *) _performOpenIdRequest: (NSString *) endpoint
+- (SimpleOpenIdResponse *) _performOpenIdRequest: (NSString *) endpoint
                         method: (NSString *) method
                        headers: (NSDictionary *) headers
                           body: (NSData *) body;
 - (NSMutableDictionary *) fecthConfiguration: (NSString *) _domain;
-- (void) setAccessToken;
+- (void) setAccessToken: (NSString* ) token;
 - (NSString *) getRefreshToken; 
 - (NSString *) getToken;
 - (NSString *) getCurrentToken; 
