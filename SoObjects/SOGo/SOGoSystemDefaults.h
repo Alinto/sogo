@@ -83,6 +83,7 @@ static const NSString *kDisableSharingCalendar = @"Calendar";
 - (BOOL) uixDebugEnabled;
 - (BOOL) easDebugEnabled;
 - (BOOL) openIdDebugEnabled;
+- (BOOL) apiDebugEnabled;
 - (BOOL) tnefDecoderDebugEnabled;
 - (BOOL) xsrfValidationEnabled;
 

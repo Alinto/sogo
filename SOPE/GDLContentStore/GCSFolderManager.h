@@ -76,6 +76,7 @@
 
 - (BOOL)folderExistsAtPath:(NSString *)_path;
 - (NSArray *)listSubFoldersAtPath:(NSString *)_path recursive:(BOOL)_flag;
+- (NSArray *)listSubFoldersAndNamesAtPath:(NSString *)_path recursive:(BOOL)_recursive;
 
 - (NSDictionary *) recordAtPath: (NSString *) _path;
 - (GCSFolder *)folderAtPath:(NSString *)_path;

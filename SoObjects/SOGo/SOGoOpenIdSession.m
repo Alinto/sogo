@@ -139,6 +139,13 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
     return NO;
   }
   sd = [SOGoSystemDefaults sharedSystemDefaults];
+
+  if(![[sd authenticationType] isEqualToString: @"openid"])
+  {
+    [self errorWithFormat: @"Sogo SOGoAuthenticationType is not openid"];
+    return NO;
+  }
+
   return ([sd openIdConfigUrl] && [sd openIdScope]  && [sd openIdClient]  && [sd openIdClientSecret]);
 }
 
@@ -206,7 +213,7 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
     }
     else
     {
-      [self errorWithFormat: @"Missing parameters from sogo.conf"];
+      [self errorWithFormat: @"LoginTypebyDOmain - Openid not found or missing parameters for domain", _domain];
     }
   }
   else if ([[self class] checkUserConfig])

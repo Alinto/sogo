@@ -598,6 +598,27 @@ static BOOL       _singleStoreMode           = NO;
   return sql;
 }
 
+- (NSString *)generateSQLPathAndNameFetchForInternalNames:(NSArray *)_names
+					exactMatch:(BOOL)_beExact orDirectSubfolderMatch:(BOOL)_directSubs
+{
+  /* fetches the 'path' subset for a given quick-names */
+  NSMutableString *sql;
+  NSString *ws;
+  
+  ws = [self generateSQLWhereForInternalNames:_names 
+	     exactMatch:_beExact orDirectSubfolderMatch:_directSubs];
+  if ([ws length] == 0)
+    return nil;
+  
+  sql = [NSMutableString stringWithCapacity:256];
+  [sql appendString:@"SELECT c_path, c_foldername FROM "];
+  [sql appendString:[self folderInfoTableName]];
+  [sql appendString:@" WHERE "];
+  [sql appendString:ws];
+  if (debugSQLGen) [self logWithFormat:@"PathFetch-SQL: %@", sql];
+  return sql;
+}
+
 /* handling folder names */
 
 - (BOOL)_isStandardizedPath:(NSString *)_path {
@@ -800,6 +821,72 @@ static BOOL       _singleStoreMode           = NO;
       /* direct children only, so exclude everything with a slash */
       if ([sname rangeOfString:@"/"].length == 0 && [spath length] > 0)
 	[result addObject:spath];
+    }
+  }
+  
+  return result;
+}
+
+- (NSArray *)listSubFoldersAndNamesAtPath:(NSString *)_path recursive:(BOOL)_recursive{
+  NSMutableArray *result;
+  NSString *fname;
+  NSArray  *fnames, *records;
+  NSString *sql;
+  unsigned i, count;
+  
+  if ((fnames = [self internalNamesFromPath:_path]) == nil) {
+    [self debugWithFormat:@"got no internal names for path: '%@'", _path];
+    return nil;
+  }
+  
+  sql = [self generateSQLPathAndNameFetchForInternalNames:fnames 
+	      exactMatch:NO orDirectSubfolderMatch:(_recursive ? NO : YES)];
+  if ([sql length] == 0) {
+    [self debugWithFormat:@"got no SQL for names: %@", fnames];
+    return nil;
+  }
+  
+  if ((records = [self performSQL:sql]) == nil) {
+    [self logWithFormat:@"ERROR(%s): executing SQL failed: '%@'", 
+	  __PRETTY_FUNCTION__, sql];
+    return nil;
+  }
+  
+  if ((count = [records count]) == 0)
+    return emptyArray;
+
+  result = [NSMutableArray arrayWithCapacity:(count > 128 ? 128 : count)];
+  
+  fname = [self internalNameFromPath:_path];
+  fname = [fname stringByAppendingString:@"/"]; /* add slash */
+  for (i = 0; i < count; i++) {
+    NSDictionary *record, *folderInfo;
+    NSString *sname, *spath, *foldername;
+    
+    record = [records objectAtIndex:i];
+    sname  = [record objectForKey:GCSPathRecordName];
+    if (![sname hasPrefix:fname]) /* does not match at all ... */
+      continue;
+    
+    /* strip prefix and following slash */
+    sname = [sname substringFromIndex:[fname length]];
+    spath = [self pathPartFromInternalName:sname];
+    
+    if (_recursive) {
+      if ([spath length] > 0){
+        foldername = [record objectForKey: @"c_foldername"];
+        folderInfo = [NSDictionary dictionaryWithObjectsAndKeys: spath, @"path", foldername, @"name", nil];
+	      [result addObject:folderInfo];
+      } 
+    }
+    else {
+      /* direct children only, so exclude everything with a slash */
+      if ([sname rangeOfString:@"/"].length == 0 && [spath length] > 0)
+      {
+        foldername = [record objectForKey: @"c_foldername"];
+        folderInfo = [NSDictionary dictionaryWithObjectsAndKeys: spath, @"path", foldername, @"name", nil];
+	      [result addObject:folderInfo];
+      }
     }
   }
   

@@ -417,7 +417,7 @@ static BOOL debugLeaks;
 {
   id obj;
   WORequest *request;
-  BOOL isDAVRequest;
+  BOOL isDAVRequest, isAPIRequest;
   SOGoSystemDefaults *sd;
 
   /* put locale info into the context in case it's not there */
@@ -425,8 +425,14 @@ static BOOL debugLeaks;
 
   sd = [SOGoSystemDefaults sharedSystemDefaults];
   request = [_ctx request];
+  isAPIRequest = [[request requestHandlerKey] isEqualToString:@"SOGoAPI"];
   isDAVRequest = [[request requestHandlerKey] isEqualToString:@"dav"];
-  if (isDAVRequest || [sd isWebAccessEnabled])
+  if(isAPIRequest && ![_key isEqualToString:@"SOGo"] && ![_key isEqualToString:@"SOGoAPI"])
+  {
+    //The request will be handle by the API Dispatcher
+    obj = nil;
+  }
+  else if (isDAVRequest || [sd isWebAccessEnabled])
     {
       if (isDAVRequest)
         {

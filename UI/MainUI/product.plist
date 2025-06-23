@@ -118,6 +118,11 @@
           actionClass = "SOGoMicrosoftActiveSyncActions"; 
           actionName = "microsoftServerActiveSync";
         };
+        SOGoAPI = {
+          protectedBy = "<public>";
+          actionClass = "SOGoAPIActions"; 
+          actionName = "sogoAPI";
+        };
         casProxy = { 
           protectedBy = "<public>";
           pageName = "SOGoRootPage"; 
