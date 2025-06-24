@@ -371,20 +371,20 @@ void handle_api_terminate(int signum)
   }
 
   //Execute action
-  // NS_DURING
-  // {
+  NS_DURING
+  {
     ret = [classAction action: context withParam: paramInjected];
-  // }
-  // NS_HANDLER
-  // {
-  //   error = [NSString stringWithFormat: @"Internal error during: %@", action];
-  //   [self errorWithFormat: error];
-  //   [self _sendAPIErrorResponse: theResponse withMessage: error withStatus: 500];
-  //   RELEASE(context);
-  //   RELEASE(pool);
-  //   return nil;
-  // }
-  // NS_ENDHANDLER;
+  }
+  NS_HANDLER
+  {
+    error = [NSString stringWithFormat: @"Internal error during: %@", action];
+    [self errorWithFormat: error];
+    [self _sendAPIErrorResponse: theResponse withMessage: error withStatus: 500];
+    RELEASE(context);
+    RELEASE(pool);
+    return nil;
+  }
+  NS_ENDHANDLER;
   
 
   //Make the response
