@@ -220,6 +220,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{_libdir}/sogo/libSOGoUI.so*
 %{_libdir}/GNUstep/SOGo/AdministrationUI.SOGo
 %{_libdir}/GNUstep/SOGo/Appointments.SOGo
+%{_libdir}/GNUstep/SOGo/API.SOGo
 %{_libdir}/GNUstep/SOGo/CommonUI.SOGo
 %{_libdir}/GNUstep/SOGo/Contacts.SOGo
 %{_libdir}/GNUstep/SOGo/ContactsUI.SOGo
