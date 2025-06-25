@@ -45,7 +45,7 @@
 "Reduce" = "Verminderen";
 
 /* tooltip */
-"Refresh" = "Refresh";
+"Refresh" = "Vernieuwen";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -109,7 +109,7 @@
 "Personal" = "Persoonlijk";
 "To Do" = "Te doen";
 "Later" = "Later";
-"Forwarded" = "Forwarded";
+"Forwarded" = "Doorgestuurd";
 "Return Receipt Sent" = "Ontvangstbewijs verzonden";
 "a2_Sunday" = "Zo";
 "a2_Monday" = "Ma";
@@ -122,7 +122,7 @@
 "Add User" = "Gebruiker toevoegen";
 "Loading" = "Laden";
 "No such user." = "Geen dergelijke gebruiker";
-"You cannot (un)subscribe to a folder that you own!" = "Kan niet aan- of afmelden van eigen map!";
+"You cannot (un)subscribe to a folder that you own!" = "U kunt zich niet (af)melden voor een map waarvan u de eigenaar bent!";
 
 /* SMIME Certificate field */
 "S/MIME Certificate" = "S/MIME Certificaat";
@@ -227,16 +227,16 @@
 "Move forward" = "Ga vooruit";
 
 /* Password Recovery */
-"passwordRecovery_Disabled" = "Disabled";
-"passwordRecovery_SecretQuestion" = "Secret question";
-"passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
-"passwordRecovery_SecretQuestion2" = "What was your first car ?";
-"passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
-"passwordRecovery_SecondaryEmail" = "Secondary E-mail";
+"passwordRecovery_Disabled" = "Uitgezet";
+"passwordRecovery_SecretQuestion" = "Geheime vraag";
+"passwordRecovery_SecretQuestion1" = "Hoe heet je eerste huisdier?";
+"passwordRecovery_SecretQuestion2" = "Wat was je eerste auto?";
+"passwordRecovery_SecretQuestion3" = "Wat is je favoriete film?";
+"passwordRecovery_SecondaryEmail" = "Secundair e-mailadres";
 
 /* Password */
-"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
-"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
-"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0} special symbols";
-"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+"POLICY_MIN_LOWERCASE_LETTER" = "Minimaal %{0} kleine letter";
+"POLICY_MIN_UPPERCASE_LETTER" = "Minimaal %{0} hoofdletter";
+"POLICY_MIN_DIGIT" = "Minimaal %{0} cijfer";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimaal %{0} speciale symbolen";
+"POLICY_MIN_LENGTH" = "Minimale lengte van %{0} tekens";

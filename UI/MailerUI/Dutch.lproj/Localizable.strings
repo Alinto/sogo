@@ -143,23 +143,23 @@
 "This mail is being sent from an unsecure network!" = "Deze e-mail wordt verzonden vanaf een onveilig netwerk!";
 "Address Book" = "Adresboek";
 "Search For" = "Zoek naar";
-"Contains" = "Contains";
-"Does not contains" = "Does not contains";
-"Advanced search" = "Advanced search";
-"Anytime" = "Anytime";
-"Last 7 days" = "Last 7 days";
-"Last 30 days" = "Last 30 days";
-"Last 6 month" = "Last 6 month";
-"Before" = "Before";
-"After" = "After";
-"Between" = "Between";
-"and" = "and";
-"With attachments" = "With attachments";
-"In favorites" = "In favorites";
-"Unseen only" = "Unseen only";
-"Show more" = "Show more";
+"Contains" = "bevat";
+"Does not contains" = "bevat niet";
+"Advanced search" = "Geavanceerd zoeken";
+"Anytime" = "Altijd";
+"Last 7 days" = "Laatste 7 dagen";
+"Last 30 days" = "Laatste 30 dagen";
+"Last 6 month" = "Laatste 6 maanden";
+"Before" = "Voor";
+"After" = "Na";
+"Between" = "Tussen";
+"and" = "en";
+"With attachments" = "Met bijlage";
+"In favorites" = "In favorieten";
+"Unseen only" = "Alleen ongelezen ";
+"Show more" = "Meer weergeven";
 "Reset" = "Reset";
-"Message size" = "Message size";
+"Message size" = "Berichtgrootte";
 
 /* Popup "show" */
 "all"     = "alle";
@@ -171,7 +171,7 @@
 /* MailListView */
 "Sender" = "Afzender";
 "Subject or Sender" = "Onderwerp of afzender";
-"Subject or Recipient" = "Subject or Recipient";
+"Subject or Recipient" = "Onderwerp of ontvanger";
 "To or Cc" = "Ontvanger (Aan of Cc)";
 "Entire Message" = "Volledig bericht";
 "Date"          = "Datum";
@@ -257,7 +257,7 @@
 "Save As..." = "Opslaan als...";
 "Print Preview" = "Afdrukvoorbeeld";
 "View Message Source" = "Bron bekijken";
-"View raw message" = "View raw message";
+"View raw message" = "Bekijk onbewerkt bericht";
 
 /* Message view "more" menu: create an event from message */
 "Convert To Event" = "Omzetten naar afspraak";
@@ -464,7 +464,7 @@
 "Copy messages" = "Kopieer berichten";
 "More messages options" = "Meer berichtopties";
 "Flag" = "Met vlag";
-"Unflag" = "Unflag";
+"Unflag" = "Vlag verwijderen";
 "Mark as Unread" = "Als ongelezen markeren";
 "Mark as Read" = "Markeren als gelezen";
 "Closing Window ..." = "Venster sluiten ...";
@@ -478,7 +478,7 @@
 "Your email has been sent" = "Uw email is verzonden";
 "Folder compacted" = "Map gecomprimeerd";
 
-"More Options" = "More Options";
+"More Options" = "Meer opties";
 
 "New draft" = "Nieuw concept";
 "Create new draft with this template" = "Maak een nieuw concept met dit sjabloon";
@@ -517,16 +517,16 @@
 "hotkey_forward" = "f";
 
 /* Email deletion */
-"Clean folder" = "Clean folder";
-"Clean mailbox" = "Clean mailbox";
-"Delete permanently (do not use trash)" = "Delete permanently (do not use trash)";
-"Apply to subfolders" = "Apply to subfolders";
-"Delete e-mails older than" = "Delete e-mails older than";
-"3 months" = "3 months";
-"6 months" = "6 months";
-"9 months" = "9 months";
-"1 year" = "1 year";
-"Custom" = "Custom";
-"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "You are about to permanently delete some messages. Are you sure you want to proceed with this action?";
-"Apply" = "Apply";
-"%{0} message(s) deleted" = "%{0} message(s) deleted";
+"Clean folder" = "Map opschonen";
+"Clean mailbox" = "Mailbox opschonen";
+"Delete permanently (do not use trash)" = "Permanent verwijderen (niet in de prullenbak gebruiken)";
+"Apply to subfolders" = "Toepassen op submappen";
+"Delete e-mails older than" = "Verwijder e-mails die ouder zijn dan";
+"3 months" = "3 maanden";
+"6 months" = "6 maanden";
+"9 months" = "9 maanden";
+"1 year" = "1 jaar";
+"Custom" = "Aangepast";
+"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "U staat op het punt om enkele berichten definitief te verwijderen. Weet u zeker dat u hiermee wilt doorgaan?";
+"Apply" = "Toepassen";
+"%{0} message(s) deleted" = "%{0} bericht(en) verwijderd";

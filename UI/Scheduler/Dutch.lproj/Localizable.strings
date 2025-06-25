@@ -65,7 +65,7 @@
 "A total of %{0} events were imported in the calendar." = "Een totaal van %{0} afspraken is geïmporteerd naar de kalender.";
 "Compose E-Mail to All Attendees" = "E-mail aan alle deelnemers opstellen";
 "Compose E-Mail to Undecided Attendees" = "E-mail opstellen aan deelnemers die nog niet hebben gereageerd";
-"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
+"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuratieprofiel";
 
 /* Relative dates */
 "Yesterday" = "Gisteren";
@@ -117,7 +117,7 @@
 "Save and Close" = "Opslaan en sluiten";
 "Close" = "Sluiten";
 "Invite Attendees" = "Deelnemers uitnodigen";
-"Create Jitsi Meeting" = "Create Jitsi Meeting";
+"Create Jitsi Meeting" = "Jitsi-vergadering aanmaken";
 "Attach" = "Koppelen";
 "Update" = "Opslaan";
 "Cancel" = "Annuleren";
@@ -378,7 +378,7 @@
 "Show an Alert" = "Toon een waarschuwing";
 "Send an E-mail" = "Stuur een E-mail";
 "Email Organizer" = "E-mail organisator";
-"Email Attendees (internal users)" = "Email Attendees (internal users)";
+"Email Attendees (internal users)" = "E-mail deelnemers (interne gebruikers)";
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
@@ -403,8 +403,8 @@
 "To" = "Tot";
 
 /* dates */
-"DateFrom" = "From";
-"DateTo" = "To";
+"DateFrom" = "Van";
+"DateTo" = "Aan";
 
 /* validation errors */
 validate_notitle           = "U heeft geen titel opgegeven. Wilt u doorgaan?";
@@ -567,7 +567,7 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "CalDAV URL" = "CalDAV-URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
-"Copy to clipboard" = "Copy to clipboard";
+"Copy to clipboard" = "Kopiëren naar klembord";
 
 /* Error messages */
 "dayFieldInvalid" = "Vul een numerieke waarde in het veld Dagen in groter dan of gelijk aan 1.";
@@ -632,7 +632,7 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "Rename" = "Hernoem";
 "Import Calendar" = "Agenda Importeren";
 "Select an ICS file." = "Selecteer een ICS bestand.";
-"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "U heeft gewijzigde gegevens die niet zijn opgeslagen. Wilt u de pop-up sluiten en uw gegevens verliezen?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Abonneren op agenda succesvol";

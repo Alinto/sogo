@@ -77,14 +77,14 @@
 "Welsh" = "Cymraeg";
 
 "About" = "Over";
-"AboutBox" = "Developed by Inverse and Alinto, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
+"AboutBox" = "SOGO is een volledig uitgeruste groupware server met focus op schaalbaarheid en eenvoud ontwikkeld door Inverse.<br/><br/>SOGO biedt een rijke AJAX-gebaseerde web-interface en ondersteunt meerdere native clients door gebruik van standaard protocollen als CalDAV en CardDAV.<br/><br/>SOGO wordt gedistribueerd onder de <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> versie 2 of hoger en onderdelen worden verspreid onder de GNU LGPL versie 2. Dit is vrije software: je bent vrij om het te veranderen en verspreiden. Er is GEEN GARANTIE, voor zover toegestaan ​​door de wet.<br/><br/>Zie <a href=\"http://www.sogo.nu/en/support/community.html\">deze pagina</a> voor diverse support opties.";
 "Your account was locked due to too many failed attempts." = "Uw account is geblokkeerd wegens te veel mislukte pogingen.";
 "Your account was locked due to an expired password." = "Uw account is geblokkeerd wegens een verlopen wachtwoord.";
 "Login failed due to unhandled error case" = "Inloggen mislukt wegens onverwerkte fout";
 "Change your Password" = "Verander uw wachtwoord";
 "The password was changed successfully." = "Het wachtwoord is met succes veranderd.";
 "Your password has expired, please enter a new one below" = "Uw wachtwoord is verlopen, vul hieronder een nieuw wachtwoord in";
-"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Uw wachtwoord is te zwak. Kies een sterker wachtwoord om uw veiligheid te verbeteren.";
 "Password must not be empty." = "Wachtwoord mag niet leeg zijn.";
 "The passwords do not match. Please try again." = "De wachtwoorden komen niet overeen. Probeer het opnieuw.";
 "Password Grace Period" = "Wachtwoord-respijtperiode";
@@ -114,17 +114,17 @@
 "Missing type parameter" = "Ontbrekende typeparameter";
 
 /* Password Recovery */
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password lost" = "Password lost";
-"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
-"Invalid secret question answer" = "Invalid secret question answer";
-"Next" = "Next";
-"Back" = "Back";
-"Please enter a new password below" = "Please enter a new password below";
-"A link will be sent to %{0}" = "A link will be sent to %{0}";
-"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
-"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
-"Password recovery email in error" = "Password recovery email in error";
-"Password reset" = "Password reset";
-"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";
+"Secondary e-mail" = "Secundair e-mailadres";
+"Answer" = "Beantwoord";
+"Password lost" = "Wachtwoord verloren";
+"No password recovery method has been defined for this user" = "Er is geen wachtwoordherstelmethode gedefinieerd voor deze gebruiker";
+"Invalid secret question answer" = "Ongeldig antwoord op geheime vraag";
+"Next" = "Volgende";
+"Back" = "Terug";
+"Please enter a new password below" = "Voer hieronder een nieuw wachtwoord in";
+"A link will be sent to %{0}" = "Er wordt een link verzonden naar %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "Er is een link verzonden om uw wachtwoord opnieuw in te stellen. Controleer uw herstel-e-mailbox en klik op de link.";
+"Invalid configuration for email password recovery" = "Ongeldige configuratie voor e-mailwachtwoordherstel";
+"Password recovery email in error" = "Wachtwoordherstel-e-mail is foutief verzonden";
+"Password reset" = "Wachtwoord opnieuw instellen";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hallo %{0},\nEr is een verzoek ingediend om je wachtwoord te wijzigen!\n\nAls je dit verzoek niet hebt ingediend, negeer dan deze e-mail.\n\nKlik anders op deze link om je wachtwoord te wijzigen: %{1}";

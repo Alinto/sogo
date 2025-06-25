@@ -24,7 +24,7 @@
 "Vacation" = "Afwezigheid";
 "Forward" = "Doorsturen";
 "Password" = "Wachtwoord";
-"Notification" = "Notification";
+"Notification" = "Notificatie";
 "Categories" = "Categorieën";
 "Appointments invitations" = "Uitnodigingen voor afspraken";
 "Name" = "Naam";
@@ -46,10 +46,10 @@
 "Days between responses" = "Dagen tussen reacties";
 "Do not send responses to mailing lists" = "Geen reacties naar maillinglijsten sturen";
 "Activation Constraints" = "Activatiebeperkingen";
-"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Pas de dag- en uur bereiken onafhankelijk van elkaar aan en combineer ze eventueel met specifieke weekdagen om uw vakantiefilters aan te passen aan uw voorkeuren";
 "Enable auto reply on" = "Automatisch beantwoorden inschakelen";
 "First day of vacation" = "Eerste vakantiedag";
-"Disable auto reply after" = "Disable auto reply after";
+"Disable auto reply after" = "Automatisch antwoord uitschakelen na";
 "Last day of vacation" = "Laatste vakantiedag";
 "Enter date" = "Voer datum in";
 /* Enable auto reply at this time of the day */
@@ -82,9 +82,9 @@
 "You are not allowed to forward your messages to this domain:" = "U mag uw berichten niet doorsturen naar dit domein:";
 
 /* notification */
-"Notify incoming messsages" = "Notify incoming messsages";
-"Notification Message Sent" = "Notification message sent";
-"Notification Message" = "Notification of new message on %{0}";
+"Notify incoming messsages" = "Meld binnenkomende berichten";
+"Notification Message Sent" = "Meldingsbericht verzonden";
+"Notification Message" = "Melding van nieuw bericht op %{0}";
 
 /* d & t */
 "Time Zone" = "Tijd Zone";
@@ -152,7 +152,7 @@
 "Contacts Names" = "Contactnamen";
 "Duplicate name" = "Dubbele naam";
 "Calendar categories must have unique names." = "Kalendercategorieën moeten unieke namen hebben.";
-"Disable e-mail notifications on CalDAV" = "Disable e-mail notifications on CalDAV";
+"Disable e-mail notifications on CalDAV" = "E-mailmeldingen op CalDAV uitschakelen";
 
 /* Default Calendar */
 "Default calendar" = "Standaardagenda";
@@ -202,11 +202,11 @@
 "Compose messages in" = "Berichten opstellen in";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Platte tekst";
-"Insert signature on new message" = "Insert signature on new message";
-"Insert signature on reply" = "Insert signature on reply";
-"Insert signature on forward" = "Insert signature on forward";
-"Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
-"Hide attachements for inline images" = "Hide attachments for inline images";
+"Insert signature on new message" = "Handtekening invoegen bij nieuw bericht";
+"Insert signature on reply" = "Handtekening invoegen bij antwoord";
+"Insert signature on forward" = "Handtekening bij doorsturen invoegen";
+"Show recipients or sender full email in mailboxes" = "Toon ontvangers of afzenders volledige e-mail in mailboxen";
+"Hide attachements for inline images" = "Bijlagen voor inline-afbeeldingen verbergen";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Standaard lettergrootte";
@@ -232,11 +232,11 @@
 "Mail Account" = "Mailaccount";
 "New Mail Account" = "Nieuw mailaccount";
 "Server Name" = "Servernaam";
-"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
-"Smtp Auth" = "Smtp Auth";
+"Outgoing Server Name (SMTP)" = "Uitgaande servernaam (SMTP)";
+"Smtp Auth" = "Smtp-authenticatie";
 "Port" = "Poort";
 "Encryption" = "Encryptie";
-"Outgoing Encryption" = "Outgoing Encryption";
+"Outgoing Encryption" = "Uitgaande encryptie";
 "None" = "Geen";
 "User Name" = "Gebruikersnaam";
 "Full Name" = "Naam";
@@ -263,7 +263,7 @@
 "Digitally sign the message by default" = "Standaard digitaal ondertekenen van het bericht";
 "Always try to encrypt the message" = "Probeer altijd het bericht te versleutelen";
 "An error occurred while importing the certificate. Verify your password." = "Er is een fout opgetreden tijdens het importeren van het certificaat. Controleer je wachtwoord.";
-"Data too big. Please contact technical support." = "Data too big. Please contact technical support.";
+"Data too big. Please contact technical support." = "Gegevens te groot. Neem contact op met de technische ondersteuning.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Extra Parameters";
@@ -418,7 +418,7 @@
 
 "Keep the message" = "Bewaar het bericht";
 "Forward the message to" = "Stuur het bericht door naar";
-"Notify the message to" = "Notify the message to";
+"Notify the message to" = "Geef het bericht door aan";
 
 /* Input field label of "forward" mail filter action */
 "Email" = "E-mail";
@@ -499,8 +499,8 @@
 "Enable two-factor authentication using a TOTP application" = "Twee-factor authenticatie met TOTP programma inschakelen";
 "You must enter this key into your TOTP application." = "U moet deze sleutel in uw TOTP programma invoeren.";
 "If you do not and you log out you will not be able to login again." = "Als u dit niet doet en uitlogt, zal u niet meer terug kunnen inloggen.";
-"Enter TOTP verification code :" = "Enter TOTP verification code :";
-"Invalid TOTP verification code" = "Invalid TOTP verification code";
+"Enter TOTP verification code :" = "Voer de TOTP-verificatiecode in:";
+"Invalid TOTP verification code" = "Ongeldige TOTP-verificatiecode";
 
 /* External Sieve scripts */
 "An external Sieve script is active" = "Een extern Sieve script is actief";
@@ -508,9 +508,9 @@
 "Let SOGo handle everything" = "Laat SOGo alles beheren";
 
 /* Password Recovery */
-"Password recovery mode" = "Password recovery mode";
-"Question" = "Question";
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password recovery" = "Password recovery";
-"Password change" = "Password change";
+"Password recovery mode" = "Wachtwoordherstelmodus";
+"Question" = "Vraag";
+"Secondary e-mail" = "Secundair e-mailadres";
+"Answer" = "Beantwoord";
+"Password recovery" = "Wachtwoordherstelmodus";
+"Password change" = "Wachtwoord wijzigen mislukt";
