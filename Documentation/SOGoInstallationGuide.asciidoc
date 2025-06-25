@@ -1567,6 +1567,8 @@ expected by pam_cas, otherwise it will fail to authenticate incoming
 connection properly.
 
 
+[[openid-section]]
+
 Authenticating using OPENID
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -4119,6 +4121,155 @@ or create a json file which contains _{"forwardAddress":["sogo-tests2@sogo.alint
 ----
 sogo-tool user-preferences set defaults user1 Forward -f /path/filename -p cred
 ----
+
+
+API REST
+--------
+
+Starting from 5.12.2, an API with two endpoints is available.
+All response will be on json format. In case of errors, the message will be:
+```json
+{"error" : "message"}
+```
+with an explicit message
+
+API server url
+~~~~~~~~~~~~~~
+
+_<scheme>_://_<domain>_/SOGo/SOGoAPI/_<action>_
+
+•	*scheme* : https or http
+•	*domain* : domain or ip:port of SOGo's server
+•	*action* : name of the action. No action does the Version action described below.
+
+Authentication
+~~~~~~~~~~~~~~
+
+Somes actions needs to be authenticated. There is two ways to do so:
+
+* *Basic auth*
+
+Add a header *Auhtorization* with value:
+
+'Basic <credentials>'
+
+*credentials* is the sitrng '<uid>:<password>' base64 encoded.
+
+* *OpenID*
+
+**Only works if you configure sogo to use openid. See <<openid-section, the related section>>**
+
+Add a header *Auhtorization* with value:
+
+'Bearer <access_token>'
+
+*acces_token* is from the https://connect2id.com/products/server/docs/api/token#url[openid protocol]. It has to be fetch with the scope `openid`.
+
+Action - Version
+~~~~~~~~~~~~~~~~
+*	*URL*: <scheme>://<domain>/SOGo/SOGoAPI/Version
+*	*Authentication needed*: NO
+*	*HTTP method allowed*: GET
+*	*Description*: Return the current version of sogo
+* *Answer structure*:
+```json
+{
+   "major":5,
+   "patch":1,
+   "minor":12
+}
+```
+
+Action - UserFolder
+~~~~~~~~~~~~~~~~~~~
+*	*URL*: <scheme>://<domain>/SOGo/SOGoAPI/UserFolder
+*	*Authentication needed*: YES
+*	*HTTP method allowed*: GET
+*	*Description*: Return the caldav and cardav links of the authenticated user, plus their names.
+* *Answer structure*:
+```json
+{
+   "calendar":[
+      {
+         "name":"DidyShared",
+         "url":"http://127.0.0.1/SOGo/dav/sogo-tests1@example.org/Calendar/12509-67F67D00-1-3105AF40"
+      },
+      {
+         "name":"LocalDidy",
+         "url":"http://127.0.0.1/SOGo/dav/sogo-tests1@example.org/Calendar/1BC38-67B60000-1-6E4B6880"
+      },
+      {
+         "name":"Personal Calendar",
+         "url":"http://127.0.0.1/SOGo/dav/sogo-tests1@example.org/Calendar/personal"
+      }
+   ],
+   "username":"sogo-tests1@example.org",
+   "contact":[
+      {
+         "name":"Personal Address Book",
+         "url":"http://127.0.0.1/SOGo/dav/sogo-tests1@example.org/Contacts/personal"
+      }
+   ]
+}
+```
+* *Note*:
+
+The Answer has 3 primary keys:
+
+** *username*: uid of the user.
+** *calendar*: array of calendar's folder info.
+** *contact*: array of calendar's folder info.
+
+A folder info is a dict with:
+
+** *name*: Name of the folder.
+** *url*: Dav link of the folder.
+
+Errors and messages
+~~~~~~~~~~~~~~~~~~~
+
+Complete http response is `{“error:” : <message>}`.
+*<action>* is the one used for the request: `<scheme>://<domain>/SOGo/SOGoAPI/<action>`
+
+[%header,cols="1,3,3"]
+|===
+|Status |Message |Description
+
+|400
+|No backend API found for action: <action>
+|The requested action doesn't exist
+
+|500
+|Can't alloc and init class: <classAction>
+|The requested action exist but failed to be instantiated. <classAction> is the class's name
+
+|400
+|Method <method> not allowed for action <action>
+|Http method not allowed. <methos> is the one used (GET, PUT, POST...)
+
+|400
+|Missing param <param> for action <action>
+|Required param for action not found. <param> is the name of the missing parameter.
+
+|401
+|No authorization header found for <action>
+|No Authorization header found
+
+|401
+|Authorization method incorrect: <auth> for action <action>
+|Value of Authorization's header doesn't start with Basic or Bearer. <auth> is the full value.
+
+|401
+|User wrong login or not found for action <action>
+|Fail to authenticate the user. Various causes possible: wrong login, wrong password, expired token...
+
+|500
+|Internal error during: <action>
+|Internal error during the action
+|===
+
+
+To have more logs you can add `SOGoAPIDebugEnabled = YES;` to your sogo.conf.
 
 
 
