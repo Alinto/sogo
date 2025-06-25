@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.12.2](https://github.com/Alinto/sogo/compare/SOGo-5.12.1...SOGo-5.12.2) (2025-06-25)
+
+
+### Features
+
+* **api:** add endpoint for caldav/cardav url ([51f1521](https://github.com/Alinto/sogo/commit/51f1521dba2d0ca8bdbadffadb16db26b975f668))
+* **openid:** swicth to libcurl for http request ([a782424](https://github.com/Alinto/sogo/commit/a782424a30cfe8e9c6f2769a45bcdd3498679237))
+
+
+### Bug Fixes
+
+* **api:** add handler for internal error ([dabad1d](https://github.com/Alinto/sogo/commit/dabad1d0cf46263d78558d79d2af9fff528a9a89))
+* **calendar:** properly evalute last occurance freebusy ([8766b7c](https://github.com/Alinto/sogo/commit/8766b7c6b32aedf37d7f8f350e461931b253a4fb))
+* **openid:** add state in connection flow ([085fc4a](https://github.com/Alinto/sogo/commit/085fc4a9eb7d1e2a0f7b48baa1f09a8ba0d515e1))
+* **openid:** allow expires_in param to be null ([9954c36](https://github.com/Alinto/sogo/commit/9954c3607bfda55424f5ac532a1075407235f345))
+* **openid:** make end_session_endpoint optional ([c5fb348](https://github.com/Alinto/sogo/commit/c5fb3482e22f1bfc935213e8ed7208becd9bd1f4))
+* **password:** put correct regex for special char ([e36d0d2](https://github.com/Alinto/sogo/commit/e36d0d219baed8c7d57af0069fadb8d1bf7df072))
+* **session:** allow password/token to be longer than userkey ([516606b](https://github.com/Alinto/sogo/commit/516606baff5674c25da1e76f532ca2a9d7818ec0))
+* **sieve:** add requirements for notify when doing a filter ([f53d7b7](https://github.com/Alinto/sogo/commit/f53d7b73db3d87a17a253bf98ee09a80052b3fd8))
+* **view:** don't hide the option mailcomposer in small screen ([8a90773](https://github.com/Alinto/sogo/commit/8a907737de336f873047ecdc7d5c8ac07ae9e45b))
+
+
+### Localization
+
+* **nl:** Update Dutch translations ([031e117](https://github.com/Alinto/sogo/commit/031e117cbacf9d41caff43be19e639dee81b84dc))
+* **pt:** Update Portuguese translations ([9649ae3](https://github.com/Alinto/sogo/commit/9649ae345f334d390860b0db70db8c3b621f513e))
+* **tr_TR:** Update TurkishTurkey translations ([e9c03d3](https://github.com/Alinto/sogo/commit/e9c03d3cf7e668866ac757f72d87cdc4709c9d33))
+
 ## [5.12.1](https://github.com/Alinto/sogo/compare/SOGo-5.12.0...SOGo-5.12.1) (2025-04-30)
 
 
