@@ -235,8 +235,8 @@
 "passwordRecovery_SecondaryEmail" = "İkincil e-posta";
 
 /* Password */
-"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
-"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
-"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0} special symbols";
-"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+"POLICY_MIN_LOWERCASE_LETTER" = "En az %{0} küçük harf";
+"POLICY_MIN_UPPERCASE_LETTER" = "En az %{0} büyük harf";
+"POLICY_MIN_DIGIT" = "En az %{0} rakam";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "En az %{0} özel simge";
+"POLICY_MIN_LENGTH" = "En az %{0} karakter uzunluğunda";

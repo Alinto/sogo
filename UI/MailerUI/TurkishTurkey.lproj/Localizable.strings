@@ -171,7 +171,7 @@
 /* MailListView */
 "Sender" = "Gönderici";
 "Subject or Sender" = "Konu ya da Gönderici";
-"Subject or Recipient" = "Subject or Recipient";
+"Subject or Recipient" = "Konu ya da alıcı";
 "To or Cc" = "Alıcı veya Kopya";
 "Entire Message" = "Tüm ileti";
 "Date"          = "Tarih";
@@ -517,16 +517,16 @@
 "hotkey_forward" = "f";
 
 /* Email deletion */
-"Clean folder" = "Clean folder";
-"Clean mailbox" = "Clean mailbox";
-"Delete permanently (do not use trash)" = "Delete permanently (do not use trash)";
-"Apply to subfolders" = "Apply to subfolders";
-"Delete e-mails older than" = "Delete e-mails older than";
-"3 months" = "3 months";
-"6 months" = "6 months";
-"9 months" = "9 months";
-"1 year" = "1 year";
-"Custom" = "Custom";
-"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "You are about to permanently delete some messages. Are you sure you want to proceed with this action?";
-"Apply" = "Apply";
-"%{0} message(s) deleted" = "%{0} message(s) deleted";
+"Clean folder" = "Klasörü temizle";
+"Clean mailbox" = "E-posta kutusunu temizle";
+"Delete permanently (do not use trash)" = "Kalıcı olarak sil (çöpe atmadan)";
+"Apply to subfolders" = "Alt klasörlere uygula";
+"Delete e-mails older than" = "Şundan eski e-postaları sil";
+"3 months" = "3 ay";
+"6 months" = "6 ay";
+"9 months" = "9 ay";
+"1 year" = "1 yıl";
+"Custom" = "Özel";
+"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "Bazı iletileri kalıcı olarak silmek üzeresiniz. Bunu yapmak istediğinize emin misiniz?";
+"Apply" = "Uygula";
+"%{0} message(s) deleted" = "%{0} ileti silindi";

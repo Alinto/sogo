@@ -84,7 +84,7 @@
 "Change your Password" = "Parolanızı değiştirin";
 "The password was changed successfully." = "Parola değiştirildi.";
 "Your password has expired, please enter a new one below" = "Parolanızın süresi dolmuş. Lütfen aşağıya yeni bir parola yazın";
-"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Parolanız çok zayıf. Lütfen güvenliğinizi artırmak için daha güçlü bir parola seçin";
 "Password must not be empty." = "Parola boş olamaz.";
 "The passwords do not match. Please try again." = "Parola ile onayı aynı değil. Lütfen yeniden deneyin.";
 "Password Grace Period" = "Parola geçerlilik süresi";
