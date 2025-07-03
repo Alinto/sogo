@@ -1,0 +1,366 @@
+/* this file is in UTF-8 format! */
+
+"Contact" = "연락처";
+"Address" = "주소";
+"Photos" = "사진";
+"Other" = "기타";
+"Address Books" = "주소록";
+"Addressbook" = "주소록";
+"Addresses" = "주소";
+"Update" = "업데이트";
+"Cancel" = "취소";
+"Common" = "공통";
+"Contact editor" = "연락처 편집기";
+"Contact viewer" = "연락처 뷰어";
+"Email" = "이메일";
+"Screen Name" = "스크린 이름";
+"Extended" = "확장";
+"Fax" = "팩스";
+"Firstname" = "이름";
+"Home" = "집";
+"HomePhone" = "집 전화";
+"Lastname" = "성";
+"Location" = "위치";
+"Add a category" = "카테고리 추가";
+"MobilePhone" = "휴대폰";
+"Name" = "이름";
+"OfficePhone" = "회사 전화";
+"Organization" = "기관";
+"Work Phone" = "직장 전화";
+"Cell" = "휴대폰";
+"Pager" = "호출기";
+"Pref" = "기본";
+"Phone" = "전화";
+"Phones" = "전화번호";
+"Postal" = "우편";
+"Save" = "저장";
+"Internet" = "인터넷";
+"Unit" = "단위";
+"delete" = "삭제";
+"edit" = "편집";
+"invalidemailwarn" = "지정된 이메일이 유효하지 않습니다";
+"new" = "새로 만들기";
+"Preferred Phone" = "기본 전화번호";
+"Move To" = "이동";
+"Copy To" = "복사";
+"Add to" = "추가";
+"To" = "받는 사람";
+"Carbon Copy (Cc)" = "참조 (Cc)";
+"Blind Carbon Copy (Bcc)" = "숨은 참조 (Bcc)";
+
+/* Search scope: name fields */
+"name" = "이름";
+
+/* Search scope: name fields */
+"c_cn" = "이름";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "보조 이메일";
+
+/* Search scope: screen name field */
+"nsaimid" = "스크린 이름";
+
+/* Search scope: mail fields */
+"mail" = "메일";
+
+/* Search scope: mail fields */
+"c_mail" = "메일";
+
+/* Search scope: telephone field */
+"telephonenumber" = "전화";
+
+/* Search scope: telephone field */
+"homephone" = "전화";
+
+/* Search scope: mobile field */
+"mobile" = "모바일";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "팩스";
+
+/* Search scope: pager field */
+"pager" = "호출기";
+
+/* Search scope: categories field */
+"c_categories" = "카테고리";
+
+/* Search scope: categories field */
+"vcardcategories" = "카테고리";
+
+/* Search scope: title field */
+"title" = "직함";
+
+/* Search scope: organization field */
+"c_o" = "기관";
+
+/* Search scope: organization field */
+"o" = "기관";
+
+/* Search scope: department field */
+"ou" = "부서";
+
+/* Search scope: city field */
+"l" = "도시";
+
+/* Search scope: country field */
+"c" = "국가";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "집 주소";
+
+/* Search scope: state/province field */
+"st" = "주/도";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "집 주/도";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "우편/우편번호";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "우편/우편번호";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "집 국가";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "홈페이지";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "웹 페이지";
+
+/* Search scope: note field */
+"description" = "메모";
+
+/* Subheader of empty addressbook */
+"No contact" = "연락처 없음";
+
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "이 주소록을 탐색하려면 검색을 시작하십시오";
+
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "연락처";
+
+/* No contact matching search criteria */
+"No matching contact" = "일치하는 연락처 없음";
+
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "일치하는 연락처";
+
+/* Number of selected contacts in list */
+"selected" = "선택됨";
+
+/* Empty right pane */
+"No contact selected" = "선택된 연락처 없음";
+
+/* Tooltips */
+"Create a new address book card" = "새 주소록 카드 만들기";
+"Create a new list" = "새 목록 만들기";
+"Edit the selected card" = "선택한 카드 편집";
+"Send a mail message" = "메일 메시지 보내기";
+"Delete selected card or address book" = "선택한 카드 또는 주소록 삭제";
+"Reload all contacts" = "모든 연락처 새로고침";
+"htmlMailFormat_UNKNOWN" = "알 수 없음";
+"htmlMailFormat_FALSE" = "일반 텍스트";
+"htmlMailFormat_TRUE" = "HTML";
+"Name or Email" = "이름 또는 이메일";
+"Category" = "카테고리";
+"Personal Addressbook" = "개인 주소록";
+"Search in Addressbook" = "주소록 검색";
+"New Card" = "새 카드";
+"New List" = "새 목록";
+"Edit" = "편집";
+"Properties" = "속성";
+"Sharing..." = "공유...";
+"Write" = "쓰기";
+"Delete" = "삭제";
+"Instant Message" = "인스턴트 메시지";
+"Add..." = "추가...";
+"Remove" = "제거";
+"Please wait..." = "기다려 주십시오...";
+"No possible subscription" = "구독할 수 없음";
+"Preferred" = "기본";
+"Display" = "표시";
+"Display Name" = "표시 이름";
+"Additional Email" = "추가 이메일";
+"Phone Number" = "전화번호";
+"Prefers to receive messages formatted as" = "선호하는 메시지 형식";
+"Categories" = "카테고리";
+"First" = "이름";
+"Last" = "성";
+"Nickname" = "별명";
+"Telephone" = "전화";
+"Work" = "직장";
+"Mobile" = "휴대폰";
+"Pager" = "호출기";
+"Download iOS - MacOS configuration profile" = "iOS - MacOS 구성 프로필 다운로드";
+
+/* categories */
+"contacts_category_labels" = "동료, 경쟁사, 고객, 친구, 가족, 비즈니스 파트너, 공급업체, 언론, VIP";
+"New category" = "새 카테고리";
+
+/* adresses */
+"Title" = "직함";
+"Service" = "서비스";
+"Company" = "회사";
+"Department" = "부서";
+"City" = "도시";
+"State_Province" = "주/도";
+"ZIP_Postal Code" = "우편/우편번호";
+"Country" = "국가";
+"Web Page" = "웹 페이지";
+"Other Infos" = "기타 정보";
+"Note" = "메모";
+"Timezone" = "시간대";
+"Birthday" = "생일";
+"Birthday (yyyy-mm-dd)" = "생일 (yyyy-mm-dd)";
+"Freebusy URL" = "약속 가능/불가능 URL";
+"Add as..." = "다음으로 추가...";
+"Recipient" = "받는 사람";
+"Carbon Copy" = "참조";
+"Blind Carbon Copy" = "숨은 참조";
+"New Addressbook..." = "새 주소록...";
+"Subscribe to an Addressbook..." = "주소록 구독...";
+"Remove the selected Addressbook" = "선택한 주소록 제거";
+"Subscribe to a shared contact" = "공유 주소록 구독";
+"Search User" = "사용자 검색";
+"Name of the Address Book" = "주소록 이름";
+"Are you sure you want to delete the selected address book?"
+= "선택한 주소록을 삭제하시겠습니까?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "주소록 \"%{0}\"을 삭제하시겠습니까?";
+"You cannot remove nor unsubscribe from a public addressbook."
+= "공개 주소록은 제거하거나 구독 취소할 수 없습니다.";
+"You cannot remove nor unsubscribe from your personal addressbook."
+= "개인 주소록은 제거하거나 구독 취소할 수 없습니다.";
+"Are you sure you want to delete the selected contacts?"
+= "선택한 연락처를 삭제하시겠습니까?";
+"Are you sure you want to delete the card of %{0}?" = "%{0}의 카드를 삭제하시겠습니까?";
+"You cannot delete the card of \"%{0}\"."
+= "\"%{0}\"의 카드를 삭제할 수 없습니다.";
+"You cannot subscribe to a folder that you own!"
+= "소유하고 있는 폴더는 구독할 수 없습니다.";
+"Unable to subscribe to that folder!"
+= "해당 폴더를 구독할 수 없습니다.";
+
+/* security */
+"Security" = "보안";
+"Uninstall" = "제거";
+"Error reading the card certificate." = "카드 인증서 읽기 오류.";
+"No certificate associated to card." = "카드와 연결된 인증서가 없습니다.";
+
+/* acls */
+"Access rights to" = "접근 권한 대상";
+"For user" = "사용자";
+"Any Authenticated User" = "모든 인증된 사용자";
+"Public Access" = "공개 접근";
+"This person can add cards to this addressbook."
+= "이 사람은 이 주소록에 카드를 추가할 수 있습니다.";
+"This person can edit the cards of this addressbook."
+= "이 사람은 이 주소록의 카드를 편집할 수 있습니다.";
+"This person can list the content of this addressbook."
+= "이 사람은 이 주소록의 내용을 나열할 수 있습니다.";
+"This person can read the cards of this addressbook."
+= "이 사람은 이 주소록의 카드를 읽을 수 있습니다.";
+"This person can erase cards from this addressbook."
+= "이 사람은 이 주소록에서 카드를 지울 수 있습니다.";
+"The selected contact has no email address."
+= "선택한 연락처에 이메일 주소가 없습니다.";
+"Please select a contact." = "연락처를 선택하십시오.";
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0}개 카드 복사됨";
+"%{0} card(s) moved" = "%{0}개 카드 이동됨";
+"SoAccessDeniedException" = "이 주소록에 쓸 수 없습니다.";
+"Forbidden" = "금지됨";
+"Invalid Contact" = "선택한 연락처가 더 이상 존재하지 않습니다.";
+"Unknown Destination Folder" = "선택한 대상 주소록이 더 이상 존재하지 않습니다.";
+
+/* Lists */
+"List details" = "목록 세부 정보";
+"List name" = "목록 이름";
+"List nickname" = "목록 별명";
+"List description" = "목록 설명";
+"Members" = "회원";
+"Contacts" = "연락처";
+"Add" = "추가";
+"Lists can't be moved or copied." = "목록은 이동하거나 복사할 수 없습니다.";
+"Export" = "내보내기";
+"Export Address Book..." = "주소록 내보내기...";
+"View Raw Source" = "원본 내용 보기";
+
+/* Import */
+"Import Cards" = "카드 가져오기";
+"Select a vCard or LDIF file." = "vCard 또는 LDIF 파일을 선택하십시오.";
+"Upload" = "업로드";
+"Uploading" = "업로드 중";
+"Done" = "완료";
+"An error occured while importing contacts." = "연락처 가져오기 중 오류가 발생했습니다.";
+"No card was imported." = "가져온 카드가 없습니다.";
+"A total of %{0} cards were imported in the addressbook." = "총 %{0}개의 카드가 주소록으로 가져와졌습니다.";
+"Reload" = "새로고침";
+
+/* Properties window */
+"Address Book Name" = "주소록 이름";
+"Links to this Address Book" = "이 주소록 링크";
+"Authenticated User Access" = "인증된 사용자 접근";
+"CardDAV URL" = "CardDAV URL";
+"Options" = "옵션";
+"Rename" = "이름 변경";
+"Subscriptions" = "구독";
+"Global Addressbooks" = "전역 주소록";
+"Search" = "검색";
+"Sort" = "정렬";
+"Descending Order" = "내림차순";
+"Back" = "뒤로";
+"Select All" = "모두 선택";
+"Copy contacts" = "연락처 복사";
+"More messages options" = "더 많은 메시지 옵션";
+"New Contact" = "새 연락처";
+"Close" = "닫기";
+"More contact options" = "더 많은 연락처 옵션";
+"Organization Unit" = "조직 단위";
+"Add Organizational Unit" = "조직 단위 추가";
+"Type" = "유형";
+"Email Address" = "이메일 주소";
+"New Email Address" = "새 이메일 주소";
+"New Phone Number" = "새 전화번호";
+"URL" = "URL";
+"New URL" = "새 URL";
+"street" = "거리";
+"street (continued)" = "거리 (계속)";
+"Postoffice" = "우체국";
+"Region" = "지역";
+"Postal Code" = "우편번호";
+"New Address" = "새 주소";
+"Reset" = "재설정";
+"Description" = "설명";
+"Add Member" = "멤버 추가";
+"Subscribe" = "구독";
+"Add Birthday" = "생일 추가";
+"Import" = "가져오기";
+"More options" = "더 많은 옵션";
+"Role" = "역할";
+"Add Screen Name" = "스크린 이름 추가";
+"Custom 1" = "사용자 지정 1";
+"Custom 2" = "사용자 지정 2";
+"Custom 3" = "사용자 지정 3";
+"Custom 4" = "사용자 지정 4";
+"Custom Value" = "사용자 지정 값";
+"New Custom Value" = "새 사용자 지정 값";
+"Synchronization" = "동기화";
+"Synchronize" = "동기화";
+"Sucessfully subscribed to address book" = "주소록 구독 성공";
+"A similar card already exists. Would you like to save it anyway?" = "유사한 카드가 이미 존재합니다. 그래도 저장하시겠습니까?";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "검색 범위";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "항목 전환";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

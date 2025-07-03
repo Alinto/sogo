@@ -112,6 +112,9 @@
 @interface SOGoMailKazakhForward : SOGoMailForward
 @end
 
+@interface SOGoMailKoreanForward : SOGoMailForward
+@end
+
 @interface SOGoMailLatvianForward : SOGoMailForward
 @end
 

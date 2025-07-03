@@ -366,6 +366,9 @@
 @implementation SOGoMailKazakhForward
 @end
 
+@implementation SOGoMailKoreanForward
+@end
+
 @implementation SOGoMailLatvianForward
 @end
 

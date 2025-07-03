@@ -1,0 +1,242 @@
+/* this file is in UTF-8 format! */
+
+/* toolbars */
+"Save" = "저장";
+"Close" = "닫기";
+"Edit User Rights" = "사용자 권한 편집";
+"Home" = "홈";
+"Calendar" = "캘린더";
+"Address Book"  = "주소록";
+"Mail" = "메일";
+"Preferences" = "환경설정";
+"Administration" = "관리";
+"Disconnect" = "연결 끊기";
+"Toggle Menu" = "메뉴 전환";
+"Right Administration" = "권한 관리";
+"Log Console (dev.)" = "로그 콘솔 (개발)";
+"User" = "사용자";
+"Vacation message is enabled" = "부재중 메시지 활성화됨";
+"Help" = "도움말";
+"noJavascriptError" = "SOGo를 실행하려면 Javascript가 필요합니다. 브라우저 환경설정에서 이 옵션이 사용 가능하고 활성화되어 있는지 확인하세요.";
+"noJavascriptRetry" = "다시 시도";
+"Owner" = "소유자";
+"Publish the Free/Busy information" = "약속 가능/불가능 정보 게시";
+"Add..." = "추가...";
+"Remove" = "제거";
+"Subscribe User" = "사용자 구독";
+"Any Authenticated User" = "모든 인증된 사용자";
+"Public Access" = "공개 접근";
+"Any user not listed above" = "위에 나열되지 않은 모든 사용자";
+"Anybody accessing this resource from the public area" = "공개 영역에서 이 리소스에 접근하는 모든 사람";
+"Sorry, the user rights can not be configured for that object." = "죄송합니다, 해당 개체에 대한 사용자 권한은 설정할 수 없습니다.";
+"Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
+     = "이 시스템에 계정이 있는 모든 사용자가 귀하의 사서함 \"%{0}\"에 접근할 수 있습니다. 그들 모두를 신뢰하십니까?";
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
+     = "이 시스템에 계정이 있는 모든 사용자가 귀하의 캘린더 \"%{0}\"에 접근할 수 있습니다. 그들 모두를 신뢰하십니까?";
+"Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "이 시스템에 계정이 없더라도 인터넷상의 누구나 귀하의 캘린더 \"%{0}\"에 접근할 수 있습니다. 이 정보는 공개 인터넷에 적합합니까?";
+"Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
+     = "이 시스템에 계정이 있는 모든 사용자가 귀하의 주소록 \"%{0}\"에 접근할 수 있습니다. 그들 모두를 신뢰하십니까?";
+"Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "이 시스템에 계정이 없더라도 인터넷상의 누구나 귀하의 주소록 \"%{0}\"에 접근할 수 있습니다. 이 정보는 공개 인터넷에 적합합니까?";
+"Give Access" = "접근 권한 부여";
+"Keep Private" = "비공개 유지";
+"Expand" = "확장";
+"Reduce" = "축소";
+
+/* tooltip */
+"Refresh" = "새로고침";
+
+/* generic.js */
+"Unable to subscribe to that folder!"
+        = "해당 폴더를 구독할 수 없습니다!";
+"You cannot subscribe to a folder that you own!"
+        = "소유하고 있는 폴더는 구독할 수 없습니다!";
+"Unable to unsubscribe from that folder!"
+        = "해당 폴더 구독을 취소할 수 없습니다!";
+"You cannot unsubscribe from a folder that you own!"
+        = "소유하고 있는 폴더는 구독을 취소할 수 없습니다!";
+"Unable to rename that folder!" = "해당 폴더 이름을 바꿀 수 없습니다!";
+"You have already subscribed to that folder!"
+        = "이미 해당 폴더를 구독했습니다!";
+"The user rights cannot be edited for this object!"
+        = "이 개체에 대한 사용자 권한은 편집할 수 없습니다!";
+"A folder by that name already exists." = "해당 이름의 폴더가 이미 존재합니다.";
+"You cannot create a list in a shared address book."
+        = "공유 주소록에서는 목록을 생성할 수 없습니다.";
+"Warning" = "경고";
+"Can't contact server" = "서버와 통신하는 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.";
+"You are not allowed to access this module or this system. Please contact your system administrator."
+= "이 모듈 또는 이 시스템에 접근할 수 없습니다. 시스템 관리자에게 문의하십시오.";
+"You don't have the required privileges to perform the operation."
+= "이 작업을 수행하는 데 필요한 권한이 없습니다.";
+"noEmailForDelegation" = "초대를 위임할 주소를 지정해야 합니다.";
+"delegate is organizer" = "위임자가 주최자입니다. 다른 위임자를 지정하십시오.";
+"delegate is a participant" = "위임자가 이미 참가자입니다.";
+"delegate is a group" = "지정된 주소는 그룹에 해당합니다. 개별 사용자에게만 위임할 수 있습니다.";
+
+/* common buttons */
+"OK" = "확인";
+"Cancel" = "취소";
+"Yes" = "예";
+"No" = "아니요";
+
+/* generic messages */
+"Error" = "오류";
+"Success" = "성공";
+
+/* confirmation dialog box */
+"Confirmation" = "확인";
+
+/* alarms */
+"Reminder" = "알림";
+"Start" = "시작";
+"Due Date" = "마감일";
+"Location" = "장소";
+"Snooze" = "다시 알림";
+"Snooze for " = "다시 알림 ";
+"5 minutes" = "5분";
+"10 minutes" = "10분";
+"15 minutes" = "15분";
+"30 minutes" = "30분";
+"45 minutes" = "45분";
+"1 hour" = "1시간";
+"1 day" = "1일";
+
+/* mail labels */
+"Important" = "중요";
+"Work" = "업무";
+"Personal" = "개인";
+"To Do" = "할 일";
+"Later" = "나중에";
+"Forwarded" = "전달됨";
+"Return Receipt Sent" = "읽음 확인 전송됨";
+"a2_Sunday" = "일";
+"a2_Monday" = "월";
+"a2_Tuesday" = "화";
+"a2_Wednesday" = "수";
+"a2_Thursday" = "목";
+"a2_Friday" = "금";
+"a2_Saturday" = "토";
+"Access Rights" = "접근 권한";
+"Add User" = "사용자 추가";
+"Loading" = "로딩 중";
+"No such user." = "해당 사용자가 없습니다.";
+"You cannot (un)subscribe to a folder that you own!" = "소유하고 있는 폴더는 (구독/구독 취소)할 수 없습니다!";
+
+/* SMIME Certificate field */
+"S/MIME Certificate" = "S/MIME 인증서";
+"Subject Name" = "주체 이름";
+"Issuer" = "발급자";
+"streetAddress" = "거리 주소";
+"stateOrProvinceName" = "주 또는 시/도";
+"localityName" = "지역";
+"countryName" = "국가";
+"organizationName" = "기관명";
+"organizationalUnitName" = "조직 단위";
+"commonName" = "일반 이름";
+"surname" = "성";
+"givenName" = "이름";
+"emailAddress" = "이메일 주소";
+
+
+/* Authentication username */
+"Username" = "사용자명";
+
+/* Authentication password */
+"Password" = "비밀번호";
+
+/* Authentication failed */
+"Wrong username or password." = "잘못된 사용자명 또는 비밀번호입니다.";
+
+/* Error message displayed bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "최소 %{minimumSearchLength}자를 입력하세요";
+
+/* Error message displayed when a file upload exceeds WOMaxUploadSize */
+"File size upload limit reached" = "파일 크기 업로드 제한에 도달했습니다";
+
+/* Generic server error */
+"An error occured, please try again." = "An error occured, please try again.";
+
+/* Open datepicker */
+"Open Calendar" = "캘린더 열기";
+
+/* Toggle visibility (ex: mail account in left navigation menu) */
+"Toggle visibility" = "가시성 전환";
+
+"Keyboard Shortcuts" = "키보드 단축키";
+
+/* Aria label for avatar button to select and unselect an item */
+"Toggle item" = "항목 전환";
+
+/* Toggle multiple items at the same time (hotkeys cheatsheet) */
+"Toggle range of items" = "항목 범위 전환";
+
+/* Question mark shows list of hotkeys */
+"Show or hide this help" = "이 도움말 표시 또는 숨기기";
+
+/* Space key */
+"key_space" = "스페이스";
+
+/* Delete key */
+"key_delete" = "삭제";
+
+/* Shift and space key */
+"key_shift+space" = "시프트 + 스페이스";
+
+/* Up arrow key */
+"key_up" = "↑";
+
+/* Down arrow key */
+"key_down" = "↓";
+
+/* Left arrow key */
+"key_left" = "←";
+
+/* Right arrow key */
+"key_right" = "→";
+
+/* Shift and up arrow combo keys */
+"key_shift+up" = "시프트 + ↑";
+
+/* Shift and down arrow combo keys */
+"key_shift+down" = "시프트 + ↓";
+
+/* Backspace key */
+"key_backspace" = "⌫";
+
+/* Hotkey to start a search */
+"hotkey_search" = "s";
+
+/* Hotkey description to select next list item */
+"View next item" = "다음 항목 보기";
+
+/* Hotkey description to select previous list item */
+"View previous item" = "이전 항목 보기";
+
+/* Hotkey description to add next list item to selection */
+"Add next item to selection" = "선택 항목에 다음 항목 추가";
+
+/* Hotkey description to add previous list item to selection */
+"Add previous item to selection" = "선택 항목에 이전 항목 추가";
+
+/* Hotkey description to move backward in current view */
+"Move backward" = "뒤로 이동";
+
+/* Hotkey description to move forward in current view */
+"Move forward" = "앞으로 이동";
+
+/* Password Recovery */
+"passwordRecovery_Disabled" = "비활성화됨";
+"passwordRecovery_SecretQuestion" = "비밀 질문";
+"passwordRecovery_SecretQuestion1" = "첫 번째 반려동물의 이름은 무엇인가요?";
+"passwordRecovery_SecretQuestion2" = "첫 번째 자동차는 무엇이었나요?";
+"passwordRecovery_SecretQuestion3" = "가장 좋아하는 영화는 무엇인가요?";
+"passwordRecovery_SecondaryEmail" = "보조 이메일";
+
+/* Password */
+"POLICY_MIN_LOWERCASE_LETTER" = "최소 %{0}개의 소문자";
+"POLICY_MIN_UPPERCASE_LETTER" = "최소 %{0}개의 대문자";
+"POLICY_MIN_DIGIT" = "최소 %{0}개의 숫자";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "최소 %{0}개의 특수 기호";
+"POLICY_MIN_LENGTH" = "최소 길이 %{0}자";

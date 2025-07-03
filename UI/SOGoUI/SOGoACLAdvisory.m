@@ -370,6 +370,16 @@
 @implementation SOGoACLKazakhRemovalAdvisory
 @end
 
+@implementation SOGoACLKoreanModificationAdvisory
+@end
+
+@implementation SOGoACLKoreanAdditionAdvisory
+@end
+
+@implementation SOGoACLKoreanRemovalAdvisory
+@end
+
+
 @implementation SOGoACLNorwegianBokmalAdditionAdvisory
 @end
 

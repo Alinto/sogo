@@ -173,6 +173,15 @@
 @interface SOGoACLKazakhRemovalAdvisory : SOGoACLRemovalAdvisory
 @end
 
+@interface SOGoACLKoreanAdditionAdvisory : SOGoACLAdditionAdvisory
+@end
+
+@interface SOGoACLKoreanModificationAdvisory : SOGoACLModificationAdvisory
+@end
+
+@interface SOGoACLKoreanRemovalAdvisory : SOGoACLRemovalAdvisory
+@end
+
 @interface SOGoACLNorwegianBokmalAdditionAdvisory : SOGoACLAdditionAdvisory
 @end
 

@@ -1,0 +1,31 @@
+/* this file is in UTF-8 format! */
+
+"Help" = "도움말";
+"Close" = "닫기";
+"Modules" = "모듈";
+/* Modules short names */
+"ACLs" = "ACL";
+/* Modules titles */
+"ACLs_title" = "사용자 폴더 ACL 관리";
+/* Modules descriptions */
+"ACLs_description" = "<p>접근 제어 목록(ACL) 관리 모듈은 각 사용자의 캘린더 및 주소록의 ACL을 변경할 수 있도록 합니다.</p><p>사용자 폴더의 ACL을 수정하려면 창 상단의 검색 필드에 사용자 이름을 입력하고 원하는 폴더를 두 번 클릭하십시오.</p>";
+"Name or Email" = "이름 또는 이메일";
+"ACLs saved" = "ACL 저장됨";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "권한을 편집하려면 검색을 시작하십시오";
+/* Rights module: Empty search result */
+"No matching user" = "일치하는 사용자 없음";
+/* Rights module: no selection */
+"No resource selected" = "선택된 리소스 없음";
+"Add User" = "사용자 추가";
+"Subscribe User" = "사용자 구독";
+"Rights" = "권한";
+"Search Users" = "사용자 검색";
+"users found" = "사용자 발견";
+"No resource" = "리소스 없음";
+"Any Authenticated User" = "모든 인증된 사용자";
+"Public Access" = "공개 접근";
+"Save" = "저장";
+"Clear" = "지우기";
+"Message of the day" = "오늘의 메시지";
+"Message of the day has been saved" = "오늘의 메시지가 저장되었습니다";

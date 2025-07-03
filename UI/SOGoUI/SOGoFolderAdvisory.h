@@ -161,6 +161,12 @@
 @interface SOGoFolderKazakhRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
+@interface SOGoFolderKoreanAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderKoreanRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
 @interface SOGoFolderLatvianAdditionAdvisory : SOGoFolderAdditionAdvisory
 @end
 

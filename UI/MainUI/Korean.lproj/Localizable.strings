@@ -1,0 +1,131 @@
+/* this file is in UTF-8 format! */
+
+"title" = "SOGo";
+"Username" = "사용자 이름";
+"Password" = "비밀번호";
+"Domain" = "도메인";
+"Remember username" = "사용자 이름 기억";
+"Connect" = "연결";
+
+/* Appears while authentication is in progress */
+"Authenticating" = "인증 중";
+
+/* Appears when authentication succeeds */
+"Welcome" = "환영합니다";
+
+"Authentication Failed" = "인증 실패";
+"Wrong username or password." = "잘못된 사용자 이름 또는 비밀번호입니다.";
+"Retry" = "다시 시도";
+"Login failed due to unhandled error case:" = "처리되지 않은 오류로 인해 로그인에 실패했습니다:";
+"cookiesNotEnabled" = "브라우저의 쿠키가 비활성화되어 로그인할 수 없습니다. 브라우저 설정에서 쿠키를 활성화하고 다시 시도하십시오.";
+"browserNotCompatible" = "현재 브라우저 버전이 이 사이트에서 지원되지 않습니다. Firefox를 사용하시는 것을 권장합니다. 아래 링크를 클릭하여 최신 버전의 브라우저를 다운로드하십시오.";
+"alternativeBrowsers" = "또는 다음 호환 브라우저를 사용할 수도 있습니다";
+"alternativeBrowserSafari" = "또는 Safari를 사용할 수도 있습니다.";
+
+/* 2FA */
+"Verification Code" = "인증 코드";
+"Enter the 6-digit verification code from your TOTP application." = "TOTP 애플리케이션에서 6자리 인증 코드를 입력하십시오.";
+"You provided an invalid TOTP key." = "유효하지 않은 TOTP 키를 제공했습니다.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "2단계 인증이 비활성화되었습니다. 환경설정 모듈을 방문하여 2단계 인증을 복원하고 TOTP 애플리케이션을 재구성하십시오.";
+
+"Download" = "다운로드";
+"Language" = "언어";
+"choose" = "선택...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Bosnian" = "Bosanski";
+"Bulgarian" = "Български";
+"Catalan" = "Català";
+"ChineseChina" = "简体中文";
+"ChineseTaiwan" = "正體中文";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"Galician" = "Galego";
+"German" = "Deutsch";
+"Hebrew" = "עברית";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
+"Italian" = "Italiano";
+"Japanese" = "日本語";
+"Korean" = "한국어";
+"Kazakh" = "Қазақ";
+"Latvian" = "Latviešu";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"Montenegrin" = "Crnogorski";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
+"Russian" = "Русский";
+"Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"About" = "정보";
+"AboutBox" = "Inverse와 Alinto가 개발한 SOGo는 확장성과 단순성에 중점을 둔 완벽한 그룹웨어 서버입니다.<br/><br/>SOGo는 풍부한 AJAX 기반 웹 인터페이스를 제공하며 CalDAV 및 CardDAV와 같은 표준 프로토콜을 사용하여 여러 기본 클라이언트를 지원합니다.<br/><br/>SOGo는 <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> 버전 2 이상으로 배포되며, 일부는 GNU LGPL 버전 2로 배포됩니다. 이는 자유 소프트웨어이며, 자유롭게 변경하고 재배포할 수 있습니다. 법이 허용하는 범위 내에서 어떠한 보증도 제공하지 않습니다.<br/><br/>다양한 지원 옵션은 <a href=\"http://www.sogo.nu/en/support/community.html\">이 페이지</a>를 참조하십시오.";
+"Your account was locked due to too many failed attempts." = "너무 많은 로그인 시도 실패로 계정이 잠겼습니다.";
+"Your account was locked due to an expired password." = "비밀번호 만료로 인해 계정이 잠겼습니다.";
+"Login failed due to unhandled error case" = "처리되지 않은 오류로 인해 로그인에 실패했습니다";
+"Change your Password" = "비밀번호 변경";
+"The password was changed successfully." = "비밀번호가 성공적으로 변경되었습니다.";
+"Your password has expired, please enter a new one below" = "비밀번호가 만료되었습니다. 아래에 새 비밀번호를 입력하십시오";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "비밀번호가 너무 약합니다. 보안 강화를 위해 더 강력한 비밀번호를 선택하십시오";
+"Password must not be empty." = "비밀번호는 비워둘 수 없습니다.";
+"The passwords do not match. Please try again." = "비밀번호가 일치하지 않습니다. 다시 시도하십시오.";
+"Password Grace Period" = "비밀번호 유예 기간";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "계정이 잠기기 전까지 %{0}번의 로그인이 남았습니다. 환경설정 대화 상자에서 비밀번호를 변경하십시오.";
+"Password about to expire" = "비밀번호 만료 예정";
+"Your password is going to expire in %{0} %{1}." = "귀하의 비밀번호는 %{0} %{1} 후에 만료됩니다.";
+"days" = "일";
+"hours" = "시간";
+"minutes" = "분";
+"seconds" = "초";
+"Password change failed" = "비밀번호 변경 실패";
+"Password change failed - Permission denied" = "비밀번호 변경 실패 - 권한 거부";
+"Password change failed - Insufficient password quality" = "비밀번호 변경 실패 - 불충분한 비밀번호 품질";
+"Password change failed - Password is too short" = "비밀번호 변경 실패 - 비밀번호가 너무 짧습니다";
+"Password change failed - Password is too young" = "비밀번호 변경 실패 - 비밀번호 사용 기간이 너무 짧습니다";
+"Password change failed - Password is in history" = "비밀번호 변경 실패 - 비밀번호가 기록에 있습니다";
+"Unhandled policy error: %{0}" = "처리되지 않은 정책 오류: %{0}";
+"Unhandled error response" = "처리되지 않은 오류 응답";
+"Password change is not supported." = "비밀번호 변경이 지원되지 않습니다.";
+"Unhandled HTTP error code: %{0}" = "처리되지 않은 HTTP 오류 코드: %{0}";
+"New password" = "새 비밀번호";
+"Confirmation" = "확인";
+"Cancel" = "취소";
+"Please wait..." = "기다려 주십시오...";
+"Close" = "닫기";
+"Missing search parameter" = "검색 매개변수 누락";
+"Missing type parameter" = "유형 매개변수 누락";
+
+/* Password Recovery */
+"Secondary e-mail" = "보조 이메일";
+"Answer" = "답변";
+"Password lost" = "비밀번호 분실";
+"No password recovery method has been defined for this user" = "이 사용자에 대해 정의된 비밀번호 복구 방법이 없습니다";
+"Invalid secret question answer" = "잘못된 비밀 질문 답변";
+"Next" = "다음";
+"Back" = "뒤로";
+"Please enter a new password below" = "아래에 새 비밀번호를 입력하십시오";
+"A link will be sent to %{0}" = "%{0}으로 링크가 전송됩니다";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "비밀번호 재설정 링크가 전송되었습니다. 복구 이메일 사서함을 확인하고 링크를 클릭하십시오";
+"Invalid configuration for email password recovery" = "비밀번호 복구 이메일에 대한 잘못된 설정";
+"Password recovery email in error" = "비밀번호 복구 이메일 오류";
+"Password reset" = "비밀번호 재설정";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "안녕하세요 %{0}님,\n비밀번호 변경 요청이 있었습니다!\n\n요청하지 않으셨다면 이 이메일을 무시하십시오.\n\n그렇지 않다면, 다음 링크를 클릭하여 비밀번호를 변경하십시오: %{1}";

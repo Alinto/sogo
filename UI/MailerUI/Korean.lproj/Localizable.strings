@@ -1,0 +1,532 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "생성";
+"Empty Trash" = "휴지통 비우기";
+"Empty Junk Folder" = "정크 폴더 비우기";
+"Delete"      = "삭제";
+"Expunge"     = "말소";
+"Forward"     = "전달";
+"Get Mail"    = "메일 가져오기";
+"Junk"        = "정크";
+"Not junk"    = "정크 아님";
+"Reply"       = "답장";
+"Reply All"   = "전체답장";
+"Print"       = "인쇄";
+"Stop"        = "중단";
+"Write"       = "글쓰기";
+"Search"      = "검색";
+"Send" = "보내기";
+"Contacts" = "연락처";
+"Attach" = "첨부";
+"Save" = "저장";
+"Options" = "옵션";
+"Close" = "닫기";
+"Size" = "크기";
+
+/* Tooltips */
+"Send this message now" = "지금 이 메시지 보내기";
+"Select a recipient from an Address Book" = "주소록에서 받는 사람 선택";
+"Include an attachment" = "첨부 파일 포함";
+"Save this message" = "이 메시지 저장";
+"Get new messages" = "새 메시지 받기";
+"Create a new message" = "새 메시지 만들기";
+"Go to address book" = "주소록으로 이동";
+"Reply to the message" = "메시지에 답장하기";
+"Reply to sender and all recipients" = "발신자 및 모든 수신자에게 답장하기";
+"Forward selected message" = "선택한 메시지 전달";
+"Delete selected message or folder" = "선택한 메시지 또는 폴더 삭제";
+"Print this message" = "이 메시지 인쇄";
+"Stop the current transfer" = "현재 전송 중지";
+"Attachment" = "첨부 파일";
+"Unread" = "읽지 않음";
+"Flagged" = "플래그가 지정된";
+"Search multiple mailboxes" = "여러 메일함 검색";
+
+/* Main Frame  */
+"Home"                 = "홈";
+"Calendar"             = "달력";
+"Addressbook"          = "주소록";
+"Mail"                 = "메일";
+"Right Administration" = "권한 관리";
+"Help" = "도움말";
+
+/* Mail account main windows */
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "SOGo 메일러에 오신 것을 환영합니다. 왼쪽의 폴더 트리를 사용하여 메일 계정을 찾아보세요!";
+"Read messages"       = "메시지 읽기";
+
+/* Tooltip for fab button */
+"Write a new message" = "새 메시지 작성";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "새 창에 메시지 쓰기";
+
+"Share" = "공유";
+"Account" = "계정";
+"Shared Account" = "공유 계정";
+
+/* A mailbox is selected, but no message (only shown on large screens) */
+"No message selected" = "선택한 메시지가 없습니다.";
+
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "선택한 메일함이 없습니다.";
+
+"An error occured while communicating with the mail server" = "메일 서버와 통신하는 동안 오류가 발생했습니다.";
+
+/* Mailbox actions */
+
+/* Compact Folder success message */
+"Folder compacted" = "폴더 압축";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "정크 폴더 비우기";
+
+/* Empty Trash success message */
+"Trash emptied" = "휴지통 비워짐";
+
+/* acls */
+"Access rights to" = "다음에 대한 액세스 권한";
+"For user" = "사용자용";
+"Any Authenticated User" = "인증된 모든 사용자";
+"View this folder" = "이 폴더 보기";
+"Read mails from this folder" = "이 폴더에서 메일 읽기";
+"Mark mails read and unread" = "읽은 메일과 읽지 않은 메일 표시";
+"Modify the flags of the mails in this folder" = "이 폴더에 있는 메일의 플래그를 수정합니다.";
+"Insert, copy and move mails into this folder" = "이 폴더에 메일을 삽입, 복사 및 이동합니다.";
+"Post mails" = "메일 보내기";
+"Add subfolders to this folder" = "이 폴더에 하위 폴더 추가";
+"Remove this folder" = "이 폴더 제거";
+"Erase mails from this folder" = "이 폴더에서 메일 지우기";
+"Expunge this folder" = "이 폴더 삭제";
+"Export This Folder" = "이 폴더 내보내기";
+"Modify the acl of this folder" = "이 폴더의 acl을 수정 합니다.";
+"Saved Messages.zip" = "Messages.zip으로 저장됨";
+"Update" = "업데이트";
+"Cancel" = "취소";
+
+/* Mail edition */
+"From"          = "보낸사람";
+"Subject"       = "제목";
+"To"            = "받는사람";
+"Cc"            = "참조";
+"Bcc"           = "숨은참조";
+"Reply-To"	= "답장 받는 사람";
+"Add address"   = "주소 추가";
+"Body"          = "본문";
+"Open" = "열기";
+"Select All" = "전체 선택";
+"Select Message" = "메시지 선택";
+"Attach Web Page..." = "웹 페이지 첨부...";
+"file" = "파일";
+"files" = "파일";
+"Save all" = "전체 저장";
+"to"            = "받는사람";
+"cc"            = "참조";
+"bcc"           = "숨은참조";
+"Add a recipient" = "받는 사람 추가";
+"Edit Draft..." = "초안 편집...";
+"Load Images" = "이미지 불러오기";
+"Return Receipt" = "받은사람 회신";
+"Choose which identity to send this message from" = "이 메시지를 보낼 ID 선택";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "이 메시지를 읽으면 발신자에게 알림을 보내도록 요청했습니다. 발신자에게 알림을 보내시겠습니까?";
+"Return Receipt (displayed) - %@"= "받은사람 회신(표시됨) - %@";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "이 메일은 %@로 보낸 메일에 대한 받은사람의 회신입니다.\n\n참고: 이 받은사람 회신은 메시지가 수신자의 컴퓨터에 표시되었다는 사실만 확인합니다. 받는 사람이 메시지 내용을 읽었거나 이해했다는 보장은 없습니다.";
+"Security" = "보안";
+"Sign" = "서명";
+"Encrypt" = "암호화";
+"Priority" = "우선순위";
+"highest" = "매우 높음";
+"high" = "높음";
+"normal" = "보통";
+"low" = "낮음";
+"lowest" = "가장낮음";
+"This mail is being sent from an unsecure network!" = "안전하지 않은 네트워크에서 발송된 메일입니다.";
+"Address Book" = "주소록";
+"Search For" = "검색";
+"Contains" = "포함";
+"Does not contains" = "포함하지 않음";
+"Advanced search" = "고급 검색";
+"Anytime" = "언제든지";
+"Last 7 days" = "지난 7일";
+"Last 30 days" = "지난 30일";
+"Last 6 month" = "지난 6개월";
+"Before" = "전";
+"After" = "후";
+"Between" = "사이";
+"and" = "와";
+"With attachments" = "첨부 파일 포함";
+"In favorites" = "즐겨찾기에";
+"Unseen only" = "표시되지 않음";
+"Show more" = "더 보기";
+"Reset" = "초기화";
+"Message size" = "메시지 크기";
+
+/* Popup "show" */
+"all"     = "모두";
+"read"    = "읽기";
+"unread"  = "읽지 않음";
+"deleted" = "삭제됨";
+"flagged" = "플래그됨";
+
+/* MailListView */
+"Sender" = "보낸사람";
+"Subject or Sender" = "제목 또는 보낸사람";
+"Subject or Recipient" = "제목 또는 받는 사람";
+"To or Cc" = "받는 사람 또는 참조";
+"Entire Message" = "전체 메시지";
+"Date"          = "날짜";
+"View"          = "보기";
+"All"           = "모두";
+"No message"    = "메시지 없음";
+"messages"      = "메시지";
+"Yesterday"     = "어제";
+"first"         = "처음";
+"previous"      = "이전";
+"next"          = "다음";
+"last"          = "마지막";
+"msgnumber_to"  = "to";
+"msgnumber_of"  = "of";
+"Mark Unread" = "읽지 않음으로 표시";
+"Mark Read"   = "읽음으로 표시";
+"Untitled" = "제목 없음";
+
+/* Filter option in messages list */
+"Show unread messages only" = "읽지 않은 메시지만 표시";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "플래그가 지정된 메시지만 표시";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "라벨로 필터링";
+
+/* Tree */
+"SentFolderName"   = "보냄";
+"TrashFolderName"  = "휴지통";
+"InboxFolderName"  = "받은 편지함";
+"DraftsFolderName" = "초안";
+"JunkFolderName" = "정크";
+"TemplatesFolderName" = "템플릿";
+"SieveFolderName"  = "필터";
+"Folders"          = "폴더"; /* title line */
+
+/* MailMoveToPopUp */
+"MoveTo"        = "이동 &hellip;";
+
+/* Address Popup menu */
+"Add to Address Book..." = "주소록에 추가...";
+"Successfully created card" = "카드 생성 성공";
+"Compose Mail To" = "메일 작성 대상";
+"Create Filter From Message..." = "메시지에서 필터 만들기...";
+
+/* Image Popup menu */
+"Save Image" = "이미지 저장";
+"Save Attachment" = "첨부 파일 저장";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "새 메일 창에서 열기";
+"Copy Folder Location" = "폴더 위치 복사";
+"Subscribe..." = "구독하기...";
+"Mark Folder Read" = "폴더 읽음 표시";
+"New Folder..." = "새 폴더...";
+"Compact This Folder" = "이 폴더 압축";
+"Search Messages..." = "메시지 검색...";
+"Sharing..." = "공유...";
+"New Subfolder..." = "새 하위 폴더...";
+"Rename Folder..." = "폴더 이름변경";
+"Delete Folder" = "폴더 삭제";
+"Use This Folder For" = "이 폴더를 다음 용도로 사용";
+"Get Messages for Account" = "계정 메시지 받기";
+"Properties..." = "속성...";
+"Delegation..." = "위임...";
+
+/* Use This Folder menu */
+"Sent Messages" = "메시지 보내기";
+"Drafts" = "초안";
+"Deleted Messages" = "삭제된 메시지";
+"Junk Messages" = "정크 메시지";
+
+/* Message list popup menu */
+"Open Message In New Window" = "새 창에서 메시지 열기";
+"Reply to Sender Only" = "보낸 사람에게만 답장";
+"Reply to All" = "모두에게 답장";
+"Edit As New..." = "새로 편집...";
+"Move To" = "이동";
+"Copy To" = "복사";
+"Label" = "라벨";
+"Mark" = "표시";
+"Save As..." = "다른 이름으로 저장";
+"Print Preview" = "인쇄 미리보기";
+"View Message Source" = "메시지 소스 보기";
+"View raw message" = "원시 메시지 보기";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "이벤트로 변환";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "작업으로 변환";
+
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "메시지 다운로드";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "메시지 다운로드(zip)";
+
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "모든 첨부파일 다운로드";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "첨부";
+
+"Print..." = "인쇄";
+"Delete Message" = "메시지 삭제";
+"Delete Selected Messages" = "선택한 메시지 삭제";
+"Mark the selected messages as junk" = "선택한 메시지를 정크 메시지로 표시";
+"Mark the selected messages as not junk" = "선택한 메시지를 정크 메일이 아닌 것으로 표시";
+
+/* Text appended to the recipients list when there are too many recipients */
+"and %{0} more..." = "및 %{0} 더보기...";
+
+/* Button label to hide extended list of recipients */
+"Hide" = "숨기기";
+
+/* Number of selected messages in list */
+"selected" = "선택된";
+
+/* Date formatting from one time to another time */
+"to_time" = "to";
+
+/* Date formatting from one day to another day */
+"to_date" = "to";
+
+/* Encrypted message notification */
+"This message is encrypted" = "이 메시지는 암호화되어 있습니다.";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "이 메시지는 해독할 수 없습니다. 메일 환경설정 모듈에서 S/MIME 인증서를 업로드했는지 확인하세요.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "메시지 서명을 확인할 수 없음";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "메시지가 수정되었습니다.";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "인증서를 읽는 동안 오류가 발생했습니다. 새 인증서를 설치하세요.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "계정에 연결된 인증서가 없습니다.";
+
+/* Invalid S/MIME signature */
+"Digital signature is not valid" = "디지털 서명이 유효하지 않습니다.";
+
+/* Valid S/MIME signature */
+"Message is signed" = "메시지가 서명됨";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "메시지에 서명이 되어 있지만, 인증서가 발신자 이메일 주소와 일치하지 않습니다.";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "디지털 서명이 유효하지 않습니다.";
+
+"This Folder" = "이 폴더";
+
+/* Label popup menu */
+"None" = "없음";
+
+/* Mark popup menu */
+"As Read" = "읽음으로 표시";
+"Thread As Read" = "스레드를 읽음으로 표시";
+"As Read By Date..." = "읽은 순서대로...";
+"All Read" = "모두 읽기";
+"As Junk" = "정크로 설정";
+"As Not Junk" = "정크 아님으로 설정";
+"Run Junk Mail Controls" = "정크 메일 컨트롤 실행";
+"Search messages in" = "다음에서 메시지 검색";
+"Search" = "검색";
+"Search subfolders" = "하위 폴더 검색";
+"Match any of the following" = "다음 중 하나에 해당합니다.";
+"Match all of the following" = "다음 중 모두 일치하는 것을 고르세요.";
+"contains" = "포함";
+"does not contain" = "포함하지 않음";
+"No matches found" = "일치하는 항목이 없음";
+"results found" = "검색 결과";
+"result found" = "검색 결과";
+"Please specify at least one filter" = "필터를 하나 이상 지정하세요.";
+
+/* Folder operations */
+"Name" = "이름";
+"Enter the new name of your folder"
+ ="폴더의 새 이름을 입력합니다.";
+"Do you really want to move this folder into the trash ?"
+ = "이 폴더를 정말로 휴지통으로 옮길까요?";
+"Operation failed" = "작업 실패";
+"Quota" = "할당량:";
+"quotasFormat" = "%{0}% : %{1} MB 사용됨";
+"messageQuotasFormat" = "%{1} 메세지 중 %{0}%";
+"Unable to move/delete folder." = "폴더를 이동/삭제할 수 없습니다.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "메일함을 휴지통으로 옮길 수 없습니다. 즉시 삭제하시겠습니까?";
+
+/* Confirmation message when deleting multiple messages */
+"Are you sure you want to delete the selected messages?" = "선택한 메시지를 삭제하시겠습니까?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} 메시지 복사됨";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} 메시지 이동됨";
+
+"Please select a message." = "메시지를 선택해 주세요.";
+"Please select a message to print." = "인쇄할 메시지를 선택하세요.";
+"Please select only one message to print." = "인쇄할 메시지를 하나만 선택하세요.";
+"The message you have selected doesn't exist anymore." = "선택한 메시지가 더 이상 존재하지 않습니다.";
+"The folder with name \"%{0}\" could not be created."
+= "\"%{0}\" 이름의 폴더를 만들지 못했습니다.";
+"This folder could not be renamed to \"%{0}\"."
+= "이 폴더의 이름을 \"%{0}\"로 변경할 수 없습니다.";
+"The folder could not be deleted."
+= "폴더를 삭제할 수 없습니다.";
+"The trash could not be emptied."
+= "휴지통을 비울 수 없습니다.";
+"The folder functionality could not be changed."
+= "폴더 기능을 변경할 수 없습니다.폴더 기능은 변경할 수 없습니다.";
+"You need to choose a non-virtual folder!" = "가상 폴더가 아닌 폴더를 선택해야 합니다!";
+"Moving a message into its own folder is impossible!"
+= "메시지를 자체 폴더로 옮기는 것은 불가능합니다!";
+"Copying a message into its own folder is impossible!"
+= "메시지를 자체 폴더에 복사하는 것은 불가능합니다!";
+
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "메시지를 휴지통 폴더로 옮길 수 없습니다. 즉시 삭제하시겠습니까?";
+
+/* Message editing */
+"Please specify a subject." = "제목을 지정해 주세요.";
+"error_missingsubject" = "메시지에 제목이 없습니다. 정말 보내시겠습니까?";
+"error_missingrecipients" = "받는 사람을 한 명 이상 지정하세요.";
+"Send Anyway" = "아무튼 보내기";
+"Error while saving the draft" = "초안 저장 중 오류 발생";
+
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "휴지통 폴더를 비울 수 없습니다.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "정크 폴더를 비울 수 없습니다.";
+
+/* Error when uploading a file attachment */
+"Error while uploading the file \"%{0}\":" = "\"%{0}\" 파일을 업로드하는 동안 오류가 발생했습니다.";
+"There is an active file upload. Closing the window will interrupt it." = "활성 파일 업로드가 진행 중입니다. 창을 닫으면 업로드가 중단됩니다.";
+"Message is too big" = "메시지가 너무 큽니다.";
+
+/* Appears while sending the message */
+"Sending" = "전송 중";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "전송됨";
+
+"cannot send message: (smtp) all recipients discarded" = "메시지를 보낼 수 없음: 모든 수신자가 유효하지 않습니다.";
+"cannot send message (smtp) - recipients discarded" = "메시지를 보낼 수 없습니다. 다음 주소는 유효하지 않습니다.";
+"cannot send message: (smtp) error when connecting" = "메시지를 보낼 수 없음: SMTP 서버에 연결할 때 오류가 발생했습니다.";
+"cannot sign email without certificate" = "메일 계정에 연결된 인증서가 없기 때문에 메시지에 서명할 수 없습니다.";
+"cannot sign message because the certificate can't be read" = "메일 계정에 연결된 인증서를 읽을 수 없기 때문에 메시지에 서명할 수 없습니다.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "보낸 사람 주소가 메일 계정에 연결된 인증서에 포함되어 있지 않으므로 메시지에 서명할 수 없습니다.";
+
+/* Contacts list in mail editor */
+"Email" = "이메일";
+"More mail options" = "더 많은 메일 옵션";
+"Delegation" = "위임";
+"Add User" = "사용자 추가";
+"Add a tag" = "태그 추가";
+"reply" = "답장";
+"Edit" = "수정";
+"Yes" = "예";
+"No" = "아니오";
+"Location" = "위치";
+"Rename" = "이름 변경";
+"Compact" = "압축";
+"Export" = "내보내기";
+"Set as Drafts" = "초안으로 설정";
+"Set as Sent" = "보내기로 설정";
+"Set as Trash" = "휴지통으로 설정";
+
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "템플릿으로 설정";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "정크로 설정";
+
+"Sort" = "정렬";
+"Order Received" = "수신된 순서";
+"Descending Order" = "내림차순";
+"Back" = "뒤로";
+"Copy messages" = "메시지 복사";
+"More messages options" = "더 많은 메시지 옵션";
+"Flag" = "플래그";
+"Unflag" = "플래그 해제";
+"Mark as Unread" = "읽지 않음으로 표시";
+"Mark as Read" = "읽음으로 표시";
+"Closing Window ..." = "윈도우 닫는 중";
+"Tried to send too many mails. Please wait." = "메일을 너무 많이 보내려고 했습니다. 잠시만 기다려주세요.";
+"View Mail" = "메일 보기";
+"This message contains external images." = "이 메시지에는 외부 이미지가 포함되어 있습니다.";
+"Expanded" = "확장";
+"Add a Criteria" = "기준 추가";
+"More search options" = "더 많은 검색 옵션";
+"Your email has been saved" = "이메일이 저장되었습니다.";
+"Your email has been sent" = "이메일이 전송되었습니다.";
+"Folder compacted" = "폴더 압축";
+
+"More Options" = "더 많은 옵션";
+
+"New draft" = "새 초안";
+"Create new draft with this template" = "이 템플릿으로 새 초안 만들기";
+
+/* Advanced search */
+"Enter Subject" = "제목 입력";
+"Enter From" = "보낸사람 입력";
+"Enter To" = "받는사람 입력";
+"Enter Cc" = "참조 입력";
+"Enter Body" = "본문 입력";
+"match" = "일치";
+"does not match" = "일치하지 않음";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "검색 범위";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "구독 관리";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "필터";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";
+
+/* Email deletion */
+"Clean folder" = "폴더 지우기";
+"Clean mailbox" = "메일함 정리";
+"Delete permanently (do not use trash)" = "영구 삭제(휴지통 사용 안 함)";
+"Apply to subfolders" = "하위 폴더에 적용";
+"Delete e-mails older than" = "다음보다 오래된 이메일 삭제";
+"3 months" = "3개월";
+"6 months" = "6개월";
+"9 months" = "9개월";
+"1 year" = "1년";
+"Custom" = "사용자 지정";
+"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "일부 메시지를 영구 삭제하려고 합니다. 이 작업을 계속 진행하시겠습니까?";
+"Apply" = "적용";
+"%{0} message(s) deleted" = "%{0} 메시지 삭제됨";

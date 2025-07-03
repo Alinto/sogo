@@ -1,0 +1,665 @@
+/* this file is in UTF-8 format! */
+
+/* Tooltips */
+"Create a new event" = "새 이벤트 생성";
+"Create a new task" = "새 할 일 생성";
+"Edit this event or task" = "이 이벤트 또는 할 일 편집";
+"Print the current calendar view" = "현재 캘린더 보기 인쇄";
+"Delete this event or task" = "이 이벤트 또는 할 일 삭제";
+"Go to today" = "오늘로 이동";
+"Switch to day view" = "일별 보기로 전환";
+"Switch to week view" = "주별 보기로 전환";
+"Switch to month view" = "월별 보기로 전환";
+"Switch to multi-columns day view" = "다중 열 일별 보기로 전환";
+"Reload all calendars" = "모든 캘린더 새로고침";
+
+/* Tabs */
+"Date" = "날짜";
+"Calendars" = "캘린더";
+"No events for selected criteria" = "선택된 조건에 대한 이벤트 없음";
+"No tasks for selected criteria" = "선택된 조건에 대한 할 일 없음";
+
+/* Day */
+"DayOfTheMonth" = "이달의 날짜";
+"dayLabelFormat" = "%m/%d/%Y";
+"today" = "오늘";
+"Previous Day" = "이전 날";
+"Next Day" = "다음 날";
+
+/* Week */
+"Week" = "주";
+"this week" = "이번 주";
+"Week %d" = "%d주차";
+"Previous Week" = "이전 주";
+"Next Week" = "다음 주";
+
+/* Month */
+"this month" = "이번 달";
+"Previous Month" = "이전 달";
+"Next Month" = "다음 달";
+/* Week number prefix */
+"W" = "W";
+
+/* Year */
+"this year" = "올해";
+
+/* Menu */
+"Calendar" = "캘린더";
+"Contacts" = "연락처";
+"New Calendar..." = "새 캘린더...";
+"Delete Calendar" = "캘린더 삭제...";
+"Unsubscribe Calendar" = "캘린더 구독 취소";
+"Sharing..." = "공유...";
+"Export Calendar..." = "캘린더 내보내기...";
+"Import Events..." = "이벤트 가져오기...";
+"Import Events" = "이벤트 가져오기";
+"Select an iCalendar file (.ics)." = "iCalendar 파일(.ics)을 선택하십시오.";
+"Upload" = "업로드";
+"Uploading" = "업로드 중";
+"Publish Calendar..." = "캘린더 게시...";
+"Reload Remote Calendars" = "원격 캘린더 새로고침";
+"Properties" = "속성";
+"Done" = "완료";
+"An error occurred while importing calendar." = "캘린더 가져오기 중 오류가 발생했습니다.";
+"No event was imported." = "가져온 이벤트 없음.";
+"A total of %{0} events were imported in the calendar." = "총 %{0}개의 이벤트가 캘린더에 가져와졌습니다.";
+"Compose E-Mail to All Attendees" = "모든 참석자에게 이메일 작성";
+"Compose E-Mail to Undecided Attendees" = "미정 참석자에게 이메일 작성";
+"Download iOS - MacOS configuration profile" = "iOS - MacOS 구성 프로필 다운로드";
+
+/* Relative dates */
+"Yesterday" = "어제";
+"Today" = "오늘";
+"Tomorrow" = "내일";
+"Last %@" = "지난 %@";
+
+/* Folders */
+"Personal calendar" = "개인 캘린더";
+
+/* Misc */
+"OpenGroupware.org" = "OpenGroupware.org";
+"Forbidden" = "금지됨";
+
+/* acls */
+"Access rights to" = "접근 권한";
+"For user" = "사용자용";
+"Any Authenticated User" = "모든 인증된 사용자";
+"Public Access" = "공개 접근";
+"label_Public" = "공개";
+"label_Private" = "개인";
+"label_Confidential" = "기밀";
+"label_Viewer" = "모두 보기";
+"label_DAndTViewer" = "날짜 및 시간 보기";
+"label_Modifier" = "수정";
+"label_Responder" = "회신";
+"label_None" = "없음";
+"View All" = "모두 보기";
+"View the Date & Time" = "날짜 및 시간 보기";
+"Modify" = "수정";
+"Respond To" = "회신";
+"None" = "없음";
+"This person can create objects in my calendar."
+= "이 사람은 내 캘린더에 항목을 생성할 수 있습니다.";
+"This person can erase objects from my calendar."
+= "이 사람은 내 캘린더에서 항목을 지울 수 있습니다.";
+
+/* Button Titles */
+"Subscribe to a Calendar..." = "캘린더 구독...";
+"Remove the selected Calendar" = "선택한 캘린더 제거";
+"New calendar" = "새 캘린더";
+"Name of the Calendar" = "캘린더 이름";
+"new" = "새로 만들기";
+"Print view" = "인쇄 미리보기";
+"Print" = "인쇄";
+"edit" = "편집";
+"delete" = "삭제";
+"proposal" = "제안";
+"Save and Close" = "저장하고 닫기";
+"Close" = "닫기";
+"Invite Attendees" = "참석자 초대";
+"Create Jitsi Meeting" = "Jitsi 회의 생성";
+"Attach" = "첨부";
+"Update" = "업데이트";
+"Cancel" = "취소";
+"Reset" = "초기화";
+"Save" = "저장";
+"show_rejected_apts" = "거절된 약속 보기";
+"hide_rejected_apts" = "거절된 약속 숨기기";
+
+/* Schedule */
+"Schedule" = "일정";
+"No appointments found" = "약속 없음";
+"Meetings proposed by you" = "귀하가 제안한 회의";
+"Meetings proposed to you" = "귀하에게 제안된 회의";
+"sched_startDateFormat" = "%d/%m %H:%M";
+"action" = "작업";
+"accept" = "수락";
+"decline" = "거절";
+"more attendees" = "더 많은 참석자";
+"Hide already accepted and rejected appointments" = "이미 수락 및 거절된 약속 숨기기";
+"Show already accepted and rejected appointments" = "이미 수락 및 거절된 약속 표시";
+
+/* Print view */
+"LIST" = "목록";
+"Print Settings" = "인쇄 설정";
+"Title" = "제목";
+"Layout" = "레이아웃";
+"What to Print" = "인쇄할 내용";
+"Options" = "옵션";
+"Tasks with no due date" = "기한 없는 할 일";
+"Display working hours only" = "근무 시간만 표시";
+"Completed tasks" = "완료된 할 일";
+"Display events and tasks colors" = "이벤트 및 할 일 색상 표시";
+"Borders" = "테두리";
+"Backgrounds" = "배경";
+"Page Format" = "페이지 형식";
+
+/* Appointments */
+"Appointment viewer" = "약속 뷰어";
+"Appointment editor" = "약속 편집기";
+"Appointment proposal" = "약속 제안";
+"Appointment on" = "약속 날짜";
+"Start" = "시작";
+"End" = "종료";
+"Due Date" = "기한";
+"Name" = "이름";
+"Email" = "이메일";
+"Status" = "상태";
+"% complete" = "완료율";
+"Location" = "장소";
+"Add a category" = "카테고리 추가";
+"Priority" = "우선순위";
+"Privacy" = "개인 정보";
+"Cycle" = "반복";
+"Cycle End" = "반복 종료";
+"Categories" = "카테고리";
+"Classification" = "분류";
+"Duration" = "기간";
+"Attendees" = "참석자";
+"Resources" = "자원";
+"Organizer" = "주최자";
+"Description" = "설명";
+"Document" = "문서";
+"Category" = "카테고리";
+"Repeat" = "반복";
+"Reminder" = "알림";
+"General" = "일반";
+"Reply" = "회신";
+"Created by" = "생성자";
+"You are invited to participate" = "참여하도록 초대받았습니다";
+"Target" = "대상";
+"attributes" = "속성";
+"attendees" = "참석자";
+"delegated from" = "위임됨";
+
+/* checkbox title */
+"is private" = "개인 정보";
+
+/* classification */
+"Public" = "공개";
+"Private" = "개인";
+
+/* text used in overviews and tooltips */
+"empty title" = "제목 없음";
+"private appointment" = "개인 약속";
+"Change..." = "변경...";
+
+/* Appointments (participation state) */
+"partStat_NEEDS-ACTION" = "나중에 확인하겠습니다";
+"partStat_ACCEPTED" = "참석하겠습니다";
+"partStat_DECLINED" = "참석하지 않겠습니다";
+"partStat_TENTATIVE" = "참석할 수도 있습니다";
+"partStat_DELEGATED" = "위임합니다";
+"partStat_OTHER" = "기타";
+
+/* Appointments (error messages) */
+"Conflicts found!" = "충돌 발견!";
+"Invalid iCal data!" = "잘못된 iCal 데이터!";
+"Could not create iCal data!" = "iCal 데이터를 생성할 수 없습니다!";
+
+/* Searching */
+"view_all" = "모두";
+"view_today" = "오늘";
+"view_next7" = "다음 7일";
+"view_next14" = "다음 14일";
+"view_next31" = "다음 31일";
+"view_thismonth" = "이번 달";
+"view_thisyear" = "올해";
+"view_last7" = "지난 7일";
+"view_last14" = "지난 14일";
+"view_last31" = "지난 31일";
+"view_lastmonth" = "지난 달";
+"view_lastyear" = "작년";
+"view_future" = "모든 미래 이벤트";
+"view_selectedday" = "선택된 날짜";
+"view_not_started" = "시작되지 않은 할 일";
+"view_overdue" = "기한이 지난 할 일";
+"view_incomplete" = "미완료 할 일";
+"View" = "보기";
+"Title, category or location" = "제목, 카테고리 또는 장소";
+"Entire content" = "전체 내용";
+"Search" = "검색";
+"Search attendees" = "참석자 검색";
+"Search resources" = "자원 검색";
+"Search appointments" = "약속 검색";
+"All day Event" = "종일 이벤트";
+"check for conflicts" = "충돌 확인";
+"URL" = "URL";
+"newAttendee" = "참석자 추가";
+
+/* calendar modes */
+"Overview" = "개요";
+"Chart" = "차트";
+"List" = "목록";
+"Columns" = "열";
+
+/* Priorities */
+"prio_0" = "지정되지 않음";
+"prio_1" = "높음";
+"prio_2" = "높음";
+"prio_3" = "높음";
+"prio_4" = "높음";
+"prio_5" = "보통";
+"prio_6" = "낮음";
+"prio_7" = "낮음";
+"prio_8" = "낮음";
+"prio_9" = "낮음";
+
+/* access classes (privacy) */
+"PUBLIC_vevent" = "공개 이벤트";
+"CONFIDENTIAL_vevent" = "기밀 이벤트";
+"PRIVATE_vevent" = "개인 이벤트";
+"PUBLIC_vtodo" = "공개 할 일";
+"CONFIDENTIAL_vtodo" = "기밀 할 일";
+"PRIVATE_vtodo" = "개인 할 일";
+
+/* status type */
+"status_" = "지정되지 않음";
+"status_NOT-SPECIFIED" = "지정되지 않음";
+"status_TENTATIVE" = "미정";
+"status_CONFIRMED" = "확정됨";
+"status_CANCELLED" = "취소됨";
+"status_NEEDS-ACTION" = "조치 필요";
+"status_IN-PROCESS" = "진행 중";
+"status_COMPLETED" = "완료일";
+
+/* Priority level */
+"low" = "낮음";
+
+/* Priority level */
+"normal" = "보통";
+
+/* Priority level */
+"high" = "높음";
+
+/* Cycles */
+"cycle_once" = "한 번";
+"cycle_daily" = "매일";
+"cycle_weekly" = "매주";
+"cycle_2weeks" = "2주마다";
+"cycle_4weeks" = "4주마다";
+"cycle_monthly" = "매월";
+"cycle_weekday" = "주중 매일";
+"cycle_yearly" = "매년";
+"cycle_end_never" = "종료 없음";
+"cycle_end_until" = "종료일";
+"Recurrence pattern" = "반복 패턴";
+"Range of recurrence" = "반복 범위";
+"Daily" = "매일";
+"Multi-Columns" = "다중 열";
+"Weekly" = "매주";
+"Monthly" = "매월";
+"Yearly" = "매년";
+"Every" = "매";
+"Days" = "일";
+"Week(s)" = "주";
+"On" = "요일";
+"Month(s)" = "개월";
+
+/* [Event recurrence editor] Ex: _The_ first Sunday */
+"The" = "매";
+"Recur on day(s)" = "반복 요일";
+"Year(s)" = "년";
+
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
+"cycle_of" = "의";
+"No end date" = "종료 날짜 없음";
+"Create" = "생성";
+"appointment(s)" = "약속";
+"Repeat until" = "반복 종료일";
+"End Repeat" = "반복 종료";
+"Never" = "안 함";
+"After" = "후";
+"On Date" = "날짜";
+"times" = "회";
+"First" = "첫 번째";
+"Second" = "두 번째";
+"Third" = "세 번째";
+"Fourth" = "네 번째";
+"Fift" = "다섯 번째";
+"Last" = "마지막";
+
+/* Appointment categories */
+"category_none" = "없음";
+"category_labels" = "기념일,생일,비즈니스,전화,고객,경쟁,고객,즐겨찾기,후속 조치,선물,휴일,아이디어,회의,문제,기타,개인,프로젝트,공휴일,상태,공급업체,여행,휴가";
+"repeat_NEVER" = "반복 안 함";
+"repeat_DAILY" = "매일";
+"repeat_WEEKLY" = "매주";
+"repeat_BI-WEEKLY" = "격주";
+"repeat_EVERY WEEKDAY" = "주중 매일";
+"repeat_MONTHLY" = "매월";
+"repeat_YEARLY" = "매년";
+"repeat_CUSTOM" = "사용자 지정...";
+"reminder_NONE" = "알림 없음";
+"reminder_0" = "이벤트 시간";
+"reminder_5_MINUTES_BEFORE" = "5분 전";
+"reminder_10_MINUTES_BEFORE" = "10분 전";
+"reminder_15_MINUTES_BEFORE" = "15분 전";
+"reminder_30_MINUTES_BEFORE" = "30분 전";
+"reminder_45_MINUTES_BEFORE" = "45분 전";
+"reminder_1_HOUR_BEFORE" = "1시간 전";
+"reminder_2_HOURS_BEFORE" = "2시간 전";
+"reminder_5_HOURS_BEFORE" = "5시간 전";
+"reminder_15_HOURS_BEFORE" = "15시간 전";
+"reminder_1_DAY_BEFORE" = "1일 전";
+"reminder_2_DAYS_BEFORE" = "2일 전";
+"reminder_1_WEEK_BEFORE" = "1주 전";
+"reminder_CUSTOM" = "사용자 지정...";
+"reminder_MINUTES" = "분";
+"reminder_HOURS" = "시간";
+"reminder_DAYS" = "일";
+"reminder_WEEKS" = "주";
+"reminder_BEFORE" = "전";
+"reminder_AFTER" = "후";
+"reminder_START" = "이벤트 시작";
+"reminder_END" = "이벤트 종료";
+"Reminder Details" = "알림 세부 정보";
+"Choose a Reminder Action" = "알림 작업 선택";
+"Show an Alert" = "알림 표시";
+"Send an E-mail" = "이메일 전송";
+"Email Organizer" = "주최자에게 이메일";
+"Email Attendees (internal users)" = "참석자에게 이메일 (내부 사용자)";
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
+
+/* Arial label for reminder units */
+"Reminder units" = "알림 단위";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "알림 위치";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "알림과 이벤트 관계";
+
+/* transparency */
+"Show Time as Free" = "시간을 비어 있음으로 표시";
+
+/* email notifications */
+"Send Appointment Notifications" = "약속 알림 전송";
+"From" = "보낸 사람";
+"To" = "받는 사람";
+
+/* dates */
+"DateFrom" = "부터";
+"DateTo" = "까지";
+
+/* validation errors */
+validate_notitle           = "제목이 설정되지 않았습니다. 계속하시겠습니까?";
+validate_invalid_startdate = "시작 날짜 필드가 올바르지 않습니다!";
+validate_invalid_enddate   = "종료 날짜 필드가 올바르지 않습니다!";
+validate_endbeforestart    = "입력한 종료 날짜가 시작 날짜보다 빠릅니다.";
+validate_untilbeforeend    = "반복은 첫 번째 발생 후에 끝나야 합니다.";
+
+"Events" = "이벤트";
+"Tasks" = "할 일";
+"Show completed tasks" = "완료된 할 일 표시";
+
+/* tabs */
+"Task" = "할 일";
+"Event" = "이벤트";
+"Recurrence" = "반복";
+
+/* toolbar */
+"New Event" = "새 이벤트";
+"New Task" = "새 할 일";
+"Edit" = "편집";
+"Delete" = "삭제";
+"Go to Today" = "오늘로 이동";
+"Day View" = "일별 보기";
+"Week View" = "주별 보기";
+"Month View" = "월별 보기";
+"Reload" = "새로고침";
+
+/* Number of selected components in events or tasks list */
+"selected" = "선택됨";
+"eventPartStatModificationError" = "참여 상태를 수정할 수 없습니다.";
+
+/* menu */
+"New Event..." = "새 이벤트...";
+"New Task..." = "새 할 일...";
+"Edit Selected Event..." = "선택한 이벤트 편집...";
+"Delete Selected Event" = "선택한 이벤트 삭제";
+"Select All" = "모두 선택";
+"Workweek days only" = "주중만";
+"Tasks in View" = "보기의 할 일";
+"eventDeleteConfirmation" = "다음 이벤트가 지워집니다:";
+"taskDeleteConfirmation" = "다음 할 일이 지워집니다:";
+"Would you like to continue?" = "계속하시겠습니까?";
+"You cannot remove nor unsubscribe from your personal calendar."
+= "개인 캘린더를 제거하거나 구독 취소할 수 없습니다.";
+"Are you sure you want to delete the calendar \"%{0}\"?"
+= "캘린더 \"%{0}\"을(를) 정말 삭제하시겠습니까?";
+"Are you sure you want to delete the selected components?"
+= "선택한 구성 요소를 정말 삭제하시겠습니까?";
+
+/* Participation role */
+"Role" = "역할";
+
+/* Participant role: participation is required */
+"Participant" = "참여자";
+
+/* Participant role: participation is required */
+"req-participant" = "참여자";
+
+/* Participant role: participation is optional */
+"Optional Participant" = "선택적 참여자";
+
+/* Participant role: participation is optional */
+"opt-participant" = "선택적 참여자";
+
+/* Participant role: participant is copied for information purposes only */
+"Non Participant" = "비참여자";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "비참여자";
+
+/* Participant role: participant is chair of the calendar entity */
+"Chair" = "의장";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "의장";
+
+/* Participant status: needs action */
+"Needs action" = "조치 필요";
+
+/* Participant status: event accepted */
+"Accepted" = "수락됨";
+
+/* Participant status: event declined */
+"Declined" = "거절됨";
+
+/* Participant status: tentatively accepted */
+"Tentative" = "미정";
+
+"Free" = "한가함";
+"Busy" = "바쁨";
+"Maybe busy" = "바쁠 수도 있음";
+"No free-busy information" = "한가함/바쁨 정보 없음";
+
+/* FreeBusy panel buttons and labels */
+"Suggest time slot" = "시간 제안";
+"Zoom" = "확대/축소";
+"Previous slot" = "이전 슬롯";
+"Next slot" = "다음 슬롯";
+"Previous hour" = "이전 시간";
+"Next hour" = "다음 시간";
+"Work days only" = "근무일만";
+"The whole day" = "온종일";
+"Between" = "사이";
+"and" = "와";
+"A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
+= "한 명 이상의 참석자와 시간 충돌이 있습니다.\n그래도 현재 설정을 유지하시겠습니까?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "그들을 제거하고 남은 참석자들에게 초대를 보내시겠습니까?";
+
+/* events list */
+"Due" = "기한";
+"(Private Event)" = "(개인 이벤트)";
+vevent_class0 = "(공개 이벤트)";
+vevent_class1 = "(개인 이벤트)";
+vevent_class2 = "(기밀 이벤트)";
+
+/* tasks list */
+"Descending Order" = "내림차순";
+vtodo_class0 = "(공개 할 일)";
+vtodo_class1 = "(개인 할 일)";
+vtodo_class2 = "(기밀 할 일)";
+"closeThisWindowMessage" = "감사합니다! 이제 이 창을 닫거나 ";
+"Multicolumn Day View" = "다중 열 일별 보기";
+"Please select an event or a task." = "이벤트 또는 할 일을 선택하십시오.";
+"editRepeatingItem" = "편집하려는 항목은 반복 항목입니다. 모든 반복을 편집하시겠습니까, 아니면 이 단일 인스턴스만 편집하시겠습니까?";
+"button_thisOccurrenceOnly" = "이 발생만";
+"button_allOccurrences" = "모든 발생";
+"Edit This Occurrence" = "이 발생 편집";
+"Edit All Occurrences" = "모든 발생 편집";
+"Update This Occurrence" = "이 발생 업데이트";
+"Update All Occurrences" = "모든 발생 업데이트";
+
+/* Properties dialog */
+"Color" = "색상";
+"Include in free-busy" = "한가함/바쁨에 포함";
+"Synchronization" = "동기화";
+"Synchronize" = "동기화";
+"Tag" = "태그";
+"Display" = "표시";
+"Show alarms" = "알림 표시";
+"Show tasks" = "할 일 표시";
+"Notifications" = "알림";
+"Receive a mail when I modify my calendar" = "캘린더를 수정할 때 메일 받기";
+"Receive a mail when someone else modifies my calendar" = "다른 사람이 캘린더를 수정할 때 메일 받기";
+"When I modify my calendar, send a mail to" = "캘린더를 수정할 때 메일을 보낼 대상";
+"Email Address" = "이메일 주소";
+"Export" = "내보내기";
+
+
+/* Show only the calendar for which the menu is displayed */
+"Show Only This Calendar" = "이 캘린더만 보기";
+
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "모든 캘린더 보기";
+
+"Links to this Calendar" = "이 캘린더 링크";
+"Authenticated User Access" = "인증된 사용자 접근";
+"CalDAV URL" = "CalDAV URL ";
+"WebDAV ICS URL" = "WebDAV ICS URL";
+"WebDAV XML URL" = "WebDAV XML URL";
+"Copy to clipboard" = "클립보드에 복사";
+
+/* Error messages */
+"dayFieldInvalid" = "일 필드에 1보다 크거나 같은 숫자를 지정하십시오.";
+"weekFieldInvalid" = "주 필드에 1보다 크거나 같은 숫자를 지정하십시오.";
+"monthFieldInvalid" = "개월 필드에 1보다 크거나 같은 숫자를 지정하십시오.";
+"monthDayFieldInvalid" = "월 일 필드에 1보다 크거나 같은 숫자를 지정하십시오.";
+"yearFieldInvalid" = "년 필드에 1보다 크거나 같은 숫자를 지정하십시오.";
+"appointmentFieldInvalid" = "약속 필드에 1보다 크거나 같은 숫자를 지정하십시오.";
+"recurrenceUnsupported" = "이 반복 유형은 현재 지원되지 않습니다.";
+"Please specify a calendar name." = "캘린더 이름을 지정하십시오.";
+"tagNotDefined" = "이 캘린더를 동기화하려면 태그를 지정해야 합니다.";
+"tagAlreadyExists" = "지정한 태그가 이미 다른 캘린더와 연결되어 있습니다.";
+"tagHasChanged" = "캘린더 태그를 변경하면 모바일 장치에서 데이터를 다시 로드해야 합니다.\n계속하시겠습니까?";
+"tagWasAdded" = "이 캘린더를 동기화하려면 모바일 장치에서 데이터를 다시 로드해야 합니다.\n계속하시겠습니까?";
+"tagWasRemoved" = "이 캘린더를 동기화에서 제거하면 모바일 장치에서 데이터를 다시 로드해야 합니다.\n계속하시겠습니까?";
+"DestinationCalendarError" = "원본 캘린더와 대상 캘린더가 동일합니다. 다른 캘린더로 복사해 보십시오.";
+"EventCopyError" = "복사가 실패했습니다. 다른 캘린더로 복사해 보십시오.";
+"Please select at least one calendar" = "하나 이상의 캘린더를 선택하십시오";
+"Open Task..." = "할 일 열기...";
+"Mark Completed" = "완료로 표시";
+"Delete Task" = "할 일 삭제";
+"Delete Event" = "이벤트 삭제";
+"Copy event to my calendar" = "내 캘린더로 이벤트 복사";
+"View Raw Source" = "원본 소스 보기";
+"Move To" = "이동";
+"Copy To" = "복사";
+"Subscriptions" = "구독";
+"Subscribe to a shared calendar" = "공유 캘린더 구독";
+"Subscribe to a web calendar..." = "웹 캘린더 구독...";
+"URL of the Calendar" = "캘린더 URL";
+"Web Calendar" = "웹 캘린더";
+"Web Calendars" = "웹 캘린더";
+"Reload on login" = "로그인 시 새로고침";
+"Invalid number." = "잘못된 숫자입니다.";
+"Please identify yourself to %{0}" = "%{0}에 자신을 식별하십시오";
+"quantity" = "수량";
+"Current view" = "현재 보기";
+"Selected events and tasks" = "선택된 이벤트 및 할 일";
+"Custom date range" = "사용자 지정 날짜 범위";
+"Select starting date" = "시작 날짜 선택";
+"Select ending date" = "종료 날짜 선택";
+"Delegated to" = "위임 대상";
+"Keep sending me updates" = "계속 업데이트 보내기";
+"OK" = "확인";
+"Confidential" = "기밀";
+"Enable" = "활성화";
+"Filter" = "필터";
+"Sort" = "정렬";
+"Back" = "뒤로";
+"Day" = "일";
+"Month" = "월";
+"New Appointment" = "새 약속";
+"filters" = "필터";
+"Today" = "오늘";
+"More options" = "더 많은 옵션";
+"Delete This Occurrence" = "이 발생 삭제";
+"Delete All Occurrences" = "모든 발생 삭제";
+"Add Recurrence Date" = "반복 날짜 추가";
+"Add From" = "시작일 추가";
+"Add Due" = "기한 추가";
+"Import" = "가져오기";
+"Rename" = "이름 변경";
+"Import Calendar" = "캘린더 가져오기";
+"Select an ICS file." = "ICS 파일을 선택하십시오.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "저장되지 않은 데이터를 수정했습니다. 팝업을 닫고 데이터를 잃으시겠습니까?";
+
+/* Notification when user subscribes to a calendar */
+"Successfully subscribed to calendar" = "캘린더 구독 완료";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "항목 토글";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "검색 범위";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";

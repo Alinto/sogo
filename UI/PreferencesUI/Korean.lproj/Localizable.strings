@@ -1,0 +1,517 @@
+/* toolbar */
+"Save and Close" = "저장하고 닫기";
+"Close" = "닫기";
+"Preferences saved" = "환경설정 저장됨";
+
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "저장되지 않은 변경사항";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "구성 변경사항을 저장하시겠습니까?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "저장";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "저장 안 함";
+
+/* tabs */
+"General" = "General";
+"Calendar Options" = "캘린더 옵션";
+"Contacts Options" = "연락처 옵션";
+"Mail Options" = "메일 옵션";
+"IMAP Accounts" = "IMAP 계정";
+"Vacation" = "부재중";
+"Forward" = "전달";
+"Password" = "비밀번호";
+"Notification" = "알림";
+"Categories" = "카테고리";
+"Appointments invitations" = "약속 초대";
+"Name" = "이름";
+"Color" = "색상";
+"Add" = "추가";
+"Delete" = "삭제";
+
+/* contacts categories */
+"contacts_category_labels" = "동료, 경쟁사, 고객, 친구, 가족, 비즈니스 파트너, 공급업체, 언론, VIP";
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "부재중 자동 답장 활성화";
+"Enable custom auto reply subject" = "사용자 지정 자동 답장 제목 활성화";
+"Auto reply subject" = "자동 답장 제목";
+"You can write ${subject} to insert the original subject" = "원본 제목을 삽입하려면 ${subject}를 작성할 수 있습니다";
+"Auto reply message" = "자동 답장 메시지";
+"Email addresses" = "이메일 주소";
+"Add default email addresses" = "기본 이메일 주소 추가";
+"Days between responses" = "응답 간격(일)";
+"Do not send responses to mailing lists" = "메일링 리스트로 응답 보내지 않기";
+"Activation Constraints" = "활성화 제약 조건";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "휴가 필터를 선호도에 맞춰 요일 및 시간 범위를 독립적으로 사용자 지정하고 특정 요일과 조합할 수 있습니다";
+"Enable auto reply on" = "자동 답장 활성화 날짜";
+"First day of vacation" = "휴가 시작일";
+"Disable auto reply after" = "자동 답장 비활성화 날짜";
+"Last day of vacation" = "휴가 마지막 날";
+"Enter date" = "날짜 입력";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "자동 답장 활성화 시간";
+"Enter time" = "시간 입력";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "자동 답장 비활성화 시간";
+"Enable auto reply on these days" = "이 날짜에 자동 답장 활성화";
+"Always send vacation message response" = "항상 부재중 메시지 응답 전송";
+"The vacation message is sent prior to apply your filters." = "부재중 메시지는 필터를 적용하기 전에 전송됩니다.";
+"Discard incoming mails during vacation" = "부재중 동안 수신 메일 버리기";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "부재중 메시지는 전송되지만 수신 메시지는 받은 편지함으로 전달되지 않습니다.";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "자동 답장을 활성화할 메시지와 이메일 주소를 지정하십시오.";
+"Your vacation message must not end with a single dot on a line." = "부재중 메시지는 한 줄에 마침표 하나로 끝나면 안 됩니다.";
+"End date of your auto reply must be in the future."
+= "자동 답장 종료 날짜는 미래여야 합니다.";
+
+/* forward messages */
+"Forward incoming messages" = "수신 메시지 전달";
+"Always forward" = "항상 전달";
+"Incoming messages are forwarded prior to apply your filters." = "수신 메시지는 필터를 적용하기 전에 전달됩니다.";
+"Keep a copy" = "사본 유지";
+"Enter an email" = "이메일 입력";
+"Add another email" = "다른 이메일 추가";
+"Please specify an address to which you want to forward your messages."
+= "메시지를 전달할 주소를 지정하십시오.";
+"You are not allowed to forward your messages to an external email address." = "외부 이메일 주소로 메시지를 전달할 수 없습니다.";
+"You are not allowed to forward your messages to an internal email address." = "내부 이메일 주소로 메시지를 전달할 수 없습니다.";
+"You are not allowed to forward your messages to this domain:" = "이 도메인으로는 메시지를 전달할 수 없습니다:";
+
+/* notification */
+"Notify incoming messsages" = "수신 메시지 알림";
+"Notification Message Sent" = "알림 메시지 전송됨";
+"Notification Message" = "%{0}의 새 메시지 알림";
+
+/* d & t */
+"Time Zone" = "시간대";
+"Short Date Format" = "짧은 날짜 형식";
+"Long Date Format" = "긴 날짜 형식";
+"Time Format" = "시간 형식";
+"default" = "기본값";
+"Default Module" = "기본 모듈";
+"Save" = "저장";
+"shortDateFmt_0" = "%d-%b-%y";
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
+
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
+
+/* Timezone autocompletion */
+"No matches found." = "일치하는 항목 없음.";
+
+/* calendar */
+"Week begins on" = "주 시작 요일";
+"Day start time" = "하루 시작 시간";
+"Day end time" = "하루 종료 시간";
+"Day start time must be prior to day end time." = "하루 시작 시간은 하루 종료 시간보다 빨라야 합니다.";
+"Week days to display" = "표시할 주중 요일";
+"Show time as busy outside working hours" = "근무 시간 외에는 시간을 바쁨으로 표시";
+"First week of year" = "연중 첫째 주";
+"Enable reminders for Calendar items" = "캘린더 항목에 대한 알림 활성화";
+"Play a sound when a reminder comes due" = "알림 기한이 되면 소리 재생";
+"Default reminder" = "기본 알림";
+"firstWeekOfYear_January1" = "1월 1일에 시작";
+"firstWeekOfYear_First4DayWeek" = "첫 4일 주";
+"firstWeekOfYear_FirstFullWeek" = "첫 완전 주";
+"Prevent from being invited to appointments" = "약속 초대를 받지 않도록 방지";
+"White list for appointment invitations" = "약속 초대 허용 목록";
+"Contacts Names" = "연락처 이름";
+"Duplicate name" = "중복 이름";
+"Calendar categories must have unique names." = "캘린더 카테고리 이름은 고유해야 합니다.";
+"Disable e-mail notifications on CalDAV" = "CalDAV에서 이메일 알림 비활성화";
+
+/* Default Calendar */
+"Default calendar" = "기본 캘린더";
+"selectedCalendar" = "선택된 캘린더";
+"personalCalendar" = "개인 캘린더";
+"firstCalendar" = "첫 번째 활성화된 캘린더";
+"reminder_NONE" = "알림 없음";
+"reminder_5_MINUTES_BEFORE" = "5분 전";
+"reminder_10_MINUTES_BEFORE" = "10분 전";
+"reminder_15_MINUTES_BEFORE" = "15분 전";
+"reminder_30_MINUTES_BEFORE" = "30분 전";
+"reminder_45_MINUTES_BEFORE" = "45분 전";
+"reminder_1_HOUR_BEFORE" = "1시간 전";
+"reminder_2_HOURS_BEFORE" = "2시간 전";
+"reminder_5_HOURS_BEFORE" = "5시간 전";
+"reminder_15_HOURS_BEFORE" = "15시간 전";
+"reminder_1_DAY_BEFORE" = "1일 전";
+"reminder_2_DAYS_BEFORE" = "2일 전";
+"reminder_1_WEEK_BEFORE" = "1주 전";
+
+/* Mailer */
+"Labels" = "레이블";
+"Label" = "레이블";
+"IMAP Label" = "IMAP 레이블";
+"Invalid label" = "공백, ( ) { } % * \" \\ 를 사용하지 마십시오";
+"Duplicate label" = "중복 레이블";
+"IMAP labels must have unique names." = "IMAP 레이블 이름은 고유해야 합니다.";
+"New label" = "새 레이블";
+"Show subscribed mailboxes only" = "구독한 사서함만 표시";
+"Synchronize only default mail folders (EAS)" = "기본 메일 폴더만 동기화 (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "모든 사서함의 읽지 않은 메시지 수 가져오기";
+"Sort messages by threads" = "스레드별로 메시지 정렬";
+"Always open mail composer" = "항상 메일 작성기 열기";
+"Inside current window" = "현재 창 안에서";
+"In a popup window" = "팝업 창에서";
+"When sending mail, add unknown recipients to my" = "메일 전송 시 알 수 없는 수신자를 내";
+"Address Book" = "주소록";
+"Forward messages" = "메시지 전달";
+"messageforward_inline" = "인라인";
+"messageforward_attached" = "첨부 파일로";
+"When replying to a message" = "메시지에 답장할 때";
+"replyplacement_above" = "인용문 위에 답장 시작";
+"replyplacement_below" = "인용문 아래에 답장 시작";
+"And place my signature" = "그리고 서명 배치";
+"signatureplacement_above" = "답장 아래";
+"signatureplacement_below" = "인용문 아래";
+"Compose messages in" = "메시지 작성 형식";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "일반 텍스트";
+"Insert signature on new message" = "새 메시지에 서명 삽입";
+"Insert signature on reply" = "답장에 서명 삽입";
+"Insert signature on forward" = "전달에 서명 삽입";
+"Show recipients or sender full email in mailboxes" = "사서함에 수신자 또는 발신자 전체 이메일 표시";
+"Hide attachements for inline images" = "인라인 이미지의 첨부 파일 숨기기";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "기본 글꼴 크기";
+
+"Display remote inline images" = "원격 인라인 이미지 표시";
+"displayremoteinlineimages_never" = "안 함";
+"displayremoteinlineimages_always" = "항상";
+"Auto save every" = "자동 저장 간격";
+"minutes" = "분";
+"Automatically mark messages as read" = "메시지를 자동으로 읽음으로 표시";
+"Immediately on display" = "표시 즉시";
+"After displaying for" = "표시 후";
+"seconds" = "초";
+
+/* Contact */
+"Personal Address Book" = "개인 주소록";
+"Collected Address Book" = "수집된 주소록";
+"Contact categories must have unique names." = "연락처 카테고리 이름은 고유해야 합니다.";
+
+/* IMAP Accounts */
+"Settings" = "설정";
+"Security" = "보안";
+"Mail Account" = "메일 계정";
+"New Mail Account" = "새 메일 계정";
+"Server Name" = "서버 이름";
+"Outgoing Server Name (SMTP)" = "보내는 서버 이름 (SMTP)";
+"Smtp Auth" = "SMTP 인증";
+"Port" = "포트";
+"Encryption" = "암호화";
+"Outgoing Encryption" = "보내는 암호화";
+"None" = "없음";
+"User Name" = "사용자 이름";
+"Full Name" = "전체 이름";
+"Email" = "이메일";
+"Reply To Email" = "답장 이메일";
+"Signature" = "서명";
+"Identities" = "ID";
+"Always use the default identity when replying to messages" = "메시지에 답장할 때 항상 기본 ID 사용";
+"Default Identity" = "기본 ID";
+"New Identity" = "새 ID";
+"(Click to create)" = "(클릭하여 생성)";
+"Please enter your signature below" = "아래에 서명을 입력하십시오";
+"Please specify a valid sender address." = "유효한 발신자 주소를 지정하십시오.";
+"Please specify a valid reply-to address." = "유효한 답장 주소를 지정하십시오.";
+"Specify a hostname other than the local host" = "로컬 호스트 이외의 호스트 이름을 지정하십시오";
+
+"No certificate installed" = "설치된 인증서 없음";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "SSL 인증서는 PKCS#12 (PFX) 형식을 사용해야 합니다.";
+"Uninstall" = "제거";
+"Choose PKCS12 Certificate .." = "PKCS12 인증서 선택 ..";
+"Certificate Import Password" = "인증서 가져오기 비밀번호";
+"Upload" = "업로드";
+"When composing a message" = "메시지를 작성할 때";
+"Digitally sign the message by default" = "기본적으로 메시지 디지털 서명";
+"Always try to encrypt the message" = "항상 메시지를 암호화 시도";
+"An error occurred while importing the certificate. Verify your password." = "인증서를 가져오는 중 오류가 발생했습니다. 비밀번호를 확인하십시오.";
+"Data too big. Please contact technical support." = "데이터가 너무 큽니다. 기술 지원팀에 문의하십시오.";
+
+/* Additional Parameters */
+"Additional Parameters" = "추가 매개변수";
+
+/* password */
+"Current password" = "현재 비밀번호";
+"New password" = "새 비밀번호";
+"Confirmation" = "확인";
+"Change" = "변경";
+"Passwords don't match" = "비밀번호가 일치하지 않습니다";
+
+
+/* Event+task classifications */
+"Default events classification" = "기본 이벤트 분류";
+"Default tasks classification" = "기본 할 일 분류";
+"PUBLIC_item" = "공개";
+"CONFIDENTIAL_item" = "기밀";
+"PRIVATE_item" = "개인";
+
+/* Event+task categories */
+"Calendar Category" = "캘린더 카테고리";
+"Add Calendar Category" = "캘린더 카테고리 추가";
+"New category" = "새 카테고리";
+"Reset to defaults" = "기본값으로 재설정";
+"Remove Calendar Category" = "캘린더 카테고리 제거";
+"Contact Category" = "연락처 카테고리";
+"Add Contact Category" = "연락처 카테고리 추가";
+"Remove Contact Category" = "연락처 카테고리 제거";
+"category_none" = "없음";
+"calendar_category_labels" = "기념일,생일,비즈니스,전화,고객,경쟁,고객,즐겨찾기,후속 조치,선물,휴일,아이디어,회의,문제,기타,개인,프로젝트,공휴일,상태,공급업체,여행,휴가";
+
+/* Default module */
+"Calendar" = "Calendar";
+"Contacts" = "Address Book";
+"Mail" = "Mail";
+"Last" = "마지막으로 사용됨";
+"Default Module " = "기본 모듈";
+"SOGo Version" = "SOGo 버전";
+
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "환경설정을 저장하고 지금 페이지를 다시 로드하시겠습니까?";
+"Language" = "언어";
+"choose" = "선택...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Bosnian" = "Bosanski";
+"Bulgarian" = "Български";
+"Catalan" = "Català";
+"ChineseChina" = "简体中文";
+"ChineseTaiwan" = "正體中文";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"Galician" = "Galego";
+"German" = "Deutsch";
+"Hebrew" = "עברית";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
+"Italian" = "Italiano";
+"Japanese" = "日本語";
+"Kazakh" = "Қазақ";
+"Korean" = "한국어";
+"Latvian" = "Latviešu";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"Montenegrin" = "Crnogorski";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
+"Russian" = "Русский";
+"Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"Refresh View" = "새로고침 보기";
+"refreshview_manually" = "수동";
+"refreshview_every_minute" = "매분";
+"refreshview_every_2_minutes" = "2분마다";
+"refreshview_every_5_minutes" = "5분마다";
+"refreshview_every_10_minutes" = "10분마다";
+"refreshview_every_20_minutes" = "20분마다";
+"refreshview_every_30_minutes" = "30분마다";
+"refreshview_once_per_hour" = "시간당 한 번";
+"Enable Desktop Notifications" = "데스크톱 알림 활성화";
+
+/* Return receipts */
+"When I receive a request for a return receipt" = "읽음 확인 요청을 받을 때";
+"Never send a return receipt" = "읽음 확인을 보내지 않음";
+"Allow return receipts for some messages" = "일부 메시지에 대해 읽음 확인 허용";
+"If I'm not in the To or Cc of the message" = "메시지의 받는 사람 또는 참조에 내가 없으면";
+"If the sender is outside my domain" = "보낸 사람이 내 도메인 외부에 있으면";
+"In all other cases" = "모든 다른 경우";
+"Never send" = "절대 보내지 않음";
+"Always send" = "항상 보냄";
+"Ask me" = "묻기";
+
+/* Filters - UIxPreferences */
+"Filters" = "필터";
+"Active" = "활성";
+"Move Up" = "위로 이동";
+"Move Down" = "아래로 이동";
+"Connection error" = "연결 오류";
+"Service temporarily unavailable" = "서비스를 일시적으로 사용할 수 없음";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "필터 활성화";
+
+/* Filters - UIxFilterEditor */
+"Filter name" = "필터 이름";
+/* Button label */
+"Add a condition" = "조건 추가";
+/* Button label */
+"Add an action" = "작업 추가";
+"For incoming messages that" = "수신 메시지에 대해";
+"match all of the following rules" = "다음 모든 규칙과 일치";
+"match any of the following rules" = "다음 규칙 중 하나라도 일치";
+"match all messages" = "모든 메시지와 일치";
+"Perform these actions" = "다음 작업 수행";
+"Untitled Filter" = "제목 없는 필터";
+"Subject" = "제목";
+"From" = "보낸 사람";
+"To" = "받는 사람";
+"Cc" = "참조";
+"To or Cc" = "받는 사람 또는 참조";
+"Size (Kb)" = "크기 (KB)";
+"Header" = "헤더";
+"Body" = "본문";
+"Flag the message with" = "메시지에 플래그 지정";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "플래그";
+
+"Discard the message" = "메시지 버리기";
+"File the message in" = "메시지 보관함";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "사서함";
+
+"Keep the message" = "메시지 유지";
+"Forward the message to" = "메시지 전달 대상";
+"Notify the message to" = "메시지 알림 대상";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "이메일";
+
+"Send a reject message" = "거부 메시지 전송";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "메시지";
+
+"Send a vacation message" = "부재중 메시지 전송";
+"Stop processing filter rules" = "필터 규칙 처리 중지";
+"is under" = "미만";
+"is over" = "초과";
+"is" = "같음";
+"is not" = "같지 않음";
+"contains" = "포함";
+"does not contain" = "포함하지 않음";
+"matches" = "일치";
+"does not match" = "일치하지 않음";
+"matches regex" = "정규식 일치";
+"does not match regex" = "정규식 일치하지 않음";
+/* Placeholder for the value field of a condition */
+"Value" = "값";
+"Seen" = "읽음";
+"Deleted" = "삭제됨";
+"Answered" = "답장됨";
+"Flagged" = "플래그됨";
+"Junk" = "스팸";
+"Not Junk" = "스팸 아님";
+
+/* Password policy */
+"The password was changed successfully." = "비밀번호가 성공적으로 변경되었습니다.";
+"Password must not be empty." = "비밀번호는 비어 있을 수 없습니다.";
+"The passwords do not match. Please try again." = "비밀번호가 일치하지 않습니다. 다시 시도하십시오.";
+"Password change failed" = "비밀번호 변경 실패";
+"Password change failed - Permission denied" = "비밀번호 변경 실패 - 권한 거부됨";
+"Password change failed - Insufficient password quality" = "비밀번호 변경 실패 - 비밀번호 품질이 불충분함";
+"Password change failed - Password is too short" = "비밀번호 변경 실패 - 비밀번호가 너무 짧음";
+"Password change failed - Password is too young" = "비밀번호 변경 실패 - 비밀번호 사용 기간이 너무 짧음";
+"Password change failed - Password is in history" = "비밀번호 변경 실패 - 비밀번호가 기록에 있음";
+"Unhandled policy error: %{0}" = "처리되지 않은 정책 오류: %{0}";
+"Unhandled error response" = "처리되지 않은 오류 응답";
+"Password change is not supported." = "비밀번호 변경이 지원되지 않습니다.";
+"Unhandled HTTP error code: %{0}" = "처리되지 않은 HTTP 오류 코드: %{0}";
+"Cancel" = "취소";
+"Invitations" = "초대";
+"Edit Filter" = "필터 편집";
+"Delete Filter" = "필터 삭제";
+"Create Filter" = "필터 생성";
+"Delete Label" = "레이블 삭제";
+"Create Label" = "레이블 생성";
+"Accounts" = "계정";
+"Edit Account" = "계정 편집";
+"Delete Account" = "계정 삭제";
+"Create Account" = "계정 생성";
+"Account Name" = "계정 이름";
+"SSL" = "SSL";
+"TLS" = "TLS";
+
+/* Avatars */
+"Use Gravatar" = "Gravatar 사용";
+"Alternate Avatar" = "대체 아바타";
+"none" =  "없음";
+"identicon" = "아이덴티콘";
+"monsterid" = "몬스터";
+"wavatar" = "와바타";
+"retro" = "레트로";
+
+/* Animation Level */
+"Animation Level" = "애니메이션 레벨";
+/* Normal Animation Mode */
+"animation_NORMAL" = "일반";
+/* Limited Animation Mode */
+"animation_LIMITED" = "제한적";
+"animation_NONE" = "없음";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "TOTP 애플리케이션을 사용하여 2단계 인증 활성화";
+"You must enter this key into your TOTP application." = "TOTP 애플리케이션에 이 키를 입력해야 합니다.";
+"If you do not and you log out you will not be able to login again." = "그렇지 않으면 로그아웃 시 다시 로그인할 수 없습니다.";
+"Enter TOTP verification code :" = "TOTP 인증 코드 입력 :";
+"Invalid TOTP verification code" = "잘못된 TOTP 인증 코드";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "외부 Sieve 스크립트가 활성화되어 있습니다";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve는 이메일 필터링에 사용할 수 있는 프로그래밍 언어입니다. SOGo가 필터, 부재중 및 전달 설정을 처리하도록 허용하면 활성화된 스크립트가 비활성화됩니다.";
+"Let SOGo handle everything" = "SOGo가 모든 것을 처리하도록 허용";
+
+/* Password Recovery */
+"Password recovery mode" = "비밀번호 복구 모드";
+"Question" = "질문";
+"Secondary e-mail" = "보조 이메일";
+"Answer" = "답변";
+"Password recovery" = "비밀번호 복구";
+"Password change" = "비밀번호 변경";
