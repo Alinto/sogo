@@ -130,6 +130,8 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailSpanishArgentinaReply.wo \
 	SOGoMailSwedishForward.wo \
 	SOGoMailSwedishReply.wo \
+	SOGoMailThaiForward.wo \
+	SOGoMailThaiReply.wo \
 	SOGoMailTurkishTurkeyForward.wo \
 	SOGoMailTurkishTurkeyReply.wo \
 	SOGoMailUkrainianForward.wo \

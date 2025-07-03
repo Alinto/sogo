@@ -423,3 +423,9 @@
 
 @implementation SOGoFolderSwedishRemovalAdvisory
 @end
+
+@implementation SOGoFolderThaiAdditionAdvisory
+@end
+
+@implementation SOGoFolderThaiRemovalAdvisory
+@end

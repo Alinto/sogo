@@ -166,6 +166,9 @@
 @interface SOGoMailSwedishForward : SOGoMailForward
 @end
 
+@interface SOGoMailThaiForward : SOGoMailForward
+@end
+
 @interface SOGoMailTurkishTurkeyForward : SOGoMailForward
 @end
 

@@ -167,6 +167,9 @@
 @implementation SOGoMailKazakhReply
 @end
 
+@implementation SOGoMailKoreanReply
+@end
+
 @implementation SOGoMailLatvianReply
 @end
 
@@ -216,6 +219,9 @@
 @end
 
 @implementation SOGoMailSwedishReply
+@end
+
+@implementation SOGoMailThaiReply
 @end
 
 @implementation SOGoMailTurkishTurkeyReply

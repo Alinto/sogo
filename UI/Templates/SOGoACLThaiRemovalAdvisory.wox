@@ -1,0 +1,29 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+
+<var:if condition="isSubject">
+    <var:string value="currentUserName" const:escapeHTML="NO"/> ได้ลบคุณออกไปแล้ว
+</var:if>
+
+<var:if condition="isBody">
+<var:string value="currentUserName" const:escapeHTML="NO"/> ได้ลบคุณออกจากรายการการเข้าถึงโฟลเดอร์ <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> ของพวกเขา.
+<!--
+คุณสามารถยกเลิกการสมัครสมาชิกโฟลเดอร์ดังกล่าวโดยตรงได้โดยทำตามลิงก์นี้:
+    <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>unsubscribe?mail-invitation=YES
+
+
+หากไม่เช่นนั้น คุณจะสามารถยกเลิกการสมัครรับข้อมูลได้ในภายหลังจากอินเทอร์เฟซเว็บ SOGo
+
+นอกจากนี้ คุณไม่สามารถเข้าถึงทรัพยากรนี้โดยใช้ URL ต่อไปนี้ได้อีกต่อไป:
+
+<var:string value="httpFolderURL" const:escapeHTML="NO"/>
+-->
+</var:if>
+
+</container>

@@ -1,0 +1,532 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "สร้าง";
+"Empty Trash" = "ล้างถังขยะ";
+"Empty Junk Folder" = "ล้างอีเมลขยะ";
+"Delete"      = "ลบ";
+"Expunge"     = "ลบออก";
+"Forward"     = "ส่งต่อ";
+"Get Mail"    = "รับเมล";
+"Junk"        = "อีเมลขยะ";
+"Not junk"    = "ไม่ใช่อีเมลขยะ";
+"Reply"       = "ตอบกลับ";
+"Reply All"   = "ตอบกลับทั้งหมด";
+"Print"       = "พิมพ์";
+"Stop"        = "หยุด";
+"Write"       = "เขียน";
+"Search"      = "ค้นหา";
+"Send" = "ส่ง";
+"Contacts" = "ผู้ติดต่อ";
+"Attach" = "แนบ";
+"Save" = "บันทึก";
+"Options" = "ตัวเลือก";
+"Close" = "ปิด";
+"Size" = "ขนาด";
+
+/* Tooltips */
+"Send this message now" = "ส่งข้อความนี้ตอนนี้";
+"Select a recipient from an Address Book" = "เลือกผู้รับจากสมุดที่อยู่";
+"Include an attachment" = "รวมไฟล์แนบ";
+"Save this message" = "บันทึกข้อความนี้";
+"Get new messages" = "รับข้อความใหม่";
+"Create a new message" = "สร้างข้อความใหม่";
+"Go to address book" = "ไปที่สมุดที่อยู่";
+"Reply to the message" = "ตอบกลับข้อความ";
+"Reply to sender and all recipients" = "ตอบกลับผู้ส่งและผู้รับทั้งหมด";
+"Forward selected message" = "ส่งข้อความที่เลือกไว้ข้างหน้า";
+"Delete selected message or folder" = "ลบข้อความหรือโฟลเดอร์ที่เลือก";
+"Print this message" = "พิมพ์ข้อความนี้";
+"Stop the current transfer" = "หยุดการโอนปัจจุบัน";
+"Attachment" = "สิ่งที่แนบ";
+"Unread" = "ยังไม่ได้อ่าน";
+"Flagged" = "ทำเครื่องหมาย";
+"Search multiple mailboxes" = "ค้นหากล่องจดหมายหลายกล่อง";
+
+/* Main Frame  */
+"Home"                 = "หน้าหลัก";
+"Calendar"             = "ปฏิทิน";
+"Addressbook"          = "สมุดรายชื่อ";
+"Mail"                 = "จดหมาย";
+"Right Administration" = "การจัดการสิทธ์";
+"Help" = "ช่วยเหลือ";
+
+/* Mail account main windows */
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "ยินดีต้อนรับสู่ SOGo Mailer ใช้ต้นไม้โฟลเดอร์ทางซ้ายเพื่อเรียกดูบัญชีอีเมลของคุณ!";
+"Read messages"       = "อ่านข้อความ";
+
+/* Tooltip for fab button */
+"Write a new message" = "สร้างข้อความใหม่";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "เขียนข้อความในหน้าต่างใหม่";
+
+"Share" = "แชร์";
+"Account" = "บัญชี";
+"Shared Account" = "บัญชีที่ใช้ร่วมกัน";
+
+/* A mailbox is selected, but no message (only shown on large screens) */
+"No message selected" = "ไม่มีข้อความที่เลือก";
+
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "ไม่ได้เลือกกล่องจดหมาย";
+
+"An error occured while communicating with the mail server" = "เกิดข้อผิดพลาดขึ้นในขณะที่กำลังสื่อสารกับเซิร์ฟเวอร์ของเมล์";
+
+/* Mailbox actions */
+
+/* Compact Folder success message */
+"Folder compacted" = "โฟลเดอร์ถูกบีบอัด";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "โฟลเดอร์ขยะถูกล้าง";
+
+/* Empty Trash success message */
+"Trash emptied" = "ถังขยะถูกล้าง";
+
+/* acls */
+"Access rights to" = "สิทธิ์การเข้าถึง";
+"For user" = "สำหรับผู้ใช้";
+"Any Authenticated User" = "ผู้ใช้ที่ได้รับการยืนยันตัวตนใด ๆ";
+"View this folder" = "ดูโฟลเดอร์นี้";
+"Read mails from this folder" = "อ่านอีเมลจากโฟลเดอร์นี้";
+"Mark mails read and unread" = "ทำเครื่องหมายอีเมลอ่านและยังไม่อ่าน";
+"Modify the flags of the mails in this folder" = "ปรับเปลี่ยนธงของอีเมลในโฟลเดอร์นี้";
+"Insert, copy and move mails into this folder" = "ใส่ คัดลอก และย้ายอีเมลล์เข้าไปในโฟลเดอร์นี้";
+"Post mails" = "ส่งจดหมาย";
+"Add subfolders to this folder" = "เพิ่มโฟลเดอร์ย่อยในโฟลเดอร์นี้";
+"Remove this folder" = "ลบโฟลเดอร์นี้";
+"Erase mails from this folder" = "ลบอีเมลจากโฟลเดอร์นี้";
+"Expunge this folder" = "ลบโฟลเดอร์นี้";
+"Export This Folder" = "ส่งออกโฟลเดอร์นี้";
+"Modify the acl of this folder" = "ปรับเปลี่ยน acl ของโฟลเดอร์นี้";
+"Saved Messages.zip" = "Saved Messages.zip";
+"Update" = "อัปเดต";
+"Cancel" = "ยกเลิก";
+
+/* Mail edition */
+"From"          = "จาก";
+"Subject"       = "หัวข้อ";
+"To"            = "ถึง";
+"Cc"            = "สำเนา";
+"Bcc"           = "สำเนาช่อน";
+"Reply-To"	= "ตอบกลับ";
+"Add address"   = "เพิ่มที่อยู่";
+"Body"          = "เนื้อหา";
+"Open" = "เปิด";
+"Select All" = "เลือกทั้งหมด";
+"Select Message" = "เลือกข้อความ";
+"Attach Web Page..." = "แนบหน้าเว็บ...";
+"file" = "ไฟล์";
+"files" = "ไฟล์";
+"Save all" = "บันทึกทั้งหมด";
+"to"            = "ถึง";
+"cc"            = "สำเนา";
+"bcc"           = "สำเนาซ่อน";
+"Add a recipient" = "เพิ่มผู้รับ";
+"Edit Draft..." = "แก้ไขร่าง...";
+"Load Images" = "โหลดรูปภาพ";
+"Return Receipt" = "ส่งคืน";
+"Choose which identity to send this message from" = "เลือกตัวตนที่จะส่งข้อความนี้จาก";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "ผู้ส่งข้อความนี้ขอให้แจ้งเตือนเมื่อคุณอ่านข้อความนี้ คุณต้องการแจ้งเตือนผู้ส่งหรือไม่?";
+"Return Receipt (displayed) - %@"= "ส่งคืน (แสดง) - %@";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "นี่คือใบรับรองการส่งคืนสำหรับจดหมายที่คุณส่งไปยัง %@.\n\nหมายเหตุ: ใบรับรองการส่งคืนนี้เพียงแค่ยืนยันว่าข้อความได้แสดงบนคอมพิวเตอร์ของผู้รับเท่านั้น ไม่มีการรับประกันว่าผู้รับได้อ่านหรือเข้าใจเนื้อหาข้อความ";
+"Security" = "ความปลอดภัย";
+"Sign" = "ลงชื่อ";
+"Encrypt" = "เข้ารหัส";
+"Priority" = "ความสำคัญ";
+"highest" = "สูงสุด";
+"high" = "สูง";
+"normal" = "ปกติ";
+"low" = "ต่ำ";
+"lowest" = "ต่ำสุด";
+"This mail is being sent from an unsecure network!" = "ข้อความนี้ถูกส่งจากเครือข่ายที่ไม่ปลอดภัย!";
+"Address Book" = "สมุดรายชื่อ";
+"Search For" = "ค้นหา";
+"Contains" = "มี";
+"Does not contains" = "ไม่มี";
+"Advanced search" = "การค้นหาขั้นสูง";
+"Anytime" = "เวลาใดก็ได้";
+"Last 7 days" = "7 วันที่ผ่านมา";
+"Last 30 days" = "30 วันที่ผ่านมา";
+"Last 6 month" = "6 เดือนที่ผ่านมา";
+"Before" = "ก่อน";
+"After" = "หลัง";
+"Between" = "ระหว่าง";
+"and" = "และ";
+"With attachments" = "พร้อมไฟล์แนบ";
+"In favorites" = "อยู่ในรายการโปรด";
+"Unseen only" = "เฉพาะไม่เคยอ่าน";
+"Show more" = "แสดงเพิ่มเติม";
+"Reset" = "รีเซ็ท";
+"Message size" = "ขนาดข้อความ";
+
+/* Popup "show" */
+"all"     = "ทั้งหมด";
+"read"    = "อ่าน";
+"unread"  = "ยังไม่ได้อ่าน";
+"deleted" = "ลบ";
+"flagged" = "ทำเครื่องหมาย";
+
+/* MailListView */
+"Sender" = "ผู้ส่ง";
+"Subject or Sender" = "หัวข้อหรือผู้ส่ง";
+"Subject or Recipient" = "หัวข้อหรือผู้รับ";
+"To or Cc" = "ถึงหรือสำเนา";
+"Entire Message" = "ข้อความทั้งหมด";
+"Date"          = "วันที่";
+"View"          = "มุมมอง";
+"All"           = "ทั้งหมด";
+"No message"    = "ไม่มีข้อความ";
+"messages"      = "ข้อความ";
+"Yesterday"     = "เมื่อวานนี้";
+"first"         = "แรก";
+"previous"      = "ก่อนหน้านี้";
+"next"          = "ถัดไป";
+"last"          = "สุดท้าย";
+"msgnumber_to"  = "ถึง";
+"msgnumber_of"  = "ของ";
+"Mark Unread" = "ทำเครื่องหมายว่ายังไม่ได้อ่าน";
+"Mark Read"   = "Mark Read";
+"Untitled" = "ไม่มีชื่อ";
+
+/* Filter option in messages list */
+"Show unread messages only" = "แสดงข้อความที่ยังไม่ได้อ่านเท่านั้น";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "แสดงข้อความที่ถูกทำเครื่องหมายเท่านั้น";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "กรองตามป้ายชื่อ";
+
+/* Tree */
+"SentFolderName"   = "ส่ง";
+"TrashFolderName"  = "ถังขยะ";
+"InboxFolderName"  = "กล่องขาเข้า";
+"DraftsFolderName" = "ร่าง";
+"JunkFolderName" = "อีเมลขยะ";
+"TemplatesFolderName" = "เทมเพลต";
+"SieveFolderName"  = "ตัวกรอง";
+"Folders"          = "โฟลเดอร์"; /* title line */
+
+/* MailMoveToPopUp */
+"MoveTo"        = "เคลื่อนที่ &hellip;";
+
+/* Address Popup menu */
+"Add to Address Book..." = "เพิ่มไปยังสมุดรายชื่อ...";
+"Successfully created card" = "สร้างบัตรเรียบร้อยแล้ว";
+"Compose Mail To" = "สร้างอีเมลถึง";
+"Create Filter From Message..." = "สร้างตัวกรองจากข้อความ ...";
+
+/* Image Popup menu */
+"Save Image" = "บันทึกภาพ";
+"Save Attachment" = "บันทึกไฟล์แนบ";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "เปิดในหน้าต่างจดหมายใหม่";
+"Copy Folder Location" = "คัดลอกตำแหน่งโฟลเดอร์";
+"Subscribe..." = "สมัครสมาชิก...";
+"Mark Folder Read" = "ทำเครื่องหมายโฟลเดอร์ว่าอ่านแล้ว";
+"New Folder..." = "โฟลเดอร์ใหม่...";
+"Compact This Folder" = "เก็บรวบรวมโฟลเดอร์นี้";
+"Search Messages..." = "ค้นหาข้อความ...";
+"Sharing..." = "แชร์...";
+"New Subfolder..." = "สร้างโฟลเดอร์ย่อยใหม่";
+"Rename Folder..." = "เปลี่ยนชื่อโฟลเดอร์...";
+"Delete Folder" = "ลบโฟลเดอร์";
+"Use This Folder For" = "ใช้โฟลเดอร์นี้สำหรับ";
+"Get Messages for Account" = "รับข้อความสำหรับบัญชี";
+"Properties..." = "คุณสมบัติ...";
+"Delegation..." = "การมอบหมาย...";
+
+/* Use This Folder menu */
+"Sent Messages" = "ข้อความที่ถูกส่ง";
+"Drafts" = "ร่าง";
+"Deleted Messages" = "ข้อความที่ถูกลบ";
+"Junk Messages" = "ข้อความขยะ";
+
+/* Message list popup menu */
+"Open Message In New Window" = "เปิดข้อความในหน้าต่างใหม่";
+"Reply to Sender Only" = "ตอบกลับเฉพาะผู้ส่งเท่านั้น";
+"Reply to All" = "ตอบกลับทั้งหมด";
+"Edit As New..." = "แก้ไขเป็นใหม่...";
+"Move To" = "ย้ายไป";
+"Copy To" = "คัดลอกไปยัง";
+"Label" = "ป้าย";
+"Mark" = "มาร์ค";
+"Save As..." = "บันทึกเป็น...";
+"Print Preview" = "การพิมพ์ตัวอย่างก่อนพิมพ์";
+"View Message Source" = "ดูแหล่งที่มาของข้อความ";
+"View raw message" = "ดูข้อความดิบ";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "แปลเป็นกิจกรรม";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "แปลเป็นงาน";
+
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "ดาวน์โหลดข้อความ";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "ดาวน์โหลดข้อความ (zip)";
+
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "ดาวน์โหลดไฟล์แนบทั้งหมด";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "สิ่งที่แนบ";
+
+"Print..." = "พิมพ์...";
+"Delete Message" = "ข้อความที่ถูกลบ";
+"Delete Selected Messages" = "ลบข้อความที่เลือก";
+"Mark the selected messages as junk" = "ทำเครื่องหมายข้อความที่เลือกเป็นอีเมลขยะ";
+"Mark the selected messages as not junk" = "ทำเครื่องหมายข้อความที่เลือกเป็นไม่ใช่อีเมลขยะ";
+
+/* Text appended to the recipients list when there are too many recipients */
+"and %{0} more..." = "และ %{0} เพิ่มเติม...";
+
+/* Button label to hide extended list of recipients */
+"Hide" = "ซ่อน";
+
+/* Number of selected messages in list */
+"selected" = "เลือก";
+
+/* Date formatting from one time to another time */
+"to_time" = "ถึง";
+
+/* Date formatting from one day to another day */
+"to_date" = "ถึง";
+
+/* Encrypted message notification */
+"This message is encrypted" = "ข้อความนี้ถูกเข้ารหัสแล้ว";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "ข้อความนี้ไม่สามารถถอดรหัสได้ โปรดตรวจสอบให้แน่ใจว่าคุณได้อัปโหลดใบรับรอง S/MIME ของคุณจากโมดูลการตั้งค่าอีเมล์แล้ว";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "ไม่สามารถยืนยันลายเซ็นข้อความได้";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "ข้อความถูกแก้ไขแล้ว";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "ข้อผิดพลาดในการอ่านใบรับรอง โปรดติดตั้งใบรับรองใหม่";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "ไม่มีใบรับรองที่เกี่ยวข้องกับบัญชี";
+
+/* Invalid S/MIME signature */
+"Digital signature is not valid" = "ลายเซ็นดิจิทัลไม่ถูกต้อง";
+
+/* Valid S/MIME signature */
+"Message is signed" = "ข้อความถูกลงลายมือ";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "ข้อความถูกลงลายมือแต่ใบรับรองไม่ตรงกับที่อยู่อีเมลผู้ส่ง";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "ลายเซ็นดิจิทัลไม่ถูกต้อง";
+
+"This Folder" = "โฟลเดอร์นี้";
+
+/* Label popup menu */
+"None" = "ไม่มี";
+
+/* Mark popup menu */
+"As Read" = "อ่าน";
+"Thread As Read" = "เรียบเรียงเป็นอ่านแล้ว";
+"As Read By Date..." = "เมื่ออ่านตามวันที่...";
+"All Read" = "ทั้งหมดอ่าน";
+"As Junk" = "เป็นอีเมลขยะ";
+"As Not Junk" = "ไม่ใช่อีเมลขยะ";
+"Run Junk Mail Controls" = "เรียกใช้ควบคุมอีเมลขยะ";
+"Search messages in" = "ค้นหาข้อความใน";
+"Search" = "ค้นหา";
+"Search subfolders" = "ค้นหาโฟลเดอร์ย่อย";
+"Match any of the following" = "ตรงกับหนึ่งในต่อไปนี้";
+"Match all of the following" = "ตรงกับทั้งหมดของต่อไปนี้";
+"contains" = "ประกอบด้วย";
+"does not contain" = "ไม่ประกอบด้วย";
+"No matches found" = "ไม่พบการจับคู่";
+"results found" = "ผลลัพธ์ที่พบ";
+"result found" = "ผลลัพธ์ที่พบ";
+"Please specify at least one filter" = "โปรดระบุอย่างน้อยหนึ่งตัวกรอง";
+
+/* Folder operations */
+"Name" = "ชื่อ";
+"Enter the new name of your folder"
+ ="ป้อนชื่อใหม่ของโฟลเดอร์ของคุณ";
+"Do you really want to move this folder into the trash ?"
+ = "คุณต้องการย้ายโฟลเดอร์นี้ไปยังถังขยะใช่ไหม?";
+"Operation failed" = "การดำเนินการล้มเหลว";
+"Quota" = "โควต้า:";
+"quotasFormat" = "%{0}% ใช้ไปที่ %{1} MB";
+"messageQuotasFormat" = "%{0}% of %{1} msgs";
+"Unable to move/delete folder." = "ไม่สามารถย้าย / ลบโฟลเดอร์ได้";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "กล่องจดหมายไม่สามารถย้ายไปยังโฟลเดอร์ถังขยะได้ คุณต้องการลบมันทันทีหรือไม่?";
+
+/* Confirmation message when deleting multiple messages */
+"Are you sure you want to delete the selected messages?" = "คุณแน่ใจหรือว่าต้องการลบข้อความที่เลือกไว้?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} message(s) copied";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} message(s) moved";
+
+"Please select a message." = "โปรดเลือกข้อความ";
+"Please select a message to print." = "โปรดเลือกข้อความที่ต้องการพิมพ์";
+"Please select only one message to print." = "โปรดเลือกข้อความที่ต้องการพิมพ์เพียงหนึ่งข้อเท่านั้น.";
+"The message you have selected doesn't exist anymore." = "ข้อความที่คุณเลือกไม่มีอยู่แล้ว";
+"The folder with name \"%{0}\" could not be created."
+= "โฟลเดอร์ที่ชื่อ \"%{0}\" ไม่สามารถสร้างได้";
+"This folder could not be renamed to \"%{0}\"."
+= "โฟลเดอร์นี้ไม่สามารถเปลี่ยนชื่อเป็น \"%{0}\" ได้";
+"The folder could not be deleted."
+= "โฟลเดอร์ไม่สามารถลบได้";
+"The trash could not be emptied."
+= "ไม่สามารถล้างขยะได้";
+"The folder functionality could not be changed."
+= "ฟังก์ชันการทำงานของโฟลเดอร์ไม่สามารถเปลี่ยนแปลงได้";
+"You need to choose a non-virtual folder!" = "คุณต้องเลือกโฟลเดอร์ที่ไม่ใช่เสมือนจริง!";
+"Moving a message into its own folder is impossible!"
+= "การย้ายข้อความไปยังโฟลเดอร์ของมันเองเป็นสิ่งที่เป็นไปไม่ได้!";
+"Copying a message into its own folder is impossible!"
+= "การคัดลอกข้อความไปยังโฟลเดอร์ของมันเองเป็นสิ่งที่เป็นไปไม่ได้!";
+
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "กล่องจดหมายไม่สามารถย้ายไปยังโฟลเดอร์ถังขยะได้ คุณต้องการลบมันทันทีหรือไม่?";
+
+/* Message editing */
+"Please specify a subject." = "โปรดระบุหัวข้อ";
+"error_missingsubject" = "ข้อความไม่มีหัวข้อ คุณแน่ใจหรือว่าต้องการส่ง?";
+"error_missingrecipients" = "โปรดระบุผู้รับอย่างน้อยหนึ่งคน";
+"Send Anyway" = "ส่งอย่างไรก็ตาม";
+"Error while saving the draft" = "ข้อผิดพลาดในขณะที่บันทึกแบบร่าง";
+
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "ไม่สามารถล้างโฟลเดอร์ถังขยะได้";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "ไม่สามารถล้างโฟลเดอร์ถังขยะได้";
+
+/* Error when uploading a file attachment */
+"Error while uploading the file \"%{0}\":" = "ข้อผิดพลาดในขณะที่อัปโหลดไฟล์ \"%{0}\":";
+"There is an active file upload. Closing the window will interrupt it." = "มีการอัปโหลดไฟล์ที่กำลังทำงานอยู่ การปิดหน้าต่างจะทำให้การอัปโหลดถูกขัดจังหวะ";
+"Message is too big" = "ข้อความใหญ่เกินไป";
+
+/* Appears while sending the message */
+"Sending" = "กำลังส่ง...";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "ส่ง";
+
+"cannot send message: (smtp) all recipients discarded" = "ไม่สามารถส่งข้อความได้: ผู้รับทั้งหมดไม่ถูกต้อง";
+"cannot send message (smtp) - recipients discarded" = "ไม่สามารถส่งข้อความได้ ที่อยู่ต่อไปนี้ไม่ถูกต้อง";
+"cannot send message: (smtp) error when connecting" = "ไม่สามารถส่งข้อความ: เกิดข้อผิดพลาดขณะเชื่อมต่อกับเซิร์ฟเวอร์ SMTP";
+"cannot sign email without certificate" = "ข้อความไม่สามารถลงลายมือได้เนื่องจากไม่มีใบรับรองที่เกี่ยวข้องกับบัญชีอีเมล";
+"cannot sign message because the certificate can't be read" = "ข้อความไม่สามารถลงลายมือได้เนื่องจากไม่สามารถอ่านใบรับรองที่เกี่ยวข้องกับบัญชีอีเมลได้";
+"cannot sign message because the certificate doesn't include the specified sender address" = "ข้อความไม่สามารถลงลายมือได้เนื่องจากที่อยู่ผู้ส่งไม่ได้รวมอยู่ในใบรับรองที่เกี่ยวข้องกับบัญชีอีเมล";
+
+/* Contacts list in mail editor */
+"Email" = "อีเมล";
+"More mail options" = "ตัวเลือกอีเมลเพิ่มเติม";
+"Delegation" = "การมอบหมายงาน";
+"Add User" = "เพิ่มผู้ใช้";
+"Add a tag" = "เพิ่มแท็ก";
+"reply" = "ตอบ";
+"Edit" = "แก้ไข";
+"Yes" = "ใช่";
+"No" = "ไม่";
+"Location" = "สถานที่";
+"Rename" = "เปลี่ยนชื่อ";
+"Compact" = "กระชับ";
+"Export" = "ส่งออก";
+"Set as Drafts" = "ตั้งเป็นแบบร่าง";
+"Set as Sent" = "ตั้งเป็นส่งแล้ว";
+"Set as Trash" = "ตั้งเป็นอีเมลขยะ";
+
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "ตั้งเป็นเทมเพลต";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "ตั้งเป็นอีเมลขยะ";
+
+"Sort" = "เรียงลำดับ";
+"Order Received" = "เรียงตามผู้รับ";
+"Descending Order" = "ลำดับจากมากไปน้อย";
+"Back" = "กลับ";
+"Copy messages" = "คัดลอกข้อความ";
+"More messages options" = "ตัวเลือกข้อความเพิ่มเติม";
+"Flag" = "ทำเครื่องหมาย";
+"Unflag" = "ยกเลิกเครื่องหมาย";
+"Mark as Unread" = "ทำเครื่องหมายว่ายังไม่ได้อ่าน";
+"Mark as Read" = "ทำเครื่องหมายว่าอ่านแล้ว";
+"Closing Window ..." = "ปิดหน้าต่าง ...";
+"Tried to send too many mails. Please wait." = "พยายามส่งอีเมลมากเกินไป โปรดรอสักครู่";
+"View Mail" = "ดูเมล์";
+"This message contains external images." = "ข้อความนี้มีรูปภาพภายนอก";
+"Expanded" = "ขยายขนาด";
+"Add a Criteria" = "เพิ่มเกณฑ์";
+"More search options" = "ตัวเลือกการค้นหาเพิ่มเติม";
+"Your email has been saved" = "อีเมลของคุณถูกบันทึกแล้ว";
+"Your email has been sent" = "อีเมลของคุณถูกส่งแล้ว";
+"Folder compacted" = "โฟลเดอร์ถูกบีบอัด";
+
+"More Options" = "ตัวเลือกเพิ่มเติม";
+
+"New draft" = "ร่างใหม่";
+"Create new draft with this template" = "สร้างร่างใหม่ด้วยเทมเพลตนี้";
+
+/* Advanced search */
+"Enter Subject" = "ใส่หัวข้อ";
+"Enter From" = "ใส่ผู้ส่ง";
+"Enter To" = "ใส่ผู้รับ";
+"Enter Cc" = "ใส่สำเนา";
+"Enter Body" = "ใส่เนื้อหา";
+"match" = "ตรงกัน";
+"does not match" = "ไม่ตรงกัน";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "ขอบเขตการค้นหา";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "จัดการการสมัครสมาชิก";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "ตัวกรอง";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";
+
+/* Email deletion */
+"Clean folder" = "ล้างโฟลเดอร์";
+"Clean mailbox" = "ล้างกล่องอีเมล์";
+"Delete permanently (do not use trash)" = "ลบถาวร(อย่าใช้ถังขยะ)";
+"Apply to subfolders" = "นำไปใช้กับโฟลเดอร์ย่อย";
+"Delete e-mails older than" = "ลบอีเมล์ที่เก่ากว่า";
+"3 months" = "3 เดือน";
+"6 months" = "6 เดือน";
+"9 months" = "9 เดือน";
+"1 year" = "1 ปี";
+"Custom" = "กำหนดเอง";
+"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "คุณกำลังจะลบข้อความบางส่วนอย่างถาวร คุณแน่ใจหรือไม่ว่าต้องการดำเนินการ?";
+"Apply" = "นำไปใช้";
+"%{0} message(s) deleted" = "ลบ %{0} ข้อความแล้ว";

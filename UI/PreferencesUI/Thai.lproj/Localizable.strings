@@ -1,0 +1,518 @@
+/* toolbar */
+"Save and Close" = "Save and Close";
+"Close" = "ปิด";
+"Preferences saved" = "การบันทึกการตั้งค่าถูกบันทึกแล้ว";
+
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "การเปลี่ยนแปลงที่ยังไม่ได้บันทึก";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "คุณต้องการบันทึกการเปลี่ยนแปลงที่ทำกับการกำหนดค่าหรือไม่?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "บันทึก";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "ไม่บันทึก";
+
+/* tabs */
+"General" = "ทั่วไป";
+"Calendar Options" = "ตัวเลือกปฏิทิน";
+"Contacts Options" = "ตัวเลือกของผู้ติดต่อ";
+"Mail Options" = "ตัวเลือกอีเมล";
+"IMAP Accounts" = "บัญชี IMAP";
+"Vacation" = "วันหยุดพักผ่อน";
+"Forward" = "ส่งต่อ";
+"Password" = "รหัสผ่าน";
+"Notification" = "การแจ้งเตือน";
+"Categories" = "หมวดหมู่";
+"Appointments invitations" = "เชิญเข้าร่วมการนัดหมาย";
+"Name" = "ชื่อ";
+"Color" = "สี";
+"Add" = "เพิ่ม";
+"Delete" = "ลบ";
+
+/* contacts categories */
+"contacts_category_labels" = "เพื่อนร่วมงาน, คู่แข่ง, ลูกค้า, เพื่อน, ครอบครัว, พันธมิตรทางธุรกิจ, ผู้ให้บริการ, สื่อ, บุคคลสำคัญ";
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "เปิดใช้งานการตอบกลับอัตโนมัติในช่วงวันหยุด";
+"Enable custom auto reply subject" = "เปิดใช้งานหัวเรื่องการตอบกลับอัตโนมัติที่กำหนดเอง";
+"Auto reply subject" = "หัวข้อการตอบกลับอัตโนมัติ";
+"You can write ${subject} to insert the original subject" = "คุณสามารถเขียน ${subject} เพื่อแทรกหัวข้อเดิม";
+"Auto reply message" = "ข้อความตอบกลับอัตโนมัติ";
+"Email addresses" = "ที่อยู่อีเมล์";
+"Add default email addresses" = "เพิ่มที่อยู่อีเมลเริ่มต้น";
+"Days between responses" = "วันระหว่างการตอบกลับ";
+"Do not send responses to mailing lists" = "กรุณาอย่าตอบกลับมาที่เมล์นี้";
+"Activation Constraints" = "ไม่สามารถเปิดใช้งานได้";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "ปรับแต่งช่วงวันและช่วงเวลาได้อิสระและตั้งค่าให้เหมาะสมกับความต้องการของคุณในการกรองวันหยุดของคุณ";
+"Enable auto reply on" = "เปิดใช้งานการตอบกลับอัตโนมัติ";
+"First day of vacation" = "วันแรกของการพักผ่อน";
+"Disable auto reply after" = "ปิดการตอบกลับอัตโนมัติหลังจากนี้";
+"Last day of vacation" = "วันสุดท้ายของการพักผ่อน";
+"Enter date" = "ใส่วันที่";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "เปิดใช้งานการตอบกลับอัตโนมัติที่";
+"Enter time" = "ใส่เวลา";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "ปิดการตอบกลับอัตโนมัติที่";
+"Enable auto reply on these days" = "เปิดใช้งานการตอบกลับอัตโนมัติในวันเหล่านี้";
+"Always send vacation message response" = "ส่งการตอบกลับข้อความการพักผ่อนเสมอ";
+"The vacation message is sent prior to apply your filters." = "ข้อความการพักผ่อนถูกส่งก่อนที่จะใช้ตัวกรองของคุณ";
+"Discard incoming mails during vacation" = "การทิ้งอีเมลที่เข้ามาในช่วงวันหยุด";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "ข้อความการส่งข้อความวันหยุดถูกส่งแต่ข้อความเข้าไม่ถูกส่งไปยังกล่องขาเข้าของคุณ";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "โปรดระบุข้อความของคุณและที่อยู่อีเมลที่คุณต้องการเปิดใช้งานการตอบกลับอัตโนมัติ";
+"Your vacation message must not end with a single dot on a line." = "ข้อความของคุณเมื่อเทียบกับบรรทัดเดียวจะต้องไม่ลงท้ายด้วยจุดเดียว";
+"End date of your auto reply must be in the future."
+= "วันที่สิ้นสุดของการตอบกลับอัตโนมัติของคุณต้องอยู่ในอนาคต";
+
+/* forward messages */
+"Forward incoming messages" = "ส่งข้อความเข้ามาข้างหน้า";
+"Always forward" = "ส่งต่อเสมอ";
+"Incoming messages are forwarded prior to apply your filters." = "ข้อความที่เข้ามาจะถูกส่งต่อก่อนที่จะใช้ตัวกรองของคุณ";
+"Keep a copy" = "เก็บสำเนา";
+"Enter an email" = "ป้อนอีเมล์";
+"Add another email" = "เพิ่มอีเมลอีกหนึ่งอัน";
+"Please specify an address to which you want to forward your messages."
+= "โปรดระบุที่อยู่ที่คุณต้องการส่งต่อข้อความของคุณ";
+"You are not allowed to forward your messages to an external email address." = "คุณไม่ได้รับอนุญาตให้ส่งข้อความของคุณไปยังที่อยู่อีเมลภายนอก";
+"You are not allowed to forward your messages to an internal email address." = "คุณไม่ได้รับอนุญาตให้ส่งข้อความของคุณไปยังที่อยู่อีเมลภายใน";
+"You are not allowed to forward your messages to this domain:" = "คุณไม่ได้รับอนุญาตให้ส่งข้อความของคุณไปยังโดเมนนี้:";
+
+/* notification */
+"Notify incoming messsages" = "แจ้งเตือนข้อความที่เข้ามา";
+"Notification Message Sent" = "ข้อความแจ้งเตือนถูกส่ง";
+"Notification Message" = "การแจ้งเตือนข้อความใหม่ใน %{0}";
+
+/* d & t */
+"Time Zone" = "เขตเวลา";
+"Short Date Format" = "รูปแบบวันที่สั้น";
+"Long Date Format" = "รูปแบบวันที่ยาว";
+"Time Format" = "รูปแบบเวลา";
+"default" = "ค่าเริ่มต้น";
+"Default Module" = "โมดูลเริ่มต้น";
+"Save" = "บันทึก";
+"shortDateFmt_0" = "%d-%b-%y";
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
+
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
+
+/* Timezone autocompletion */
+"No matches found." = "ไม่พบข้อมูลตรงกับค้นหาของคุณ";
+
+/* calendar */
+"Week begins on" = "สัปดาห์เริ่มต้นในวัน";
+"Day start time" = "เวลาเริ่มต้นของวัน";
+"Day end time" = "เวลาสิ้นสุดวัน";
+"Day start time must be prior to day end time." = "เวลาเริ่มต้นของวันต้องเป็นก่อนเวลาสิ้นสุดของวัน";
+"Week days to display" = "วันในสัปดาห์ที่จะแสดง";
+"Show time as busy outside working hours" = "แสดงเวลาเป็นไม่ว่างนอกเวลาทำงาน";
+"First week of year" = "สัปดาห์แรกของปี";
+"Enable reminders for Calendar items" = "เปิดใช้การแจ้งเตือนสำหรับรายการปฏิทิน";
+"Play a sound when a reminder comes due" = "เล่นเสียงเมื่อคำเตือนถึงกำหนด";
+"Default reminder" = "การแปล: การแจ้งเตือนเริ่มต้น";
+"firstWeekOfYear_January1" = "เริ่มต้นในวันที่ 1 มกราคม";
+"firstWeekOfYear_First4DayWeek" = "วันทำงาน 4 วันแรก";
+"firstWeekOfYear_FirstFullWeek" = "สัปดาห์แรก";
+"Prevent from being invited to appointments" = "ป้องกันไม่ให้ถูกเชิญไปที่นัดหมาย";
+"White list for appointment invitations" = "รายชื่อที่ยอมรับสำหรับการเชิญนัดหมาย";
+"Contacts Names" = "ชื่อผู้ติดต่อ";
+"Duplicate name" = "ชื่อซ้ำ";
+"Calendar categories must have unique names." = "หมวดหมู่ปฏิทินต้องมีชื่อที่ไม่ซ้ำกัน";
+"Disable e-mail notifications on CalDAV" = "ยกเลิกการแจ้งเตือนอีเมลบน CalDAV";
+
+/* Default Calendar */
+"Default calendar" = "ปฏิทินเริ่มต้น";
+"selectedCalendar" = "ปฏิทินที่เลือก";
+"personalCalendar" = "ปฏิทินส่วนตัว";
+"firstCalendar" = "แปลเป็นภาษาไทย: ปฏิทินที่เปิดใช้งานครั้งแรก";
+"reminder_NONE" = "ไม่มีการแจ้งเตือน";
+"reminder_5_MINUTES_BEFORE" = "5 นาทีก่อน";
+"reminder_10_MINUTES_BEFORE" = "10 นาทีก่อน";
+"reminder_15_MINUTES_BEFORE" = "15 นาทีก่อน";
+"reminder_30_MINUTES_BEFORE" = "30 นาทีก่อน";
+"reminder_45_MINUTES_BEFORE" = "45 นาทีก่อน";
+"reminder_1_HOUR_BEFORE" = "1 ชั่วโมงก่อน";
+"reminder_2_HOURS_BEFORE" = "2 ชั่วโมงก่อน";
+"reminder_5_HOURS_BEFORE" = "5 ชั่วโมงก่อน";
+"reminder_15_HOURS_BEFORE" = "15 ชั่วโมงก่อน";
+"reminder_1_DAY_BEFORE" = "1 วันก่อน";
+"reminder_2_DAYS_BEFORE" = "2 วันก่อน";
+"reminder_1_WEEK_BEFORE" = "1 สัปดาห์ก่อน";
+
+/* Mailer */
+"Labels" = "ป้าย";
+"Label" = "ป้าย";
+"IMAP Label" = "ป้ายชื่อ IMAP";
+"Invalid label" = "ไม่ใช้ช่องว่าง หรือ ( ) { } % * \" \\";
+"Duplicate label" = "ป้ายกำกับซ้ำ";
+"IMAP labels must have unique names." = "ป้ายชื่อ IMAP ต้องมีชื่อที่ไม่ซ้ำกัน";
+"New label" = "ป้ายใหม่";
+"Show subscribed mailboxes only" = "แสดงกล่องจดหมายที่สมัครสมาชิกเท่านั้น";
+"Synchronize only default mail folders (EAS)" = "ซิงโครไนซ์เฉพาะโฟลเดอร์จดหมายเริ่มต้นเท่านั้น (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "นับจำนวนข้อความที่ยังไม่เคยเห็นสำหรับกล่องจดหมายทั้งหมด";
+"Sort messages by threads" = "เรียงข้อความตามกระทู้";
+"Always open mail composer" = "เปิดเครื่องมือสร้างอีเมลเสมอ";
+"Inside current window" = "ในหน้าต่างปัจจุบัน";
+"In a popup window" = "ในหน้าต่างป๊อปอัพ";
+"When sending mail, add unknown recipients to my" = "เมื่อส่งจดหมาย ให้เพิ่มผู้รับที่ไม่รู้จักในรายชื่อของฉัน";
+"Address Book" = "สมุดรายชื่อ";
+"Forward messages" = "ส่งข้อความต่อไป";
+"messageforward_inline" = "อินไลน์";
+"messageforward_attached" = "ไฟล์แนบ";
+"When replying to a message" = "เมื่อตอบกลับข้อความ";
+"replyplacement_above" = "เริ่มต้นการตอบข้างบนข้อความที่ถูกอ้างอิง";
+"replyplacement_below" = "เริ่มต้นการตอบข้างล่างข้อความที่ถูกอ้างอิง";
+"And place my signature" = "และวางลายเซ็นของฉัน";
+"signatureplacement_above" = "ข้างล่างของการตอบกลับของฉัน";
+"signatureplacement_below" = "ข้างล่างของคำพูด";
+"Compose messages in" = "เขียนข้อความใน";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "ข้อความธรรมดา";
+"Insert signature on new message" = "เพิ่มลายเซ็นต์ในข้อความใหม่";
+"Insert signature on reply" = "เพิ่มลายเซ็นต์ในการตอบกลับ";
+"Insert signature on forward" = "แทรกลายเซ็นต์ไปยังข้างหน้า";
+"Show recipients or sender full email in mailboxes" = "แสดงผู้รับหรือผู้ส่งอีเมลเต็มในกล่องจดหมาย";
+"Hide attachements for inline images" = "ซ่อนสิ่งที่แนบมาสำหรับภาพอินไลน์";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "ขนาดตัวอักษรเริ่มต้น";
+
+"Display remote inline images" = "แสดงรูปภาพแบบออนไลน์จากระยะไกล";
+"displayremoteinlineimages_never" = "ไม่เคย";
+"displayremoteinlineimages_always" = "เสมอ";
+"Auto save every" = "บันทึกอัตโนมัติทุกๆ";
+"minutes" = "นาที";
+"Automatically mark messages as read" = "อัตโนมัติทำเครื่องหมายข้อความว่าอ่านแล้ว";
+"Immediately on display" = "ทันทีที่แสดงผล";
+"After displaying for" = "หลังจากแสดงผลสำหรับ";
+"seconds" = "วินาที";
+
+/* Contact */
+"Personal Address Book" = "สมุดที่อยู่ส่วนตัว";
+"Collected Address Book" = "สมุดที่อยู่ที่เก็บรวบรวม";
+"Contact categories must have unique names." = "หมวดหมู่ของการติดต่อต้องมีชื่อที่ไม่ซ้ำกัน";
+
+/* IMAP Accounts */
+"Settings" = "การตั้งค่า";
+"Security" = "ความปลอดภัย";
+"Mail Account" = "บัญชีอีเมล์";
+"New Mail Account" = "บัญชีอีเมลใหม่";
+"Server Name" = "ชื่อเซิร์ฟเวอร์";
+"Outgoing Server Name (SMTP)" = "ชื่อเซิร์ฟเวอร์ออก (SMTP)";
+"Smtp Auth" = "Smtp Auth";
+"Port" = "พอร์ต";
+"Encryption" = "การเข้ารหัส";
+"Outgoing Encryption" = "การเข้ารหัสข้อมูลที่ส่งออก";
+"None" = "ไม่มี";
+"User Name" = "ชื่อผู้ใช้";
+"Full Name" = "ชื่อเต็ม";
+"Email" = "อีเมล";
+"Reply To Email" = "ตอบกลับทางอีเมล";
+"Signature" = "ลายเซ็นต์";
+"Identities" = "บุคคลิกภาพ";
+"Always use the default identity when replying to messages" = "ใช้ตัวตนเริ่มต้นเสมอเมื่อตอบกลับข้อความ";
+"Default Identity" = "ตัวตนเริ่มต้น";
+"New Identity" = "ข้อมูลประจำตัวใหม่";
+"(Click to create)" = "(คลิกเพื่อสร้าง)";
+"Please enter your signature below" = "โปรดป้อนลายเซ็นของคุณด้านล่าง";
+"Please specify a valid sender address." = "โปรดระบุที่อยู่ผู้ส่งที่ถูกต้อง";
+"Please specify a valid reply-to address." = "โปรดระบุที่อยู่ผู้ตอบกลับที่ถูกต้อง";
+"Specify a hostname other than the local host" = "ระบุชื่อโฮสต์ที่แตกต่างจากโฮสต์ท้องถิ่น";
+
+"No certificate installed" = "ไม่มีใบรับรองที่ติดตั้ง";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "ใบรับรอง SSL ต้องใช้รูปแบบ PKCS#12 (PFX)";
+"Uninstall" = "ถอนการติดตั้ง";
+"Choose PKCS12 Certificate .." = "เลือกใบรับรอง PKCS12 ..";
+"Certificate Import Password" = "รหัสผ่านการนำเข้าใบรับรอง";
+"Upload" = "อัปโหลด";
+"When composing a message" = "เมื่อเขียนข้อความ";
+"Digitally sign the message by default" = "เซ็นต์ดิจิตอลข้อความโดยค่าเริ่มต้น";
+"Always try to encrypt the message" = "พยายามเข้ารหัสข้อความเสมอ";
+"An error occurred while importing the certificate. Verify your password." = "เกิดข้อผิดพลาดขึ้นในขณะที่นำเข้าใบรับรอง โปรดตรวจสอบรหัสผ่านของคุณ";
+"Data too big. Please contact technical support." = "ข้อมูลใหญ่เกินไป โปรดติดต่อฝ่ายสนับสนุนทางเทคนิค";
+
+/* Additional Parameters */
+"Additional Parameters" = "พารามิเตอร์เพิ่มเติม";
+
+/* password */
+"Current password" = "รหัสผ่านปัจจุบัน";
+"New password" = "รหัสผ่านใหม่";
+"Confirmation" = "ยืนยัน";
+"Change" = "เปลี่ยน";
+"Passwords don't match" = "รหัสผ่านไม่ตรงกัน";
+
+
+/* Event+task classifications */
+"Default events classification" = "การจัดประเภทเหตุการณ์เริ่มต้น";
+"Default tasks classification" = "การจัดประเภทงานเริ่มต้นเริ่มต้น";
+"PUBLIC_item" = "สาธารณะ";
+"CONFIDENTIAL_item" = "ความลับ";
+"PRIVATE_item" = "ส่วนตัว";
+
+/* Event+task categories */
+"Calendar Category" = "หมวดหมู่ปฏิทิน";
+"Add Calendar Category" = "เพิ่มหมวดหมู่ปฏิทิน";
+"New category" = "หมวดหมู่ใหม่";
+"Reset to defaults" = "รีเซ็ตเป็นค่าเริ่มต้น";
+"Remove Calendar Category" = "ลบหมวดหมู่ปฏิทิน";
+"Contact Category" = "หมวดหมู่การติดต่อ";
+"Add Contact Category" = "หมวดหมู่การติดต่อ";
+"Remove Contact Category" = "ลบหมวดหมู่ของผู้ติดต่อ";
+"category_none" = "ไม่มี";
+"calendar_category_labels" = "วันครบรอบ, วันเกิด, ธุรกิจ, การโทร, ลูกค้า, การแข่งขัน, ลูกค้า, รายการโปรด, ติดตาม, ของขวัญ, วันหยุด, ความคิด, การประชุม, ปัญหา, อื่นๆ, ส่วนตัว, โครงการ, วันหยุดราชการ, สถานะ, ซัพพลายเออร์, การเดินทาง, วันหยุดพักผ่อน";
+
+/* Default module */
+"Calendar" = "ปฏิทิน";
+"Contacts" = "สมุดรายชื่อ";
+"Mail" = "อีเมล";
+"Last" = "ล่าสุด";
+"Default Module " = "โมดูลเริ่มต้น";
+"SOGo Version" = "SOGo Version";
+
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "บันทึกการตั้งค่าและโหลดหน้าเว็บใหม่ตอนนี้หรือไม่?";
+"Language" = "ภาษา";
+"choose" = "เลือก ...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Bosnian" = "Bosanski";
+"Bulgarian" = "Български";
+"Catalan" = "Català";
+"ChineseChina" = "简体中文";
+"ChineseTaiwan" = "正體中文";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"Galician" = "Galego";
+"German" = "Deutsch";
+"Hebrew" = "עברית";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
+"Italian" = "Italiano";
+"Japanese" = "日本語";
+"Kazakh" = "Қазақ";
+"Korean" = "한국어";
+"Latvian" = "Latviešu";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"Montenegrin" = "Crnogorski";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
+"Russian" = "Русский";
+"Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"Thai" = "ภาษา";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"Refresh View" = "รีเฟรชวิว";
+"refreshview_manually" = "คู่มือ";
+"refreshview_every_minute" = "ทุกนาที";
+"refreshview_every_2_minutes" = "ทุก 2 นาที";
+"refreshview_every_5_minutes" = "ทุก 5 นาที";
+"refreshview_every_10_minutes" = "ทุก 10 นาที";
+"refreshview_every_20_minutes" = "ทุก 20 นาที";
+"refreshview_every_30_minutes" = "ทุก 30 นาที";
+"refreshview_once_per_hour" = "หนึ่งครั้งต่อชั่วโมง";
+"Enable Desktop Notifications" = "เปิดใช้งานการแจ้งเตือนบนเดสก์ท็อป";
+
+/* Return receipts */
+"When I receive a request for a return receipt" = "เมื่อฉันได้รับคำขอให้ส่งใบรับรองการคืน";
+"Never send a return receipt" = "ไม่เคยส่งใบรับรองการส่งคืน";
+"Allow return receipts for some messages" = "อนุญาตให้ส่งใบเสร็จการส่งคืนสำหรับบางข้อความ";
+"If I'm not in the To or Cc of the message" = "ถ้าฉันไม่ได้อยู่ในส่วนของ To หรือ Cc ของข้อความ";
+"If the sender is outside my domain" = "ถ้าผู้ส่งอยู่นอกโดเมนของฉัน";
+"In all other cases" = "ในกรณีอื่น ๆ";
+"Never send" = "ไม่ต้องส่ง";
+"Always send" = "ส่งเสมอ";
+"Ask me" = "ถามฉัน";
+
+/* Filters - UIxPreferences */
+"Filters" = "ตัวกรอง";
+"Active" = "ใช้งานอยู่";
+"Move Up" = "เลื่อนขึ้น";
+"Move Down" = "เลื่อนลง";
+"Connection error" = "ข้อผิดพลาดในการเชื่อมต่อ";
+"Service temporarily unavailable" = "บริการไม่สามารถใช้งานได้ชั่วคราว";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "เปิดใช้งานตัวกรอง";
+
+/* Filters - UIxFilterEditor */
+"Filter name" = "ชื่อตัวกรอง";
+/* Button label */
+"Add a condition" = "เพิ่มเงื่อนไข";
+/* Button label */
+"Add an action" = "เพิ่มการกระทำ";
+"For incoming messages that" = "สำหรับข้อความที่เข้ามา";
+"match all of the following rules" = "ตรงกับกฎทั้งหมดต่อไปนี้";
+"match any of the following rules" = "ตรงกับกฎใดก็ได้ในกฎต่อไปนี้";
+"match all messages" = "จับคู่ข้อความทั้งหมด";
+"Perform these actions" = "ดำเนินการเหล่านี้";
+"Untitled Filter" = "ไม่มีรายละเอียดเพิ่มเติม";
+"Subject" = "หัวข้อ";
+"From" = "จาก";
+"To" = "ถึง";
+"Cc" = "Cc";
+"To or Cc" = "ถึงหรือสำเนา";
+"Size (Kb)" = "ขนาด (Kb)";
+"Header" = "หัวเรื่อง";
+"Body" = "เนื้อหา";
+"Flag the message with" = "ทำเครื่องหมายข้อความด้วย";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "ทำเครื่องหมาย";
+
+"Discard the message" = "ละทิ้งข้อความ";
+"File the message in" = "ไฟล์ข้อความใน";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "กล่องจดหมาย";
+
+"Keep the message" = "เก็บข้อความ";
+"Forward the message to" = "ส่งข้อความต่อไปยัง";
+"Notify the message to" = "แจ้งข้อความถึง";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "อีเมล";
+
+"Send a reject message" = "ส่งข้อความปฏิเสธ";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "ข้อความ";
+
+"Send a vacation message" = "ข้อความแจ้งลาพักร้อน";
+"Stop processing filter rules" = "หยุดการประมวลผลกฎกรอง";
+"is under" = "อยู่ภายใต้";
+"is over" = "เสร็จสิ้น";
+"is" = "คือ";
+"is not" = "ไม่ใช่";
+"contains" = "ประกอบด้วย";
+"does not contain" = "ไม่ประกอบด้วย";
+"matches" = "ค้นหาพบ";
+"does not match" = "ไม่ตรงกัน";
+"matches regex" = "ตรงกับเงื่อนไข";
+"does not match regex" = "ไม่ตรงกับเงื่อนไข";
+/* Placeholder for the value field of a condition */
+"Value" = "ค่า";
+"Seen" = "เห็น";
+"Deleted" = "ลบ";
+"Answered" = "ตอบ";
+"Flagged" = "ทำเครื่องหมาย";
+"Junk" = "อีเมลขยะ";
+"Not Junk" = "ไม่ใช่อีเมลขยะ";
+
+/* Password policy */
+"The password was changed successfully." = "เปลี่ยนรหัสผ่านเรียบร้อยแล้ว.";
+"Password must not be empty." = "รหัสผ่านต้องไม่เป็นค่าว่าง";
+"The passwords do not match. Please try again." = "รหัสผ่านไม่ตรงกัน กรุณาลองอีกครั้ง.";
+"Password change failed" = "การเปลี่ยนรหัสผ่านล้มเหลว";
+"Password change failed - Permission denied" = "การเปลี่ยนรหัสผ่านล้มเหลว - การเข้าถึงถูกปฏิเสธ";
+"Password change failed - Insufficient password quality" = "การเปลี่ยนรหัสผ่านไม่สำเร็จ - คุณภาพรหัสผ่านไม่เพียงพอ";
+"Password change failed - Password is too short" = "การเปลี่ยนรหัสผ่านไม่สำเร็จ - รหัสผ่านสั้นเกินไป";
+"Password change failed - Password is too young" = "การเปลี่ยนรหัสผ่านไม่สำเร็จ - รหัสผ่านใหม่ยังใหม่เกินไป";
+"Password change failed - Password is in history" = "การเปลี่ยนรหัสผ่านไม่สำเร็จ - รหัสผ่านใหม่ของคุณเหมือนกับรหัสผ่านเก่าที่เคยใช้";
+"Unhandled policy error: %{0}" = "ข้อผิดพลาดเกี่ยวกับนโยบายที่ไม่สามารถจัดการได้: %{0}";
+"Unhandled error response" = "การตอบสนองข้อผิดพลาดที่ไม่สามารถจัดการได้";
+"Password change is not supported." = "ไม่รองรับการเปลี่ยนรหัสผ่าน.";
+"Unhandled HTTP error code: %{0}" = "โค้ดข้อผิดพลาด HTTP ไม่ได้รับการจัดการ: %{0}";
+"Cancel" = "ยกเลิก";
+"Invitations" = "เชิญชวน";
+"Edit Filter" = "แก้ไขตัวกรอง";
+"Delete Filter" = "ลบตัวกรอง";
+"Create Filter" = "สร้างตัวกรอง";
+"Delete Label" = "ลบป้ายชื่อ";
+"Create Label" = "สร้างป้ายชื่อ";
+"Accounts" = "บัญชี";
+"Edit Account" = "แก้ไขบัญชี";
+"Delete Account" = "ลบบัญชี";
+"Create Account" = "สร้างบัญชี";
+"Account Name" = "ชื่อบัญชี";
+"SSL" = "SSL";
+"TLS" = "TLS";
+
+/* Avatars */
+"Use Gravatar" = "ใช้ Gravatar";
+"Alternate Avatar" = " \nรูปโปรไฟล์สำรอง";
+"none" =  "ไม่มี";
+"identicon" = " ไอคอนระบุตัวตน";
+"monsterid" = "สัตว์ประหลาด";
+"wavatar" = "อวตารของคุณ";
+"retro" = "ย้อนหลัง";
+
+/* Animation Level */
+"Animation Level" = "ระดับการสร้างภาพเคลื่อนไหว";
+/* Normal Animation Mode */
+"animation_NORMAL" = "ปกติ";
+/* Limited Animation Mode */
+"animation_LIMITED" = "จำกัด";
+"animation_NONE" = "ไม่มี";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "เปิดใช้งานการยืนยันตัวตนสองขั้นตอนโดยใช้แอปพลิเคชัน TOTP";
+"You must enter this key into your TOTP application." = "คุณต้องป้อนคีย์นี้ลงในแอปพลิเคชัน TOTP ของคุณ";
+"If you do not and you log out you will not be able to login again." = "ถ้าคุณไม่ทำและคุณออกจากระบบคุณจะไม่สามารถเข้าสู่ระบบอีกครั้งได้";
+"Enter TOTP verification code :" = "ป้อนรหัสยืนยัน TOTP:";
+"Invalid TOTP verification code" = "รหัสการยืนยัน TOTP ไม่ถูกต้อง";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "สคริปต์ Sieve ภายนอกกำลังทำงานอยู่";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve เป็นภาษาโปรแกรมที่ใช้สำหรับกรองอีเมล หากคุณให้ SOGo จัดการตัวกรอง การตั้งค่าการพักร้อนและการส่งต่อ สคริปต์ที่ใช้งานอยู่จะถูกปิดใช้งาน";
+"Let SOGo handle everything" = "ให้ SOGo จัดการทุกอย่าง";
+
+/* Password Recovery */
+"Password recovery mode" = "โหมดกู้คืนรหัสผ่าน";
+"Question" = "คำถาม";
+"Secondary e-mail" = "อีเมลสำรอง";
+"Answer" = "คำตอบ";
+"Password recovery" = "การกู้คืนรหัสผ่าน";
+"Password change" = "การเปลี่ยนรหัสผ่าน";

@@ -245,4 +245,13 @@
 @interface SOGoACLSwedishRemovalAdvisory : SOGoACLRemovalAdvisory
 @end
 
+@interface SOGoACLThaiAdditionAdvisory : SOGoACLAdditionAdvisory
+@end
+
+@interface SOGoACLThaiModificationAdvisory : SOGoACLModificationAdvisory
+@end
+
+@interface SOGoACLThaiRemovalAdvisory : SOGoACLRemovalAdvisory
+@end
+
 #endif /* SOGOACLADVISORY_H */

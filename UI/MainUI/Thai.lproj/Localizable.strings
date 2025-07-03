@@ -1,0 +1,132 @@
+/* this file is in UTF-8 format! */
+
+"title" = "SOGo";
+"Username" = "ชื่อผู้ใช้";
+"Password" = "รหัสผ่าน";
+"Domain" = "โดเมน";
+"Remember username" = "บันทึกชื่อผู้ใช้";
+"Connect" = "เชื่อมต่อ";
+
+/* Appears while authentication is in progress */
+"Authenticating" = "การยืนยันตัวตน";
+
+/* Appears when authentication succeeds */
+"Welcome" = "ยินดีต้อนรับ";
+
+"Authentication Failed" = "การยืนยันตัวตนล้มเหลว";
+"Wrong username or password." = "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
+"Retry" = "ลองใหม่";
+"Login failed due to unhandled error case:" = "เข้าระบบล้มเหลวเนื่องจากข้อผิดพลาดที่ไม่สามารถจัดการได้:";
+"cookiesNotEnabled" = " ท่านไม่สามารถเข้าสู่ระบบได้ เนื่องจากคุกกี้ ของเบราว์เซอร์ของคุณถูกปิดใช้งาน กรุณาเปิดใช้งานคุกกี้ในเบราว์เซอร์ของคุณ แล้วลองเข้าสู่ระบบอีกครั้ง";
+"browserNotCompatible" = "เราตรวจพบว่าเบราว์เซอร์ของคุณเวอร์ชันปัจจุบัน ไม่รองรับเว็บไซต์นี้ เราแนะนำให้ใช้ Firefox คุณสามารถคลิกที่ลิงค์ด้านล่างเพื่อดาวน์โหลดเบราว์เซอร์ Firefox เวอร์ชันล่าสุด";
+"alternativeBrowsers" = "หรือ คุณสามารถใช้เบราว์เซอร์ที่รองรับต่อไปนี้";
+"alternativeBrowserSafari" = "หรือคุณสามารถใช้ Safari แทนได้";
+
+/* 2FA */
+"Verification Code" = "รหัสยืนยัน";
+"Enter the 6-digit verification code from your TOTP application." = "ใส่รหัสยืนยัน 6 หลักจากแอปพลิเคชัน TOTP ของคุณ";
+"You provided an invalid TOTP key." = "รหัส TOTP ที่คุณใส่ไม่ถูกต้อง";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = " ระบบยืนยันตัวตนสองชั้น ถูกปิดใช้งาน กรุณาเข้าไปที่ เมนูการตั้งค่า เพื่อเปิดใช้งานระบบยืนยันตัวตนสองชั้นอีกครั้ง และกำหนดค่าแอปพลิเคชัน TOTP ใหม่";
+
+"Download" = "ดาวน์โหลด";
+"Language" = "ภาษา";
+"choose" = "เลือก ...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Bosnian" = "Bosanski";
+"Bulgarian" = "Български";
+"Catalan" = "Català";
+"ChineseChina" = "简体中文";
+"ChineseTaiwan" = "正體中文";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"Galician" = "Galego";
+"German" = "Deutsch";
+"Hebrew" = "עברית";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
+"Italian" = "Italiano";
+"Japanese" = "日本語";
+"Korean" = "한국어";
+"Kazakh" = "Қазақ";
+"Latvian" = "Latviešu";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"Montenegrin" = "Crnogorski";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
+"Russian" = "Русский";
+"Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"Thai" = "ภาษา";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"About" = "เกี่ยวกับ";
+"AboutBox" = "Developed by Inverse and Alinto, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
+"Your account was locked due to too many failed attempts." = " \nบัญชีของคุณถูกล็อกเนื่องจากมีการลองเข้าสู่ระบบผิดพลาดหลายครั้ง";
+"Your account was locked due to an expired password." = " บัญชีของคุณถูกล็อกเนื่องจากรหัสผ่านหมดอายุ";
+"Login failed due to unhandled error case" = " เข้าสู่ระบบล้มเหลวเนื่องจากกรณีข้อผิดพลาดที่ไม่สามารถจัดการได้";
+"Change your Password" = " เปลี่ยนรหัสผ่านของคุณ";
+"The password was changed successfully." = " เปลี่ยนรหัสผ่านเรียบร้อยแล้ว";
+"Your password has expired, please enter a new one below" = " รหัสผ่านของคุณหมดอายุแล้ว กรุณาป้อนรหัสผ่านใหม่ด้านล่าง";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "รหัสผ่านของคุณไม่แข็งแรงพอ กรุณาเลือกใช้รหัสผ่านที่แข็งแกร่งขึ้นเพื่อเพิ่มความปลอดภัย";
+"Password must not be empty." = " รหัสผ่านต้องไม่เป็นค่าว่าง";
+"The passwords do not match. Please try again." = " รหัสผ่านไม่ตรงกัน กรุณาลองอีกครั้ง";
+"Password Grace Period" = "ระยะเวลาผ่อนผันรหัสผ่าน";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "ขณะนี้บัญชีของคุณเหลือการเข้าสู่ระบบอีก %{0} ครั้งก่อนที่จะถูกล็อค กรุณาเปลี่ยนรหัสผ่านของคุณที่หน้าตั้งค่า";
+"Password about to expire" = "รหัสผ่านใกล้หมดอายุ";
+"Your password is going to expire in %{0} %{1}." = " รหัสผ่านของคุณจะหมดอายุใน %{0} %{1}.";
+"days" = "วัน";
+"hours" = "ชั่วโมง";
+"minutes" = "นาที";
+"seconds" = "วินาที";
+"Password change failed" = "การเปลี่ยนรหัสผ่านล้มเหลว";
+"Password change failed - Permission denied" = "การเปลี่ยนรหัสผ่านล้มเหลว - การเข้าถึงถูกปฏิเสธ";
+"Password change failed - Insufficient password quality" = "การเปลี่ยนรหัสผ่านไม่สำเร็จ - คุณภาพรหัสผ่านไม่เพียงพอ";
+"Password change failed - Password is too short" = " การเปลี่ยนรหัสผ่านไม่สำเร็จ - รหัสผ่านสั้นเกินไป";
+"Password change failed - Password is too young" = "เปลี่ยนรหัสผ่านไม่สำเร็จ - รหัสผ่านใหม่ยังใหม่เกินไป";
+"Password change failed - Password is in history" = " เปลี่ยนรหัสผ่านไม่สำเร็จ - รหัสผ่านใหม่ของคุณเหมือนกับรหัสผ่านเก่าที่เคยใช้";
+"Unhandled policy error: %{0}" = "ข้อผิดพลาดเกี่ยวกับนโยบายที่ไม่สามารถจัดการได้: %{0}";
+"Unhandled error response" = "การตอบสนองข้อผิดพลาดที่ไม่สามารถจัดการได้";
+"Password change is not supported." = "ไม่รองรับการเปลี่ยนรหัสผ่าน";
+"Unhandled HTTP error code: %{0}" = "โค้ดข้อผิดพลาด HTTP ไม่ได้รับการจัดการ: %{0}";
+"New password" = "รหัสผ่านใหม่";
+"Confirmation" = "ยืนยัน";
+"Cancel" = "ยกเลิก";
+"Please wait..." = " กรุณารอสักครู่...";
+"Close" = "ปิด";
+"Missing search parameter" = "ขาดพารามิเตอร์การค้นหา";
+"Missing type parameter" = "ขาดพารามิเตอร์ประเภท";
+
+/* Password Recovery */
+"Secondary e-mail" = "อีเมลสำรอง";
+"Answer" = "คำตอบ";
+"Password lost" = "รหัสผ่านหาย";
+"No password recovery method has been defined for this user" = "ผู้ใช้รายนี้ไม่ได้กำหนดวิธีการกู้คืนรหัสผ่านไว้";
+"Invalid secret question answer" = "คำตอบสำหรับคำถามลับไม่ถูกต้อง";
+"Next" = "ถัดไป";
+"Back" = "กลับ";
+"Please enter a new password below" = " กรุณาระบุรหัสผ่านใหม่ด้านล่าง";
+"A link will be sent to %{0}" = "ลิงก์จะถูกส่งไปยัง %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "ลิงก์รีเซ็ตรหัสผ่าน ได้ถูกส่งไปแล้ว กรุณาตรวจสอบกล่องจดหมายกู้คืนอีเมลของคุณ และคลิกที่ลิงก์";
+"Invalid configuration for email password recovery" = " การตั้งค่าการกู้คืนรหัสผ่านอีเมลไม่ถูกต้อง";
+"Password recovery email in error" = "การกู้คืนรหัสผ่านทางอีเมลผิดพลาด";
+"Password reset" = "รีเซ็ตรหัสผ่าน";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "สวัสดี %{0},\nมีคำขอเปลี่ยนรหัสผ่านของคุณ!\n\nหากคุณไม่ได้ทำคำขอนี้ โปรดเพิกเฉยต่ออีเมลนี้\n\nมิฉะนั้น โปรดคลิกที่ลิงก์นี้เพื่อเปลี่ยนรหัสผ่านของคุณ: %{1}";

@@ -420,6 +420,9 @@
 @implementation SOGoMailSwedishForward
 @end
 
+@implementation SOGoMailThaiForward
+@end
+
 @implementation SOGoMailTurkishTurkeyForward
 @end
 

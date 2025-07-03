@@ -443,3 +443,11 @@
 @implementation SOGoACLSwedishRemovalAdvisory
 @end
 
+@implementation SOGoACLThaiAdditionAdvisory
+@end
+
+@implementation SOGoACLThaiModificationAdvisory
+@end
+
+@implementation SOGoACLThaiRemovalAdvisory
+@end

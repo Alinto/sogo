@@ -1,0 +1,35 @@
+/* Thai */
+{
+  NSLanguageName = "Thai";
+  NSFormalName = "ภาษา";
+  NSLocaleCode = "th"; /* ISO 639-1 */
+  NSLanguageCode = "tha"; /* ISO 639-2 */
+  NSParentContext = "";
+
+  NSCurrencySymbol = "฿";
+  NSDateFormatString = "%A %e %B %Y";
+  NSDateTimeOrdering = DMYH;
+  NSDecimalDigits = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+  NSDecimalSeparator = ".";
+  NSEarlierTimeDesignations = ("ล่าสุด");
+  NSHourNameDesignations = ((0, "เที่ยงคืน"), (10, "โมงเช้า"), (12, "เที่ยง"), (14, "โมงเย็น"), (19, "ตอนเย็น"));
+  NSInternationalCurrencyString = THB; /* ISO 4217 */
+  NSLaterTimeDesignations = ("ถัดไป");
+  NSMonthNameArray = ("มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม");
+  NSNextDayDesignations = ("พรุ่งนี้");
+  NSNextNextDayDesignations = ("มะรืนนี้");
+  NSPriorDayDesignations = ("เมื่อวาน");
+  NSShortDateFormatString = "%e/%m/%y";
+  NSShortMonthNameArray = ("ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค.");
+  NSShortTimeDateFormatString = "%e/%m/%y %H:%M";
+  NSShortWeekDayNameArray = ("อา.", "จ.", "อ.", "พ.", "พฤ.", "ศ.", "ส.");
+  NSThisDayDesignations = ("วันนี้");
+  NSThousandsSeparator = ","; /* space */
+  NSTimeDateFormatString = "%A %e %B %Y %H:%M:%S %Z";
+  NSTimeFormatString = "%H:%M:%S"; /* no space before and after colons*/
+  NSWeekDayNameArray = ("วันอาทิตย์", "วันจันทร์", "วันอังคาร", "วันพุธ", "วันพฤหัสบดี", "วันศุกร์", "วันเสาร์");
+  NSYearMonthWeekDesignations = ("ปี", "เดือน", "สัปดาห์");
+  NSAMPMDesignation = (AM, PM);
+  NSPositiveCurrencyFormatString = "฿9,999.00";
+  NSNegativeCurrencyFormatString = "-฿9,999.00";
+}

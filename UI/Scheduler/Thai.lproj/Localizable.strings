@@ -1,0 +1,665 @@
+/* this file is in UTF-8 format! */
+
+/* Tooltips */
+"Create a new event" = "สร้างกิจกรรมใหม่";
+"Create a new task" = "สร้างงานใหม่";
+"Edit this event or task" = "แก้ไขกิจกรรมหรืองานนี้";
+"Print the current calendar view" = "พิมพ์มุมมองปฏิทินปัจจุบัน";
+"Delete this event or task" = "ลบกิจกรรมหรืองานนี้";
+"Go to today" = "ไปยังวันนี้";
+"Switch to day view" = "เปลี่ยนไปยังมุมมองในวัน";
+"Switch to week view" = "สลับไปยังมุมมองสัปดาห์";
+"Switch to month view" = "เปลี่ยนไปยังมุมมองเดือน";
+"Switch to multi-columns day view" = "สลับไปยังมุมมองวันหลายคอลัมน์";
+"Reload all calendars" = "โหลดปฏิทินทั้งหมดใหม่";
+
+/* Tabs */
+"Date" = "วันที่";
+"Calendars" = "ปฏิทิน";
+"No events for selected criteria" = "ไม่มีเหตุการณ์ตามเกณฑ์ที่เลือก";
+"No tasks for selected criteria" = "ไม่มีงานตามเกณฑ์ที่เลือก";
+
+/* Day */
+"DayOfTheMonth" = "วันของเดือน";
+"dayLabelFormat" = "%m/%d/%Y";
+"today" = "วันนี้";
+"Previous Day" = "วันก่อน";
+"Next Day" = "วันถัดไป";
+
+/* Week */
+"Week" = "สัปดาห์";
+"this week" = "ในสัปดาห์นี้";
+"Week %d" = "สัปดาห์ %d";
+"Previous Week" = "สัปดาห์ที่ผ่านมา";
+"Next Week" = "สัปดาห์หน้า";
+
+/* Month */
+"this month" = "เดือนนี้";
+"Previous Month" = "เดือนที่ผ่านมา";
+"Next Month" = "เดือนหน้า";
+/* Week number prefix */
+"W" = "W";
+
+/* Year */
+"this year" = "ปีนี้";
+
+/* Menu */
+"Calendar" = "ปฏิทิน";
+"Contacts" = "ผู้ติดต่อ";
+"New Calendar..." = "ปฏิทินใหม่...";
+"Delete Calendar" = "ลบปฏิทิน...";
+"Unsubscribe Calendar" = "ยกเลิกการสมัครรับปฏิทิน";
+"Sharing..." = "แชร์...";
+"Export Calendar..." = "ส่งออกปฏิทิน...";
+"Import Events..." = "นำเข้าเหตุการณ์...";
+"Import Events" = "นำเข้าเหตุการณ์";
+"Select an iCalendar file (.ics)." = "เลือกไฟล์ iCalendar (.ics)";
+"Upload" = "อัปโหลด";
+"Uploading" = "กำลังอัปโหลด";
+"Publish Calendar..." = "เผยแพร่ปฏิทิน...";
+"Reload Remote Calendars" = "รีโหลดปฏิทินระยะไกล";
+"Properties" = "คุณสมบัติ";
+"Done" = "เสร็จแล้ว";
+"An error occurred while importing calendar." = "เกิดข้อผิดพลาดขณะนำเข้าปฏิทิน";
+"No event was imported." = "ไม่มีเหตุการณ์ถูกนำเข้า";
+"A total of %{0} events were imported in the calendar." = "จำนวนทั้งหมด %{0} กิจกรรมถูกนำเข้าในปฏิทิน";
+"Compose E-Mail to All Attendees" = "สร้างอีเมลถึงผู้เข้าร่วมทั้งหมด";
+"Compose E-Mail to Undecided Attendees" = "เขียนอีเมลถึงผู้เข้าร่วมที่ยังไม่ตัดสินใจ";
+"Download iOS - MacOS configuration profile" = "ดาวน์โหลดโปรไฟล์การกำหนดค่า iOS - MacOS";
+
+/* Relative dates */
+"Yesterday" = "เมื่อวานนี้";
+"Today" = "วันนี้";
+"Tomorrow" = "พรุ่งนี้";
+"Last %@" = "ล่าสุด %@";
+
+/* Folders */
+"Personal calendar" = "ปฏิทินส่วนตัว";
+
+/* Misc */
+"OpenGroupware.org" = "OpenGroupware.org";
+"Forbidden" = "เข้าถึงไม่ได้";
+
+/* acls */
+"Access rights to" = "สิทธิ์การเข้าถึง";
+"For user" = "สำหรับผู้ใช้";
+"Any Authenticated User" = "ผู้ใช้ที่ได้รับการยืนยันตัวตนใด ๆ";
+"Public Access" = "การเข้าถึงสาธารณะ";
+"label_Public" = "สาธารณะ";
+"label_Private" = "ส่วนตัว";
+"label_Confidential" = "ความลับ";
+"label_Viewer" = "ดูทั้งหมด";
+"label_DAndTViewer" = "ดูวันที่และเวลา";
+"label_Modifier" = "แก้ไข";
+"label_Responder" = "ตอบกลับ";
+"label_None" = "ไม่มี";
+"View All" = "ดูทั้งหมด";
+"View the Date & Time" = "ดูวันที่และเวลา";
+"Modify" = "แก้ไข";
+"Respond To" = "ตอบกลับ";
+"None" = "ไม่มี";
+"This person can create objects in my calendar."
+= "บุคคลนี้สามารถสร้างวัตถุในปฏิทินของฉันได้";
+"This person can erase objects from my calendar."
+= "บุคคลนี้สามารถลบวัตถุจากปฏิทินของฉันได้.";
+
+/* Button Titles */
+"Subscribe to a Calendar..." = "สมัครสมาชิกในปฏิทิน...";
+"Remove the selected Calendar" = "ลบปฏิทินที่เลือก";
+"New calendar" = "ปฏิทินใหม่";
+"Name of the Calendar" = "ชื่อของปฏิทิน";
+"new" = "ใหม่";
+"Print view" = "มุมมองการพิมพ์";
+"Print" = "พิมพ์";
+"edit" = "แก้ไข";
+"delete" = "ลบ";
+"proposal" = "ข้อเสนอ";
+"Save and Close" = "บันทึกและปิด";
+"Close" = "ปิด";
+"Invite Attendees" = "เชิญผู้เข้าร่วม";
+"Create Jitsi Meeting" = "สร้างประชุม Jitsi";
+"Attach" = "ไฟล์แนบ";
+"Update" = "อัปเดต";
+"Cancel" = "ยกเลิก";
+"Reset" = "รีเซ็ต";
+"Save" = "บันทึก";
+"show_rejected_apts" = "แสดงการนัดหมายที่ถูกปฏิเสธ";
+"hide_rejected_apts" = "ซ่อนการนัดหมายที่ถูกปฏิเสธ";
+
+/* Schedule */
+"Schedule" = "กำหนดการ";
+"No appointments found" = "ไม่พบการนัดหมาย";
+"Meetings proposed by you" = "การประชุมที่คุณเสนอ";
+"Meetings proposed to you" = "การประชุมที่เสนอถึงคุณ";
+"sched_startDateFormat" = "%d/%m %H:%M";
+"action" = "การกระทำ";
+"accept" = "ยอมรับ";
+"decline" = "ปฏิเสธ";
+"more attendees" = "มีผู้เข้าร่วมมากขึ้น";
+"Hide already accepted and rejected appointments" = "ซ่อนการนัดหมายที่ได้รับการยอมรับและปฏิเสธแล้ว";
+"Show already accepted and rejected appointments" = "ซ่อนการนัดหมายที่ได้รับการยอมรับและปฏิเสธแล้ว";
+
+/* Print view */
+"LIST" = "รายการ";
+"Print Settings" = "การตั้งค่าการพิมพ์";
+"Title" = "หัวข้อ";
+"Layout" = " เค้าโครง";
+"What to Print" = "เลือกสิ่งที่จะพิมพ์";
+"Options" = "ตัวเลือก";
+"Tasks with no due date" = "งานที่ไม่มีกำหนดส่ง";
+"Display working hours only" = "แสดงเวลาทำงานเท่านั้น";
+"Completed tasks" = "งานที่เสร็จสิ้น";
+"Display events and tasks colors" = "แสดงสีของเหตุการณ์และงาน";
+"Borders" = "เส้นขอบ";
+"Backgrounds" = "พื้นหลัง";
+"Page Format" = "รูปแบบหน้า";
+
+/* Appointments */
+"Appointment viewer" = "มุมมองการนัดหมาย";
+"Appointment editor" = "ตัวแก้ไขการนัดหมาย";
+"Appointment proposal" = "ข้อเสนอการนัดหมาย";
+"Appointment on" = "การนัดหมายในวันที่";
+"Start" = "เริ่ม";
+"End" = "สิ้นสุด";
+"Due Date" = "วันครบกำหนด";
+"Name" = "ชื่อ";
+"Email" = "อีเมล";
+"Status" = "สถานะ";
+"% complete" = "% เสร็จสิ้น";
+"Location" = "สถานที่";
+"Add a category" = "เพิ่มหมวดหมู่";
+"Priority" = "ความสำคัญ";
+"Privacy" = "ความเป็นส่วนตัว";
+"Cycle" = "วงจร";
+"Cycle End" = "สิ้นสุดรอบ";
+"Categories" = "หมวดหมู่";
+"Classification" = "การจัดประเภท";
+"Duration" = "ระยะเวลา";
+"Attendees" = "ผู้เข้าร่วม";
+"Resources" = "ทรัพยากร";
+"Organizer" = "ผู้จัดงาน";
+"Description" = "คำอธิบาย";
+"Document" = "เอกสาร";
+"Category" = "หมวดหมู่";
+"Repeat" = "ทำซ้ำ";
+"Reminder" = "เตือนความจำ";
+"General" = "ทั่วไป";
+"Reply" = "ตอบ";
+"Created by" = "สร้างโดย";
+"You are invited to participate" = "คุณได้รับเชิญให้เข้าร่วม";
+"Target" = "เป้าหมาย";
+"attributes" = "แอตทริบิวต์";
+"attendees" = "ผู้เข้าร่วม";
+"delegated from" = "มอบหมายโดย";
+
+/* checkbox title */
+"is private" = "เป็นส่วนตัว";
+
+/* classification */
+"Public" = "สาธารณะ";
+"Private" = "ส่วนตัว";
+
+/* text used in overviews and tooltips */
+"empty title" = "หัวข้อว่างเปล่า";
+"private appointment" = "การนัดหมายส่วนตัว";
+"Change..." = "เปลี่ยน...";
+
+/* Appointments (participation state) */
+"partStat_NEEDS-ACTION" = "ฉันจะยืนยันในภายหลัง";
+"partStat_ACCEPTED" = "ฉันจะเข้าร่วม";
+"partStat_DECLINED" = "ฉันจะไม่เข้าร่วม";
+"partStat_TENTATIVE" = "ฉันอาจเข้าร่วม";
+"partStat_DELEGATED" = "ฉันมอบหมาย";
+"partStat_OTHER" = "อื่นๆ";
+
+/* Appointments (error messages) */
+"Conflicts found!" = "พบข้อขัดแย้ง!";
+"Invalid iCal data!" = "ข้อมูล iCal ไม่ถูกต้อง!";
+"Could not create iCal data!" = "ไม่สามารถสร้างข้อมูล iCal ได้!";
+
+/* Searching */
+"view_all" = "ทั้งหมด";
+"view_today" = "วันนี้";
+"view_next7" = "7 วันถัดไป";
+"view_next14" = "14 วันถัดไป";
+"view_next31" = "31 วันถัดไป";
+"view_thismonth" = "เดือนนี้";
+"view_thisyear" = "ปีนี้";
+"view_last7" = "7 วันที่ผ่านมา";
+"view_last14" = "14 วันที่ผ่านมา";
+"view_last31" = "31 วันที่ผ่านมา";
+"view_lastmonth" = "เดือนที่แล้ว";
+"view_lastyear" = "ปีที่แล้ว";
+"view_future" = "ทุกเหตุการณ์ในอนาคต";
+"view_selectedday" = "วันที่เลือก";
+"view_not_started" = "งานที่ยังไม่เริ่มต้น";
+"view_overdue" = "งานที่ค้างชำระ";
+"view_incomplete" = "งานที่ยังไม่เสร็จสมบูรณ์";
+"View" = "มุมมอง";
+"Title, category or location" = "หัวข้อ หมวดหมู่ หรือสถานที่";
+"Entire content" = "เนื้อหาทั้งหมด";
+"Search" = "ค้นหา";
+"Search attendees" = "ค้นหาผู้เข้าร่วม";
+"Search resources" = "ค้นหาทรัพยากร";
+"Search appointments" = "ค้นหาการนัดหมาย";
+"All day Event" = "กิจกรรมทั้งวัน";
+"check for conflicts" = "ตรวจสอบความขัดแย้ง";
+"URL" = "URL";
+"newAttendee" = "เพิ่มผู้เข้าร่วม";
+
+/* calendar modes */
+"Overview" = "ภาพรวม";
+"Chart" = "แผนภูมิ";
+"List" = "รายการ";
+"Columns" = "คอลัมน์";
+
+/* Priorities */
+"prio_0" = "ไม่ได้ระบุ";
+"prio_1" = "สูง";
+"prio_2" = "สูง";
+"prio_3" = "สูง";
+"prio_4" = "สูง";
+"prio_5" = "ปกติ";
+"prio_6" = "ต่ำ";
+"prio_7" = "ต่ำ";
+"prio_8" = "ต่ำ";
+"prio_9" = "ต่ำ";
+
+/* access classes (privacy) */
+"PUBLIC_vevent" = "เหตุการณ์สาธารณะ";
+"CONFIDENTIAL_vevent" = "กิจกรรมลับ";
+"PRIVATE_vevent" = "กิจกรรมส่วนตัว";
+"PUBLIC_vtodo" = "งานสาธารณะ";
+"CONFIDENTIAL_vtodo" = "งานลับ";
+"PRIVATE_vtodo" = "งานส่วนตัว";
+
+/* status type */
+"status_" = "ไม่ได้ระบุ";
+"status_NOT-SPECIFIED" = "ไม่ได้ระบุ";
+"status_TENTATIVE" = "ไม่กำหนดชัดเจน";
+"status_CONFIRMED" = "ยืนยัน";
+"status_CANCELLED" = "ยกเลิก";
+"status_NEEDS-ACTION" = "ต้องการการดำเนินการ";
+"status_IN-PROCESS" = "ในกระบวนการ";
+"status_COMPLETED" = "เสร็จสิ้นเมื่อ";
+
+/* Priority level */
+"low" = "ต่ำ";
+
+/* Priority level */
+"normal" = "ปกติ";
+
+/* Priority level */
+"high" = "สูง";
+
+/* Cycles */
+"cycle_once" = "cycle_once";
+"cycle_daily" = "cycle_daily";
+"cycle_weekly" = "cycle_weekly";
+"cycle_2weeks" = "cycle_2weeks";
+"cycle_4weeks" = "cycle_4weeks";
+"cycle_monthly" = "cycle_monthly";
+"cycle_weekday" = "cycle_weekday";
+"cycle_yearly" = "cycle_yearly";
+"cycle_end_never" = "cycle_end_never";
+"cycle_end_until" = "cycle_end_until";
+"Recurrence pattern" = "รูปแบบการเกิดซ้ำ";
+"Range of recurrence" = "ช่วงการเกิดซ้ำ";
+"Daily" = "ทุกวัน";
+"Multi-Columns" = "หลายคอลัมน์";
+"Weekly" = "สัปดาห์ละครั้ง";
+"Monthly" = "รายเดือน";
+"Yearly" = "รายปี";
+"Every" = "ทุกๆ";
+"Days" = "วัน";
+"Week(s)" = "สัปดาห์";
+"On" = "บน";
+"Month(s)" = "เดือน";
+
+/* [Event recurrence editor] Ex: _The_ first Sunday */
+"The" = "เดอะ";
+"Recur on day(s)" = "ทำซ้ำทุก [จำนวน] วัน";
+"Year(s)" = "ปี";
+
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
+"cycle_of" = "ของ";
+"No end date" = "ไม่มีวันสิ้นสุด";
+"Create" = "สร้าง";
+"appointment(s)" = "การนัดหมาย";
+"Repeat until" = "ทำต่อไปจนกว่า";
+"End Repeat" = "สิ้นสุดการทำซ้ำ";
+"Never" = "ไม่เคย";
+"After" = "หลังจาก";
+"On Date" = "ในวันที่";
+"times" = "ครั้ง";
+"First" = "แรก";
+"Second" = "สอง";
+"Third" = "สาม";
+"Fourth" = "สี่";
+"Fift" = "ห้า";
+"Last" = "สุดท้าย";
+
+/* Appointment categories */
+"category_none" = "ไม่มี";
+"category_labels" = "วันครบรอบ, วันเกิด, ธุรกิจ, การโทร, ลูกค้า, การแข่งขัน, ลูกค้า, รายการโปรด, ติดตาม, ของขวัญ, วันหยุด, ความคิด, การประชุม, ปัญหา, อื่นๆ, ส่วนตัว, โครงการ, วันหยุดราชการ, สถานะ, ซัพพลายเออร์, การเดินทาง, วันหยุดพักผ่อน";
+"repeat_NEVER" = "ไม่ต้องทำซ้ำ";
+"repeat_DAILY" = "ทุกวัน";
+"repeat_WEEKLY" = "สัปดาห์ละครั้ง";
+"repeat_BI-WEEKLY" = "สองสัปดาห์";
+"repeat_EVERY WEEKDAY" = "ทุกวันธรรมดา";
+"repeat_MONTHLY" = "รายเดือน";
+"repeat_YEARLY" = "รายปี";
+"repeat_CUSTOM" = "กำหนดเอง...";
+"reminder_NONE" = "ไม่มีการแจ้งเตือน";
+"reminder_0" = "เมื่อเวลาของเหตุการณ์";
+"reminder_5_MINUTES_BEFORE" = "5 นาทีก่อน";
+"reminder_10_MINUTES_BEFORE" = "10 นาทีก่อน";
+"reminder_15_MINUTES_BEFORE" = "15 นาทีก่อน";
+"reminder_30_MINUTES_BEFORE" = "30 นาทีก่อน";
+"reminder_45_MINUTES_BEFORE" = "45 นาทีก่อน";
+"reminder_1_HOUR_BEFORE" = "1 ชั่วโมงก่อน";
+"reminder_2_HOURS_BEFORE" = "2 ชั่วโมงก่อน";
+"reminder_5_HOURS_BEFORE" = "5 ชั่วโมงก่อน";
+"reminder_15_HOURS_BEFORE" = "15 ชั่วโมงก่อน";
+"reminder_1_DAY_BEFORE" = "1 วันก่อน";
+"reminder_2_DAYS_BEFORE" = "2 วันก่อน";
+"reminder_1_WEEK_BEFORE" = "1 สัปดาห์ก่อน";
+"reminder_CUSTOM" = "กำหนดเอง...";
+"reminder_MINUTES" = "นาที";
+"reminder_HOURS" = "ชั่วโมง";
+"reminder_DAYS" = "วัน";
+"reminder_WEEKS" = "สัปดาห์";
+"reminder_BEFORE" = "ก่อน";
+"reminder_AFTER" = "หลังจาก";
+"reminder_START" = "กิจกรรมเริ่มต้น";
+"reminder_END" = "กิจกรรมสิ้นสุดลง";
+"Reminder Details" = "รายละเอียดการแจ้งเตือน";
+"Choose a Reminder Action" = "เลือกการดำเนินการเตือน";
+"Show an Alert" = "แสดงการแจ้งเตือน";
+"Send an E-mail" = "ส่งอีเมล์";
+"Email Organizer" = "อีเมลล์ออแกไนเซอร์";
+"Email Attendees (internal users)" = "อีเมลผู้เข้าร่วม (ผู้ใช้ภายใน)";
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
+
+/* Arial label for reminder units */
+"Reminder units" = "หน่วยการแจ้งเตือน";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "ตำแหน่งการแจ้งเตือน";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "ความสัมพันธ์การเตือนควรจะถูกเก็บรักษา";
+
+/* transparency */
+"Show Time as Free" = "แสดงเวลาฟรี";
+
+/* email notifications */
+"Send Appointment Notifications" = "ส่งการแจ้งเตือนการนัดหมาย";
+"From" = "จาก";
+"To" = "ถึง";
+
+/* dates */
+"DateFrom" = "จาก";
+"DateTo" = "ถึง";
+
+/* validation errors */
+validate_notitle           = "ไม่ได้ตั้งชื่อเรื่อง ทำต่อหรือไม่?";
+validate_invalid_startdate = "เขตผิดพลาดของฟิลด์วันที่เริ่มต้นไม่ถูกต้อง!";
+validate_invalid_enddate   = "เขตผิดพลาดของฟิลด์วันที่สิ้นสุดไม่ถูกต้อง!";
+validate_endbeforestart    = "วันที่สิ้นสุดที่คุณป้อนเกิดขึ้นก่อนวันที่เริ่มต้น";
+validate_untilbeforeend    = "การเกิดซ้ำต้องสิ้นสุดหลังจากการเกิดครั้งแรก";
+
+"Events" = "กิจกรรม";
+"Tasks" = "งาน";
+"Show completed tasks" = "แสดงงานที่เสร็จสิ้น";
+
+/* tabs */
+"Task" = "งาน";
+"Event" = "กิจกรรม";
+"Recurrence" = "การเกิดซ้ำ";
+
+/* toolbar */
+"New Event" = "เหตุการณ์ใหม่";
+"New Task" = "งานใหม่";
+"Edit" = "แก้ไข";
+"Delete" = "ลบ";
+"Go to Today" = "ไปยังวันนี้";
+"Day View" = "มุมมองวัน";
+"Week View" = "มุมมองสัปดาห์";
+"Month View" = "มุมมองเดือน";
+"Reload" = "รีโหลด";
+
+/* Number of selected components in events or tasks list */
+"selected" = "เลือก";
+"eventPartStatModificationError" = "สถานะการเข้าร่วมของคุณไม่สามารถแก้ไขได้";
+
+/* menu */
+"New Event..." = "เหตุการณ์ใหม่...";
+"New Task..." = "งานใหม่...";
+"Edit Selected Event..." = "แก้ไขกิจกรรมที่เลือก...";
+"Delete Selected Event" = "ลบกิจกรรมที่เลือก";
+"Select All" = "เลือกทั้งหมด";
+"Workweek days only" = "วันทำงานในสัปดาห์เท่านั้น";
+"Tasks in View" = "งานในมุมมอง";
+"eventDeleteConfirmation" = "กิจกรรมต่อไปนี้จะถูกลบ:";
+"taskDeleteConfirmation" = "กิจกรรมต่อไปนี้จะถูกลบ:";
+"Would you like to continue?" = "คุณต้องการที่จะดำเนินการต่อหรือไม่?";
+"You cannot remove nor unsubscribe from your personal calendar."
+= "คุณไม่สามารถลบหรือยกเลิกการสมัครสมาชิกจากปฏิทินส่วนตัวของคุณได้";
+"Are you sure you want to delete the calendar \"%{0}\"?"
+= "คุณแน่ใจหรือไม่ว่าต้องการลบปฏิทิน \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "คุณแน่ใจหรือว่าต้องการลบส่วนประกอบที่เลือกไว้?";
+
+/* Participation role */
+"Role" = "บทบาท";
+
+/* Participant role: participation is required */
+"Participant" = "ผู้เข้าร่วม";
+
+/* Participant role: participation is required */
+"req-participant" = "ผู้เข้าร่วม";
+
+/* Participant role: participation is optional */
+"Optional Participant" = "ผู้เข้าร่วมเพิ่มเติม";
+
+/* Participant role: participation is optional */
+"opt-participant" = "ผู้เข้าร่วมเพิ่มเติม";
+
+/* Participant role: participant is copied for information purposes only */
+"Non Participant" = "ผู้ไม่เข้าร่วม";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "ผู้ไม่เข้าร่วม";
+
+/* Participant role: participant is chair of the calendar entity */
+"Chair" = "เก้าอี้";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "เก้าอี้";
+
+/* Participant status: needs action */
+"Needs action" = "ต้องการการดำเนินการ";
+
+/* Participant status: event accepted */
+"Accepted" = "ยอมรับ";
+
+/* Participant status: event declined */
+"Declined" = "ปฏิเสธ";
+
+/* Participant status: tentatively accepted */
+"Tentative" = "ไม่สามารถแปลได้";
+
+"Free" = "ฟรี";
+"Busy" = "ไม่ว่าง";
+"Maybe busy" = "อาจจะยุ่งเหยิง";
+"No free-busy information" = "ไม่มีข้อมูลเวลาว่าง";
+
+/* FreeBusy panel buttons and labels */
+"Suggest time slot" = "เสนอช่วงเวลา";
+"Zoom" = "ซูม";
+"Previous slot" = "สล็อตก่อนหน้า";
+"Next slot" = "สล็อตถัดไป";
+"Previous hour" = "ชั่วโมงก่อนหน้า";
+"Next hour" = "ชั่วโมงถัดไป";
+"Work days only" = "วันทำงานเท่านั้น";
+"The whole day" = "ทั้งวัน";
+"Between" = "ระหว่าง";
+"and" = "และ";
+"A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
+= "เกิดข้อขัดแย้งเวลากับผู้เข้าร่วมหนึ่งคนหรือมากกว่า\nคุณต้องการเก็บการตั้งค่าปัจจุบันไว้หรือไม่?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "คุณต้องการลบพวกเขาและส่งคำเชิญให้กับผู้เข้าร่วมที่เหลือไหม?";
+
+/* events list */
+"Due" = " ครบกำหนด";
+"(Private Event)" = "(กิจกรรมส่วนตัว)";
+vevent_class0 = "(กิจกรรมสาธารณะ)";
+vevent_class1 = "(กิจกรรมส่วนตัว)";
+vevent_class2 = "(กิจกรรมลับ)";
+
+/* tasks list */
+"Descending Order" = "ลำดับจากมากไปน้อย";
+vtodo_class0 = "(งานสาธารณะ)";
+vtodo_class1 = "(งานส่วนตัว)";
+vtodo_class2 = "(งานลับ)";
+"closeThisWindowMessage" = "ขอบคุณครับ! คุณสามารถปิดหน้าต่างนี้หรือดูของคุณได้แล้ว";
+"Multicolumn Day View" = "มุลติคอลัมน์วิววัน";
+"Please select an event or a task." = "โปรดเลือกเหตุการณ์หรืองาน";
+"editRepeatingItem" = "รายการที่คุณกำลังแก้ไขเป็นรายการที่เกิดซ้ำกัน คุณต้องการแก้ไขทุกครั้งหรือเพียงครั้งเดียวนี้เท่านั้น?";
+"button_thisOccurrenceOnly" = "เหตุการณ์นี้เท่านั้น";
+"button_allOccurrences" = "ทุกครั้งที่พบ";
+"Edit This Occurrence" = "แก้ไขการเกิดขึ้นนี้";
+"Edit All Occurrences" = "แก้ไขทุกครั้งที่พบ";
+"Update This Occurrence" = "อัปเดตการเกิดขึ้นนี้";
+"Update All Occurrences" = "แก้ไขทุกครั้งที่พบ";
+
+/* Properties dialog */
+"Color" = "สี";
+"Include in free-busy" = "รวมในสถานะว่างฟรี";
+"Synchronization" = "การประสานข้อมูล";
+"Synchronize" = "ซิงโครไนซ์";
+"Tag" = "แท็ก";
+"Display" = "แสดงผล";
+"Show alarms" = "แสดงการเตือน";
+"Show tasks" = "แสดงงาน";
+"Notifications" = "การแจ้งเตือน";
+"Receive a mail when I modify my calendar" = "รับอีเมลเมื่อฉันแก้ไขปฏิ";
+"Receive a mail when someone else modifies my calendar" = "รับอีเมลเมื่อมีคนอื่นแก้ไขปฏิทินของฉัน";
+"When I modify my calendar, send a mail to" = "เมื่อฉันแก้ไขปฏิทินของฉัน ส่งอีเมลถึง";
+"Email Address" = "ที่อยู่อีเมล์";
+"Export" = "ส่งออก";
+
+
+/* Show only the calendar for which the menu is displayed */
+"Show Only This Calendar" = "แสดงปฏิทินนี้เท่านั้น";
+
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "แสดงปฏิทินทั้งหมด";
+
+"Links to this Calendar" = "ลิงค์ไปยังปฏิทินนี้";
+"Authenticated User Access" = "การเข้าถึงผู้ใช้ที่ได้รับการรับรองแล้ว";
+"CalDAV URL" = "URL CalDAV";
+"WebDAV ICS URL" = "WebDAV ICS URL";
+"WebDAV XML URL" = "WebDAV XML URL";
+"Copy to clipboard" = "คัดลอกไปยังคลิปบอร์ด";
+
+/* Error messages */
+"dayFieldInvalid" = "โปรดระบุค่าตัวเลขในช่อง Days ที่มากกว่าหรือเท่ากับ 1";
+"weekFieldInvalid" = "กรุณาระบุจำนวนสัปดาห์ในช่อง \"จำนวนสัปดาห์\" เป็นตัวเลขมากกว่าหรือเท่ากับ 1";
+"monthFieldInvalid" = "กรุณาระบุค่าตัวเลขในช่อง \"จำนวนเดือน\" เป็นตัวเลขมากกว่าหรือเท่ากับ 1";
+"monthDayFieldInvalid" = "กรุณาระบุวันที่ในช่อง \"เดือน\" เป็นตัวเลข ตั้งแต่ 1 ขึ้นไป";
+"yearFieldInvalid" = "กรุณาระบุค่าตัวเลขในช่อง \"จำนวนปี\" เป็นตัวเลขมากกว่าหรือเท่ากับ 1.";
+"appointmentFieldInvalid" = "กรุณาระบุค่าตัวเลขในช่อง \"จำนวนการนัดหมาย\" เป็นตัวเลขมากกว่าหรือเท่ากับ 1.";
+"recurrenceUnsupported" = "ประเภทการเกิดซ้ำนี้ยังไม่ได้รับการสนับสนุนในปัจจุบัน";
+"Please specify a calendar name." = "โปรดระบุชื่อปฏิทิน";
+"tagNotDefined" = "คุณต้องระบุแท็กหากคุณต้องการซิงค์ปฏิทินนี้";
+"tagAlreadyExists" = "แท็กที่คุณระบุไว้ถูกเชื่อมโยงกับปฏิทินอื่นแล้ว";
+"tagHasChanged" = "ถ้าคุณเปลี่ยนแท็กปฏิทินของคุณ คุณจะต้องโหลดข้อมูลใหม่ลงในอุปกรณ์มือถือของคุณ\nคุณต้องการดำเนินการต่อหรือไม่?";
+"tagWasAdded" = "ถ้าคุณต้องการซิงโครไนซ์ปฏิทินนี้ คุณจะต้องโหลดข้อมูลใหม่ลงในอุปกรณ์มือถือของคุณ\nคุณต้องการดำเนินการต่อหรือไม่?";
+"tagWasRemoved" = "ถ้าคุณลบปฏิทินนี้ออกจากการซิงโครไนซ์ คุณจะต้องโหลดข้อมูลใหม่ลงในอุปกรณ์มือถือของคุณ\nคุณต้องการดำเนินการต่อหรือไม่?";
+"DestinationCalendarError" = "แปลเป็นภาษาไทย:\nแปลเป็นภาษาไทย: ปฏิทินต้นฉบับและปฏิทินปลายทางเป็นเดียวกัน โปรดลองคัดลอกไปยังปฏิทินอื่น";
+"EventCopyError" = "การคัดลอกล้มเหลว โปรดลองคัดลอกไปยังปฏิทินอื่น";
+"Please select at least one calendar" = "โปรดเลือกปฏิทินอย่างน้อยหนึ่งปฏิทิน";
+"Open Task..." = "เปิดงาน...";
+"Mark Completed" = "ทำเสร็จแล้ว";
+"Delete Task" = "ลบงาน";
+"Delete Event" = "ลบกิจกรรม";
+"Copy event to my calendar" = "คัดลอกเหตุการณ์ไปยังปฏิทินของฉัน";
+"View Raw Source" = "ดูแหล่งที่มาแบบเรียลไทม์";
+"Move To" = "ย้ายไป";
+"Copy To" = "คัดลอกไปยัง";
+"Subscriptions" = "การสมัครสมาชิก";
+"Subscribe to a shared calendar" = "สมัครสมาชิกในปฏิทินที่แชร์กัน";
+"Subscribe to a web calendar..." = "สมัครสมาชิกในปฏิทินเว็บ...";
+"URL of the Calendar" = "URL ของปฏิทิน";
+"Web Calendar" = "ปฏิทินเว็บ";
+"Web Calendars" = "ปฏิทินเว็บ";
+"Reload on login" = "รีโหลดเมื่อเข้าสู่ระบบ";
+"Invalid number." = "หมายเลขไม่ถูกต้อง";
+"Please identify yourself to %{0}" = "โปรดระบุตัวตนของคุณให้กับ %{0}";
+"quantity" = "ปริมาณ";
+"Current view" = "มุมมองปัจจุบัน";
+"Selected events and tasks" = "เหตุการณ์และงานที่เลือก";
+"Custom date range" = "ช่วงวันที่ที่กำหนดเอง";
+"Select starting date" = "เลือกวันที่เริ่มต้น";
+"Select ending date" = "เลือกวันที่สิ้นสุด";
+"Delegated to" = "ได้มอบหมายให้";
+"Keep sending me updates" = "ส่งอัปเดตให้ฉันตลอดเวลา";
+"OK" = "ตกลง";
+"Confidential" = "ความลับ";
+"Enable" = "เปิดใช้งาน";
+"Filter" = "ตัวกรอง";
+"Sort" = "เรียงลำดับ";
+"Back" = "กลับ";
+"Day" = "วัน";
+"Month" = "เดือน";
+"New Appointment" = "การนัดหมายใหม่";
+"filters" = "ตัวกรอง";
+"Today" = "วันนี้";
+"More options" = "ตัวเลือกเพิ่มเติม";
+"Delete This Occurrence" = "ลบการเกิดขึ้นนี้";
+"Delete All Occurrences" = "ลบทุกครั้งที่พบ";
+"Add Recurrence Date" = "เพิ่มวันที่เกิดซ้ำ";
+"Add From" = "เพิ่มจาก";
+"Add Due" = "เพิ่มค่าที่ครบกำหนด";
+"Import" = "นำเข้า";
+"Rename" = "เปลี่ยนชื่อ";
+"Import Calendar" = "นำเข้าปฏิทิน";
+"Select an ICS file." = "เลือกไฟล์ ICS";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "คุณได้แก้ไขข้อมูลที่ยังไม่ได้บันทึก คุณต้องการปิดป็อปอัพและสูญเสียข้อมูลหรือไม่?";
+
+/* Notification when user subscribes to a calendar */
+"Successfully subscribed to calendar" = "สมัครสมาชิกปฏิทินเรียบร้อยแล้ว";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "เปิด-ปิดรายการ";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "ขอบเขตการค้นหา";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";

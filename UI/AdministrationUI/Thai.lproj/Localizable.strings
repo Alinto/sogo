@@ -1,0 +1,31 @@
+/* this file is in UTF-8 format! */
+
+"Help" = "ช่วยเหลือ";
+"Close" = "ปิด";
+"Modules" = "โมดูล";
+/* Modules short names */
+"ACLs" = "ACLs";
+/* Modules titles */
+"ACLs_title" = "Users folders ACLs management";
+/* Modules descriptions */
+"ACLs_description" = "<p>โมดูลการจัดการรายการควบคุมการเข้าถึงช่วยให้สามารถเปลี่ยนแปลง ACLs ของปฏิทินและสมุดที่อยู่ของผู้ใช้แต่ละคนได้</p><p>ในการแก้ไข ACLs ของโฟลเดอร์ของผู้ใช้ ให้พิมพ์ชื่อผู้ใช้ในช่องค้นหาที่ด้านบนของหน้าต่างและดับเบิลคลิกที่โฟลเดอร์ที่ต้องการ</p>";
+"Name or Email" = "ชื่อหรืออีเมล์";
+"ACLs saved" = "ACLs บันทึกแล้ว";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "เริ่มการค้นหาเพื่อแก้ไขสิทธิ์";
+/* Rights module: Empty search result */
+"No matching user" = "ไม่พบผู้ใช้ที่ตรงกัน";
+/* Rights module: no selection */
+"No resource selected" = "ไม่ได้เลือกทรัพยากร";
+"Add User" = "เพิ่มผู้ใช้";
+"Subscribe User" = "สมัครสมาชิกผู้ใช้";
+"Rights" = "สิทธิ์";
+"Search Users" = "ค้นหาผู้ใช้";
+"users found" = "ผู้ใช้พบ";
+"No resource" = "ไม่มีทรัพยากร";
+"Any Authenticated User" = "ผู้ใช้ที่ได้รับการยืนยันตัวตนใด ๆ";
+"Public Access" = "การเข้าถึงสาธารณะ";
+"Save" = "บันทึก";
+"Clear" = "ชัดเจน";
+"Message of the day" = "ข้อความของวันนี้";
+"Message of the day has been saved" = "ข้อความของวันนี้ถูกบันทึกแล้ว";

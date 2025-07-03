@@ -1,0 +1,366 @@
+/* this file is in UTF-8 format! */
+
+"Contact" = "ผู้ติดต่อ";
+"Address" = "ที่อยู่";
+"Photos" = "รูปภาพ";
+"Other" = "อื่นๆ";
+"Address Books" = "สมุดรายชื่อ";
+"Addressbook" = "สมุดที่อยู่";
+"Addresses" = "ที่อยู่";
+"Update" = "อัปเดต";
+"Cancel" = "ยกเลิก";
+"Common" = "ทั่วไป";
+"Contact editor" = "ติดต่อบรรณาธิการ";
+"Contact viewer" = "ผู้ดูแลรายชื่อติดต่อ";
+"Email" = "อีเมล";
+"Screen Name" = "ชื่อหน้าจอ";
+"Extended" = "ขยายออก";
+"Fax" = "แฟกซ์";
+"Firstname" = "ชื่อจริง";
+"Home" = "บ้าน";
+"HomePhone" = "โทรศัพท์บ้าน";
+"Lastname" = "นามสกุล";
+"Location" = "สถานที่";
+"Add a category" = "เพิ่มหมวดหมู่";
+"MobilePhone" = "โทรศัพท์มือถือ";
+"Name" = "ชื่อ";
+"OfficePhone" = "โทรศัพท์ในสำนักงาน";
+"Organization" = "องค์กร";
+"Work Phone" = "โทรศัพท์ที่ใช้ในการทำงาน";
+"Cell" = "เซลล์";
+"Pager" = "เพจเจอร์";
+"Pref" = "การตั้งค่า";
+"Phone" = "โทรศัพท์";
+"Phones" = "โทรศัพท์";
+"Postal" = "ไปรษณีย์";
+"Save" = "บันทึก";
+"Internet" = "อินเทอร์เน็ต";
+"Unit" = "หน่วย";
+"delete" = "ลบ";
+"edit" = "แก้ไข";
+"invalidemailwarn" = "ระบุอีเมลที่ระบุไม่ถูกต้อง";
+"new" = "ใหม่";
+"Preferred Phone" = "โทรศัพท์ที่ต้องการ";
+"Move To" = "ย้ายไป";
+"Copy To" = "คัดลอกไปยัง";
+"Add to" = "เพิ่มเข้าไป";
+"To" = "ถึง";
+"Carbon Copy (Cc)" = "คัดลอกคาร์บอน (Cc)";
+"Blind Carbon Copy (Bcc)" = "สำเนาบนซองที่มองไม่เห็น (Bcc)";
+
+/* Search scope: name fields */
+"name" = "ชื่อ";
+
+/* Search scope: name fields */
+"c_cn" = "ชื่อ";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "อีเมลสำรอง";
+
+/* Search scope: screen name field */
+"nsaimid" = "ชื่อหน้าจอ";
+
+/* Search scope: mail fields */
+"mail" = "อีเมล";
+
+/* Search scope: mail fields */
+"c_mail" = "อีเมล";
+
+/* Search scope: telephone field */
+"telephonenumber" = "โทรศัพท์";
+
+/* Search scope: telephone field */
+"homephone" = "โทรศัพท์";
+
+/* Search scope: mobile field */
+"mobile" = "มือถือ";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "แฟกซ์";
+
+/* Search scope: pager field */
+"pager" = "เพจเจอร์";
+
+/* Search scope: categories field */
+"c_categories" = "หมวดหมู่";
+
+/* Search scope: categories field */
+"vcardcategories" = "หมวดหมู่";
+
+/* Search scope: title field */
+"title" = "หัวข้อ";
+
+/* Search scope: organization field */
+"c_o" = "องค์กร";
+
+/* Search scope: organization field */
+"o" = "องค์กร";
+
+/* Search scope: department field */
+"ou" = "แผนก";
+
+/* Search scope: city field */
+"l" = "เมือง";
+
+/* Search scope: country field */
+"c" = "ประเทศ";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "ที่อยู่บ้าน";
+
+/* Search scope: state/province field */
+"st" = "รัฐ/จังหวัด";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "รัฐ/จังหวัดบ้าน";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "รหัสไปรษณีย์";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "รหัสไปรษณีย์";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "ประเทศบ้าน";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "หน้าหลัก";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "หน้าเว็บ";
+
+/* Search scope: note field */
+"description" = "หมายเหตุ";
+
+/* Subheader of empty addressbook */
+"No contact" = "ไม่มีการติดต่อ";
+
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "เริ่มการค้นหาเพื่อเรียกดูสมุดที่อยู่นี้";
+
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "ผู้ติดต่อ";
+
+/* No contact matching search criteria */
+"No matching contact" = "ไม่พบผู้ติดต่อที่ตรงกัน";
+
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "การจับคู่ผู้ติดต่อ";
+
+/* Number of selected contacts in list */
+"selected" = "เลือก";
+
+/* Empty right pane */
+"No contact selected" = "ไม่มีการเลือกติดต่อ";
+
+/* Tooltips */
+"Create a new address book card" = "สร้างบัตรสมุดที่อยู่ใหม่";
+"Create a new list" = "สร้างรายการใหม่";
+"Edit the selected card" = "แก้ไขการ์ดที่เลือก";
+"Send a mail message" = "ส่งข้อความอีเมล์";
+"Delete selected card or address book" = "ลบบัตรหรือสมุดที่อยู่ที่เลือก";
+"Reload all contacts" = "โหลดข้อมูลทั้งหมดใหม่";
+"htmlMailFormat_UNKNOWN" = "ไม่ทราบ";
+"htmlMailFormat_FALSE" = "ข้อความธรรมดา";
+"htmlMailFormat_TRUE" = "HTML";
+"Name or Email" = "ชื่อหรืออีเมล์";
+"Category" = "หมวดหมู่";
+"Personal Addressbook" = "สมุดที่อยู่ส่วนตัว";
+"Search in Addressbook" = "ค้นหาในสมุดที่อยู่";
+"New Card" = "บัตรใหม่";
+"New List" = "รายการใหม่";
+"Edit" = "แก้ไข";
+"Properties" = "คุณสมบัติ";
+"Sharing..." = "แชร์...";
+"Write" = "เขียน";
+"Delete" = "ลบ";
+"Instant Message" = "ข้อความสารบัญ: ข้อความทันที";
+"Add..." = "เพิ่ม...";
+"Remove" = "ลบ";
+"Please wait..." = "กรุณารอสักครู่...";
+"No possible subscription" = "ไม่มีการสมัครสมาชิกเป็นไปได้";
+"Preferred" = "ต้องการ";
+"Display" = "แสดงผล";
+"Display Name" = "ชื่อที่แสดง";
+"Additional Email" = "อีเมลเพิ่มเติม";
+"Phone Number" = "หมายเลขโทรศัพท์";
+"Prefers to receive messages formatted as" = "ต้องการรับข้อความที่จัดรูปแบบเป็น";
+"Categories" = "หมวดหมู่";
+"First" = "แรก";
+"Last" = "สุดท้าย";
+"Nickname" = "ชื่อเล่น";
+"Telephone" = "โทรศัพท์";
+"Work" = "งาน";
+"Mobile" = "มือถือ";
+"Pager" = "เพจเจอร์";
+"Download iOS - MacOS configuration profile" = "ดาวน์โหลดโปรไฟล์การกำหนดค่า iOS - MacOS";
+
+/* categories */
+"contacts_category_labels" = "เพื่อนร่วมงาน, คู่แข่ง, ลูกค้า, เพื่อน, ครอบครัว, พันธมิตรทางธุรกิจ, ผู้ให้บริการ, สื่อ, บุคคลสำคัญ";
+"New category" = "หมวดหมู่ใหม่";
+
+/* adresses */
+"Title" = "หัวข้อ";
+"Service" = "บริการ";
+"Company" = "บริษัท";
+"Department" = "แผนก";
+"City" = "เมือง";
+"State_Province" = "รัฐ/จังหวัด";
+"ZIP_Postal Code" = "รหัสไปรษณีย์";
+"Country" = "ประเทศ";
+"Web Page" = "หน้าเว็บ";
+"Other Infos" = "อื่น ๆ ข้อมูล";
+"Note" = "หมายเหตุ";
+"Timezone" = "เขตเวลา";
+"Birthday" = "วันเกิด";
+"Birthday (yyyy-mm-dd)" = "วันเกิด (yyyy-mm-dd)";
+"Freebusy URL" = "URL ที่สามารถใช้งานได้ฟรี";
+"Add as..." = "เพิ่มเป็น...";
+"Recipient" = "ผู้รับ";
+"Carbon Copy" = "สำเนาคาร์บอน";
+"Blind Carbon Copy" = "สำเนาบนซองอีเมล";
+"New Addressbook..." = "สมุดที่อยู่ใหม่...";
+"Subscribe to an Addressbook..." = "รับข้อมูลอัปเดตจากสมุดรายชื่อ...";
+"Remove the selected Addressbook" = "ลบสมุดรายชื่อที่เลือก";
+"Subscribe to a shared contact" = "สมัครสมาชิกสมุดรายชื่อที่ใช้ร่วมกัน";
+"Search User" = "ค้นหาผู้ใช้";
+"Name of the Address Book" = "ชื่อสมุดที่อยู่";
+"Are you sure you want to delete the selected address book?"
+= "คุณแน่ใจหรือว่าต้องการลบสมุดที่อยู่ที่เลือกไว้?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "คุณแน่ใจหรือไม่ว่าต้องการลบสมุดที่อยู่ \"%{0}\"?";
+"You cannot remove nor unsubscribe from a public addressbook."
+= "คุณไม่สามารถลบหรือยกเลิกการสมัครสมาชิกจากสมุดที่อยู่สาธารณะได้";
+"You cannot remove nor unsubscribe from your personal addressbook."
+= "คุณไม่สามารถลบหรือยกเลิกการสมัครสมาชิกจากสมุดที่อยู่ส่วนตัวของคุณได้";
+"Are you sure you want to delete the selected contacts?"
+= "คุณแน่ใจหรือว่าต้องการลบรายชื่อที่เลือกไว้?";
+"Are you sure you want to delete the card of %{0}?" = "คุณแน่ใจหรือไม่ว่าต้องการลบบัตรของ %{0}?";
+"You cannot delete the card of \"%{0}\"."
+= "คุณไม่สามารถลบบัตรของ \"%{0}\" ได้";
+"You cannot subscribe to a folder that you own!"
+= "คุณไม่สามารถสมัครสมาชิกในโฟลเดอร์ที่คุณเป็นเจ้าของ!";
+"Unable to subscribe to that folder!"
+= "ไม่สามารถสมัครสมาชิกในโฟลเดอร์นั้นได้.";
+
+/* security */
+"Security" = "ความปลอดภัย";
+"Uninstall" = "ถอนการติดตั้ง";
+"Error reading the card certificate." = "ข้อผิดพลาดในการอ่านใบรับรองของบัตร";
+"No certificate associated to card." = "ไม่มีใบรับรองที่เกี่ยวข้องกับบัตร";
+
+/* acls */
+"Access rights to" = "สิทธิ์การเข้าถึง";
+"For user" = "สำหรับผู้ใช้";
+"Any Authenticated User" = "ผู้ใช้ที่ได้รับการยืนยันตัวตนใด ๆ";
+"Public Access" = "การเข้าถึงสาธารณะ";
+"This person can add cards to this addressbook."
+= "บุคคลนี้สามารถเพิ่มบัตรเข้าสู่สมุดที่อยู่นี้ได้";
+"This person can edit the cards of this addressbook."
+= "บุคคลนี้สามารถแก้ไขบัตรของสมุดที่อยู่นี้ได้";
+"This person can list the content of this addressbook."
+= "บุคคลนี้สามารถรายการเนื้อหาของสมุดที่อยู่นี้ได้";
+"This person can read the cards of this addressbook."
+= "บุคคลนี้สามารถอ่านบัตรของสมุดที่อยู่นี้ได้.";
+"This person can erase cards from this addressbook."
+= "บุคคลนี้สามารถลบบัตรออกจากสมุดที่อยู่นี้ได้.";
+"The selected contact has no email address."
+= "ผู้ติดต่อที่เลือกไม่มีที่อยู่อีเมล์";
+"Please select a contact." = "โปรดเลือกติดต่อ";
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "มีการคัดลอกบัตร %{0} ใบ";
+"%{0} card(s) moved" = "มีการย้ายบัตร %{0} ใบ";
+"SoAccessDeniedException" = "คุณไม่สามารถเขียนไปยังสมุดที่อยู่นี้ได้";
+"Forbidden" = "เข้าถึงไม่ได้";
+"Invalid Contact" = "คุณติดต่อที่เลือกไม่มีอยู่แล้ว";
+"Unknown Destination Folder" = "ที่อยู่สมุดที่เลือกไว้ไม่มีอยู่แล้ว";
+
+/* Lists */
+"List details" = "รายละเอียดรายการ";
+"List name" = "ชื่อรายการ";
+"List nickname" = "รายชื่อเล่น";
+"List description" = "รายละเอียดของรายการ";
+"Members" = "สมาชิก";
+"Contacts" = "ผู้ติดต่อ";
+"Add" = "เพิ่ม";
+"Lists can't be moved or copied." = "รายการไม่สามารถย้ายหรือคัดลอกได้";
+"Export" = "ส่งออก";
+"Export Address Book..." = "ส่งออกสมุดที่อยู่...";
+"View Raw Source" = "ดูแหล่งที่มาแบบเรียลไทม์";
+
+/* Import */
+"Import Cards" = "นำเข้าการ์ด";
+"Select a vCard or LDIF file." = "เลือกไฟล์ vCard หรือ LDIF";
+"Upload" = "อัปโหลด";
+"Uploading" = "กำลังอัปโหลด";
+"Done" = "เสร็จแล้ว";
+"An error occured while importing contacts." = "เกิดข้อผิดพลาดขณะนำเข้ารายชื่อผู้ติดต่อ";
+"No card was imported." = "ไม่มีการนำเข้าบัตร";
+"A total of %{0} cards were imported in the addressbook." = "จำนวนทั้งหมด %{0} บัตรถูกนำเข้าในสมุดที่อยู่";
+"Reload" = "รีโหลด";
+
+/* Properties window */
+"Address Book Name" = "ชื่อสมุดที่อยู่";
+"Links to this Address Book" = "ลิงค์ไปยังสมุดที่อยู่นี้";
+"Authenticated User Access" = "การเข้าถึงผู้ใช้ที่ได้รับการรับรองแล้ว";
+"CardDAV URL" = "CardDAV URL";
+"Options" = "ตัวเลือก";
+"Rename" = "เปลี่ยนชื่อ";
+"Subscriptions" = "การสมัครสมาชิก";
+"Global Addressbooks" = "สมุดที่อยู่อีเมลทั่วไป";
+"Search" = "ค้นหา";
+"Sort" = "เรียงลำดับ";
+"Descending Order" = "ลำดับจากมากไปน้อย";
+"Back" = "กลับ";
+"Select All" = "เลือกทั้งหมด";
+"Copy contacts" = "คัดลอกที่ติดต่อ";
+"More messages options" = "ตัวเลือกข้อความเพิ่มเติม";
+"New Contact" = "ติดต่อใหม่";
+"Close" = "ปิด";
+"More contact options" = "ตัวเลือกการติดต่อเพิ่มเติม";
+"Organization Unit" = "หน่วยงานองค์กร";
+"Add Organizational Unit" = "เพิ่มหน่วยงานองค์กร";
+"Type" = "ประเภท";
+"Email Address" = "ที่อยู่อีเมล์";
+"New Email Address" = "ที่อยู่อีเมลใหม่";
+"New Phone Number" = "หมายเลขโทรศัพท์ใหม่";
+"URL" = "URL";
+"New URL" = "New URL";
+"street" = "ถนน";
+"street (continued)" = "ถนน (ต่อไป)";
+"Postoffice" = "ไปรษณีย์";
+"Region" = "ภูมิภาค";
+"Postal Code" = "รหัสไปรษณีย์";
+"New Address" = "ที่อยู่ใหม่";
+"Reset" = "รีเซ็ต";
+"Description" = "คำอธิบาย";
+"Add Member" = "เพิ่มสมาชิก";
+"Subscribe" = "สมัครสมาชิก";
+"Add Birthday" = "เพิ่มวันเกิด";
+"Import" = "นำเข้า";
+"More options" = "ตัวเลือกเพิ่มเติม";
+"Role" = "บทบาท";
+"Add Screen Name" = "เพิ่มชื่อหน้าจอ";
+"Custom 1" = "กำหนดเอง 1";
+"Custom 2" = "กำหนดเอง 2";
+"Custom 3" = "กำหนดเอง 3";
+"Custom 4" = "กำหนดเอง 4";
+"Custom Value" = "ค่าที่กำหนดเอง";
+"New Custom Value" = "ค่าที่กำหนดเองใหม่";
+"Synchronization" = "การประสานข้อมูล";
+"Synchronize" = "ซิงโครไนซ์";
+"Sucessfully subscribed to address book" = "สมัครสมาชิกที่สมุดที่อยู่เรียบร้อยแล้ว";
+"A similar card already exists. Would you like to save it anyway?" = "มีบัตรที่คล้ายกันอยู่แล้ว คุณต้องการบันทึกมันอยู่หรือไม่?";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "ขอบเขตการค้นหา";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "เปิด-ปิดรายการ";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

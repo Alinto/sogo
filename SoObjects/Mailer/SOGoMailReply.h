@@ -108,6 +108,9 @@
 @interface SOGoMailJapaneseReply : SOGoMailReply
 @end
 
+@interface SOGoMailKoreanReply : SOGoMailReply
+@end
+
 @interface SOGoMailKazakhReply : SOGoMailReply
 @end
 
@@ -160,6 +163,9 @@
 @end
 
 @interface SOGoMailSwedishReply : SOGoMailReply
+@end
+
+@interface SOGoMailThaiReply : SOGoMailReply
 @end
 
 @interface SOGoMailTurkishTurkeyReply : SOGoMailReply

@@ -1,0 +1,82 @@
+"Inviting the following persons is prohibited:" = " ไม่เชิญบุคคลต่อไปนี้:";
+"Personal Calendar" = "ปฏิทินส่วนตัว";
+vevent_class0 = "(กิจกรรมสาธารณะ)";
+vevent_class1 = "(กิจกรรมส่วนตัว)";
+vevent_class2 = "(กิจกรรมลับ)";
+
+vtodo_class0 = "(งานสาธารณะ)";
+vtodo_class1 = "(งานส่วนตัว)";
+vtodo_class2 = "(งานลับ)";
+
+/* Receipts */
+"The event \"%{Summary}\" was created" = "กิจกรรม \"%{Summary}\" ถุกสร้างขึ้น";
+"The event \"%{Summary}\" was deleted" = "กิจกรรม \"%{Summary}\" ถูกลบ";
+"The event \"%{Summary}\" was updated" = "กิจกรรม \"%{Summary}\" ถูกอัพเดต";
+"The task \"%{Summary}\" was created" = "งาน \"%{Summary}\" ถูกสร้างขี้น";
+"The task \"%{Summary}\" was deleted" = "งาน \"%{Summary}\" ถูกลบ";
+"The task \"%{Summary}\" was updated" = "งาน \"%{Summary}\" ถูกอัพเดต";
+"The following attendees(s) were notified" = "แจ้งผู้เข้าร่วมดังต่อไปนี้";
+"The following attendees(s) were added" = "ผู้เข้าร่วมต่อไปนี้ถูกเพิ่มเข้ามา";
+"The following attendees(s) were removed" = "ผู้เข้าร่วมต่อไปนี้ถูกลบออก";
+
+/* IMIP messages */
+"calendar_label" = "ปฏิทิน";
+"startDate_label" = "เริ่ม";
+"endDate_label" = "สิ้นสุด";
+"time_label" = "เวลา";
+"to_label" = "ถึง";
+"due_label" = "วันครบกำหนด";
+"location_label" = "สถานที่";
+"summary_label" = "สรุป";
+"comment_label" = "ความคิดเห็น";
+"organizer_label" = "ผู้จัดงาน";
+"attendee_label" = "ผู้เข้าร่วม";
+
+/* Invitation */
+"Event Invitation: \"%{Summary}\"" = "คำเชิญร่วมกิจกรรม : \"%{Summary}\"";
+"(sent by %{SentBy}) " = "(ส่งโดย %{SentBy}) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}ได้ทําการเชิญคุณไป %{Summary}.\n\nเริ่ม: %{StartDate}\nสิ้นสุด: %{EndDate}\nคำอธิบาย: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}ได้ทําการเชิญคุณไป %{Summary}.\n\nเริ่ม: %{StartDate} เวลา %{StartTime}\nสิ้นสุด: %{EndDate} เวลา %{EndTime}\nคำอธิบาย: %{Description}";
+
+/* Deletion */
+"Event Cancelled: \"%{Summary}\"" = "กิจกรรมถูกยกเลิกแล้ว: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}:ได้ยกเลิกกิจกรรม %{Summary}.\n\nเริ่ม: %{StartDate}\nสิ้นสุด: %{EndDate}\nคำอธิบาย: %{Description}";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}hasได้ยกเลิกกิจกรรม: %{Summary}.\n\nเริ่ม: %{StartDate} เวลา %{StartTime}\nสิ้นสุด: %{EndDate} เวลา %{EndTime}\nคำอธิบาย: %{Description}";
+
+/* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "นัดหมาย \"%{Summary}\" สำหรับวันที่ %{OldStartDate} มีการเปลี่ยนแปลง";
+"The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
+= "นัดหมาย \"%{Summary}\" สำหรับวันที่ %{OldStartDate} เวลา %{OldStartTime} มีการเปลี่ยนแปลง";
+"The following parameters have changed in the \"%{Summary}\" meeting:"
+= "มีการเปลี่ยนแปลงใน \"%{Summary}\" :";
+"Please accept or decline those changes."
+= "กรุณาตอบรับหรือปฏิเสธการเปลี่ยนแปลงเหล่านั้น";
+
+/* Reply */
+"Accepted invitation: \"%{Summary}\"" = "ตอบรับคำเชิญ: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "ปฏิเสธคำเชิญ: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "ลบคำเชิญ: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "ยังไม่ตัดสินใจเกี่ยวกับคำเชิญ: \"%{Summary}\"";
+"%{Attendee} %{SentByText}has accepted your event invitation."
+= "%{Attendee} %{SentByText} ได้ตอบรับคำเชิญกิจกรรมของคุณแล้ว";
+"%{Attendee} %{SentByText}has declined your event invitation."
+= "%{Attendee} %{SentByText} ได้ตอบปฏิเสธคำเชิญกิจกรรมของคุณแล้ว";
+"%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
+= "%{Attendee} %{SentByText}ได้มอบหมายการเชิญให้ %{Delegate}.";
+"%{Attendee} %{SentByText}has not yet decided upon your event invitation."
+= "%{Attendee} %{SentByText}ยังไม่ได้ตัดสินใจเกี่ยวกับคำเชิญงานของคุณ";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "สิ่งเตือนความจำ: \"%{Summary}\" - %{StartDate}";
+
+/* Resources */
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "ไม่สามารถเข้าถึงทรัพยากรได้: \"%{Cn} %{SystemEmail}\"";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "จำนวนการจองสูงสุดพร้อมกัน (%{NumberOfSimultaneousBookings}) ขอใช้ทรัพยากร \"%{Cn} %{SystemEmail}\". งานที่ขัดแย้งกัน \"%{EventTitle}\", and starts on %{StartDate}.";
+
+/* Participation role */
+"Your participation is required to this event" = "การเข้าร่วมของคุณจำเป็นสำหรับกิจกรรมนี้";
+"Your participation is optional to this event" = " การเข้าร่วมกิจกรรมนี้ไม่จำเป็น";
+"Your participation is not required to this event" = " การเข้าร่วมของคุณไม่จำเป็นสำหรับกิจกรรมนี้";

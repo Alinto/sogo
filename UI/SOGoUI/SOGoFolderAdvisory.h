@@ -251,4 +251,10 @@
 @interface SOGoFolderSwedishRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
+@interface SOGoFolderThaiAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderThaiRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
 #endif /* SOGOFOLDERADVISORY_H */
