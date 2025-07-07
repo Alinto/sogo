@@ -129,7 +129,7 @@
 
     // Restart the refresh timer, if needed
     var refreshViewCheck = Component.$Preferences.defaults.SOGoRefreshViewCheck;
-    if (refreshViewCheck && refreshViewCheck != 'manually') {
+    if (refreshViewCheck && refreshViewCheck != 'manually' && !isNaN(refreshViewCheck)) {
       var f = angular.bind(Component.$rootScope, Component.$rootScope.$emit, 'calendars:list');
       Component.$refreshTimeout = Component.$timeout(f, refreshViewCheck.timeInterval()*1000);
     }
