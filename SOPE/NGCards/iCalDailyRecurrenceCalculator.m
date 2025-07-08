@@ -93,11 +93,13 @@
       if (until)
         {
           lastStartDate = until;
+          lastEndDate = until;
         }
       else
         {
           repeatCount = [rrule repeatCount];
           if (dayMask == nil)
+          {
             // If there's no day mask, we can compute the date of the last
             // occurrence of the recurrent rule.
             lastStartDate = [firStart dateByAddingYears: 0 months: 0
@@ -106,6 +108,7 @@
             lastEndDate = [firEnd dateByAddingYears: 0 months: 0
                                               days: (interval
                                                      * (repeatCount - 1))];
+          }                                        
         }
 
       if (lastStartDate != nil && lastEndDate != nil)

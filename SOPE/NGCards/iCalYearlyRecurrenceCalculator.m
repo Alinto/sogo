@@ -80,10 +80,12 @@
       if (until)
         {
           lastStartDate = until;
+          lastEndDate = until;
         }
       if (repeatCount > 0)
         {
           if (lastStartDate == nil && ![rrule hasByMask])
+          {
             // When there's no BYxxx mask, we can find the date of the last
             // occurrence.
             lastStartDate = [firStart dateByAddingYears: (interval * (repeatCount - 1))
@@ -92,6 +94,7 @@
             lastEndDate = [firEnd dateByAddingYears: (interval * (repeatCount - 1))
                                             months: 0
                                               days: 0];
+          }
           referenceDate = firStart;
         }
 

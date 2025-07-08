@@ -230,10 +230,11 @@ static inline unsigned iCalDoWForNSDoW (int dow)
       else
 	{
 	  untilStart = [rrule untilDate];
+    untilEnd = [rrule untilDate];
 	}
     }
 
-  if (untilStart != nil)
+  if (untilStart != nil && untilEnd != nil)
     {
       if ([untilEnd compare: rStart] == NSOrderedAscending)
 	// Range starts after last occurrence

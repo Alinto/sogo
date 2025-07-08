@@ -102,11 +102,15 @@
       lastEndDate = nil;
       until = [rrule untilDate];
       if (until)
+      {
         lastStartDate = until;
+        lastEndDate = until;
+      }
       else
         {
           repeatCount = [rrule repeatCount];
           if (dayMask == nil)
+          {
             // When there's no BYxxx mask, we can find the date of the last
             // occurrence.
             lastStartDate = [firStart dateByAddingYears: 0 months: 0
@@ -115,6 +119,7 @@
             lastEndDate = [firEnd dateByAddingYears: 0 months: 0
                                               days: (interval
                                                      * (repeatCount - 1) * 7)];
+          }
         }
 
       if (lastStartDate != nil && lastEndDate != nil)
