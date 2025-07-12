@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.12.3](https://github.com/Alinto/sogo/compare/SOGo-5.12.2...SOGo-5.12.3) (2025-07-12)
+
+
+### Bug Fixes
+
+* **calendar:** fix recurrent event last date ([3ab8677](https://github.com/Alinto/sogo/commit/3ab86776e2ea826e043e3a0519097538853d82e3)), closes [#8766b7](https://bugs.sogo.nu/view.php?id=8766b7)
+* **view:** automatically refresh view only if a number is set. ([55dbae6](https://github.com/Alinto/sogo/commit/55dbae6bee9bdd1aa00333320ba076617cbfb0fc))
+
 ## [5.12.2](https://github.com/Alinto/sogo/compare/SOGo-5.12.1...SOGo-5.12.2) (2025-06-25)
 
 
