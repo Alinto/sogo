@@ -84,7 +84,7 @@
   {
     cats = [self _languageContactsCategories];
     return cats;
-  
+  }
 
   ud = [[SOGoUser userWithLogin: ownerLogin] userDefaults];
   cats = [ud contactsCategories];
