@@ -587,7 +587,7 @@
       }
     }).finally(function () {
       var refreshViewCheck = _this.defaults.SOGoRefreshViewCheck;
-      if (refreshViewCheck && refreshViewCheck != 'manually' && !isNaN(refreshViewCheck))
+      if (refreshViewCheck && refreshViewCheck != 'manually')
         _this.nextInboxPoll = Preferences.$timeout(angular.bind(_this, _this.pollInbox), refreshViewCheck.timeInterval()*1000);
     });
   };

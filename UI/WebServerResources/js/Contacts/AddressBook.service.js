@@ -458,7 +458,7 @@
 
     // Restart the refresh timer, if needed
     var refreshViewCheck = AddressBook.$Preferences.defaults.SOGoRefreshViewCheck;
-    if (refreshViewCheck && refreshViewCheck != 'manually' && !isNaN(refreshViewCheck)) {
+    if (refreshViewCheck && refreshViewCheck != 'manually') {
       var f = angular.bind(this, AddressBook.prototype.$reload);
       AddressBook.$refreshTimeout = AddressBook.$timeout(f, refreshViewCheck.timeInterval()*1000);
     }

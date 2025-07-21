@@ -156,7 +156,7 @@
       });
     });
 
-    if (refreshViewCheck && refreshViewCheck != 'manually' && !isNaN(refreshViewCheck)) {
+    if (refreshViewCheck && refreshViewCheck != 'manually') {
       if (Account.$refreshUnseenCount)
         Account.$timeout.cancel(Account.$refreshUnseenCount);
       Account.$refreshUnseenCount = Account.$timeout(angular.bind(this, Account.refreshUnseenCount, folders), refreshViewCheck.timeInterval()*1000);

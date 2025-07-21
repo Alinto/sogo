@@ -462,7 +462,7 @@
     // Restart the refresh timer, if needed
     if (!Mailbox.$virtualMode) {
       var refreshViewCheck = Mailbox.$Preferences.defaults.SOGoRefreshViewCheck;
-      if (refreshViewCheck && refreshViewCheck != 'manually' && !isNaN(refreshViewCheck)) {
+      if (refreshViewCheck && refreshViewCheck != 'manually') {
         var f = angular.bind(this, Mailbox.prototype.$filter, null, filters);
         Mailbox.$refreshTimeout = Mailbox.$timeout(f, refreshViewCheck.timeInterval()*1000);
       }
