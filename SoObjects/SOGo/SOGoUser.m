@@ -265,23 +265,32 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
 - (NSString *) loginInDomain
 {
   SOGoSystemDefaults *sd;
-  NSString *_domain, *realLoginInDOmain;
+  NSString *_domain, *realLoginInDomain;
   NSRange r;
-
+  NSLog(@"loginInDomain start: %@", loginInDomain);
   sd = [SOGoSystemDefaults sharedSystemDefaults];
   if ([sd enableDomainBasedUID] || [[sd loginDomains] count] > 0)
   {
-    r = [loginInDomain rangeOfString: @"@" options: NSBackwardsSearch];
-    if (r.location == NSNotFound)
-    {
-      _domain = [self _fetchFieldForUser: @"c_domain"];
-      if (_domain != nil)
-      {
-        realLoginInDOmain = [NSString stringWithFormat: @"%@@%@", loginInDomain, _domain];
-        return realLoginInDOmain;
-      }
-    }
+    NSLog(@"loginInDomain enableDomainBasedUID: %@", self->login);
+    return self->login;
+    // r = [loginInDomain rangeOfString: @"@" options: NSBackwardsSearch];
+    // if (r.location == NSNotFound)
+    // {
+    //   _domain = [self _fetchFieldForUser: @"c_domain"];
+    //   if (_domain != nil)
+    //   {
+    //     realLoginInDomain = [NSString stringWithFormat: @"%@@%@", loginInDomain, _domain];
+    //     NSLog(@"loginInDomain return: %@", realLoginInDomain):
+    //     return realLoginInDomain;
+    //   }
+    //   else
+    //   {
+    //     NSLog(@"loginInDomain return: %@", [self _fetchFieldForUser: @"c_email"]):
+    //     return [self _fetchFieldForUser: @"c_email"];
+    //   }
+    // }
   }
+  NSLog(@"loginInDomain return: %@", loginInDomain);
   return loginInDomain;
 }
 
