@@ -65,6 +65,9 @@
 #import "iCalRepeatableEntityObject+SOGo.h"
 #import "SOGoCalendarComponent.h"
 
+
+static NSArray *allowed_tags = nil;
+
 @implementation SOGoCalendarComponent
 
 + (SOGoWebDAVAclManager *) webdavAclManager
@@ -210,7 +213,6 @@
   SOGoUser *calendarOwner;
   NSEnumerator *children;
   CardElement *element;
-  NSArray *tags;
 
   int classification;
 
@@ -231,21 +233,24 @@
   summary = [self labelForKey: [NSString stringWithFormat: @"%@_class%d",
                                          type, classification]
                     inContext: context];
-
-  tags = [NSArray arrayWithObjects: @"DTSTAMP", @"DTSTART", @"DTEND", @"DUE", @"EXDATE", @"EXRULE", @"RRULE", @"RECURRENCE-ID", nil];
+  if(!allowed_tags)
+      allowed_tags = [[NSArray arrayWithObjects: @"DTSTAMP", @"DTSTART", @"DTEND", @"DUE", @"EXDATE", @"EXRULE", @"RRULE", @"RECURRENCE-ID", nil] retain];
   uid = [[component uid] asCryptedPassUsingScheme: @"ssha256"
                                          withSalt: [[settings userPublicSalt] dataUsingEncoding: NSASCIIStringEncoding]
                                       andEncoding: encHex
                                           keyPath: nil];
 
-  children = [[[[component children] copy] autorelease] objectEnumerator];
-
+  children = [[component children] objectEnumerator];
+  NSMutableArray *to_remove = [NSMutableArray arrayWithCapacity: 8];
+  
   while ((element = [children nextObject]))
     {
       tag = [element tag];
-      if (![tags containsObject: [tag uppercaseString]])
-        [component removeChild: element];
+      if (![allowed_tags containsObject: [tag uppercaseString]])
+	  [to_remove addObject: element];
     }
+
+  [component removeChildren: to_remove];
 
   [component setSummary: summary];
   [component setUid: uid];
