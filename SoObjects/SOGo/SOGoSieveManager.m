@@ -790,10 +790,10 @@ static NSString *sieveScriptName = @"sogo";
   imapAuthMech = nil;
   if([sd doesLoginTypeByDomain])
   {
-    r = [theUsername rangeOfString: @"@"];
+    r = [authname rangeOfString: @"@"];
     if (r.location != NSNotFound)
     {
-      userDomain = [theUsername substringFromIndex: r.location+1];
+      userDomain = [authname substringFromIndex: r.location+1];
       imapAuthMech = [sd getImapAuthMechForDomain: userDomain];
     }
   }

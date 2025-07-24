@@ -791,6 +791,7 @@ static SoProduct      *commonProduct      = nil;
   // If the action is 'connect' (or 'logoff'), we let it go as the token
   // needs to be created (or destroyed) during the session initialization
   if ([_actionName isEqualToString: @"connect"] ||
+      [_actionName isEqualToString: @"connectName"] ||
       [_actionName isEqualToString: @"changePassword"] ||
       [_actionName isEqualToString: @"logoff"] ||
       [_actionName isEqualToString: @"passwordRecovery"] ||
