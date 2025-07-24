@@ -54,7 +54,6 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
   return total;
 }
 
-
 @implementation SimpleOpenIdResponse
 
 - (id)init {
@@ -352,16 +351,19 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
         if(SOGoOpenIDDebugEnabled)
           NSLog(@"OpenId perform request: response is: %@", response);
 
+        curl_easy_cleanup(curl);
         return [response autorelease];
       }
       else if (status == 404)
       {
         [self errorWithFormat: @"OpenID endpoint not found (404): %@", endpoint];
+        curl_easy_cleanup(curl);
         return nil; 
       }
       else
       {
         [self errorWithFormat: @"OpenID server internal error during %@: %@", endpoint, response];
+        curl_easy_cleanup(curl);
         return nil;
       }
     }
@@ -370,7 +372,7 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
       [self errorWithFormat: @"CURL error while accessing %@ (%d): %@", endpoint, rc,
             [NSString stringWithCString: strlen(error) ? error : curl_easy_strerror(rc)]];
     }
-    curl_easy_cleanup (curl);
+    curl_easy_cleanup(curl);
   }
   else
   {
