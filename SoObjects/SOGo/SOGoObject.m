@@ -20,6 +20,7 @@
  */
 
 #import <unistd.h>
+#import <sys/random.h>
 
 
 #import <NGObjWeb/SoClass.h>
@@ -111,9 +112,26 @@
 		   pid, (int) f, sequence++, (int) rndm];
 }
 
+
 - (NSString *) globallyUniqueObjectId
 {
   return [[self class] globallyUniqueObjectId];
+}
+
++ (NSString *) mailUniqueMessageId
+{
+  /*
+  843F8180-4E33-7B0B-6F1B-9847CAD3E6EB
+  */
+  return [[NSUUID UUID] UUIDString];
+}
+
+- (NSString *) mailUniqueMessageId
+{
+  /*
+  843F8180-4E33-7B0B-6F1B-9847CAD3E6EB
+  */
+  return [[self class] mailUniqueMessageId];
 }
 
 /* containment */

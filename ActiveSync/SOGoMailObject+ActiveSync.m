@@ -1627,7 +1627,7 @@ struct GlobalObjectId {
 
       [map setObject: dateReceived forKey: @"date"];
 
-      messageId = [NSString generateMessageID];
+      messageId = [NSString generateMessageID: [identity objectForKey: @"email"]];
       [map setObject: messageId forKey: @"message-id"];
 
       attachmentKeys = [self fetchFileAttachmentKeys];

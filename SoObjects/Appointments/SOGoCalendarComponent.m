@@ -885,7 +885,7 @@
 		  mailDate = [[NSCalendarDate date] rfc822DateString];
 		  [headerMap setObject: mailDate forKey: @"date"];
 		  [headerMap setObject: subject forKey: @"subject"];
-                  [headerMap setObject: [NSString generateMessageID] forKey: @"message-id"];
+                  [headerMap setObject: [NSString generateMessageID: senderEmail] forKey: @"message-id"];
                   if ([msgType length] > 0)
                     [headerMap setObject: msgType forKey: @"x-sogo-message-type"];
 		  msg = [NGMimeMessage messageWithHeader: headerMap];
@@ -974,7 +974,7 @@
   [headerMap setObject: mailDate forKey: @"date"];
   [headerMap setObject: [[p getSubject] asQPSubjectString: @"UTF-8"]
                 forKey: @"subject"];
-  [headerMap setObject: [NSString generateMessageID] forKey: @"message-id"];
+  [headerMap setObject: [NSString generateMessageID: [[attendee mailAddress] pureEMailAddress]] forKey: @"message-id"];
   [headerMap setObject: @"1.0" forKey: @"MIME-Version"];
 
   if (textOnly)
@@ -1163,7 +1163,7 @@
   mailDate = [[NSCalendarDate date] rfc822DateString];
   [headerMap setObject: mailDate forKey: @"date"];
   [headerMap setObject: [page getSubject] forKey: @"subject"];
-  [headerMap setObject: [NSString generateMessageID] forKey: @"message-id"];
+  [headerMap setObject: [NSString generateMessageID: senderEmail] forKey: @"message-id"];
   [headerMap setObject: @"1.0" forKey: @"MIME-Version"];
   [headerMap setObject: @"text/html; charset=utf-8"
 		forKey: @"content-type"];

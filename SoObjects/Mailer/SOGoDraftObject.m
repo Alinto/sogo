@@ -222,7 +222,7 @@ static NSString    *userAgent      = nil;
   messageID = [headers objectForKey: @"message-id"];
   if (!messageID)
     {
-      messageID = [NSString generateMessageID];
+      messageID = [NSString generateMessageID: [[newHeaders objectForKey: @"from"] pureEMailAddress]];
       [headers setObject: messageID forKey: @"message-id"];
     }
 

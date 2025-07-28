@@ -560,15 +560,27 @@
 
 @implementation NSString (SOGoExtension)
 
-+ (NSString *) generateMessageID
++ (NSString *) generateMessageID: (NSString *) mailOrDomain
 {
   NSMutableString *messageID;
-  NSString *pGUID;
+  NSString *_domain;
+  NSRange r;
 
   messageID = [NSMutableString string];
-  [messageID appendFormat: @"<%@", [SOGoObject globallyUniqueObjectId]];
-  pGUID = [[NSProcessInfo processInfo] globallyUniqueString];
-  [messageID appendFormat: @"@%u>", (unsigned int)[pGUID hash]];
+  [messageID appendFormat: @"<%@", [SOGoObject mailUniqueMessageId]];
+  if(mailOrDomain)
+  {
+    r = [mailOrDomain rangeOfString: @"@" options: NSBackwardsSearch];
+    if (r.location != NSNotFound)
+    {
+      //Its the full email not a domain
+      _domain = [mailOrDomain substringFromIndex: (r.location + r.length)];
+    }
+    else
+      _domain = mailOrDomain;
+    [messageID appendFormat: @"@%@>", _domain];
+  }
+    
 
   return [messageID lowercaseString];
 }

@@ -48,6 +48,7 @@
 @class NSException;
 @class NSTimeZone;
 @class NSURL;
+@class NSUUID;
 
 @class WOContext;
 @class WORequest;
@@ -73,6 +74,9 @@
 
 + (NSString *) globallyUniqueObjectId;
 - (NSString *) globallyUniqueObjectId;
+
++ (NSString *) mailUniqueMessageId;
+- (NSString *) mailUniqueMessageId;
 
 + (id) objectWithName: (NSString *)_name inContainer:(id)_container;
 
