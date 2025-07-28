@@ -145,92 +145,91 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
   realUID = nil;
   domain = nil;
 
-  if ([newLogin isEqualToString: @"anonymous"]
-      || [newLogin isEqualToString: @"freebusy"])
+  if ([newLogin isEqualToString: @"anonymous"] || [newLogin isEqualToString: @"freebusy"])
     realUID = newLogin;
   else
+  {
+    sd = [SOGoSystemDefaults sharedSystemDefaults];
+    if ([sd enableDomainBasedUID] || [[sd loginDomains] count] > 0)
     {
-      sd = [SOGoSystemDefaults sharedSystemDefaults];
-      if ([sd enableDomainBasedUID] || [[sd loginDomains] count] > 0)
-        {
-          r = [newLogin rangeOfString: @"@" options: NSBackwardsSearch];
-          if (r.location != NSNotFound)
-            {
-              // The domain is probably appended to the username;
-              // make sure it is defined as a domain in the configuration.
-              domain = [newLogin substringFromIndex: (r.location + r.length)];
-              if ([[SOGoUserManager sharedUserManager] isDomainDefined: domain] &&
-                  ![sd enableDomainBasedUID])
-                newLogin = [newLogin substringToIndex: r.location];
+      r = [newLogin rangeOfString: @"@" options: NSBackwardsSearch];
+      if (r.location != NSNotFound)
+      {
+        // The domain is probably appended to the username;
+        // make sure it is defined as a domain in the configuration.
+        domain = [newLogin substringFromIndex: (r.location + r.length)];
+        if ([[SOGoUserManager sharedUserManager] isDomainDefined: domain] &&
+            ![sd enableDomainBasedUID])
+          newLogin = [newLogin substringToIndex: r.location];
 
-              if (domain != nil && ![sd enableDomainBasedUID])
-                // Login domains are enabled (SOGoLoginDomains) but not
-                // domain-based UID (SOGoEnableDomainBasedUID).
-                // Drop the domain from the login name.
-                domain = nil;
-            }
-        }
-
-      newLogin = [newLogin stringByReplacingString: @"%40"
-                                        withString: @"@"];
-      if (b)
-	realUID = newLogin;
-      else
-	{
-	  um = [SOGoUserManager sharedUserManager];
-          contactInfos = [um contactInfosForUserWithUIDorEmail: newLogin
-                                                      inDomain: domain];
-	  realUID = [contactInfos objectForKey: @"c_uid"];
-          if (domain == nil && [sd enableDomainBasedUID])
-            domain = [contactInfos objectForKey: @"c_domain"];
-	}
-
-      if ([realUID length] && [domain length])
-        {
-          // When the user is associated to a domain, the [SOGoUser login]
-          // method returns the combination login@domain while
-          // [SOGoUser loginInDomain] only returns the login.
-          r = [realUID rangeOfString: domain  options: NSBackwardsSearch|NSCaseInsensitiveSearch];
-
-          // Do NOT strip @domain.com if SOGoEnableDomainBasedUID is enabled since
-          // the real login most likely is the email address.
-          if (r.location != NSNotFound && ![sd enableDomainBasedUID])
-            uid = [realUID substringToIndex: r.location-1];
-          // If we don't have the domain in the UID but SOGoEnableDomainBasedUID is
-          // enabled, let's add it internally so so it becomes unique across
-          // all potential domains.
-          else if (r.location == NSNotFound && [sd enableDomainBasedUID])
-            {
-              uid = [NSString stringWithString: realUID];
-              realUID = [NSString stringWithFormat: @"%@@%@", realUID, domain];
-            }
-          // We found the domain and SOGoEnableDomainBasedUID is enabled,
-          // we keep realUID.. This would happen for example if the user
-          // authenticates with foo@bar.com and the UIDFieldName is also foo@bar.com
-          else if ([sd enableDomainBasedUID])
-            uid = [NSString stringWithString: realUID];
-        }
+        if (domain != nil && ![sd enableDomainBasedUID])
+          // Login domains are enabled (SOGoLoginDomains) but not
+          // domain-based UID (SOGoEnableDomainBasedUID).
+          // Drop the domain from the login name.
+          domain = nil;
+      }
     }
+
+    newLogin = [newLogin stringByReplacingString: @"%40"
+                                      withString: @"@"];
+    if (b)
+      realUID = newLogin;
+    else
+    {
+      um = [SOGoUserManager sharedUserManager];
+            contactInfos = [um contactInfosForUserWithUIDorEmail: newLogin
+                                                        inDomain: domain];
+      realUID = [contactInfos objectForKey: @"c_uid"];
+      if (domain == nil && [sd enableDomainBasedUID])
+        domain = [contactInfos objectForKey: @"c_domain"];
+    }
+
+    if ([realUID length] && [domain length])
+    {
+      // When the user is associated to a domain, the [SOGoUser login]
+      // method returns the combination login@domain while
+      // [SOGoUser loginInDomain] only returns the login.
+      r = [realUID rangeOfString: domain  options: NSBackwardsSearch|NSCaseInsensitiveSearch];
+
+      // Do NOT strip @domain.com if SOGoEnableDomainBasedUID is enabled since
+      // the real login most likely is the email address.
+      if (r.location != NSNotFound && ![sd enableDomainBasedUID])
+        uid = [realUID substringToIndex: r.location-1];
+      // If we don't have the domain in the UID but SOGoEnableDomainBasedUID is
+      // enabled, let's add it internally so so it becomes unique across
+      // all potential domains.
+      else if (r.location == NSNotFound && [sd enableDomainBasedUID])
+      {
+        uid = [NSString stringWithString: realUID];
+        realUID = [NSString stringWithFormat: @"%@@%@", realUID, domain];
+      }
+      // We found the domain and SOGoEnableDomainBasedUID is enabled,
+      // we keep realUID.. This would happen for example if the user
+      // authenticates with foo@bar.com and the UIDFieldName is also foo@bar.com
+      else if ([sd enableDomainBasedUID])
+        uid = [NSString stringWithString: realUID];
+    }
+  }
 
   if ([realUID length])
+  {
+    if ((self = [super initWithLogin: realUID roles: newRoles]))
     {
-      if ((self = [super initWithLogin: realUID roles: newRoles]))
-	{
-	  allEmails = nil;
-	  currentPassword = nil;
-	  cn = nil;
-          ASSIGN (loginInDomain, (uid ? uid : realUID));
-          _defaults = nil;
-          _domainDefaults = nil;
-          _settings = nil;
-          mailAccounts = nil;
-	}
+      allEmails = nil;
+      currentPassword = nil;
+      cn = nil;
+      ASSIGN (loginInDomain, (uid ? uid : realUID));
+      _defaults = nil;
+      _domainDefaults = nil;
+      _settings = nil;
+      mailAccounts = nil;
     }
+  }
   else
-    {
-      [self release];
-      self = nil;
-    }
+  {
+    [self release];
+    self = nil;
+  }
 
   return self;
 }
@@ -265,6 +264,14 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
 
 - (NSString *) loginInDomain
 {
+  SOGoSystemDefaults *sd;
+  NSString *_domain, *realLoginInDomain;
+  NSRange r;
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if ([sd enableDomainBasedUID] || [[sd loginDomains] count] > 0)
+  {
+    return self->login;
+  }
   return loginInDomain;
 }
 
