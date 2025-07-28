@@ -78,6 +78,14 @@
   NSArray *cats, *newCats, *contactCategories;
 
   ownerLogin = [[self clientObject] ownerInContext: context];
+  //if ownerLogin == @"nobody", meaning the current folder is not the personnal source of the user (it's the global address book)
+  //No need to fetch the user "nobody". Beware that if someone is really called nobody...
+  if([ownerLogin isEqualToString:@"nobody"])
+  {
+    cats = [self _languageContactsCategories];
+    return cats;
+  }
+
   ud = [[SOGoUser userWithLogin: ownerLogin] userDefaults];
   cats = [ud contactsCategories];
   if (!cats)
@@ -85,16 +93,16 @@
 
   contactCategories = [card categories];
   if (contactCategories)
-    {
-      newCats = [cats mergedArrayWithArray: [contactCategories trimmedComponents]];
-      if ([newCats count] != [cats count])
-        {
-          cats = [newCats sortedArrayUsingSelector:
-                            @selector (localizedCaseInsensitiveCompare:)];
-          [ud setContactsCategories: cats];
-          [ud synchronize];
-        }
-    }
+  {
+    newCats = [cats mergedArrayWithArray: [contactCategories trimmedComponents]];
+    if ([newCats count] != [cats count])
+      {
+        cats = [newCats sortedArrayUsingSelector:
+                          @selector (localizedCaseInsensitiveCompare:)];
+        [ud setContactsCategories: cats];
+        [ud synchronize];
+      }
+  }
 
   return cats;
 }
