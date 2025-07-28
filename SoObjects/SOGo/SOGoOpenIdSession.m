@@ -151,7 +151,7 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
 - (void) initializeWithConfig: (NSDictionary *) _config
 {
   SOGoSystemDefaults *sd;
-  id refreshTokenBool, domainInfo;
+  id refreshTokenBool, domainInfo, intForKey;
 
   if([_config objectForKey: @"SOGoOpenIdConfigUrl"] &&
       [_config objectForKey: @"SOGoOpenIdScope"] &&
@@ -163,7 +163,6 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
     openIdClient             = [_config objectForKey: @"SOGoOpenIdClient"];
     openIdClientSecret       = [_config objectForKey: @"SOGoOpenIdClientSecret"];
     openIdEmailParam         = [_config objectForKey: @"SOGoOpenIdEmailParam"];
-    openIdHttpVersion        = [_config objectForKey: @"SOGoOpenIdHttpVersion"];
 
     openIdEnableRefreshToken = NO;
     refreshTokenBool = [_config objectForKey: @"SOGoOpenIdEnableRefreshToken"];
@@ -175,8 +174,12 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
     if (domainInfo && [domainInfo respondsToSelector: @selector (boolValue)])
         sendDomainInfo = [domainInfo boolValue];
 
-      
-    userTokenInterval        = [_config objectForKey: @"SOGoOpenIdTokenCheckInterval"];
+    intForKey = [_config objectForKey: @"SOGoOpenIdTokenCheckInterval"];
+    if (intForKey && [intForKey respondsToSelector: @selector (intValue)])
+          userTokenInterval = [intForKey intValue];
+    else
+      userTokenInterval = 0;
+
     [self _loadSessionFromCache: forDomain];
 
     if(cacheUpdateNeeded)
@@ -222,7 +225,6 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
     openIdClient             = [sd openIdClient];
     openIdClientSecret       = [sd openIdClientSecret];
     openIdEmailParam         = [sd openIdEmailParam];
-    openIdHttpVersion        = [sd openIdHttpVersion];
     openIdEnableRefreshToken = [sd openIdEnableRefreshToken];
     userTokenInterval        = [sd openIdTokenCheckInterval];
     sendDomainInfo           = [sd openIdSendDomainInfo];

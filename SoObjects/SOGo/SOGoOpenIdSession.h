@@ -66,7 +66,6 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer);
   NSString *openIdClient;
   NSString *openIdClientSecret;
   NSString *openIdEmailParam;
-  NSString *openIdHttpVersion;
   BOOL openIdEnableRefreshToken;
   BOOL sendDomainInfo;
 

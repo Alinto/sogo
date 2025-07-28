@@ -784,15 +784,6 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
   return emailParam;
 }
 
-- (NSString *) openIdHttpVersion
-{
-  NSString *httpVersion;
-  httpVersion = [self stringForKey: @"SOGoOpenIdHttpVersion"];
-  if(!httpVersion)
-    httpVersion = @"HTTP/1.1";
-  return httpVersion;
-}
-
 - (BOOL) openIdLogoutEnabled: (NSString *) _domain
 {
   if(_domain && [self doesLoginTypeByDomain])

@@ -107,7 +107,6 @@ NSComparisonResult languageSort(id el1, id el2, void *context);
 - (NSString *) openIdClient;
 - (NSString *) openIdClientSecret;
 - (NSString *) openIdEmailParam;
-- (NSString *) openIdHttpVersion;
 - (BOOL) openIdEnableRefreshToken;
 - (BOOL) openIdLogoutEnabled: (NSString *) _domain;
 - (int) openIdTokenCheckInterval;
