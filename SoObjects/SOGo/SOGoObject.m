@@ -20,8 +20,6 @@
  */
 
 #import <unistd.h>
-#import <sys/random.h>
-
 
 #import <NGObjWeb/SoClass.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
