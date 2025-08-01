@@ -86,8 +86,13 @@
   tzId = [self value: 0 ofAttribute: @"tzid"];
   if ([tzId length])
   {
-      calendar = (iCalCalendar *) [self searchParentOfClass: [iCalCalendar class]];
-      timeZone = [calendar timeZoneWithId: tzId];
+      //Hack, get timezone inf from sogo and not from the event VTIMEZONE as it can be incorrect/incomplete
+      timeZone = [iCalTimeZone timeZoneForName: tzId];
+      if(!timeZone)
+      {
+        calendar = (iCalCalendar *) [self searchParentOfClass: [iCalCalendar class]];
+        timeZone = [calendar timeZoneWithId: tzId];
+      }
       //if (!timeZone)
       //[self logWithFormat: @"timezone '%@' not found in calendar", tzId];
   }
