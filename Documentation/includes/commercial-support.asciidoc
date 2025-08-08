@@ -12,8 +12,7 @@
 
 ////
 
-Commercial Support and Contact Information
-------------------------------------------
+== Commercial Support and Contact Information
 
 For any questions or comments, do not hesitate to contact us by writing
 an email to contact@sogo.nu.
