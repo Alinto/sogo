@@ -1,5 +1,4 @@
-Installation and Configuration Guide
-====================================
+= Installation and Configuration Guide
 ////
 
     This file is part of the SOGo project.
@@ -10,8 +9,8 @@ Installation and Configuration Guide
 ////
 include::includes/global-attributes.asciidoc[]
 
-About this Guide
-----------------
+
+== About this Guide
 
 This guide will walk you through the installation and configuration of
 the SOGo solution. It also covers the installation and configuration of
@@ -23,8 +22,8 @@ The instructions are based on version {release_version} of SOGo.
 The latest version of this guide is available
 at https://www.sogo.nu/support.html#/documentation.
 
-Introduction
-------------
+
+== Introduction
 
 SOGo is a free and modern scalable groupware server. It offers shared
 calendars, address books, and emails through your favourite Web browser
@@ -48,8 +47,8 @@ device, or Outlook 2013/2016
 SOGo is developed by a community of developers located mainly in North
 America and Europe. More information can be found at https://sogo.nu/
 
-Architecture and Compatibility
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+=== Architecture and Compatibility
 
 image::images/architecture.png[System Architecture, 400, 964]
 
@@ -61,11 +60,11 @@ protocol are also supported.
 To install and configure the Outlook CalDav Synchronizer, please refer
 to the _Outlook Connector Configuration Guide_.
 
-System Requirements
--------------------
 
-Assumptions
-~~~~~~~~~~~
+== System Requirements
+
+
+=== Assumptions
 
 SOGo reuses many components in an infrastructure. Thus, it requires the
 following:
@@ -104,8 +103,8 @@ components, together with version numbers:
 
 More recent versions of the software mentioned above can also be used.
 
-Minimum Hardware Requirements
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+=== Minimum Hardware Requirements
 
 The following table provides hardware recommendations for the server,
 desktops and mobile devices:
@@ -157,8 +156,8 @@ Linux
 Microsoft ActiveSync.
 |=======================================================================
 
-Operating System Requirements
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+=== Operating System Requirements
 
 The following operating systems are currently supported by SOGo:
 
@@ -182,16 +181,16 @@ directly to the SOGo website at https://sogo.nu/faq/installation.html.
 Note that once the SOGo packages are installed under Debian and Ubuntu,
 this guide can be followed in order to fully configure SOGo.
 
-Installation
-------------
+
+== Installation
 
 This section will guide you through the installation of SOGo together
 with its dependencies. The steps described here apply to an RPM-based
 installation for a Red Hat or CentOS 7 distribution. Most of these steps
 should apply to all supported operating systems.
 
-Software Downloads
-~~~~~~~~~~~~~~~~~~
+
+=== Software Downloads
 
 **In order to access the community build, go to https://www.sogo.nu/download.html[SOGo website]
 and select "Development (nightly builds)" at the bottom of the page.**
@@ -255,8 +254,8 @@ sed -i '/enabled=1/a exclude=gnustep* ytnef*' /etc/yum.repos.d/epel.repo
 
 For more information on EPEL, visit http://fedoraproject.org/wiki/EPEL/.
 
-Software Installation
-~~~~~~~~~~~~~~~~~~~~~
+
+=== Software Installation
 
 Once the yum configuration file has been created, you are now ready to
 install SOGo and its dependencies. To do so, proceed with the following
@@ -276,8 +275,8 @@ for Oracle. The installation command will thus look like this:
 Once completed, SOGo will be fully installed on your server. You are now
 ready to configure it.
 
-Configuration
--------------
+
+== Configuration
 
 In this section, you'll learn how to configure SOGo to use your existing
 LDAP, SMTP and database servers. As previously mentioned, we assume that
@@ -285,8 +284,8 @@ those components run on the same server on which SOGo is being
 installed. If this is not the case, please adjust the configuration
 parameters to reflect those changes.
 
-GNUstep Environment Overview
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+=== GNUstep Environment Overview
 
 SOGo makes use of the GNUstep environment. GNUstep is a free software
 implementation of the OpenStep specification which provides many
@@ -319,8 +318,8 @@ wrapped within curly brackets `{ [configuration] }`. If SOGo refuses to
 start due to syntax errors in its configuration file, `plparse` is helpful
 for finding these, as it indicates the line containing the problem.
 
-Preferences Hierarchy
-~~~~~~~~~~~~~~~~~~~~~
+
+=== Preferences Hierarchy
 
 SOGo supports domain names segregation, meaning that you can separate
 multiple groups of users within one installation of SOGo. A user
@@ -350,8 +349,8 @@ following abbreviations in the tables of this document:
 Remember that the hierarchy paradigm allow the default value of a
 parameter to be defined at a parent level.
 
-General Preferences
-~~~~~~~~~~~~~~~~~~~
+
+=== General Preferences
 
 The following table describes the general parameters that can be set:
 
@@ -879,8 +878,8 @@ Obiously, if your users can connect without specifying a domain, let this parame
 
 [[Secret-for-sensitive-data]]
 
-Secret for sensitive data
-~~~~~~~~~~~~~~~~~~~~~~~~~
+
+=== Secret for sensitive data
 
 _Since 5.10_
 
@@ -974,8 +973,7 @@ sogo-tool user-preferences unset default <user> AuxiliaryMailAccounts
 user being the full mail address or just the username if domainless. After that, the user will have to set its auxiliary accounts again.
 
 
-Authentication using LDAP
-~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Authentication using LDAP
 
 SOGo can use a LDAP server to authenticate users and, if desired, to
 provide global address books. SOGo can also use an SQL backend for this
@@ -1385,8 +1383,8 @@ Defaults to `NO` when unset.
 
 |=======================================================================
 
-LDAP Attributes Indexing
-~~~~~~~~~~~~~~~~~~~~~~~~
+
+=== LDAP Attributes Indexing
 
 To ensure proper performance of the SOGo application, the following LDAP
 attributes must be fully indexed:
@@ -1402,8 +1400,8 @@ attributes must be fully indexed:
 Please refer to the documentation of the software you use in order to
 index those attributes.
 
-LDAP Attributes Mapping
-~~~~~~~~~~~~~~~~~~~~~~~
+
+=== LDAP Attributes Mapping
 
 Some LDAP attributes are mapped to contacts attributes in the SOGo UI.
 The table below list most of them. It is possible to override these by
@@ -1463,8 +1461,8 @@ mapping = {
 |Photo |photo
 |===
 
-Authenticating using C.A.S.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+=== Authenticating using C.A.S.
 
 SOGo natively supports C.A.S. authentication. For activating C.A.S.
 authentication you need first to make sure that the
@@ -1568,9 +1566,7 @@ connection properly.
 
 
 [[openid-section]]
-
-Authenticating using OPENID
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Authenticating using OPENID
 
 SOGo natively supports OPENID authentication. For activating OpenId authentication you need first to make sure that
 _SOGoAuthenticationType_ is set to `openid`,
@@ -1643,8 +1639,8 @@ the session will stays in the table and be useless. That's why a new sogo-tool c
 You can put it in a cron to do that periodicly. +
 See _<<sogo-tool-clean-openid-sessions,sogo-tool clean-openid-sessions>>_.
 
-Authenticating using SAML2
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+=== Authenticating using SAML2
 
 SOGo natively supports SAML2 authentication. Please refer to the documentation of your identity
 provider and the SAML2 configuration keys that are listed above for proper setup. Once a SOGo
@@ -1677,8 +1673,7 @@ _NGImap4AuthMechanism_ is configured to use the `SAML` mechanism. If you
 make use of the CrudeSAML PAM plugin, this value may be left empty.
 
 
-Database Configuration
-~~~~~~~~~~~~~~~~~~~~~~
+=== Database Configuration
 
 SOGo requires a relational database system in order to store
 appointments, tasks and contacts information. It also uses the database
@@ -1925,10 +1920,9 @@ calendar.
 
 Ensure the computer used for the test has emoji fonts installed.
 
-[[Authentication-using-SQL]]
 
-Authentication using SQL
-~~~~~~~~~~~~~~~~~~~~~~~~
+[[Authentication-using-SQL]]
+=== Authentication using SQL
 
 SOGo can use a SQL-based database server for authentication. The
 configuration is very similar to LDAP-based authentication.
@@ -2165,8 +2159,8 @@ or username@domain.tld
 Note that groups are currently not supported for SQL-based
 authentication sources.
 
-SMTP Server Configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~
+
+=== SMTP Server Configuration
 
 SOGo makes use of a SMTP server to send emails from the Web interface,
 iMIP/iTIP messages and various notifications.
@@ -2225,8 +2219,8 @@ Possible values are:
 Defaults to `NO` when unset.
 |=======================================================================
 
-IMAP Server Configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~
+
+=== IMAP Server Configuration
 
 SOGo requires an IMAP server in order to let users consult their email
 messages, manage their folders and more.
@@ -2394,8 +2388,8 @@ permissions for the individual user.
 The default prefix is `$`. 
 |=======================================================================
 
-Web Interface Configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+=== Web Interface Configuration
 
 The following additional parameters only affect the Web interface
 behaviour of SOGo.
@@ -2902,8 +2896,8 @@ SOGoMailJunkSettings = {
 sent by SOGo. Defaults to `NO` when unset.
 |=======================================================================
 
-SOGo Configuration Summary
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+=== SOGo Configuration Summary
 
 The complete SOGo configuration file `/etc/sogo/sogo.conf` should look
 like this:
@@ -2951,10 +2945,9 @@ like this:
 }
 ----
 
-[[multi-domains-configuration]]
 
-Multi-domains Configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[[multi-domains-configuration]]
+=== Multi-domains Configuration
 
 If you want your installation to isolate two groups of users, you must
 define a distinct authentication source for each _domain_. Your domain keys
@@ -3050,8 +3043,8 @@ Defaults to an empty array, which means domains are isolated from each
 other.
 |=======================================================================
 
-Apache Configuration
-~~~~~~~~~~~~~~~~~~~~
+
+=== Apache Configuration
 
 The SOGo configuration for Apache is located in
 `/etc/httpd/conf.d/SOGo.conf`.
@@ -3080,8 +3073,8 @@ The default configuration will use `mod_proxy` and `mod_headers` to
 relay requests to the `sogod` parent process. This is suitable for small
 to medium deployments.
 
-Starting Services
-~~~~~~~~~~~~~~~~~
+
+=== Starting Services
 
 Once SOGo if fully installed and configured, start the services using
 the following command:
@@ -3097,8 +3090,8 @@ modules and configuration files were added:
 Finally, you should also make sure that the `memcached` service is
 started and that it is also automatically started at boot time.
 
-_Cronjob_ — EMail reminders
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+=== _Cronjob_ — EMail reminders
 
 SOGo allows you to set email-based reminders for events and tasks. To
 enable this, you must enable the `SOGoEnableEMailAlarms` preference and
@@ -3125,8 +3118,8 @@ SOGoSMTPMasterUserUsername = "foo";
 SOGoSMTPMasterUserPassword = "bar";
 ```
 
-_Cronjob_ — Vacation messages activation and expiration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+=== _Cronjob_ — Vacation messages activation and expiration
 
 When vacation messages are enabled (see the parameter
 _SOGoVacationEnabled_), users can set an activation or expiration date
@@ -3147,8 +3140,8 @@ The _cronjob_ should look like this:
 0 0 * * * sogo /usr/sbin/sogo-tool update-autoreply -p /etc/sogo/sieve.creds
 ----
 
-_Password_ — Force user password change at login
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+=== _Password_ — Force user password change at login
 
 The following commands force user to change his password at login :
 
@@ -3162,11 +3155,11 @@ Disable :
 /usr/sbin/sogo-tool user-preferences unset settings [USER] ForceResetPassword
 ----
 
-Managing User Accounts
-----------------------
 
-Creating the SOGo Administrative Account
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+== Managing User Accounts
+
+
+=== Creating the SOGo Administrative Account
 
 First, create the SOGo administrative account in your LDAP server. The
 following LDIF file (`sogo.ldif`) can be used as an example:
@@ -3193,8 +3186,8 @@ administrative account using the following command:
 
  ldappasswd -h 127.0.0.1 -x -w qwerty -D cn=Manager,dc=acme,dc=com uid=sogo,ou=users,dc=acme,dc=com -s qwerty
 
-Creating a User Account
-~~~~~~~~~~~~~~~~~~~~~~~
+
+=== Creating a User Account
 
 SOGo uses LDAP directories to authenticate users. Use the following LDIF
 file (`jdoe.ldif`) as an example to create a SOGo user account:
@@ -3227,8 +3220,8 @@ easier. These GUI utilities can make use of templates to create and
 pre-configure typical user accounts or any standardized LDAP record,
 along with the correct object classes, fields and default values.
 
-Microsoft Enterprise ActiveSync
--------------------------------
+
+=== Microsoft Enterprise ActiveSync
 
 SOGo supports the Microsoft ActiveSync protocol.
 
@@ -3364,8 +3357,8 @@ and send an email to iplicreq@microsoft.com
 Alinto provides this software for free, but is not responsible for
 anything related to its usage.
 
-Microsoft Enterprise ActiveSync Tuning
---------------------------------------
+
+== Microsoft Enterprise ActiveSync Tuning
 
 First of all, it is important to know that most EAS devices will keep
 HTTP connections open to SOGo (and thus, Apache) for a long time. This
@@ -3440,8 +3433,8 @@ SOGoMaximumSyncInterval = 3540;
 SOGoInternalSyncInterval = 60;
 ----
 
-S/MIME Support in SOGo
-----------------------
+
+== S/MIME Support in SOGo
 
 SOGo supports S/MIME email signing and encryption. When receiving
 S/MIME signed emails, SOGo automatically extracts the PKCS (Public-Key
@@ -3459,11 +3452,10 @@ please have a look at Actalis:
 https://www.actalis.it/products/certificates-for-secure-electronic-mail.aspx
 
 
-Using SOGo
-----------
+== Using SOGo
 
-SOGo Web Interface
-~~~~~~~~~~~~~~~~~~
+
+=== SOGo Web Interface
 
 To acces the SOGo Web Interface, point your Web browser, which is
 running from the same server where SOGo was installed, to the following
@@ -3472,8 +3464,8 @@ URL: http://127.0.0.1/SOGo.
 Log in using the "jdoe" user and the "qwerty" password. The underlying
 database tables will automatically be created by SOGo.
 
-Mozilla Thunderbird and Lightning
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+=== Mozilla Thunderbird and Lightning
 
 Alternatively, you can access SOGo with a GroupDAV and a CalDAV client.
 A typical well-integrated setup is to use Mozilla Thunderbird and
@@ -3515,8 +3507,8 @@ To access your personal calendar:
 `http://127.0.0.1/SOGo/dav/jdoe/Calendar/personal/`
 * Click on Continue.
 
-Apple Calendar (macOS, iOS, iPadOS)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+=== Apple Calendar (macOS, iOS, iPadOS)
 
 Apple Calendar on macOS, iOS, and iPadOS can also be used
 as a client application for SOGo.
@@ -3534,8 +3526,8 @@ You have to add the profile to your device :
 * Go to Settings / Profiles / Click on + / Continue
 * Type your SOGo account password and click on install
 
-Apple AddressBook
-~~~~~~~~~~~~~~~~~
+
+=== Apple AddressBook
 
 Since Mac OS X 10.6 (Snow Leopard), Apple AddressBook can be configured
 to use SOGo.
@@ -3583,8 +3575,8 @@ You have to add the profile to your device :
 * Go to Settings / Profiles / Click on + / Continue
 * Type your SOGo account password and click on install
 
-Microsoft ActiveSync
-~~~~~~~~~~~~~~~~~~~~
+
+=== Microsoft ActiveSync
 
 You can synchronize contacts, emails, events and tasks from SOGo with
 any mobile devices that support Microsoft ActiveSync. Microsoft Outlook
@@ -3593,8 +3585,9 @@ any mobile devices that support Microsoft ActiveSync. Microsoft Outlook
 The Microsoft ActiveSync server URL is generally something
 like: `http://127.0.0.1/Microsoft-Server-ActiveSync`.
 
-Using sogo-tool
----------------
+
+== Using sogo-tool
+
 The command _sogo-tool_ allows to do some operations on database and sieve filter. It is included with
 the sogo package on Debian/Ubuntu but must be installed manually on RHEl/CentOS:
 
@@ -3603,8 +3596,8 @@ the sogo package on Debian/Ubuntu but must be installed manually on RHEl/CentOS:
 *_WARNING_: Use sogo-tool with full awareness of what you are doing. This is an admin tool that can cause loss of data
 or completely make the webmail unusable by a user.*
 
-sogo-tool backup/restore
-~~~~~~~~~~~~~~~~~~~~~~~~
+
+=== sogo-tool backup/restore
 
 The backup tool saves the information of a user into a file. The information saved are its preferences, its events and its contacts.
 
@@ -3685,8 +3678,8 @@ sogo-tool restore -F "Contacts/personal" tmp/backup user1
 sogo-tool restore -F "Calendar/60C8-65323D80-7-4D9F7D80" tmp/backup user1
 ----
 
-sogo-tool checkup
-~~~~~~~~~~~~~~~~~
+
+=== sogo-tool checkup
 
 Check the events and contacts data's integrity of a user
 
@@ -3717,8 +3710,8 @@ sogo-tool checkup -d user1
 
 [[sogo-tool-clean-openid-sessions]]
 
-sogo-tool clean-openid-sessions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+=== sogo-tool clean-openid-sessions
 
 Obviously only usefull if you have set SOGo with openId authentication.
 Will clean all expired openId sessions from the database.
@@ -3730,8 +3723,8 @@ Example:
 sogo-tool clean-openid-sessions
 ----
 
-sogo-tool cleanup
-~~~~~~~~~~~~~~~~~
+
+=== sogo-tool cleanup
 
 Will purge all user's deleted events and contacts which the deletion is older than a number of days.
 
@@ -3755,8 +3748,7 @@ Purged 5 records from folder /Users/user2/Calendar/personal
 ----
 
 
-sogo-tool create-folder
-~~~~~~~~~~~~~~~~~~~~~~~
+=== sogo-tool create-folder
 
 Create a folder (Calendar or Address Book) for a user.
 
@@ -3773,8 +3765,7 @@ sogo-tool create-folder user2 Calendar Pro_Calendar
 ----
 
 
-sogo-tool dump-defaults
-~~~~~~~~~~~~~~~~~~~~~~~
+=== sogo-tool dump-defaults
 
 Output all current defaults value of GNUstep and SOGo (sogo.conf)
 
@@ -3791,8 +3782,8 @@ sogo-tool dump-defaults all
 sogo-tool dump-defaults -f /tmp/foo/conf.xml
 ----
 
-sogo-tool expire-sessions
-~~~~~~~~~~~~~~~~~~~~~~~~~
+
+=== sogo-tool expire-sessions
 
 Expires user sessions from database without activity for specified number of minutes. When a user log in to sogo for
 the first time, sogo will create a entry in database's table OCSSessionsFolderURL with the user's information. Sogo will 
@@ -3811,8 +3802,8 @@ sogo-tool expire-sessions 160     #Will remove session which last activity is ol
 sogo-tool expire-sessions 0       #Will remove session which last activity is older than 0 minutes.
 ----
 
-sogo-tool manage-acl
-~~~~~~~~~~~~~~~~~~~~
+
+=== sogo-tool manage-acl
 
 Manage access-control list (ACL) of a user for folders (Calendar and Address Book).
 
@@ -3883,8 +3874,8 @@ Example:
 sogo-tool manage-acl unsubscribe sogo-tests1 Contacts/5E1D-653FC400-1-1A330C40 sogo-tests2
 ----
 
-sogo-tool manage-eas
-~~~~~~~~~~~~~~~~~~~~
+
+=== sogo-tool manage-eas
 
 Manage EAS folders
 
@@ -3914,8 +3905,8 @@ sogo-tool manage-eas mergevcard  janedow androidc316986417 YES
 sogo-tool manage-eas mergevevent janedow androidc316986417 YES
 ----
 
-sogo-tool remove
-~~~~~~~~~~~~~~~~
+
+=== sogo-tool remove
 
 Remove all folders (Calendar and Address Book) and Preference settings of a user. The personal Calendar and Address Book
 will stay but be emptied of all entries. The Preferences will go back to defaults values as for a new user.
@@ -3939,8 +3930,8 @@ Deleting /Users/user2/Contacts/B087-65363400-7-374DA380
 Deleting /Users/user2/Contacts/personal
 ----
 
-sogo-tool remove-doubles
-~~~~~~~~~~~~~~~~~~~~~~~~
+
+=== sogo-tool remove-doubles
 
 remove duplicate contacts from the specified user addressbook
 
@@ -3965,8 +3956,8 @@ sogo-tool remove-doubles user1 personal
 sogo-tool remove-doubles user2 489-65376E80-1-2D2BA000
 ----
 
-sogo-tool rename-user
-~~~~~~~~~~~~~~~~~~~~~
+
+=== sogo-tool rename-user
 
 Update records pertaining to a user after a change of user id. Will change all folders path, subscriptions from others users,
 all mention of user id in database.
@@ -3984,8 +3975,8 @@ Example:
 sogo-tool rename-user old_username new_username
 ----
 
-sogo-tool truncate-calendar
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+=== sogo-tool truncate-calendar
 
 Remove old calendar entries from the specified user calendar.
 
@@ -4015,8 +4006,7 @@ Removing 1 records...
 Removed 1 records.
 ----
 
-sogo-tool update-autoreply
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== sogo-tool update-autoreply
 
 _This command is only useful if your sieve server doesn't have the capabilities *date* or *relational*_
 In that case this command will check vacation's setting of all the users. If vacation is enabled/disabled,
@@ -4036,8 +4026,7 @@ Example:
 [[sogo-tool-update-secret]]
 
 
-sogo-tool update-secret
-~~~~~~~~~~~~~~~~~~~~~~~
+=== sogo-tool update-secret
 
 _New in 5.10_
 
@@ -4063,8 +4052,7 @@ If your data are already encrypted with 'oldSecret' but you want to decrypt them
  sogo-tool update-secret -o oldSecret
 ----
 
-sogo-tool user-preferences
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== sogo-tool user-preferences
 
 Get, set or unset user defaults / settings in the database.
 
@@ -4123,8 +4111,7 @@ sogo-tool user-preferences set defaults user1 Forward -f /path/filename -p cred
 ----
 
 
-API REST
---------
+== API REST
 
 Starting from 5.12.2, an API with two endpoints is available.
 All response will be on json format. In case of errors, the message will be:
@@ -4133,8 +4120,7 @@ All response will be on json format. In case of errors, the message will be:
 ```
 with an explicit message
 
-API server url
-~~~~~~~~~~~~~~
+=== API server url
 
 _<scheme>_://_<domain>_/SOGo/SOGoAPI/_<action>_
 
@@ -4142,8 +4128,7 @@ _<scheme>_://_<domain>_/SOGo/SOGoAPI/_<action>_
 •	*domain* : domain or ip:port of SOGo's server
 •	*action* : name of the action. No action does the Version action described below.
 
-Authentication
-~~~~~~~~~~~~~~
+=== Authentication
 
 Somes actions needs to be authenticated. There is two ways to do so:
 
@@ -4165,8 +4150,8 @@ Add a header *Auhtorization* with value:
 
 *acces_token* is from the https://connect2id.com/products/server/docs/api/token#url[openid protocol]. It has to be fetch with the scope `openid`.
 
-Action - Version
-~~~~~~~~~~~~~~~~
+=== Action - Version
+
 *	*URL*: <scheme>://<domain>/SOGo/SOGoAPI/Version
 *	*Authentication needed*: NO
 *	*HTTP method allowed*: GET
@@ -4180,8 +4165,8 @@ Action - Version
 }
 ```
 
-Action - UserFolder
-~~~~~~~~~~~~~~~~~~~
+=== Action - UserFolder
+
 *	*URL*: <scheme>://<domain>/SOGo/SOGoAPI/UserFolder
 *	*Authentication needed*: YES
 *	*HTTP method allowed*: GET
@@ -4225,8 +4210,7 @@ A folder info is a dict with:
 ** *name*: Name of the folder.
 ** *url*: Dav link of the folder.
 
-Errors and messages
-~~~~~~~~~~~~~~~~~~~
+=== Errors and messages
 
 Complete http response is `{“error:” : <message>}`.
 *<action>* is the one used for the request: `<scheme>://<domain>/SOGo/SOGoAPI/<action>`
@@ -4273,8 +4257,7 @@ To have more logs you can add `SOGoAPIDebugEnabled = YES;` to your sogo.conf.
 
 
 
-Upgrading
----------
+== Upgrading
 
 This section describes what needs to be done when upgrading to the
 current version of SOGo from the previous release.
