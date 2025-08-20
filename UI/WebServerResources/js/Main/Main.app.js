@@ -89,6 +89,12 @@
     };
 
     this.login = function () {
+      if(vm.loginState == 'passwordrecovery') {
+        if(vm.passwordRecovery.passwordRecoveryMode == 'SecretQuestion')
+          return this.passwordRecoveryCheck();
+        if(vm.passwordRecovery.passwordRecoveryMode == 'SecondaryEmail')
+          return this.passwordRecoveryEmail();
+      }
       vm.loginState = 'authenticating';
       Authentication.login(vm.creds)
         .then(function (data) {
@@ -167,6 +173,12 @@
     };
 
     this.loginName = function() {
+      if(vm.loginState == 'passwordrecovery') {
+        if(vm.passwordRecovery.passwordRecoveryMode == 'SecretQuestion')
+          return this.passwordRecoveryCheck();
+        if(vm.passwordRecovery.passwordRecoveryMode == 'SecondaryEmail')
+          return this.passwordRecoveryEmail();
+      }
       vm.loginState = 'authenticating';
       Authentication.loginName(vm.creds)
         .then(function(data) {
