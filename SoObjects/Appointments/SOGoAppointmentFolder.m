@@ -1133,8 +1133,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   recordIndex = [self _indexOfRecordMatchingDate: recurrenceId inArray: ma];
   if ([dateRange doesIntersectWithDateRange: recurrenceIdRange] && recordIndex == -1) {
     [self warnWithFormat:
-                @"missing exception record for recurrence-id %@ (uid %@), ma = %@, dr = %@, rir = %@",
-              recurrenceId, [component uid], ma, dateRange, recurrenceIdRange];
+                @"missing exception record for recurrence-id %@ (uid %@), dr = %@, rir = %@",
+              recurrenceId, [component uid], dateRange, recurrenceIdRange];
   }
   if ([dateRange doesIntersectWithDateRange: recurrenceIdRange] && recordIndex != -1)
     {
