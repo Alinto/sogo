@@ -27,6 +27,7 @@
 @class NSArray;
 @class NSString;
 @class WOContext;
+@class NSNull;
 
 @interface NSObject (SOGoObjectUtilities)
 

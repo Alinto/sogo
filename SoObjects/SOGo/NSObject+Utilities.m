@@ -110,7 +110,7 @@ static NSMutableDictionary *translationCache = nil;
 
   while (!label && (language = [languages nextObject]))
     {
-      if (![translationCache objectForKey: language]) {
+      if (![translationCache objectForKey: language] || [[translationCache objectForKey: language] objectForKey: key] != [NSNull null]) {
         paths = [bundle pathsForResourcesOfType: @"strings"
           inDirectory: [NSString stringWithFormat: @"%@.lproj",
                         language]
