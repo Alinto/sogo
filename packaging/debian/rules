@@ -37,6 +37,11 @@ ifeq ($(DIST_CODENAME), bookworm)
 MFA_CONFIG=--enable-mfa
 endif
 
+# Debian 13
+ifeq ($(DIST_CODENAME), trixie)
+MFA_CONFIG=--enable-mfa
+endif
+
 # Ubuntu 12.04
 ifeq ($(DIST_CODENAME), precise)
 SODIUM_CONFIG=--disable-sodium
