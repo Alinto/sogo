@@ -105,8 +105,11 @@
 "Unhandled error response" = "Uhåndtert feilmelding.";
 "Password change is not supported." = "Passordendring er ikke støttet.";
 "Unhandled HTTP error code: %{0}" = "Uhåndtert HTTP-feilkode: %{0}";
+"Current password" = "Nåværende passord";
 "New password" = "Nytt passord";
 "Confirmation" = "Bekreftelse";
+"Passwords don't match" = "Passordene er ikke like ";
+"Change" = "Endre";
 "Cancel" = "Avbryt";
 "Please wait..." = "Vennligst vent...";
 "Close" = "Lukk";

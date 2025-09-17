@@ -105,8 +105,11 @@
 "Unhandled error response" = "fejlreaktion";
 "Password change is not supported." = "Ændring af adgangskoden er ikke understøttet.";
 "Unhandled HTTP error code: %{0}" = "HTTP fejlkode: %{0}";
+"Current password" = "Nuværende adgangskode";
 "New password" = "Ny adgangskode";
 "Confirmation" = "Bekræftelse";
+"Passwords don't match" = "Adgangskoder stemmer ikke overens";
+"Change" = "Skift";
 "Cancel" = "Annullér";
 "Please wait..." = "Vent venligst ...";
 "Close" = "Luk";
