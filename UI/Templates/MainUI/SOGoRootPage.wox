@@ -226,14 +226,14 @@
                   <div flex="100">
                     <div layout="row" layout-xs="column">
                     <md-input-container class="md-block" flex="flex" ng-if="!(app.isInPasswordRecoveryMode())">
-                        <label><var:string label:value="Current password"/>
+                        <label class="input-login-label"><var:string label:value="Current password"/>
                         </label>
-                        <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.oldPassword"/>
+                        <input class="md-input input-login-input" type="password" sg-no-dirty-check="true" ng-model="app.passwords.oldPassword"/>
                       </md-input-container>
                       <md-input-container class="md-block" flex="flex">
-                        <label><var:string label:value="New password"/>
+                        <label class="input-login-label"><var:string label:value="New password"/>
                         </label>
-                        <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.newPassword"/>
+                        <input class="input-login-input" type="password" sg-no-dirty-check="true" ng-model="app.passwords.newPassword"/>
                         <div class="sg-hint">
                           <ul class="sg-padded">
                             <li ng-repeat="item in app.passwordPolicy">
@@ -243,11 +243,11 @@
                         </div>
                       </md-input-container>
                       <md-input-container class="md-block" flex="flex">
-                        <label><var:string label:value="Confirmation"/>
+                        <label class="input-login-label"><var:string label:value="Confirmation"/>
                         </label>
-                        <input type="password" name="newPasswordConfirmation" sg-no-dirty-check="true" ng-model="app.passwords.newPasswordConfirmation"/>
+                        <input class="input-login-input" type="password" name="newPasswordConfirmation" sg-no-dirty-check="true" ng-model="app.passwords.newPasswordConfirmation"/>
                         <div ng-messages="loginForm.newPasswordConfirmation.$error">
-                          <div ng-message="newPasswordMismatch"><var:string label:value="Passwords don't match"/></div>
+                          <div class="input-login-mismtach" ng-message="newPasswordMismatch"><var:string label:value="Passwords don't match"/></div>
                         </div>
                       </md-input-container>
                     </div>
