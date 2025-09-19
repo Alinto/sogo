@@ -112,6 +112,7 @@ See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for v
 "Unhandled HTTP error code: %{0}" = "Unhandled HTTP error code: %{0}";
 "Current password" = "Current password";
 "New password" = "New password";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "Confirmation";
 "Change" = "Changer";
 "Cancel" = "Cancel";
