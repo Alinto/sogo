@@ -142,6 +142,10 @@
   else
     imapAuthMech = nil;
 
+  //If ActiveSync, force the plain mech
+  if([[[[self context] request] requestHandlerKey] isEqualToString:@"Microsoft-Server-ActiveSync"])
+    imapAuthMech = @"plain";
+
   return [NGImap4ConnectionManager defaultConnectionManager: imapAuthMech];
 }
 
