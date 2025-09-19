@@ -129,6 +129,7 @@
     SOGoMailDisplayFullEmail = NO;
     SOGoMailDisplayRemoteInlineImages = "never";
     SOGoMailCertificateEnabled = YES;
+    SOGoMailDisplayAttachmentAbove = NO;
 
     SOGoMailAutoMarkAsReadDelay = "0";
     SOGoMailAutoSave = "5";

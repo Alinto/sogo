@@ -462,7 +462,12 @@
             // Trusted content that can be compiled (Angularly-speaking)
             part.compile = true;
             if (!Object.hasOwn(part, 'shouldDisplayAttachment') || 1 == part.shouldDisplayAttachment ) {
-              parts.push(part);
+              if(Message.$Preferences.defaults.SOGoMailDisplayAttachmentAbove) {
+                parts.unshift(part);
+              }
+              else {
+                parts.push(part);
+              }
             }
           }
           else {

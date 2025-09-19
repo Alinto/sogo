@@ -723,6 +723,16 @@
 
             <div>
               <md-checkbox
+                  ng-model="app.preferences.defaults.SOGoMailDisplayAttachmentAbove"
+                  ng-true-value="1"
+                  ng-false-value="0"
+                  label:aria-label="Show attachments above the message">
+                <var:string label:value="Show attachments above the message"/>
+              </md-checkbox>
+            </div>
+
+            <div>
+              <md-checkbox
                   ng-model="app.preferences.defaults.SOGoMailAutoMarkAsReadEnabled"
                   label:aria-label="Automatically mark messages as read">
                 <var:string label:value="Automatically mark messages as read"/>

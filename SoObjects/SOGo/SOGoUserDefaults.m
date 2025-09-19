@@ -634,12 +634,12 @@ NSString *SOGoPasswordRecoverySecondaryEmail = @"SecondaryEmail";
   return [self integerForKey: @"SOGoMailComposeFontSize"];
 }
 
-- (void) setMailDisplayFullEmail: (BOOL *) newValue
+- (void) setMailDisplayFullEmail: (BOOL) newValue
 {
   [self setBool: newValue forKey: @"SOGoMailDisplayFullEmail"];
 }
 
-- (BOOL *) mailDisplayFullEmail;
+- (BOOL) mailDisplayFullEmail;
 {
   return [self boolForKey: @"SOGoMailDisplayFullEmail"];
 }
@@ -652,6 +652,16 @@ NSString *SOGoPasswordRecoverySecondaryEmail = @"SecondaryEmail";
 - (NSString *) mailDisplayRemoteInlineImages;
 {
   return [self stringForKey: @"SOGoMailDisplayRemoteInlineImages"];
+}
+
+- (void) setMailDisplayAttachmentAbove: (BOOL) newValue
+{
+  [self setBool: newValue forKey: @"SOGoMailDisplayAttachmentAbove"];
+}
+
+- (BOOL) mailDisplayAttachmentAbove;
+{
+  return [self boolForKey: @"SOGoMailDisplayAttachmentAbove"];
 }
 
 - (void) setMailAutoMarkAsReadDelay: (int) newValue
