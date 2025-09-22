@@ -390,7 +390,7 @@ md-dialog md-dialog-actions.sg-mail-editor-attachments {
 
 // Default styles for HTML parts
 .SOGoHTMLMail-CSS-Delimiter p {
-  margin: 0 0 0;
+  margin: 0 0 1em;
 }
 
 [ui-view="maileditor"] {
