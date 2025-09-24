@@ -184,6 +184,9 @@ static int cssEscapingCount;
     {
       rangePtr->location += offset;
       urlText = [selfCopy substringFromRange: *rangePtr];
+      //If we try to detect mail, check if the first char is @, meaning this is not an email
+      if([prefix isEqualToString: @"mailto:"] && [urlText characterAtIndex: 0] == '@')
+        continue;
       newUrlText = [NSString stringWithFormat: @"<a rel=\"noopener\" href=\"%@%@\">%@</a>",
                           ([urlText hasPrefix: prefix]? @"" : prefix),
                              urlText, urlText];
