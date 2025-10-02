@@ -274,7 +274,7 @@ static const NSString *kJwtKey = @"jwt";
 
   SOGoPasswordPolicyError err;
   int expire, grace;
-  BOOL rememberLogin, b;
+  BOOL rememberLogin, b, loginSuccess;
 
   err = PolicyNoError;
   expire = grace = -1;
@@ -296,12 +296,14 @@ static const NSString *kJwtKey = @"jwt";
 		 perr: &err expire: &expire grace: &grace additionalInfo: &additionalLoginInformations useCache: NO];
   [self translateAdditionalLoginInformations: &additionalLoginInformations];
 
-  if (b
+  loginSuccess = b
       && (err == PolicyNoError)
       // no password policy
       && ((expire < 0 && grace < 0)     // no password policy or everything is alright
       || (expire < 0 && grace > 0)      // password expired, grace still permits login
-      || (expire >= 0 && grace == -1))) // password about to expire OR ppolicy activated and passwd never changed
+      || (expire >= 0 && grace == -1)); // password about to expire OR ppolicy activated and passwd never changed
+
+  if (loginSuccess) 
     {
       NSMutableDictionary *json = [NSMutableDictionary dictionary];
 
@@ -442,7 +444,8 @@ static const NSString *kJwtKey = @"jwt";
       response = [self _responseWithLDAPPolicyError: err additionalInfos: additionalLoginInformations];
     }
 
-  if (rememberLogin)
+  //Only remember login If the auth was succesful...
+  if (rememberLogin && loginSuccess)
     [response addCookie: [self _cookieWithUsername: [params objectForKey: @"userName"]]];
   else
     [response addCookie: [self _cookieWithUsername: nil]];
