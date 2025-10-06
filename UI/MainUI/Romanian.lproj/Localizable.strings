@@ -107,8 +107,11 @@
 "Unhandled error response" = "Răspuns de eroare nedeclarat";
 "Password change is not supported." = "Schimbare parolei nu este suportată.";
 "Unhandled HTTP error code: %{0}" = "Răspuns de eroare HTTP nedeclarat: %{0}";
+"Current password" = "Current password";
 "New password" = "Parola nouă";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "Confirmare";
+"Change" = "Change";
 "Cancel" = "Renunţare";
 "Please wait..." = "Vă rugăm să așteptați...";
 "Close" = "Închide";
