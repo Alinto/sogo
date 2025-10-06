@@ -107,8 +107,11 @@
 "Unhandled error response" = "Neapstrādāta kļūda";
 "Password change is not supported." = "Paroles maiņa nav atbalstīta.";
 "Unhandled HTTP error code: %{0}" = "Neparedzēts HTTP kļūdas kods: %{0}";
+"Current password" = "Current password";
 "New password" = "Jauna parole";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "Apstiprinājums";
+"Change" = "Change";
 "Cancel" = "Atcelt";
 "Please wait..." = "Lūdzu, uzgaidiet...";
 "Close" = "Aizvērt";
