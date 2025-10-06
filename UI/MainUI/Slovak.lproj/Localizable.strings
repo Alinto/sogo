@@ -107,8 +107,11 @@
 "Unhandled error response" = "Nespracované chyby na odpoveď";
 "Password change is not supported." = "Zmena hesla nie je povolená.";
 "Unhandled HTTP error code: %{0}" = "Nespracované HTTP. Kód chyby:% {0}";
+"Current password" = "Current password";
 "New password" = "Nové heslo";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "Potvrdiť";
+"Change" = "Change";
 "Cancel" = "Zrušiť";
 "Please wait..." = "Prosím, čakajte ...";
 "Close" = "Zavrieť";
