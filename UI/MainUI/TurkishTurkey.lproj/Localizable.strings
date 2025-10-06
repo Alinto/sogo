@@ -107,8 +107,11 @@
 "Unhandled error response" = "İşlenmedi hatası yanıtı";
 "Password change is not supported." = "Parolanın değiştirilmesi desteklenmiyor.";
 "Unhandled HTTP error code: %{0}" = "İşlenmedi HTTP hata kodu: %{0}";
+"Current password" = "Current password";
 "New password" = "Yeni parola";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "Onay";
+"Change" = "Change";
 "Cancel" = "İptal";
 "Please wait..." = "Lütfen bekleyin...";
 "Close" = "Kapat";

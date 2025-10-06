@@ -207,6 +207,7 @@
 "Insert signature on forward" = "İmza iletilen e-postalara eklensin";
 "Show recipients or sender full email in mailboxes" = "E-posta kutularında alıcıların ya da göndericinin tam adı görüntülensin";
 "Hide attachements for inline images" = "Satır içi görsellerde ek dosyalar gizlensin";
+"Show attachments above the message" = "Show attachments above the message";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Varsayılan yazı büyüklüğü";
