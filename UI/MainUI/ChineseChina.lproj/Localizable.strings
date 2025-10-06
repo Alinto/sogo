@@ -107,8 +107,11 @@
 "Unhandled error response" = "返回未知错误";
 "Password change is not supported." = "不支持修改密码";
 "Unhandled HTTP error code: %{0}" = "未知 HTTP 错误: %{0}";
+"Current password" = "Current password";
 "New password" = "新密码";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "确认";
+"Change" = "Change";
 "Cancel" = "取消";
 "Please wait..." = "请稍候…";
 "Close" = "关闭";
