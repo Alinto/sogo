@@ -107,8 +107,11 @@
 "Unhandled error response" = "Невизначений результат помилки";
 "Password change is not supported." = "Функція зміни пароля не підтримується.";
 "Unhandled HTTP error code: %{0}" = "Невизначений код помилкий HTTP: %{0}";
+"Current password" = "Current password";
 "New password" = "Новий пароль";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "Підтвердження";
+"Change" = "Change";
 "Cancel" = "Скасувати";
 "Please wait..." = "Будь ласка, зачекайте...";
 "Close" = "Закрити";
