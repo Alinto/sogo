@@ -107,8 +107,11 @@
 "Unhandled error response" = "Error no previst";
 "Password change is not supported." = "No s'admet canvi de contrasenyes.";
 "Unhandled HTTP error code: %{0}" = "Error HTTP no previst. Codi: %{0}";
+"Current password" = "Current password";
 "New password" = "Contrasenya nova";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "Confirmació";
+"Change" = "Change";
 "Cancel" = "Cancel·lar";
 "Please wait..." = "Si us plau, espereu-vos...";
 "Close" = "Tancar";
