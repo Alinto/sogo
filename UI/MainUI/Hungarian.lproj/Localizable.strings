@@ -107,8 +107,11 @@
 "Unhandled error response" = "Nem kezelt hiba";
 "Password change is not supported." = "A jelszó megváltoztatása nem támogatott.";
 "Unhandled HTTP error code: %{0}" = "Nem kezelt HTTP hibakód: /{0}";
+"Current password" = "Current password";
 "New password" = "Új jelszó";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "Megerősítés";
+"Change" = "Change";
 "Cancel" = "Törlés";
 "Please wait..." = "Kérem várjon ...";
 "Close" = "Bezárás";
