@@ -107,8 +107,11 @@
 "Unhandled error response" = "Risposta con errore non gestito";
 "Password change is not supported." = "Cambio di password non supportato.";
 "Unhandled HTTP error code: %{0}" = "Codice errore HTTP non gestito: %{0}";
+"Current password" = "Current password";
 "New password" = "Nuova password";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "Conferma";
+"Change" = "Change";
 "Cancel" = "Cancella";
 "Please wait..." = "Prego attendere...";
 "Close" = "Chiudi";
