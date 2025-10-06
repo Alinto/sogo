@@ -107,8 +107,11 @@
 "Unhandled error response" = "Onverwerkte foutmelding";
 "Password change is not supported." = "Wachtwoordwijziging wordt niet ondersteund.";
 "Unhandled HTTP error code: %{0}" = "Onverwerkte HTTP-foutcode: %{0}";
+"Current password" = "Current password";
 "New password" = "Nieuw wachtwoord";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "Bevestiging";
+"Change" = "Change";
 "Cancel" = "Annuleren";
 "Please wait..." = "Een ogenblik geduld ...";
 "Close" = "Sluiten";

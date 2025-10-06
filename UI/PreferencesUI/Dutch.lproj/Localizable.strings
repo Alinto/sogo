@@ -207,6 +207,7 @@
 "Insert signature on forward" = "Handtekening bij doorsturen invoegen";
 "Show recipients or sender full email in mailboxes" = "Toon ontvangers of afzenders volledige e-mail in mailboxen";
 "Hide attachements for inline images" = "Bijlagen voor inline-afbeeldingen verbergen";
+"Show attachments above the message" = "Show attachments above the message";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Standaard lettergrootte";
