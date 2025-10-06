@@ -107,8 +107,11 @@
 "Unhandled error response" = "Käsittelemätön virhe";
 "Password change is not supported." = "Salasanan vaihto ei ole tuettu.";
 "Unhandled HTTP error code: %{0}" = "Käsittelemätön HTTP virhe: %{0}";
+"Current password" = "Current password";
 "New password" = "Uusi salasana";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "Vahvistus";
+"Change" = "Change";
 "Cancel" = "Peruuta";
 "Please wait..." = "Odota hetki...";
 "Close" = "Sulje";
