@@ -207,6 +207,7 @@
 "Insert signature on forward" = "Sett inn signatur på videresending";
 "Show recipients or sender full email in mailboxes" = "Vis mottakere eller avsender av hele e-posten i innboksene";
 "Hide attachements for inline images" = "Skjul vedlegg for innebygde bilder";
+"Show attachments above the message" = "Vis vedlegg over meldingen";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Standard skriftstørrelse ";

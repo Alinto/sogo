@@ -53,7 +53,7 @@
 "Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
 "Japanese" = "日本語";
-"Korean" = "한국어";
+"Korean" = "Koreansk";
 "Kazakh" = "Қазақ";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
@@ -73,7 +73,7 @@
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
-"Thai" = "ภาษา";
+"Thai" = "Thailandsk";
 "TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
@@ -107,8 +107,11 @@
 "Unhandled error response" = "Uhåndtert feilmelding.";
 "Password change is not supported." = "Passordendring er ikke støttet.";
 "Unhandled HTTP error code: %{0}" = "Uhåndtert HTTP-feilkode: %{0}";
+"Current password" = "Nåværende passord";
 "New password" = "Nytt passord";
+"Passwords don't match" = "Passordene er ikke like";
 "Confirmation" = "Bekreftelse";
+"Change" = "Endre";
 "Cancel" = "Avbryt";
 "Please wait..." = "Vennligst vent...";
 "Close" = "Lukk";
