@@ -107,8 +107,11 @@
 "Unhandled error response" = "Ohanterat fel har inträffat";
 "Password change is not supported." = "Stöd saknas för ändring av lösenord.";
 "Unhandled HTTP error code: %{0}" = "Ohanterat HTTP felkod: %{0}";
+"Current password" = "Current password";
 "New password" = "Nytt lösenord";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "Bekräfta";
+"Change" = "Change";
 "Cancel" = "Avbryt";
 "Please wait..." = "Var god vänta...";
 "Close" = "Close";
