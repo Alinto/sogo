@@ -207,6 +207,7 @@
 "Insert signature on forward" = "Vkládat podpis do přeposlaných zpráv";
 "Show recipients or sender full email in mailboxes" = "Zobrazovat kompletní e-mailové adresy v poštovních složkách";
 "Hide attachements for inline images" = "Skrývat obrázky v textu";
+"Show attachments above the message" = "Zobrazit přílohy nad zprávou";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Výchozí velikost písma";

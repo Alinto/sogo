@@ -86,7 +86,7 @@
 "Change your Password" = "Změňte své heslo";
 "The password was changed successfully." = "Heslo bylo úspěšně změněno.";
 "Your password has expired, please enter a new one below" = "Vaše heslo expirovalo, prosím zadejte nové";
-"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Heslo je příliš slabé. Zvolte raději silnější heslo";
 "Password must not be empty." = "Heslo nesmí být prázdné.";
 "The passwords do not match. Please try again." = "Hesla se neshodují. Prosím zadejte znovu.";
 "Password Grace Period" = "Doba platnosti hesla";
@@ -107,8 +107,11 @@
 "Unhandled error response" = "Neošetřená chyba";
 "Password change is not supported." = "Změna hesla není podporována.";
 "Unhandled HTTP error code: %{0}" = "Neošetřený HTTP chybový kód: %{0}";
+"Current password" = "Stávající heslo";
 "New password" = "Nové heslo";
+"Passwords don't match" = "Hesla se neshodují";
 "Confirmation" = "Potvrzení";
+"Change" = "Změnit";
 "Cancel" = "Storno";
 "Please wait..." = "Prosím čekejte...";
 "Close" = "Zavřít";

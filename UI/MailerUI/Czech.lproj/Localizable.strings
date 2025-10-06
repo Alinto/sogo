@@ -171,7 +171,7 @@
 /* MailListView */
 "Sender" = "Odesílatel";
 "Subject or Sender" = "Předmět nebo Odesílatel";
-"Subject or Recipient" = "Subject or Recipient";
+"Subject or Recipient" = "Předmět nebo Příjemce";
 "To or Cc" = "Komu nebo Kopie";
 "Entire Message" = "Celá zpráva";
 "Date"          = "Datum";
@@ -517,16 +517,16 @@
 "hotkey_forward" = "f";
 
 /* Email deletion */
-"Clean folder" = "Clean folder";
-"Clean mailbox" = "Clean mailbox";
-"Delete permanently (do not use trash)" = "Delete permanently (do not use trash)";
-"Apply to subfolders" = "Apply to subfolders";
-"Delete e-mails older than" = "Delete e-mails older than";
-"3 months" = "3 months";
-"6 months" = "6 months";
-"9 months" = "9 months";
-"1 year" = "1 year";
-"Custom" = "Custom";
-"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "You are about to permanently delete some messages. Are you sure you want to proceed with this action?";
-"Apply" = "Apply";
-"%{0} message(s) deleted" = "%{0} message(s) deleted";
+"Clean folder" = "Promazat složku";
+"Clean mailbox" = "Promazat schránku";
+"Delete permanently (do not use trash)" = "Smazat trvale (přeskočit Koš)";
+"Apply to subfolders" = "Použít na podsložky";
+"Delete e-mails older than" = "Smazat maily starší než";
+"3 months" = "3 měsíce";
+"6 months" = "6 měsíců";
+"9 months" = "9 měsíců";
+"1 year" = "1 rok";
+"Custom" = "Vlastní...";
+"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "Tǐmto navždy smažete zprávy. Chcete pokračovat?";
+"Apply" = "Použít";
+"%{0} message(s) deleted" = "%{0} zpráv smazáno";
