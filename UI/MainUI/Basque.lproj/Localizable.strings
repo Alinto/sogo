@@ -107,8 +107,11 @@
 "Unhandled error response" = "Landu gabeko errore erantzuna";
 "Password change is not supported." = "Pasahitz aldaketa ez dago onartua.";
 "Unhandled HTTP error code: %{0}" = "Landu gabeko HTTP errore kodea: %{0}";
+"Current password" = "Current password";
 "New password" = "New password";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "Berrespena";
+"Change" = "Change";
 "Cancel" = "Ezeztatu";
 "Please wait..." = "Itxaron mesedez...";
 "Close" = "Close";
