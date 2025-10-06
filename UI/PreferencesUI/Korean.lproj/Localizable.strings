@@ -207,6 +207,7 @@
 "Insert signature on forward" = "전달에 서명 삽입";
 "Show recipients or sender full email in mailboxes" = "사서함에 수신자 또는 발신자 전체 이메일 표시";
 "Hide attachements for inline images" = "인라인 이미지의 첨부 파일 숨기기";
+"Show attachments above the message" = "Show attachments above the message";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "기본 글꼴 크기";
