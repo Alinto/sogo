@@ -207,6 +207,7 @@
 "Insert signature on forward" = "Inserir firma ao reenviar";
 "Show recipients or sender full email in mailboxes" = "Mostrar os destinatarios ou o remitente completo nas caixas de correos de correo";
 "Hide attachements for inline images" = "Ocultar arquivos adxuntos para imaxes en liña";
+"Show attachments above the message" = "Show attachments above the message";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Tamaño de fonte por defecto.";
