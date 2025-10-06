@@ -207,6 +207,7 @@
 "Insert signature on forward" = "Insert signature on forward";
 "Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
 "Hide attachements for inline images" = "Hide attachments for inline images";
+"Show attachments above the message" = "Show attachments above the message";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Podrazumijevana veličina fonta";
