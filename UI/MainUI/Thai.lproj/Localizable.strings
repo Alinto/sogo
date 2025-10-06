@@ -107,8 +107,11 @@
 "Unhandled error response" = "การตอบสนองข้อผิดพลาดที่ไม่สามารถจัดการได้";
 "Password change is not supported." = "ไม่รองรับการเปลี่ยนรหัสผ่าน";
 "Unhandled HTTP error code: %{0}" = "โค้ดข้อผิดพลาด HTTP ไม่ได้รับการจัดการ: %{0}";
+"Current password" = "Current password";
 "New password" = "รหัสผ่านใหม่";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "ยืนยัน";
+"Change" = "Change";
 "Cancel" = "ยกเลิก";
 "Please wait..." = " กรุณารอสักครู่...";
 "Close" = "ปิด";

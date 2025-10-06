@@ -207,6 +207,7 @@
 "Insert signature on forward" = "แทรกลายเซ็นต์ไปยังข้างหน้า";
 "Show recipients or sender full email in mailboxes" = "แสดงผู้รับหรือผู้ส่งอีเมลเต็มในกล่องจดหมาย";
 "Hide attachements for inline images" = "ซ่อนสิ่งที่แนบมาสำหรับภาพอินไลน์";
+"Show attachments above the message" = "Show attachments above the message";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "ขนาดตัวอักษรเริ่มต้น";
