@@ -107,8 +107,11 @@
 "Unhandled error response" = "Непозната грешка";
 "Password change is not supported." = "Промената на лозинката не е подржана.";
 "Unhandled HTTP error code: %{0}" = "Непозната HTTP грешка: %{0}";
+"Current password" = "Current password";
 "New password" = "Нова лозинка";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "Потврда";
+"Change" = "Change";
 "Cancel" = "Откажи";
 "Please wait..." = "Ве молиме почекајте...";
 "Close" = "Затвори";
