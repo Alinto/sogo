@@ -107,8 +107,11 @@
 "Unhandled error response" = "Необработанный ответ об ошибке";
 "Password change is not supported." = "Смена пароля не поддерживается.";
 "Unhandled HTTP error code: %{0}" = "Необработанные ошибки HTTP-код:% {0}";
+"Current password" = "Current password";
 "New password" = "Новый пароль";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "Подтверждение";
+"Change" = "Change";
 "Cancel" = "Отменить";
 "Please wait..." = "Пожалуйста, подождите...";
 "Close" = "Закрыть";
