@@ -107,8 +107,11 @@
 "Unhandled error response" = "error de respuesta desatendido";
 "Password change is not supported." = "El cambio de contraseña no está soportado.";
 "Unhandled HTTP error code: %{0}" = "Codigo de Error HTTP desatendido: %{0}";
+"Current password" = "Current password";
 "New password" = "Nueva contraseña";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "Confirmación";
+"Change" = "Change";
 "Cancel" = "Cancelar";
 "Please wait..." = "Por favor, espere...";
 "Close" = "Cerrar";
