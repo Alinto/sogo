@@ -107,8 +107,11 @@
 "Unhandled error response" = "Unhandled error response";
 "Password change is not supported." = "Парольді өзгерту қолданылмайды.";
 "Unhandled HTTP error code: %{0}" = "Өңделмеген қателер HTTP-код: %{0}";
+"Current password" = "Current password";
 "New password" = "Жаңа пароль";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "Растау";
+"Change" = "Change";
 "Cancel" = "Кері қарай";
 "Please wait..." = "Күте тұрыңыз...";
 "Close" = "Жабу";
