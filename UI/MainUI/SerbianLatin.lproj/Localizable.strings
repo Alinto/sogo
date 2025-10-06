@@ -107,8 +107,11 @@
 "Unhandled error response" = "Neobrađeni odziv greške";
 "Password change is not supported." = "Promena lozinke nije podržana.";
 "Unhandled HTTP error code: %{0}" = "Neobrađena greška HTTP koda: %{0}";
+"Current password" = "Current password";
 "New password" = "Nova lozinka";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "Potvrda";
+"Change" = "Change";
 "Cancel" = "Otkaži";
 "Please wait..." = "Molimo sačekajte...";
 "Close" = "Zatvori";
