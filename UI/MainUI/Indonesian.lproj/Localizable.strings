@@ -107,8 +107,11 @@
 "Unhandled error response" = "Respon kesalahan tak tertangani";
 "Password change is not supported." = "Perubahan katasandi tidak didukung";
 "Unhandled HTTP error code: %{0}" = "kode error HTTP tidak tertangani: %{0}";
+"Current password" = "Current password";
 "New password" = "Katasandi baru";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "Konfirmasi";
+"Change" = "Change";
 "Cancel" = "Batal";
 "Please wait..." = "Silahkan Tunggu";
 "Close" = "Tutup";
