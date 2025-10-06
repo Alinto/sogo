@@ -152,7 +152,7 @@
 "Contacts Names" = "Nazwy kontaktów";
 "Duplicate name" = "Skopiuj nazwę";
 "Calendar categories must have unique names." = "Kategorie kalendarza muszą mieć unikalne nazwy.";
-"Disable e-mail notifications on CalDAV" = "Disable e-mail notifications on CalDAV";
+"Disable e-mail notifications on CalDAV" = "Zablokuj powiadomienia e-mail w CalDAV";
 
 /* Default Calendar */
 "Default calendar" = "Domyślny kalendarz";
@@ -207,6 +207,7 @@
 "Insert signature on forward" = "Wstaw sygnaturę przy przekierowaniu";
 "Show recipients or sender full email in mailboxes" = "Pokazuj w skrzynkach pocztowych pełne adresy e-mail odbiorców lub nadawców";
 "Hide attachements for inline images" = "Ukryj załączniki obrazów w treści";
+"Show attachments above the message" = "Pokazuj załączniki powyżej wiadomości";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Podstawowy rozmiar czcionki";

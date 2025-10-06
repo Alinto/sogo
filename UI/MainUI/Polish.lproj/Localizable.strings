@@ -86,7 +86,7 @@
 "Change your Password" = "Zmień swoje hasło";
 "The password was changed successfully." = "Hasło zostało zmienione.";
 "Your password has expired, please enter a new one below" = "Ważność twojego hasła wygasła, wprowadź niżej nowe hasło";
-"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Twoje hasło jest za słabe. Wybierz silniejsze hasło, by poprawić bezpieczeństwo.";
 "Password must not be empty." = "Hasło nie może być puste.";
 "The passwords do not match. Please try again." = "Hasła nie są zgodne. Spróbuj jeszcze raz.";
 "Password Grace Period" = "Okres pobłażliwości hasła";
@@ -107,8 +107,11 @@
 "Unhandled error response" = "Niezidentyfikowany błąd";
 "Password change is not supported." = "Zmiana hasła nie jest obsługiwana.";
 "Unhandled HTTP error code: %{0}" = "Nieobsługiwany kod błędu HTTP: %{0}";
+"Current password" = "Aktualne hasło";
 "New password" = "Nowe hasło";
+"Passwords don't match" = "Hasła nie są takie same";
 "Confirmation" = "Potwierdzenie";
+"Change" = "Zmień";
 "Cancel" = "Anuluj";
 "Please wait..." = "Zaczekaj proszę...";
 "Close" = "Zamknij";
