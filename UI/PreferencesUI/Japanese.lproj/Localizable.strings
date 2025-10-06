@@ -207,6 +207,7 @@
 "Insert signature on forward" = "転送するときに署名を挿入する";
 "Show recipients or sender full email in mailboxes" = "宛先や差出人のメールアドレス全体をメールボックスに表示する";
 "Hide attachements for inline images" = "インライン画像用の添付ファイルを非表示にする";
+"Show attachments above the message" = "Show attachments above the message";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "既定のフォントサイズ";
