@@ -107,8 +107,11 @@
 "Unhandled error response" = "Neobravnavana napaka odziva";
 "Password change is not supported." = "Sprememba gesla ni podprta.";
 "Unhandled HTTP error code: %{0}" = "Neobravnavana HTTP napaka: %{0}";
+"Current password" = "Current password";
 "New password" = "Novo geslo";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "Potrditev";
+"Change" = "Change";
 "Cancel" = "Prekini";
 "Please wait..." = "Prosim počakaj...";
 "Close" = "Zapri";
