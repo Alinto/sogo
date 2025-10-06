@@ -107,8 +107,11 @@
 "Unhandled error response" = "תגובת שגיאה לא מטופלת";
 "Password change is not supported." = "שינוי סיסמה אינו נתמך.";
 "Unhandled HTTP error code: %{0}" = "שגיאת HTTP לא מטופלת מספר: {0}%";
+"Current password" = "Current password";
 "New password" = "סיסמה חדשה";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "אישור";
+"Change" = "Change";
 "Cancel" = "ביטול";
 "Please wait..." = "אנא המתן...";
 "Close" = "סגירה";
