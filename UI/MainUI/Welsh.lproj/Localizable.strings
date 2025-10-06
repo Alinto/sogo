@@ -107,8 +107,11 @@
 "Unhandled error response" = "Ymateb gwall heb fodd ei drin";
 "Password change is not supported." = "Dim cefnogaeth i newid cyfrinair.";
 "Unhandled HTTP error code: %{0}" = "Cod gwall HTTP heb fodd ei drin: %{0}";
+"Current password" = "Current password";
 "New password" = "Cyfrinair newydd";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "Cadarnhad";
+"Change" = "Change";
 "Cancel" = "Canslo";
 "Please wait..." = "Arhoswch...";
 "Close" = "Cau";
