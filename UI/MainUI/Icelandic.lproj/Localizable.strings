@@ -107,8 +107,11 @@
 "Unhandled error response" = "Unhandled error response";
 "Password change is not supported." = "Ekki er hægt að breyta lykilorði í póstkerfinu. Notið Ugluna.";
 "Unhandled HTTP error code: %{0}" = "Unhandled HTTP error code: %{0}";
+"Current password" = "Current password";
 "New password" = "Nýtt lykilorð";
+"Passwords don't match" = "Passwords don't match";
 "Confirmation" = "Staðfesting";
+"Change" = "Change";
 "Cancel" = "Hætta við";
 "Please wait..." = "Augnablik...";
 "Close" = "Close";
