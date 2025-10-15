@@ -142,7 +142,7 @@ CREATE TABLE sogo_quick_contact (
 
 CREATE TABLE sogo_sessions_folder (
 	c_id           varchar(255) NOT NULL,
-	c_value        varchar(4096) NOT NULL,
+	c_value        text NOT NULL,
 	c_creationdate int(11)      NOT NULL,
 	c_lastseen     int(11)      NOT NULL,
 	PRIMARY KEY (c_id)
@@ -166,10 +166,10 @@ CREATE TABLE sogo_admin (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE sogo_opend_id (
-	c_user_session              varchar(4096) NOT NULL,
-	c_old_session              varchar(4096) DEFAULT '',
+	c_user_session              text NOT NULL,
+	c_old_session              text DEFAULT '',
 	c_session_started           int(11)       NOT NULL,
-	c_refresh_token             varchar(4096) DEFAULT '',
+	c_refresh_token             text DEFAULT '',
 	c_access_token_expires_in    int(11)       DEFAULT '',
 	c_refresh_token_expires_in  int(11)       DEFAULT NULL,
 	PRIMARY KEY (c_user_session)

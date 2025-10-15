@@ -214,10 +214,10 @@
 {
   static NSString *sqlFolderFormat
     = (@"CREATE TABLE %@ (" 
-       @" c_user_session VARCHAR(4096) NOT NULL,"
-       @" c_old_session VARCHAR(4096) NULL,"
+       @" c_user_session TEXT NOT NULL,"
+       @" c_old_session TEXT NULL,"
        @" c_session_started INT4 NOT NULL,"
-       @" c_refresh_token VARCHAR(4096) NULL,"
+       @" c_refresh_token TEXT NULL,"
        @" c_access_token_expires_in INT4 NULL,"
        @" c_refresh_token_expires_in INT4 NULL)");
 
@@ -274,7 +274,7 @@
   static NSString *sqlFolderFormat
     = (@"CREATE TABLE %@ ("
        @" c_id VARCHAR(255) PRIMARY KEY,"
-       @" c_value VARCHAR(4096) NOT NULL,"
+       @" c_value TEXT NOT NULL,"
        @" c_creationdate INT4 NOT NULL,"
        @" c_lastseen INT4 NOT NULL)");
 
@@ -375,10 +375,10 @@
 {
   static NSString *sqlFolderFormat
     = (@"CREATE TABLE %@ (" 
-       @" c_user_session VARCHAR(4096) NOT NULL,"
-       @" c_old_session VARCHAR(4096) NULL,"
+       @" c_user_session TEXT NOT NULL,"
+       @" c_old_session TEXT NULL,"
        @" c_session_started INT4 NOT NULL,"
-       @" c_refresh_token VARCHAR(4096) NULL,"
+       @" c_refresh_token TEXT NULL,"
        @" c_access_token_expires_in INT4 NULL,"
        @" c_refresh_token_expires_in INT4 NULL)");
 
@@ -435,7 +435,7 @@
   static NSString *sqlFolderFormat
     = (@"CREATE TABLE %@ (" 
        @" c_id VARCHAR(255) PRIMARY KEY,"
-       @" c_value VARCHAR(4096) NOT NULL,"
+       @" c_value TEXT NOT NULL,"
        @" c_creationdate INT NOT NULL,"
        @" c_lastseen INT NOT NULL)");
 
@@ -536,10 +536,10 @@
 {
   static NSString *sqlFolderFormat
     = (@"CREATE TABLE %@ (" 
-       @" c_user_session VARCHAR2(4096) NOT NULL,"
-       @" c_old_session VARCHAR2(4096) NULL,"
+       @" c_user_session VARCHAR2(8192) NOT NULL,"
+       @" c_old_session VARCHAR2(8192) NULL,"
        @" c_session_started INTEGER NOT NULL,"
-       @" c_refresh_token VARCHAR2(4096) NULL,"
+       @" c_refresh_token VARCHAR2(8192) NULL,"
        @" c_access_token_expires_in INTEGER NULL,"
        @" c_refresh_token_expires_in INTEGER NULL)");
 
@@ -595,7 +595,7 @@
   static NSString *sqlFolderFormat
     = (@"CREATE TABLE %@ (" 
        @" c_id VARCHAR2(255) PRIMARY KEY,"
-       @" c_value VARCHAR2(4096) NOT NULL,"
+       @" c_value VARCHAR2(8192) NOT NULL,"
        @" c_creationdate INTEGER NOT NULL,"
        @" c_lastseen INTEGER NOT NULL)");
 
