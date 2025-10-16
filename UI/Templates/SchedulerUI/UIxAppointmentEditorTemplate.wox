@@ -127,7 +127,7 @@
                 <md-icon>add_circle</md-icon>
               </md-button>
               <label class="button-label">
-                <var:string label:value="Create Jitsi meeting"/>
+                <var:string label:value="Create Jitsi Meeting"/>
               </label>
             </div>
           </var:if>
