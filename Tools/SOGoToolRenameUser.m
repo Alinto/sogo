@@ -172,6 +172,9 @@
   EOAdaptorContext *ac;
   EOAdaptorChannel *fc;
   NSString *profileURL, *sql, *sqlFromUserID, *sqlToUserID;
+  NSString *old_c_default, *old_c_settings, *new_c_default, *new_c_settings;
+  NSArray *attrs;
+  NSDictionary *row;
   NSException *sqlError;
   SOGoSystemDefaults *sd;
 
@@ -188,9 +191,22 @@
 
   [ac beginTransaction];
 
-  sql = [NSString stringWithFormat: @"UPDATE %@ SET c_uid = '%@'"
+  sql = [NSString stringWithFormat: @"SELECT c_defaults, c_settings FROM %@"
                   @" WHERE c_uid = '%@'",
-                  [profileLocation gcsTableName], sqlToUserID, sqlFromUserID];
+                  [profileLocation gcsTableName], sqlFromUserID];
+  sqlError = [fc evaluateExpressionX: sql];
+  attrs = [fc describeResults: NO];
+  while ((row = [fc fetchAttributes: attrs withZone: NULL]))
+  {
+    old_c_default = [row objectForKey: @"c_defaults"];
+    old_c_settings = [row objectForKey: @"c_settings"];
+    new_c_default = [old_c_default stringByReplacingOccurrencesOfString:fromUserID withString:toUserID];
+    new_c_settings = [old_c_settings stringByReplacingOccurrencesOfString:fromUserID withString:toUserID];
+  }
+
+  sql = [NSString stringWithFormat: @"UPDATE %@ SET c_uid = '%@', c_defaults = '%@', "
+                  @"c_settings = '%@' WHERE c_uid = '%@'",
+                  [profileLocation gcsTableName], sqlToUserID, new_c_default, new_c_settings, sqlFromUserID];
   sqlError = [fc evaluateExpressionX: sql];
   if (sqlError)
     {
@@ -568,6 +584,7 @@
           [self _updateForeignSubscriptionsFromUser: oldUserID toUser: newUserID];
           [self _updateLocalACLsFromUser: oldUserID toUser: newUserID];
           [self _updateForeignACLsFromUser: oldUserID toUser: newUserID];
+          [self _updateOldUserIDDefaultAndSettings: oldUserID toUser: newUserID];
           rc = YES;
         }
 
