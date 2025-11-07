@@ -3,7 +3,7 @@
 /* Icon's label */
 "Create"      = "Redactar";
 "Empty Trash" = "Buidar paperera";
-"Empty Junk Folder" = "Empty Junk Folder";
+"Empty Junk Folder" = "Buidar carpeta de correu brossa";
 "Delete"      = "Esborrar";
 "Expunge"     = "Compactar";
 "Forward"     = "Reenviar";
@@ -79,7 +79,7 @@
 "Folder compacted" = "carpeta compactada";
 
 /* Empty Junk Folder success message */
-"Junk folder emptied" = "Junk folder emptied";
+"Junk folder emptied" = "S'ha buidat la carpeta de correu brossa";
 
 /* Empty Trash success message */
 "Trash emptied" = "S'ha buidat la paperera";
@@ -88,7 +88,7 @@
 "Access rights to" = "Drets d'accés a";
 "For user" = "Per a l'usuari";
 "Any Authenticated User" = "Qualsevol usuari autenticat";
-"View this folder" = "View this folder";
+"View this folder" = "Veure aquesta carpeta";
 "Read mails from this folder" = "Llegir corrreu d'aquesta carpeta";
 "Mark mails read and unread" = "Marcar correus com a llegits o no llegits";
 "Modify the flags of the mails in this folder" = "Modificar les marques dels correus en aquesta carpeta";
@@ -143,23 +143,23 @@
 "This mail is being sent from an unsecure network!" = "Aquest missatge s'envia des d'una xarxa no segura.";
 "Address Book" = "Llibreta d'adreces";
 "Search For" = "Cercar";
-"Contains" = "Contains";
-"Does not contains" = "Does not contains";
-"Advanced search" = "Advanced search";
-"Anytime" = "Anytime";
-"Last 7 days" = "Last 7 days";
-"Last 30 days" = "Last 30 days";
-"Last 6 month" = "Last 6 month";
-"Before" = "Before";
-"After" = "After";
-"Between" = "Between";
-"and" = "and";
-"With attachments" = "With attachments";
-"In favorites" = "In favorites";
-"Unseen only" = "Unseen only";
-"Show more" = "Show more";
-"Reset" = "Reset";
-"Message size" = "Message size";
+"Contains" = "Conté";
+"Does not contains" = "No conté";
+"Advanced search" = "Cerca avançada";
+"Anytime" = "Qualsevol moment";
+"Last 7 days" = "Últims 7 dies";
+"Last 30 days" = "Últims 30 dies";
+"Last 6 month" = "Últims 6 mesos";
+"Before" = "Abans de";
+"After" = "Després de";
+"Between" = "Entre";
+"and" = "i";
+"With attachments" = "Amb adjunts";
+"In favorites" = "Als preferits";
+"Unseen only" = "Només no llegits";
+"Show more" = "Mostrar més";
+"Reset" = "Restablir";
+"Message size" = "Mida del missatge";
 
 /* Popup "show" */
 "all"     = "tot";
@@ -171,7 +171,7 @@
 /* MailListView */
 "Sender" = "Remitent";
 "Subject or Sender" = "Assumpte o remitent";
-"Subject or Recipient" = "Subject or Recipient";
+"Subject or Recipient" = "Assumpte o destinatari";
 "To or Cc" = "Per a o CC";
 "Entire Message" = "Missatge complet";
 "Date"          = "Data";
@@ -191,13 +191,13 @@
 "Untitled" = "Sense títol";
 
 /* Filter option in messages list */
-"Show unread messages only" = "Show unread messages only";
+"Show unread messages only" = "Mostrar només missatges no llegits";
 
 /* Filter option in messages list */
-"Show flagged messages only" = "Show flagged messages only";
+"Show flagged messages only" = "Mostrar només missatges marcats";
 
 /* Aria label for icon of labels */
-"Filtered by label" = "Filtered by label";
+"Filtered by label" = "Filtrat per etiqueta";
 
 /* Tree */
 "SentFolderName"   = "Enviats";
@@ -205,7 +205,7 @@
 "InboxFolderName"  = "Safata d'entrada";
 "DraftsFolderName" = "Esborranys";
 "JunkFolderName" = "Correu brossa";
-"TemplatesFolderName" = "Templates";
+"TemplatesFolderName" = "Plantilles";
 "SieveFolderName"  = "Filtres";
 "Folders"          = "Carpetes"; /* title line */
 
@@ -257,7 +257,7 @@
 "Save As..." = "Desar com a...";
 "Print Preview" = "Vista preliminar";
 "View Message Source" = "Veure format original del missatge";
-"View raw message" = "View raw message";
+"View raw message" = "Veure missatge sense format";
 
 /* Message view "more" menu: create an event from message */
 "Convert To Event" = "Converteix a esdeveniment";
@@ -266,10 +266,10 @@
 "Convert To Task" = "Converteix a tasca";
 
 /* Message view "more" menu: download message as an eml file */
-"Download message" = "Download message";
+"Download message" = "Descarregar missatge";
 
 /* Message view "more" menu: download message as a zip archive */
-"Download message (zip)" = "Download message (zip)";
+"Download message (zip)" = "Descarregar missatge (zip)";
 
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "Descarrega tots els adjunts";
@@ -317,16 +317,16 @@
 "No certificate associated to account." = "No hi ha cap certificat associat al compte.";
 
 /* Invalid S/MIME signature */
-"Digital signature is not valid" = "Digital signature is not valid";
+"Digital signature is not valid" = "La signatura digital no és vàlida";
 
 /* Valid S/MIME signature */
-"Message is signed" = "Message is signed";
+"Message is signed" = "El missatge està signat";
 
 /* Valid S/MIME signature but common name not found */
-"Message is signed but the certificate doesn't match the sender email address" = "Message is signed but the certificate doesn't match the sender email address";
+"Message is signed but the certificate doesn't match the sender email address" = "El missatge està signat però el certificat no coincideix amb l'adreça de correu del remitent";
 
 /* Unknown error while validating message signature */
-"Digital signature is not valid" = "Digital signature is not valid";
+"Digital signature is not valid" = "La signatura digital no és vàlida";
 
 "This Folder" = "Aquesta carpeta";
 
@@ -410,10 +410,10 @@
 "Error while saving the draft" = "Error en guardar l'esborrany";
 
 /* Error when emptying trash */
-"Unable to empty the trash folder." = "Unable to empty the trash folder.";
+"Unable to empty the trash folder." = "No s'ha pogut buidar la paperera.";
 
 /* Error when emptying junk folder */
-"Unable to empty the junk folder." = "Unable to empty the junk folder.";
+"Unable to empty the junk folder." = "No s'ha pogut buidar la carpeta de correu brossa.";
 
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Error en carregar el fitxer \"%{0}\":";
@@ -429,9 +429,9 @@
 "cannot send message: (smtp) all recipients discarded" = "No s'ha pogut enviar el missatge: tots els destinataris són incorrectes.";
 "cannot send message (smtp) - recipients discarded" = "No s'ha pogut enviar el missatge. Les següents adreces són incorrectes";
 "cannot send message: (smtp) error when connecting" = "No s'ha pogut enviar el missatge. Error al connectar amb el servidor SMTP.";
-"cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
-"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
-"cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
+"cannot sign email without certificate" = "El missatge no es pot signar perquè no hi ha cap certificat associat al compte de correu.";
+"cannot sign message because the certificate can't be read" = "El missatge no es pot signar perquè no es pot llegir el certificat associat al compte de correu.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "El missatge no es pot signar perquè l'adreça del remitent no està inclosa al certificat associat al compte de correu.";
 
 /* Contacts list in mail editor */
 "Email" = "Correu electrònic";
@@ -452,7 +452,7 @@
 "Set as Trash" = "Establir com a Paperera";
 
 /* Set the folder as the one holding the Templates */
-"Set as Templates" = "Set as Templates";
+"Set as Templates" = "Establir com a Plantilles";
 
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Estableix com a correu brossa";
@@ -464,7 +464,7 @@
 "Copy messages" = "Copiar els missatges";
 "More messages options" = "Més opcions de missatges";
 "Flag" = "Afegir estrella";
-"Unflag" = "Unflag";
+"Unflag" = "Treure estrella";
 "Mark as Unread" = "Marca com a no llegit";
 "Mark as Read" = "Marca com a llegit";
 "Closing Window ..." = "Tancant la finestra ...";
@@ -478,10 +478,10 @@
 "Your email has been sent" = "El teu email s'ha enviat";
 "Folder compacted" = "carpeta compactada";
 
-"More Options" = "More Options";
+"More Options" = "Més opcions";
 
-"New draft" = "New draft";
-"Create new draft with this template" = "Create new draft with this template";
+"New draft" = "Nou esborrany";
+"Create new draft with this template" = "Crear nou esborrany amb aquesta plantilla";
 
 /* Advanced search */
 "Enter Subject" = "Introduïu l'Assumpte";
@@ -517,16 +517,16 @@
 "hotkey_forward" = "f";
 
 /* Email deletion */
-"Clean folder" = "Clean folder";
-"Clean mailbox" = "Clean mailbox";
-"Delete permanently (do not use trash)" = "Delete permanently (do not use trash)";
-"Apply to subfolders" = "Apply to subfolders";
-"Delete e-mails older than" = "Delete e-mails older than";
-"3 months" = "3 months";
-"6 months" = "6 months";
-"9 months" = "9 months";
-"1 year" = "1 year";
-"Custom" = "Custom";
-"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "You are about to permanently delete some messages. Are you sure you want to proceed with this action?";
-"Apply" = "Apply";
-"%{0} message(s) deleted" = "%{0} message(s) deleted";
+"Clean folder" = "Netejar carpeta";
+"Clean mailbox" = "Netejar bústia";
+"Delete permanently (do not use trash)" = "Esborrar permanentment (sense paperera)";
+"Apply to subfolders" = "Aplicar a subcarpetes";
+"Delete e-mails older than" = "Esborrar correus més antics de";
+"3 months" = "3 mesos";
+"6 months" = "6 mesos";
+"9 months" = "9 mesos";
+"1 year" = "1 any";
+"Custom" = "Personalitzat";
+"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "Esteu a punt d'esborrar permanentment alguns missatges. Esteu segur que voleu continuar amb aquesta acció?";
+"Apply" = "Aplicar";
+"%{0} message(s) deleted" = "%{0} missatge(s) esborrat(s)";

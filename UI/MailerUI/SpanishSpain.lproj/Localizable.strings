@@ -143,23 +143,23 @@
 "This mail is being sent from an unsecure network!" = "Este mendaje es enviado desde una red no segura.";
 "Address Book" = "Libreta de direcciones";
 "Search For" = "Buscar";
-"Contains" = "Contains";
-"Does not contains" = "Does not contains";
-"Advanced search" = "Advanced search";
-"Anytime" = "Anytime";
-"Last 7 days" = "Last 7 days";
-"Last 30 days" = "Last 30 days";
-"Last 6 month" = "Last 6 month";
-"Before" = "Before";
-"After" = "After";
-"Between" = "Between";
-"and" = "and";
-"With attachments" = "With attachments";
-"In favorites" = "In favorites";
-"Unseen only" = "Unseen only";
-"Show more" = "Show more";
-"Reset" = "Reset";
-"Message size" = "Message size";
+"Contains" = "Contiene";
+"Does not contains" = "No contiene";
+"Advanced search" = "Búsqueda avanzada";
+"Anytime" = "Cualquier momento";
+"Last 7 days" = "Últimos 7 días";
+"Last 30 days" = "Últimos 30 días";
+"Last 6 month" = "Últimos 6 meses";
+"Before" = "Antes de";
+"After" = "Después de";
+"Between" = "Entre";
+"and" = "y";
+"With attachments" = "Con adjuntos";
+"In favorites" = "En favoritos";
+"Unseen only" = "Solo no leídos";
+"Show more" = "Mostrar más";
+"Reset" = "Restablecer";
+"Message size" = "Tamaño del mensaje";
 
 /* Popup "show" */
 "all"     = "todo";
@@ -171,7 +171,7 @@
 /* MailListView */
 "Sender" = "Remitente";
 "Subject or Sender" = "Asunto o remitente";
-"Subject or Recipient" = "Subject or Recipient";
+"Subject or Recipient" = "Asunto o destinatario";
 "To or Cc" = "Para o CC";
 "Entire Message" = "Mensage completo";
 "Date"          = "Fecha";
@@ -257,7 +257,7 @@
 "Save As..." = "Guardar como...";
 "Print Preview" = "Vista preliminar";
 "View Message Source" = "Ver formato original del mensaje";
-"View raw message" = "View raw message";
+"View raw message" = "Ver mensaje sin formato";
 
 /* Message view "more" menu: create an event from message */
 "Convert To Event" = "Convertir como evento";
@@ -517,16 +517,16 @@
 "hotkey_forward" = "f";
 
 /* Email deletion */
-"Clean folder" = "Clean folder";
-"Clean mailbox" = "Clean mailbox";
-"Delete permanently (do not use trash)" = "Delete permanently (do not use trash)";
-"Apply to subfolders" = "Apply to subfolders";
-"Delete e-mails older than" = "Delete e-mails older than";
-"3 months" = "3 months";
-"6 months" = "6 months";
-"9 months" = "9 months";
-"1 year" = "1 year";
-"Custom" = "Custom";
-"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "You are about to permanently delete some messages. Are you sure you want to proceed with this action?";
-"Apply" = "Apply";
-"%{0} message(s) deleted" = "%{0} message(s) deleted";
+"Clean folder" = "Limpiar carpeta";
+"Clean mailbox" = "Limpiar buzón";
+"Delete permanently (do not use trash)" = "Borrar permanentemente (sin papelera)";
+"Apply to subfolders" = "Aplicar a subcarpetas";
+"Delete e-mails older than" = "Borrar correos más antiguos de";
+"3 months" = "3 meses";
+"6 months" = "6 meses";
+"9 months" = "9 meses";
+"1 year" = "1 año";
+"Custom" = "Personalizado";
+"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "Está a punto de borrar permanentemente algunos mensajes. ¿Está seguro de que desea continuar con esta acción?";
+"Apply" = "Aplicar";
+"%{0} message(s) deleted" = "%{0} mensaje(s) borrado(s)";
