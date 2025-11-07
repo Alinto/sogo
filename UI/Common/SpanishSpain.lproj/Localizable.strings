@@ -235,8 +235,8 @@
 "passwordRecovery_SecondaryEmail" = "Email secundario";
 
 /* Password */
-"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
-"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
-"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0} special symbols";
-"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+"POLICY_MIN_LOWERCASE_LETTER" = "Mínimo de %{0} letra minúscula";
+"POLICY_MIN_UPPERCASE_LETTER" = "Mínimo de %{0} letra mayúscula";
+"POLICY_MIN_DIGIT" = "Mínimo de %{0} dígito";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Mínimo de %{0} símbolos especiales";
+"POLICY_MIN_LENGTH" = "Longitud mínima de %{0} caracteres";
