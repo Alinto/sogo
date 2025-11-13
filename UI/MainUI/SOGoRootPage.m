@@ -338,7 +338,7 @@ static const NSString *kJwtKey = @"jwt";
               const auto time_step = OATH_TOTP_DEFAULT_TIME_STEP_SIZE;
               const auto digits = 6;
 
-              real_secret = [[loggedInUser totpKey] UTF8String];
+              real_secret = [[loggedInUser totpKey: YES] UTF8String];
 
               auto result = oath_init();
               auto t = time(NULL);
@@ -372,7 +372,7 @@ static const NSString *kJwtKey = @"jwt";
                   return [self responseWithStatus: 403
                             andJSONRepresentation: json];
                 }
-            } //  if ([verificationCode length] == 6 && [verificationCode unsignedIntValue] > 0)
+            } 
           else
             {
               if ([us dictionaryForKey: @"General"] && ![[us dictionaryForKey: @"General"] objectForKey: @"PrivateSalt"])

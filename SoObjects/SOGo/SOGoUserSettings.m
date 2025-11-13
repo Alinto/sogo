@@ -116,6 +116,29 @@ static Class SOGoUserProfileKlass = Nil;
   return salt;
 }
 
+- (NSString *) userCurrentTotpKey: (bool) renew
+{
+  NSMutableDictionary *values;
+  NSString *key;
+
+  key = [[self dictionaryForKey: @"General"] objectForKey: @"totpKey"];
+
+  if (!key || renew)
+    {
+      key = [[[[NSProcessInfo processInfo] globallyUniqueString] asSHA1String] substringToIndex: 20];
+      values = [self objectForKey: @"General"];
+
+      if (!values)
+        values = [NSMutableDictionary dictionary];
+
+      [values setObject: key forKey: @"totpKey"];
+      [self setObject: values forKey: @"General"];
+      [self synchronize];
+    }
+
+  return key;
+}
+
 - (void) enableForceResetPassword
 {
   [self setObject: [NSNumber numberWithInt:1]  forKey: @"ForceResetPassword"];

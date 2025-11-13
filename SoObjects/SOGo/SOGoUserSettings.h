@@ -35,6 +35,7 @@
 - (NSArray *) subscribedCalendars;
 - (NSArray *) subscribedAddressBooks;
 - (NSString *) userPrivateSalt;
+- (NSString *) userCurrentTotpKey: (bool) renew;
 - (NSString *) userPublicSalt;
 - (void)enableForceResetPassword;
 - (void)disableForceResetPassword;

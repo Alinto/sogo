@@ -1299,7 +1299,7 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
   return [authValue boolValue];
 }
 
-- (NSString *) totpKey
+- (NSString *) totpKey: (bool) isCheck
 {
 #if defined(MFA_CONFIG)
   NSString *key, *result;
@@ -1308,7 +1308,24 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
 
   size_t s_len, secret_len;
 
-  key = [[[self userSettings] userPrivateSalt] substringToIndex: 12];
+  //Until 5.12.4, SOGo had two problems with totp:
+  // * It was not renew after a user disable it/renable it.
+  // * The length was too small: 12 instead of the recommanded 20
+
+  if(![_defaults totpEnabled])
+  {
+    //Totp was not enabled
+    //Only renew if this is not a check (happen when the user enable it for the first time and save its preferences
+    //the saveAction will check the totp code but [_defaults totpEnabled] is still False )
+    key = [[self userSettings] userCurrentTotpKey: !isCheck];
+  }
+  else
+  {
+    //Totp currently enabled
+    key = [[self userSettings] userCurrentTotpKey: NO];
+  }
+
+  //key = [[[self userSettings] userPrivateSalt] substringToIndex: 12];
   s = [key UTF8String];
   s_len = strlen(s);
 
