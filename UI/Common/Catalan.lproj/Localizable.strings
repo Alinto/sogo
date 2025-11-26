@@ -41,11 +41,11 @@
      = "Qualsevol usuari amb un compte en el sistema tindrà accés a la seua llibreta d'adreces \"%{0}\". Està segur de voler donar accés a qualsevol usuari en el sistema? ";
 "Give Access" = "Donar accés";
 "Keep Private" = "Mantenir en privat";
-"Expand" = "Expand";
-"Reduce" = "Reduce";
+"Expand" = "Expandir";
+"Reduce" = "Reduir";
 
 /* tooltip */
-"Refresh" = "Refresh";
+"Refresh" = "Actualitzar";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -109,7 +109,7 @@
 "Personal" = "Personal";
 "To Do" = "Per fer";
 "Later" = "Més tard";
-"Forwarded" = "Forwarded";
+"Forwarded" = "Reenviat";
 "Return Receipt Sent" = "Justificant de recepció enviat";
 "a2_Sunday" = "dg";
 "a2_Monday" = "dl";
@@ -128,15 +128,15 @@
 "S/MIME Certificate" = "Certificat S/MIME";
 "Subject Name" = "Nom del subjecte";
 "Issuer" = "Emissor";
-"streetAddress" = "Street";
-"stateOrProvinceName" = "State or Province";
-"localityName" = "Locality";
+"streetAddress" = "Carrer";
+"stateOrProvinceName" = "Estat o Província";
+"localityName" = "Localitat";
 "countryName" = "País";
 "organizationName" = "Organització";
 "organizationalUnitName" = "Unitat organitzativa";
 "commonName" = "Nom comú";
-"surname" = "Surname";
-"givenName" = "Given Name";
+"surname" = "Cognoms";
+"givenName" = "Nom de pila";
 "emailAddress" = "Correu electrònic";
 
 
@@ -227,16 +227,16 @@
 "Move forward" = "Avançar";
 
 /* Password Recovery */
-"passwordRecovery_Disabled" = "Disabled";
-"passwordRecovery_SecretQuestion" = "Secret question";
-"passwordRecovery_SecretQuestion1" = "What is the name of your first pet ?";
-"passwordRecovery_SecretQuestion2" = "What was your first car ?";
-"passwordRecovery_SecretQuestion3" = "What is your favorite movie ?";
-"passwordRecovery_SecondaryEmail" = "Secondary E-mail";
+"passwordRecovery_Disabled" = "Desactivat";
+"passwordRecovery_SecretQuestion" = "Pregunta secreta";
+"passwordRecovery_SecretQuestion1" = "Quin és el nom de la teva primera mascota?";
+"passwordRecovery_SecretQuestion2" = "Quin va ser el teu primer cotxe?";
+"passwordRecovery_SecretQuestion3" = "Quina és la teva pel·lícula preferida?";
+"passwordRecovery_SecondaryEmail" = "Correu electrònic secundari";
 
 /* Password */
-"POLICY_MIN_LOWERCASE_LETTER" = "Minimum of %{0} lowercase letter";
-"POLICY_MIN_UPPERCASE_LETTER" = "Minimum of %{0} uppercase letter";
-"POLICY_MIN_DIGIT" = "Minimum of %{0} digit";
-"POLICY_MIN_SPECIAL_SYMBOLS" = "Minimum of %{0} special symbols";
-"POLICY_MIN_LENGTH" = "Minimum length of %{0} characters";
+"POLICY_MIN_LOWERCASE_LETTER" = "Mínim de %{0} lletra minúscula";
+"POLICY_MIN_UPPERCASE_LETTER" = "Mínim de %{0} lletra majúscula";
+"POLICY_MIN_DIGIT" = "Mínim de %{0} dígit";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Mínim de %{0} símbols especials";
+"POLICY_MIN_LENGTH" = "Longitud mínima de %{0} caràcters";
