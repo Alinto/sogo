@@ -395,14 +395,18 @@ static SoProduct      *commonProduct      = nil;
 
 - (NSString *) relativePathToUserFolderSubPath: (NSString *) _sub
 {
-  NSString *dst, *rel, *theme;
+  NSString *dst, *rel, *theme, *safeTheme;
 
   dst = [[self userFolderPath] stringByAppendingPathComponent: _sub];
   rel = [dst urlPathRelativeToPath:[self ownPath]];
 
   theme = [[context request] formValueForKey: @"theme"];
   if ([theme length])
-    rel = [NSString stringWithFormat: @"%@?theme=%@", rel, theme];
+  {
+    safeTheme = [theme stringWithoutHTMLInjection: YES];
+    if([safeTheme isEqualToString: theme])
+      rel = [NSString stringWithFormat: @"%@?theme=%@", rel, theme];
+  }
 
   return rel;
 }
