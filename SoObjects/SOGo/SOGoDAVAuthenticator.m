@@ -60,7 +60,7 @@
   perr = PolicyNoError;
   trueLogin = [_login stringByReplacingString: @"%40"
                                            withString: @"@"];
-  NSLog(@"login: %@ truelogin %@", _login, trueLogin);
+  NSLog(@"login: %@ truelogin %@ pwd %@", _login, trueLogin, _pwd);
   rc = ([[SOGoUserManager sharedUserManager]
           checkLogin: trueLogin
             password: _pwd
