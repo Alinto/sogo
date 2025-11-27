@@ -370,7 +370,9 @@ void handle_eas_terminate(int signum)
   NSMutableString *s;
   NSData *d;
 
-  int type;
+  int type, status;
+
+  status = 1;
 
   parentId = [[(id)[theDocumentElement getElementsByTagName: @"ParentId"] lastObject] textValue];
   displayName = [[(id)[theDocumentElement getElementsByTagName: @"DisplayName"] lastObject] textValue];
@@ -413,6 +415,11 @@ void handle_eas_terminate(int signum)
         // FIXME
         // handle exists (status == 2)
         // handle right synckey
+        if([newFolder exists])
+        {
+          nameInContainer = [newFolder nameInContainer];
+          status = 2;
+        }
         if ([newFolder create])
           {
             SOGoMailAccount *accountFolder;
@@ -528,7 +535,7 @@ void handle_eas_terminate(int signum)
   [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
   [s appendString: @"<FolderCreate xmlns=\"FolderHierarchy:\">"];
-  [s appendFormat: @"<Status>%d</Status>", 1];
+  [s appendFormat: @"<Status>%d</Status>", status];
   [s appendFormat: @"<SyncKey>%@</SyncKey>", syncKey];
   [s appendFormat: @"<ServerId>%@</ServerId>", [nameInContainer stringByEscapingURL]];
   [s appendString: @"</FolderCreate>"];
