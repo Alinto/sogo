@@ -49,7 +49,7 @@
 - (BOOL) checkLogin: (NSString *) _login
            password: (NSString *) _pwd
 {
-  NSString *domain;
+  NSString *domain, *trueLogin;
   SOGoSystemDefaults *sd;
   SOGoCASSession *session;
   SOGoPasswordPolicyError perr;
@@ -58,9 +58,11 @@
 
   domain = nil;
   perr = PolicyNoError;
+  trueLogin = [_login stringByReplacingString: @"%40"
+                                           withString: @"@"];
+  NSLog(@"login: %@ truelogin %@", _login, trueLogin);
   rc = ([[SOGoUserManager sharedUserManager]
-          checkLogin: [_login stringByReplacingString: @"%40"
-                                           withString: @"@"]
+          checkLogin: trueLogin
             password: _pwd
               domain: &domain
                 perr: &perr
