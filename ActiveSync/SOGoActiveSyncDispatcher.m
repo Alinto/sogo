@@ -420,7 +420,7 @@ void handle_eas_terminate(int signum)
           nameInContainer = [newFolder nameInContainer];
           status = 2;
         }
-        if ([newFolder create])
+        else if ([newFolder create])
           {
             SOGoMailAccount *accountFolder;
             NSDictionary *imapGUIDs;
