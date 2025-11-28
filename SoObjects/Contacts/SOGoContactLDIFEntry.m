@@ -52,6 +52,9 @@
       withLDIFEntry: (NSDictionary *) newEntry
         inContainer: (id) newContainer
 {
+  if ([newName length] == 0) {
+      newName = @"Unnamed Contact";
+    }
   if ((self = [self initWithName: newName inContainer: newContainer]))
     {
       ASSIGN (ldifEntry, newEntry);
