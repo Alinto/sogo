@@ -833,7 +833,14 @@
   Component.prototype.deleteAttachUrl = function(index) {
 
     if (index > -1 && this.attachUrls.length > index) {
+      var currentUrl = this.attachUrls[index];
       this.attachUrls.splice(index, 1);
+      var jitsiBaseUrl = "https://meet.jit.si";
+      if(Component.$Preferences.defaults && Component.$Preferences.defaults.SOGoCalendarJitsiBaseUrl)
+        jitsiBaseUrl = Component.$Preferences.defaults.SOGoCalendarJitsiBaseUrl;
+      if (currentUrl.value.includes(jitsiBaseUrl)) {
+        this.location = "";
+      }
     }
   };
 

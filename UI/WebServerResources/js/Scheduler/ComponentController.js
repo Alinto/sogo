@@ -323,6 +323,7 @@
         jitsiRoomPrefix = this.preferences.defaults.SOGoCalendarJitsiRoomPrefix;
       var jitsiUrl = jitsiBaseUrl + "/" + jitsiRoomPrefix + crypto.randomUUID();
       var i = this.component.addAttachUrl(jitsiUrl);
+      this.component.location = jitsiUrl;
       focus('attachUrl_' + i);
     };
 
