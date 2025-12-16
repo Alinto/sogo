@@ -339,7 +339,7 @@
   [list retain];
 
   request = [context request];
-  params = [[request contentAsString] objectFromJSONString];
+  params = [[[request contentAsString] stringWithoutHTMLInjection: YES] objectFromJSONString];
 
   o = [params objectForKey: @"refs"];
   if (![o isKindOfClass: [NSArray class]])

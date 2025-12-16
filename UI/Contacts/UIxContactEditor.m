@@ -485,7 +485,7 @@ static Class SOGoContactGCSEntryK = Nil;
   co = [self clientObject];
   card = [co vCard];
   request = [context request];
-  params = [[request contentAsString] objectFromJSONString];
+  params = [[[request contentAsString] stringWithoutHTMLInjection: YES] objectFromJSONString];
   forceSave = [[params objectForKey: @"ignoreDuplicate"] boolValue];
 
   [self setAttributes: params];
