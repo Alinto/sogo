@@ -875,8 +875,12 @@ static NSArray *infoKeys = nil;
       messages_count = [[messageSubmissions objectForKey: @"MessagesCount"] intValue];
       recipients_count =  [[messageSubmissions objectForKey: @"RecipientsCount"] intValue];
       
+      //
+      // Rate limit check: block if limits exceeded within the submission interval
+      // (not the block interval - that's for how long to block after a violation)
+      //
       if ((messages_count >= [dd maximumMessageSubmissionCount] || recipients_count >= [dd maximumRecipientCount]) &&
-          delta <= block_time)
+          delta < [dd maximumSubmissionInterval])
         {
           jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
                                          @"failure", @"status",
@@ -887,8 +891,12 @@ static NSArray *infoKeys = nil;
                                 andString: [jsonResponse jsonRepresentation]];
         }
       
-      if (delta > block_time ||
-          (delta >= [dd maximumSubmissionInterval] && messages_count < [dd maximumMessageSubmissionCount] && recipients_count < [dd maximumRecipientCount]))
+      //
+      // Reset counters if the submission interval has elapsed AND we're within limits
+      //
+      if (delta >= [dd maximumSubmissionInterval] &&
+          messages_count < [dd maximumMessageSubmissionCount] &&
+          recipients_count < [dd maximumRecipientCount])
         {
           [[SOGoCache sharedCache] setMessageSubmissionsCount: 0
                                               recipientsCount: 0
