@@ -1016,12 +1016,14 @@ static const NSString *kJwtKey = @"jwt";
 {
   id value;
   WORequest *rq;
-  NSString* login;
+  NSString* login, *loginClean;
   NSDictionary *formValues;
 
   login = @"";
 
   rq = [context request];
+
+
   if((formValues=[rq formValues]) && (value=[formValues objectForKey: @"hint"]))
   {
     if ([value isKindOfClass: [NSArray class]])
@@ -1029,7 +1031,20 @@ static const NSString *kJwtKey = @"jwt";
     else
       login = value;
   }
-  return login;
+
+  //Check common injection
+  loginClean = [login stringWithoutHTMLInjection: YES];
+  if(![loginClean isEqualToString: login])
+  {
+    loginClean = @"";
+  }
+  //Check single quote to inject javascript
+  if ([loginClean rangeOfString:@"'"].location !=NSNotFound)
+  {
+    loginClean = @"";
+  }
+
+  return loginClean;
 }
 
 - (BOOL) hasPasswordRecovery
