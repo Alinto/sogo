@@ -1,2 +1,2 @@
-usr/include/GNUstep/*
-usr/lib/sogo/lib*.so
+/usr/include/x86_64-linux-gnu/GNUstep/*
+usr/lib/x86_64-linux-gnu/sogo/lib*.so
