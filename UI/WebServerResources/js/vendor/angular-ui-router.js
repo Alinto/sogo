@@ -4,7 +4,7 @@
  *         This causes it to be incompatible with plugins that depend on @uirouter/core.
  *         We recommend switching to the ui-router-core.js and ui-router-angularjs.js bundles instead.
  *         For more information, see https://ui-router.github.io/blog/uirouter-for-angularjs-umd-bundles
- * @version v1.0.30
+ * @version v1.1.2
  * @link https://ui-router.github.io
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -25,12 +25,14 @@
      *
      * @packageDocumentation
      */
-    var __spreadArrays = (undefined && undefined.__spreadArrays) || function () {
-        for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-        for (var r = Array(s), k = 0, i = 0; i < il; i++)
-            for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-                r[k] = a[j];
-        return r;
+    var __spreadArray = (undefined && undefined.__spreadArray) || function (to, from, pack) {
+        if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+            if (ar || !(i in from)) {
+                if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+                ar[i] = from[i];
+            }
+        }
+        return to.concat(ar || Array.prototype.slice.call(from));
     };
     /**
      * Returns a new function for [Partial Application](https://en.wikipedia.org/wiki/Partial_application) of the original function.
@@ -79,7 +81,7 @@
                 return fn.apply(this, arguments);
             }
             var args = Array.prototype.slice.call(arguments);
-            return curried.bind.apply(curried, __spreadArrays([this], args));
+            return curried.bind.apply(curried, __spreadArray([this], args, false));
         };
     }
     /**
@@ -139,13 +141,15 @@
      * Given a function that returns a truthy or falsey value, returns a
      * function that returns the opposite (falsey or truthy) value given the same inputs
      */
-    var not = function (fn) { return function () {
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i] = arguments[_i];
-        }
-        return !fn.apply(null, args);
-    }; };
+    var not = function (fn) {
+        return function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            return !fn.apply(null, args);
+        };
+    };
     /**
      * Given two functions that return truthy or falsey values, returns a function that returns truthy
      * if both functions return truthy for the given arguments
@@ -182,13 +186,19 @@
     // tslint:disable-next-line:variable-name
     var any = function (fn1) { return function (arr) { return arr.reduce(function (b, x) { return b || !!fn1(x); }, false); }; };
     /** Given a class, returns a Predicate function that returns true if the object is of that class */
-    var is = function (ctor) { return function (obj) {
-        return (obj != null && obj.constructor === ctor) || obj instanceof ctor;
-    }; };
+    var is = function (ctor) {
+        return function (obj) {
+            return (obj != null && obj.constructor === ctor) || obj instanceof ctor;
+        };
+    };
     /** Given a value, returns a Predicate function that returns true if another value is === equal to the original value */
     var eq = function (value) { return function (other) { return value === other; }; };
     /** Given a value, returns a function which returns the value */
-    var val = function (v) { return function () { return v; }; };
+    var val = function (v) {
+        return function () {
+            return v;
+        };
+    };
     function invoke(fnName, args) {
         return function (obj) { return obj[fnName].apply(obj, args); };
     }
@@ -283,22 +293,24 @@
     var isPromise = and(isObject, pipe(prop('then'), isFunction));
 
     var noImpl = function (fnname) { return function () {
-        throw new Error("No implementation for " + fnname + ". The framework specific code did not implement this method.");
+        throw new Error("No implementation for ".concat(fnname, ". The framework specific code did not implement this method."));
     }; };
     var makeStub = function (service, methods) {
-        return methods.reduce(function (acc, key) { return ((acc[key] = noImpl(service + "." + key + "()")), acc); }, {});
+        return methods.reduce(function (acc, key) { return ((acc[key] = noImpl("".concat(service, ".").concat(String(key), "()"))), acc); }, {});
     };
     var services = {
         $q: undefined,
         $injector: undefined,
     };
 
-    var __spreadArrays$1 = (undefined && undefined.__spreadArrays) || function () {
-        for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-        for (var r = Array(s), k = 0, i = 0; i < il; i++)
-            for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-                r[k] = a[j];
-        return r;
+    var __spreadArray$1 = (undefined && undefined.__spreadArray) || function (to, from, pack) {
+        if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+            if (ar || !(i in from)) {
+                if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+                ar[i] = from[i];
+            }
+        }
+        return to.concat(ar || Array.prototype.slice.call(from));
     };
     var root = (typeof self === 'object' && self.self === self && self) ||
         (typeof global === 'object' && global.global === global && global) ||
@@ -427,7 +439,7 @@
         for (var _i = 1; _i < arguments.length; _i++) {
             defaultsList[_i - 1] = arguments[_i];
         }
-        var defaultVals = extend.apply(void 0, __spreadArrays$1([{}], defaultsList.reverse()));
+        var defaultVals = extend.apply(void 0, __spreadArray$1([{}], defaultsList.reverse(), false));
         return extend(defaultVals, pick(opts || {}, Object.keys(defaultVals)));
     }
     /** Reduce function that merges each element of the list into a single object, using extend */
@@ -1049,7 +1061,7 @@
             var detailString = function (d) { return (d && d.toString !== Object.prototype.toString ? d.toString() : stringify(d)); };
             var detail = detailString(this.detail);
             var _a = this, $id = _a.$id, type = _a.type, message = _a.message;
-            return "Transition Rejection($id: " + $id + " type: " + type + ", message: " + message + ", detail: " + detail + ")";
+            return "Transition Rejection($id: ".concat($id, " type: ").concat(type, ", message: ").concat(message, ", detail: ").concat(detail, ")");
         };
         Rejection.prototype.toPromise = function () {
             return extend(silentRejection(this), { _transitionRejection: this });
@@ -1263,12 +1275,12 @@
         if (!uiview)
             return 'ui-view (defunct)';
         var state = uiview.creationContext ? uiview.creationContext.name || '(root)' : '(none)';
-        return "[ui-view#" + uiview.id + " " + uiview.$type + ":" + uiview.fqn + " (" + uiview.name + "@" + state + ")]";
+        return "[ui-view#".concat(uiview.id, " ").concat(uiview.$type, ":").concat(uiview.fqn, " (").concat(uiview.name, "@").concat(state, ")]");
     }
     var viewConfigString = function (viewConfig) {
         var view = viewConfig.viewDecl;
         var state = view.$context.name || '(root)';
-        return "[View#" + viewConfig.$id + " from '" + state + "' state]: target ui-view: '" + view.$uiViewName + "@" + view.$uiViewContextAnchor + "'";
+        return "[View#".concat(viewConfig.$id, " from '").concat(state, "' state]: target ui-view: '").concat(view.$uiViewName, "@").concat(view.$uiViewContextAnchor, "'");
     };
     function normalizedCat(input) {
         return isNumber(input) ? exports.Category[input] : exports.Category[exports.Category[input]];
@@ -1296,7 +1308,7 @@
     })(exports.Category || (exports.Category = {}));
     var _tid = parse('$id');
     var _rid = parse('router.$id');
-    var transLbl = function (trans) { return "Transition #" + _tid(trans) + "-" + _rid(trans); };
+    var transLbl = function (trans) { return "Transition #".concat(_tid(trans), "-").concat(_rid(trans)); };
     /**
      * Prints UI-Router Transition trace information to the console.
      */
@@ -1348,69 +1360,69 @@
         Trace.prototype.traceTransitionStart = function (trans) {
             if (!this.enabled(exports.Category.TRANSITION))
                 return;
-            safeConsole.log(transLbl(trans) + ": Started  -> " + stringify(trans));
+            safeConsole.log("".concat(transLbl(trans), ": Started  -> ").concat(stringify(trans)));
         };
         /** @internal called by ui-router code */
         Trace.prototype.traceTransitionIgnored = function (trans) {
             if (!this.enabled(exports.Category.TRANSITION))
                 return;
-            safeConsole.log(transLbl(trans) + ": Ignored  <> " + stringify(trans));
+            safeConsole.log("".concat(transLbl(trans), ": Ignored  <> ").concat(stringify(trans)));
         };
         /** @internal called by ui-router code */
         Trace.prototype.traceHookInvocation = function (step, trans, options) {
             if (!this.enabled(exports.Category.HOOK))
                 return;
             var event = parse('traceData.hookType')(options) || 'internal', context = parse('traceData.context.state.name')(options) || parse('traceData.context')(options) || 'unknown', name = functionToString(step.registeredHook.callback);
-            safeConsole.log(transLbl(trans) + ":   Hook -> " + event + " context: " + context + ", " + maxLength(200, name));
+            safeConsole.log("".concat(transLbl(trans), ":   Hook -> ").concat(event, " context: ").concat(context, ", ").concat(maxLength(200, name)));
         };
         /** @internal called by ui-router code */
         Trace.prototype.traceHookResult = function (hookResult, trans, transitionOptions) {
             if (!this.enabled(exports.Category.HOOK))
                 return;
-            safeConsole.log(transLbl(trans) + ":   <- Hook returned: " + maxLength(200, stringify(hookResult)));
+            safeConsole.log("".concat(transLbl(trans), ":   <- Hook returned: ").concat(maxLength(200, stringify(hookResult))));
         };
         /** @internal called by ui-router code */
         Trace.prototype.traceResolvePath = function (path, when, trans) {
             if (!this.enabled(exports.Category.RESOLVE))
                 return;
-            safeConsole.log(transLbl(trans) + ":         Resolving " + path + " (" + when + ")");
+            safeConsole.log("".concat(transLbl(trans), ":         Resolving ").concat(path, " (").concat(when, ")"));
         };
         /** @internal called by ui-router code */
         Trace.prototype.traceResolvableResolved = function (resolvable, trans) {
             if (!this.enabled(exports.Category.RESOLVE))
                 return;
-            safeConsole.log(transLbl(trans) + ":               <- Resolved  " + resolvable + " to: " + maxLength(200, stringify(resolvable.data)));
+            safeConsole.log("".concat(transLbl(trans), ":               <- Resolved  ").concat(resolvable, " to: ").concat(maxLength(200, stringify(resolvable.data))));
         };
         /** @internal called by ui-router code */
         Trace.prototype.traceError = function (reason, trans) {
             if (!this.enabled(exports.Category.TRANSITION))
                 return;
-            safeConsole.log(transLbl(trans) + ": <- Rejected " + stringify(trans) + ", reason: " + reason);
+            safeConsole.log("".concat(transLbl(trans), ": <- Rejected ").concat(stringify(trans), ", reason: ").concat(reason));
         };
         /** @internal called by ui-router code */
         Trace.prototype.traceSuccess = function (finalState, trans) {
             if (!this.enabled(exports.Category.TRANSITION))
                 return;
-            safeConsole.log(transLbl(trans) + ": <- Success  " + stringify(trans) + ", final state: " + finalState.name);
+            safeConsole.log("".concat(transLbl(trans), ": <- Success  ").concat(stringify(trans), ", final state: ").concat(finalState.name));
         };
         /** @internal called by ui-router code */
         Trace.prototype.traceUIViewEvent = function (event, viewData, extra) {
             if (extra === void 0) { extra = ''; }
             if (!this.enabled(exports.Category.UIVIEW))
                 return;
-            safeConsole.log("ui-view: " + padString(30, event) + " " + uiViewString(viewData) + extra);
+            safeConsole.log("ui-view: ".concat(padString(30, event), " ").concat(uiViewString(viewData)).concat(extra));
         };
         /** @internal called by ui-router code */
         Trace.prototype.traceUIViewConfigUpdated = function (viewData, context) {
             if (!this.enabled(exports.Category.UIVIEW))
                 return;
-            this.traceUIViewEvent('Updating', viewData, " with ViewConfig from context='" + context + "'");
+            this.traceUIViewEvent('Updating', viewData, " with ViewConfig from context='".concat(context, "'"));
         };
         /** @internal called by ui-router code */
         Trace.prototype.traceUIViewFill = function (viewData, html) {
             if (!this.enabled(exports.Category.UIVIEW))
                 return;
-            this.traceUIViewEvent('Fill', viewData, " with: " + maxLength(200, html));
+            this.traceUIViewEvent('Fill', viewData, " with: ".concat(maxLength(200, html)));
         };
         /** @internal called by ui-router code */
         Trace.prototype.traceViewSync = function (pairs) {
@@ -1423,7 +1435,7 @@
                 var _b;
                 var uiView = _a.uiView, viewConfig = _a.viewConfig;
                 var uiv = uiView && uiView.fqn;
-                var cfg = viewConfig && viewConfig.viewDecl.$context.name + ": (" + viewConfig.viewDecl.$name + ")";
+                var cfg = viewConfig && "".concat(viewConfig.viewDecl.$context.name, ": (").concat(viewConfig.viewDecl.$name, ")");
                 return _b = {}, _b[uivheader] = uiv, _b[cfgheader] = cfg, _b;
             })
                 .sort(function (a, b) { return (a[uivheader] || '').localeCompare(b[uivheader] || ''); });
@@ -1433,13 +1445,13 @@
         Trace.prototype.traceViewServiceEvent = function (event, viewConfig) {
             if (!this.enabled(exports.Category.VIEWCONFIG))
                 return;
-            safeConsole.log("VIEWCONFIG: " + event + " " + viewConfigString(viewConfig));
+            safeConsole.log("VIEWCONFIG: ".concat(event, " ").concat(viewConfigString(viewConfig)));
         };
         /** @internal called by ui-router code */
         Trace.prototype.traceViewServiceUIViewEvent = function (event, viewData) {
             if (!this.enabled(exports.Category.VIEWCONFIG))
                 return;
-            safeConsole.log("VIEWCONFIG: " + event + " " + uiViewString(viewData));
+            safeConsole.log("VIEWCONFIG: ".concat(event, " ").concat(uiViewString(viewData)));
         };
         return Trace;
     }());
@@ -1513,7 +1525,7 @@
             return sub.substr(1, sub.length - 2);
         };
         ParamType.prototype.toString = function () {
-            return "{ParamType:" + this.name + "}";
+            return "{ParamType:".concat(this.name, "}");
         };
         /** Given an encoded string, or a decoded object, returns a decoded object */
         ParamType.prototype.$normalize = function (val) {
@@ -1623,7 +1635,7 @@
     }
     function getType(cfg, urlType, location, id, paramTypes) {
         if (cfg.type && urlType && urlType.name !== 'string')
-            throw new Error("Param '" + id + "' has two type configurations.");
+            throw new Error("Param '".concat(id, "' has two type configurations."));
         if (cfg.type && urlType && urlType.name === 'string' && paramTypes.type(cfg.type))
             return paramTypes.type(cfg.type);
         if (urlType)
@@ -1649,7 +1661,7 @@
             return defaultPolicy;
         if (squash === true || isString(squash))
             return squash;
-        throw new Error("Invalid squash policy: '" + squash + "'. Valid policies: false, true, or arbitrary string");
+        throw new Error("Invalid squash policy: '".concat(squash, "'. Valid policies: false, true, or arbitrary string"));
     }
     function getReplace(config, arrayMode, isOptional, squash) {
         var defaultPolicy = [
@@ -1745,7 +1757,7 @@
                     throw new Error('Injectable functions cannot be called at configuration time');
                 var defaultValue = services.$injector.invoke(_this.config.$$fn);
                 if (defaultValue !== null && defaultValue !== undefined && !_this.type.is(defaultValue))
-                    throw new Error("Default value (" + defaultValue + ") for parameter '" + _this.id + "' is not an instance of ParamType (" + _this.type.name + ")");
+                    throw new Error("Default value (".concat(defaultValue, ") for parameter '").concat(_this.id, "' is not an instance of ParamType (").concat(_this.type.name, ")"));
                 if (_this.config.$$fn['__cacheable']) {
                     _this._defaultValueCache = { defaultValue: defaultValue };
                 }
@@ -1778,7 +1790,7 @@
             return !(isString(encoded) && !this.type.pattern.exec(encoded));
         };
         Param.prototype.toString = function () {
-            return "{Param:" + this.id + " " + this.type + " squash: '" + this.squash + "' optional: " + this.isOptional + "}";
+            return "{Param:".concat(this.id, " ").concat(this.type, " squash: '").concat(this.squash, "' optional: ").concat(this.isOptional, "}");
         };
         return Param;
     }());
@@ -1837,7 +1849,7 @@
             if (!isDefined(definition))
                 return this.types[name];
             if (this.types.hasOwnProperty(name))
-                throw new Error("A type named '" + name + "' has already been defined.");
+                throw new Error("A type named '".concat(name, "' has already been defined."));
             this.types[name] = new ParamType(extend({ name: name }, definition));
             if (definitionFn) {
                 this.typeQueue.push({ name: name, def: definitionFn });
@@ -1865,7 +1877,7 @@
                 is: is(String),
                 pattern: /.*/,
                 // tslint:disable-next-line:triple-equals
-                equals: function (a, b) { return a == b; },
+                equals: function (a, b) { return a == b; }, // allow coersion for null/undefined/""
             };
             return extend({}, defaultTypeBase, def);
         };
@@ -1943,19 +1955,21 @@
          * @param {Object} $to Internal definition of object representing state to transition to.
          */
         StateParams.prototype.$inherit = function (newParams, $current, $to) {
-            var parentParams;
             var parents = ancestors($current, $to), inherited = {}, inheritList = [];
             for (var i in parents) {
                 if (!parents[i] || !parents[i].params)
                     continue;
-                parentParams = Object.keys(parents[i].params);
-                if (!parentParams.length)
+                var parentParams = parents[i].params;
+                var parentParamsKeys = Object.keys(parentParams);
+                if (!parentParamsKeys.length)
                     continue;
-                for (var j in parentParams) {
-                    if (inheritList.indexOf(parentParams[j]) >= 0)
+                for (var j in parentParamsKeys) {
+                    if (!parentParamsKeys.hasOwnProperty(j) ||
+                        parentParams[parentParamsKeys[j]].inherit == false ||
+                        inheritList.indexOf(parentParamsKeys[j]) >= 0)
                         continue;
-                    inheritList.push(parentParams[j]);
-                    inherited[parentParams[j]] = this[parentParams[j]];
+                    inheritList.push(parentParamsKeys[j]);
+                    inherited[parentParamsKeys[j]] = this[parentParamsKeys[j]];
                 }
             }
             return extend({}, inherited, newParams);
@@ -2124,15 +2138,15 @@
             var base = this.options().relative;
             if (!this._definition && !!base) {
                 var stateName = base.name ? base.name : base;
-                return "Could not resolve '" + this.name() + "' from state '" + stateName + "'";
+                return "Could not resolve '".concat(this.name(), "' from state '").concat(stateName, "'");
             }
             if (!this._definition)
-                return "No such state '" + this.name() + "'";
+                return "No such state '".concat(this.name(), "'");
             if (!this._definition.self)
-                return "State '" + this.name() + "' has an invalid definition";
+                return "State '".concat(this.name(), "' has an invalid definition");
         };
         TargetState.prototype.toString = function () {
-            return "'" + this.name() + "'" + stringify(this.params());
+            return "'".concat(this.name(), "'").concat(stringify(this.params()));
         };
         /**
          * Returns a copy of this TargetState which targets a different state.
@@ -2444,7 +2458,7 @@
             return this.promise || this.resolve(resolveContext, trans);
         };
         Resolvable.prototype.toString = function () {
-            return "Resolvable(token: " + stringify(this.token) + ", requires: [" + this.deps.map(stringify) + "])";
+            return "Resolvable(token: ".concat(stringify(this.token), ", requires: [").concat(this.deps.map(stringify), "])");
         };
         Resolvable.prototype.clone = function () {
             return new Resolvable(this);
@@ -2681,7 +2695,7 @@
             if (!url)
                 return null;
             if (!$urlMatcherFactoryProvider.isMatcher(url))
-                throw new Error("Invalid url '" + url + "' in state '" + stateObject + "'");
+                throw new Error("Invalid url '".concat(url, "' in state '").concat(stateObject, "'"));
             return parsed && parsed.root ? url : ((parent && parent.navigable) || root()).url.append(url);
         };
     };
@@ -2896,7 +2910,7 @@
                 segments.pop();
             if (segments.length) {
                 if (state.parent) {
-                    throw new Error("States that specify the 'parent:' property should not have a '.' in their name (" + name + ")");
+                    throw new Error("States that specify the 'parent:' property should not have a '.' in their name (".concat(name, ")"));
                 }
                 // 'foo.bar'
                 return segments.join('.');
@@ -2944,7 +2958,7 @@
             stateDecl.$$state = function () { return state; };
             state.self = stateDecl;
             state.__stateObjectCache = {
-                nameGlob: Glob.fromString(state.name),
+                nameGlob: Glob.fromString(state.name), // might return null
             };
             return state;
         };
@@ -3047,7 +3061,7 @@
                 var _states = values(this._states);
                 var matches = _states.filter(function (_state) { return _state.__stateObjectCache.nameGlob && _state.__stateObjectCache.nameGlob.matches(name); });
                 if (matches.length > 1) {
-                    safeConsole.error("stateMatcher.find: Found multiple matches for " + name + " using glob: ", matches.map(function (match) { return match.name; }));
+                    safeConsole.error("stateMatcher.find: Found multiple matches for ".concat(name, " using glob: "), matches.map(function (match) { return match.name; }));
                 }
                 return matches[0];
             }
@@ -3055,7 +3069,7 @@
         };
         StateMatcher.prototype.resolvePath = function (name, base) {
             if (!base)
-                throw new Error("No reference point given for path '" + name + "'");
+                throw new Error("No reference point given for path '".concat(name, "'"));
             var baseState = this.find(base);
             var splitName = name.split('.');
             var pathLength = splitName.length;
@@ -3067,7 +3081,7 @@
                 }
                 if (splitName[i] === '^') {
                     if (!current.parent)
-                        throw new Error("Path '" + name + "' not valid for state '" + baseState.name + "'");
+                        throw new Error("Path '".concat(name, "' not valid for state '").concat(baseState.name, "'"));
                     current = current.parent;
                     continue;
                 }
@@ -3097,7 +3111,7 @@
             if (!isString(name))
                 throw new Error('State must have a valid name');
             if (this.states.hasOwnProperty(name) || inArray(queue.map(prop('name')), name))
-                throw new Error("State '" + name + "' is already defined");
+                throw new Error("State '".concat(name, "' is already defined"));
             queue.push(state);
             this.flush();
             return state;
@@ -3124,7 +3138,7 @@
                 if (result) {
                     var existingState = getState(name_1);
                     if (existingState && existingState.name === name_1) {
-                        throw new Error("State '" + name_1 + "' is already defined");
+                        throw new Error("State '".concat(name_1, "' is already defined"));
                     }
                     var existingFutureState = getState(name_1 + '.**');
                     if (existingFutureState) {
@@ -3485,7 +3499,7 @@
             var router = this.transition.router;
             // The router is stopped
             if (router._disposed) {
-                return Rejection.aborted("UIRouter instance #" + router.$id + " has been stopped (disposed)").toPromise();
+                return Rejection.aborted("UIRouter instance #".concat(router.$id, " has been stopped (disposed)")).toPromise();
             }
             if (this.transition._aborted) {
                 return Rejection.aborted().toPromise();
@@ -3500,7 +3514,7 @@
         TransitionHook.prototype.toString = function () {
             var _a = this, options = _a.options, registeredHook = _a.registeredHook;
             var event = parse('traceData.hookType')(options) || 'internal', context = parse('traceData.context.state.name')(options) || parse('traceData.context')(options) || 'unknown', name = fnToString(registeredHook.callback);
-            return event + " context: " + context + ", " + maxLength(200, name);
+            return "".concat(event, " context: ").concat(context, ", ").concat(maxLength(200, name));
         };
         /**
          * These GetResultHandler(s) are used by [[invokeHook]] below
@@ -3762,7 +3776,7 @@
             var registries = isCreate ? [$transitions] : [this.transition, $transitions];
             return registries
                 .map(function (reg) { return reg.getHooks(hookType.name); }) // Get named hooks from registries
-                .filter(assertPredicate(isArray, "broken event named: " + hookType.name)) // Sanity check
+                .filter(assertPredicate(isArray, "broken event named: ".concat(hookType.name))) // Sanity check
                 .reduce(unnestR, []) // Un-nest RegisteredHook[][] to RegisteredHook[] array
                 .filter(function (hook) { return hook.matches(treeChanges, transition); }); // Only those satisfying matchCriteria
         };
@@ -4405,14 +4419,14 @@
         Transition.prototype.error = function () {
             var state = this.$to();
             if (state.self.abstract) {
-                return Rejection.invalid("Cannot transition to abstract state '" + state.name + "'");
+                return Rejection.invalid("Cannot transition to abstract state '".concat(state.name, "'"));
             }
             var paramDefs = state.parameters();
             var values = this.params();
             var invalidParams = paramDefs.filter(function (param) { return !param.validates(values[param.id]); });
             if (invalidParams.length) {
-                var invalidValues = invalidParams.map(function (param) { return "[" + param.id + ":" + stringify(values[param.id]) + "]"; }).join(', ');
-                var detail = "The following parameter values are not valid for state '" + state.name + "': " + invalidValues;
+                var invalidValues = invalidParams.map(function (param) { return "[".concat(param.id, ":").concat(stringify(values[param.id]), "]"); }).join(', ');
+                var detail = "The following parameter values are not valid for state '".concat(state.name, "': ").concat(invalidValues);
                 return Rejection.invalid(detail);
             }
             if (this.success === false)
@@ -4431,7 +4445,7 @@
             };
             // (X) means the to state is invalid.
             var id = this.$id, from = isObject(fromStateOrName) ? fromStateOrName.name : fromStateOrName, fromParams = stringify(avoidEmptyHash(this._treeChanges.from.map(prop('paramValues')).reduce(mergeR, {}))), toValid = this.valid() ? '' : '(X) ', to = isObject(toStateOrName) ? toStateOrName.name : toStateOrName, toParams = stringify(avoidEmptyHash(this.params()));
-            return "Transition#" + id + "( '" + from + "'" + fromParams + " -> " + toValid + "'" + to + "'" + toParams + " )";
+            return "Transition#".concat(id, "( '").concat(from, "'").concat(fromParams, " -> ").concat(toValid, "'").concat(to, "'").concat(toParams, " )");
         };
         /** @internal */
         Transition.diToken = Transition;
@@ -4451,7 +4465,7 @@
                 surroundPattern = ['(?:/(', ')|/)?'];
                 break;
             default:
-                surroundPattern = ["(" + param.squash + "|", ')?'];
+                surroundPattern = ["(".concat(param.squash, "|"), ')?'];
                 break;
         }
         return result + surroundPattern[0] + param.type.pattern.source + surroundPattern[1];
@@ -4544,28 +4558,28 @@
             // The regular expression is somewhat complicated due to the need to allow curly braces
             // inside the regular expression. The placeholder regexp breaks down as follows:
             //    ([:*])([\w\[\]]+)              - classic placeholder ($1 / $2) (search version has - for snake-case)
-            //    \{([\w\[\]]+)(?:\:\s*( ... ))?\}  - curly brace placeholder ($3) with optional regexp/type ... ($4) (search version has - for snake-case
+            //    \{([\w\[\]]+)(?:\: ... ( ... ))?\}  - curly brace placeholder ($3) with optional regexp/type ... ($5) (search version has - for snake-case
             //    (?: ... | ... | ... )+         - the regexp consists of any number of atoms, an atom being either
-            //    [^{}\\]+                       - anything other than curly braces or backslash
+            //    [^{}\\]                        - anything other than curly braces or backslash
             //    \\.                            - a backslash escape
-            //    \{(?:[^{}\\]+|\\.)*\}          - a matched set of curly braces containing other atoms
-            var placeholder = /([:*])([\w\[\]]+)|\{([\w\[\]]+)(?:\:\s*((?:[^{}\\]+|\\.|\{(?:[^{}\\]+|\\.)*\})+))?\}/g;
-            var searchPlaceholder = /([:]?)([\w\[\].-]+)|\{([\w\[\].-]+)(?:\:\s*((?:[^{}\\]+|\\.|\{(?:[^{}\\]+|\\.)*\})+))?\}/g;
+            //    \{(?:[^{}\\]|\\.)*\}           - a matched set of curly braces containing other atoms
+            var placeholder = /([:*])([\w\[\]]+)|\{([\w\[\]]+)(?:\:(?=(\s*))\4((?:[^{}\\]|\\.|\{(?:[^{}\\]|\\.)*\})+))?\}/g;
+            var searchPlaceholder = /([:]?)([\w\[\].-]+)|\{([\w\[\].-]+)(?:\:(?=(\s*))\4((?:[^{}\\]|\\.|\{(?:[^{}\\]|\\.)*\})+))?\}/g;
             var patterns = [];
             var last = 0;
             var matchArray;
             var checkParamErrors = function (id) {
                 if (!UrlMatcher.nameValidator.test(id))
-                    throw new Error("Invalid parameter name '" + id + "' in pattern '" + pattern + "'");
+                    throw new Error("Invalid parameter name '".concat(id, "' in pattern '").concat(pattern, "'"));
                 if (find(_this._params, propEq('id', id)))
-                    throw new Error("Duplicate parameter name '" + id + "' in pattern '" + pattern + "'");
+                    throw new Error("Duplicate parameter name '".concat(id, "' in pattern '").concat(pattern, "'"));
             };
             // Split into static segments separated by path parameter placeholders.
             // The number of segments is always 1 more than the number of parameters.
             var matchDetails = function (m, isSearch) {
                 // IE[78] returns '' for unmatched groups instead of null
                 var id = m[2] || m[3];
-                var regexp = isSearch ? m[4] : m[4] || (m[1] === '*' ? '[\\s\\S]*' : null);
+                var regexp = isSearch ? m[5] : m[5] || (m[1] === '*' ? '[\\s\\S]*' : null);
                 var makeRegexpType = function (str) {
                     return inherit(paramTypes.type(isSearch ? 'query' : 'path'), {
                         pattern: new RegExp(str, _this.config.caseInsensitive ? 'i' : undefined),
@@ -4615,7 +4629,7 @@
         /** @internal */
         UrlMatcher.encodeDashes = function (str) {
             // Replace dashes with encoded "\-"
-            return encodeURIComponent(str).replace(/-/g, function (c) { return "%5C%" + c.charCodeAt(0).toString(16).toUpperCase(); });
+            return encodeURIComponent(str).replace(/-/g, function (c) { return "%5C%".concat(c.charCodeAt(0).toString(16).toUpperCase()); });
         };
         /** @internal Given a matcher, return an array with the matcher's path segments and path params, in order */
         UrlMatcher.pathSegmentsAndParams = function (matcher) {
@@ -4778,7 +4792,7 @@
             // options = defaults(options, { isolate: false });
             var allParams = this.parameters(), pathParams = allParams.filter(function (param) { return !param.isSearch(); }), searchParams = allParams.filter(function (param) { return param.isSearch(); }), nPathSegments = this._cache.path.map(function (urlm) { return urlm._segments.length - 1; }).reduce(function (a, x) { return a + x; }), values = {};
             if (nPathSegments !== match.length - 1)
-                throw new Error("Unbalanced capture group in route '" + this.pattern + "'");
+                throw new Error("Unbalanced capture group in route '".concat(this.pattern, "'"));
             function decodePathArray(paramVal) {
                 var reverseString = function (str) { return str.split('').reverse().join(''); };
                 var unquoteDashes = function (str) { return str.replace(/\\-/g, '-'); };
@@ -4947,13 +4961,13 @@
                     return;
                 if (!param.raw)
                     encoded = map(encoded, encodeURIComponent);
-                return encoded.map(function (val) { return param.id + "=" + val; });
+                return encoded.map(function (val) { return "".concat(param.id, "=").concat(val); });
             })
                 .filter(identity)
                 .reduce(unnestR, [])
                 .join('&');
             // Concat the pathstring with the queryString (if exists) and the hashString (if exists)
-            return pathString + (queryString ? "?" + queryString : '') + (values['#'] ? '#' + values['#'] : '');
+            return pathString + (queryString ? "?".concat(queryString) : '') + (values['#'] ? '#' + values['#'] : '');
         };
         /** @internal */
         UrlMatcher.nameValidator = /^\w+([-.]+\w+)*(?:\[\])?$/;
@@ -5407,7 +5421,7 @@
             this._pluginapi = {
                 _rootViewContext: this._rootViewContext.bind(this),
                 _viewConfigFactory: this._viewConfigFactory.bind(this),
-                _registeredUIView: function (id) { return find(_this._uiViews, function (view) { return _this.router.$id + "." + view.id === id; }); },
+                _registeredUIView: function (id) { return find(_this._uiViews, function (view) { return "".concat(_this.router.$id, ".").concat(view.id) === id; }); },
                 _registeredUIViews: function () { return _this._uiViews; },
                 _activeViewConfigs: function () { return _this._viewConfigs; },
                 _onSync: function (listener) {
@@ -6126,7 +6140,7 @@
          */
         UrlConfig.prototype.defaultSquashPolicy = function (value) {
             if (isDefined(value) && value !== true && value !== false && !isString(value))
-                throw new Error("Invalid squash policy: " + value + ". Valid policies: false, true, arbitrary-string");
+                throw new Error("Invalid squash policy: ".concat(value, ". Valid policies: false, true, arbitrary-string"));
             return (this._defaultSquashPolicy = isDefined(value) ? value : this._defaultSquashPolicy);
         };
         /**
@@ -7529,7 +7543,7 @@
             options.reloadState =
                 options.reload === true ? reg.root() : reg.matcher.find(options.reload, options.relative);
             if (options.reload && !options.reloadState)
-                throw new Error("No such reload state '" + (isString(options.reload) ? options.reload : options.reload.name) + "'");
+                throw new Error("No such reload state '".concat(isString(options.reload) ? options.reload : options.reload.name, "'"));
             return new TargetState(this.router.stateRegistry, identifier, params, options);
         };
         /** @internal */
@@ -7931,7 +7945,7 @@
         invoke: function (fn, context, locals) {
             var all = extend({}, globals, locals || {});
             var params = $injector.annotate(fn);
-            var ensureExist = assertPredicate(function (key) { return all.hasOwnProperty(key); }, function (key) { return "DI can't find injectable: '" + key + "'"; });
+            var ensureExist = assertPredicate(function (key) { return all.hasOwnProperty(key); }, function (key) { return "DI can't find injectable: '".concat(key, "'"); });
             var args = params.filter(ensureExist).map(function (x) { return all[x]; });
             if (isFunction(fn))
                 return fn.apply(context, args);
@@ -7946,7 +7960,7 @@
          */
         annotate: function (fn) {
             if (!isInjectable(fn))
-                throw new Error("Not an injectable function: " + fn);
+                throw new Error("Not an injectable function: ".concat(fn));
             if (fn && fn.$inject)
                 return fn.$inject;
             if (isArray(fn))
@@ -8043,10 +8057,12 @@
         var extendStatics = function (d, b) {
             extendStatics = Object.setPrototypeOf ||
                 ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-                function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+                function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
             return extendStatics(d, b);
         };
         return function (d, b) {
+            if (typeof b !== "function" && b !== null)
+                throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
             extendStatics(d, b);
             function __() { this.constructor = d; }
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -8077,10 +8093,12 @@
         var extendStatics = function (d, b) {
             extendStatics = Object.setPrototypeOf ||
                 ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-                function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+                function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
             return extendStatics(d, b);
         };
         return function (d, b) {
+            if (typeof b !== "function" && b !== null)
+                throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
             extendStatics(d, b);
             function __() { this.constructor = d; }
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -8105,10 +8123,12 @@
         var extendStatics = function (d, b) {
             extendStatics = Object.setPrototypeOf ||
                 ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-                function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+                function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
             return extendStatics(d, b);
         };
         return function (d, b) {
+            if (typeof b !== "function" && b !== null)
+                throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
             extendStatics(d, b);
             function __() { this.constructor = d; }
             d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());

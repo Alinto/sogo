@@ -462,7 +462,9 @@
 
 - (int) searchMinimumWordLength
 {
-  return [self integerForKey: @"SOGoSearchMinimumWordLength"];
+  int min = [self integerForKey: @"SOGoSearchMinimumWordLength"];
+  if(min<1) min=1;
+  return min;
 }
 
 - (BOOL) notifyOnPersonalModifications

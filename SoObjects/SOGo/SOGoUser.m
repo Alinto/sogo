@@ -47,7 +47,6 @@
 
 #import "SOGoUser.h"
 
-static const NSString *kEncryptedUserNamePrefix = @"uenc";
 
 @implementation SoUser (SOGoExtension)
 
@@ -1371,7 +1370,7 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
     return username;
 
   cache = [SOGoCache sharedCache];
-  cacheKey = [NSString stringWithFormat: @"%@_%@", kEncryptedUserNamePrefix, username];
+  cacheKey = [NSString stringWithFormat: @"encrypted_%@",username];
   
   exception = nil;
   tmp = nil;
@@ -1402,11 +1401,14 @@ static const NSString *kEncryptedUserNamePrefix = @"uenc";
   NSString *tmp, *cacheKey;
   SOGoCache *cache;
 
-  if (![[SOGoSystemDefaults sharedSystemDefaults] isURLEncryptionEnabled] || [username isEqualToString: @"anonymous"] || [[request requestHandlerKey] isEqualToString:@"dav"])
+  if (![[SOGoSystemDefaults sharedSystemDefaults] isURLEncryptionEnabled] || 
+              [username isEqualToString: @"anonymous"] || 
+              [[request requestHandlerKey] isEqualToString:@"dav"] ||
+              [[request requestHandlerPath] hasSuffix: @"freebusy.ifb/ajaxRead"])
     return username;
 
   cache = [SOGoCache sharedCache];
-  cacheKey = [NSString stringWithFormat: @"%@_%@", kEncryptedUserNamePrefix, username];
+  cacheKey = [NSString stringWithFormat: @"decrypted_%@", username];
   exception = nil;
   tmp = nil;
   
