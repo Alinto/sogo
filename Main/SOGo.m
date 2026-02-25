@@ -380,7 +380,7 @@ static BOOL debugLeaks;
 
   request = [_ctx request];
   login = [SOGoUser getDecryptedUsernameIfNeeded: _key request: request];
-  if([login isEqualToString: @"changeLanguage"])
+  if([login isEqualToString: @"changeLanguage"] || [login isEqualToString: @"login"])
     user = nil;
   else
   {

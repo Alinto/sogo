@@ -289,7 +289,7 @@ static memcached_st *handle = NULL;
   NSData *keyData, *valueData;
   memcached_return error;
 
-  // [self logWithFormat: @"setValue: '%@' forKey: '%@'", value, key];
+  //[self logWithFormat: @"setValue: '%@' forKey: '%@'", value, key];
   if (handle)
     {
       keyData = [key dataUsingEncoding: NSUTF8StringEncoding];

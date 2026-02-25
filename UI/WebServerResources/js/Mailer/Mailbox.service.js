@@ -1234,6 +1234,10 @@
           _this.updateVisibleMessages();
         }
 
+        if (data.quotas) {
+          _this.$account.updateQuota(data.quotas);
+        }
+
         Mailbox.$log.debug('mailbox ' + _this.id + ' ready');
         _this.$isLoading = false;
         Mailbox.$rootScope.$broadcast('listRefreshed');

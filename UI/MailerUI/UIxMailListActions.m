@@ -1034,6 +1034,8 @@
   SOGoMailFolder *folder;
   WORequest *request;
   WOResponse *response;
+  SOGoMailAccount *account;
+  id quota;
   int i, max;
 
   request = [context request];
@@ -1078,13 +1080,20 @@
           headers = [self getHeadersForUIDs: [changedUids subarrayWithRange: r]
                                    inFolder: folder];
 
-          data = [NSDictionary dictionaryWithObjectsAndKeys:
+          data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                  changedUids, @"changed",
                                deletedUids, @"deleted",
                                headers, @"headers",
                                newSyncToken, @"syncToken",
                                [NSNumber numberWithUnsignedInt: [folder unseenCount]], @"unseenCount",
                                nil];
+                               
+          // We also return the inbox quota
+          account = [folder mailAccountFolder];
+          quota = [account getInboxQuota];
+          if (quota != nil)
+            [data setObject: quota forKey: @"quotas"];
+
           response = [self responseWithStatus: 200 andJSONRepresentation: data];
         }
     }
