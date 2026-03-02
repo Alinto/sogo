@@ -207,7 +207,7 @@
 "Insert signature on forward" = "Inserir assinatura ao encaminhar";
 "Show recipients or sender full email in mailboxes" = "Mostrar destinatários ou remetente do email completo nas caixas de correio";
 "Hide attachements for inline images" = "Ocultar anexos de imagens embutidas";
-"Show attachments above the message" = "Show attachments above the message";
+"Show attachments above the message" = "Mostrar anexos acima da mensagem";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Tamanho de fonte padrão";
@@ -331,7 +331,7 @@
 "Italian" = "Italiano";
 "Japanese" = "日本語";
 "Kazakh" = "Қазақ";
-"Korean" = "한국어";
+"Korean" = "coreano";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
@@ -350,7 +350,7 @@
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
-"Thai" = "ภาษา";
+"Thai" = "Idioma";
 "TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
