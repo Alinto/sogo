@@ -1,0 +1,242 @@
+/* this file is in UTF-8 format! */
+
+/* toolbars */
+"Save" = "Αποθήκευση";
+"Close" = "Κλείσιμο";
+"Edit User Rights" = "Επεξεργασία Δικαιωμάτων Χρήστη";
+"Home" = "Αρχική";
+"Calendar" = "Ημερολόγιο";
+"Address Book"  = "Επαφές";
+"Mail" = "Αλληλογραφία";
+"Preferences" = "Ρυθμίσεις";
+"Administration" = "Διαχείριση";
+"Disconnect" = "Αποσύνδεση";
+"Toggle Menu" = "Εναλλαγή Μενού";
+"Right Administration" = "Διαχείριση Δικαιωμάτων";
+"Log Console (dev.)" = "Κονσόλα Καταγραφής (dev.)";
+"User" = "Χρήστης";
+"Vacation message is enabled" = "Το μήνυμα απουσίας είναι ενεργοποιημένο";
+"Help" = "Βοήθεια";
+"noJavascriptError" = "Το SOGo απαιτεί JavaScript για να λειτουργήσει. Βεβαιωθείτε ότι αυτή η επιλογή είναι διαθέσιμη και ενεργοποιημένη στις ρυθμίσεις του προγράμματος περιήγησής σας.";
+"noJavascriptRetry" = "Επανάληψη";
+"Owner" = "Ιδιοκτήτης";
+"Publish the Free/Busy information" = "Δημοσίευση πληροφοριών Ελεύθερος/Απασχολημένος";
+"Add..." = "Προσθήκη...";
+"Remove" = "Αφαίρεση";
+"Subscribe User" = "Εγγραφή Χρήστη";
+"Any Authenticated User" = "Οποιοσδήποτε Πιστοποιημένος Χρήστης";
+"Public Access" = "Δημόσια Πρόσβαση";
+"Any user not listed above" = "Οποιοσδήποτε χρήστης δεν αναφέρεται παραπάνω";
+"Anybody accessing this resource from the public area" = "Οποιοσδήποτε που έχει πρόσβαση σε αυτόν τον πόρο από τη δημόσια περιοχή";
+"Sorry, the user rights can not be configured for that object." = "Λυπούμαστε, τα δικαιώματα χρήστη δεν μπορούν να ρυθμιστούν για αυτό το αντικείμενο.";
+"Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
+     = "Οποιοσδήποτε χρήστης με λογαριασμό σε αυτό το σύστημα θα μπορεί να έχει πρόσβαση στο γραμματοκιβώτιό σας \"%{0}\". Είστε βέβαιοι ότι τους εμπιστεύεστε όλους;";
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
+     = "Οποιοσδήποτε χρήστης με λογαριασμό σε αυτό το σύστημα θα μπορεί να έχει πρόσβαση στο ημερολόγιό σας \"%{0}\". Είστε βέβαιοι ότι τους εμπιστεύεστε όλους;";
+"Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Δυνητικά οποιοσδήποτε στο Διαδίκτυο θα μπορεί να έχει πρόσβαση στο ημερολόγιό σας \"%{0}\", ακόμα και αν δεν έχει λογαριασμό σε αυτό το σύστημα. Είναι αυτές οι πληροφορίες κατάλληλες για δημόσια δημοσίευση στο Διαδίκτυο;";
+"Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
+     = "Οποιοσδήποτε χρήστης με λογαριασμό σε αυτό το σύστημα θα μπορεί να έχει πρόσβαση στο βιβλίο διευθύνσεών σας \"%{0}\". Είστε βέβαιοι ότι τους εμπιστεύεστε όλους;";
+"Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Δυνητικά οποιοσδήποτε στο Διαδίκτυο θα μπορεί να έχει πρόσβαση στο βιβλίο διευθύνσεών σας \"%{0}\", ακόμα και αν δεν έχει λογαριασμό σε αυτό το σύστημα. Είναι αυτές οι πληροφορίες κατάλληλες για δημόσια δημοσίευση στο Διαδίκτυο;";
+"Give Access" = "Παροχή Πρόσβασης";
+"Keep Private" = "Διατήρηση Ιδιωτικότητας";
+"Expand" = "Επέκταση";
+"Reduce" = "Σύμπτυξη";
+
+/* tooltip */
+"Refresh" = "Ανανέωση";
+
+/* generic.js */
+"Unable to subscribe to that folder!"
+        = "Αδυναμία εγγραφής σε αυτόν τον φάκελο!";
+"You cannot subscribe to a folder that you own!"
+        = "Δεν μπορείτε να εγγραφείτε σε φάκελο που σας ανήκει!";
+"Unable to unsubscribe from that folder!"
+        = "Αδυναμία κατάργησης εγγραφής από αυτόν τον φάκελο!";
+"You cannot unsubscribe from a folder that you own!"
+        = "Δεν μπορείτε να καταργήσετε την εγγραφή από φάκελο που σας ανήκει!";
+"Unable to rename that folder!" = "Αδυναμία μετονομασίας αυτού του φακέλου!";
+"You have already subscribed to that folder!"
+        = "Έχετε ήδη εγγραφεί σε αυτόν τον φάκελο!";
+"The user rights cannot be edited for this object!"
+        = "Τα δικαιώματα χρήστη δεν μπορούν να επεξεργαστούν για αυτό το αντικείμενο!";
+"A folder by that name already exists." = "Ένας φάκελος με αυτό το όνομα υπάρχει ήδη.";
+"You cannot create a list in a shared address book."
+        = "Δεν μπορείτε να δημιουργήσετε λίστα σε κοινόχρηστο βιβλίο διευθύνσεων.";
+"Warning" = "Προειδοποίηση";
+"Can't contact server" = "Προέκυψε σφάλμα κατά την επικοινωνία με τον διακομιστή. Παρακαλούμε δοκιμάστε ξανά αργότερα.";
+"You are not allowed to access this module or this system. Please contact your system administrator."
+= "Δεν σας επιτρέπεται η πρόσβαση σε αυτήν την ενότητα ή σε αυτό το σύστημα. Επικοινωνήστε με τον διαχειριστή του συστήματος.";
+"You don't have the required privileges to perform the operation."
+= "Δεν έχετε τα απαιτούμενα δικαιώματα για να εκτελέσετε αυτήν την ενέργεια.";
+"noEmailForDelegation" = "Πρέπει να καθορίσετε τη διεύθυνση στην οποία θέλετε να αναθέσετε την πρόσκλησή σας.";
+"delegate is organizer" = "Ο αντιπρόσωπος είναι ο διοργανωτής. Παρακαλούμε καθορίστε διαφορετικό αντιπρόσωπο.";
+"delegate is a participant" = "Ο αντιπρόσωπος είναι ήδη συμμετέχων.";
+"delegate is a group" = "Η καθορισμένη διεύθυνση αντιστοιχεί σε ομάδα. Μπορείτε να αναθέσετε μόνο σε μοναδικό άτομο.";
+
+/* common buttons */
+"OK" = "Εντάξει";
+"Cancel" = "Άκυρο";
+"Yes" = "Ναι";
+"No" = "Όχι";
+
+/* generic messages */
+"Error" = "Σφάλμα";
+"Success" = "Επιτυχία";
+
+/* confirmation dialog box */
+"Confirmation" = "Επιβεβαίωση";
+
+/* alarms */
+"Reminder" = "Υπενθύμιση";
+"Start" = "Έναρξη";
+"Due Date" = "Ημερομηνία Λήξης";
+"Location" = "Τοποθεσία";
+"Snooze" = "Αναβολή";
+"Snooze for " = "Αναβολή για ";
+"5 minutes" = "5 λεπτά";
+"10 minutes" = "10 λεπτά";
+"15 minutes" = "15 λεπτά";
+"30 minutes" = "30 λεπτά";
+"45 minutes" = "45 λεπτά";
+"1 hour" = "1 ώρα";
+"1 day" = "1 ημέρα";
+
+/* mail labels */
+"Important" = "Σημαντικό";
+"Work" = "Εργασία";
+"Personal" = "Προσωπικό";
+"To Do" = "Προς Εκτέλεση";
+"Later" = "Αργότερα";
+"Forwarded" = "Προωθήθηκε";
+"Return Receipt Sent" = "Απεστάλη Απόδειξη Παράδοσης";
+"a2_Sunday" = "Κυ";
+"a2_Monday" = "Δε";
+"a2_Tuesday" = "Τρ";
+"a2_Wednesday" = "Τε";
+"a2_Thursday" = "Πέ";
+"a2_Friday" = "Πα";
+"a2_Saturday" = "Σά";
+"Access Rights" = "Δικαιώματα Πρόσβασης";
+"Add User" = "Προσθήκη Χρήστη";
+"Loading" = "Φόρτωση";
+"No such user." = "Δεν υπάρχει τέτοιος χρήστης.";
+"You cannot (un)subscribe to a folder that you own!" = "Δεν μπορείτε να (απ)εγγραφείτε από φάκελο που σας ανήκει!";
+
+/* SMIME Certificate field */
+"S/MIME Certificate" = "Πιστοποιητικό S/MIME";
+"Subject Name" = "Όνομα Υποκειμένου";
+"Issuer" = "Εκδότης";
+"streetAddress" = "Οδός";
+"stateOrProvinceName" = "Πολιτεία ή Νομός";
+"localityName" = "Πόλη";
+"countryName" = "Χώρα";
+"organizationName" = "Οργανισμός";
+"organizationalUnitName" = "Μονάδα Οργανισμού";
+"commonName" = "Κοινό Όνομα";
+"surname" = "Επίθετο";
+"givenName" = "Όνομα";
+"emailAddress" = "Διεύθυνση Email";
+
+
+/* Authentication username */
+"Username" = "Όνομα Χρήστη";
+
+/* Authentication password */
+"Password" = "Κωδικός Πρόσβασης";
+
+/* Authentication failed */
+"Wrong username or password." = "Λανθασμένο όνομα χρήστη ή κωδικός πρόσβασης.";
+
+/* Error message displayed bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Εισαγάγετε τουλάχιστον %{minimumSearchLength} χαρακτήρες";
+
+/* Error message displayed when a file upload exceeds WOMaxUploadSize */
+"File size upload limit reached" = "Ξεπεράστηκε το όριο μεγέθους αρχείου για μεταφόρτωση";
+
+/* Generic server error */
+"An error occured, please try again." = "Προέκυψε σφάλμα, παρακαλούμε δοκιμάστε ξανά.";
+
+/* Open datepicker */
+"Open Calendar" = "Άνοιγμα Ημερολογίου";
+
+/* Toggle visibility (ex: mail account in left navigation menu) */
+"Toggle visibility" = "Εναλλαγή ορατότητας";
+
+"Keyboard Shortcuts" = "Συντομεύσεις Πληκτρολογίου";
+
+/* Aria label for avatar button to select and unselect an item */
+"Toggle item" = "Εναλλαγή στοιχείου";
+
+/* Toggle multiple items at the same time (hotkeys cheatsheet) */
+"Toggle range of items" = "Εναλλαγή εύρους στοιχείων";
+
+/* Question mark shows list of hotkeys */
+"Show or hide this help" = "Εμφάνιση ή απόκρυψη αυτής της βοήθειας";
+
+/* Space key */
+"key_space" = "διάστημα";
+
+/* Delete key */
+"key_delete" = "delete";
+
+/* Shift and space key */
+"key_shift+space" = "shift + διάστημα";
+
+/* Up arrow key */
+"key_up" = "↑";
+
+/* Down arrow key */
+"key_down" = "↓";
+
+/* Left arrow key */
+"key_left" = "←";
+
+/* Right arrow key */
+"key_right" = "→";
+
+/* Shift and up arrow combo keys */
+"key_shift+up" = "shift + ↑";
+
+/* Shift and down arrow combo keys */
+"key_shift+down" = "shift + ↓";
+
+/* Backspace key */
+"key_backspace" = "⌫";
+
+/* Hotkey to start a search */
+"hotkey_search" = "s";
+
+/* Hotkey description to select next list item */
+"View next item" = "Προβολή επόμενου στοιχείου";
+
+/* Hotkey description to select previous list item */
+"View previous item" = "Προβολή προηγούμενου στοιχείου";
+
+/* Hotkey description to add next list item to selection */
+"Add next item to selection" = "Προσθήκη επόμενου στοιχείου στην επιλογή";
+
+/* Hotkey description to add previous list item to selection */
+"Add previous item to selection" = "Προσθήκη προηγούμενου στοιχείου στην επιλογή";
+
+/* Hotkey description to move backward in current view */
+"Move backward" = "Μετακίνηση προς τα πίσω";
+
+/* Hotkey description to move forward in current view */
+"Move forward" = "Μετακίνηση προς τα εμπρός";
+
+/* Password Recovery */
+"passwordRecovery_Disabled" = "Απενεργοποιημένο";
+"passwordRecovery_SecretQuestion" = "Μυστική ερώτηση";
+"passwordRecovery_SecretQuestion1" = "Ποιο είναι το όνομα του πρώτου σας κατοικίδιου;";
+"passwordRecovery_SecretQuestion2" = "Ποιο ήταν το πρώτο σας αυτοκίνητο;";
+"passwordRecovery_SecretQuestion3" = "Ποια είναι η αγαπημένη σας ταινία;";
+"passwordRecovery_SecondaryEmail" = "Δευτερεύον Email";
+
+/* Password */
+"POLICY_MIN_LOWERCASE_LETTER" = "Τουλάχιστον %{0} πεζός χαρακτήρας";
+"POLICY_MIN_UPPERCASE_LETTER" = "Τουλάχιστον %{0} κεφαλαίος χαρακτήρας";
+"POLICY_MIN_DIGIT" = "Τουλάχιστον %{0} ψηφίο";
+"POLICY_MIN_SPECIAL_SYMBOLS" = "Τουλάχιστον %{0} ειδικός χαρακτήρας";
+"POLICY_MIN_LENGTH" = "Ελάχιστο μήκος %{0} χαρακτήρες";

@@ -338,7 +338,7 @@ static const NSString *kJwtKey = @"jwt";
               const auto time_step = OATH_TOTP_DEFAULT_TIME_STEP_SIZE;
               const auto digits = 6;
 
-              real_secret = [[loggedInUser totpKey] UTF8String];
+              real_secret = [[loggedInUser totpKey: YES] UTF8String];
 
               auto result = oath_init();
               auto t = time(NULL);
@@ -366,13 +366,56 @@ static const NSString *kJwtKey = @"jwt";
 
               if (code != [verificationCode unsignedIntValue])
                 {
-                  [self logWithFormat: @"Invalid TOTP key for '%@'", username];
-                  [json setObject: [NSNumber numberWithInt: 1]
-                           forKey: @"totpInvalidKey"];
-                  return [self responseWithStatus: 403
-                            andJSONRepresentation: json];
+                  //With 5.12.5, the totpKey has changed (non longer from salt but from a propoer totpkey parameter)
+                  //To avoid making all old totp configuration obsolete, we're trying the verification code with
+                  //the old method first
+                  unsigned int old_code;
+                  const char *old_real_secret;
+                  char *old_secret;
+
+                  size_t old_secret_len;
+
+                  const auto old_time_step = OATH_TOTP_DEFAULT_TIME_STEP_SIZE;
+                  const auto old_digits = 6;
+
+                  old_real_secret = [[loggedInUser oldtotpKey] UTF8String];
+
+                  auto old_result = oath_init();
+                  auto old_time = time(NULL);
+                  auto old_left = old_time_step - (old_time % old_time_step);
+
+                  char old_otp[old_digits + 1];
+
+                  oath_base32_decode (old_real_secret,
+                                      strlen(old_real_secret),
+                                      &old_secret, &old_secret_len);
+
+                  old_result = oath_totp_generate2(old_secret,
+                                              old_secret_len,
+                                              old_time,
+                                              old_time_step,
+                                              OATH_TOTP_DEFAULT_START_TIME,
+                                              old_digits,
+                                              0,
+                                              old_otp);
+
+                  sscanf(old_otp, "%u", &old_code);
+
+                  oath_done();
+                  free(old_secret);
+
+                  if (old_code != [verificationCode unsignedIntValue])
+                  {
+                    [self logWithFormat: @"Invalid TOTP key for '%@'", username];
+                    [json setObject: [NSNumber numberWithInt: 1] forKey: @"totpInvalidKey"];
+                    return [self responseWithStatus: 403 andJSONRepresentation: json];
+                  }
+                  else {
+                    //Move the old secret to the new parameter
+                    [us setTotpKey: [[us userPrivateSalt] substringToIndex: 12]];
+                  }
                 }
-            } //  if ([verificationCode length] == 6 && [verificationCode unsignedIntValue] > 0)
+            } 
           else
             {
               if ([us dictionaryForKey: @"General"] && ![[us dictionaryForKey: @"General"] objectForKey: @"PrivateSalt"])

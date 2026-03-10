@@ -1298,9 +1298,54 @@
   return [authValue boolValue];
 }
 
-- (NSString *) totpKey
+- (NSString *) totpKey: (bool) isCheck
 {
 #if defined(MFA_CONFIG)
+  NSString *key, *result;
+  const char *s;
+  char *secret;
+
+  size_t s_len, secret_len;
+
+  //Until 5.12.4, SOGo had two problems with totp:
+  // * It was not renew after a user disable it/renable it.
+  // * The length was too small: 12 instead of the recommanded 20
+
+  if(![_defaults totpEnabled])
+  {
+    //Totp was not enabled
+    //Only renew if this is not a check (happen when the user enable it for the first time and save its preferences
+    //the saveAction will check the totp code but [_defaults totpEnabled] is still False )
+    key = [[self userSettings] userCurrentTotpKey: !isCheck];
+  }
+  else
+  {
+    //Totp currently enabled
+    key = [[self userSettings] userCurrentTotpKey: NO];
+  }
+
+  s = [key UTF8String];
+  s_len = strlen(s);
+
+  oath_init();
+  oath_base32_encode(s,s_len, &secret, &secret_len);
+  oath_done();
+
+  result = [[NSString alloc] initWithBytesNoCopy: secret
+                                          length: secret_len
+                                        encoding: NSASCIIStringEncoding
+                                    freeWhenDone: YES];
+
+  return [result autorelease];
+#else
+  return nil;
+#endif
+}
+
+- (NSString *) oldtotpKey
+{
+#if defined(MFA_CONFIG)
+  //Was used before 5.12.5, is to not make obsolete totp profile set before
   NSString *key, *result;
   const char *s;
   char *secret;

@@ -119,6 +119,12 @@
 @interface SOGoFolderGermanRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
+@interface SOGoFolderGreekAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderGreekRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
 @interface SOGoFolderHebrewAdditionAdvisory : SOGoFolderAdditionAdvisory
 @end
 

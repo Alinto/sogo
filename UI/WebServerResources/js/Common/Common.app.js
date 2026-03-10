@@ -36,7 +36,7 @@
           return settings;
       },
       minimumSearchLength: function () {
-        minSearch = angular.isNumber(minimumSearchLength) ? minimumSearchLength : 2;
+        var minSearch = angular.isNumber(minimumSearchLength) ? minimumSearchLength : 2;
         minSearch = minSearch > 1 ? minSearch : 1;
         return minSearch;
       }

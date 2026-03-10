@@ -124,7 +124,8 @@
 
 - (BOOL) isSuperUser;
 - (BOOL) canAuthenticate;
-- (NSString *) totpKey;
+- (NSString *) totpKey: (bool) isCheck;
+- (NSString *) oldtotpKey;
 
 /* resource */
 - (BOOL) isResource;
