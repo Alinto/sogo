@@ -15,7 +15,7 @@ vtodo_class2 = "(งานลับ)";
 "The task \"%{Summary}\" was created" = "งาน \"%{Summary}\" ถูกสร้างขี้น";
 "The task \"%{Summary}\" was deleted" = "งาน \"%{Summary}\" ถูกลบ";
 "The task \"%{Summary}\" was updated" = "งาน \"%{Summary}\" ถูกอัพเดต";
-"The following attendees(s) were notified" = "แจ้งผู้เข้าร่วมดังต่อไปนี้";
+"The following attendees(s) were notified" = "ผู้เข้าร่วมต่อไปนี้ได้รับการแจ้งแล้ว";
 "The following attendees(s) were added" = "ผู้เข้าร่วมต่อไปนี้ถูกเพิ่มเข้ามา";
 "The following attendees(s) were removed" = "ผู้เข้าร่วมต่อไปนี้ถูกลบออก";
 

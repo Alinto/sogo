@@ -1,0 +1,519 @@
+/* toolbar */
+"Save and Close" = "Save and Close";
+"Close" = "Close";
+"Preferences saved" = "Preferences saved";
+
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Unsaved Changes";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Do you want to save your changes made to the configuration?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Save";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Don't Save";
+
+/* tabs */
+"General" = "General";
+"Calendar Options" = "Calendar Options";
+"Contacts Options" = "Contacts Options";
+"Mail Options" = "Mail Options";
+"IMAP Accounts" = "IMAP Accounts";
+"Vacation" = "Vacation";
+"Forward" = "Forward";
+"Password" = "Password";
+"Notification" = "Notification";
+"Categories" = "Categories";
+"Appointments invitations" = "Appointments invitations";
+"Name" = "Name";
+"Color" = "Color";
+"Add" = "Add";
+"Delete" = "Delete";
+
+/* contacts categories */
+"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Enable vacation auto reply";
+"Enable custom auto reply subject" = "Enable custom auto reply subject";
+"Auto reply subject" = "Auto reply subject";
+"You can write ${subject} to insert the original subject" = "You can write ${subject} to insert the original subject";
+"Auto reply message" = "Auto reply message";
+"Email addresses" = "Email addresses";
+"Add default email addresses" = "Add default email addresses";
+"Days between responses" = "Days between responses";
+"Do not send responses to mailing lists" = "Do not send responses to mailing lists";
+"Activation Constraints" = "Activation Constraints";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences";
+"Enable auto reply on" = "Enable auto reply on";
+"First day of vacation" = "First day of vacation";
+"Disable auto reply after" = "Disable auto reply after";
+"Last day of vacation" = "Last day of vacation";
+"Enter date" = "Enter date";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Enable auto reply at";
+"Enter time" = "Enter time";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Disable auto reply at";
+"Enable auto reply on these days" = "Enable auto reply on these days";
+"Always send vacation message response" = "Always send vacation message response";
+"The vacation message is sent prior to apply your filters." = "The vacation message is sent prior to apply your filters.";
+"Discard incoming mails during vacation" = "Discard incoming mails during vacation";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "The vacation message is sent but incoming messages are not delivered to your inbox.";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Please specify your message and your email addresses for which you want to enable auto reply.";
+"Your vacation message must not end with a single dot on a line." = "Your vacation message must not end with a single dot on a line.";
+"End date of your auto reply must be in the future."
+= "End date of your auto reply must be in the future.";
+
+/* forward messages */
+"Forward incoming messages" = "Forward incoming messages";
+"Always forward" = "Always forward";
+"Incoming messages are forwarded prior to apply your filters." = "Incoming messages are forwarded prior to apply your filters.";
+"Keep a copy" = "Keep a copy";
+"Enter an email" = "Enter an email";
+"Add another email" = "Add another email";
+"Please specify an address to which you want to forward your messages."
+= "Please specify an address to which you want to forward your messages.";
+"You are not allowed to forward your messages to an external email address." = "You are not allowed to forward your messages to an external email address.";
+"You are not allowed to forward your messages to an internal email address." = "You are not allowed to forward your messages to an internal email address.";
+"You are not allowed to forward your messages to this domain:" = "You are not allowed to forward your messages to this domain:";
+
+/* notification */
+"Notify incoming messsages" = "Notify incoming messsages";
+"Notification Message Sent" = "Notification message sent";
+"Notification Message" = "Notification of new message on %{0}";
+
+/* d & t */
+"Time Zone" = "Time Zone";
+"Short Date Format" = "Short Date Format";
+"Long Date Format" = "Long Date Format";
+"Time Format" = "Time Format";
+"default" = "Default";
+"Default Module" = "Default Module";
+"Save" = "Save";
+"shortDateFmt_0" = "%d-%b-%y";
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
+
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
+
+/* Timezone autocompletion */
+"No matches found." = "No matches found.";
+
+/* calendar */
+"Week begins on" = "Week begins on";
+"Day start time" = "Day start time";
+"Day end time" = "Day end time";
+"Day start time must be prior to day end time." = "Day start time must be prior to day end time.";
+"Week days to display" = "Week days to display";
+"Show time as busy outside working hours" = "Show time as busy outside working hours";
+"First week of year" = "First week of year";
+"Enable reminders for Calendar items" = "Enable reminders for Calendar items";
+"Play a sound when a reminder comes due" = "Play a sound when a reminder comes due";
+"Default reminder" = "Default reminder";
+"firstWeekOfYear_January1" = "Starts on january 1";
+"firstWeekOfYear_First4DayWeek" = "First 4-day week";
+"firstWeekOfYear_FirstFullWeek" = "First full week";
+"Prevent from being invited to appointments" = "Prevent from being invited to appointments";
+"White list for appointment invitations" = "White list for appointment invitations";
+"Contacts Names" = "Contacts Names";
+"Duplicate name" = "Duplicate name";
+"Calendar categories must have unique names." = "Calendar categories must have unique names.";
+"Disable e-mail notifications on CalDAV" = "Disable e-mail notifications on CalDAV";
+
+/* Default Calendar */
+"Default calendar" = "Default calendar";
+"selectedCalendar" = "Selected calendar";
+"personalCalendar" = "Personal calendar";
+"firstCalendar" = "First enabled calendar";
+"reminder_NONE" = "No reminder";
+"reminder_5_MINUTES_BEFORE" = "5 minutes before";
+"reminder_10_MINUTES_BEFORE" = "10 minutes before";
+"reminder_15_MINUTES_BEFORE" = "15 minutes before";
+"reminder_30_MINUTES_BEFORE" = "30 minutes before";
+"reminder_45_MINUTES_BEFORE" = "45 minutes before";
+"reminder_1_HOUR_BEFORE" = "1 hour before";
+"reminder_2_HOURS_BEFORE" = "2 hours before";
+"reminder_5_HOURS_BEFORE" = "5 hours before";
+"reminder_15_HOURS_BEFORE" = "15 hours before";
+"reminder_1_DAY_BEFORE" = "1 day before";
+"reminder_2_DAYS_BEFORE" = "2 days before";
+"reminder_1_WEEK_BEFORE" = "1 week before";
+
+/* Mailer */
+"Labels" = "Labels";
+"Label" = "Label";
+"IMAP Label" = "IMAP Label";
+"Invalid label" = "Don't use space, nor ( ) { } % * \" \\";
+"Duplicate label" = "Duplicate label";
+"IMAP labels must have unique names." = "IMAP labels must have unique names.";
+"New label" = "New label";
+"Show subscribed mailboxes only" = "Show subscribed mailboxes only";
+"Synchronize only default mail folders (EAS)" = "Synchronize only default mail folders (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Fetch count of unseen messages for all mailboxes";
+"Sort messages by threads" = "Sort messages by threads";
+"Always open mail composer" = "Always open mail composer";
+"Inside current window" = "Inside current window";
+"In a popup window" = "In a popup window";
+"When sending mail, add unknown recipients to my" = "When sending mail, add unknown recipients to my";
+"Address Book" = "Address Book";
+"Forward messages" = "Forward messages";
+"messageforward_inline" = "Inline";
+"messageforward_attached" = "As Attachment";
+"When replying to a message" = "When replying to a message";
+"replyplacement_above" = "Start my reply above the quote";
+"replyplacement_below" = "Start my reply below the quote";
+"And place my signature" = "And place my signature";
+"signatureplacement_above" = "below my reply";
+"signatureplacement_below" = "below the quote";
+"Compose messages in" = "Compose messages in";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "Plain text";
+"Insert signature on new message" = "Insert signature on new message";
+"Insert signature on reply" = "Insert signature on reply";
+"Insert signature on forward" = "Insert signature on forward";
+"Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
+"Hide attachements for inline images" = "Hide attachments for inline images";
+"Show attachments above the message" = "Show attachments above the message";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Default font size";
+
+"Display remote inline images" = "Display remote inline images";
+"displayremoteinlineimages_never" = "Never";
+"displayremoteinlineimages_always" = "Always";
+"Auto save every" = "Auto save every";
+"minutes" = "minutes";
+"Automatically mark messages as read" = "Automatically mark messages as read";
+"Immediately on display" = "Immediately on display";
+"After displaying for" = "After displaying for";
+"seconds" = "seconds";
+
+/* Contact */
+"Personal Address Book" = "Personal Address Book";
+"Collected Address Book" = "Collected Address Book";
+"Contact categories must have unique names." = "Contact categories must have unique names.";
+
+/* IMAP Accounts */
+"Settings" = "Settings";
+"Security" = "Security";
+"Mail Account" = "Mail Account";
+"New Mail Account" = "New Mail Account";
+"Server Name" = "Server Name";
+"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
+"Smtp Auth" = "Smtp Auth";
+"Port" = "Port";
+"Encryption" = "Encryption";
+"Outgoing Encryption" = "Outgoing Encryption";
+"None" = "None";
+"User Name" = "User Name";
+"Full Name" = "Full Name";
+"Email" = "Email";
+"Reply To Email" = "Reply To Email";
+"Signature" = "Signature";
+"Identities" = "Identities";
+"Always use the default identity when replying to messages" = "Always use the default identity when replying to messages";
+"Default Identity" = "Default Identity";
+"New Identity" = "New Identity";
+"(Click to create)" = "(Click to create)";
+"Please enter your signature below" = "Please enter your signature below";
+"Please specify a valid sender address." = "Please specify a valid sender address.";
+"Please specify a valid reply-to address." = "Please specify a valid reply-to address.";
+"Specify a hostname other than the local host" = "Specify a hostname other than the local host";
+
+"No certificate installed" = "No certificate installed";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "The SSL certificate must use the PKCS#12 (PFX) format.";
+"Uninstall" = "Uninstall";
+"Choose PKCS12 Certificate .." = "Choose PKCS12 Certificate ..";
+"Certificate Import Password" = "Certificate Import Password";
+"Upload" = "Upload";
+"When composing a message" = "When composing a message";
+"Digitally sign the message by default" = "Digitally sign the message by default";
+"Always try to encrypt the message" = "Always try to encrypt the message";
+"An error occurred while importing the certificate. Verify your password." = "An error occurred while importing the certificate. Verify your password.";
+"Data too big. Please contact technical support." = "Data too big. Please contact technical support.";
+
+/* Additional Parameters */
+"Additional Parameters" = "Additional Parameters";
+
+/* password */
+"Current password" = "Current password";
+"New password" = "New password";
+"Confirmation" = "Confirmation";
+"Change" = "Change";
+"Passwords don't match" = "Passwords don't match";
+
+
+/* Event+task classifications */
+"Default events classification" = "Default events classification";
+"Default tasks classification" = "Default tasks classification";
+"PUBLIC_item" = "Public";
+"CONFIDENTIAL_item" = "Confidential";
+"PRIVATE_item" = "Private";
+
+/* Event+task categories */
+"Calendar Category" = "Calendar Category";
+"Add Calendar Category" = "Add Calendar Category";
+"New category" = "New category";
+"Reset to defaults" = "Reset to defaults";
+"Remove Calendar Category" = "Remove Calendar Category";
+"Contact Category" = "Contact Category";
+"Add Contact Category" = "Add Contact Category";
+"Remove Contact Category" = "Remove Contact Category";
+"category_none" = "None";
+"calendar_category_labels" = "Anniversary,Birthday,Business,Calls,Clients,Competition,Customer,Favorites,Follow up,Gifts,Holidays,Ideas,Meeting,Issues,Miscellaneous,Personal,Projects,Public Holiday,Status,Suppliers,Travel,Vacation";
+
+/* Default module */
+"Calendar" = "Calendar";
+"Contacts" = "Address Book";
+"Mail" = "Mail";
+"Last" = "Last used";
+"Default Module " = "Default Module";
+"SOGo Version" = "SOGo Version";
+
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "Save preferences and reload page now?";
+"Language" = "Language";
+"choose" = "Choose ...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Bosnian" = "Bosanski";
+"Bulgarian" = "Български";
+"Catalan" = "Català";
+"ChineseChina" = "简体中文";
+"ChineseTaiwan" = "正體中文";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"Galician" = "Galego";
+"German" = "Deutsch";
+"Hebrew" = "עברית";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
+"Italian" = "Italiano";
+"Japanese" = "日本語";
+"Kazakh" = "Қазақ";
+"Korean" = "한국어";
+"Latvian" = "Latviešu";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"Montenegrin" = "Crnogorski";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
+"Russian" = "Русский";
+"Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"Thai" = "ภาษา";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"Refresh View" = "Refresh View";
+"refreshview_manually" = "Manually";
+"refreshview_every_minute" = "Every minute";
+"refreshview_every_2_minutes" = "Every 2 minutes";
+"refreshview_every_5_minutes" = "Every 5 minutes";
+"refreshview_every_10_minutes" = "Every 10 minutes";
+"refreshview_every_20_minutes" = "Every 20 minutes";
+"refreshview_every_30_minutes" = "Every 30 minutes";
+"refreshview_once_per_hour" = "Once per hour";
+"Enable Desktop Notifications" = "Enable Desktop Notifications";
+
+/* Return receipts */
+"When I receive a request for a return receipt" = "When I receive a request for a return receipt";
+"Never send a return receipt" = "Never send a return receipt";
+"Allow return receipts for some messages" = "Allow return receipts for some messages";
+"If I'm not in the To or Cc of the message" = "If I'm not in the To or Cc of the message";
+"If the sender is outside my domain" = "If the sender is outside my domain";
+"In all other cases" = "In all other cases";
+"Never send" = "Never send";
+"Always send" = "Always send";
+"Ask me" = "Ask me";
+
+/* Filters - UIxPreferences */
+"Filters" = "Filters";
+"Active" = "Active";
+"Move Up" = "Move Up";
+"Move Down" = "Move Down";
+"Connection error" = "Connection error";
+"Service temporarily unavailable" = "Service temporarily unavailable";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Enable filter";
+
+/* Filters - UIxFilterEditor */
+"Filter name" = "Filter name";
+/* Button label */
+"Add a condition" = "Add a condition";
+/* Button label */
+"Add an action" = "Add an action";
+"For incoming messages that" = "For incoming messages that";
+"match all of the following rules" = "match all of the following rules";
+"match any of the following rules" = "match any of the following rules";
+"match all messages" = "match all messages";
+"Perform these actions" = "Perform these actions";
+"Untitled Filter" = "Untitled Filter";
+"Subject" = "Subject";
+"From" = "From";
+"To" = "To";
+"Cc" = "Cc";
+"To or Cc" = "To or Cc";
+"Size (Kb)" = "Size (Kb)";
+"Header" = "Header";
+"Body" = "Body";
+"Flag the message with" = "Flag the message with";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Flag";
+
+"Discard the message" = "Discard the message";
+"File the message in" = "File the message in";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Mailbox";
+
+"Keep the message" = "Keep the message";
+"Forward the message to" = "Forward the message to";
+"Notify the message to" = "Notify the message to";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "Email";
+
+"Send a reject message" = "Send a reject message";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Message";
+
+"Send a vacation message" = "Send a vacation message";
+"Stop processing filter rules" = "Stop processing filter rules";
+"is under" = "is under";
+"is over" = "is over";
+"is" = "is";
+"is not" = "is not";
+"contains" = "contains";
+"does not contain" = "does not contain";
+"matches" = "matches";
+"does not match" = "does not match";
+"matches regex" = "matches regex";
+"does not match regex" = "does not match regex";
+/* Placeholder for the value field of a condition */
+"Value" = "Value";
+"Seen" = "Seen";
+"Deleted" = "Deleted";
+"Answered" = "Answered";
+"Flagged" = "Flagged";
+"Junk" = "Junk";
+"Not Junk" = "Not Junk";
+
+/* Password policy */
+"The password was changed successfully." = "The password was changed successfully.";
+"Password must not be empty." = "Password must not be empty.";
+"The passwords do not match. Please try again." = "The passwords do not match. Please try again.";
+"Password change failed" = "Password change failed";
+"Password change failed - Permission denied" = "Password change failed - Permission denied";
+"Password change failed - Insufficient password quality" = "Password change failed - Insufficient password quality";
+"Password change failed - Password is too short" = "Password change failed - Password is too short";
+"Password change failed - Password is too young" = "Password change failed - Password is too young";
+"Password change failed - Password is in history" = "Password change failed - Password is in history";
+"Unhandled policy error: %{0}" = "Unhandled policy error: %{0}";
+"Unhandled error response" = "Unhandled error response";
+"Password change is not supported." = "Password change is not supported.";
+"Unhandled HTTP error code: %{0}" = "Unhandled HTTP error code: %{0}";
+"Cancel" = "Cancel";
+"Invitations" = "Invitations";
+"Edit Filter" = "Edit Filter";
+"Delete Filter" = "Delete Filter";
+"Create Filter" = "Create Filter";
+"Delete Label" = "Delete Label";
+"Create Label" = "Create Label";
+"Accounts" = "Accounts";
+"Edit Account" = "Edit Account";
+"Delete Account" = "Delete Account";
+"Create Account" = "Create Account";
+"Account Name" = "Account Name";
+"SSL" = "SSL";
+"TLS" = "TLS";
+
+/* Avatars */
+"Use Gravatar" = "Use Gravatar";
+"Alternate Avatar" = "Alternate Avatar";
+"none" =  "None";
+"identicon" = "Ident Icon";
+"monsterid" = "Monster";
+"wavatar" = "Wavatar";
+"retro" = "Retro";
+
+/* Animation Level */
+"Animation Level" = "Animation Level";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Normal";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Limited";
+"animation_NONE" = "None";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "Enable two-factor authentication using a TOTP application";
+"You must enter this key into your TOTP application." = "You must enter this key into your TOTP application.";
+"If you do not and you log out you will not be able to login again." = "If you do not and you log out you will not be able to login again.";
+"Enter TOTP verification code :" = "Enter TOTP verification code :";
+"Invalid TOTP verification code" = "Invalid TOTP verification code";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "An external Sieve script is active";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled.";
+"Let SOGo handle everything" = "Let SOGo handle everything";
+
+/* Password Recovery */
+"Password recovery mode" = "Password recovery mode";
+"Question" = "Question";
+"Secondary e-mail" = "Secondary e-mail";
+"Answer" = "Answer";
+"Password recovery" = "Password recovery";
+"Password change" = "Password change";

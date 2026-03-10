@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.12.5](https://github.com/Alinto/sogo/compare/SOGo-5.12.4...SOGo-5.12.5) (2026-03-03)
+
+
+### Bug Fixes
+
+* **db:** increase some column size ([f8638a3](https://github.com/Alinto/sogo/commit/f8638a3f4edd3487901c119b079dea2a3746cd7c))
+* **encryptedUrl:** fix cache key data and expect uncrypted name for freebusy ([95efe73](https://github.com/Alinto/sogo/commit/95efe73e69abaae7fb8c1bdd0fe7ac660d59d7a4))
+* **event:** also add jitsi url in the location as outlook doesn't support attach url ([7876013](https://github.com/Alinto/sogo/commit/7876013a4c1b0c7a1ac7153f2c61ff5f3de39632))
+* **identity:** fix signatrue when changing identity ([71d865b](https://github.com/Alinto/sogo/commit/71d865b86a7c11dc6aa8612999ae515f14a3bdf2))
+* **login:** prevent user search for login keyword ([6f91600](https://github.com/Alinto/sogo/commit/6f916008e9e30bceaf5942e0c8645006d07d3aec))
+* **Mail:** correctly update quota when refreshing ([af984f5](https://github.com/Alinto/sogo/commit/af984f58c043cb7ddc8597f119c8a5b9737612b2))
+* **mail:** use the correct replyTo when set to a non*default identity ([03fa91d](https://github.com/Alinto/sogo/commit/03fa91dc22b268ce230f78e7386234ca84814f27))
+* **minsearch:** fix instance of minsearch ([d7e5165](https://github.com/Alinto/sogo/commit/d7e51655fb0a543cff68a9fbc10ceb67540e4bec))
+* **tool:** rename-user properly change data in c_defaults and c_settings ([d69f55c](https://github.com/Alinto/sogo/commit/d69f55c265e0e5873032d5e14e49636ed6c36631))
+* **trad:** typo in a transation key ([e2b8494](https://github.com/Alinto/sogo/commit/e2b8494a9cde046a8aad71808353366c328e0230))
+* **ui:** prevent UI to search for users with empty string ([389e8e6](https://github.com/Alinto/sogo/commit/389e8e64c4933edbcc1f756f422594e70d70c903))
+* **vulnerability:** prevent javascript njection with hint query ([e821b20](https://github.com/Alinto/sogo/commit/e821b20f87d1a9757f1d0aff7d1e31703f97054b))
+* **vulnerability:** prevent sogo to execute scripts pass in theme query ([16ab99e](https://github.com/Alinto/sogo/commit/16ab99e7cf8db2c30b211f0d5e338d7f9e3a9efb))
+* **vulnerability:** prevent xss with events, tasks and contacts categories ([e9b3f2a](https://github.com/Alinto/sogo/commit/e9b3f2a43d7557e8416f6749df4ab4f9128af2d1))
+* **vulnerability:** properly change the totp code after disabling it ([83d4c52](https://github.com/Alinto/sogo/commit/83d4c522f87cfde0ba543837d9b24c3479083ec2))
+
+
+### Localization
+
+* **ca:** Update Catalan translations ([4a587fe](https://github.com/Alinto/sogo/commit/4a587fe00044bfce55186a7f75af64b5256399d7))
+* **es_ES:** Update SpanishSpain translations ([6ce884b](https://github.com/Alinto/sogo/commit/6ce884b3e71cc08c1e3eedb722be00ade6d1263f))
+* **pt_BR:** Update BrazilianPortuguese translations ([39b820a](https://github.com/Alinto/sogo/commit/39b820a5490eadbbadc6872f0814c23b7a6d4a13))
+* **pt:** Add Greek (partial) ([1fdb4d3](https://github.com/Alinto/sogo/commit/1fdb4d30261f5d69d83eef7d8615ef62ddd94a7e))
+* **pt:** Update Portuguese translations ([fbd056c](https://github.com/Alinto/sogo/commit/fbd056cc293a7c53f0ff0de4dd8a50a0d998291f))
+* **ru:** Update Russian translations ([1be58da](https://github.com/Alinto/sogo/commit/1be58da745b875aeb12096ac8fb8c51c6df99068))
+* **th:** Update Thai translations ([d993227](https://github.com/Alinto/sogo/commit/d993227b36b6fbddebf113a5b544aa3bebf01bcc))
+
 ## [5.12.4](https://github.com/Alinto/sogo/compare/SOGo-5.12.3...SOGo-5.13.0) (2025-10-06)
 
 

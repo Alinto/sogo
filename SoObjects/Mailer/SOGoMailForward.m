@@ -345,6 +345,9 @@
 @implementation SOGoMailGermanForward
 @end
 
+@implementation SOGoMailGreekForward
+@end
+
 @implementation SOGoMailHebrewForward
 @end
 

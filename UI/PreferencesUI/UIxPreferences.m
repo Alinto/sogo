@@ -1123,7 +1123,7 @@ static NSArray *reminderValues = nil;
 
 - (NSString *) totpKey
 {
-  return [[context activeUser] totpKey];
+  return [[context activeUser] totpKey: NO];
 }
 
 //
@@ -1910,7 +1910,7 @@ static NSArray *reminderValues = nil;
               const auto time_step = OATH_TOTP_DEFAULT_TIME_STEP_SIZE;
               const auto digits = 6;
 
-              real_secret = [[user totpKey] UTF8String];
+              real_secret = [[user totpKey: YES] UTF8String];
 
               auto result = oath_init();
               auto t = time(NULL);

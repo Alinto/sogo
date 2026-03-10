@@ -334,6 +334,15 @@
 @implementation SOGoACLGermanRemovalAdvisory
 @end
 
+@implementation SOGoACLGreekAdditionAdvisory
+@end
+
+@implementation SOGoACLGreekModificationAdvisory
+@end
+
+@implementation SOGoACLGreekRemovalAdvisory
+@end
+
 @implementation SOGoACLHungarianAdditionAdvisory
 @end
 
