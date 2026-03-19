@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.12.6](https://github.com/Alinto/sogo/compare/SOGo-5.12.6...SOGo-5.12.6) (2026-03-19)
+
+### Bug Fixes
+
+* **totp:** new user can properly use totp ([623f08](https://github.com/Alinto/sogo/commit/623f083cd94842766c6d9430cf3bdad8fc4d5dbc))
+
 ### [5.12.5](https://github.com/Alinto/sogo/compare/SOGo-5.12.4...SOGo-5.12.5) (2026-03-03)
 
 
