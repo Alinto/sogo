@@ -418,7 +418,8 @@ static const NSString *kJwtKey = @"jwt";
             } 
           else
             {
-              if ([us dictionaryForKey: @"General"] && ![[us dictionaryForKey: @"General"] objectForKey: @"PrivateSalt"])
+              if ([us dictionaryForKey: @"General"] && !([[us dictionaryForKey: @"General"] objectForKey: @"PrivateSalt"] || 
+                [[us dictionaryForKey: @"General"] objectForKey: @"totpKey"]))
                 {
                   // Since v5.3.0, a new salt is used for TOTP. If it's missing, disable TOTP and alert the user.
                   [ud setTotpEnabled: NO];
