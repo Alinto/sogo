@@ -225,8 +225,15 @@
  */
 - (NSString *) _encryptPassword: (NSString *) plainPassword
 {
-  NSString *pass;
+  NSString *pass, *passwordScheme;
   NSString* result;
+
+  // if ([_userPasswordAlgorithm caseInsensitiveCompare: @"none"] == NSOrderedSame ||
+  //     [_userPasswordAlgorithm caseInsensitiveCompare: @"plain"] == NSOrderedSame ||
+  //     [_userPasswordAlgorithm caseInsensitiveCompare: @"cleartext"] == NSOrderedSame)
+  // {
+  //   pass = [pass stringByReplacingString: @"'"  withString: @"''"];
+  // }
 
   pass = [plainPassword asCryptedPassUsingScheme: _userPasswordAlgorithm
                                          keyPath: _keyPath];
@@ -272,6 +279,7 @@
               grace: (int *) _grace
   disablepasswordPolicyCheck: (BOOL) _disablepasswordPolicyCheck
 {
+  EOAdaptor *adaptor;
   EOAdaptorChannel *channel;
   EOQualifier *qualifier;
   GCSChannelManager *cm;
@@ -281,11 +289,13 @@
 
   rc = NO;
 
-  _login = [_login stringByReplacingString: @"'"  withString: @"''"];
   cm = [GCSChannelManager defaultChannelManager];
   channel = [cm acquireOpenChannelForURL: _viewURL];
   if (channel)
     {
+      EOAdaptorContext *adaptorCtx;
+      adaptorCtx = [channel adaptorContext];
+      adaptor = [adaptorCtx adaptor];
       if (_loginFields)
         {
           NSMutableArray *qualifiers;
@@ -324,7 +334,8 @@
                                               nil];
           [qualifier autorelease];
         }
-      [qualifier appendSQLToString: sql];
+      [qualifier appendSQLToString: sql
+                       withAdaptor: adaptor];
 
       ex = [channel evaluateExpressionX: sql];
       if (!ex)
@@ -430,9 +441,11 @@
 {
   BOOL didChange, isOldPwdOk, isPolicyOk;
   EOAdaptorChannel *channel;
+  EOAdaptor *adaptor;
+  EOQualifier *qualifier_login, *qualifier_pwd;
   GCSChannelManager *cm;
   NSException *ex;
-  NSString *sqlstr;
+  NSMutableString *sqlstr;
 
   *perr = -1;
   isOldPwdOk = NO;
@@ -455,16 +468,28 @@
         return NO;
 
       // Save new password
-      login = [login stringByReplacingString: @"'"  withString: @"''"];
+      // login = [login stringByReplacingString: @"'"  withString: @"''"];
       cm = [GCSChannelManager defaultChannelManager];
       channel = [cm acquireOpenChannelForURL: _viewURL];
       if (channel)
         {
-          sqlstr = [NSString stringWithFormat: (@"UPDATE %@"
-                                                @" SET c_password = '%@'"
-                                                @" WHERE c_uid = '%@'"),
-                             [_viewURL gcsTableName], encryptedPassword, login];
-
+          EOAdaptorContext *adaptorCtx;
+          adaptorCtx = [channel adaptorContext];
+          adaptor = [adaptorCtx adaptor];
+          sqlstr = [NSMutableString stringWithFormat: @"UPDATE %@ SET ",
+                                              [_viewURL gcsTableName]];
+                
+          qualifier_pwd = [[EOKeyValueQualifier alloc] initWithKey: @"c_password"
+                                              operatorSelector: EOQualifierOperatorEqual
+                                                         value: encryptedPassword];
+          [qualifier_pwd appendSQLToString: sqlstr
+                          withAdaptor: adaptor];
+          [sqlstr appendString: @" WHERE "];
+          qualifier_login = [[EOKeyValueQualifier alloc] initWithKey: @"c_uid"
+                                              operatorSelector: EOQualifierOperatorEqual
+                                                         value: login];
+          [qualifier_login appendSQLToString: sqlstr
+                          withAdaptor: adaptor];
           ex = [channel evaluateExpressionX: sqlstr];
           if (!ex)
             {
@@ -998,7 +1023,9 @@
                           inDomain: (NSString *)domain
                              limit: (int)limit
 {
+  EOAdaptor *adaptor;
   EOAdaptorChannel *channel;
+  EOQualifier *qualifier;
   NSEnumerator *criteriaList;
   NSMutableArray *fields, *results;
   GCSChannelManager *cm;
@@ -1014,12 +1041,14 @@
       channel = [cm acquireOpenChannelForURL: _viewURL];
       if (channel)
         {
+          EOAdaptorContext *adaptorCtx;
+          adaptorCtx = [channel adaptorContext];
+          adaptor = [adaptorCtx adaptor];
           fields = [NSMutableArray array];
           if ([filter length])
             {
-              lowerFilter = [filter lowercaseString];
-              lowerFilter = [lowerFilter asSafeSQLLikeString];
-              filterFormat = [NSString stringWithFormat: @"LOWER(%%@) LIKE '%%%%%@%%%%'", lowerFilter];
+              filter = [[filter asSafeSQLString] stringByReplacingString: @"\%" withString: @"%%"];
+              filterFormat = [NSString stringWithFormat: @"(%%@ isCaseInsensitiveLike: '*%@*')", filter];
               if (criteria)
                 criteriaList = [criteria objectEnumerator];
               else
@@ -1044,7 +1073,9 @@
           if ([fields count])
             {
               qs = [[[fields uniqueObjects] stringsWithFormat: filterFormat] componentsJoinedByString: @" OR "];
-              [sql appendString: qs];
+              qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
+              [qualifier appendSQLToString: sql
+                             withAdaptor: adaptor];
             }
           else
             [sql appendString: @"1 = 1"];
@@ -1108,7 +1139,7 @@
                           andSortOrdering: (EOSortOrdering *) ordering
                                  inDomain: (NSString *) domain
 {
-  static EOAdaptor *adaptor = nil;
+  EOAdaptor *adaptor;
   NSException *ex;
   NSMutableArray *results;
   NSMutableString *sql;
@@ -1123,12 +1154,9 @@
       channel = [cm acquireOpenChannelForURL: _viewURL];
       if (channel)
         {
-          if (!adaptor)
-            {
-              EOAdaptorContext *adaptorCtx;
-              adaptorCtx = [channel adaptorContext];
-              adaptor = [adaptorCtx adaptor];
-            }
+          EOAdaptorContext *adaptorCtx;
+          adaptorCtx = [channel adaptorContext];
+          adaptor = [adaptorCtx adaptor];
           sql = [NSMutableString stringWithFormat: @"SELECT c_name FROM %@ WHERE (", [_viewURL gcsTableName]];
 
           if (qualifier)
