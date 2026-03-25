@@ -276,7 +276,7 @@
 /* status type */
 "status_" = "Non-spécifié";
 "status_NOT-SPECIFIED" = "Non spécifié";
-"status_TENTATIVE" = "Tentatif";
+"status_TENTATIVE" = "Tentative";
 "status_CONFIRMED" = "Confirmé";
 "status_CANCELLED" = "Annulé";
 "status_NEEDS-ACTION" = "En attente";
@@ -492,7 +492,7 @@ validate_untilbeforeend    = "La répétition doit se terminer après la premiè
 "Declined" = "Décliné";
 
 /* Participant status: tentatively accepted */
-"Tentative" = "Tentatif";
+"Tentative" = "Tentative";
 
 "Free" = "Libre";
 "Busy" = "Occupé";
