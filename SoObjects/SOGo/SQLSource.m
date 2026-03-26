@@ -261,7 +261,7 @@
   return [self checkLogin: _login
                  password: _pwd
                      perr: _perr
-                   expire: _perr
+                   expire: _expire
                     grace: _grace
   disablepasswordPolicyCheck: NO];
 }
