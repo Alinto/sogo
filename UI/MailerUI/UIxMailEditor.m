@@ -865,33 +865,60 @@ static NSArray *infoKeys = nil;
 
   if (messageSubmissions)
     {
-      unsigned int current_time, start_time, delta, block_time;
+      unsigned int current_time, start_time, delta, block_time, submission_interval;
+      bool is_blocked;
 
       current_time = [[NSCalendarDate date] timeIntervalSince1970];
       start_time = [[messageSubmissions objectForKey: @"InitialDate"] unsignedIntValue];
       delta = current_time - start_time;
 
       block_time = [dd messageSubmissionBlockInterval];
+      submission_interval = [dd maximumMessageSubmissionCount];
       messages_count = [[messageSubmissions objectForKey: @"MessagesCount"] intValue];
       recipients_count =  [[messageSubmissions objectForKey: @"RecipientsCount"] intValue];
+      is_blocked = [[messageSubmissions objectForKey: @"isBlocked"] boolValue];
+
+      if(is_blocked && delta < (block_time + submission_interval))
+      {
+        //The user is still withinh the block time
+        jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
+                                              @"failure", @"status",
+                                              [self labelForKey: @"Tried to send too many mails. Please wait."],  @"message",
+                                              nil];
+        return [self responseWithStatus: 405
+                                andString: [jsonResponse jsonRepresentation]];
+      }
       
-      if ((messages_count >= [dd maximumMessageSubmissionCount] || recipients_count >= [dd maximumRecipientCount]) &&
-          delta <= block_time)
+      //
+      // Rate limit check: block if limits exceeded within the submission interval
+      // (not the block interval - that's for how long to block after a violation)
+      //
+      if ((messages_count >= submission_interval || recipients_count >= [dd maximumRecipientCount]) &&
+          delta < [dd maximumSubmissionInterval])
         {
+          // Set the user as blocked
+          [[SOGoCache sharedCache] setMessageSubmissionsCount: messages_count
+                                              recipientsCount: recipients_count
+                                                    isBlocked: YES
+                                                     forLogin: [[context activeUser] login]];
           jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
-                                         @"failure", @"status",
-                                                  [self labelForKey: @"Tried to send too many mails. Please wait."],
-                                       @"message",
-                                       nil];
+                                              @"failure", @"status",
+                                              [self labelForKey: @"Tried to send too many mails. Please wait."],  @"message",
+                                              nil];
           return [self responseWithStatus: 405
                                 andString: [jsonResponse jsonRepresentation]];
         }
       
-      if (delta > block_time ||
-          (delta >= [dd maximumSubmissionInterval] && messages_count < [dd maximumMessageSubmissionCount] && recipients_count < [dd maximumRecipientCount]))
+      //
+      // Reset counters if the submission interval has elapsed AND we're within limits
+      //
+      if (delta >= submission_interval &&
+          messages_count < [dd maximumMessageSubmissionCount] &&
+          recipients_count < [dd maximumRecipientCount])
         {
           [[SOGoCache sharedCache] setMessageSubmissionsCount: 0
                                               recipientsCount: 0
+                                                    isBlocked: NO
                                                      forLogin: [[context activeUser] login]];
         }
     }
@@ -940,6 +967,7 @@ static NSArray *infoKeys = nil;
         {
           [[SOGoCache sharedCache] setMessageSubmissionsCount: messages_count
                                               recipientsCount: recipients_count
+                                                    isBlocked: NO
                                                      forLogin: [[context activeUser] login]];
         }
     }
