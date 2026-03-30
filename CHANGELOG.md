@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.12.7](https://github.com/Alinto/sogo/compare/SOGo-5.12.6...SOGo-5.12.7) (2026-03-30)
+
+
+### Bug Fixes
+
+* **sql:** use proper sql adaptor for usr source ([1f7e5d2](https://github.com/Alinto/sogo/commit/1f7e5d2b2c2047c44a6a9e05f73c36491cb96d21))
+* **typo:** pass the correct arg to checkLogin ([d7f02b6](https://github.com/Alinto/sogo/commit/d7f02b6083197ecabc57c6e3c6f16a3bc23c68d0))
+
+
+### Localization
+
+* **all:** update several translations ([40228c6](https://github.com/Alinto/sogo/commit/40228c619b6df02be4ed5e3f2e0b8d78d8cf15b2))
+* **fr:** Typo in French ([55d615e](https://github.com/Alinto/sogo/commit/55d615e4dd563bc31d82400b1bf110eed61248f6))
+
 ### [5.12.6](https://github.com/Alinto/sogo/compare/SOGo-5.12.6...SOGo-5.12.6) (2026-03-19)
 
 ### Bug Fixes
