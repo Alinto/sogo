@@ -304,11 +304,11 @@
 "Address Book Name" = "Nome do livro de endereços";
 "Links to this Address Book" = "Link para este livro de endereços";
 "Authenticated User Access" = "Acesso Utilizadores Autenticados";
-"CardDAV URL" = "CardDAV URL";
+"CardDAV URL" = "URL CardDAV";
 "Options" = "Opções";
 "Rename" = "Alterar nome";
 "Subscriptions" = "Subscrições";
-"Global Addressbooks" = "Livro de endereços de global";
+"Global Addressbooks" = "Livro de endereços global";
 "Search" = "Procurar";
 "Sort" = "Ordenar";
 "Descending Order" = "Ordem decrescente";

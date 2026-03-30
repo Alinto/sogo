@@ -5,7 +5,7 @@
 "Empty Trash" = "Papierkorb leeren";
 "Empty Junk Folder" = "Spam-Ordner leeren";
 "Delete"      = "Löschen";
-"Expunge"     = "Expunge";
+"Expunge"     = "Komprimieren";
 "Forward"     = "Weiterleiten";
 "Get Mail"    = "Abrufen";
 "Junk"        = "Spam";
@@ -360,7 +360,7 @@
 "Do you really want to move this folder into the trash ?"
  = "Wollen Sie diesen Ordner wirklich in den Papierkorb verschieben?";
 "Operation failed" = "Operation fehlgeschlagen.";
-"Quota" = "Quota:";
+"Quota" = "Speicherplatz:";
 "quotasFormat" = "%{0}% von %{1} MB verwendet";
 "messageQuotasFormat" = "%{0}% von %{1} Nachrichten";
 "Unable to move/delete folder." = "Kann den Ordner nicht verschieben/löschen.";

@@ -9,7 +9,7 @@
 "Address Book"  = "Adressbuch";
 "Mail" = "E-Mail";
 "Preferences" = "Einstellungen";
-"Administration" = "Administration";
+"Administration" = "Verwaltung";
 "Disconnect" = "Beenden";
 "Toggle Menu" = "Menü umschalten";
 "Right Administration" = "Rechteadministration";
@@ -197,10 +197,10 @@
 "key_right" = "→";
 
 /* Shift and up arrow combo keys */
-"key_shift+up" = "shift + ↑";
+"key_shift+up" = "Umschalt + ↑";
 
 /* Shift and down arrow combo keys */
-"key_shift+down" = "shift + ↓";
+"key_shift+down" = "Umschalt + ↓";
 
 /* Backspace key */
 "key_backspace" = "⌫";

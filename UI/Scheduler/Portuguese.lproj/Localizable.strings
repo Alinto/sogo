@@ -565,8 +565,8 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "Links to this Calendar" = "Links para este Calendário";
 "Authenticated User Access" = "Acesso a utilizador autenticado";
 "CalDAV URL" = "CalDAV URL:";
-"WebDAV ICS URL" = "WebDAV ICS URL";
-"WebDAV XML URL" = "WebDAV XML URL";
+"WebDAV ICS URL" = " URL WebDAV ICS";
+"WebDAV XML URL" = " URL WebDAV XML";
 "Copy to clipboard" = "Copiar para área de transferência";
 
 /* Error messages */
