@@ -69,6 +69,20 @@
     lcCharset = @"us-ascii";
 
   bodyString = [NSString stringWithData: self usingEncodingNamed: lcCharset];
+
+  /* Many Japanese emails declare charset=iso-2022-jp but actually use
+     Microsoft's extended variant (cp50220 / ISO-2022-JP-MS), which
+     includes NEC special characters (circled digits ①-⑳, Roman
+     numerals Ⅰ-Ⅹ, etc.) located at JIS rows 9-15.  These rows are
+     undefined in standard ISO-2022-JP (RFC 1468), so strict iconv
+     implementations return EILSEQ and the conversion fails (returns
+     nil).  Because ISO-2022-JP is a 7-bit encoding every byte is also
+     valid UTF-8, so the UTF-8 fallback below would "succeed" and
+     render the raw escape sequences as ASCII garbage.  Try cp50220
+     before falling back to UTF-8. */
+  if (!bodyString && [lcCharset isEqualToString: @"iso-2022-jp"])
+    bodyString = [NSString stringWithData: self usingEncodingNamed: @"cp50220"];
+
   if (![bodyString length])
     {
       /* UTF-8 is used as a 8bit fallback charset... */
