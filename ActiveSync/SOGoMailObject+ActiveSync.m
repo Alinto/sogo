@@ -78,6 +78,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <Appointments/iCalPerson+SOGo.h>
 #include <Mailer/SOGoMailBodyPart.h>
 #include <Mailer/NSString+Mail.h>
+#include <Mailer/NSData+Mail.h>
 
 #import <Mailer/SOGoMailLabel.h>
 #import <Mailer/SOGoMailFolder.h>
@@ -415,6 +416,16 @@ struct GlobalObjectId {
       
       s = [NSString stringWithData: d  usingEncodingNamed: charset];
 
+      // cp50220 (ISO-2022-JP-MS) handles NEC special characters that strict
+      // ISO-2022-JP (RFC 1468) rejects; see NSData+Mail.m bodyStringFromCharset:
+      // Fall back to built-in NEC decoder when cp50220 is unavailable (glibc iconv).
+      if (!s && [charset caseInsensitiveCompare: @"iso-2022-jp"] == NSOrderedSame)
+        {
+          s = [NSString stringWithData: d  usingEncodingNamed: @"cp50220"];
+          if (!s)
+            s = [d bodyStringFromISO2022JPWithNECExtension];
+        }
+
       // We fallback to ISO-8859-1 string encoding
       if (!s)
         s = [[[NSString alloc] initWithData: d  encoding: NSISOLatin1StringEncoding] autorelease];
@@ -481,15 +492,48 @@ struct GlobalObjectId {
               
               s = [NSString stringWithData: body usingEncodingNamed: charset];
 
+              // cp50220 (ISO-2022-JP-MS) handles NEC special characters that strict
+              // ISO-2022-JP (RFC 1468) rejects; see NSData+Mail.m bodyStringFromCharset:
+              // Fall back to built-in NEC decoder when cp50220 is unavailable (glibc iconv).
+              if (!s && [charset caseInsensitiveCompare: @"iso-2022-jp"] == NSOrderedSame)
+                {
+                  s = [NSString stringWithData: body  usingEncodingNamed: @"cp50220"];
+                  if (!s)
+                    s = [body bodyStringFromISO2022JPWithNECExtension];
+                }
+
               // We fallback to ISO-8859-1 string encoding. We avoid #3103.
               if (!s)
                 s = [[[NSString alloc] initWithData: body  encoding: NSISOLatin1StringEncoding] autorelease];
             }
           else
             {
-              // Handle situations when SOPE stupidly returns us a NSString
-              // This can happen for Content-Type: text/plain, Content-Transfer-Encoding: 8bit
-              s = body;
+              // Handle situations when SOPE stupidly returns us a NSString.
+              // If the charset is iso-2022-jp, SOPE may have decoded it incorrectly
+              // (e.g. as UTF-8 fallback, producing garbled escape sequences).
+              // Re-encode to raw bytes and decode properly.
+              NSString *charset;
+              charset = [[thePart contentType] valueOfParameter: @"charset"];
+              if ([charset caseInsensitiveCompare: @"iso-2022-jp"] == NSOrderedSame)
+                {
+                  NSData *rawData;
+                  // Re-encode as latin1 to recover the original 7-bit bytes
+                  rawData = [(NSString *)body dataUsingEncoding: NSISOLatin1StringEncoding];
+                  if (!rawData)
+                    rawData = [(NSString *)body dataUsingEncoding: NSUTF8StringEncoding];
+                  if (rawData)
+                    {
+                      s = [NSString stringWithData: rawData usingEncodingNamed: @"iso-2022-jp"];
+                      if (!s)
+                        s = [NSString stringWithData: rawData usingEncodingNamed: @"cp50220"];
+                      if (!s)
+                        s = [rawData bodyStringFromISO2022JPWithNECExtension];
+                    }
+                  if (!s)
+                    s = body;
+                }
+              else
+                s = body;
             }
 
           if (s)
@@ -723,6 +767,16 @@ struct GlobalObjectId {
             d = [d dataByDecodingQuotedPrintableTransferEncoding];
 
           s = [NSString stringWithData: d  usingEncodingNamed: charset];
+
+          // cp50220 (ISO-2022-JP-MS) handles NEC special characters that strict
+          // ISO-2022-JP (RFC 1468) rejects; see NSData+Mail.m bodyStringFromCharset:
+          // Fall back to built-in NEC decoder when cp50220 is unavailable (glibc iconv).
+          if (!s && [charset caseInsensitiveCompare: @"iso-2022-jp"] == NSOrderedSame)
+            {
+              s = [NSString stringWithData: d  usingEncodingNamed: @"cp50220"];
+              if (!s)
+                s = [d bodyStringFromISO2022JPWithNECExtension];
+            }
 
           // We fallback to ISO-8859-1 string encoding. We avoid #3103.
           if (!s)
