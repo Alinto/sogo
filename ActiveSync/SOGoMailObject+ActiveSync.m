@@ -417,8 +417,13 @@ struct GlobalObjectId {
 
       // cp50220 (ISO-2022-JP-MS) handles NEC special characters that strict
       // ISO-2022-JP (RFC 1468) rejects; see NSData+Mail.m bodyStringFromCharset:
+      // Fall back to built-in NEC decoder when cp50220 is unavailable (glibc iconv).
       if (!s && [charset caseInsensitiveCompare: @"iso-2022-jp"] == NSOrderedSame)
-        s = [NSString stringWithData: d  usingEncodingNamed: @"cp50220"];
+        {
+          s = [NSString stringWithData: d  usingEncodingNamed: @"cp50220"];
+          if (!s)
+            s = [d bodyStringFromISO2022JPWithNECExtension];
+        }
 
       // We fallback to ISO-8859-1 string encoding
       if (!s)
@@ -488,8 +493,13 @@ struct GlobalObjectId {
 
               // cp50220 (ISO-2022-JP-MS) handles NEC special characters that strict
               // ISO-2022-JP (RFC 1468) rejects; see NSData+Mail.m bodyStringFromCharset:
+              // Fall back to built-in NEC decoder when cp50220 is unavailable (glibc iconv).
               if (!s && [charset caseInsensitiveCompare: @"iso-2022-jp"] == NSOrderedSame)
-                s = [NSString stringWithData: body  usingEncodingNamed: @"cp50220"];
+                {
+                  s = [NSString stringWithData: body  usingEncodingNamed: @"cp50220"];
+                  if (!s)
+                    s = [body bodyStringFromISO2022JPWithNECExtension];
+                }
 
               // We fallback to ISO-8859-1 string encoding. We avoid #3103.
               if (!s)
@@ -736,8 +746,13 @@ struct GlobalObjectId {
 
           // cp50220 (ISO-2022-JP-MS) handles NEC special characters that strict
           // ISO-2022-JP (RFC 1468) rejects; see NSData+Mail.m bodyStringFromCharset:
+          // Fall back to built-in NEC decoder when cp50220 is unavailable (glibc iconv).
           if (!s && [charset caseInsensitiveCompare: @"iso-2022-jp"] == NSOrderedSame)
-            s = [NSString stringWithData: d  usingEncodingNamed: @"cp50220"];
+            {
+              s = [NSString stringWithData: d  usingEncodingNamed: @"cp50220"];
+              if (!s)
+                s = [d bodyStringFromISO2022JPWithNECExtension];
+            }
 
           // We fallback to ISO-8859-1 string encoding. We avoid #3103.
           if (!s)

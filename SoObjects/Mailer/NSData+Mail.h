@@ -29,6 +29,7 @@
 
 - (NSData *) bodyDataFromEncoding: (NSString *) encoding;
 - (NSString *) bodyStringFromCharset: (NSString *) charset;
+- (NSString *) bodyStringFromISO2022JPWithNECExtension;
 - (NSString *) decodedHeader;
 - (NSData *) sanitizedContentUsingVoidTags: (NSArray *) theVoidTags;
 
