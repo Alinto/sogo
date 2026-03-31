@@ -225,6 +225,7 @@ _necSpecialCharForJISBytes(unsigned char b1, unsigned char b2)
   return [result length] > 0 ? result : nil;
 }
 
+- (NSString *) bodyStringFromCharset: (NSString *) charset
 {
   NSString *lcCharset, *bodyString;
 
