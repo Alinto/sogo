@@ -479,7 +479,7 @@ struct GlobalObjectId {
         {
           // We make sure everything is encoded in UTF-8.
           NGMimeType *mimeType;
-          NSString *s;
+          NSString *s = nil;
 
           if ([body isKindOfClass: [NSData class]])
             {
