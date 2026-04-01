@@ -509,18 +509,24 @@ struct GlobalObjectId {
           else
             {
               // Handle situations when SOPE stupidly returns us a NSString.
-              // If the charset is iso-2022-jp, SOPE may have decoded it incorrectly
-              // (e.g. as UTF-8 fallback, producing garbled escape sequences).
-              // Re-encode to raw bytes and decode properly.
+              // If the charset is iso-2022-jp and the NSString looks garbled (i.e. it
+              // still contains raw JIS escape sequences because SOPE used the UTF-8
+              // fallback), re-encode to Latin-1 to recover the original 7-bit bytes
+              // and decode properly.
+              // IMPORTANT: only re-encode to Latin-1. If that fails the string is
+              // already correctly decoded (contains non-Latin-1 Unicode chars such as
+              // ■ or ━), so we use it as-is.  Never feed UTF-8-encoded bytes of an
+              // already-decoded string into bodyStringFromISO2022JPWithNECExtension —
+              // that would produce garbled output for high-Unicode characters.
               NSString *charset;
               charset = [[thePart contentType] valueOfParameter: @"charset"];
               if ([charset caseInsensitiveCompare: @"iso-2022-jp"] == NSOrderedSame)
                 {
                   NSData *rawData;
-                  // Re-encode as latin1 to recover the original 7-bit bytes
+                  // Re-encode as Latin-1 to recover the original 7-bit bytes.
+                  // This only succeeds when the string consists entirely of
+                  // characters ≤ U+00FF (i.e. garbled escape-sequence text).
                   rawData = [(NSString *)body dataUsingEncoding: NSISOLatin1StringEncoding];
-                  if (!rawData)
-                    rawData = [(NSString *)body dataUsingEncoding: NSUTF8StringEncoding];
                   if (rawData)
                     {
                       s = [NSString stringWithData: rawData usingEncodingNamed: @"iso-2022-jp"];
