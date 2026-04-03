@@ -838,9 +838,12 @@ static NSArray *infoKeys = nil;
   if (![self hasOneOrMoreRecipients])
     error = [NSException exceptionWithHTTPStatus: 400 /* Bad Request */
                                           reason: [self labelForKey: @"error_missingrecipients"]];
+  else if (![self subject] || [[self subject] length] == 0 || [[self subject] stringByTrimmingSpaces] length] == 0)
+    error = [NSException exceptionWithHTTPStatus: 400 /* Bad Request */
+                                          reason: [self labelForKey: @"error_missingsubject"]];
   else
     error = nil;
-  
+
   return error;
 }
 
