@@ -1859,27 +1859,77 @@ static NSArray *childRecordFields = nil;
   EOAdaptorChannel *channel;
   GCSFolder *folder;
   NSEnumerator *userRoles;
-  NSString *SQL, *currentRole;
+  NSString *SQL, *currentRole, *sqlstr;
+  NSString *fieldName, *value;
+  EOAdaptorContext *adaptorCtx;
+  EOAdaptor *adaptor;
+  EOAttribute *attribute;
 
   folder = [self ocsFolder];
   channel = [folder acquireAclChannel];
-  [[channel adaptorContext] beginTransaction];
+  adaptorCtx = [channel adaptorContext];
+
+  [adaptorCtx beginTransaction];
   userRoles = [roles objectEnumerator];
   while ((currentRole = [userRoles nextObject]))
     {
+      int i = 0;
+      int count = 0;
+      adaptor = [adaptorCtx adaptor];
+      attribute = [EOAttribute new];
+      [attribute autorelease];
+      objectPath = [NSString stringWithFormat: @"/%@", objectPath];
       if ([GCSFolderManager singleStoreMode])
-        SQL = [NSString stringWithFormat: @"INSERT INTO %@"
-                        @" (c_object, c_uid, c_role, c_folder_id)"
-                        @" VALUES ('/%@', '%@', '%@', %@)",
-                        [folder aclTableName],
-                        objectPath, uid, currentRole, [folder folderId]];
+      {
+        sqlstr = [NSMutableString stringWithFormat: @"INSERT INTO %@"
+                                            @" (c_object, c_uid, c_role, c_folder_id)"
+                                            @" VALUES (",
+                                            [folder aclTableName]];
+        NSArray *keys = [NSArray arrayWithObjects: @"c_object", @"c_uid", @"c_role", @"c_folder_id", nil];
+        NSArray *values = [NSArray arrayWithObjects: objectPath, uid, currentRole, [folder folderId], nil];
+            
+        for (i = 0, count = [keys count]; i < count; i++) {
+          fieldName = [keys objectAtIndex: i];
+          if(i < 3)
+            [attribute setExternalType: @"varchar"];
+          else
+            [attribute setExternalType: @"int"];
+          value = [values objectAtIndex: i];
+          if (attribute)
+          {
+            value = [adaptor formatValue: value forAttribute: attribute];
+            [sqlstr appendString: value];
+            if(i < 3)
+              [sqlstr appendString:@", "];
+          }
+        }
+        [sqlstr appendString:@")"];
+      }
       else
-        SQL = [NSString stringWithFormat: @"INSERT INTO %@"
-                        @" (c_object, c_uid, c_role)"
-                        @" VALUES ('/%@', '%@', '%@')",
-                        [folder aclTableName],
-                        objectPath, uid, currentRole];
-      [channel evaluateExpressionX: SQL];
+      {
+        sqlstr = [NSMutableString stringWithFormat: @"INSERT INTO %@"
+                                            @" (c_object, c_uid, c_role)"
+                                            @" VALUES (",
+                                            [folder aclTableName]];
+        NSArray *keys = [NSArray arrayWithObjects: @"c_object", @"c_uid", @"c_role", nil];
+        NSArray *values = [NSArray arrayWithObjects: objectPath, uid, currentRole, nil];
+            
+        for (i = 0, count = [keys count]; i < count; i++) {
+          fieldName = [keys objectAtIndex: i];
+          [attribute setExternalType: @"varchar"];
+          value = [values objectAtIndex: i];
+          if (attribute)
+          {
+            value = [adaptor formatValue: value forAttribute: attribute];
+            [sqlstr appendString: value];
+            if(i < 2)
+              [sqlstr appendString:@", "];
+          }
+        }
+        [sqlstr appendString:@")"];
+      }
+        
+      [channel evaluateExpressionX: sqlstr];
     }
 
   [[channel adaptorContext] commitTransaction];

@@ -26,6 +26,8 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 
+#import <SOGo/SOGoUserManager.h>
+
 #import <SoObjects/SOGo/SOGoContentObject.h>
 
 #import <SOGo/NSDictionary+Utilities.h>
@@ -33,6 +35,25 @@
 #import "UIxObjectActions.h"
 
 @implementation UIxObjectActions
+
+
+- (BOOL) _checkUid: (NSString *) newUID
+{
+  BOOL response;
+  SOGoUserManager *um;
+  response = NO;
+
+  if ([newUID length] > 0)
+    {
+      um = [SOGoUserManager sharedUserManager];
+      if ([[um getEmailForUID: newUID] length] > 0)
+        {
+          response = YES;
+        }
+    }
+
+  return response;
+}
 
 /**
  * @api {get} /so/:username/:folderPath/addUserInAcls?uid=:uid Add user to ACLs
@@ -49,8 +70,17 @@
   WOResponse *response;
   NSString *uid;
   unsigned int code;
+  NSDictionary *jsonResponse;
 
   uid = [[context request] formValueForKey: @"uid"];
+  if(![self _checkUid: uid])
+  {
+    jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"No such user."]
+                                                 forKey: @"message"];
+    response = [self responseWithStatus: 403
+                              andString: [jsonResponse jsonRepresentation]];
+    return response;
+  }
   if ([[self clientObject] addUserInAcls: uid])
     code = 204;
   else
@@ -77,8 +107,17 @@
   WOResponse *response;
   NSString *uid;
   unsigned int code;
+  NSDictionary *jsonResponse;
 
   uid = [[context request] formValueForKey: @"uid"];
+  if(![self _checkUid: uid])
+  {
+    jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"No such user."]
+                                                 forKey: @"message"];
+    response = [self responseWithStatus: 403
+                              andString: [jsonResponse jsonRepresentation]];
+    return response;
+  }
   if ([[self clientObject] removeUserFromAcls: uid])
     code = 204;
   else

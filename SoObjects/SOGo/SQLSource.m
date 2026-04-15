@@ -228,13 +228,6 @@
   NSString *pass, *passwordScheme;
   NSString* result;
 
-  // if ([_userPasswordAlgorithm caseInsensitiveCompare: @"none"] == NSOrderedSame ||
-  //     [_userPasswordAlgorithm caseInsensitiveCompare: @"plain"] == NSOrderedSame ||
-  //     [_userPasswordAlgorithm caseInsensitiveCompare: @"cleartext"] == NSOrderedSame)
-  // {
-  //   pass = [pass stringByReplacingString: @"'"  withString: @"''"];
-  // }
-
   pass = [plainPassword asCryptedPassUsingScheme: _userPasswordAlgorithm
                                          keyPath: _keyPath];
 
@@ -468,7 +461,6 @@
         return NO;
 
       // Save new password
-      // login = [login stringByReplacingString: @"'"  withString: @"''"];
       cm = [GCSChannelManager defaultChannelManager];
       channel = [cm acquireOpenChannelForURL: _viewURL];
       if (channel)
