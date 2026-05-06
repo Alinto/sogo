@@ -153,7 +153,7 @@
   NSString *rc;
 
   if (htmlComposition)
-    rc = [NSString stringWithFormat: @"%@<br/>", [self _headerField: @"organization"]];
+    rc = [NSString stringWithFormat: @"%@<br/>", [[self _headerField: @"organization"] stringByEscapingHTMLString]];
   else
     rc = [NSString stringWithFormat: @"%@\n", [self _headerField: @"organization"]];
 
@@ -205,7 +205,7 @@
   NSString *rc;
 
   if (htmlComposition)
-    rc = [NSString stringWithFormat: @"%@<br/>", [self _headerField: @"newsgroups"]];
+    rc = [NSString stringWithFormat: @"%@<br/>", [[self _headerField: @"newsgroups"] stringByEscapingHTMLString]];
   else
     rc = [NSString stringWithFormat: @"%@\n", [self _headerField: @"newsgroups"]];
 
@@ -222,7 +222,7 @@
   NSString *rc;
 
   if (htmlComposition)
-    rc = [NSString stringWithFormat: @"%@<br/>", [self _headerField: @"references"]];
+    rc = [NSString stringWithFormat: @"%@<br/>", [[self _headerField: @"references"] stringByEscapingHTMLString]];
   else
     rc = [NSString stringWithFormat: @"%@\n", [self _headerField: @"references"]];
 
