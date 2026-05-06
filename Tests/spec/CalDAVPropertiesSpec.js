@@ -165,5 +165,11 @@ END:VCALENDAR`
     expect(fridayRules.length)
       .withContext(`Different recurrence rule is preserved`)
       .toBe(1)
+
+    const dirtySerializedLength = Buffer.byteLength(`${event.replace(/\n/g, '\r\n')}\r\n`, 'utf8')
+    const [objectProperties] = await webdav.propfindWebdav(resource + filename, ['getcontentlength'])
+    expect(Number(objectProperties.props.getcontentlength))
+      .withContext(`Persisted calendar object is normalized on save`)
+      .toBeLessThan(dirtySerializedLength)
   })
 })

@@ -725,6 +725,8 @@ static NSArray *allowed_tags = nil;
 {
   NSString *newUid;
 
+  [newObject removeDuplicateRecurrenceRules];
+
   if (!isNew
       && [newObject isRecurrent])
     // We update an repeating event -- update exception dates
@@ -757,6 +759,16 @@ static NSArray *allowed_tags = nil;
 {
   [newObject setLastModified: [NSCalendarDate calendarDate]];
   return [self saveCalendar: [newObject parent]];
+}
+
+- (NSException *) saveComponent: (id) theComponent
+                    baseVersion: (unsigned int) newVersion
+{
+  if ([theComponent isKindOfClass: [iCalCalendar class]])
+    [self _removeDuplicateRecurrenceRulesFromCalendar: theComponent];
+
+  return [super saveComponent: theComponent
+                  baseVersion: newVersion];
 }
 
 - (NSException *) saveComponent: (iCalRepeatableEntityObject *) newEvent

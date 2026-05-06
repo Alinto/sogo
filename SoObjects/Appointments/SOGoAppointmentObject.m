@@ -66,6 +66,12 @@
 
 #import "SOGoAppointmentObject.h"
 
+@interface SOGoCalendarComponent (DuplicateRecurrenceRules)
+
+- (BOOL) _removeDuplicateRecurrenceRulesFromCalendar: (iCalCalendar *) calendar;
+
+@end
+
 @implementation SOGoAppointmentObject
 
 - (NSString *) componentTag
@@ -2237,6 +2243,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       [self adjustClassificationInRequestCalendar: calendar];
       [self _adjustPartStatInRequestCalendar: calendar];
     }
+
+  [self _removeDuplicateRecurrenceRulesFromCalendar: calendar];
       
   //
   // We first check if it's a new event
