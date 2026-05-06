@@ -365,6 +365,7 @@
 
       var refresh = function() {
         var html = vm.editor.getData();
+        html = inlineImageDimensions(html);
 
         var dom = document.createElement("DIV");
         dom.innerHTML = html;
@@ -428,6 +429,29 @@
         vm.ngModelCtrl.$setValidity('required', body.length > 0);
       }
       
+    }
+    
+    function inlineImageDimensions(html) {
+      return html.replace(/<img\b[^>]*>/gi, function (tag) {
+        var style = (tag.match(/style="([^"]*)"/i) || [])[1];
+        if (!style) return tag;
+        var r = style.match(/aspect-ratio\s*:\s*(\d+)\s*\/\s*(\d+)/i);
+        if (!r) return tag;
+        var w = (style.match(/(?:^|;)\s*width\s*:\s*(\d+)px/i) || [])[1]
+             || (tag.match(/\swidth="(\d+)"/i) || [])[1];
+        if (!w) return tag;
+        var h = Math.round(w * r[2] / r[1]);
+
+        var newStyle = style;
+        if (!/(?:^|;)\s*width\s*:/i.test(newStyle)) newStyle = newStyle.replace(/;?\s*$/, '') + ';width:' + w + 'px';
+        if (!/(?:^|;)\s*height\s*:/i.test(newStyle)) newStyle = newStyle.replace(/;?\s*$/, '') + ';height:' + h + 'px';
+        
+        return tag
+          .replace(/style="[^"]*"/i, 'style="' + newStyle + '"')
+          .replace(/\swidth="[^"]*"/gi, '')
+          .replace(/\sheight="[^"]*"/gi, '')
+          .replace(/\s*\/?>$/, ' width="' + w + '" height="' + h + '">');
+      });
     }
 
     function cleanDirtyHTMLElements(html, threshold) {
