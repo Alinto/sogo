@@ -130,6 +130,13 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
   BOOL hasEmbeddedCSS;
   xmlCharEncoding contentEncoding;
   BOOL rawContent;
+  // Wrap libxml2-orphaned <a> around the following block element
+  // (HTML5 pattern <a><table>...</table></a> auto-closed by libxml2 HTML4 DTD).
+  NSString    *pendingAnchorTag;
+  NSString    *anchorWrapTag;
+  NSUInteger   anchorWrapDepth;
+  NSString    *lastAnchorOpenString;
+  NSUInteger   lastAnchorOpenEnd;
 }
 
 - (NSString *) result;
@@ -175,6 +182,9 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
   [result release];
   [css release];
   [ignoreTag release];
+  [pendingAnchorTag release];
+  [anchorWrapTag release];
+  [lastAnchorOpenString release];
   [super dealloc];
 }
 
@@ -228,6 +238,15 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
   inCSSDeclaration = NO;
   hasEmbeddedCSS = NO;
   embeddedCSSLevel = 0;
+
+  [pendingAnchorTag release];
+  [anchorWrapTag release];
+  [lastAnchorOpenString release];
+  pendingAnchorTag = nil;
+  anchorWrapTag = nil;
+  lastAnchorOpenString = nil;
+  anchorWrapDepth = 0;
+  lastAnchorOpenEnd = 0;
 }
 
 - (void) endDocument
@@ -494,6 +513,32 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
         }
       else
         {
+          // If a libxml2-orphaned <a> is waiting, re-open it around the next
+          // block element (HTML5 pattern <a><table>...</table></a>).
+          // Skip if the next element is itself <a> (avoids invalid nesting).
+          if (pendingAnchorTag != nil)
+            {
+              if ([lowerName isEqualToString: @"a"])
+                {
+                  [pendingAnchorTag release];
+                  pendingAnchorTag = nil;
+                }
+              else
+                {
+                  [result appendString: pendingAnchorTag];
+                  [anchorWrapTag release];
+                  anchorWrapTag = [lowerName copy];
+                  anchorWrapDepth = 1;
+                  [pendingAnchorTag release];
+                  pendingAnchorTag = nil;
+                }
+            }
+          else if (anchorWrapTag != nil
+                   && [lowerName isEqualToString: anchorWrapTag])
+            {
+              anchorWrapDepth++;
+            }
+
           resultPart = [NSMutableString string];
           [resultPart appendFormat: @"<%@", _rawName];
 
@@ -599,6 +644,13 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
             [resultPart appendString: @"/"];
           [resultPart appendString: @">"];
           [result appendString: resultPart];
+
+          if ([lowerName isEqualToString: @"a"])
+            {
+              [lastAnchorOpenString release];
+              lastAnchorOpenString = [resultPart copy];
+              lastAnchorOpenEnd = [result length];
+            }
         }
     }
 }
@@ -655,8 +707,42 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
             }
           else
             {
+              // Empty <a> auto-closed by libxml2 right after opening:
+              // strip it from result and remember it to wrap the next block.
+              if ([lowerName isEqualToString: @"a"]
+                  && lastAnchorOpenString != nil
+                  && [result length] == lastAnchorOpenEnd)
+                {
+                  NSUInteger tagLen = [lastAnchorOpenString length];
+                  [result deleteCharactersInRange:
+                            NSMakeRange(lastAnchorOpenEnd - tagLen, tagLen)];
+                  [pendingAnchorTag release];
+                  pendingAnchorTag = lastAnchorOpenString;
+                  lastAnchorOpenString = nil;
+                  lastAnchorOpenEnd = 0;
+                  return;
+                }
+              if ([lowerName isEqualToString: @"a"])
+                {
+                  [lastAnchorOpenString release];
+                  lastAnchorOpenString = nil;
+                  lastAnchorOpenEnd = 0;
+                }
+
               //NSLog (@"%@", _localName);
               [result appendFormat: @"</%@>", _localName];
+
+              if (anchorWrapTag != nil
+                  && [lowerName isEqualToString: anchorWrapTag])
+                {
+                  anchorWrapDepth--;
+                  if (anchorWrapDepth == 0)
+                    {
+                      [result appendString: @"</a>"];
+                      [anchorWrapTag release];
+                      anchorWrapTag = nil;
+                    }
+                }
             }
         }
     }
@@ -673,8 +759,16 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
       else if (inBody)
         {
 	  NSString *s;
-  
+
           s = [NSString stringWithCharacters: _chars length: _len];
+
+          if (pendingAnchorTag != nil
+              && [[s stringByTrimmingCharactersInSet:
+                       [NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 0)
+            {
+              [pendingAnchorTag release];
+              pendingAnchorTag = nil;
+            }
 
 	  // HACK: This is to avoid appending the useless junk in the <html> tag
 	  //       that Outlook adds. It seems to confuse the XML parser for
