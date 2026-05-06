@@ -256,6 +256,57 @@ static NSArray *allowed_tags = nil;
   [component setUid: uid];
 }
 
+- (BOOL) _removeDuplicateRecurrenceRulesFromCalendar: (iCalCalendar *) calendar
+{
+  iCalRepeatableEntityObject *currentComponent;
+  NSArray *allComponents;
+  BOOL modified;
+  int i;
+
+  allComponents = [calendar childrenWithTag: [self componentTag]];
+  modified = NO;
+
+  for (i = 0; i < [allComponents count]; i++)
+    {
+      currentComponent = (iCalRepeatableEntityObject *) [allComponents objectAtIndex: i];
+      modified = [currentComponent removeDuplicateRecurrenceRules] || modified;
+    }
+
+  return modified;
+}
+
+- (NSString *) _contentByRemovingDuplicateRecurrenceRulesFromString: (NSString *) iCalString
+{
+  iCalCalendar *calendar;
+  NSRange firstRange, secondRange;
+  BOOL modified;
+
+  if (![iCalString length])
+    return iCalString;
+
+  /* Avoid parsing the common single-RRULE case; duplicates need two markers. */
+  firstRange = [iCalString rangeOfString: @"RRULE"
+                                 options: NSCaseInsensitiveSearch];
+  if (firstRange.location == NSNotFound)
+    return iCalString;
+
+  secondRange
+    = [iCalString rangeOfString: @"RRULE"
+                        options: NSCaseInsensitiveSearch
+                          range: NSMakeRange (NSMaxRange (firstRange),
+                                              [iCalString length] - NSMaxRange (firstRange))];
+  if (secondRange.location == NSNotFound)
+    return iCalString;
+
+  calendar = [iCalCalendar parseSingleFromSource: iCalString];
+  modified = [self _removeDuplicateRecurrenceRulesFromCalendar: calendar];
+
+  if (modified)
+    iCalString = [calendar versitString];
+
+  return iCalString;
+}
+
 - (NSString *) secureContentAsString
 {
   iCalRepeatableEntityObject *tmpComponent;
@@ -271,13 +322,14 @@ static NSArray *allowed_tags = nil;
       || [[self ownerInContext: context] isEqualToString: [[context activeUser] login]]
       || ![sm validatePermission: SOGoCalendarPerm_ViewAllComponent
 	      onObject: self inContext: context])
-    iCalString = content;
+    iCalString = [self _contentByRemovingDuplicateRecurrenceRulesFromString: content];
   else if (![sm validatePermission: SOGoCalendarPerm_ViewDAndT
 		onObject: self inContext: context])
     {
       tmpCalendar = [[self calendar: NO secure: NO] mutableCopy];
 
       // We filter all components, in case we have RECURRENCE-ID
+      [self _removeDuplicateRecurrenceRulesFromCalendar: tmpCalendar];
       allComponents = [tmpCalendar childrenWithTag: [self componentTag]];
 
       for (i = 0; i < [allComponents count]; i++)
@@ -426,10 +478,11 @@ static NSArray *allowed_tags = nil;
 {
   iCalCalendar *calendar;
   NSArray *allComponents;
-  iCalEntityObject *currentComponent;
+  iCalRepeatableEntityObject *currentComponent;
   NSUInteger count, max;
 
   calendar = [self calendar: NO secure: YES];
+  [self _removeDuplicateRecurrenceRulesFromCalendar: calendar];
   allComponents = [calendar childrenWithTag: [self componentTag]];
   max = [allComponents count];
   for (count = 0; count < max; count++)
