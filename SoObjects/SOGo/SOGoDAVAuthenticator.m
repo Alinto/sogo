@@ -49,7 +49,7 @@
 - (BOOL) checkLogin: (NSString *) _login
            password: (NSString *) _pwd
 {
-  NSString *domain;
+  NSString *domain, *checkedLogin;
   SOGoSystemDefaults *sd;
   SOGoCASSession *session;
   SOGoPasswordPolicyError perr;
@@ -58,9 +58,21 @@
 
   domain = nil;
   perr = PolicyNoError;
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  checkedLogin = [_login stringByReplacingString: @"%40" withString: @"@"];
+
+  /* Per-addressbook CardDAV profile: a login of the form <user>!<book> is an
+     alias used to discriminate the URL path; the password check applies to
+     the underlying real user. */
+  if ([sd carddavSingleAddressBookProfile])
+    {
+      NSRange aliasRange = [checkedLogin rangeOfString: @"!"];
+      if (aliasRange.location != NSNotFound)
+        checkedLogin = [checkedLogin substringToIndex: aliasRange.location];
+    }
+
   rc = ([[SOGoUserManager sharedUserManager]
-          checkLogin: [_login stringByReplacingString: @"%40"
-                                           withString: @"@"]
+          checkLogin: checkedLogin
             password: _pwd
               domain: &domain
                 perr: &perr

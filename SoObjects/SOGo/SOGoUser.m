@@ -144,11 +144,26 @@
   realUID = nil;
   domain = nil;
 
+  ASSIGN (loginAlias, newLogin);
+
   if ([newLogin isEqualToString: @"anonymous"] || [newLogin isEqualToString: @"freebusy"])
     realUID = newLogin;
   else
   {
     sd = [SOGoSystemDefaults sharedSystemDefaults];
+
+    /* Per-addressbook CardDAV profile: strip the alias suffix so that a login
+       of the form <user>!<book> resolves to the real user <user>. The book
+       part is consumed elsewhere (Main/SOGo.m, SOGoContactFolders) to filter
+       the addressbook listing. The original alias is kept in loginAlias so
+       that DAV property hrefs (current-user-principal, etc.) preserve it. */
+    if ([sd carddavSingleAddressBookProfile])
+      {
+        NSRange aliasRange = [newLogin rangeOfString: @"!"];
+        if (aliasRange.location != NSNotFound)
+          newLogin = [newLogin substringToIndex: aliasRange.location];
+      }
+
     if ([sd enableDomainBasedUID] || [[sd loginDomains] count] > 0)
     {
       r = [newLogin rangeOfString: @"@" options: NSBackwardsSearch];
@@ -243,7 +258,13 @@
   [currentPassword release];
   [cn release];
   [loginInDomain release];
+  [loginAlias release];
   [super dealloc];
+}
+
+- (NSString *) loginAlias
+{
+  return [loginAlias length] ? loginAlias : self->login;
 }
 
 - (void) setPrimaryRoles: (NSArray *) newRoles

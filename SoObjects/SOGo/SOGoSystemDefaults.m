@@ -588,6 +588,11 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return [self boolForKey: @"SOGoAddressBookDAVAccessEnabled"];
 }
 
+- (BOOL) carddavSingleAddressBookProfile
+{
+  return [self boolForKey: @"SOGoCarddavSingleAddressBookProfile"];
+}
+
 - (BOOL) enableEMailAlarms
 {
   return [self boolForKey: @"SOGoEnableEMailAlarms"];

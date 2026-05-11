@@ -62,6 +62,7 @@ static const NSString *kDisableSharingCalendar = @"Calendar";
 - (BOOL) isCalendarDAVAccessEnabled;
 - (BOOL) isCalendarJitsiLinkEnabled;
 - (BOOL) isAddressBookDAVAccessEnabled;
+- (BOOL) carddavSingleAddressBookProfile;
 
 - (BOOL) enableEMailAlarms;
 

@@ -63,6 +63,10 @@
   SOGoUserFolder *homeFolder;
   NSString *currentPassword;
   NSString *loginInDomain;
+  /* The login as it appeared at lookup time, before any alias stripping
+     (per-addressbook CardDAV profile uses <user>!<book> aliases). Equal
+     to [self login] for regular users. */
+  NSString *loginAlias;
   //NSString *language;
   NSArray *allEmails;
   NSMutableArray *mailAccounts;
@@ -88,6 +92,7 @@
 - (NSString *) currentPassword;
 
 - (NSString *) loginInDomain;
+- (NSString *) loginAlias;
 
 /* properties */
 - (NSString *) domain;
