@@ -387,6 +387,10 @@ static BOOL debugLeaks;
     //Here the user is expected to be name or name@domain.com
     //However iOS 18.4 sanitize the caldav url and put %40 instead of @
     login = [login stringByReplacingOccurrencesOfString: @"%40" withString: @"@"];
+    /* When SOGoCarddavSingleAddressBookProfile is on, login may carry a
+       <user>!<book> alias suffix; userWithLogin: strips it internally, but we
+       keep the alias as the folder name so generated hrefs preserve the !book
+       discriminator. */
     user = [SOGoUser userWithLogin: login roles: nil];
   }
   if (user)

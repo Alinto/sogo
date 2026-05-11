@@ -102,11 +102,14 @@
       ownerUser = [SOGoUser userWithLogin: nameInContainer roles: nil];
       login = [ownerUser login];
       [self setOwner: login];
-      if (![nameInContainer isEqualToString: login])
+      if (![nameInContainer isEqualToString: login]
+          && [nameInContainer rangeOfString: @"!"].location == NSNotFound)
         // In case the user domain is specified in the URL but not in the user
         // login name, we remove it (user@domain => user).
         // This happens when SOGoLoginDomains is defined but
         // SOGoEnableDomainBasedUID is disabled.
+        // The !book alias used by the per-addressbook CardDAV profile must be
+        // preserved here so generated hrefs keep the discriminator.
         ASSIGN(nameInContainer, login);
     }
 

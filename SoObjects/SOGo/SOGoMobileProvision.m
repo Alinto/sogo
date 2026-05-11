@@ -22,6 +22,7 @@
 #import <Foundation/Foundation.h>
 
 #import "SOGoMobileProvision.h"
+#import "SOGoSystemDefaults.h"
 #import "SOGoUser.h"
 #import "NSString+Crypto.h"
 
@@ -34,11 +35,12 @@
   NSURL *serverURL;
   NSDictionary *provisioning;
   NSError *error;
-  NSString *payloadType, *prefix, *type;
+  NSString *payloadType, *prefix, *type, *username;
   NSNumber *port;
 
   activeUser = [context activeUser];
   serverURL = [context serverURL];
+  username = [activeUser login];
 
   if (!context || !path) {
     [self errorWithFormat: @"Invalid provisioning profile - no parameters"];
@@ -55,6 +57,32 @@
       payloadType = @"com.apple.carddav.account";
       prefix = @"CardDAV";
       type = @"Contact";
+
+      /* Per-addressbook CardDAV profile: rewrite the principal URL and the
+         CardDAV username from <user> to <user>!<book>. macOS Contacts
+         strips path-only discriminators when it falls back on its own
+         discovery; embedding the alias in the username keeps the !book
+         tag in every subsequent request, both in the URL and in the Basic
+         Auth header. */
+      if ([[SOGoSystemDefaults sharedSystemDefaults] carddavSingleAddressBookProfile])
+        {
+          NSArray *parts;
+          parts = [path componentsSeparatedByString: @"/"];
+          if ([parts count] >= 7
+              && [[parts objectAtIndex: 4] isEqualToString: @"Contacts"])
+            {
+              NSString *aliasLogin;
+              NSMutableArray *rewritten;
+              aliasLogin = [NSString stringWithFormat: @"%@!%@",
+                                     [parts objectAtIndex: 3],
+                                     [parts objectAtIndex: 5]];
+              rewritten = [parts mutableCopy];
+              [rewritten replaceObjectAtIndex: 3 withObject: aliasLogin];
+              path = [rewritten componentsJoinedByString: @"/"];
+              [rewritten release];
+              username = aliasLogin;
+            }
+        }
     break;
   }
 
@@ -74,7 +102,7 @@
                                               port, [NSString stringWithFormat:@"%@%@", prefix, @"Port"],
                                               path, [NSString stringWithFormat:@"%@%@", prefix, @"PrincipalURL"],
                                               [NSNumber numberWithBool:[[serverURL scheme] isEqualToString:@"https"]], [NSString stringWithFormat:@"%@%@", prefix, @"UseSSL"],
-                                              [activeUser login], [NSString stringWithFormat:@"%@%@", prefix, @"Username"],
+                                              username, [NSString stringWithFormat:@"%@%@", prefix, @"Username"],
                                               [NSString stringWithFormat: @"SOGo %@ provisioning", prefix], @"PayloadDescription",
                                               [NSString stringWithFormat:@"%@ %@", type,  name], @"PayloadDisplayName",
                                               [NSString stringWithFormat:@"%@.%@.apple.%@", [serverURL host], [name asMD5String], [prefix lowercaseString]], @"PayloadIdentifier",

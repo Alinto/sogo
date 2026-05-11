@@ -32,6 +32,7 @@
 
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/WORequest+SOGo.h>
@@ -299,8 +300,27 @@ Class SOGoContactSourceFolderK;
 - (NSArray *) toManyRelationshipKeys
 {
   NSMutableArray *keys;
+  SOGoSystemDefaults *sd;
 
-  if ([[context request] isMacOSXAddressBookApp])
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+
+  /* Per-addressbook CardDAV profile: when enabled and the parent user folder
+     is reached through a /dav/<user>!<book>/ alias URL, expose only that
+     book. The legacy macOS "personal only" shortcut below is also gated on
+     the flag so the two mechanisms don't overlap. */
+  if ([sd carddavSingleAddressBookProfile])
+    {
+      NSString *parentName;
+      NSRange separator;
+      parentName = [[self lookupUserFolder] nameInContainer];
+      separator = [parentName rangeOfString: @"!"];
+      if (separator.location != NSNotFound)
+        return [NSArray arrayWithObject:
+                          [parentName substringFromIndex: separator.location + 1]];
+    }
+
+  if ([[context request] isMacOSXAddressBookApp]
+      && ![sd carddavSingleAddressBookProfile])
     keys = [NSMutableArray arrayWithObject: @"personal"];
   else
     keys = (NSMutableArray *) [super toManyRelationshipKeys];

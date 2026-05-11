@@ -548,8 +548,11 @@
     davCurrentUserPrincipal = nil;
   else
     {
+      /* loginAlias preserves the <user>!<book> alias used by the
+         per-addressbook CardDAV profile, so that macOS Contacts keeps
+         using the alias URL instead of falling back on the canonical one. */
       usersUrl = [NSString stringWithFormat: @"%@%@/",
-                           [self davURLAsString], login];
+                           [self davURLAsString], [activeUser loginAlias]];
       userHREF = davElementWithContent (@"href", XMLNS_WEBDAV, usersUrl);
       davCurrentUserPrincipal
         = [davElementWithContent (@"current-user-principal",

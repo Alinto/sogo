@@ -44,6 +44,8 @@
 @class SOGoContactFolders;
 
 @interface SOGoUserFolder : SOGoFolder
+{
+}
 
 /* ownership */
 

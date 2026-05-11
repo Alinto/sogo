@@ -471,6 +471,26 @@ example.
 
 Defaults to `YES` when unset.
 
+|S |SOGoCarddavSingleAddressBookProfile
+|Enables a per-addressbook CardDAV provisioning profile for macOS Contacts.
+macOS Contacts.app cannot sync more than one addressbook per CardDAV account
+and silently picks one through its own discovery, ignoring the
+_CardDAVPrincipalURL_ in the provisioning profile.
+
+When this flag is set to `YES`, downloading a CardDAV mobile profile from
+SOGo produces a URL and a username of the form `<user>!<book>`. The `!book`
+suffix acts as a server-side alias that resolves to the real user but
+restricts the exposed addressbook to the selected one. The user can then
+install one profile per addressbook to sync them as separate accounts.
+
+The flag must only be enabled when no login in your directory contains the
+character `!`, otherwise legitimate users would be unable to authenticate
+(the suffix is stripped before the password check). The legacy macOS
+behaviour, which restricts macOS Contacts to the `personal` addressbook
+regardless of which one is requested, is disabled when this flag is on.
+
+Defaults to `NO` when unset.
+
 |S |SOGoCalendarDAVAccessEnabled
 |Parameter controlling WebDAV access to the Calendar collections.
 
