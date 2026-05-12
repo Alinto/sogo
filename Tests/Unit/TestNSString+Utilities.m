@@ -107,8 +107,8 @@
   testEquals([[NSString stringWithString:@"<img livescript:test"] stringWithoutHTMLInjection: NO], @"<img test");
   testEquals([[NSString stringWithString:@"foobar <form action=\"\">bar</form>"] stringWithoutHTMLInjection: NO], @"foobar <for* action=\"\">bar</for*>");
   testEquals([[NSString stringWithString:@"foobar <iframe src=\"\">bar</iframe>"] stringWithoutHTMLInjection: NO], @"foobar <ifr*** src=\"\">bar</iframe>");
-  testEquals([[NSString stringWithString:@"foobar <img onload=foo bar"] stringWithoutHTMLInjection: NO], @"foobar <img onl***=foo bar");
-  testEquals([[NSString stringWithString:@"foobar <img onmouseover=foo bar"] stringWithoutHTMLInjection: NO], @"foobar <img onmouseo***=foo bar");
+  testEquals([[NSString stringWithString:@"foobar <img onload=foo bar"] stringWithoutHTMLInjection: NO], @"foobar <img on***=\"\" bar");
+  testEquals([[NSString stringWithString:@"foobar <img onmouseover=foo bar"] stringWithoutHTMLInjection: NO], @"foobar <img on***=\"\" bar");
   testEquals([[NSString stringWithString:@"<!DOCTYPE html><html><head><style>@import url(https://foo.bar/malicious.css);.foo{background-color: red; @import url(https://bar.foo/malicious2.css);</style></head><body><table><tr><td>A</td><td>B</td><td>C</td></tr></table></body></html>"] stringWithoutHTMLInjection: NO], @"<!DOCTYPE html><html><head><style>@im**** url(https://foo.bar/malicious.css);.foo{background-color: red; @im**** url(https://bar.foo/malicious2.css);</style></head><body><table><tr><td>A</td><td>B</td><td>C</td></tr></table></body></html>");
 }
 
