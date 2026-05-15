@@ -1,0 +1,31 @@
+/* this file is in UTF-8 format! */
+
+"Help" = "Kömək";
+"Close" = "Bağla";
+"Modules" = "Modullar";
+/* Modules short names */
+"ACLs" = "Giriş nəzarəti siyahıları";
+/* Modules titles */
+"ACLs_title" = "İstifadəçi qovluqları giriş nəzarəti siyahıları idarəetməsi";
+/* Modules descriptions */
+"ACLs_description" = "<p> Giriş nəzarəti siyahısı idarəetmə modulu hər istifadəçi üçün Təqvim və Ünvan dəftərlərinə giriş icazələrinin müəyyən edilməsini təmin edir. </p><p>İstifadəçi qovluğunun giriş nəzarəti siyahısını dəyişmək üçün pəncərənin yuxarı hissəsindəki axtarış sahəsinə istifadəçinin adını daxil edin və müvafiq qovluğa iki dəfə klikləyin.</p>";
+"Name or Email" = "Ad və ya e-poçt";
+"ACLs saved" = "Giriş nəzarəti siyahısı yadda saxlanıldı";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "İcazələri redaktə etmək üçün axtarış başladın";
+/* Rights module: Empty search result */
+"No matching user" = "Uyğun istifadəçi tapılmadı";
+/* Rights module: no selection */
+"No resource selected" = "Heç bir resurs seçilməyib";
+"Add User" = "İstifadəçi əlavə et";
+"Subscribe User" = "İstifadəçiyə abunə ol";
+"Rights" = "İcazələr";
+"Search Users" = "İstifadəçi axtar";
+"users found" = "istifadəçi tapıldı";
+"No resource" = "Heç bir resurs yoxdur";
+"Any Authenticated User" = "Doğrulanmış istifadəçilər";
+"Public Access" = "Hamıya açıq giriş";
+"Save" = "Yadda saxla";
+"Clear" = "Təmizlə";
+"Message of the day" = "Günün mesajı";
+"Message of the day has been saved" = "Günün mesajı yadda saxlanıldı";
