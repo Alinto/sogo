@@ -488,6 +488,14 @@
 	  && [user isSuperUser]);
 }
 
+- (BOOL) usesCASAuthentication
+{
+  SOGoSystemDefaults *sd;
+
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+
+  return [[sd authenticationType] isEqualToString: @"cas"];
+}
 
 - (BOOL) usesOpenIdAuthentication
 {
