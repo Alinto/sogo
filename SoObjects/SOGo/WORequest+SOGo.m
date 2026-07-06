@@ -255,6 +255,12 @@
           && [[cc userAgent] rangeOfString: @"macOS"].location != NSNotFound
           && [[cc userAgent] rangeOfString: @"dataaccessd"].location != NSNotFound
         )
+		||
+		(
+          nil != [cc userAgent] 
+          && [[cc userAgent] rangeOfString: @"macOS"].location != NSNotFound
+          && [[cc userAgent] rangeOfString: @"remindd"].location != NSNotFound
+        )
        );
 
   return b;
