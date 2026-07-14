@@ -599,6 +599,12 @@
    */
   Preferences.prototype.getAlarms = function() {
     var _this = this;
+
+    // SOGoCalendarAlarmsDisabled: Skip alarm polling entirely
+    if (_this.defaults.SOGoCalendarAlarmsDisabled) {
+      return;
+    }
+
     var now = new Date();
     var browserTime = Math.floor(now.getTime()/1000);
 
@@ -608,14 +614,31 @@
         var y = parseInt(b[2]);
         return (y - x);
       });
-      if (alarms.length > 0) {
-        var next = alarms.pop();
-        var now = new Date();
-        var utc = Math.floor(now.getTime()/1000);
+      // Filter out alarms whose trigger time is already in the past,
+      // to prevent cascading backlog of overdue popups when the user
+      // returns after a prolonged absence.
+      var now = new Date();
+      var utc = Math.floor(now.getTime()/1000);
+      var futureAlarms = [], pastAlarms = [];
+      alarms.forEach(function(alarm) {
+        var alarmTime = parseInt(alarm[2]);
+        if (alarmTime > 0 && alarmTime >= utc)
+          futureAlarms.push(alarm);
+        else
+          pastAlarms.push(alarm);
+      });
+      // Silently dismiss past alarms on the server so they don't reappear
+      if (pastAlarms.length > 0) {
+        pastAlarms.forEach(function(alarm) {
+          var pastUrl = alarm[0] + '/' + alarm[1];
+          Preferences.$$resource.fetch('Calendar/' + pastUrl, '?resetAlarm=yes');
+        });
+      }
+      if (futureAlarms.length > 0) {
+        var next = futureAlarms.pop();
         var url = next[0] + '/' + next[1];
         var alarmTime = parseInt(next[2]);
-        var delay = alarmTime;
-        if (alarmTime > 0) delay -= utc;
+        var delay = alarmTime - utc;
         var d = new Date(alarmTime*1000);
         //console.log ("now = " + now.toUTCString());
         //console.log ("next event " + url + " in " + delay + " seconds (on " + d.toUTCString() + ")");
@@ -638,6 +661,11 @@
    */
   Preferences.prototype.showAlarm = function(url) {
     var _this = this;
+
+    // SOGoCalendarAlarmsDisabled: Don't show alarm popups
+    if (_this.defaults.SOGoCalendarAlarmsDisabled) {
+      return;
+    }
 
     Preferences.$$resource.fetch('Calendar/' + url, '?resetAlarm=yes').then(function(data) {
       var today = new Date().beginOfDay(),
