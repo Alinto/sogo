@@ -3765,6 +3765,30 @@ sogo-tool create-folder user2 Calendar Pro_Calendar
 ----
 
 
+=== sogo-tool init-user
+
+Create the personal calendar and the personal address book of one or more users, and initialize
+their preferences. Those folders and preferences are otherwise only created upon the user's first
+login, which prevents any operation on them (setting ACLs or reading the user's preferences from a
+provisioning tool, for instance) beforehand.
+
+The resulting preferences are the same as the ones a login through the web interface would produce.
+
+ init-user [-l language] user1 [user2] ...
+
+* *user* is the name of the user
+* *language* is the language of the user's preferences, as it would be chosen at login. When
+omitted, the language of the domain or of the system is used. The categories and labels stored in
+the preferences are localized accordingly.
+
+Example:
+----
+sogo-tool init-user user1
+sogo-tool init-user user1 user2
+sogo-tool init-user -l French user1
+----
+
+
 === sogo-tool dump-defaults
 
 Output all current defaults value of GNUstep and SOGo (sogo.conf)

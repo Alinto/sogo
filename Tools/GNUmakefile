@@ -25,6 +25,7 @@ $(SOGO_TOOL)_OBJC_FILES += \
 	SOGoToolCleanupUser.m \
 	SOGoToolRestore.m \
 	SOGoToolCreateFolder.m \
+	SOGoToolInitUser.m \
 	SOGoToolUserPreferences.m \
 	SOGoToolManageACL.m \
 	SOGoToolManageEAS.m \
