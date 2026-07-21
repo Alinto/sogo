@@ -2406,16 +2406,17 @@ static NSString    *userAgent      = nil;
         }
     }
 
-  // Expunge Drafts mailbox if
-  //  - message was sent and saved to Sent mailbox if necessary;
+  // Delete local spool and expunge Drafts mailbox if
+  //  - message was sent successfully;
   //  - SOGoMailKeepDraftsAfterSend is not set;
-  //  - draft is successfully deleted;
   //  - drafts mailbox exists.
-  [self delete];
-  if (!error &&
-      ![dd mailKeepDraftsAfterSend] &&
-      [imap4 doesMailboxExistAtURL: [container imap4URL]])
-    [(SOGoDraftsFolder *) container expunge];
+  if (!error)
+    {
+      [self delete];
+      if (![dd mailKeepDraftsAfterSend] &&
+          [imap4 doesMailboxExistAtURL: [container imap4URL]])
+        [(SOGoDraftsFolder *) container expunge];
+    }
 
   [self cleanTmpFiles];
 
