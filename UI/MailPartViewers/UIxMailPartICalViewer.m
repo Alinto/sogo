@@ -587,7 +587,7 @@
 
   //Sanitise the html content
   if([d objectForKey:@"content"]){
-    [d setObject: [[d objectForKey:@"content"] stringWithoutHTMLInjection: NO] forKey: @"content"];
+    [d setObject: [[d objectForKey:@"content"] stringWithoutHTMLInjection: NO stripAngular:YES] forKey: @"content"];
   }
 
   return d;

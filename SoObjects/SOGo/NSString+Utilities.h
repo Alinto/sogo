@@ -78,7 +78,8 @@
 
 /* XSS protection */
 - (NSString *) removeHTMLTagsExceptAnchorTags;
-- (NSString *) stringWithoutHTMLInjection: (BOOL)stripHTMLCode;
+- (NSString *) stringWithoutHTMLInjection: (BOOL)stripHTMLCode
+							 stripAngular: (BOOL)stripAngular;
 
 #ifndef GNUSTEP_BASE_LIBRARY
 - (BOOL) boolValue;

@@ -1750,7 +1750,7 @@ static NSArray *reminderValues = nil;
   id o, v;
 
   requestStr = [[context request] contentAsString];
-  requestStr = [requestStr stringWithoutHTMLInjection: NO];
+  requestStr = [requestStr stringWithoutHTMLInjection: NO stripAngular:NO];
   o = [requestStr objectFromJSONString];
   results = nil;
 

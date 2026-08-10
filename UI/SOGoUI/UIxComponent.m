@@ -403,7 +403,7 @@ static SoProduct      *commonProduct      = nil;
   theme = [[context request] formValueForKey: @"theme"];
   if ([theme length])
   {
-    safeTheme = [theme stringWithoutHTMLInjection: YES];
+    safeTheme = [theme stringWithoutHTMLInjection: YES stripAngular:NO];
     if([safeTheme isEqualToString: theme])
       rel = [NSString stringWithFormat: @"%@?theme=%@", rel, theme];
   }

@@ -93,7 +93,7 @@ static const NSString *kCacheMotdKey = @"admin-motd";
   NSException *error;
   NSString *safeMotd;
 
-  safeMotd = [motd stringWithoutHTMLInjection: NO];
+  safeMotd = [motd stringWithoutHTMLInjection: NO stripAngular: NO];
   error = [[[GCSFolderManager defaultFolderManager] adminFolder] writeMotd: safeMotd];
   if (!error) {
     [[SOGoCache sharedCache] setValue:safeMotd forKey:kCacheMotdKey];

@@ -335,7 +335,7 @@
 
   ex = nil;
   request = [context request];
-  params = [[[request contentAsString] stringWithoutHTMLInjection: NO] objectFromJSONString];
+  params = [[[request contentAsString] stringWithoutHTMLInjection: NO stripAngular:NO] objectFromJSONString];
   if (params == nil)
     {
       ex = [NSException exceptionWithName: @"JSONParsingException"

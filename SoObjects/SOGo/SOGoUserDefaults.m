@@ -152,7 +152,7 @@ NSString *SOGoPasswordRecoverySecondaryEmail = @"SecondaryEmail";
       rc = NO;
 
       if ([fullName length])
-        [identity setObject: [fullName stringWithoutHTMLInjection: YES] forKey: @"fullName"];
+        [identity setObject: [fullName stringWithoutHTMLInjection: YES stripAngular:NO] forKey: @"fullName"];
       if ([email length])
         [identity setObject: email forKey: @"email"];
       if ([replyTo length])
@@ -864,7 +864,7 @@ NSString *SOGoPasswordRecoverySecondaryEmail = @"SecondaryEmail";
     if (mailIdentity && [mailIdentity objectForKey: @"fullName"]) {
       fullName = [NSString stringWithString: [mailIdentity objectForKey: @"fullName"]];
       if (fullName) {
-        [mailIdentity setObject: [fullName stringWithoutHTMLInjection: YES] forKey: @"fullName"];
+        [mailIdentity setObject: [fullName stringWithoutHTMLInjection: YES stripAngular:NO] forKey: @"fullName"];
         [mailIdentities setObject: mailIdentity atIndexedSubscript: i];
       }
     }

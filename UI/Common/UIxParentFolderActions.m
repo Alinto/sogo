@@ -61,7 +61,7 @@
   request = [context request];
   params = [[request contentAsString] objectFromJSONString];
 
-  name = [[params objectForKey: @"name"] stringWithoutHTMLInjection: YES];
+  name = [[params objectForKey: @"name"] stringWithoutHTMLInjection: YES stripAngular:NO];
   nameInContainer = nil;
 
   if ([name length] > 0)

@@ -299,7 +299,7 @@
             <label class="pseudo-input-label">
               <var:string label:value="Description"/>
             </label>
-            <div>
+            <div ng-non-bindable="">
               <md-content>
                 <var:string value="authorativeEvent.comment.stringByDetectingURLs" const:insertBR="1" const:escapeHTML="NO"/>
               </md-content>

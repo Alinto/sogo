@@ -1091,7 +1091,7 @@ static const NSString *kJwtKey = @"jwt";
   }
 
   //Check common injection
-  loginClean = [login stringWithoutHTMLInjection: YES];
+  loginClean = [login stringWithoutHTMLInjection: YES stripAngular:NO];
   if(![loginClean isEqualToString: login])
   {
     loginClean = @"";

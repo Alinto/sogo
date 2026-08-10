@@ -201,7 +201,7 @@
   
 
 
-  content = [[[self generateResponse] contentAsString] stringWithoutHTMLInjection: NO];
+  content = [[[self generateResponse] contentAsString] stringWithoutHTMLInjection: NO stripAngular:YES];
   if ([self respondsToSelector:@selector(getException)]) {
     e = [self getException];
   }

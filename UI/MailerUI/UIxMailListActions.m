@@ -1178,7 +1178,7 @@
           [msg addObject: [NSNumber numberWithBool: [self isMessageFlagged]]];
 
           // Subject
-          [msg addObject: [[[self messageSubject] stringWithoutHTMLInjection: YES] stringWithoutHTMLInjection: NO]];
+          [msg addObject: [[[self messageSubject] stringWithoutHTMLInjection: YES stripAngular:NO] stringWithoutHTMLInjection: NO stripAngular:NO]];
       
           // From
           from = [[message objectForKey: @"envelope"] from];

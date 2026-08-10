@@ -363,7 +363,7 @@ static NSString *mailETag = nil;
   if ([self formattedDate])
     [data setObject: [self formattedDate] forKey: @"date"];
   if ([self messageSubject])
-    [data setObject: [[[self messageSubject] stringWithoutHTMLInjection: YES] stringWithoutHTMLInjection: NO] forKey: @"subject"];
+    [data setObject: [[[self messageSubject] stringWithoutHTMLInjection: YES stripAngular:YES] stringWithoutHTMLInjection: NO stripAngular:YES] forKey: @"subject"];
   if ((addresses = [addressFormatter dictionariesForArray: [co fromEnvelopeAddresses]]))
     [data setObject: addresses forKey: @"from"];
   if ((addresses = [addressFormatter dictionariesForArray: [co toEnvelopeAddresses]]))

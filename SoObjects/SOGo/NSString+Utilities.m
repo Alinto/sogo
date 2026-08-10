@@ -936,7 +936,7 @@ static int cssEscapingCount;
  * @param stripHTMLCode Remove all HTML code from content
  * @return A safe string
  */
-- (NSString *) stringWithoutHTMLInjection: (BOOL)stripHTMLCode
+- (NSString *) stringWithoutHTMLInjection: (BOOL)stripHTMLCode stripAngular: (BOOL)stripAngular
 {
   NSString *result, *text, *newResult;
   NSScanner *theScanner;
@@ -1058,6 +1058,22 @@ static int cssEscapingCount;
       // Remove @import css (in style tags)
       regex = [NSRegularExpression regularExpressionWithPattern:@"(<[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*s[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*t[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*y[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*l[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*e.*)([\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*@[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*i[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*m[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*p[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*o[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*r[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*t)(.*<[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*\\/[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*s[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*t[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*y[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*l[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*e[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*>)" 
                                   options: NSRegularExpressionCaseInsensitive error:&error];
+      newResult = [regex stringByReplacingMatchesInString:result options:0 range:NSMakeRange(0, [result length]) withTemplate:@"onrep***="];
+      result = [NSString stringWithString: newResult];
+
+
+      if(stripAngular) {
+        // Remove {{ and }} as they are interprated by angularJS with no way of escaping
+        regex = [NSRegularExpression regularExpressionWithPattern:@"(\\{\\{)|(&#x7b;&#x7b;)" 
+                                    options: NSRegularExpressionCaseInsensitive error:&error];
+        newResult = [regex stringByReplacingMatchesInString:result options:0 range:NSMakeRange(0, [result length]) withTemplate:@"{\\\\{"];
+        result = [NSString stringWithString: newResult];
+        regex = [NSRegularExpression regularExpressionWithPattern:@"(\\}\\})|(&#x7d;&#x7d;)" 
+                                    options: NSRegularExpressionCaseInsensitive error:&error];
+        newResult = [regex stringByReplacingMatchesInString:result options:0 range:NSMakeRange(0, [result length]) withTemplate:@"}/}"];
+        result = [NSString stringWithString: newResult];
+      }
+
       newResult = result;
       while([regex numberOfMatchesInString:newResult options:0 range:NSMakeRange(0, [newResult length])] > 0) {
         newResult = [regex stringByReplacingMatchesInString:newResult options:0 range:NSMakeRange(0, [newResult length]) withTemplate:@"$1@im****$3"];
