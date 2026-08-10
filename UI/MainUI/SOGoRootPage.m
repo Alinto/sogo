@@ -1316,7 +1316,7 @@ static const NSString *kJwtKey = @"jwt";
  */
 - (WOResponse *) passwordRecoveryEmailAction
 {
-  NSString *username, *domain, *mode, *uid, *mailDomain, *fromEmail, *toEmail, *jwtToken, *url, *mailContent;
+  NSString *username, *domain, *mode, *uid, *mailDomain, *fromEmail, *toEmail, *jwtToken, *url, *mailContent, *email;
   NSDictionary *message, *info;
   WORequest *request;
   SOGoUserManager *um;
@@ -1333,7 +1333,6 @@ static const NSString *kJwtKey = @"jwt";
   message = [[request contentAsString] objectFromJSONString];
   username = [message objectForKey: @"userName"];
   domain = [message objectForKey: @"domain"];
-  mailDomain = [message objectForKey: @"mailDomain"];
   mode = [message objectForKey: @"mode"];
   um = [SOGoUserManager sharedUserManager];
   jwtToken = [request formValueForKey:@"token"];
@@ -1345,14 +1344,6 @@ static const NSString *kJwtKey = @"jwt";
         ownerUser = [SOGoUser userWithLogin: username];
         dd = [ownerUser domainDefaults];
 
-        // Email recovery
-
-        // Create email from
-        if (mailDomain) {
-          fromEmail = [NSString stringWithFormat:@"noreply@%@", mailDomain];
-        } else {
-          fromEmail = [dd passwordRecoveryFrom];
-        }
 
         // Get password recovery email
         info = [um contactInfosForUserWithUIDorEmail: username];
@@ -1360,6 +1351,19 @@ static const NSString *kJwtKey = @"jwt";
         userDefaults = [SOGoUserDefaults defaultsForUser: uid
                               inDomain: domain];
         toEmail = [userDefaults passwordRecoverySecondaryEmail];
+
+        //get fromEmail domain
+        email = [info objectForKey: @"c_email"];
+        // Create email from
+        mailDomain = [email mailDomain];
+        if (mailDomain) {
+          fromEmail = [NSString stringWithFormat:@"noreply@%@", mailDomain];
+        } else {
+          fromEmail = [dd passwordRecoveryFrom];
+        }
+
+
+
 
         if (toEmail) {
           // Generate token
