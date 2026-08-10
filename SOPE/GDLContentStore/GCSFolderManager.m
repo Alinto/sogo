@@ -32,10 +32,12 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <GDLAccess/EOAdaptorContext.h>
+#import <GDLAccess/EOAdaptor.h>
 #import <NGExtensions/NGResourceLocator.h>
 
 #import "GCSChannelManager.h"
 #import "EOAdaptorChannel+GCS.h"
+#import "EOQualifier+GCS.h"
 #import "GCSAlarmsFolder.h"
 #import "GCSAdminFolder.h"
 #import "GCSOpenIdFolder.h"
@@ -383,20 +385,11 @@ static BOOL       _singleStoreMode           = NO;
   return [[self channelManager] canConnect:[self folderInfoLocation]];
 }
 
-- (NSArray *)performSQL:(NSString *)_sql {
-  EOAdaptorChannel *channel;
+- (NSArray *)performSQL:(NSString *)_sql withChannel: (EOAdaptorChannel*) channel{
   NSException    *ex;
   NSMutableArray *rows;
   NSDictionary   *row;
   NSArray        *attrs;
-  
-  /* acquire channel */
-  
-  if ((channel = [self acquireOpenChannel]) == nil) {
-    if (debugOn) [self debugWithFormat:@"could not acquire channel!"];
-    return nil;
-  }
-  if (debugOn) [self debugWithFormat:@"acquired channel: %@", channel];
   
   /* run SQL */
   
@@ -513,9 +506,12 @@ static BOOL       _singleStoreMode           = NO;
 
 - (NSString *)generateSQLWhereForInternalNames:(NSArray *)_names
 				    exactMatch:(BOOL)_beExact orDirectSubfolderMatch:(BOOL)_directSubs
+            withChannel: (EOAdaptorChannel*) channel
 {
   /* generates a WHERE qualifier for matching the "quick" entries */
   NSMutableString *sql;
+  EOAdaptorContext *adaptorContext;
+  EOAdaptor *adaptor;
   unsigned i, count;
   
   if ((count = [_names count]) == 0) {
@@ -523,10 +519,13 @@ static BOOL       _singleStoreMode           = NO;
 	  __PRETTY_FUNCTION__];
     return @"1 = 2";
   }
-  
-  sql = [NSMutableString stringWithCapacity:(count * 8)];
+
+  adaptorContext = [channel adaptorContext];
+  adaptor = [adaptorContext adaptor]; 
+  sql = [NSMutableString stringWithString:@""];
   for (i = 0; i < quickPathCount; i++) {
     NSString *pathColumn;
+    EOQualifier *qualifier;
     char buf[32];
     
     sprintf(buf, GCSPathColumnPattern, (i + 1));
@@ -537,8 +536,11 @@ static BOOL       _singleStoreMode           = NO;
     if (i < count) {
       /* exact match, regular column */
       if ([sql length] > 0) [sql appendString:@" AND "];
-      [sql appendString:pathColumn];
-      [sql appendFormat:@" = '%@'", [_names objectAtIndex:i]];
+
+      qualifier = [[EOKeyValueQualifier alloc] initWithKey: pathColumn
+                                              operatorSelector: EOQualifierOperatorEqual
+                                                         value: [_names objectAtIndex:i]];
+      [qualifier appendSQLToString: sql withAdaptor: adaptor];
     }
     else if (_beExact) {
       /* exact match, ensure that all additional quick-cols are NULL */
@@ -569,9 +571,12 @@ static BOOL       _singleStoreMode           = NO;
   }
   
   if (_beExact && (count > quickPathCount)) {
-    [sql appendString:@" AND c_foldername = '"];
-    [sql appendString:[_names lastObject]];
-    [sql appendString:@"'"];
+    EOQualifier *qualifier;
+    [sql appendString:@" AND "];
+    qualifier = [[EOKeyValueQualifier alloc] initWithKey: @"c_foldername"
+                                              operatorSelector: EOQualifierOperatorEqual
+                                                         value: [_names lastObject]];
+    [qualifier appendSQLToString: sql withAdaptor: adaptor];
   }
   
   return sql;
@@ -579,13 +584,15 @@ static BOOL       _singleStoreMode           = NO;
 
 - (NSString *)generateSQLPathFetchForInternalNames:(NSArray *)_names
 					exactMatch:(BOOL)_beExact orDirectSubfolderMatch:(BOOL)_directSubs
+          withChannel: (EOAdaptorChannel*) channel
 {
   /* fetches the 'path' subset for a given quick-names */
   NSMutableString *sql;
   NSString *ws;
   
   ws = [self generateSQLWhereForInternalNames:_names 
-	     exactMatch:_beExact orDirectSubfolderMatch:_directSubs];
+	     exactMatch:_beExact orDirectSubfolderMatch:_directSubs
+       withChannel: channel];
   if ([ws length] == 0)
     return nil;
   
@@ -600,13 +607,15 @@ static BOOL       _singleStoreMode           = NO;
 
 - (NSString *)generateSQLPathAndNameFetchForInternalNames:(NSArray *)_names
 					exactMatch:(BOOL)_beExact orDirectSubfolderMatch:(BOOL)_directSubs
+          withChannel: (EOAdaptorChannel*) channel
 {
   /* fetches the 'path' subset for a given quick-names */
   NSMutableString *sql;
   NSString *ws;
   
   ws = [self generateSQLWhereForInternalNames:_names 
-	     exactMatch:_beExact orDirectSubfolderMatch:_directSubs];
+	     exactMatch:_beExact orDirectSubfolderMatch:_directSubs
+       withChannel: channel];
   if ([ws length] == 0)
     return nil;
   
@@ -726,20 +735,28 @@ static BOOL       _singleStoreMode           = NO;
   NSString *fname, *sname, *sql;
   NSArray  *fnames, *records;
   unsigned int count;
+  EOAdaptorChannel* channel;
   NSDictionary *record;
   BOOL result;
   
   result = NO;
+
+  if ((channel = [self acquireOpenChannel]) == nil) {
+    return [NSException exceptionWithName:@"GCSNoChannel"
+			reason:@"could not "
+			userInfo:nil];
+  }
 
   fnames = [self internalNamesFromPath: _path];
   if (fnames)
     {
       sql = [self generateSQLPathFetchForInternalNames: fnames 
 		  exactMatch: YES
-		  orDirectSubfolderMatch: NO];
+		  orDirectSubfolderMatch: NO
+      withChannel: channel];
       if ([sql length])
 	{
-	  records = [self performSQL: sql];
+	  records = [self performSQL: sql withChannel: channel];
 	  if (records)
 	    {
 	      count = [records count];
@@ -774,21 +791,28 @@ static BOOL       _singleStoreMode           = NO;
   NSString *fname;
   NSArray  *fnames, *records;
   NSString *sql;
+  EOAdaptorChannel *channel;
   unsigned i, count;
   
+  if ((channel = [self acquireOpenChannel]) == nil) {
+    return [NSException exceptionWithName:@"GCSNoChannel"
+			reason:@"could not "
+			userInfo:nil];
+  }
+
   if ((fnames = [self internalNamesFromPath:_path]) == nil) {
     [self debugWithFormat:@"got no internal names for path: '%@'", _path];
     return nil;
   }
   
   sql = [self generateSQLPathFetchForInternalNames:fnames 
-	      exactMatch:NO orDirectSubfolderMatch:(_recursive ? NO : YES)];
+	      exactMatch:NO orDirectSubfolderMatch:(_recursive ? NO : YES) withChannel: channel];
   if ([sql length] == 0) {
     [self debugWithFormat:@"got no SQL for names: %@", fnames];
     return nil;
   }
   
-  if ((records = [self performSQL:sql]) == nil) {
+  if ((records = [self performSQL:sql withChannel: channel]) == nil) {
     [self logWithFormat:@"ERROR(%s): executing SQL failed: '%@'", 
 	  __PRETTY_FUNCTION__, sql];
     return nil;
@@ -833,6 +857,13 @@ static BOOL       _singleStoreMode           = NO;
   NSArray  *fnames, *records;
   NSString *sql;
   unsigned i, count;
+  EOAdaptorChannel *channel;
+
+  if ((channel = [self acquireOpenChannel]) == nil) {
+    return [NSException exceptionWithName:@"GCSNoChannel"
+			reason:@"could not "
+			userInfo:nil];
+  }
   
   if ((fnames = [self internalNamesFromPath:_path]) == nil) {
     [self debugWithFormat:@"got no internal names for path: '%@'", _path];
@@ -840,13 +871,13 @@ static BOOL       _singleStoreMode           = NO;
   }
   
   sql = [self generateSQLPathAndNameFetchForInternalNames:fnames 
-	      exactMatch:NO orDirectSubfolderMatch:(_recursive ? NO : YES)];
+	      exactMatch:NO orDirectSubfolderMatch:(_recursive ? NO : YES) withChannel: channel];
   if ([sql length] == 0) {
     [self debugWithFormat:@"got no SQL for names: %@", fnames];
     return nil;
   }
   
-  if ((records = [self performSQL:sql]) == nil) {
+  if ((records = [self performSQL:sql withChannel: channel]) == nil) {
     [self logWithFormat:@"ERROR(%s): executing SQL failed: '%@'", 
 	  __PRETTY_FUNCTION__, sql];
     return nil;
@@ -899,6 +930,13 @@ static BOOL       _singleStoreMode           = NO;
   NSArray      *fnames, *records;
   NSString     *ws;
   NSDictionary *record;
+  EOAdaptorChannel *channel;
+
+  if ((channel = [self acquireOpenChannel]) == nil) {
+    return [NSException exceptionWithName:@"GCSNoChannel"
+			reason:@"could not "
+			userInfo:nil];
+  }
   
   if ((fnames = [self internalNamesFromPath:_path]) == nil) {
     [self debugWithFormat:@"got no internal names for path: '%@'", _path];
@@ -908,7 +946,7 @@ static BOOL       _singleStoreMode           = NO;
   /* generate SQL to fetch folder attributes */
   
   ws = [self generateSQLWhereForInternalNames:fnames 
-	     exactMatch:YES orDirectSubfolderMatch:NO];
+	     exactMatch:YES orDirectSubfolderMatch:NO withChannel: channel];
   
   sql = [NSMutableString stringWithCapacity:256];
   [sql appendString:@"SELECT "];
@@ -925,7 +963,7 @@ static BOOL       _singleStoreMode           = NO;
 
   /* fetching */
   
-  if ((records = [self performSQL:sql]) == nil) {
+  if ((records = [self performSQL:sql withChannel: channel]) == nil) {
     [self logWithFormat:@"ERROR(%s): executing SQL failed: '%@'", 
 	  __PRETTY_FUNCTION__, sql];
     return nil;
@@ -992,44 +1030,55 @@ static BOOL       _singleStoreMode           = NO;
 				   andChannel: (EOAdaptorChannel *) channel
 				       atPath: (NSString *) path
 {
-  NSString *baseURL, *tableName, *quickTableName, *aclTableName, *createQuery, *sql;
+  NSString *baseURL, *tableName, *quickTableName, *aclTableName, *createQuery, *sql, *safeFolderName, *safePath;
   GCSSpecialQueries *specialQuery;
   EOAdaptorContext *aContext;
+  EOAdaptor *adaptor;
+  EOAttribute *attribute;
   NSMutableArray *paths;
   NSException *error;
   NSRange range;
   
-  paths = [NSMutableArray arrayWithArray: [path componentsSeparatedByString: @"/"]];
+  aContext = [channel adaptorContext];
+  [aContext beginTransaction];
+
+  //escape foldername to avoid sql injection
+  adaptor = [aContext adaptor];
+
+  attribute = [EOAttribute new];
+  [attribute autorelease];
+  [attribute setExternalType: @"varchar"];
+
+  safeFolderName = [adaptor formatValue: folderName forAttribute: attribute];
+  safePath = [adaptor formatValue: path forAttribute: attribute];
+
+
+  paths = [NSMutableArray arrayWithArray: [safePath componentsSeparatedByString: @"/"]];
 
   while ([paths count] < 5)
     [paths addObject: @"NULL"];
   
-  aContext = [channel adaptorContext];
-  [aContext beginTransaction];
-
   tableName = [self baseTableNameWithUID: [paths objectAtIndex: 2]];
   quickTableName = [tableName stringByAppendingString: @"_quick"];
   aclTableName = [tableName stringByAppendingString: @"_acl"];
 
-  // TBD: fix SQL injection issues.
-  // We no longer call stringByDeletingLastPathComponent since, since GNUstep 1.22,
-  // it'll replace // characters in the URL with /, so mysql:// becomes mysql:/
-  // This is to conform with recent Apple changes.
   baseURL = [folderInfoLocation absoluteString];
   range = [baseURL rangeOfString: @"/" options: NSBackwardsSearch];
   if (range.location != NSNotFound)
     baseURL = [baseURL substringToIndex: range.location];
-  
+
+
+  //Mind the quote, safeFolderName and safePath already have them as they have been escaped, c_path4 already has one at the end
   sql = [NSString stringWithFormat: @"INSERT INTO %@"
 		  @"        (c_path, c_path1, c_path2, c_path3, c_path4,"
 		  @"         c_foldername, c_location, c_quick_location,"
 		  @"         c_acl_location, c_folder_type)"
-		  @" VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@/%@',"
+		  @" VALUES (%@, '%@', '%@', '%@', '%@, %@, '%@/%@',"
 		  @"         '%@/%@', '%@/%@', '%@')",
-		  [self folderInfoTableName], path,
+		  [self folderInfoTableName], safePath,
 		  [paths objectAtIndex: 1], [paths objectAtIndex: 2],
 		  [paths objectAtIndex: 3], [paths objectAtIndex: 4],
-		  [folderName stringByReplacingString: @"'" withString: @"''"],
+		  safeFolderName,
 		  baseURL, tableName,
 		  baseURL, quickTableName,
 		  baseURL, aclTableName,
@@ -1114,6 +1163,12 @@ static BOOL       _singleStoreMode           = NO;
   EOAdaptorChannel *channel;
   NSException *ex;
 
+  if ((channel = [self acquireOpenChannel]) == nil) {
+    return [NSException exceptionWithName:@"GCSNoChannel"
+			reason:@"could not "
+			userInfo:nil];
+  }
+
   if ((folder = [self folderAtPath:_path]) == nil) {
     return [NSException exceptionWithName:@"GCSMissingFolder"
 			reason:@"missing folder"
@@ -1126,15 +1181,11 @@ static BOOL       _singleStoreMode           = NO;
   }
 
   ws = [self generateSQLWhereForInternalNames:fnames 
-	     exactMatch:YES orDirectSubfolderMatch:NO];
+	     exactMatch:YES orDirectSubfolderMatch:NO withChannel: channel];
 
   sql = [NSString stringWithFormat: @"DELETE FROM %@ WHERE %@",
 		  [self folderInfoTableName], ws];
-  if ((channel = [self acquireOpenChannel]) == nil) {
-    return [NSException exceptionWithName:@"GCSNoChannel"
-			reason:@"could not "
-			userInfo:nil];
-  }
+
 
   [[channel adaptorContext] beginTransaction];
 
