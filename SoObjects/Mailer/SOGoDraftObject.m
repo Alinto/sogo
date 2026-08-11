@@ -322,7 +322,7 @@ static NSString    *userAgent      = nil;
 
 - (void) setText: (NSString *) newText
 {
-  ASSIGN (text, [newText stringWithoutHTMLInjection: NO]);
+  ASSIGN (text, [newText stringWithoutHTMLInjection: NO stripAngular: NO]);
 }
 
 - (NSString *) text

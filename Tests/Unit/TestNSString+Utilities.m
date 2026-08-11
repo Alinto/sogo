@@ -99,17 +99,17 @@
 
 - (void) test_stringWithoutHTMLInjection
 {
-  testEquals([[NSString stringWithString:@"<a href=\"\">foo</a>bar"] stringWithoutHTMLInjection: YES], @" foo bar");
-  testEquals([[NSString stringWithString:@"fb <foo@bar.com>"] stringWithoutHTMLInjection: YES], @"fb <foo@bar.com>");
-  testEquals([[NSString stringWithString:@"Test\n<script>alert(\"foobar\");"] stringWithoutHTMLInjection: NO], @"Test\n<scr***>alert(\"foobar\");");
-  testEquals([[NSString stringWithString:@"<img vbscript:test"] stringWithoutHTMLInjection: NO], @"<img test");
-  testEquals([[NSString stringWithString:@"<img javascript:test"] stringWithoutHTMLInjection: NO], @"<img test");
-  testEquals([[NSString stringWithString:@"<img livescript:test"] stringWithoutHTMLInjection: NO], @"<img test");
-  testEquals([[NSString stringWithString:@"foobar <form action=\"\">bar</form>"] stringWithoutHTMLInjection: NO], @"foobar <for* action=\"\">bar</for*>");
-  testEquals([[NSString stringWithString:@"foobar <iframe src=\"\">bar</iframe>"] stringWithoutHTMLInjection: NO], @"foobar <ifr*** src=\"\">bar</iframe>");
-  testEquals([[NSString stringWithString:@"foobar <img onload=foo bar"] stringWithoutHTMLInjection: NO], @"foobar <img onl***=foo bar");
-  testEquals([[NSString stringWithString:@"foobar <img onmouseover=foo bar"] stringWithoutHTMLInjection: NO], @"foobar <img onmouseo***=foo bar"); 
-  testEquals([[NSString stringWithString:@"<!DOCTYPE html><html><head><style>@import url(https://foo.bar/malicious.css);.foo{background-color: red; @import url(https://bar.foo/malicious2.css);</style></head><body><table><tr><td>A</td><td>B</td><td>C</td></tr></table></body></html>"] stringWithoutHTMLInjection: NO], @"<!DOCTYPE html><html><head><style>@im**** url(https://foo.bar/malicious.css);.foo{background-color: red; @im**** url(https://bar.foo/malicious2.css);</style></head><body><table><tr><td>A</td><td>B</td><td>C</td></tr></table></body></html>");
+  testEquals([[NSString stringWithString:@"<a href=\"\">foo</a>bar"] stringWithoutHTMLInjection: YES stripAngular: NO], @" foo bar");
+  testEquals([[NSString stringWithString:@"fb <foo@bar.com>"] stringWithoutHTMLInjection: YES stripAngular: NO], @"fb <foo@bar.com>");
+  testEquals([[NSString stringWithString:@"Test\n<script>alert(\"foobar\");"] stringWithoutHTMLInjection: NO stripAngular: NO], @"Test\n<scr***>alert(\"foobar\");");
+  testEquals([[NSString stringWithString:@"<img vbscript:test"] stringWithoutHTMLInjection: NO stripAngular: NO], @"<img test");
+  testEquals([[NSString stringWithString:@"<img javascript:test"] stringWithoutHTMLInjection: NO stripAngular: NO], @"<img test");
+  testEquals([[NSString stringWithString:@"<img livescript:test"] stringWithoutHTMLInjection: NO stripAngular: NO], @"<img test");
+  testEquals([[NSString stringWithString:@"foobar <form action=\"\">bar</form>"] stringWithoutHTMLInjection: NO stripAngular: NO], @"foobar <for* action=\"\">bar</for*>");
+  testEquals([[NSString stringWithString:@"foobar <iframe src=\"\">bar</iframe>"] stringWithoutHTMLInjection: NO stripAngular: NO], @"foobar <ifr*** src=\"\">bar</iframe>");
+  testEquals([[NSString stringWithString:@"foobar <img onload=foo bar"] stringWithoutHTMLInjection: NO stripAngular: NO], @"foobar <img onl***=foo bar");
+  testEquals([[NSString stringWithString:@"foobar <img onmouseover=foo bar"] stringWithoutHTMLInjection: NO stripAngular: NO], @"foobar <img onmouseo***=foo bar"); 
+  testEquals([[NSString stringWithString:@"<!DOCTYPE html><html><head><style>@import url(https://foo.bar/malicious.css);.foo{background-color: red; @import url(https://bar.foo/malicious2.css);</style></head><body><table><tr><td>A</td><td>B</td><td>C</td></tr></table></body></html>"] stringWithoutHTMLInjection: NO stripAngular: NO], @"<!DOCTYPE html><html><head><style>@im**** url(https://foo.bar/malicious.css);.foo{background-color: red; @im**** url(https://bar.foo/malicious2.css);</style></head><body><table><tr><td>A</td><td>B</td><td>C</td></tr></table></body></html>");
 }
 
 - (void) test_stringCleanInvalidHTMLTags
