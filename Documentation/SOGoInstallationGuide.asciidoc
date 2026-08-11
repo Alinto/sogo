@@ -72,7 +72,7 @@ following:
 * Database server (MariaDB, MySQL, PostgreSQL or Oracle)
 * LDAP server (OpenLDAP, Novell eDirectory, Microsoft Active Directory
 and others) 
-* SMTP server (Postfix, Sendmail and others)
+* SMTP server (Postfix)
 * IMAP server (Courier, Cyrus IMAP Server, Dovecot and others)
 
 If you plan to use ActiveSync, an IMAP server supporting the ACL,
@@ -2174,7 +2174,6 @@ The following table describes the related parameters.
 are:
 
 [options="compact"]
-* `sendmail` - to use the sendmail binary
 * `smtp` - to use the SMTP protocol
 
 |D |SOGoSMTPServer
@@ -2202,10 +2201,6 @@ Current, Are supported `PLAIN` and 'xoauth2' for openid.
 |D |SOGoSMTPMasterUserPassword
 |SMTP account password for master account (`SOGoSMTPMasterUserEnabled` enabled).
 
-|S |WOSendMail
-|The path of the sendmail binary.
-
-Defaults to `/usr/lib/sendmail`.
 
 |D |SOGoForceExternalLoginWithEmail
 |Parameter used to specify if, when logging in to the SMTP server, the

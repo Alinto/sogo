@@ -304,11 +304,10 @@
   NSString *mailingMechanism;
 
   mailingMechanism = [self stringForKey: @"SOGoMailingMechanism"];
-  if (!([mailingMechanism isEqualToString: @"sendmail"]
-        || [mailingMechanism isEqualToString: @"smtp"]))
+  if (![mailingMechanism isEqualToString: @"smtp"])
     {
       [self logWithFormat: @"mechanism '%@' is invalid and"
-            @" should be set to 'sendmail' or 'smtp' instead",
+            @" should be set to 'smtp' instead",
             mailingMechanism];
       mailingMechanism = nil;
     }
