@@ -374,6 +374,7 @@
 - (iCalEvent *) authorativeEvent
 {
   iCalEvent *authorativeEvent;
+  NSString *comment, *cleanComment;
 
   [self storedEvent];
   if (!storedEvent
@@ -381,6 +382,14 @@
     authorativeEvent = inEvent;
   else
     authorativeEvent = [self storedEvent];
+
+  //Clean authorative event
+  if ((comment = [authorativeEvent comment])) {
+    cleanComment = [comment stringWithoutHTMLInjection: NO stripAngular:YES];
+    [authorativeEvent setComment: cleanComment];
+  }
+
+
 
   return authorativeEvent;
 }
@@ -587,7 +596,7 @@
 
   //Sanitise the html content
   if([d objectForKey:@"content"]){
-    [d setObject: [[d objectForKey:@"content"] stringWithoutHTMLInjection: NO stripAngular:YES] forKey: @"content"];
+    [d setObject: [[d objectForKey:@"content"] stringWithoutHTMLInjection: NO stripAngular:NO] forKey: @"content"];
   }
 
   return d;

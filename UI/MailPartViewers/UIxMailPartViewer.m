@@ -201,7 +201,7 @@
   
 
 
-  content = [[[self generateResponse] contentAsString] stringWithoutHTMLInjection: NO stripAngular:YES];
+  content = [[[self generateResponse] contentAsString] stringWithoutHTMLInjection: NO stripAngular:NO];
   if ([self respondsToSelector:@selector(getException)]) {
     e = [self getException];
   }
@@ -327,10 +327,12 @@
 
 - (NSString *) filenameForDisplay
 {
-  NSString *s;
+  NSString *s, *cleanFilename;
   
-  if ((s = [self filename]) != nil)
-    return s;
+  if ((s = [self filename]) != nil) {
+    cleanFilename = [s stringWithoutHTMLInjection: NO stripAngular:YES];
+    return cleanFilename;
+  }
   
   s = [partPath componentsJoinedByString:@"-"];
   return ([s length] > 0)
