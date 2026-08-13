@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.12.100](https://github.com/Alinto/sogo/compare/SOGo-5.12.9...SOGo-5.12.10) (2026-08-13)
+
+
+### Features
+
+* **sogo-tool:** add init-user command to create a user's personal folders and preferences without a login ([aefc14b](https://github.com/Alinto/sogo/commit/aefc14b265172e5ff94fa0fc1e4799f05d8e29f8))
+
+
+### Bug Fixes
+
+* **bug:** escape angularJS only if needed to keep legitimate directive ([41e2b7b](https://github.com/Alinto/sogo/commit/41e2b7b1ab59fefe48cedf49ba82f4e03b646d23))
+* **bug:** incorrect method called ([1caa257](https://github.com/Alinto/sogo/commit/1caa25711f5891135c7ebca63f33b8758c00c8e8))
+* **calendar:** do not transmit og http status to external calendar ([3a78a3b](https://github.com/Alinto/sogo/commit/3a78a3bbb44484c95c141b0f3c0c8fabdc8bcf6a))
+* **ckeditor:** Sync resized image width/height into style and HTML attributes so Outlook and other mail clients ignoring CSS aspect-ratio render the correct dimensions. Closes [#6169](https://bugs.sogo.nu/view.php?id=6169). ([39a3583](https://github.com/Alinto/sogo/commit/39a35830e9d01a26b533515a20c1b4f527064519))
+* **dav:** properly parse MKCOL request ([78807d0](https://github.com/Alinto/sogo/commit/78807d01aee9195b95e2ed21344f260aadb2faef))
+* **event:** clean import of event ([b5c83f5](https://github.com/Alinto/sogo/commit/b5c83f58393e31151939d0d6fc227c0d0f127f33))
+* **event:** clean import of event ([b18f1a0](https://github.com/Alinto/sogo/commit/b18f1a09f59424a36f6de5aa7c30e6f27405c15d))
+* **mail:** escape angularJS directive for description ([47133fd](https://github.com/Alinto/sogo/commit/47133fdf3bc3148d374bbf413f058d714776e832))
+* **mail:** escape References/Organization/Newsgroups headers in HTML forward so message-id chevrons aren't parsed as HTML tags hiding the quoted body. Closes [#6046](https://bugs.sogo.nu/view.php?id=6046). ([f11f34c](https://github.com/Alinto/sogo/commit/f11f34cdefdd4175ae6c8b0814c2ccaecfd7c373))
+* **mail:** Some links broken in HTML rendering due to libxml2 (SOPE) only supporting HTML4 — when an anchor has no content between its opening and closing tags, store it and re-open it around the next element, closing </a> after that element's end tag. Closes [#5961](https://bugs.sogo.nu/view.php?id=5961). Closes [#6172](https://bugs.sogo.nu/view.php?id=6172). ([6904911](https://github.com/Alinto/sogo/commit/6904911ac17651de754246aff26fbb85aa8e01c7))
+* **passwordRecoveyr:** get the domain from the user mail ([a156f4c](https://github.com/Alinto/sogo/commit/a156f4ce9f0eda3ff54633d4bcb7051388d2f39b))
+* **tool:** wrong method called ([97bbd7e](https://github.com/Alinto/sogo/commit/97bbd7ed7f8173894f01b259f2f0f539ad6e95ed))
+
+
+### Localization
+
+* **hu:** Update Hungarian translations ([2a8f20e](https://github.com/Alinto/sogo/commit/2a8f20e080cdb39544622874a12fef807cc66612))
+
 ### [5.12.9](https://github.com/Alinto/sogo/compare/SOGo-5.12.8...SOGo-5.12.9) (2026-05-27)
 
 

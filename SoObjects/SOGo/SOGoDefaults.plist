@@ -30,7 +30,7 @@
 
     SOGoLDAPContactInfoAttribute = "description";
 
-    SOGoMailingMechanism = "sendmail";
+    SOGoMailingMechanism = "smtp";
     SOGoSMTPServer = "smtp://localhost";
     SOGoMailSpoolPath = "/var/spool/sogo";
 
