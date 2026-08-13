@@ -12,10 +12,10 @@
 "Common" = "Közös";
 "Contact editor" = "Kapcsolatszerkesztő";
 "Contact viewer" = "Kapcsolat betekintő";
-"Email" = "Email";
+"Email" = "Email cím";
 "Screen Name" = "Megjelenített név";
 "Extended" = "Kiterjesztett";
-"Fax" = "Fax";
+"Fax" = "Telefax";
 "Firstname" = "Keresztnév";
 "Home" = "Otthoni";
 "HomePhone" = "Otthoni telefon";
@@ -61,10 +61,10 @@
 "nsaimid" = "Megjelenített név";
 
 /* Search scope: mail fields */
-"mail" = "Mail";
+"mail" = "Üzenetek";
 
 /* Search scope: mail fields */
-"c_mail" = "Mail";
+"c_mail" = "Üzenetek";
 
 /* Search scope: telephone field */
 "telephonenumber" = "Telefon";
@@ -76,7 +76,7 @@
 "mobile" = "Mobiltelefon";
 
 /* Search scope: fax field */
-"facsimiletelephonenumber" = "Fax";
+"facsimiletelephonenumber" = "Telefax";
 
 /* Search scope: pager field */
 "pager" = "Személyhívó";
@@ -193,7 +193,7 @@
 "Work" = "Munkahely";
 "Mobile" = "Mobiltelefon";
 "Pager" = "Személyhívó";
-"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
+"Download iOS - MacOS configuration profile" = "iOS - MacOS konfigurációs profil letöltése";
 
 /* categories */
 "contacts_category_labels" = "Munkatárs, Versenytárs, Felhasználó, Barát, Család, Üzleti partner, Szolgáltató, Sajtó, VIP";

@@ -143,23 +143,23 @@
 "This mail is being sent from an unsecure network!" = "A levelet nem biztonságos hálózatból készül elküldeni!";
 "Address Book" = "Címjegyzék";
 "Search For" = "Keresés";
-"Contains" = "Contains";
-"Does not contains" = "Does not contains";
-"Advanced search" = "Advanced search";
-"Anytime" = "Anytime";
-"Last 7 days" = "Last 7 days";
-"Last 30 days" = "Last 30 days";
-"Last 6 month" = "Last 6 month";
-"Before" = "Before";
-"After" = "After";
-"Between" = "Between";
-"and" = "and";
-"With attachments" = "With attachments";
-"In favorites" = "In favorites";
-"Unseen only" = "Unseen only";
-"Show more" = "Show more";
-"Reset" = "Reset";
-"Message size" = "Message size";
+"Contains" = "Tartalmazza";
+"Does not contains" = "Nem tartalmazza";
+"Advanced search" = "Bővített keresés";
+"Anytime" = "Bármikor";
+"Last 7 days" = "Előző 7 nap";
+"Last 30 days" = "Előző 30 nap";
+"Last 6 month" = "Előző 6 hónap";
+"Before" = "Előtte";
+"After" = "Utána";
+"Between" = "Között";
+"and" = "és";
+"With attachments" = "Mellékletekkel";
+"In favorites" = "Kedvencek között";
+"Unseen only" = "Csak a még nem olvasott";
+"Show more" = "Továbbiak megjelenítése";
+"Reset" = "Alaphelyzet";
+"Message size" = "Üzenet mérete";
 
 /* Popup "show" */
 "all"     = "összes";
@@ -171,7 +171,7 @@
 /* MailListView */
 "Sender" = "Feladó";
 "Subject or Sender" = "Tárgy vagy feladó";
-"Subject or Recipient" = "Subject or Recipient";
+"Subject or Recipient" = "Tárgy vagy címzett";
 "To or Cc" = "Címzett vagy másolat";
 "Entire Message" = "A teljes üzenet";
 "Date"          = "Dátum";
@@ -257,7 +257,7 @@
 "Save As..." = "Mentés másként...";
 "Print Preview" = "Nyomtatási kép";
 "View Message Source" = "Üzenet forrása";
-"View raw message" = "View raw message";
+"View raw message" = "Nyers üzenet megtekintése";
 
 /* Message view "more" menu: create an event from message */
 "Convert To Event" = "Eseménnyé alakít";
@@ -434,7 +434,7 @@
 "cannot sign message because the certificate doesn't include the specified sender address" = "Az üzenetet nem lehet aláírni, mivel a feladó címe nem található meg postafiókhoz hozzárendelt tanúsítványban.";
 
 /* Contacts list in mail editor */
-"Email" = "Email";
+"Email" = "Email cím";
 "More mail options" = "További levelezési tulajdonságok";
 "Delegation" = "Jogok átadása";
 "Add User" = "Felhasználó hozzáadása";
@@ -517,16 +517,16 @@
 "hotkey_forward" = "f";
 
 /* Email deletion */
-"Clean folder" = "Clean folder";
-"Clean mailbox" = "Clean mailbox";
-"Delete permanently (do not use trash)" = "Delete permanently (do not use trash)";
-"Apply to subfolders" = "Apply to subfolders";
-"Delete e-mails older than" = "Delete e-mails older than";
-"3 months" = "3 months";
-"6 months" = "6 months";
-"9 months" = "9 months";
-"1 year" = "1 year";
-"Custom" = "Custom";
-"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "You are about to permanently delete some messages. Are you sure you want to proceed with this action?";
-"Apply" = "Apply";
-"%{0} message(s) deleted" = "%{0} message(s) deleted";
+"Clean folder" = "Mappa ürítése";
+"Clean mailbox" = "Postafiók ürítése";
+"Delete permanently (do not use trash)" = "Végleges törlés (ne használjon lomtárat)";
+"Apply to subfolders" = "Alkalmazza az almappákra";
+"Delete e-mails older than" = "Emailek törlése amelyek régebbiek mint";
+"3 months" = "3 hónap";
+"6 months" = "6 hónap";
+"9 months" = "9 hónap";
+"1 year" = "1 év";
+"Custom" = "Egyéni";
+"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "Véglegesen törölni kíván néhány üzenetet. Biztosan végrehajtja a műveletet?";
+"Apply" = "Alkalmaz";
+"%{0} message(s) deleted" = "%{0} üzenet törölve";
