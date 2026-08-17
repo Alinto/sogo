@@ -10,7 +10,7 @@
     <img var:src="pathToAttachment"
          var:title="filenameForDisplay"><!-- image --></img>
     <md-card-content>
-      <p class="md-caption" var:title="filenameForDisplay">
+      <p class="md-caption" var:title="filenameForTitle">
         <var:string value="filenameForDisplay" />
       </p>
     </md-card-content>

@@ -137,7 +137,7 @@
 
             <p>
               <var:string label:value="Organizer" />
-              <a ng-non-bindable="" var:href="inEvent.organizer.email"
+              <a ng-non-bindable="" var:href="organizerHref"
 	         ><var:string value="organizerDisplayName" /></a>
               <var:string label:value="request_info" />
             </p>
@@ -147,7 +147,7 @@
           <var:if condition="isLoggedInUserAnAttendee" const:negate="YES">
             <p>
               <var:string label:value="Organizer" />
-              <a ng-non-bindable="" var:href="inEvent.organizer.email">
+              <a ng-non-bindable="" var:href="organizerHref">
                 <var:string value="organizerDisplayName" />
               </a>
               <var:string label:value="request_info_no_attendee" />

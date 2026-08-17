@@ -418,6 +418,18 @@
   return YES;
 }
 
+- (NSString *) organizerHref
+{
+  NSString *address;
+
+  address = [[[self inEvent] organizer] rfc822Email];
+  if (![address length])
+    return nil;
+
+  return [[NSString stringWithFormat: @"mailto:%@", address]
+           stringByEscapingHTMLAttributeValue];
+}
+
 - (NSString *) organizerDisplayName
 {
   iCalPerson *organizer;
