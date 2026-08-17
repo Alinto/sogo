@@ -942,12 +942,13 @@ static int cssEscapingCount;
   NSScanner *theScanner;
   NSError *error;
   NSUInteger numberOfMatches;
-  NSRegularExpression *regex;
+  NSRegularExpression *regex, *importRegex;
 
   text = nil;
   error = nil;
   result = [NSString stringWithString: self];
   regex = nil;
+  importRegex = nil;
   
   NS_DURING
   {
@@ -1056,9 +1057,9 @@ static int cssEscapingCount;
       result = [NSString stringWithString: newResult];
       
       // Remove @import css (in style tags)
-      regex = [NSRegularExpression regularExpressionWithPattern:@"(<[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*s[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*t[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*y[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*l[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*e.*)([\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*@[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*i[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*m[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*p[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*o[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*r[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*t)(.*<[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*\\/[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*s[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*t[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*y[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*l[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*e[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*>)" 
+      importRegex = [NSRegularExpression regularExpressionWithPattern:@"(<[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*s[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*t[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*y[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*l[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*e.*)([\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*@[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*i[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*m[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*p[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*o[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*r[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*t)(.*<[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*\\/[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*s[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*t[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*y[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*l[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*e[\\s\\u200B&#x09;&#x0A;&#x0D;\\\\0]*>)" 
                                   options: NSRegularExpressionCaseInsensitive error:&error];
-      newResult = [regex stringByReplacingMatchesInString:result options:0 range:NSMakeRange(0, [result length]) withTemplate:@"onrep***="];
+      newResult = [importRegex stringByReplacingMatchesInString:result options:0 range:NSMakeRange(0, [result length]) withTemplate:@"$1@im****$3"];
       result = [NSString stringWithString: newResult];
 
 
@@ -1075,8 +1076,8 @@ static int cssEscapingCount;
       }
 
       newResult = result;
-      while([regex numberOfMatchesInString:newResult options:0 range:NSMakeRange(0, [newResult length])] > 0) {
-        newResult = [regex stringByReplacingMatchesInString:newResult options:0 range:NSMakeRange(0, [newResult length]) withTemplate:@"$1@im****$3"];
+      while([importRegex numberOfMatchesInString:newResult options:0 range:NSMakeRange(0, [newResult length])] > 0) {
+        newResult = [importRegex stringByReplacingMatchesInString:newResult options:0 range:NSMakeRange(0, [newResult length]) withTemplate:@"$1@im****$3"];
       }
       result = [NSString stringWithString: newResult];
     }

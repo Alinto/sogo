@@ -110,6 +110,8 @@
   testEquals([[NSString stringWithString:@"foobar <img onload=foo bar"] stringWithoutHTMLInjection: NO stripAngular: NO], @"foobar <img onl***=foo bar");
   testEquals([[NSString stringWithString:@"foobar <img onmouseover=foo bar"] stringWithoutHTMLInjection: NO stripAngular: NO], @"foobar <img onmouseo***=foo bar"); 
   testEquals([[NSString stringWithString:@"<!DOCTYPE html><html><head><style>@import url(https://foo.bar/malicious.css);.foo{background-color: red; @import url(https://bar.foo/malicious2.css);</style></head><body><table><tr><td>A</td><td>B</td><td>C</td></tr></table></body></html>"] stringWithoutHTMLInjection: NO stripAngular: NO], @"<!DOCTYPE html><html><head><style>@im**** url(https://foo.bar/malicious.css);.foo{background-color: red; @im**** url(https://bar.foo/malicious2.css);</style></head><body><table><tr><td>A</td><td>B</td><td>C</td></tr></table></body></html>");
+  // the @import cleanup must still run when angular interpolation is stripped as well
+  testEquals([[NSString stringWithString:@"<style>@import url(https://foo.bar/malicious.css);</style>"] stringWithoutHTMLInjection: NO stripAngular: YES], @"<style>@im**** url(https://foo.bar/malicious.css);</style>");
 }
 
 - (void) test_stringCleanInvalidHTMLTags
