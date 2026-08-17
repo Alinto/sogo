@@ -46,6 +46,8 @@
 - (BOOL) isEndDateOnSameDay;
 - (BOOL) hasLocation;
 - (NSString *)location;
+- (NSString *) userComment;
+- (NSString *) eventDescription;
 
 @end
 

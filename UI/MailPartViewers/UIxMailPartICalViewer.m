@@ -32,6 +32,7 @@
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSString+misc.h>
 
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 
@@ -610,6 +611,16 @@
 
 - (NSString *) location {
   return [[self inEvent] location];
+}
+
+- (NSString *) userComment
+{
+  return [[[self inEvent] userComment] stringByEscapingHTMLString];
+}
+
+- (NSString *) eventDescription
+{
+  return [[[self authorativeEvent] comment] stringByEscapingHTMLString];
 }
 
 @end /* UIxMailPartICalViewer */
