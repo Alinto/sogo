@@ -410,7 +410,7 @@
   NSDictionary *urlParams, *sortingAttributes;
   SOGoUser *activeUser;
   SOGoUserSettings *us;
-  BOOL asc, dry;
+  BOOL asc, dry, unreadFirst;
 
   request = [context request];
   urlParams = [[request contentAsString] objectFromJSONString];
@@ -418,6 +418,7 @@
   sort = [[sortingAttributes objectForKey: @"sort"] uppercaseString];
   asc = [[sortingAttributes objectForKey: @"asc"] boolValue];
   dry = [[sortingAttributes objectForKey: @"dry"] boolValue];
+  unreadFirst = [[sortingAttributes objectForKey: @"unreadFirst"] boolValue];
 
   activeUser = [context activeUser];
   module = @"Mail";
@@ -426,7 +427,7 @@
 
   if ([sort length])
     {
-      if ([sort isEqualToString: [self defaultSortKey]] && !asc)
+      if ([sort isEqualToString: [self defaultSortKey]] && !asc && !unreadFirst)
 	{
 	  if (moduleSettings && !dry)
 	    {
@@ -442,7 +443,7 @@
 	      moduleSettings = [NSMutableDictionary dictionary];
 	      [us setObject: moduleSettings forKey: module];
 	    }
-	  [moduleSettings setObject: [NSArray arrayWithObjects: [sort lowercaseString], [NSString stringWithFormat: @"%d", (asc ? 1 : 0)], nil]
+	  [moduleSettings setObject: [NSArray arrayWithObjects: [sort lowercaseString], [NSString stringWithFormat: @"%d", (asc ? 1 : 0)], [NSString stringWithFormat: @"%d", (unreadFirst ? 1 : 0)], nil]
 			     forKey: @"SortingState"];
 	  [us synchronize];
 	}
@@ -464,6 +465,36 @@
     sort = [@"REVERSE " stringByAppendingString: sort];
 
   return sort;
+}
+
+- (BOOL) unreadFirst
+{
+  WORequest *request;
+  NSDictionary *urlParams, *sortingAttributes;
+  SOGoUser *activeUser;
+  SOGoUserSettings *us;
+  NSDictionary *moduleSettings;
+  NSArray *sortState;
+  BOOL unreadFirst;
+
+  request = [context request];
+  urlParams = [[request contentAsString] objectFromJSONString];
+  sortingAttributes = [urlParams objectForKey: @"sortingAttributes"];
+  unreadFirst = [[sortingAttributes objectForKey: @"unreadFirst"] boolValue];
+
+  // If no explicit sort criteria was supplied in the request, fall back on
+  // the sorting state stored in the user settings
+  if (![[sortingAttributes objectForKey: @"sort"] length])
+    {
+      activeUser = [context activeUser];
+      us = [activeUser userSettings];
+      moduleSettings = [us objectForKey: @"Mail"];
+      sortState = [moduleSettings objectForKey: @"SortingState"];
+      if ([sortState count] > 2)
+        unreadFirst = [[sortState objectAtIndex: 2] boolValue];
+    }
+
+  return unreadFirst;
 }
 
 - (NSString *)sanitizeFilterString:(NSString *)str
@@ -687,9 +718,54 @@
 {
   if (!sortedUIDs)
     {
-      sortedUIDs = [mailFolder fetchUIDsMatchingQualifier: [self searchQualifier]
-                                             sortOrdering: [self imap4SortOrdering]
-                                                 threaded: sortByThread];
+      EOQualifier *searchQualifier, *unseenQualifier, *seenQualifier;
+      NSString *sortOrdering;
+      NSArray *unreadUIDs, *seenUIDs;
+
+      searchQualifier = [self searchQualifier];
+      sortOrdering = [self imap4SortOrdering];
+
+      if ([self unreadFirst])
+        {
+          // Fetch the unread messages first, then the read ones, keeping the
+          // requested sort ordering within each group.
+          // Threading is disabled in this mode: a thread can span both groups,
+          // so threading the concatenated result would be incorrect.
+          sortByThread = NO;
+          unseenQualifier = [[EOAndQualifier alloc] initWithQualifierArray:
+                               [NSArray arrayWithObjects: searchQualifier,
+                                         [EOQualifier qualifierWithQualifierFormat: @"(not (flags = %@))", @"seen"],
+                                         nil]];
+          [unseenQualifier autorelease];
+          seenQualifier = [[EOAndQualifier alloc] initWithQualifierArray:
+                             [NSArray arrayWithObjects: searchQualifier,
+                                       [EOQualifier qualifierWithQualifierFormat: @"(flags = %@)", @"seen"],
+                                       nil]];
+          [seenQualifier autorelease];
+
+          unreadUIDs = [mailFolder fetchUIDsMatchingQualifier: unseenQualifier
+                                                 sortOrdering: sortOrdering
+                                                     threaded: NO];
+          seenUIDs = [mailFolder fetchUIDsMatchingQualifier: seenQualifier
+                                               sortOrdering: sortOrdering
+                                                   threaded: NO];
+          if ([unreadUIDs isKindOfClass: [NSException class]])
+            sortedUIDs = unreadUIDs;
+          else if ([seenUIDs isKindOfClass: [NSException class]])
+            sortedUIDs = seenUIDs;
+          else
+            {
+              if (!unreadUIDs)
+                unreadUIDs = [NSArray array];
+              if (!seenUIDs)
+                seenUIDs = [NSArray array];
+              sortedUIDs = [unreadUIDs arrayByAddingObjectsFromArray: seenUIDs];
+            }
+        }
+      else
+        sortedUIDs = [mailFolder fetchUIDsMatchingQualifier: searchQualifier
+                                               sortOrdering: sortOrdering
+                                                   threaded: sortByThread];
       [sortedUIDs retain];
     }
 

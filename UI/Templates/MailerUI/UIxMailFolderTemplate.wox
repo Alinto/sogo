@@ -121,6 +121,14 @@
                   sg-true-value="0"
                   sg-false-value="1"><var:string label:value="Descending Order"/></sg-checkmark>
             </md-menu-item>
+            <md-menu-item>
+              <sg-checkmark
+                  label:aria-label="Unread First"
+                  ng-model="mailbox.service.$query.unreadFirst"
+                  ng-change="mailbox.selectedFolder.$filter(mailbox.service.$query)"
+                  sg-true-value="true"
+                  sg-false-value="false"><var:string label:value="Unread First"/></sg-checkmark>
+            </md-menu-item>
           </md-menu-content>
         </md-menu>
         <md-button class="sg-icon-button" label:aria-label="Get Mail" ng-click="mailbox.refresh()" >
