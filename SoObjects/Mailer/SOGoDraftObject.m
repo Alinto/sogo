@@ -1631,8 +1631,11 @@ static NSString    *userAgent      = nil;
   for (i = 0; i < count; i++)
     {
       contentType = [[[attrs objectAtIndex: i] objectForKey: @"part"] headerForKey: @"content-type"];
-      if ([contentType isEqualToString: @"application/pkcs7-signature"])
-        // Skip SMIME signature as it will be resigned later
+      if ([self sign] && [contentType isEqualToString: @"application/pkcs7-signature"])
+        // Skip a stale SMIME signature part only when this message will actually
+        // be re-signed on send; a detached signature file the user explicitly
+        // attached (sign not requested for this message) must be preserved as
+        // a normal attachment instead of being silently dropped.
         continue;
       bodyPart = [self bodyPartForAttachmentWithName: [[attrs objectAtIndex: i] objectForKey: @"filename"]];
       [bodyParts addObject: bodyPart];
