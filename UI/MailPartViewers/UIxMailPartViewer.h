@@ -86,6 +86,7 @@
 - (NSString *)preferredPathExtension;
 - (NSString *)filename;
 - (NSString *)filenameForDisplay;
+- (NSString *)filenameForTitle;
 - (NSFormatter *)sizeFormatter;
 
 /* caches */

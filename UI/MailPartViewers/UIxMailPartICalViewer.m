@@ -32,6 +32,7 @@
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSString+misc.h>
 
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 
@@ -417,6 +418,18 @@
   return YES;
 }
 
+- (NSString *) organizerHref
+{
+  NSString *address;
+
+  address = [[[self inEvent] organizer] rfc822Email];
+  if (![address length])
+    return nil;
+
+  return [[NSString stringWithFormat: @"mailto:%@", address]
+           stringByEscapingHTMLAttributeValue];
+}
+
 - (NSString *) organizerDisplayName
 {
   iCalPerson *organizer;
@@ -610,6 +623,16 @@
 
 - (NSString *) location {
   return [[self inEvent] location];
+}
+
+- (NSString *) userComment
+{
+  return [[[self inEvent] userComment] stringByEscapingHTMLString];
+}
+
+- (NSString *) eventDescription
+{
+  return [[[self authorativeEvent] comment] stringByEscapingHTMLString];
 }
 
 @end /* UIxMailPartICalViewer */

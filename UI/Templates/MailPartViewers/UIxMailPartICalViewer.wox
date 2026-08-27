@@ -17,7 +17,7 @@
           </div>
       </md-toolbar>
       <md-whiteframe class="md-whiteframe-z1" layout="row" layout-align="space-between center">
-        <pre><var:string value="flatContentAsString" /></pre>
+        <pre ng-non-bindable=""><var:string value="flatContentAsString" /></pre>
       </md-whiteframe>
     </div>
   </var:if> <!-- if condition="couldParseCalendar" const:negate="1" -->
@@ -137,7 +137,7 @@
 
             <p>
               <var:string label:value="Organizer" />
-              <a var:href="inEvent.organizer.email"
+              <a ng-non-bindable="" var:href="organizerHref"
 	         ><var:string value="organizerDisplayName" /></a>
               <var:string label:value="request_info" />
             </p>
@@ -147,7 +147,7 @@
           <var:if condition="isLoggedInUserAnAttendee" const:negate="YES">
             <p>
               <var:string label:value="Organizer" />
-              <a var:href="inEvent.organizer.email">
+              <a ng-non-bindable="" var:href="organizerHref">
                 <var:string value="organizerDisplayName" />
               </a>
               <var:string label:value="request_info_no_attendee" />
@@ -233,14 +233,14 @@
         </var:if>
 
         <!-- the user comment is used in replies -->
-        <var:if condition="inEvent.userComment.isNotEmpty">
+        <var:if condition="userComment.isNotEmpty">
           <div class="pseudo-input-container">
             <label class="pseudo-input-label">
               <var:string label:value="Comment"/>
             </label>
-            <div>
+            <div ng-non-bindable="">
               <md-content>
-                <var:string value="inEvent.userComment.stringByDetectingURLs" const:insertBR="1" const:escapeHTML="NO"/>
+                <var:string value="userComment.stringByDetectingURLs" const:insertBR="1" const:escapeHTML="NO"/>
               </md-content>
             </div>
           </div>
@@ -251,7 +251,7 @@
 	<var:if condition="hasOrganizer" const:value="true">
           <div class="pseudo-input-container">
             <label class="pseudo-input-label"><var:string label:value="Organizer"/></label>
-            <div>
+            <div ng-non-bindable="">
               <var:string value="organizerDisplayName"/>
             </div>
           </div>
@@ -268,7 +268,7 @@
         <var:if condition="hasLocation">
           <div class="pseudo-input-container">
             <label class="pseudo-input-label"><var:string label:value="Location"/></label>
-            <div>
+            <div ng-non-bindable="">
               <var:string value="location"/>
             </div>
           </div>
@@ -294,14 +294,14 @@
           </div>
         </md-list>
 
-        <var:if condition="authorativeEvent.comment.isNotEmpty">
+        <var:if condition="eventDescription.isNotEmpty">
           <div class="pseudo-input-container">
             <label class="pseudo-input-label">
               <var:string label:value="Description"/>
             </label>
             <div ng-non-bindable="">
               <md-content>
-                <var:string value="authorativeEvent.comment.stringByDetectingURLs" const:insertBR="1" const:escapeHTML="NO"/>
+                <var:string value="eventDescription.stringByDetectingURLs" const:insertBR="1" const:escapeHTML="NO"/>
               </md-content>
             </div>
           </div>

@@ -340,6 +340,14 @@
     : (id)@"untitled";
 }
 
+- (NSString *) filenameForTitle
+{
+  /* the generic attribute writer escapes & but not the quote, so a quote in the
+     filename would end the title attribute and start a new one */
+  return [[self filenameForDisplay] stringByReplacingOccurrencesOfString: @"\""
+                                                             withString: @""];
+}
+
 - (NSFormatter *) sizeFormatter
 {
   return [UIxMailSizeFormatter sharedMailSizeFormatter];
