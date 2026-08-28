@@ -1616,6 +1616,26 @@ static NSString    *userAgent      = nil;
 
   attrs = [self fetchAttachmentAttrs];
   count = [attrs count];
+
+  // If the spool directory has no attachment files but the draft exists
+  // in IMAP (has a valid IMAP4ID), it means the spool was cleaned up or
+  // this is a fresh editing session for a draft that was saved previously.
+  // In this case, restore the attachments from the IMAP message to spool
+  // so they are not silently dropped during MIME generation.
+  //
+  // We check IMAP4ID > -1 to ensure the draft was actually saved to IMAP
+  // before (not a brand-new unsaved draft).
+  if (count == 0 && IMAP4ID > -1)
+    {
+      SOGoMailObject *mail;
+
+      mail = [[[SOGoMailObject alloc] initWithImap4URL: [self imap4URL]
+                                           inContainer: [self container]] autorelease];
+      [self _fetchAttachmentsFromMail: mail onlyImages: NO];
+      attrs = [self fetchAttachmentAttrs];
+      count = [attrs count];
+    }
+
   size = 0;
 
   // We first check if we don't go over our message size limit
