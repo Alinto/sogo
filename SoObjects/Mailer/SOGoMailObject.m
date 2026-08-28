@@ -1069,6 +1069,17 @@ static BOOL debugSoParts       = NO;
       else
 	{
 	  s = [NSString stringWithData: mailData usingEncodingNamed: charset];
+	  /* See bodyStringFromCharset: in NSData+Mail.m for the rationale.
+	     cp50220 (ISO-2022-JP-MS) handles NEC special characters that
+	     strict ISO-2022-JP (RFC 1468) rejects with EILSEQ.  Fall back to
+	     the built-in NEC decoder when cp50220 is unavailable (e.g. glibc
+	     iconv on Ubuntu/Linux). */
+	  if (!s && [[charset lowercaseString] isEqualToString: @"iso-2022-jp"])
+	    {
+	      s = [NSString stringWithData: mailData usingEncodingNamed: @"cp50220"];
+	      if (!s)
+	        s = [mailData bodyStringFromISO2022JPWithNECExtension];
+	    }
 	}
 
       // If it has failed, we try at least using UTF-8. Normally, this can NOT fail.
