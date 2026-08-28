@@ -26,7 +26,7 @@
       if (!size) {
         s = 48; // default to 48 pixels
       }
-      hash = email.md5();
+      hash = email.toLowerCase().md5();
 
       if (!a || a == "none") {
         if (options && options.no_404)
