@@ -91,6 +91,7 @@ static Class NSStringK;
       _schema = nil;
       _IDField = @"cn"; /* the first part of a user DN */
       _CNField = @"cn";
+      _SNField = @"sn";
       _UIDField = @"uid";
       _mailFields = [[NSArray arrayWithObject: @"mail"] retain];
       _contactMapping = nil;
@@ -142,6 +143,7 @@ static Class NSStringK;
   [_pristineBaseDN release];
   [_IDField release];
   [_CNField release];
+  [_SNField release];
   [_UIDField release];
   [_contactMapping release];
   [_mailFields release];
@@ -190,6 +192,7 @@ static Class NSStringK;
       [self setBaseDN: [udSource objectForKey: @"baseDN"]
               IDField: [udSource objectForKey: @"IDFieldName"]
               CNField: [udSource objectForKey: @"CNFieldName"]
+              SNField: [udSource objectForKey: @"SNFieldName"]
              UIDField: [udSource objectForKey: @"UIDFieldName"]
            mailFields: [udSource objectForKey: @"MailFieldNames"]
          searchFields: [udSource objectForKey: @"SearchFieldNames"]
@@ -339,6 +342,7 @@ static Class NSStringK;
 - (void) setBaseDN: (NSString *) newBaseDN
            IDField: (NSString *) newIDField
            CNField: (NSString *) newCNField
+           SNField: (NSString *) newSNField
           UIDField: (NSString *) newUIDField
         mailFields: (NSArray *) newMailFields
       searchFields: (NSArray *) newSearchFields
@@ -357,6 +361,8 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
     ASSIGN(_IDField, [newIDField lowercaseString]);
   if (newCNField)
     ASSIGN(_CNField, [newCNField lowercaseString]);
+  if (newSNField)
+    ASSIGN(_SNField, [newSNField lowercaseString]);
   if (newUIDField)
     ASSIGN(_UIDField, [newUIDField lowercaseString]);
   if (newIMAPHostField)
@@ -1370,6 +1376,11 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   if (!value)
     value = @"";
   [ldifRecord setObject: value forKey: @"c_cn"];
+
+  value = [[ldapEntry attributeWithName: _SNField] stringValueAtIndex: 0];
+  if (!value)
+    value = @"";
+  [ldifRecord setObject: value forKey: @"c_sn"];
   /* if "displayName" is not set, we use CNField because it must exist */
   if (![ldifRecord objectForKey: @"displayname"])
     [ldifRecord setObject: value forKey: @"displayname"];
@@ -2110,6 +2121,7 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
               [ab setBaseDN: [entry dn]
 		    IDField: @"cn"
 		    CNField: @"displayName"
+		    SNField: @"sn"
 		   UIDField: @"cn"
 		 mailFields: nil
 		  searchFields: nil
