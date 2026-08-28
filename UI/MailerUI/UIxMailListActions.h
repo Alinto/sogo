@@ -45,6 +45,7 @@
 
 - (NSString *) defaultSortKey;
 - (NSString *) imap4SortOrdering;
+- (BOOL) unreadFirst;
 - (EOQualifier *) searchQualifier;
 
 - (NSArray *) getSortedUIDsInFolder: (SOGoMailFolder *) mailFolder;

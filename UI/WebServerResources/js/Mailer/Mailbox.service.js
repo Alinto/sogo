@@ -41,7 +41,7 @@
       $Message: Message,
       $$Acl: Acl,
       $Preferences: Preferences,
-      $query: { sort: 'arrival', asc: 0 }, // The default sort must match [UIxMailListActions defaultSortKey]
+      $query: { sort: 'arrival', asc: 0, unreadFirst: false }, // The default sort must match [UIxMailListActions defaultSortKey]
       selectedFolder: null,
       $refreshTimeout: null,
       $virtualMode: false,
@@ -54,6 +54,8 @@
     if (Preferences.settings.Mail.SortingState) {
       Mailbox.$query.sort = Preferences.settings.Mail.SortingState[0];
       Mailbox.$query.asc = parseInt(Preferences.settings.Mail.SortingState[1]);
+      if (angular.isDefined(Preferences.settings.Mail.SortingState[2]))
+        Mailbox.$query.unreadFirst = parseInt(Preferences.settings.Mail.SortingState[2]) === 1;
     }
 
     return Mailbox; // return constructor
