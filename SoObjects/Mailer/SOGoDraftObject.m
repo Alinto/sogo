@@ -1771,52 +1771,99 @@ static NSString    *userAgent      = nil;
   return NO;
 }
 
-- (NSString *) _quoteSpecials: (NSString *) address
+#ZN|- (NSString *) _quoteSpecials: (NSString *) address
 {
-  NSString *result, *part, *s2;
-  int i, len;
+  if (!address || [address length] == 0)
+    return address;
 
-  // We want to correctly send mails to recipients such as :
-  // foo.bar
-  // foo (bar) <foo@zot.com>
-  // bar, foo <foo@zot.com>
-  if ([address indexOf: '('] >= 0 || [address indexOf: ')'] >= 0
-      || [address indexOf: '<'] >= 0 || [address indexOf: '>'] >= 0
-      || [address indexOf: '@'] >= 0 || [address indexOf: ','] >= 0
-      || [address indexOf: ';'] >= 0 || [address indexOf: ':'] >= 0
-      || [address indexOf: '\\'] >= 0 || [address indexOf: '"'] >= 0
-      || [address indexOf: '.'] >= 0
-      || [address indexOf: '['] >= 0 || [address indexOf: ']'] >= 0)
+  // Find the last occurrence of '<' to separate display name from email
+  NSRange bracketRange = [address rangeOfString: @"<" options: NSBackwardsSearch];
+
+  if (bracketRange.location == NSNotFound)
     {
-      // We search for the first instance of < from the end
-      // and we quote what was before if we need to
-      len = [address length];
-      i = -1;
-      while (len--)
-        if ([address characterAtIndex: len] == '<')
-          {
-            i = len;
-            break;
-          }
-
-      if (i > 0)
-        {
-          part = [address substringToIndex: i - 1];
-          s2 = [[part stringByReplacingString: @"\\" withString: @"\\\\"]
-                     stringByReplacingString: @"\"" withString: @"\\\""];
-          result = [NSString stringWithFormat: @"\"%@\" %@", s2, [address substringFromIndex: i]];
-        }
-      else
-        {
-          s2 = [[address stringByReplacingString: @"\\" withString: @"\\\\"]
-                     stringByReplacingString: @"\"" withString: @"\\\""];
-          result = [NSString stringWithFormat: @"\"%@\"", s2];
-        }
+      // No address notation - treat entire string as potential display name
+      // Quote if it contains RFC 5322 special characters in the phrase context
+      if ([self _needsQuotingForPhrase: address])
+        return [self _quoteAndEscape: address];
+      return address;
     }
-  else
-    result = address;
 
-  return result;
+  // We have <...> notation
+  NSString *displayName = nil;
+  NSString *emailPart = nil;
+
+  // Extract display name part (everything before <)
+  if (bracketRange.location > 0)
+    {
+      displayName = [address substringToIndex: bracketRange.location];
+      // Trim trailing whitespace
+      displayName = [displayName stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+    }
+
+  // Extract email part (from < onwards)
+  if (bracketRange.location < [address length])
+    {
+      emailPart = [address substringFromIndex: bracketRange.location];
+    }
+
+  // If no display name, return the email part as-is
+  if (!displayName || [displayName length] == 0)
+    return emailPart;
+
+  // Check if display name is already properly formatted
+  if ([self _alreadyProperlyFormatted: displayName])
+    return [NSString stringWithFormat: @"%@ %@", displayName, emailPart];
+
+  // Quote the display name if it contains special characters
+  NSString *quotedDisplay;
+  if ([self _needsQuotingForPhrase: displayName])
+    quotedDisplay = [self _quoteAndEscape: displayName];
+  else
+    quotedDisplay = displayName;
+
+  return [NSString stringWithFormat: @"%@ %@", quotedDisplay, emailPart];
+}
+
+- (BOOL) _needsQuotingForPhrase: (NSString *) phrase
+{
+  // RFC 5322: Characters that require quoting in a phrase
+  // Space, comma, semicolon, colon, at-sign, period, angle brackets,
+  // square brackets, parentheses, backslash, quote
+  NSCharacterSet *needsQuotingChars = [NSCharacterSet characterSetWithCharactersInString:
+    @" ,;:@.<>\[\]()\\\""];
+
+  return [phrase rangeOfCharacterFromSet: needsQuotingChars].location != NSNotFound;
+}
+
+- (BOOL) _alreadyProperlyFormatted: (NSString *) displayName
+{
+  NSString *trimmed = [displayName stringByTrimmingCharactersInSet:
+    [NSCharacterSet whitespaceCharacterSet]];
+
+  // Check if it's already quoted (starts and ends with ")
+  if ([trimmed length] >= 2 &&
+      [trimmed characterAtIndex: 0] == '"' &&
+      [trimmed characterAtIndex: [trimmed length] - 1] == '"')
+    return YES;
+
+  // Check if it's an RFC 2047 encoded word (starts with =? and ends with ?=)
+  if ([trimmed hasPrefix: @"=?"] && [trimmed hasSuffix: @"?="])
+    return YES;
+
+  return NO;
+}
+
+- (NSString *) _quoteAndEscape: (NSString *) unquoted
+{
+  // Trim whitespace first
+  NSString *trimmed = [unquoted stringByTrimmingCharactersInSet:
+    [NSCharacterSet whitespaceCharacterSet]];
+
+  // Escape backslashes and double quotes according to RFC 5322
+  NSString *escaped = [trimmed stringByReplacingString: @"\\" withString: @"\\\\"];
+  escaped = [escaped stringByReplacingString: @"\"" withString: @"\\\\\""];
+
+  return [NSString stringWithFormat: @"\"%@\"", escaped];
 }
 
 - (NSArray *) _quoteSpecialsInArray: (NSArray *) addresses

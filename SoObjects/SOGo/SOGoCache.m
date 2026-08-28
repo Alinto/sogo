@@ -536,6 +536,7 @@ static memcached_st *handle = NULL;
 //
 - (void) setMessageSubmissionsCount: (int) theCount
                     recipientsCount: (int) theRecipientsCount
+                          isBlocked: (bool) blocked
                            forLogin: (NSString *) theLogin
 {
   NSNumber *messages_count, *recipients_count;
@@ -555,6 +556,7 @@ static memcached_st *handle = NULL;
       
       [d setObject: messages_count  forKey: @"MessagesCount"];
       [d setObject: recipients_count  forKey: @"RecipientsCount"];
+      [d setObject: [NSNumber numberWithBool:blocked] forKey: @"isBlocked"];
       
       [self _cacheValues: [d jsonRepresentation]
                   ofType:  @"messagesubmissions"

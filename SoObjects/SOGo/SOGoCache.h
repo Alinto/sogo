@@ -94,6 +94,7 @@
 
 - (void) setMessageSubmissionsCount: (int) theCount
                     recipientsCount: (int) theRecipientsCount
+                          isBlocked: (bool) blocked
                            forLogin: (NSString *) theLogin;
 
 - (NSDictionary *) messageSubmissionsCountForLogin: (NSString *) theLogin;
