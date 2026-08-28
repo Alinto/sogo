@@ -1629,13 +1629,17 @@ You can set it with the parameter _NGImap4AuthMechanism_ and/or _SOGoSMTPAuthent
 Dovecot natively supports xoauth2 and can be figured as such: https://doc.dovecot.org/2.3/configuration_manual/authentication/oauth2/
 
 *With cyrus:* +
-Cyrus doesn't support xoauth2 mechanism and pluggins or homemade solutions must be found. +
+Cyrus doesn't support xoauth2 mechanism and plugins or homemade solutions must be found. +
 _Please note, as Alinto uses dovecot, we didn't investigate cyrus' case. If one member of the community
 finds a solution, we will be happy to update this documentation._
 
-As you can see, a new database table is used for handling openid session. The table is automaticcaly created when _OCSOpenIdURL_ is set.
-If the user quits the webmail without logging out or trough another application,
-the session will stays in the table and be useless. That's why a new sogo-tool command has been added to clean this table.
+On some OpenID-enabled setups that also rely on LDAP sources to access SOGo with clients (e.g.
+for CalDAV), it might be necessary to add both the login and mail attributes (e.g. `uid` and `mail`),
+to the _bindFields_ parameter of your LDAP _SOGoUserSources_.
+
+As you can see, a new database table is used for handling openid session. The table is automaticaly created when _OCSOpenIdURL_ is set.
+If the user quits the webmail without logging out or through another application,
+the session will stay in the table and be useless. That's why a new sogo-tool command has been added to clean this table.
 You can put it in a cron to do that periodicly. +
 See _<<sogo-tool-clean-openid-sessions,sogo-tool clean-openid-sessions>>_.
 
