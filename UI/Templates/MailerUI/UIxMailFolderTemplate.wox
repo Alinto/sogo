@@ -181,7 +181,7 @@
           <md-icon>delete</md-icon>
         </md-button>
         <md-button class="sg-icon-button" ng-click="mailbox.markOrUnMarkMessagesAsJunk()">
-          <md-icon ng-hide="::mailbox.service.selectedFolder.type == 'junk'">whatshot</md-icon>
+          <md-icon ng-hide="::mailbox.service.selectedFolder.type == 'junk'">gpp_bad</md-icon>
 	  <md-tooltip ng-hide="::mailbox.service.selectedFolder.type == 'junk'" md-direction="bottom"><var:string label:value="Junk"/></md-tooltip>	
           <md-icon ng-hide="::mailbox.service.selectedFolder.type != 'junk'">thumb_up</md-icon>
 	  <md-tooltip ng-hide="::mailbox.service.selectedFolder.type != 'junk'" md-direction="bottom"><var:string label:value="Not junk"/></md-tooltip>

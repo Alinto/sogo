@@ -207,7 +207,7 @@
       }
       else if (this.type == 'junk') {
         this.$displayName = l('JunkFolderName');
-        this.$icon = 'thumb_down';
+        this.$icon = 'gpp_bad';
       }
       else if (this.type == 'templates') {
         this.$displayName = l('TemplatesFolderName');

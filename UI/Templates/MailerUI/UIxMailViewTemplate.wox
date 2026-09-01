@@ -50,7 +50,7 @@
                      ng-click="viewer.markOrUnMarkAsJunk()">
             <md-tooltip md-direction="bottom" ng-hide="::viewer.mailbox.type == 'junk'"><var:string label:value="Junk"/></md-tooltip>
             <md-tooltip md-direction="bottom" ng-show="::viewer.mailbox.type == 'junk'"><var:string label:value="Not junk"/></md-tooltip>
-            <md-icon ng-hide="::viewer.mailbox.type == 'junk'">whatshot</md-icon>
+            <md-icon ng-hide="::viewer.mailbox.type == 'junk'">gpp_bad</md-icon>
             <md-icon ng-show="::viewer.mailbox.type == 'junk'">thumb_up</md-icon>
           </md-button>
           <md-button class="sg-icon-button"
