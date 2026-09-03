@@ -408,6 +408,7 @@
   NSString *sort, *module;
   NSMutableDictionary *moduleSettings;
   NSDictionary *urlParams, *sortingAttributes;
+  NSArray *sortValues;
   SOGoUser *activeUser;
   SOGoUserSettings *us;
   BOOL asc, dry;
@@ -424,7 +425,11 @@
   us = [activeUser userSettings];
   moduleSettings = [us objectForKey: module];
 
-  if ([sort length])
+  //Check sort value
+  sortValues = [NSArray arrayWithObjects: @"subject", @"from",
+                    @"date", @"size", @"arrival", nil];
+
+  if ([sort length] && [sortValues containsObject:sort])
     {
       if ([sort isEqualToString: [self defaultSortKey]] && !asc)
 	{

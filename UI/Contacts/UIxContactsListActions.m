@@ -115,12 +115,18 @@
 {
   NSMutableDictionary *contactSettings;
   NSString *ascending, *sort;
+  NSArray *sortValues;
   SOGoUserSettings *us;
 
   sort = [[self requestData] objectForKey: @"sort"];
   ascending = [[self requestData] objectForKey: @"asc"];
 
-  if ([sort length])
+  //Check value of sorting
+  sortValues = [NSArray arrayWithObjects: @"c_cn", @"c_sn",
+                    @"c_givenname", @"c_mail", @"c_screenname", @"c_o", @"c_telephonenumber", nil];
+
+
+  if ([sort length] && [sortValues containsObject:sort])
     {
       sort = [self sortKey];
       us = [[context activeUser] userSettings];

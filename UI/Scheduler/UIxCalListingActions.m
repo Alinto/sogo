@@ -786,12 +786,19 @@ static NSArray *tasksFields = nil;
 - (void) saveSortValue: (NSString *) submodule
 {
   NSString *sort, *ascending;
+  NSArray *sortValues;
   SOGoUserSettings *us;
   NSMutableDictionary *calendarSettings;
 
   sort = [[context request] formValueForKey: @"sort"];
   ascending = [[context request] formValueForKey: @"asc"];
-  if ([sort length])
+
+  //Check value of sorting
+  sortValues = [NSArray arrayWithObjects: @"title", @"location",
+                    @"calendarName", @"start", @"priority", @"category", @"status", @"end", nil];
+
+
+  if ([sort length] && [sortValues containsObject:sort])
   {
     us = [[context activeUser] userSettings];
     calendarSettings = [us objectForKey: @"Calendar"];

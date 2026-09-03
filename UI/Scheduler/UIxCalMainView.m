@@ -254,6 +254,7 @@
 {
   WORequest *request;
   NSDictionary *params;
+  NSArray *listValues;
   NSString *selectedList;
   
   [self _setupContext];
@@ -261,6 +262,14 @@
   params = [[request contentAsString] objectFromJSONString];
 
   selectedList = [params objectForKey: @"list"];
+
+  //Check value
+  listValues = [NSArray arrayWithObjects: @"eventsListView", @"tasksListView", nil];
+  if([selectedList length] && ![listValues containsObject:selectedList])
+  {
+    selectedList = @"eventsListView";
+  }
+
   [moduleSettings setObject: selectedList
                      forKey: @"SelectedList"];
   [us synchronize];
