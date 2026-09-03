@@ -783,6 +783,8 @@ static BOOL       _singleStoreMode           = NO;
   else
     [self debugWithFormat:@"got no internal names for path: '%@'", _path];
   
+  [self releaseChannel: channel];
+  
   return result;
 }
 
@@ -802,6 +804,7 @@ static BOOL       _singleStoreMode           = NO;
 
   if ((fnames = [self internalNamesFromPath:_path]) == nil) {
     [self debugWithFormat:@"got no internal names for path: '%@'", _path];
+    [self releaseChannel: channel];
     return nil;
   }
   
@@ -809,12 +812,14 @@ static BOOL       _singleStoreMode           = NO;
 	      exactMatch:NO orDirectSubfolderMatch:(_recursive ? NO : YES) withChannel: channel];
   if ([sql length] == 0) {
     [self debugWithFormat:@"got no SQL for names: %@", fnames];
+    [self releaseChannel: channel];
     return nil;
   }
   
   if ((records = [self performSQL:sql withChannel: channel]) == nil) {
     [self logWithFormat:@"ERROR(%s): executing SQL failed: '%@'", 
 	  __PRETTY_FUNCTION__, sql];
+    [self releaseChannel: channel];
     return nil;
   }
   
@@ -847,6 +852,7 @@ static BOOL       _singleStoreMode           = NO;
 	[result addObject:spath];
     }
   }
+  [self releaseChannel: channel];
   
   return result;
 }
@@ -867,6 +873,7 @@ static BOOL       _singleStoreMode           = NO;
   
   if ((fnames = [self internalNamesFromPath:_path]) == nil) {
     [self debugWithFormat:@"got no internal names for path: '%@'", _path];
+    [self releaseChannel: channel];
     return nil;
   }
   
@@ -874,17 +881,21 @@ static BOOL       _singleStoreMode           = NO;
 	      exactMatch:NO orDirectSubfolderMatch:(_recursive ? NO : YES) withChannel: channel];
   if ([sql length] == 0) {
     [self debugWithFormat:@"got no SQL for names: %@", fnames];
+    [self releaseChannel: channel];
     return nil;
   }
   
   if ((records = [self performSQL:sql withChannel: channel]) == nil) {
     [self logWithFormat:@"ERROR(%s): executing SQL failed: '%@'", 
 	  __PRETTY_FUNCTION__, sql];
+    [self releaseChannel: channel];
     return nil;
   }
   
-  if ((count = [records count]) == 0)
+  if ((count = [records count]) == 0) {
+    [self releaseChannel: channel];
     return emptyArray;
+  }
 
   result = [NSMutableArray arrayWithCapacity:(count > 128 ? 128 : count)];
   
@@ -920,6 +931,8 @@ static BOOL       _singleStoreMode           = NO;
       }
     }
   }
+
+  [self releaseChannel: channel];
   
   return result;
 }
