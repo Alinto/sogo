@@ -107,11 +107,21 @@
   testEquals([[NSString stringWithString:@"<img livescript:test"] stringWithoutHTMLInjection: NO stripAngular: NO], @"<img test");
   testEquals([[NSString stringWithString:@"foobar <form action=\"\">bar</form>"] stringWithoutHTMLInjection: NO stripAngular: NO], @"foobar <for* action=\"\">bar</for*>");
   testEquals([[NSString stringWithString:@"foobar <iframe src=\"\">bar</iframe>"] stringWithoutHTMLInjection: NO stripAngular: NO], @"foobar <ifr*** src=\"\">bar</iframe>");
-  testEquals([[NSString stringWithString:@"foobar <img onload=foo bar"] stringWithoutHTMLInjection: NO stripAngular: NO], @"foobar <img onl***=foo bar");
-  testEquals([[NSString stringWithString:@"foobar <img onmouseover=foo bar"] stringWithoutHTMLInjection: NO stripAngular: NO], @"foobar <img onmouseo***=foo bar"); 
+  testEquals([[NSString stringWithString:@"foobar <img onload=foo bar"] stringWithoutHTMLInjection: NO stripAngular: NO], @"foobar <img data-blocked=foo bar");
+  testEquals([[NSString stringWithString:@"foobar <img onmouseover=foo bar"] stringWithoutHTMLInjection: NO stripAngular: NO], @"foobar <img data-blocked=foo bar");
+  // any on...= handler is neutralised, including whitespace before '=' and names
+  // that were never in the old list
+  testEquals([[NSString stringWithString:@"<img src=x onerror =alert(1)>"] stringWithoutHTMLInjection: NO stripAngular: NO], @"<img src=x data-blocked=alert(1)>");
+  testEquals([[NSString stringWithString:@"<input autofocus onfocus=alert(1)>"] stringWithoutHTMLInjection: NO stripAngular: NO], @"<input autofocus data-blocked=alert(1)>");
+  // deletion filters loop until stable, so nesting cannot rebuild the scheme
+  testEquals([[NSString stringWithString:@"javajavascript:script:"] stringWithoutHTMLInjection: NO stripAngular: NO], @"");
   testEquals([[NSString stringWithString:@"<!DOCTYPE html><html><head><style>@import url(https://foo.bar/malicious.css);.foo{background-color: red; @import url(https://bar.foo/malicious2.css);</style></head><body><table><tr><td>A</td><td>B</td><td>C</td></tr></table></body></html>"] stringWithoutHTMLInjection: NO stripAngular: NO], @"<!DOCTYPE html><html><head><style>@im**** url(https://foo.bar/malicious.css);.foo{background-color: red; @im**** url(https://bar.foo/malicious2.css);</style></head><body><table><tr><td>A</td><td>B</td><td>C</td></tr></table></body></html>");
   // the @import cleanup must still run when angular interpolation is stripped as well
   testEquals([[NSString stringWithString:@"<style>@import url(https://foo.bar/malicious.css);</style>"] stringWithoutHTMLInjection: NO stripAngular: YES], @"<style>@im**** url(https://foo.bar/malicious.css);</style>");
+  // literal braces are rewritten so AngularJS cannot interpolate them
+  testEquals([[NSString stringWithString:@"{{1337*1337}}"] stringWithoutHTMLInjection: NO stripAngular: YES], @"{\\{1337*1337}/}");
+  // ... and so are the decimal HTML entities the browser would decode back to braces
+  testEquals([[NSString stringWithString:@"&#123;&#123;1337*1337&#125;&#125;"] stringWithoutHTMLInjection: NO stripAngular: YES], @"{\\{1337*1337}/}");
 }
 
 - (void) test_stringCleanInvalidHTMLTags
