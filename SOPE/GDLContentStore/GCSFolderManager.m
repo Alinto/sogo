@@ -741,49 +741,45 @@ static BOOL       _singleStoreMode           = NO;
   
   result = NO;
 
-  if ((channel = [self acquireOpenChannel]) == nil) {
-    return [NSException exceptionWithName:@"GCSNoChannel"
-			reason:@"could not "
-			userInfo:nil];
-  }
-
   fnames = [self internalNamesFromPath: _path];
   if (fnames)
-    {
-      sql = [self generateSQLPathFetchForInternalNames: fnames 
-		  exactMatch: YES
-		  orDirectSubfolderMatch: NO
-      withChannel: channel];
-      if ([sql length])
-	{
-	  records = [self performSQL: sql withChannel: channel];
-	  if (records)
-	    {
-	      count = [records count];
-	      if (count)
-		{
-		  fname = [self internalNameFromPath: _path];
-		  if (count == 1)
-		    {
-		      record = [records objectAtIndex: 0];
-		      sname = [record objectForKey: GCSPathRecordName];
-		      result = [fname isEqualToString: sname];
-		    }
-		  else
-		    [self logWithFormat: @"records: %@", records];
-		}
-	    }
-	  else
-	    [self logWithFormat:@"ERROR(%s): executing SQL failed: '%@'", 
-		  __PRETTY_FUNCTION__, sql];
-	}
-      else
-	[self debugWithFormat:@"got no SQL for names: %@", fnames];
+  {
+    if ((channel = [self acquireOpenChannel]) == nil) {
+      return [NSException exceptionWithName:@"GCSNoChannel"
+        reason:@"could not "
+        userInfo:nil];
     }
+    sql = [self generateSQLPathFetchForInternalNames: fnames 
+                                          exactMatch: YES
+                              orDirectSubfolderMatch: NO
+                              withChannel: channel];
+    if ([sql length])
+    {
+      records = [self performSQL: sql withChannel: channel];
+      if (records)
+      {
+        count = [records count];
+        if (count)
+        {
+          fname = [self internalNameFromPath: _path];
+          if (count == 1)
+          {
+            record = [records objectAtIndex: 0];
+            sname = [record objectForKey: GCSPathRecordName];
+            result = [fname isEqualToString: sname];
+          }
+          else
+            [self logWithFormat: @"records: %@", records];
+        }
+      }
+      else
+        [self logWithFormat:@"ERROR(%s): executing SQL failed: '%@'", __PRETTY_FUNCTION__, sql];
+    }
+    else
+      [self debugWithFormat:@"got no SQL for names: %@", fnames];
+  }
   else
     [self debugWithFormat:@"got no internal names for path: '%@'", _path];
-  
-  [self releaseChannel: channel];
   
   return result;
 }
@@ -796,18 +792,17 @@ static BOOL       _singleStoreMode           = NO;
   EOAdaptorChannel *channel;
   unsigned i, count;
   
+
+  if ((fnames = [self internalNamesFromPath:_path]) == nil) {
+    [self debugWithFormat:@"got no internal names for path: '%@'", _path];
+    return nil;
+  }
+  
   if ((channel = [self acquireOpenChannel]) == nil) {
     return [NSException exceptionWithName:@"GCSNoChannel"
 			reason:@"could not "
 			userInfo:nil];
   }
-
-  if ((fnames = [self internalNamesFromPath:_path]) == nil) {
-    [self debugWithFormat:@"got no internal names for path: '%@'", _path];
-    [self releaseChannel: channel];
-    return nil;
-  }
-  
   sql = [self generateSQLPathFetchForInternalNames:fnames 
 	      exactMatch:NO orDirectSubfolderMatch:(_recursive ? NO : YES) withChannel: channel];
   if ([sql length] == 0) {
@@ -819,7 +814,6 @@ static BOOL       _singleStoreMode           = NO;
   if ((records = [self performSQL:sql withChannel: channel]) == nil) {
     [self logWithFormat:@"ERROR(%s): executing SQL failed: '%@'", 
 	  __PRETTY_FUNCTION__, sql];
-    [self releaseChannel: channel];
     return nil;
   }
   
@@ -852,7 +846,6 @@ static BOOL       _singleStoreMode           = NO;
 	[result addObject:spath];
     }
   }
-  [self releaseChannel: channel];
   
   return result;
 }
@@ -865,18 +858,18 @@ static BOOL       _singleStoreMode           = NO;
   unsigned i, count;
   EOAdaptorChannel *channel;
 
+
+  
+  if ((fnames = [self internalNamesFromPath:_path]) == nil) {
+    [self debugWithFormat:@"got no internal names for path: '%@'", _path];
+    return nil;
+  }
+  
   if ((channel = [self acquireOpenChannel]) == nil) {
     return [NSException exceptionWithName:@"GCSNoChannel"
 			reason:@"could not "
 			userInfo:nil];
   }
-  
-  if ((fnames = [self internalNamesFromPath:_path]) == nil) {
-    [self debugWithFormat:@"got no internal names for path: '%@'", _path];
-    [self releaseChannel: channel];
-    return nil;
-  }
-  
   sql = [self generateSQLPathAndNameFetchForInternalNames:fnames 
 	      exactMatch:NO orDirectSubfolderMatch:(_recursive ? NO : YES) withChannel: channel];
   if ([sql length] == 0) {
@@ -888,12 +881,10 @@ static BOOL       _singleStoreMode           = NO;
   if ((records = [self performSQL:sql withChannel: channel]) == nil) {
     [self logWithFormat:@"ERROR(%s): executing SQL failed: '%@'", 
 	  __PRETTY_FUNCTION__, sql];
-    [self releaseChannel: channel];
     return nil;
   }
   
   if ((count = [records count]) == 0) {
-    [self releaseChannel: channel];
     return emptyArray;
   }
 
@@ -931,8 +922,6 @@ static BOOL       _singleStoreMode           = NO;
       }
     }
   }
-
-  [self releaseChannel: channel];
   
   return result;
 }
@@ -945,18 +934,18 @@ static BOOL       _singleStoreMode           = NO;
   NSDictionary *record;
   EOAdaptorChannel *channel;
 
-  if ((channel = [self acquireOpenChannel]) == nil) {
-    return [NSException exceptionWithName:@"GCSNoChannel"
-			reason:@"could not "
-			userInfo:nil];
-  }
-  
+
   if ((fnames = [self internalNamesFromPath:_path]) == nil) {
     [self debugWithFormat:@"got no internal names for path: '%@'", _path];
     return nil;
   }
   
   /* generate SQL to fetch folder attributes */
+  if ((channel = [self acquireOpenChannel]) == nil) {
+    return [NSException exceptionWithName:@"GCSNoChannel"
+			reason:@"could not "
+			userInfo:nil];
+  }
   
   ws = [self generateSQLWhereForInternalNames:fnames 
 	     exactMatch:YES orDirectSubfolderMatch:NO withChannel: channel];
