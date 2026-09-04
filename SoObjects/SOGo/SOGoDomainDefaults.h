@@ -100,6 +100,7 @@
 - (BOOL) notifyOnExternalModifications;
 
 - (NSDictionary *) mailJunkSettings;
+- (NSString *) mailJunkIcon;
 
 - (BOOL) createIdentitiesDisabled;
 

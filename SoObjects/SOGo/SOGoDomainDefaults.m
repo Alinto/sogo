@@ -481,6 +481,21 @@
   return [self objectForKey: @"SOGoMailJunkSettings"];
 }
 
+- (NSString *) mailJunkIcon
+{
+  NSArray *iconsList;
+  NSString *icon;
+
+  iconsList = [NSArray arrayWithObjects: @"thumb_down", @"gpp_bad", nil];
+  icon = [self objectForKey: @"mailJunkIcon"];
+  if (([icon length] && ![iconsList containsObject:icon]) || ![icon length])
+  {
+    icon = @"thumb_down";
+  }
+
+  return icon;
+}
+
 - (BOOL) createIdentitiesDisabled
 {
   return [self boolForKey: @"SOGoCreateIdentitiesDisabled"];

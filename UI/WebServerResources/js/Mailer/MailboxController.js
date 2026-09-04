@@ -36,6 +36,7 @@
       this.allSelected = false;
       this.isLoadingMessage = false;
       this.nextAction = null;
+      this.junkIcon = Preferences.defaults.mailJunkIcon;
 
       if (!Mailbox.$virtualMode)
         this.selectedFolder.getLabels(); // fetch labels from server

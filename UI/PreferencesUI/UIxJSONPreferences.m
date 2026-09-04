@@ -344,6 +344,9 @@ static SoProduct *preferencesProduct = nil;
       [[defaults source] setObject: [domainDefaults calendarJitsiRoomPrefix] forKey: @"SOGoCalendarJitsiRoomPrefix"];
   }
 
+  //Add the Junk Icon pref
+  [[defaults source] setObject: [domainDefaults mailJunkIcon] forKey: @"mailJunkIcon"];
+
   //
   // Default Contacts preferences
   //

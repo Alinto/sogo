@@ -31,6 +31,7 @@
       this.$showDetailedRecipients = this.$alwaysShowDetailedRecipients;
       this.showRawSource = false;
       this.mailInDeletion = -1;
+      this.junkIcon = Preferences.defaults.mailJunkIcon;
 
       _registerHotkeys(hotkeys);
 
@@ -319,10 +320,60 @@
       }
     };
 
+    // Select either the next or previous message once the current message
+    // has been removed from the mailbox (deleted or moved), then close the
+    // popup if any.
+    function _selectNextMessage(mailbox, state, index) {
+      var nextMessage, previousMessage,
+          nextIndex = index,
+          $timeout = vm.service.$timeout;
+
+      if (angular.isDefined(state)) {
+        if (index > 0) {
+          nextIndex -= 1;
+          nextMessage = mailbox.getItemAtIndex(nextIndex);
+        }
+        if (index < mailbox.getLength())
+          previousMessage = mailbox.getItemAtIndex(index);
+
+        if (nextMessage) {
+          if (nextMessage.isread && previousMessage && !previousMessage.isread) {
+            nextIndex = index;
+            nextMessage = previousMessage;
+          }
+        }
+        else if (previousMessage) {
+          nextIndex = index;
+          nextMessage = previousMessage;
+        }
+
+        try {
+          if (nextMessage && $mdMedia(sgConstant['gt-md'])) {
+            if (Mailbox.$virtualMode)
+              state.go('mail.account.virtualMailbox.message', {mailboxId: encodeUriFilter(nextMessage.$mailbox.path), messageId: nextMessage.uid});
+            else
+              state.go('mail.account.mailbox.message', {messageId: nextMessage.uid});
+            $timeout(function() {
+              if (nextIndex < mailbox.$topIndex)
+                mailbox.$topIndex = nextIndex;
+              else if (nextIndex > mailbox.$lastVisibleIndex)
+                mailbox.$topIndex = nextIndex - (mailbox.$lastVisibleIndex - mailbox.$topIndex);
+            });
+          }
+          else {
+            state.go('mail.account.mailbox').then(function() {
+              delete mailbox.$selectedMessage;
+            });
+          }
+        }
+        catch (error) {}
+      }
+      vm.closePopup();
+    }
+
     this.deleteMessage = function() {
-      var mailbox, message, state, nextMessage, previousMessage,
-          parentCtrls = $parentControllers(),
-          $timeout = this.service.$timeout;
+      var mailbox, message, state,
+          parentCtrls = $parentControllers();
 
       if (parentCtrls.messageCtrl) {
         mailbox = parentCtrls.mailboxCtrl.selectedFolder;
@@ -340,52 +391,9 @@
       vm.mailInDeletion = message.uid;
 
       function _success(index) {
-        var nextIndex = index;
         // Remove message object from scope
         message = null;
-        if (angular.isDefined(state)) {
-          // Select either the next or previous message
-          if (index > 0) {
-            nextIndex -= 1;
-            nextMessage = mailbox.getItemAtIndex(nextIndex);
-          }
-          if (index < mailbox.getLength())
-            previousMessage = mailbox.getItemAtIndex(index);
-
-          if (nextMessage) {
-            if (nextMessage.isread && previousMessage && !previousMessage.isread) {
-              nextIndex = index;
-              nextMessage = previousMessage;
-            }
-          }
-          else if (previousMessage) {
-            nextIndex = index;
-            nextMessage = previousMessage;
-          }
-
-          try {
-            if (nextMessage && $mdMedia(sgConstant['gt-md'])) {
-              if (Mailbox.$virtualMode)
-                state.go('mail.account.virtualMailbox.message', {mailboxId: encodeUriFilter(nextMessage.$mailbox.path), messageId: nextMessage.uid});
-              else
-                state.go('mail.account.mailbox.message', {messageId: nextMessage.uid});
-              $timeout(function() {
-                if (nextIndex < mailbox.$topIndex)
-                  mailbox.$topIndex = nextIndex;
-                else if (nextIndex > mailbox.$lastVisibleIndex)
-                  mailbox.$topIndex = nextIndex - (mailbox.$lastVisibleIndex - mailbox.$topIndex);
-              });
-            }
-            else {
-              state.go('mail.account.mailbox').then(function() {
-                message = null;
-                delete mailbox.$selectedMessage;
-              });
-            }
-          }
-          catch (error) {}
-        }
-        vm.closePopup();
+        _selectNextMessage(mailbox, state, index);
       }
 
       mailbox.$deleteMessages([message]).then(_success, function(response) {
@@ -404,6 +412,39 @@
               _messageDialog(null);
             })
         );
+      });
+    };
+
+    this.markOrUnMarkAsJunk = function() {
+      var mailbox, message, state, account, dstFolder,
+          parentCtrls = $parentControllers();
+
+      if (parentCtrls.messageCtrl) {
+        mailbox = parentCtrls.mailboxCtrl.selectedFolder;
+        message = parentCtrls.messageCtrl.message;
+        state = parentCtrls.messageCtrl.$state;
+        account = parentCtrls.messageCtrl.account;
+      }
+      else {
+        mailbox = stateMailbox;
+        message = stateMessage;
+        state = $state;
+        account = stateAccount;
+      }
+      if (Mailbox.$virtualMode) {
+        mailbox = Mailbox.selectedFolder; // the VirtualMailbox instance
+      }
+
+      if (mailbox.type == 'junk')
+        dstFolder = '/' + account.id + '/folderINBOX';
+      else
+        dstFolder = '/' + account.$getMailboxByType('junk').id;
+
+      mailbox.$markOrUnMarkMessagesAsJunk([message]).then(function() {
+        mailbox.$moveMessages([message], dstFolder).then(function(index) {
+          message = null;
+          _selectNextMessage(mailbox, state, index);
+        });
       });
     };
 
