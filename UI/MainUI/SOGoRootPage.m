@@ -1371,8 +1371,9 @@ static const NSString *kJwtKey = @"jwt";
 
           // Send mail
           mailer = [SOGoMailer mailerWithDomainDefaults: dd];
-          url = [NSString stringWithFormat:@"%@%@?token=%@"
-                      , [[request headers] objectForKey:@"origin"]
+
+          url = [NSString stringWithFormat:@"%@/%@?token=%@"
+                      , [[context serverURL] absoluteString]
                       , [request uri]
                       , jwtToken];
 
