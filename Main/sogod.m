@@ -34,6 +34,7 @@ main (int argc, char **argv, char **env)
 {
   NSAutoreleasePool *pool;
   SOGoSystemDefaults *sd;
+  NSArray *baseUrls;
   int rc;
 
   /* Here we work around a bug in GNUstep which decode XML user defaults using
@@ -54,7 +55,15 @@ main (int argc, char **argv, char **env)
         rc =-1;
         NSLog (@"Sogo secret is not correctly set");
       }
-      else
+
+      //Check sogo base urls
+      if(!((baseUrls = [sd baseURLs]) && [baseUrls count] > 0))
+      {
+        rc = -1;
+        NSLog (@"SOGoBaseUrls is not set or empty");
+      }
+      
+      if(rc == 0)
       {
         WOWatchDogApplicationMain (@"SOGo", argc, (void *) argv);
       }

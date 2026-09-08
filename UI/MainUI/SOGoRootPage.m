@@ -1316,7 +1316,8 @@ static const NSString *kJwtKey = @"jwt";
  */
 - (WOResponse *) passwordRecoveryEmailAction
 {
-  NSString *username, *domain, *mode, *uid, *mailDomain, *fromEmail, *toEmail, *jwtToken, *url, *mailContent, *email;
+  NSString *username, *domain, *mode, *uid, *mailDomain, *fromEmail, *toEmail, *jwtToken, *url, *mailContent, *email, *serverUrl;
+  NSArray *baseUrls;
   NSDictionary *message, *info;
   WORequest *request;
   SOGoUserManager *um;
@@ -1372,8 +1373,19 @@ static const NSString *kJwtKey = @"jwt";
           // Send mail
           mailer = [SOGoMailer mailerWithDomainDefaults: dd];
 
-          url = [NSString stringWithFormat:@"%@/%@?token=%@"
-                      , [[context serverURL] absoluteString]
+          //Get Allowed server URL and check if it's OK
+          baseUrls = [[SOGoSystemDefaults sharedSystemDefaults] baseURLs];
+          serverUrl = [[request headers] objectForKey:@"origin"];
+
+          if(![baseUrls containsObject:serverUrl])
+          {
+            [self logWithFormat: @"Password recovery exception for user %@: invalid request header", uid];
+            response = [self responseWithStatus: 403
+                              andString: @"Password recovery email in error"];
+          }
+
+          url = [NSString stringWithFormat:@"%@%@?token=%@"
+                      , serverUrl
                       , [request uri]
                       , jwtToken];
 
