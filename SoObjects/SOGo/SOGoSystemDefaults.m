@@ -724,12 +724,6 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
   return [self stringForKey: @"SOGoLoginSuffix"];
 }
 
-- (NSArray *) baseURLs
-{
-  return [self stringArrayForKey: @"SOGoBaseUrls"];
-}
-
-
 - (NSString *) authenticationType
 {
   return [[self stringForKey: @"SOGoAuthenticationType"] lowercaseString];
@@ -1086,6 +1080,11 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
 - (BOOL) isPasswordRecoveryEnabled
 {
   return [self boolForKey: @"SOGoPasswordRecoveryEnabled"];
+}
+
+- (NSArray *) passwordRecoveryBaseURLs
+{
+  return [self stringArrayForKey: @"SOGoPasswordRecoveryBaseURLs"];
 }
 
 - (NSArray *) passwordRecoveryDomains

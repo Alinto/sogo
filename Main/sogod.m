@@ -56,13 +56,6 @@ main (int argc, char **argv, char **env)
         NSLog (@"Sogo secret is not correctly set");
       }
 
-      //Check sogo base urls
-      if(!((baseUrls = [sd baseURLs]) && [baseUrls count] > 0))
-      {
-        rc = -1;
-        NSLog (@"SOGoBaseUrls is not set or empty");
-      }
-      
       if(rc == 0)
       {
         WOWatchDogApplicationMain (@"SOGo", argc, (void *) argv);

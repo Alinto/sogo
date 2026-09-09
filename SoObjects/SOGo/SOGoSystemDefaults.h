@@ -57,7 +57,6 @@ static const NSString *kDisableSharingCalendar = @"Calendar";
 - (NSString *) sogoSecretValue;
 - (BOOL) useRelativeURLs;
 - (NSString *) sieveFolderEncoding;
-- (NSArray *) baseURLs;
 
 - (BOOL) isWebAccessEnabled;
 - (BOOL) isCalendarDAVAccessEnabled;
@@ -150,6 +149,7 @@ NSComparisonResult languageSort(id el1, id el2, void *context);
 - (BOOL) isEasUIDisabled;
 
 - (BOOL)isPasswordRecoveryEnabled;
+- (NSArray *) passwordRecoveryBaseURLs;
 - (NSArray *) passwordRecoveryDomains;
 - (NSString *) JWTSecret;
 

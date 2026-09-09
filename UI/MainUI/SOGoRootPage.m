@@ -1374,14 +1374,23 @@ static const NSString *kJwtKey = @"jwt";
           mailer = [SOGoMailer mailerWithDomainDefaults: dd];
 
           //Get Allowed server URL and check if it's OK
-          baseUrls = [[SOGoSystemDefaults sharedSystemDefaults] baseURLs];
+          baseUrls = [[SOGoSystemDefaults sharedSystemDefaults] passwordRecoveryBaseURLs];
           serverUrl = [[request headers] objectForKey:@"origin"];
+
+          if(!(baseUrls && [baseUrls count] > 0))
+          {
+            [self logWithFormat: @"Password recovery exception for user %@: empty or unset SOGoPasswordRecoveryBaseURLs", uid];
+            response = [self responseWithStatus: 403
+                              andString: @"Password recovery email in error"];
+            return response;
+          }
 
           if(![baseUrls containsObject:serverUrl])
           {
             [self logWithFormat: @"Password recovery exception for user %@: invalid request header", uid];
             response = [self responseWithStatus: 403
                               andString: @"Password recovery email in error"];
+            return response;
           }
 
           url = [NSString stringWithFormat:@"%@%@?token=%@"
