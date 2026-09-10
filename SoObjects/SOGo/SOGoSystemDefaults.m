@@ -1082,6 +1082,11 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
   return [self boolForKey: @"SOGoPasswordRecoveryEnabled"];
 }
 
+- (NSArray *) passwordRecoveryBaseURLs
+{
+  return [self stringArrayForKey: @"SOGoPasswordRecoveryBaseURLs"];
+}
+
 - (NSArray *) passwordRecoveryDomains
 {
   static NSArray *passwordRecoveryDomains = nil;

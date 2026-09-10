@@ -149,6 +149,7 @@ NSComparisonResult languageSort(id el1, id el2, void *context);
 - (BOOL) isEasUIDisabled;
 
 - (BOOL)isPasswordRecoveryEnabled;
+- (NSArray *) passwordRecoveryBaseURLs;
 - (NSArray *) passwordRecoveryDomains;
 - (NSString *) JWTSecret;
 

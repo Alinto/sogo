@@ -840,6 +840,16 @@ Obiously, if your users can connect without specifying a domain, let this parame
 |S |SOGoPasswordRecoveryEnabled
 |Boolean enable password recovery with secret question or secondary e-mail. Default value is `NO`.
 
+|S |SOGoPasswordRecoveryBaseURLs
+| *Since 5.12.11*. Whitlist of base URL for password reset link.
+
+`SOGoPasswordRecoveryBaseURLs = ("https://demo.sogo.nu");`
+`SOGoPasswordRecoveryBaseURLs = ("https://platform1.sogo.nu", "https://platform2.sogo.nu);`
+
+Do not end the URLs by '/'.
+
+No defaults, will trhow an error if empty or unset.
+
 |S |SOGoPasswordRecoveryDomains
 |List of domains where password recovery is enabled, for example `(example.org, example.net)`. If empty array `()`, disabled for all domains. If not set, enabled for all domains.
 
@@ -2886,6 +2896,11 @@ SOGoMailJunkSettings = {
 };
 ----
 
+|D |mailJunkIcon
+|Choose the Junk icon. For the thumb down `thumb_down`, for a shield `gpp_bad`.
+
+Defaults to `gppthumb_down_bad`.
+
 |D |SOGoMailKeepDraftsAfterSend
 |Parameter used to keep mails in the drafts folder once they have been
 sent by SOGo. Defaults to `NO` when unset.
@@ -4283,6 +4298,9 @@ current version of SOGo from the previous release.
 
 [cols="100a"]
 |=======================================================================
+
+h|5.12.11
+|If you enable Password Recovery, new mandatory settings `SOGoPasswordRecoveryBaseURLs`
 
 h|5.11
 |Parameters `SOGoGlobalAddressBookFirstEntries` and `SOGoGlobalAddressBookFirstEntriesCount` has been removed. Please use `listRequiresDot` and `globalAddressBookFirstEntriesCount` instead. Signature are now between a div tag to avoid CKEditor changing the content - set `SOGoForceRawHtmlSignature` to `NO` to leave signature (https://bugs.sogo.nu/view.php?id=5920).
