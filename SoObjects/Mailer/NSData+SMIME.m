@@ -594,7 +594,7 @@
 STACK_OF(X509_ALGOR) *CMS_get_smimecap(CMS_SignerInfo *si)
 {
     X509_ATTRIBUTE *attr;
-    ASN1_TYPE *cap;
+    const ASN1_TYPE *cap;
     const unsigned char *p;
 
     attr = CMS_signed_get_attr(si, CMS_signed_get_attr_by_NID(si, NID_SMIMECapabilities, -1));
@@ -603,9 +603,9 @@ STACK_OF(X509_ALGOR) *CMS_get_smimecap(CMS_SignerInfo *si)
     cap = X509_ATTRIBUTE_get0_type(attr, 0);
     if (!cap || (cap->type != V_ASN1_SEQUENCE))
        return NULL;
-    p = cap->value.sequence->data;
+    p = ASN1_STRING_get0_data(cap->value.sequence);
     return (STACK_OF(X509_ALGOR) *)
-        ASN1_item_d2i(NULL, &p, cap->value.sequence->length,
+        ASN1_item_d2i(NULL, &p, ASN1_STRING_length(cap->value.sequence),
                       ASN1_ITEM_rptr(X509_ALGORS));
 }
 
