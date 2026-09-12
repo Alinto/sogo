@@ -59,6 +59,172 @@
   return decodedData;
 }
 
+/*
+ * Map a two-byte pair (in JIS mode after ESC$B) from the NEC special character
+ * extension area to its Unicode code point.  Returns 0 if the pair is not a
+ * known NEC special character.
+ *
+ * NEC extended the JIS X 0208 standard by assigning characters to rows 9-15
+ * (first byte 0x29-0x2F in ESC$B mode), which are undefined in RFC 1468.
+ * The mapping here follows the CP50220 / Shift_JIS NEC table.
+ *
+ * Row 13 (first byte 0x2D):
+ *   0x2D21-0x2D34  ①-⑳  U+2460-U+2473  (circled digits 1-20)
+ *   0x2D35-0x2D3E  Ⅰ-Ⅹ  U+2160-U+2169  (Roman numerals 1-10)
+ */
+static unichar
+_necSpecialCharForJISBytes(unsigned char b1, unsigned char b2)
+{
+  if (b1 == 0x2D)
+    {
+      if (b2 >= 0x21 && b2 <= 0x34)
+        return (unichar)(0x2460 + (b2 - 0x21));  /* ①-⑳ */
+      if (b2 >= 0x35 && b2 <= 0x3E)
+        return (unichar)(0x2160 + (b2 - 0x35));  /* Ⅰ-Ⅹ */
+    }
+  return 0;
+}
+
+/*
+ * Decode ISO-2022-JP body data that contains NEC special characters.
+ *
+ * Standard ISO-2022-JP (RFC 1468) does not define JIS rows 9-15.  Many
+ * Japanese Windows email clients (Outlook, etc.) use these rows for NEC
+ * special characters (circled digits ①-⑳, Roman numerals, etc.) while still
+ * labelling the message as charset=iso-2022-jp.  System iconv implementations
+ * (glibc on Linux) reject these byte sequences with EILSEQ.
+ *
+ * This method parses the escape sequences manually:
+ *   - Standard JIS pairs are decoded in bulk via iconv (iso-2022-jp).
+ *   - NEC special character pairs are mapped to Unicode directly using
+ *     the table above, without going through iconv.
+ *
+ * Returns nil if the result is empty (caller falls through to UTF-8 fallback).
+ */
+- (NSString *) bodyStringFromISO2022JPWithNECExtension
+{
+  const unsigned char *bytes;
+  NSUInteger           i, len;
+  NSMutableString     *result;
+  NSMutableData       *jisChunk;
+  BOOL                 inJIS;
+
+  bytes    = [self bytes];
+  len      = [self length];
+  result   = [NSMutableString stringWithCapacity: len];
+  jisChunk = [NSMutableData data];
+  inJIS    = NO;
+  i        = 0;
+
+  while (i < len)
+    {
+      unsigned char b = bytes[i];
+
+      /* Detect ISO-2022-JP escape sequences */
+      if (b == 0x1B && i + 2 < len)
+        {
+          unsigned char e1 = bytes[i+1], e2 = bytes[i+2];
+
+          if (e1 == '$' && (e2 == 'B' || e2 == '@'))
+            {
+              inJIS = YES;
+              i += 3;
+              continue;
+            }
+          if (e1 == '(' && (e2 == 'B' || e2 == 'J' || e2 == 'H'))
+            {
+              /* Flush accumulated JIS pairs before switching to ASCII */
+              if ([jisChunk length] > 0)
+                {
+                  NSMutableData *wrapped;
+                  NSString      *s;
+
+                  wrapped = [NSMutableData dataWithCapacity: [jisChunk length] + 6];
+                  [wrapped appendBytes: "\x1b$B" length: 3];
+                  [wrapped appendData:   jisChunk];
+                  [wrapped appendBytes: "\x1b(B" length: 3];
+                  s = [NSString stringWithData: wrapped
+                                usingEncodingNamed: @"iso-2022-jp"];
+                  if (s)
+                    [result appendString: s];
+                  jisChunk = [NSMutableData data];
+                }
+              inJIS = NO;
+              i += 3;
+              continue;
+            }
+        }
+
+      if (inJIS)
+        {
+          if (i + 1 < len)
+            {
+              unsigned char b1 = bytes[i], b2 = bytes[i+1];
+              unichar nec = _necSpecialCharForJISBytes(b1, b2);
+
+              if (nec != 0)
+                {
+                  /* Flush any preceding standard JIS pairs */
+                  if ([jisChunk length] > 0)
+                    {
+                      NSMutableData *wrapped;
+                      NSString      *s;
+
+                      wrapped = [NSMutableData dataWithCapacity: [jisChunk length] + 6];
+                      [wrapped appendBytes: "\x1b$B" length: 3];
+                      [wrapped appendData:   jisChunk];
+                      [wrapped appendBytes: "\x1b(B" length: 3];
+                      s = [NSString stringWithData: wrapped
+                                    usingEncodingNamed: @"iso-2022-jp"];
+                      if (s)
+                        [result appendString: s];
+                      jisChunk = [NSMutableData data];
+                    }
+                  /* Append the NEC character without going through iconv */
+                  [result appendString: [NSString stringWithCharacters: &nec length: 1]];
+                  i += 2;
+                }
+              else
+                {
+                  /* Standard JIS pair – accumulate for batch iconv decode */
+                  [jisChunk appendBytes: &b1 length: 1];
+                  [jisChunk appendBytes: &b2 length: 1];
+                  i += 2;
+                }
+            }
+          else
+            {
+              i++; /* trailing odd byte in JIS mode */
+            }
+        }
+      else
+        {
+          /* ASCII mode – pass byte through directly */
+          unichar c = (unichar)b;
+          [result appendString: [NSString stringWithCharacters: &c length: 1]];
+          i++;
+        }
+    }
+
+  /* Flush any remaining JIS chunk at end of stream */
+  if ([jisChunk length] > 0)
+    {
+      NSMutableData *wrapped;
+      NSString      *s;
+
+      wrapped = [NSMutableData dataWithCapacity: [jisChunk length] + 6];
+      [wrapped appendBytes: "\x1b$B" length: 3];
+      [wrapped appendData:   jisChunk];
+      [wrapped appendBytes: "\x1b(B" length: 3];
+      s = [NSString stringWithData: wrapped
+                    usingEncodingNamed: @"iso-2022-jp"];
+      if (s)
+        [result appendString: s];
+    }
+
+  return [result length] > 0 ? result : nil;
+}
+
 - (NSString *) bodyStringFromCharset: (NSString *) charset
 {
   NSString *lcCharset, *bodyString;
@@ -69,6 +235,26 @@
     lcCharset = @"us-ascii";
 
   bodyString = [NSString stringWithData: self usingEncodingNamed: lcCharset];
+
+  /* Many Japanese emails declare charset=iso-2022-jp but actually use
+     Microsoft's extended variant (cp50220 / ISO-2022-JP-MS), which
+     includes NEC special characters (circled digits ①-⑳, etc.) located
+     at JIS row 13.  This row is undefined in standard ISO-2022-JP
+     (RFC 1468), so strict iconv implementations return EILSEQ and the
+     conversion fails (returns nil).  Because ISO-2022-JP is a 7-bit
+     encoding every byte is also valid UTF-8, so the UTF-8 fallback
+     below would "succeed" and render the raw escape sequences as ASCII
+     garbage.
+     Try cp50220 first (works with GNU libiconv, e.g. on macOS), then
+     fall back to our built-in NEC decoder which does not depend on
+     iconv support (works with glibc iconv on Linux/Ubuntu). */
+  if (!bodyString && [lcCharset isEqualToString: @"iso-2022-jp"])
+    {
+      bodyString = [NSString stringWithData: self usingEncodingNamed: @"cp50220"];
+      if (!bodyString)
+        bodyString = [self bodyStringFromISO2022JPWithNECExtension];
+    }
+
   if (![bodyString length])
     {
       /* UTF-8 is used as a 8bit fallback charset... */
