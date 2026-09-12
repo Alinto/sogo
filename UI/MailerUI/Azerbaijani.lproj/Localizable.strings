@@ -1,0 +1,532 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "Yarat";
+"Empty Trash" = "Zibili boşalt";
+"Empty Junk Folder" = "Spam qovluğunu boşalt";
+"Delete"      = "Sil";
+"Expunge"     = "Sil";
+"Forward"     = "Yönləndir";
+"Get Mail"    = "Mesajları al";
+"Junk"        = "Spam";
+"Not junk"    = "Spam deyil";
+"Reply"       = "Cavabla";
+"Reply All"   = "Hamısını cavabla";
+"Print"       = "Çap et";
+"Stop"        = "Dayandır";
+"Write"       = "Yaz";
+"Search"      = "Axtar";
+"Send" = "Göndər";
+"Contacts" = "Ünvanlar";
+"Attach" = "Fayl əlavə et";
+"Save" = "Yadda saxla";
+"Options" = "Tənzimləmələr";
+"Close" = "Bağla";
+"Size" = "Ölçü";
+
+/* Tooltips */
+"Send this message now" = "Mesajı göndər";
+"Select a recipient from an Address Book" = "Ünvan dəftərindən alıcı seç";
+"Include an attachment" = "Fayl əlavə et";
+"Save this message" = "Mesajı yadda saxla";
+"Get new messages" = "Yeni mesajları al";
+"Create a new message" = "Yeni mesaj yarat";
+"Go to address book" = "Ünvan dəftərinə keç";
+"Reply to the message" = "Mesajı cavabla";
+"Reply to sender and all recipients" = "Göndərəni və bütün alıcıları cavabla";
+"Forward selected message" = "Seçilmiş mesajı yönləndir";
+"Delete selected message or folder" = "Seçilmiş mesajı və ya qovluğu sil";
+"Print this message" = "Mesajı çap et";
+"Stop the current transfer" = "Cari ötürməni dayandır";
+"Attachment" = "Əlavə fayl";
+"Unread" = "Oxunmamış";
+"Flagged" = "Ulduzlu";
+"Search multiple mailboxes" = "Bir neçə qovluqda axtar";
+
+/* Main Frame  */
+"Home"                 = "Giriş";
+"Calendar"             = "Təqvim";
+"Addressbook"          = "Ünvan dəftəri";
+"Mail"                 = "E-poçt";
+"Right Administration" = "Yetki idarəetməsi";
+"Help" = "Kömək";
+
+/* Mail account main windows */
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "SOGo Mailer-ə xoş gəlmisiniz. E-poçt hesablarınıza baxmaq üçün soldakı qovluq ağacından istifadə edin!";
+"Read messages"       = "Mesajları oxu";
+
+/* Tooltip for fab button */
+"Write a new message" = "Yeni mesaj yaz";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Yeni pəncərədə mesaj yaz";
+
+"Share" = "Paylaşım";
+"Account" = "Hesab";
+"Shared Account" = "Paylaşılan hesab";
+
+/* A mailbox is selected, but no message (only shown on large screens) */
+"No message selected" = "Heç bir mesaj seçilməyib";
+
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "Heç bir e-poçt qovluğu seçilməyib";
+
+"An error occured while communicating with the mail server" = "E-poçt serveri ilə ünsiyyət qurularkən problem yarandı";
+
+/* Mailbox actions */
+
+/* Compact Folder success message */
+"Folder compacted" = "Qovluq sıxışdırıldı";
+
+/* Empty Junk Folder success message */
+"Junk folder emptied" = "Spam qovluğu boşaldıldı";
+
+/* Empty Trash success message */
+"Trash emptied" = "Zibil boşaldıldı";
+
+/* acls */
+"Access rights to" = "Qovluğun giriş yetkiləri";
+"For user" = "Bu istifadəçi üçün";
+"Any Authenticated User" = "Doğrulanmış hər istifadəçi";
+"View this folder" = "Bu qovluğu görüntülə";
+"Read mails from this folder" = "Qovluqdakı mesajları oxuyur";
+"Mark mails read and unread" = "Mesajları oxunmuş və oxunmamış kimi işarələyir";
+"Modify the flags of the mails in this folder" = "Bu qovluqdakı mesajların ulduzlarını dəyişdirir";
+"Insert, copy and move mails into this folder" = "Mesajları bu qovluğa yerləşdirir, kopyalayır və köçürür";
+"Post mails" = "Mesajları göndərir";
+"Add subfolders to this folder" = "Qovluğa alt qovluqlar əlavə edir";
+"Remove this folder" = "Qovluğu silir";
+"Erase mails from this folder" = "Qovluqdan mesajları silir";
+"Expunge this folder" = "Qovluğu boşaldır";
+"Export This Folder" = "Qovluğu ixrac edir";
+"Modify the acl of this folder" = "Qovluğun giriş nəzarəti siyahısını dəyişdirir";
+"Saved Messages.zip" = "Messages.zip olaraq yadda saxlanıldı";
+"Update" = "Yenilə";
+"Cancel" = "Ləğv et";
+
+/* Mail edition */
+"From"          = "Göndərən";
+"Subject"       = "Mövzu";
+"To"            = "Alıcı";
+"Cc"            = "Surət";
+"Bcc"           = "Gizli surət";
+"Reply-To"	= "Cavab ünvanı";
+"Add address"   = "Ünvan əlavə et";
+"Body"          = "Məzmun";
+"Open" = "Aç";
+"Select All" = "Hamısını seç";
+"Select Message" = "Mesajı seç";
+"Attach Web Page..." = "Sayt əlavə et...";
+"file" = "fayl";
+"files" = "fayllar";
+"Save all" = "Hamısını yadda saxla";
+"to"            = "Alıcı";
+"cc"            = "Surət";
+"bcc"           = "Gizli surət";
+"Add a recipient" = "Bir alıcı əlavə edin";
+"Edit Draft..." = "Qaralamani redaktə et...";
+"Load Images" = "Şəkilləri göstər";
+"Return Receipt" = "Qəbz bildirişi";
+"Choose which identity to send this message from" = "Bu mesajın hansı kimliklə göndəriləcəyini seçin";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Bu mesajın göndərəni mesajı oxuduğunuzda məlumatlandırılmaq istədi. Göndərənə qəbz bildirişi göndərmək istərdinizmi?";
+"Return Receipt (displayed) - %@"= "Qəbz bildirişi (görüntüləndi) - %@";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Bu, %@ ünvanına göndərdiyiniz mesajın qəbz bildirişidir.\nQeyd: Bu qəbz bildirişi yalnız göndərdiyiniz mesajın alıcının kompüterində görüntüləndiyini bildirir. Mesaj məzmununun alıcı tərəfindən oxunduğunu və ya anlaşıldığını zəmanət vermir.";
+"Security" = "Təhlükəsizlik";
+"Sign" = "İmzala";
+"Encrypt" = "Şifrələ";
+"Priority" = "Prioritet";
+"highest" = "Ən yüksək";
+"high" = "Yüksək";
+"normal" = "Normal";
+"low" = "Aşağı";
+"lowest" = "Ən aşağı";
+"This mail is being sent from an unsecure network!" = "Bu mesaj təhlükəsiz olmayan şəbəkədən göndərilir!";
+"Address Book" = "Ünvan dəftəri";
+"Search For" = "Bunu axtar";
+"Contains" = "Bunu ehtiva edən";
+"Does not contains" = "Bunu ehtiva etməyən";
+"Advanced search" = "Ətraflı axtarış";
+"Anytime" = "Bütün vaxtlar";
+"Last 7 days" = "Son 7 gün";
+"Last 30 days" = "Son 30 gün";
+"Last 6 month" = "Son 6 ay";
+"Before" = "Bundan əvvəl";
+"After" = "Bundan sonra";
+"Between" = "Arasında";
+"and" = "ilə";
+"With attachments" = "Əlavə faylları olan";
+"In favorites" = "Beğənilənlər arasında";
+"Unseen only" = "Yalnız görülməmişlər";
+"Show more" = "Digərlərini görüntülə";
+"Reset" = "Sıfırla";
+"Message size" = "Mesaj ölçüsü";
+
+/* Popup "show" */
+"all"     = "hamısı";
+"read"    = "oxunmuş";
+"unread"  = "oxunmamış";
+"deleted" = "silinmiş";
+"flagged" = "ulduzlu";
+
+/* MailListView */
+"Sender" = "Göndərən";
+"Subject or Sender" = "Mövzu və ya Göndərən";
+"Subject or Recipient" = "Mövzu və ya alıcı";
+"To or Cc" = "Alıcı və ya Surət";
+"Entire Message" = "Bütün mesaj";
+"Date"          = "Tarix";
+"View"          = "Görüntülə";
+"All"           = "Hamısı";
+"No message"    = "Heç bir mesaj yoxdur";
+"messages"      = "mesaj";
+"Yesterday"     = "Dünən";
+"first"         = "İlk";
+"previous"      = "Əvvəlki";
+"next"          = "Növbəti";
+"last"          = "Son";
+"msgnumber_to"  = "alıcı";
+"msgnumber_of"  = "/";
+"Mark Unread" = "Oxunmamış kimi işarələ";
+"Mark Read"   = "Oxunmuş kimi işarələ";
+"Untitled" = "Adlandırılmamış";
+
+/* Filter option in messages list */
+"Show unread messages only" = "Yalnız oxunmamış mesajlar";
+
+/* Filter option in messages list */
+"Show flagged messages only" = "Yalnız ulduzlu mesajlar";
+
+/* Aria label for icon of labels */
+"Filtered by label" = "Etiketə görə süzülmüş";
+
+/* Tree */
+"SentFolderName"   = "Göndərilmiş";
+"TrashFolderName"  = "Zibil";
+"InboxFolderName"  = "Gələn";
+"DraftsFolderName" = "Qaralamalar";
+"JunkFolderName" = "Spam";
+"TemplatesFolderName" = "Şablonlar";
+"SieveFolderName"  = "Süzgəclər";
+"Folders"          = "Qovluqlar"; /* title line */
+
+/* MailMoveToPopUp */
+"MoveTo"        = "Köçür &hellip;";
+
+/* Address Popup menu */
+"Add to Address Book..." = "Ünvan dəftərinə əlavə et...";
+"Successfully created card" = "Kart yaradıldı";
+"Compose Mail To" = "Mesaj yaz";
+"Create Filter From Message..." = "Mesajdan süzgəc yarat...";
+
+/* Image Popup menu */
+"Save Image" = "Şəkli yadda saxla";
+"Save Attachment" = "Əlavəni yadda saxla";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "Yeni pəncərədə aç";
+"Copy Folder Location" = "Qovluq yerini kopyala";
+"Subscribe..." = "Abunə ol...";
+"Mark Folder Read" = "Qovluğu oxunmuş kimi işarələ";
+"New Folder..." = "Yeni qovluq...";
+"Compact This Folder" = "Qovluğu sıxışdır";
+"Search Messages..." = "Mesajları axtar...";
+"Sharing..." = "Paylaş...";
+"New Subfolder..." = "Yeni alt qovluq...";
+"Rename Folder..." = "Qovluğu yenidən adlandır...";
+"Delete Folder" = "Qovluğu sil";
+"Use This Folder For" = "Bu qovluğu bunun üçün istifadə et";
+"Get Messages for Account" = "Hesabdakı mesajları al";
+"Properties..." = "Xüsusiyyətlər...";
+"Delegation..." = "Nümayəndə təyin etmə...";
+
+/* Use This Folder menu */
+"Sent Messages" = "Gedən mesajlar";
+"Drafts" = "Qaralamalar";
+"Deleted Messages" = "Silinmiş mesajlar";
+"Junk Messages" = "Spam mesajlar";
+
+/* Message list popup menu */
+"Open Message In New Window" = "Mesajı yeni pəncərədə aç";
+"Reply to Sender Only" = "Yalnız göndərənə cavabla";
+"Reply to All" = "Hamısına cavabla";
+"Edit As New..." = "Yeni olaraq redaktə et...";
+"Move To" = "Bura köçür";
+"Copy To" = "Bura kopyala";
+"Label" = "Etiket";
+"Mark" = "İşarələ";
+"Save As..." = "Farklı yadda saxla...";
+"Print Preview" = "Çap önizləməsi";
+"View Message Source" = "Mesajın mənbə kodunu göstər";
+"View raw message" = "Ham mesajı görüntülə";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "Tədbirə çevir";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "Tapşırığa çevir";
+
+/* Message view "more" menu: download message as an eml file */
+"Download message" = "Mesajı yüklə";
+
+/* Message view "more" menu: download message as a zip archive */
+"Download message (zip)" = "Mesajı yüklə (zip)";
+
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Bütün əlavələri yüklə";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "əlavə fayllar";
+
+"Print..." = "Çap et...";
+"Delete Message" = "Mesajı sil";
+"Delete Selected Messages" = "Seçilmiş mesajları sil";
+"Mark the selected messages as junk" = "Seçilmiş mesajları spam kimi işarələ";
+"Mark the selected messages as not junk" = "Seçilmiş mesajları spam deyil kimi işarələ";
+
+/* Text appended to the recipients list when there are too many recipients */
+"and %{0} more..." = "və %{0} digər...";
+
+/* Button label to hide extended list of recipients */
+"Hide" = "Gizlət";
+
+/* Number of selected messages in list */
+"selected" = "seçilmiş";
+
+/* Date formatting from one time to another time */
+"to_time" = "buna";
+
+/* Date formatting from one day to another day */
+"to_date" = "buna";
+
+/* Encrypted message notification */
+"This message is encrypted" = "Bu mesaj şifrələnmişdir";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Bu mesajın şifrəsi açıla bilmədi. Zəhmət olmasa e-poçt tənzimləmələri modulundan S/MIME sertifikatınızı yüklədiyinizdən əmin olun.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Mesajın imzası doğrulana bilmədi";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "Mesaj dəyişdirilib";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Sertifikat oxunarkən problem yarandı.\nZəhmət olmasa yeni sertifikat yükləyin.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "Hesabla əlaqəli sertifikat yoxdur.";
+
+/* Invalid S/MIME signature */
+"Digital signature is not valid" = "Rəqəmsal imza etibarlı deyil";
+
+/* Valid S/MIME signature */
+"Message is signed" = "Mesaj imzalanmışdır";
+
+/* Valid S/MIME signature but common name not found */
+"Message is signed but the certificate doesn't match the sender email address" = "Mesaj imzalanmışdır, lakin sertifikat göndərənin e-poçt ünvanı ilə uyğun gəlmir";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Rəqəmsal imza etibarlı deyil";
+
+"This Folder" = "Bu qovluq";
+
+/* Label popup menu */
+"None" = "Heç biri";
+
+/* Mark popup menu */
+"As Read" = "Oxunmuş olaraq";
+"Thread As Read" = "Oxunmaya görə diz";
+"As Read By Date..." = "Oxunma tarixi...";
+"All Read" = "Hamısı oxunmuş";
+"As Junk" = "Spam olaraq";
+"As Not Junk" = "Spam deyil olaraq";
+"Run Junk Mail Controls" = "Spam mesaj nəzarəti et";
+"Search messages in" = "Axtarılacaq qovluq";
+"Search" = "Axtar";
+"Search subfolders" = "Alt qovluqlarda axtar";
+"Match any of the following" = "sözlərdən hər hansı birini axtar";
+"Match all of the following" = "ifadənin hamısını axtar";
+"contains" = "bunu ehtiva edən";
+"does not contain" = "bunu ehtiva etməyən";
+"No matches found" = "Heç bir uyğunluq tapılmadı";
+"results found" = "nəticə tapıldı";
+"result found" = "nəticə tapıldı";
+"Please specify at least one filter" = "Zəhmət olmasa ən az bir süzgəc göstərin";
+
+/* Folder operations */
+"Name" = "Tam ad";
+"Enter the new name of your folder"
+ ="Yeni qovluğunuzun adını daxil edin";
+"Do you really want to move this folder into the trash ?"
+ = "Bu qovluğu zibilə atmaq istədiyinizdən əminsinizmi?";
+"Operation failed" = "Əməliyyat tamamlana bilmədi";
+"Quota" = "Kvota:";
+"quotasFormat" = "%{0}% istifadə olunur, cəmi %{1} MB";
+"messageQuotasFormat" = "%{1} / %{0}% mesaj";
+"Unable to move/delete folder." = "Qovluq köçürülə/silinə bilmədi.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "Qovluq zibilə atıla bilmədi. Qovluğu dərhal silmək istərdinizmi?";
+
+/* Confirmation message when deleting multiple messages */
+"Are you sure you want to delete the selected messages?" = "Seçilmiş mesajları silmək istədiyinizdən əminsinizmi?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} mesaj kopyalandı";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} mesaj köçürüldü";
+
+"Please select a message." = "Zəhmət olmasa bir mesaj seçin.";
+"Please select a message to print." = "Zəhmət olmasa çap ediləcək mesajı seçin.";
+"Please select only one message to print." = "Çap etmək üçün zəhmət olmasa yalnız bir mesaj seçin.";
+"The message you have selected doesn't exist anymore." = "Seçdiyiniz mesaj artıq mövcud deyil.";
+"The folder with name \"%{0}\" could not be created."
+= "\"%{0}\" adlı qovluq yaradıla bilmədi.";
+"This folder could not be renamed to \"%{0}\"."
+= "Qovluğun adı \"%{0}\" olaraq dəyişdirilə bilmədi.";
+"The folder could not be deleted."
+= "Qovluq silinə bilmədi.";
+"The trash could not be emptied."
+= "Zibil boşaldıla bilmədi.";
+"The folder functionality could not be changed."
+= "Qovluğun funksiyası dəyişdirilə bilmədi.";
+"You need to choose a non-virtual folder!" = "Virtual olmayan bir qovluq seçməlisiniz.";
+"Moving a message into its own folder is impossible!"
+= "Mesaj artıq olduğu qovluğa köçürülə bilməz!";
+"Copying a message into its own folder is impossible!"
+= "Mesaj artıq olduğu qovluğa kopyalana bilməz!";
+
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "Mesajlar zibilə atıla bilmədi. Bu mesajları dərhal silmək istərdinizmi?";
+
+/* Message editing */
+"Please specify a subject." = "Zəhmət olmasa mesajınızın mövzusunu daxil edin.";
+"error_missingsubject" = "Bu mesajın mövzusu yoxdur. Mesajı mövzusuz göndərmək istədiyinizdən əminsinizmi?";
+"error_missingrecipients" = "Zəhmət olmasa ən az bir alıcı göstərin.";
+"Send Anyway" = "Yenə də göndər";
+"Error while saving the draft" = "Qaralama yadda saxlanılarkən problem yarandı";
+
+/* Error when emptying trash */
+"Unable to empty the trash folder." = "Zibil qovluğu boşaldıla bilmədi.";
+
+/* Error when emptying junk folder */
+"Unable to empty the junk folder." = "Spam qovluğu boşaldıla bilmədi.";
+
+/* Error when uploading a file attachment */
+"Error while uploading the file \"%{0}\":" = " \"%{0}\" faylı yüklənərkən problem yarandı:";
+"There is an active file upload. Closing the window will interrupt it." = "Fayl yükləmə əməliyyatı davam edir. Pəncərə bağlanarsa yükləmə dayandırılacaq.";
+"Message is too big" = "Mesaj çox böyükdür";
+
+/* Appears while sending the message */
+"Sending" = "Göndərilir";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Göndərildi";
+
+"cannot send message: (smtp) all recipients discarded" = "Mesaj göndərilə bilmədi: Bütün alıcılar etibarsızdır.";
+"cannot send message (smtp) - recipients discarded" = "Mesaj göndərilə bilmədi. Bu ünvanlar etibarsızdır";
+"cannot send message: (smtp) error when connecting" = "Mesaj göndərilə bilmədi: SMTP serveri ilə bağlantı qurularkən problem yarandı.";
+"cannot sign email without certificate" = "E-poçt hesabı ilə əlaqəli sertifikat olmadığı üçün mesaj imzalana bilmədi.";
+"cannot sign message because the certificate can't be read" = "E-poçt hesabı ilə əlaqəli sertifikat oxuna bilmədiyindən mesaj imzalana bilmədi.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "Göndərən ünvanı e-poçt hesabı ilə əlaqəli sertifikatda olmadığından mesaj imzalana bilmədi.";
+
+/* Contacts list in mail editor */
+"Email" = "E-poçt";
+"More mail options" = "Digər e-poçt seçimləri";
+"Delegation" = "Nümayəndə təyin etmə";
+"Add User" = "İstifadəçi əlavə et";
+"Add a tag" = "Etiket əlavə et";
+"reply" = "cavabla";
+"Edit" = "Redaktə et";
+"Yes" = "Bəli";
+"No" = "Xeyr";
+"Location" = "Yer";
+"Rename" = "Adını dəyiş";
+"Compact" = "Sıxışdır";
+"Export" = "İxrac et";
+"Set as Drafts" = "Qaralama qovluğu olaraq təyin et";
+"Set as Sent" = "Gedən qovluğu olaraq təyin et";
+"Set as Trash" = "Zibil qovluğu olaraq təyin et";
+
+/* Set the folder as the one holding the Templates */
+"Set as Templates" = "Şablon olaraq təyin et";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "Spam qovluğu olaraq təyin et";
+
+"Sort" = "Sırala";
+"Order Received" = "Alındığı tarix";
+"Descending Order" = "Azalan sıralama";
+"Back" = "Geri";
+"Copy messages" = "Mesajları kopyala";
+"More messages options" = "Digər mesaj seçimləri";
+"Flag" = "Ulduz qoy";
+"Unflag" = "Ulduzu sil";
+"Mark as Unread" = "Oxunmamış kimi işarələ";
+"Mark as Read" = "Oxunmuş kimi işarələ";
+"Closing Window ..." = "Pəncərə bağlanır...";
+"Tried to send too many mails. Please wait." = "Çox sayda mesaj göndərməyə cəhd edildi. Zəhmət olmasa gözləyin.";
+"View Mail" = "Mesajı görüntülə";
+"This message contains external images." = "Mesajda xarici yerlərdəki şəkillər var.";
+"Expanded" = "Genişləndirildi";
+"Add a Criteria" = "Meyar əlavə et";
+"More search options" = "Digər axtarış seçimləri";
+"Your email has been saved" = "Mesajınız yadda saxlanıldı";
+"Your email has been sent" = "Mesajınız göndərildi";
+"Folder compacted" = "Qovluq sıxışdırıldı";
+
+"More Options" = "Digər seçimlər";
+
+"New draft" = "Yeni qaralama";
+"Create new draft with this template" = "Bu şablonla yeni qaralama yarat";
+
+/* Advanced search */
+"Enter Subject" = "Mövzunu daxil edin";
+"Enter From" = "Göndərəni daxil edin";
+"Enter To" = "Alıcını daxil edin";
+"Enter Cc" = "Surəti daxil edin";
+"Enter Body" = "Məzmunu daxil edin";
+"match" = "bununla uyğun olan";
+"does not match" = "bununla uyğun olmayan";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Axtarış əhatəsi";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Abunəlik idarəetməsi";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Süz";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";
+
+/* Email deletion */
+"Clean folder" = "Qovluğu təmizlə";
+"Clean mailbox" = "E-poçt qutusunu təmizlə";
+"Delete permanently (do not use trash)" = "Daimi olaraq sil (zibilə atmadan)";
+"Apply to subfolders" = "Alt qovluqlara tətbiq et";
+"Delete e-mails older than" = "Bundan köhnə e-poçtları sil";
+"3 months" = "3 ay";
+"6 months" = "6 ay";
+"9 months" = "9 ay";
+"1 year" = "1 il";
+"Custom" = "Xüsusi";
+"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "Bəzi mesajları daimi olaraq silmək üzrəsiniz. Bunu etmək istədiyinizdən əminsinizmi?";
+"Apply" = "Tətbiq et";
+"%{0} message(s) deleted" = "%{0} mesaj silindi";
