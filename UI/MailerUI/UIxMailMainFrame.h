@@ -22,6 +22,8 @@
 #define UIXMAILMAINFRAME_H
 
 
+#import <NGImap4/NGSieveClient.h>
+
 @class SOGoMailLabel;
 
 @interface UIxMailMainFrame : UIxComponent
@@ -33,6 +35,7 @@
   int folderType;
   NSDictionary *currentColumn;
   SOGoMailLabel *_currentLabel;
+  NGSieveClient *client;
 }
 
 - (WOResponse *) getFoldersStateAction;
@@ -45,6 +48,8 @@
 - (WOResponse *) saveFoldersStateAction;
 
 - (NSString *) formattedMailtoString: (NGVCard *) card;
+
+- (id) _sieveClient;
 
 @end
 

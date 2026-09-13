@@ -78,6 +78,11 @@
                      ng-click="viewer.edit($event)">
             <md-icon>create</md-icon>
           </md-button>
+          <md-button class="sg-icon-button" label:aria-label="Create filter"
+                     ng-click="viewer.createFilter($event)">
+            <md-tooltip md-direction="bottom"><var:string label:value="Create filter"/></md-tooltip>
+            <md-icon>filter_list</md-icon>
+          </md-button>
           <md-button class="sg-icon-button" label:aria-label="Delete"
                      ng-click="viewer.deleteMessage()">
             <md-tooltip md-direction="bottom"><var:string label:value="Delete selected message or folder"/></md-tooltip>
