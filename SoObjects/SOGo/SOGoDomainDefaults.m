@@ -486,7 +486,15 @@
   NSArray *iconsList;
   NSString *icon;
 
-  iconsList = [NSArray arrayWithObjects: @"thumb_down", @"gpp_bad", nil];
+  iconsList = [NSArray arrayWithObjects: @"thumb_down",
+                                          @"gpp_bad",
+                                          @"local_fire_department",
+                                          @"bug_report",
+                                          @"error",
+                                          @"warning",
+                                          @"dangerous",
+                                          @"report_gmailerrorred",
+                                          nil];
   icon = [self objectForKey: @"mailJunkIcon"];
   if (([icon length] && ![iconsList containsObject:icon]) || ![icon length])
   {

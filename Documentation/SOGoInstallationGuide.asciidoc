@@ -2897,9 +2897,18 @@ SOGoMailJunkSettings = {
 ----
 
 |D |mailJunkIcon
-|Choose the Junk icon. For the thumb down `thumb_down`, for a shield `gpp_bad`.
+|Choose the Junk icon. Values are :
+https://materialui.co/icon/thumb-down[thumb_down],
+https://materialui.co/icon/gpp-bad[gpp_bad],
+https://materialui.co/icon/local-fire-department[local_fire_department],
+https://materialui.co/icon/bug-report[bug_report],
+https://materialui.co/icon/error[error],
+https://materialui.co/icon/warning[warning],
+https://materialui.co/icon/dangerous[dangerous] and
+https://materialui.co/icon/report-gmailerrorred[report_gmailerrorred].
 
-Defaults to `gppthumb_down_bad`.
+
+Defaults to `thumb_down`.
 
 |D |SOGoMailKeepDraftsAfterSend
 |Parameter used to keep mails in the drafts folder once they have been
