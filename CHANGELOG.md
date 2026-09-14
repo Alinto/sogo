@@ -2,7 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [5.12.100](https://github.com/Alinto/sogo/compare/SOGo-5.12.9...SOGo-5.12.10) (2026-08-13)
+## [5.12.11](https://github.com/Alinto/sogo/compare/SOGo-5.12.10...SOGo-5.12.11) (2026-09-14)
+
+
+### Features
+
+* **junk:** add junk action on mail view ([3f4f949](https://github.com/Alinto/sogo/commit/3f4f9496644953010a4a429f90eae733a50d61c4))
+
+
+### Bug Fixes
+
+* **core:** keep the [@import](https://github.com/import) cleanup working in stringWithoutHTMLInjection ([8813677](https://github.com/Alinto/sogo/commit/8813677ecb171e5d27cd582989c1d87b308c6df3))
+* **db:** release db channel after using them ([152f44b](https://github.com/Alinto/sogo/commit/152f44b90e08013b5c132473a2de249682d997df))
+* **db:** release db channel after using them part 2 ([089b50c](https://github.com/Alinto/sogo/commit/089b50c0defdb48e8c0bc0a13334591f3ee2dd11))
+* **junk:** extend list of junk icon available ([012e6ef](https://github.com/Alinto/sogo/commit/012e6eff471893efaac033c69ddf7838ca51b791))
+* **mail:** escape mail data placed in attributes of a compiled part ([045a0b9](https://github.com/Alinto/sogo/commit/045a0b9c0ac57aeea1b619f281acff0427cd81c7)), closes [#115](https://bugs.sogo.nu/view.php?id=115)
+* **mail:** stop interpreting iMIP card text fields as markup ([0d66d75](https://github.com/Alinto/sogo/commit/0d66d7503d8fd147842e87b9b4f1b921986ef44b))
+* **pwd:** use the proper url for reset password mail ([382118a](https://github.com/Alinto/sogo/commit/382118a93b6925de2ce7f774abc1865ebea2dbba))
+* **pwd:** use the proper url for reset password mail part2 ([04a3e98](https://github.com/Alinto/sogo/commit/04a3e9823889acaf6c247b224f5f7a0108f8f829))
+* **sanitization:** update regex for html sanitization ([10dc173](https://github.com/Alinto/sogo/commit/10dc1733496fb2f393537d864d83408e357f2215))
+* **UI:** use legitimate sorting value ([d089c40](https://github.com/Alinto/sogo/commit/d089c4046ffac8124874c504491db9d1f15ae650))
+
+
+### Localization
+
+* **hu:** Update Hungarian translations ([1bf1031](https://github.com/Alinto/sogo/commit/1bf1031ab2932f196f1adcc8fdfc9dea7dfb1f65))
+
+## [5.12.10](https://github.com/Alinto/sogo/compare/SOGo-5.12.9...SOGo-5.12.10) (2026-08-13)
 
 
 ### Features
