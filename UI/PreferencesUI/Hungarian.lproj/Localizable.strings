@@ -152,7 +152,7 @@
 "Contacts Names" = "Kapcsolatok nevei";
 "Duplicate name" = "Név kettőzése";
 "Calendar categories must have unique names." = "Naptár kategóriáknak egyedi névvel kell rendelkezniük.";
-"Disable e-mail notifications on CalDAV" = "Disable e-mail notifications on CalDAV";
+"Disable e-mail notifications on CalDAV" = "E-mail értesítések kikapcsolása a CalDAV esetén";
 
 /* Default Calendar */
 "Default calendar" = "Alapértelmezett naptár";
@@ -205,9 +205,9 @@
 "Insert signature on new message" = "Aláírás beszúrása új levél esetén";
 "Insert signature on reply" = "Aláírás beszúrása válasz esetén";
 "Insert signature on forward" = "Aláírás beszúrása továbbítás esetén";
-"Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
-"Hide attachements for inline images" = "Hide attachments for inline images";
-"Show attachments above the message" = "Show attachments above the message";
+"Show recipients or sender full email in mailboxes" = "A címzettek vagy a feladó teljes e-mail-címének megjelenítése a postafiókokban";
+"Hide attachements for inline images" = "Beágyazott képek mellékleteinek elrejtése";
+"Show attachments above the message" = "Mellékletek megjelenítése az üzenet felett";
 
 /* Base font size for messages composed in HTML */
 "Default font size" = "Alapértelmezett betűméret";
@@ -233,11 +233,11 @@
 "Mail Account" = "Levelezési fiók";
 "New Mail Account" = "Új email fiók";
 "Server Name" = "Kiszolgáló neve";
-"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
-"Smtp Auth" = "Smtp Auth";
+"Outgoing Server Name (SMTP)" = "Levéltovábbító kiszolgáló neve (SMTP)";
+"Smtp Auth" = "SMTP hitelesítés";
 "Port" = "Port";
 "Encryption" = "Titkosítás";
-"Outgoing Encryption" = "Outgoing Encryption";
+"Outgoing Encryption" = "Kimenő levél titkosítása";
 "None" = "Nincs";
 "User Name" = "Felhasználónév";
 "Full Name" = "Teljes név";
@@ -315,45 +315,45 @@
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
 "ChineseTaiwan" = "正體中文";
-"Croatian" = "Hrvatski";
+"Croatian" = "Horvát";
 "Czech" = "Česky";
-"Danish" = "Dansk (Danmark)";
-"Dutch" = "Nederlands";
-"English" = "English";
-"Finnish" = "Suomi";
-"French" = "Français";
-"Galician" = "Galego";
-"German" = "Deutsch";
-"Hebrew" = "עברית";
+"Danish" = "Dán (Dánia)";
+"Dutch" = "Holland";
+"English" = "Angol";
+"Finnish" = "Finn";
+"French" = "Francia";
+"Galician" = "Galíciai";
+"German" = "Német";
+"Hebrew" = "Héber";
 "Hungarian" = "Magyar";
-"Icelandic" = "Íslenska";
-"Indonesian" = "bahasa Indonesia";
-"Italian" = "Italiano";
-"Japanese" = "日本語";
-"Kazakh" = "Қазақ";
-"Korean" = "한국어";
-"Latvian" = "Latviešu";
-"Lithuanian" = "Lietuvių";
-"Macedonian" = "Македонски";
-"Montenegrin" = "Crnogorski";
-"NorwegianBokmal" = "Norsk bokmål";
-"NorwegianNynorsk" = "Norsk nynorsk";
-"Polish" = "Polski";
-"Portuguese" = "Português";
-"BrazilianPortuguese" = "Português brasileiro";
-"Romanian" = "Română";
-"Russian" = "Русский";
-"Serbian" = "Српски";
-"SerbianLatin" = "Srpski";
-"Slovak" = "Slovensky";
-"Slovenian" = "Slovenščina";
-"SpanishSpain" = "Español (España)";
-"SpanishArgentina" = "Español (Argentina)";
-"Swedish" = "Svenska";
-"Thai" = "ภาษา";
-"TurkishTurkey" = "Türkçe (Türkiye)";
-"Ukrainian" = "Українська";
-"Welsh" = "Cymraeg";
+"Icelandic" = "Izlandi";
+"Indonesian" = "Indonéz";
+"Italian" = "Olasz";
+"Japanese" = "Japán";
+"Kazakh" = "Kazah";
+"Korean" = "Koreai";
+"Latvian" = "Lett";
+"Lithuanian" = "Litván";
+"Macedonian" = "Macedón";
+"Montenegrin" = "Montenegrói";
+"NorwegianBokmal" = " Norvég bokmål";
+"NorwegianNynorsk" = "Norvég nynorsk";
+"Polish" = "Lengyel";
+"Portuguese" = "Portugál";
+"BrazilianPortuguese" = "Portugál (Brazília)";
+"Romanian" = "Román";
+"Russian" = "Orosz";
+"Serbian" = " Szerb (cirill írással)";
+"SerbianLatin" = "Szerb (latin írással)";
+"Slovak" = "Szlovák";
+"Slovenian" = "Szlovén";
+"SpanishSpain" = "Spanyol (Spanyolország)";
+"SpanishArgentina" = "Spanyol (Argentína)";
+"Swedish" = "Svéd";
+"Thai" = "Thai";
+"TurkishTurkey" = "Török (Törökország)";
+"Ukrainian" = "Ukrán";
+"Welsh" = "Walesi";
 
 "Refresh View" = "Nézet frissítése";
 "refreshview_manually" = "Kézi";
@@ -435,7 +435,7 @@
 "Stop processing filter rules" = "Szűrő szabályok feldolgozásának befejezése";
 "is under" = "kisebb, mint";
 "is over" = "nagyobb, mint";
-"is" = "is";
+"is" = "-";
 "is not" = "nem";
 "contains" = "tartalmaz";
 "does not contain" = "nem tartalmaz";
@@ -487,8 +487,8 @@
 "none" =  "Nincs";
 "identicon" = "Azonosító ikon";
 "monsterid" = "Szörny";
-"wavatar" = "Wavatar";
-"retro" = "Retro";
+"wavatar" = "Wavatár";
+"retro" = "Retró";
 
 /* Animation Level */
 "Animation Level" = "Animáció szintje";
@@ -511,7 +511,7 @@
 "Let SOGo handle everything" = "A SOGo kezeljen mindent";
 
 /* Password Recovery */
-"Password recovery mode" = "Password recovery mode";
+"Password recovery mode" = "Jelszó helyreállítás módszere";
 "Question" = "Kérdés";
 "Secondary e-mail" = "Másodlagos email cím";
 "Answer" = "Válasz";

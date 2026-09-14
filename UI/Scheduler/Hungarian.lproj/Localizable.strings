@@ -65,7 +65,7 @@
 "A total of %{0} events were imported in the calendar." = "Összesen %{0} esemény lett importálva a naptárba.";
 "Compose E-Mail to All Attendees" = "Üzenet küldése az összes résztvevőnek";
 "Compose E-Mail to Undecided Attendees" = "Üzenet küldése az bizonytalan résztvevőnek";
-"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
+"Download iOS - MacOS configuration profile" = "iOS - MacOS konfigurációs profil letöltése";
 
 /* Relative dates */
 "Yesterday" = "Tegnap";
@@ -117,7 +117,7 @@
 "Save and Close" = "Mentés és bezárás";
 "Close" = "Bezárás";
 "Invite Attendees" = "Résztvevők meghívása";
-"Create Jitsi Meeting" = "Create Jitsi Meeting";
+"Create Jitsi Meeting" = "Jitsi megbeszélés létrehozása";
 "Attach" = "Csatolás";
 "Update" = "Mentés";
 "Cancel" = "Mégsem";
@@ -163,7 +163,7 @@
 "End" = "Vége";
 "Due Date" = "Lejárat";
 "Name" = "Név";
-"Email" = "Email";
+"Email" = "Email cím";
 "Status" = "Állapot";
 "% complete" = "% kész";
 "Location" = "Hely";
@@ -378,7 +378,7 @@
 "Show an Alert" = "Riasztás";
 "Send an E-mail" = "Email küldése";
 "Email Organizer" = "Email szervező";
-"Email Attendees (internal users)" = "Email Attendees (internal users)";
+"Email Attendees (internal users)" = "Email résztvevők (belső felhasználók)";
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
@@ -509,7 +509,7 @@ validate_untilbeforeend    = "Az ismétlődésnek az első előfordulás után k
 "Work days only" = "Csak munkanapok";
 "The whole day" = "Az egész nap";
 "Between" = "Között";
-"and" = "and";
+"and" = "és";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Egy vagy több résztvevő között időütközés van.\nMegtartja ennek ellenére a beállításokat?";
 "Would you like to remove them and send the invitation to the remaining attendees?"
@@ -611,7 +611,7 @@ vtodo_class2 = "(Bizalmas feladat)";
 "Select ending date" = "Válasszon befejezés dátumot";
 "Delegated to" = "Jogok átruházása az alábiaknak";
 "Keep sending me updates" = "Továbbiakban küldjön frissítéseket";
-"OK" = "OK";
+"OK" = "Rendben";
 "Confidential" = "Bizalmas";
 "Enable" = "Engedélyez";
 "Filter" = "Szűrő";
