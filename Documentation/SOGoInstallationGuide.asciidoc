@@ -841,14 +841,14 @@ Obiously, if your users can connect without specifying a domain, let this parame
 |Boolean enable password recovery with secret question or secondary e-mail. Default value is `NO`.
 
 |S |SOGoPasswordRecoveryBaseURLs
-| *Since 5.12.11*. Whitlist of base URL for password reset link.
+| *Since 5.12.11*. List of allowed base URL for password reset link.
 
 `SOGoPasswordRecoveryBaseURLs = ("https://demo.sogo.nu");`
 `SOGoPasswordRecoveryBaseURLs = ("https://platform1.sogo.nu", "https://platform2.sogo.nu);`
 
 Do not end the URLs by '/'.
 
-No defaults, will trhow an error if empty or unset.
+No defaults, will throw an error if empty or unset.
 
 |S |SOGoPasswordRecoveryDomains
 |List of domains where password recovery is enabled, for example `(example.org, example.net)`. If empty array `()`, disabled for all domains. If not set, enabled for all domains.
