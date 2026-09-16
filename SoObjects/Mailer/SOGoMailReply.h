@@ -90,6 +90,9 @@
 @interface SOGoMailGermanReply : SOGoMailReply
 @end
 
+@interface SOGoMailGreekReply : SOGoMailReply
+@end
+
 @interface SOGoMailHebrewReply : SOGoMailReply
 @end
 
