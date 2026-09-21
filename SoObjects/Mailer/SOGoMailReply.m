@@ -146,6 +146,9 @@
 @implementation SOGoMailGermanReply
 @end
 
+@implementation SOGoMailGreekReply
+@end
+
 @implementation SOGoMailHebrewReply
 @end
 
