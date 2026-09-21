@@ -426,23 +426,23 @@
   moduleSettings = [us objectForKey: module];
 
   //Check sort value
-  sortValues = [NSArray arrayWithObjects: @"subject", @"from",
-                    @"date", @"size", @"arrival", nil];
+  sortValues = [NSArray arrayWithObjects: @"SUBJECT", @"FROM",
+                    @"DATE", @"SIZE", @"ARRIVAL", nil];
 
   if ([sort length] && [sortValues containsObject:sort])
-    {
-      if ([sort isEqualToString: [self defaultSortKey]] && !asc)
-	{
-	  if (moduleSettings && !dry)
+  {
+    if ([sort isEqualToString: [self defaultSortKey]] && !asc)
+	  {
+	    if (moduleSettings && !dry)
 	    {
 	      [moduleSettings removeObjectForKey: @"SortingState"];
 	      [us synchronize];
 	    }
-	}
-      else if (!dry)
-	{
-	  // Save the sorting state in the user settings
-	  if (!moduleSettings)
+	  }
+    else if (!dry)
+	  {
+	    // Save the sorting state in the user settings
+	    if (!moduleSettings)
 	    {
 	      moduleSettings = [NSMutableDictionary dictionary];
 	      [us setObject: moduleSettings forKey: module];
@@ -450,17 +450,18 @@
 	  [moduleSettings setObject: [NSArray arrayWithObjects: [sort lowercaseString], [NSString stringWithFormat: @"%d", (asc ? 1 : 0)], nil]
 			     forKey: @"SortingState"];
 	  [us synchronize];
-	}
-    }
+	  }
+  }
   else if (moduleSettings)
-    {
-      NSArray *sortState = [moduleSettings objectForKey: @"SortingState"];
-      if ([sortState count])
-	{
-	  sort = [[sortState objectAtIndex: 0] uppercaseString];
-	  asc = [[sortState objectAtIndex: 1] boolValue];
-	}
-    }
+  {
+    NSArray *sortState = [moduleSettings objectForKey: @"SortingState"];
+    if ([sortState count])
+	  {
+	    sort = [[sortState objectAtIndex: 0] uppercaseString];
+	    asc = [[sortState objectAtIndex: 1] boolValue];
+	  }
+  }
+
   if (![sort length])
     sort = [self defaultSortKey];
   
