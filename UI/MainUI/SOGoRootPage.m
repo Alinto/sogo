@@ -1513,8 +1513,9 @@ static const NSString *kJwtKey = @"jwt";
   passwordRecoveryDomains = [[SOGoSystemDefaults sharedSystemDefaults]
                              passwordRecoveryDomains];
   if (![[SOGoSystemDefaults sharedSystemDefaults] isPasswordRecoveryEnabled]) {
-    return [self responseWithStatus: 403
-            andJSONRepresentation: nil];
+    /* Not an error: answering 403 on every login page load can feed
+       intrusion-detection systems banning the client IP (#6226) */
+    return [self responseWith204];
   } else if (username && [NSNull null] != username && 
       domainName && passwordRecoveryDomains && 
       [passwordRecoveryDomains containsObject: domainName]) {

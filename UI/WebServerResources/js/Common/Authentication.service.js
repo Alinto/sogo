@@ -364,6 +364,11 @@
             url: '/SOGo/so/passwordRecoveryEnabled',
             data: { userName: userName, domain: domain }
           }).then(function (response) {
+            if (response.status === 204) {
+              // password recovery is disabled on this server
+              d.reject();
+              return;
+            }
             d.resolve(response.data.domain);
           }, function () {
             d.reject();
