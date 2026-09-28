@@ -540,6 +540,12 @@ static int cssEscapingCount;
           idx = [self _cssCharacterIndex: currentChar];
           if (idx > -1)
             [cssIdentifier appendString: cssEscapingStrings[idx]];
+          else if (currentChar > 127)
+            /* non-ASCII characters are escaped as __XXXX, as done by the
+               frontend (see asCSSIdentifier in utils.js); the double
+               underscore cannot collide with the digit-prefix underscore
+               nor with the legacy named escapes */
+            [cssIdentifier appendFormat: @"__%04X", currentChar];
           else
             [cssIdentifier appendFormat: @"%C", currentChar];
         }
@@ -562,7 +568,7 @@ static int cssEscapingCount;
 
 - (NSString *) fromCSSIdentifier
 {
-  NSCharacterSet *numericSet;
+  NSCharacterSet *numericSet, *hexadecimalSet;
   NSMutableString *newString;
   NSString *currentString;
   int count, length, max, idx;
@@ -572,11 +578,13 @@ static int cssEscapingCount;
     [self _setupCSSEscaping];
 
   numericSet = [NSCharacterSet decimalDigitCharacterSet];
+  hexadecimalSet = [NSCharacterSet characterSetWithCharactersInString:
+                                   @"0123456789abcdefABCDEF"];
   newString = [NSMutableString string];
   max = [self length];
   count = 0;
 
-  if (max > 0
+  if (max > 1
       && [self characterAtIndex: 0] == '_'
       && [numericSet characterIsMember: [self characterAtIndex: 1]])
     {
@@ -602,6 +610,26 @@ static int cssEscapingCount;
             {
               [newString appendFormat: @"%C", cssEscapingCharacters[idx]];
               count += [cssEscapingStrings[idx] length] - 1;
+            }
+          else if (count + 6 <= max
+                   && [self characterAtIndex: count + 1] == '_')
+            {
+              /* Non-ASCII characters are escaped as __XXXX by the
+                 frontend; legacy named escapes take precedence. */
+              currentString = [self substringFromRange: NSMakeRange (count + 2, 4)];
+              if ([hexadecimalSet characterIsMember: [currentString characterAtIndex: 0]]
+                  && [hexadecimalSet characterIsMember: [currentString characterAtIndex: 1]]
+                  && [hexadecimalSet characterIsMember: [currentString characterAtIndex: 2]]
+                  && [hexadecimalSet characterIsMember: [currentString characterAtIndex: 3]])
+                {
+                  unichar decodedChar;
+
+                  decodedChar = (unichar) strtoul ([currentString UTF8String], NULL, 16);
+                  [newString appendFormat: @"%C", decodedChar];
+                  count += 5;
+                }
+              else
+                [newString appendFormat: @"%C", currentChar];
             }
           else
             [newString appendFormat: @"%C", currentChar];

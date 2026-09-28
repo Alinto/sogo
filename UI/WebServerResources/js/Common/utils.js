@@ -156,7 +156,13 @@ String.prototype.asCSSIdentifier = function() {
     newString = newString.replace(re, escapeds[i]);
   }
 
-  newString = newString.replace(/[^\x00-\x7F]/g, '');
+  newString = newString.replace(/[^\x20-\x7E]/g, function(c) {
+    var code = c.charCodeAt(0).toString(16);
+    while (code.length < 4) {
+      code = '0' + code;
+    }
+    return '__' + code;
+  });
 
   if (/^\d+/.test(newString)) {
     newString = '_' + newString;

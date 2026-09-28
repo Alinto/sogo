@@ -1229,7 +1229,20 @@
       if ([[result valueForKey: @"result"] boolValue])
         response = [self responseWith204];
       else
-        response = [self responseWithStatus: 500 andJSONRepresentation: result];
+        {
+          /* The IMAP result also carries the raw response (NGHashMap),
+             which cannot be serialized to JSON (#6222) */
+          NSMutableDictionary *sanitizedResult;
+
+          sanitizedResult = [NSMutableDictionary
+                               dictionaryWithObject: [NSNumber numberWithBool: NO]
+                                             forKey: @"result"];
+          if ([result objectForKey: @"reason"])
+            [sanitizedResult setObject: [result objectForKey: @"reason"]
+                                forKey: @"reason"];
+          response = [self responseWithStatus: 500
+                        andJSONRepresentation: sanitizedResult];
+        }
     }
 
   return response;
@@ -1264,7 +1277,20 @@
   if ([[result valueForKey: @"result"] boolValue])
     response = [self responseWith204];
   else
-    response = [self responseWithStatus:500 andJSONRepresentation:result];
+    {
+      /* The IMAP result also carries the raw response (NGHashMap),
+         which cannot be serialized to JSON (#6222) */
+      NSMutableDictionary *sanitizedResult;
+
+      sanitizedResult = [NSMutableDictionary
+                           dictionaryWithObject: [NSNumber numberWithBool: NO]
+                                         forKey: @"result"];
+      if ([result objectForKey: @"reason"])
+        [sanitizedResult setObject: [result objectForKey: @"reason"]
+                            forKey: @"reason"];
+      response = [self responseWithStatus:500
+                    andJSONRepresentation: sanitizedResult];
+    }
 
   return response;
 }

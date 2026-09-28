@@ -135,4 +135,51 @@
    testEquals([[NSString stringWithString:@"<div>Test<img src=\"foo\" />bar <a href=\"https://www.sogo.nu\" target=\"_blank\">link</a> <strong>foobar</strong></div>"] removeHTMLTagsExceptAnchorTags], @"Testbar <a href=\"https://www.sogo.nu\" target=\"_blank\">link</a> foobar");
 }
 
+/* Bug #6222: non-ASCII label names were dropped by the CSS identifier
+   escaping, producing empty IMAP keywords. They are now round-tripped
+   through _XXXX hex sequences. */
+- (void) test_CSSIdentifierRoundTrip
+{
+  testEquals([@"test" asCSSIdentifier], @"test");
+  testEquals([@"_U_test" fromCSSIdentifier], @"_test");
+  testEquals([@"a_U_b" fromCSSIdentifier], @"a_b");
+  testEquals([@"_D_5_U_10" fromCSSIdentifier], @".5_10");
+
+  /* Cyrillic label: each character is escaped on four hex digits */
+  testEquals([@"тест" asCSSIdentifier], @"__0442__0435__0441__0442");
+  testEquals([@"__0442__0435__0441__0442" fromCSSIdentifier], @"тест");
+
+  /* label starting with a digit gets a removable leading underscore */
+  testEquals([@"7тест" asCSSIdentifier], @"_7__0442__0435__0441__0442");
+  testEquals([@"_7__0442__0435__0441__0442" fromCSSIdentifier], @"7тест");
+  /* a purely numeric label must not be mistaken for an hex escape */
+  testEquals([@"0442" asCSSIdentifier], @"_0442");
+  testEquals([@"_0442" fromCSSIdentifier], @"0442");
+
+  /* mixed ASCII and non-ASCII */
+  testEquals([@"R&D, тест" asCSSIdentifier], @"R_AM_D_CO__SP___0442__0435__0441__0442");
+  testEquals([@"R_AM_D_CO__SP___0442__0435__0441__0442" fromCSSIdentifier], @"R&D, тест");
+
+  /* an underscore alone is never decoded as a hex sequence */
+  testEquals([@"hello_world" fromCSSIdentifier], @"hello_world");
+  /* a lone underscore is not a crash either */
+  testEquals([@"_" fromCSSIdentifier], @"_");
+  /* uppercase hex sequences decode as well */
+  testEquals([@"__0430__0431" fromCSSIdentifier], @"аб");
+  testEquals([@"__0421" fromCSSIdentifier], @"С");
+  /* truncated sequences are left untouched */
+  testEquals([@"__04" fromCSSIdentifier], @"__04");
+  /* legacy underscore forms are preserved */
+  testEquals([@"hello_U_world" fromCSSIdentifier], @"hello_world");
+
+  /* full round trip over a non-ASCII string */
+  testEquals([[@"Проектnaïve" asCSSIdentifier] fromCSSIdentifier], @"Проектnaïve");
+
+  /* astral-plane character (surrogate pair) round-trips as two escapes;
+     built from surrogate halves to keep this file ASCII-safe */
+  NSString *astral = [NSString stringWithFormat: @"%C%C", 0xD834, 0xDD1E];
+  testEquals([astral asCSSIdentifier], @"__D834__DD1E");
+  testEquals([@"__D834__DD1E" fromCSSIdentifier], astral);
+}
+
 @end
