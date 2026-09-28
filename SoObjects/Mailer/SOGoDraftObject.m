@@ -1773,50 +1773,11 @@ static NSString    *userAgent      = nil;
 
 - (NSString *) _quoteSpecials: (NSString *) address
 {
-  NSString *result, *part, *s2;
-  int i, len;
-
   // We want to correctly send mails to recipients such as :
   // foo.bar
   // foo (bar) <foo@zot.com>
   // bar, foo <foo@zot.com>
-  if ([address indexOf: '('] >= 0 || [address indexOf: ')'] >= 0
-      || [address indexOf: '<'] >= 0 || [address indexOf: '>'] >= 0
-      || [address indexOf: '@'] >= 0 || [address indexOf: ','] >= 0
-      || [address indexOf: ';'] >= 0 || [address indexOf: ':'] >= 0
-      || [address indexOf: '\\'] >= 0 || [address indexOf: '"'] >= 0
-      || [address indexOf: '.'] >= 0
-      || [address indexOf: '['] >= 0 || [address indexOf: ']'] >= 0)
-    {
-      // We search for the first instance of < from the end
-      // and we quote what was before if we need to
-      len = [address length];
-      i = -1;
-      while (len--)
-        if ([address characterAtIndex: len] == '<')
-          {
-            i = len;
-            break;
-          }
-
-      if (i > 0)
-        {
-          part = [address substringToIndex: i - 1];
-          s2 = [[part stringByReplacingString: @"\\" withString: @"\\\\"]
-                     stringByReplacingString: @"\"" withString: @"\\\""];
-          result = [NSString stringWithFormat: @"\"%@\" %@", s2, [address substringFromIndex: i]];
-        }
-      else
-        {
-          s2 = [[address stringByReplacingString: @"\\" withString: @"\\\\"]
-                     stringByReplacingString: @"\"" withString: @"\\\""];
-          result = [NSString stringWithFormat: @"\"%@\"", s2];
-        }
-    }
-  else
-    result = address;
-
-  return result;
+  return [address stringByQuotingAddressSpecials];
 }
 
 - (NSArray *) _quoteSpecialsInArray: (NSArray *) addresses

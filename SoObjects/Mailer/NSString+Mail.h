@@ -26,6 +26,7 @@
 @interface NSString (SOGoExtension)
 
 + (NSString *) generateMessageID: (NSString *) mailOrDomain;
+- (NSString *) stringByQuotingAddressSpecials;
 - (NSString *) htmlToText;
 - (NSString *) htmlByExtractingImages: (NSMutableArray *) theImages;
 - (NSString *) stringByConvertingCRLNToHTML;

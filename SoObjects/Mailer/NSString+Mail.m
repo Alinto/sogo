@@ -564,25 +564,113 @@
 {
   NSMutableString *messageID;
   NSString *_domain;
-  NSRange r;
+  NSRange r, cutRange;
 
   messageID = [NSMutableString string];
   [messageID appendFormat: @"<%@", [SOGoObject mailUniqueMessageId]];
-  if(mailOrDomain)
-  {
-    r = [mailOrDomain rangeOfString: @"@" options: NSBackwardsSearch];
-    if (r.location != NSNotFound)
+  _domain = mailOrDomain;
+  if (mailOrDomain)
     {
-      //Its the full email not a domain
-      _domain = [mailOrDomain substringFromIndex: (r.location + r.length)];
+      r = [mailOrDomain rangeOfString: @"@" options: NSBackwardsSearch];
+      if (r.location != NSNotFound)
+        {
+          //Its the full email not a domain
+          _domain = [mailOrDomain substringFromIndex: NSMaxRange (r)];
+        }
+      /* The domain part must not carry any address delimiter, comment
+         or whitespace, as when a full "Name <a@b> (comment)" string is
+         passed (#6201) - a domain is a single token, and anything else
+         would allow header injection through generated message-ids. */
+      _domain = [[_domain componentsSeparatedByString: @">"] objectAtIndex: 0];
+      cutRange = [_domain rangeOfCharacterFromSet:
+                    [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+      if (cutRange.location != NSNotFound)
+        _domain = [_domain substringToIndex: cutRange.location];
     }
-    else
-      _domain = mailOrDomain;
-    [messageID appendFormat: @"@%@>", _domain];
-  }
-    
+
+  if ([_domain length] > 0)
+    [messageID appendFormat: @"@%@", _domain];
+  [messageID appendString: @">"];
 
   return [messageID lowercaseString];
+}
+
+static BOOL
+SOGoStringContainsPhraseSpecial (NSString *phrase)
+{
+  static NSCharacterSet *specials = nil;
+
+  if (!specials)
+    @synchronized ([NSString class])
+      {
+        if (!specials)
+          specials = [[NSCharacterSet characterSetWithCharactersInString:
+                        @",;:@<>[]()\"\\"] retain];
+      }
+
+  return ([phrase rangeOfCharacterFromSet: specials].location != NSNotFound) ? YES : NO;
+}
+
+/* Quote a RFC 5322 "phrase" (display name), escaping backslashes and
+   double quotes as required by RFC 5322 section 3.2.4. */
+static NSString *
+SOGoQuotedPhrase (NSString *phrase)
+{
+  NSString *escaped;
+
+  escaped = [[phrase stringByReplacingString: @"\\" withString: @"\\\\"]
+                     stringByReplacingString: @"\"" withString: @"\\\""];
+
+  return [NSString stringWithFormat: @"\"%@\"", escaped];
+}
+
+/* Quote the display-name part of a RFC 5322 address when it contains
+   special characters, leaving the address part and already formatted
+   phrases (quoted strings, RFC 2047 encoded-words) untouched. */
+- (NSString *) stringByQuotingAddressSpecials
+{
+  NSRange bracketRange;
+  NSString *phrase, *trimmedPhrase, *addressPart;
+
+  if (![self length])
+    return self;
+
+  bracketRange = [self rangeOfString: @"<" options: NSBackwardsSearch];
+
+  if (bracketRange.location == NSNotFound)
+    {
+      /* No angle-bracket address: keep bare addresses ("user@domain")
+         and harmless phrases as-is, quote group-only phrases such as
+         "Doe, John [ACME]" (#6227). */
+      if ([self rangeOfString: @"@"].location != NSNotFound)
+        return self;
+      if (SOGoStringContainsPhraseSpecial (self))
+        return SOGoQuotedPhrase (self);
+      return self;
+    }
+
+  if (bracketRange.location == 0)
+    /* no display name, eg. "<user@domain>" */
+    return self;
+
+  phrase = [self substringToIndex: bracketRange.location];
+  trimmedPhrase = [phrase stringByTrimmingCharactersInSet:
+                              [NSCharacterSet whitespaceCharacterSet]];
+  addressPart = [self substringFromIndex: bracketRange.location];
+
+  if (![trimmedPhrase length])
+    return addressPart;
+
+  /* already quoted or RFC 2047 encoded display names are left untouched */
+  if (([trimmedPhrase hasPrefix: @"\""] && [trimmedPhrase hasSuffix: @"\""])
+      || [trimmedPhrase hasPrefix: @"=?"])
+    return [NSString stringWithFormat: @"%@ %@", trimmedPhrase, addressPart];
+
+  if (SOGoStringContainsPhraseSpecial (trimmedPhrase))
+    return [NSString stringWithFormat: @"%@ %@",
+                      SOGoQuotedPhrase (trimmedPhrase), addressPart];
+
+  return [NSString stringWithFormat: @"%@ %@", trimmedPhrase, addressPart];
 }
 
 - (NSString *) htmlToText
