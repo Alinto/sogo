@@ -198,7 +198,37 @@
         [list deleteCardReference: cardReference];
     }
 
-  // TODO: update existing cards?
+  // Update the email address selected for members already in the list (#6251)
+  count = [references count];
+  for (i = 0; i < count; i++)
+    {
+      if ([[references objectAtIndex: i] isKindOfClass: [NSDictionary class]])
+        {
+          NSDictionary *existingReference;
+          NSString *selectedEmail;
+          NSUInteger j, max;
+
+          existingReference = [references objectAtIndex: i];
+          selectedEmail = [existingReference objectForKey: @"email"];
+          if (![selectedEmail length])
+            continue;
+
+          max = [[list cardReferences] count];
+          for (j = 0; j < max; j++)
+            {
+              NGVCardReference *existingCardReference;
+
+              existingCardReference = [[list cardReferences] objectAtIndex: j];
+              if ([[existingCardReference reference]
+                    isEqualToString: [existingReference objectForKey: @"id"]])
+                {
+                  if (![[existingCardReference email] isEqualToString: selectedEmail])
+                    [existingCardReference setEmail: selectedEmail];
+                  break;
+                }
+            }
+        }
+    }
 
   // Add new cards
   count = [references count];
@@ -230,11 +260,20 @@
 	      values = [folder lookupContactWithName: uid];
 	      if (values)
 		{
+                  NSString *selectedEmail;
+
                   emails = [[values objectForKey: @"c_mail"] componentsSeparatedByString: @","];
 		  cardReference = [NGVCardReference elementWithTag: @"card"];
 		  [cardReference setFn: [values objectForKey: @"c_cn"]];
-                  if ([emails count])
-                    [cardReference setEmail: [emails objectAtIndex: 0]];
+                  /* Keep the email address picked in the UI when it belongs
+                     to the contact, instead of always falling back to the
+                     preferred one (#6251) */
+                  selectedEmail = [currentReference objectForKey: @"email"];
+                  if (![selectedEmail length]
+                      || ![emails containsObject: selectedEmail])
+                    selectedEmail = ([emails count]
+                                     ? [emails objectAtIndex: 0] : @"");
+                  [cardReference setEmail: selectedEmail];
 		  [cardReference setReference: uid];
 
 		  [list addCardReference: cardReference];
@@ -245,8 +284,14 @@
               emails = [[currentReference objectForKey: @"c_mail"] componentsSeparatedByString: @","];
               cardReference = [NGVCardReference elementWithTag: @"card"];
               [cardReference setFn: [currentReference objectForKey: @"c_cn"]];
-                          if ([emails count])
-                            [cardReference setEmail: [emails objectAtIndex: 0]];
+              /* honor the email picked in the UI when it belongs to the
+                 contact, as done for personal address books (#6251) */
+              NSString *selectedEmail = [currentReference objectForKey: @"email"];
+              if (![selectedEmail length]
+                  || ![emails containsObject: selectedEmail])
+                selectedEmail = ([emails count]
+                                 ? [emails objectAtIndex: 0] : @"");
+              [cardReference setEmail: selectedEmail];
               [cardReference setReference: uid];
 
               [list addCardReference: cardReference];

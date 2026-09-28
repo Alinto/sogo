@@ -186,6 +186,16 @@ static NSArray *folderListingFields = nil;
       obj = [super lookupName:_key inContext:_ctx acquire:NO];
       if (!obj)
         {
+          /* Some clients (or front proxies) percent-escape characters
+             such as '@' in card UIDs; a second decoding pass resolves
+             the card instead of spawning a duplicate entry with the
+             escaped UID (#6242). */
+          if ([_key containsURLEscapeCharacters])
+            obj = [super lookupName:[_key stringByUnescapingURL]
+                          inContext:_ctx acquire:NO];
+        }
+      if (!obj)
+        {
 	  if ([self isValidContentName: _key])
             {
               url = [[[_ctx request] uri] urlWithoutParameters];
