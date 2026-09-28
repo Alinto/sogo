@@ -22,12 +22,14 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSProcessInfo.h>
+#import <Foundation/NSPathUtilities.h>
 
 #import <SaxObjC/SaxXMLReaderFactory.h>
 
 @interface SaxXMLReaderFactory (SOGoTests)
 
 - (NSArray *) saxReaderSearchPathes;
+- (NSString *) libraryDriversSubDir;
 
 @end
 
@@ -35,15 +37,24 @@
 
 - (NSArray *) saxReaderSearchPathes
 {
-  NSArray *pathes, *args;
-  NSString *exedir;
+  NSMutableArray *pathes;
+  NSArray *args, *libraryPaths;
+  NSEnumerator *e;
+  NSString *exedir, *libraryPath;
 
   args = [[NSProcessInfo processInfo] arguments];
   exedir = [[args objectAtIndex: 0] stringByDeletingLastPathComponent];
-  pathes = [NSArray arrayWithObject:
-                      [NSString stringWithFormat: @"%@/%@",
+  pathes = [NSMutableArray array];
+  [pathes addObject: [NSString stringWithFormat: @"%@/%@",
                                 exedir,
                                 @"../../../SOPE/NGCards/versitCardsSaxDriver/"]];
+
+  /* Keep the standard SaxDrivers locations reachable so that parsers
+     for other MIME types (eg. text/html through libxml) stay loadable */
+  e = [NSStandardLibraryPaths() objectEnumerator];
+  while ((libraryPath = [e nextObject]))
+    [pathes addObject: [libraryPath stringByAppendingPathComponent:
+                                   [self libraryDriversSubDir]]];
 
   return pathes;
 }

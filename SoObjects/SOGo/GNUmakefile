@@ -22,6 +22,7 @@ SOGo_HEADER_FILES = \
 	EOQualifier+SOGoCacheObject.h 	\
 	GCSSpecialQueries+SOGoCacheObject.h \
 	RTFHandler.h                    \
+	SOGoHTMLSanitizer.h		\
 	SOGoCache.h			\
 	SOGoCacheGCSFolder.h		\
 	SOGoCacheGCSObject.h		\
@@ -113,6 +114,7 @@ SOGo_OBJC_FILES = \
 	EOQualifier+SOGoCacheObject.m	\
 	GCSSpecialQueries+SOGoCacheObject.m \
 	RTFHandler.m                    \
+	SOGoHTMLSanitizer.m		\
 	SOGoCache.m			\
 	SOGoCacheGCSFolder.m		\
 	SOGoCacheGCSObject.m		\
