@@ -165,6 +165,10 @@ String.prototype.asCSSIdentifier = function() {
   return newString;
 };
 
+String.prototype.escapeRegExp = function() {
+  return this.replace(/[-\[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+};
+
 String.prototype.timeInterval = function () {
   var interval;
   if (this == "once_per_hour")

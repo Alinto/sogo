@@ -427,20 +427,25 @@
 
           if (currentIdentity.signature) {
             try {
-              //var currentSignature = new RegExp('(' + reNl + '){' + nlNb + '}--' + space + reNl +
-              //  currentIdentity.signature.replace(/[-\[\]{}()*+?.,\\^$|#\s]/g, '\\$&'));
-              var currentSignature = new RegExp('(<p>)?(<br ?\/?>(&nbsp;)?[ \\n]?)?--&nbsp;<br ?\/?>(&nbsp;)?[ \\n]?(<\/p>)?' + currentIdentity.signature)
+              var escapedSignature = currentIdentity.signature.escapeRegExp();
+              var currentSignature = new RegExp('(<p>)?(<br ?\/?>(&nbsp;)?[ \\n]?)?--&nbsp;<br ?\/?>(&nbsp;)?[ \\n]?(<\/p>)?' + escapedSignature)
               if (vm.message.editable.text.search(currentSignature) >= 0) {
                 vm.message.editable.text = vm.message.editable.text.replace(currentSignature, signature);
                 return true;
               }
             } catch (error) {
-              // An error can occur (regex too long) when the signature is too big (using images)
-              // In this case, just add the signature at the end (#5695)
-              vm.message.editable.text += signature;
-              return true;
+              var sigIndex = vm.message.editable.text.indexOf(currentIdentity.signature);
+              if (sigIndex >= 0) {
+                vm.message.editable.text =
+                  vm.message.editable.text.slice(0, sigIndex) +
+                  vm.message.editable.text.slice(sigIndex + currentIdentity.signature.length);
+                vm.message.editable.text = vm.message.editable.text
+                  .replace(/(<p>)?(<br ?\/?>(&nbsp;)?[ \n]?){1,2}--(&nbsp;)?[ \n]?(<br ?\/?>(&nbsp;)?[ \n]?)?(<\/p>)?$/, '');
+                vm.message.editable.text += signature;
+              }
+              return sigIndex >= 0;
             }
-            
+
           }
           return false;
         });
