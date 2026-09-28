@@ -204,13 +204,13 @@ String.prototype.parseDate = function(localeProvider, format) {
       date.month = parseInt(input) - 1;
       return (date.month < 12);
     }],
-    '%b': [/[^\d\s\.\/\-]{2,}/, function(input) {
+    '%b': [/[^\s\.\/\-]+/, function(input) {
       var i = _.indexOf(_.map(localeProvider.shortMonths, _.toLower), _.toLower(input));
       if (i >= 0)
         date.month = i;
       return (i >= 0);
     }],
-    '%B': [/[^\d\s\.\/\-]{2,}/, function(input) {
+    '%B': [/[^\s\.\/\-]+/, function(input) {
       var i = _.indexOf(_.map(localeProvider.months, _.toLower), _.toLower(input));
       if (i >= 0)
         date.month = i;
