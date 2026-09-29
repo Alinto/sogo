@@ -564,7 +564,7 @@
 {
   NSMutableString *messageID;
   NSString *_domain;
-  NSRange r;
+  NSRange r, cutRange;
 
   messageID = [NSMutableString string];
   [messageID appendFormat: @"<%@", [SOGoObject mailUniqueMessageId]];
@@ -578,9 +578,15 @@
     }
     else
       _domain = mailOrDomain;
-    [messageID appendFormat: @"@%@>", _domain];
+    _domain = [[_domain componentsSeparatedByString: @">"] objectAtIndex: 0];
+    cutRange = [_domain rangeOfCharacterFromSet:
+                  [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (cutRange.location != NSNotFound)
+      _domain = [_domain substringToIndex: cutRange.location];
+    if ([_domain length] > 0)
+      [messageID appendFormat: @"@%@", _domain];
   }
-    
+  [messageID appendString: @">"];
 
   return [messageID lowercaseString];
 }
