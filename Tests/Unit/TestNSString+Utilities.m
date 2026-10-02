@@ -127,7 +127,15 @@
 - (void) test_stringCleanInvalidHTMLTags
 {
   testEquals([[NSString stringWithString:@"<div>Test<!--></div>"] cleanInvalidHTMLTags], @"<div>Test</div>");
-  testEquals([[NSString stringWithString:@"<div><!--[if !mso]><span>Test</span><!--<![endif]--></div>"] cleanInvalidHTMLTags], @"<div><!--[if !mso]><span>Test</span><!--[endif]--></div>");
+  testEquals([[NSString stringWithString:@"<div>Test<!---></div>"] cleanInvalidHTMLTags], @"<div>Test</div>");
+  testEquals([[NSString stringWithString:@"<div>A<!-->B<!-- c -->C<!-->D</div>"] cleanInvalidHTMLTags], @"<div>AB<!-- c -->CD</div>");
+  testEquals([[NSString stringWithString:@"<div><!--[if !mso]><span>Test</span><!--<![endif]--></div>"] cleanInvalidHTMLTags], @"<div><!--[if !mso]><span>Test</span><!--<![endif]--></div>");
+  // Outlook "downlevel-revealed" conditional comment: content must stay visible
+  testEquals([[NSString stringWithString:@"<a><!--[if !mso]><!--> <div><img src=\"x\"/></div> <!--<![endif]--><!--[if mso]><v:fill/><![endif]--></a>"] cleanInvalidHTMLTags], @"<a><!--[if !mso]><!--> <div><img src=\"x\"/></div> <!--<![endif]--><!--[if mso]><v:fill/><![endif]--></a>");
+  // libxml2 also ends a comment with "--!>"
+  testEquals([[NSString stringWithString:@"A<!-- x --!>B<!-->C"] cleanInvalidHTMLTags], @"A<!-- x --!>BC");
+  // unterminated comment is left as is
+  testEquals([[NSString stringWithString:@"<div>A<!-- B</div>"] cleanInvalidHTMLTags], @"<div>A<!-- B</div>");
 }
 
 - (void) test_stringRemoveHTMLTagsExceptAnchorTags

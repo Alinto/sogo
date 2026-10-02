@@ -1089,14 +1089,75 @@ static int cssEscapingCount;
 }
 
 - (NSString *) cleanInvalidHTMLTags {
-  // Clean HTML invalid tags as reported in https://bugs.sogo.nu/view.php?id=5755
-  NSString *s;
-  
-  s = [NSString stringWithString: self];
-  s = [s stringByReplacingOccurrencesOfString:@"<!-->" withString:@""];
-  s = [s stringByReplacingOccurrencesOfString:@"<!--<!" withString:@"<!--"];
+  // Clean HTML invalid tags as reported in https://bugs.sogo.nu/view.php?id=5755 and https://bugs.sogo.nu/view.php?id=6167
+  // libxml2 (HTML4) sees a standalone empty comment (<!--> or <!--->) as an
+  // unterminated comment and drops the rest of the document, so remove it.
+  // Only do it outside of comments: the Outlook "downlevel-revealed" pattern
+  // <!--[if !mso]><!--> ... <!--<![endif]--> ends its first comment with
+  // "<!-->", and removing it would hide the content in between.
+  NSString *result;
+  unichar *in, *out;
+  NSUInteger len, i, j, o;
 
-  return s;
+  len = [self length];
+  if (len == 0)
+    return [NSString string];
+
+  // Work on raw buffers: linear time, bounded memory (no per-comment objects)
+  in = NSZoneMalloc (NULL, len * sizeof (unichar));
+  out = NSZoneMalloc (NULL, len * sizeof (unichar));
+  [self getCharacters: in];
+  i = o = 0;
+
+  while (i < len)
+    {
+      if (i + 3 < len
+          && in[i] == '<' && in[i+1] == '!' && in[i+2] == '-' && in[i+3] == '-')
+        {
+          j = i + 4;
+          if (j < len && in[j] == '>')
+            {
+              // <!-->
+              i = j + 1;
+              continue;
+            }
+          if (j + 1 < len && in[j] == '-' && in[j+1] == '>')
+            {
+              // <!--->
+              i = j + 2;
+              continue;
+            }
+
+          // Regular comment: keep it untouched up to its end ("-->" or "--!>",
+          // as libxml2 accepts both), or up to the end if unterminated
+          while (j < len)
+            {
+              if (j + 2 < len && in[j] == '-' && in[j+1] == '-' && in[j+2] == '>')
+                {
+                  j += 3;
+                  break;
+                }
+              if (j + 3 < len && in[j] == '-' && in[j+1] == '-'
+                  && in[j+2] == '!' && in[j+3] == '>')
+                {
+                  j += 4;
+                  break;
+                }
+              j++;
+            }
+          memcpy (out + o, in + i, (j - i) * sizeof (unichar));
+          o += j - i;
+          i = j;
+        }
+      else
+        out[o++] = in[i++];
+    }
+
+  result = [NSString stringWithCharacters: out length: o];
+  NSZoneFree (NULL, in);
+  NSZoneFree (NULL, out);
+
+  return result;
 }
 
 @end
