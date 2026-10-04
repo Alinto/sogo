@@ -235,9 +235,9 @@
       save = YES;
     }
 
-  if (save)
+  if (save || [[[context activeUser] userDefaults] mailRequestReceipt])
     {
-      [newDraftMessage setHeaders: headers];
+      [newDraftMessage setHeadersForNewMessage: headers];
       [newDraftMessage storeInfo];
     }
 
