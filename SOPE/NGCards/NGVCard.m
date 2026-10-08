@@ -296,8 +296,10 @@
 - (void) setPhoto: (NSString *) _value
 {
   CardElement *photo;
+
   photo = [self uniqueChildWithTag: @"photo"];
-  [photo setValue: 0 ofAttribute: @"encoding" to: @"BASE64"];
+  [photo setValue: 0 ofAttribute: @"type" to: @"JPEG"];
+  [photo setValue: 0 ofAttribute: @"encoding" to: @"b"];
 
   [photo setSingleValue: _value forKey: @""];
 }
