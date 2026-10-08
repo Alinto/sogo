@@ -119,7 +119,7 @@ static const char salt_chars[] =
   unsigned int stringLength = [theString length];
   unsigned int byteLength = stringLength/2;
   unsigned int byteCounter = 0;
-  unsigned char srcBuffer[stringLength];
+  unsigned char srcBuffer[stringLength + 1];
   [theString getCString:(char *)srcBuffer];
   unsigned char *srcPtr = srcBuffer;
   unsigned char dstBuffer[byteLength];
