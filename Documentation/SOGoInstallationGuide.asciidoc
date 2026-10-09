@@ -2834,6 +2834,30 @@ or in a popup window. Possible values are:
 * `inline`
 * `popup`
 
+|U |SOGoMailRequestDeliveryNotification
+|Preselect Request Delivery Notifications for new messages, replies and
+forwards in the web interface. Users can change the option for individual
+messages. Saved drafts preserve their choice when reopened.
+
+Defaults to `NO`. Set `SOGoMailRequestDeliveryNotification = YES;` in
+`sogo.conf` to enable it globally, or configure it at the domain or user
+level.
+
+This feature requires a SOPE build providing
+`supportsDeliveryStatusNotifications` and the
+`mailFrom:requestDeliveryNotification:` and
+`recipientTo:requestDeliveryNotification:` methods on `NGSmtpClient`.
+It also requires SMTP submission to a server advertising the DSN extension
+(RFC 3461). SOGo requests `RET=HDRS` and `NOTIFY=SUCCESS,FAILURE`.
+If DSN is unavailable, sending stops before message submission with an
+error; users can clear the option and retry. The `sendmail` mechanism
+does not support this option.
+
+These notifications concern delivery, not whether the recipient reads the
+message. Confirmation depends on the receiving infrastructure and can
+report relay rather than final delivery. Ordinary failure reporting is
+unchanged when the option is disabled.
+
 |S |SOGoEnableEMailAlarms
 |Parameter used to enable email-based alarms on events and tasks.
 

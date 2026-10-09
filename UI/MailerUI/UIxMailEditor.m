@@ -97,7 +97,7 @@ static NSArray *infoKeys = nil;
                                   @"subject", @"to", @"cc", @"bcc", 
                                 @"from", @"inReplyTo",
                                 @"replyTo",
-                                @"priority", @"receipt", @"isHTML",
+                                @"priority", @"receipt", @"deliveryNotification", @"isHTML",
                                 @"text", @"sign", @"encrypt", nil];
 }
 
@@ -623,6 +623,8 @@ static NSArray *infoKeys = nil;
     {
       info = [self infoFromRequest];
       [co setHeaders: info];
+      if ([[info objectForKey: @"deliveryNotification"] isNotNull])
+        [co setDeliveryNotification: [[info objectForKey: @"deliveryNotification"] boolValue]];
       [co setIsHTML: isHTML];
       [co setSign: sign];
       [co setEncrypt: encrypt];
@@ -766,6 +768,7 @@ static NSArray *infoKeys = nil;
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                               [self localeCode], @"locale",
                               [NSNumber numberWithBool: [self isHTML]], @"isHTML",
+                              [NSNumber numberWithBool: [co deliveryNotification]], @"deliveryNotification",
                               nil];
   if ((value = [self from]))
     [data setObject: value forKey: @"from"];

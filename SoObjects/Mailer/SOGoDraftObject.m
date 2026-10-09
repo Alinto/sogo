@@ -85,6 +85,11 @@
 
 #import "SOGoDraftObject.h"
 
+@interface SOGoDraftObject (DeliveryNotification)
+- (NSData *) _mimeMessageForRecipient: (NSString *) recipient
+                    extractingImages: (BOOL) extractImages
+                               draft: (BOOL) draft;
+@end
 
 static NSString *contentTypeValue = @"text/plain; charset=utf-8";
 static NSString *htmlContentTypeValue = @"text/html; charset=utf-8";
@@ -143,6 +148,7 @@ static NSString    *userAgent      = nil;
       isHTML = NO;
       sign = NO;
       encrypt = NO;
+      deliveryNotification = NO;
       tmpFiles = [[NSMutableArray alloc] init];
     }
 
@@ -202,6 +208,16 @@ static NSString    *userAgent      = nil;
 }
 
 /* contents */
+
+- (void) setDeliveryNotification: (BOOL) aBool
+{
+  deliveryNotification = aBool;
+}
+
+- (BOOL) deliveryNotification
+{
+  return deliveryNotification;
+}
 
 - (void) setHeaders: (NSDictionary *) newHeaders
 {
@@ -433,6 +449,8 @@ static NSString    *userAgent      = nil;
     {
       infos = [NSMutableDictionary dictionary];
       [infos setObject: headers forKey: @"headers"];
+      [infos setObject: [NSNumber numberWithBool: deliveryNotification]
+               forKey: @"deliveryNotification"];
       if (text)
 	[infos setObject: text forKey: @"text"];
       [infos setObject: [NSNumber numberWithBool: isHTML]
@@ -490,6 +508,7 @@ static NSString    *userAgent      = nil;
   if ([value length] > 0)
     [self setText: value];
   isHTML = [[infoDict objectForKey: @"isHTML"] boolValue];
+  deliveryNotification = [[infoDict objectForKey: @"deliveryNotification"] boolValue];
 
   value = [infoDict objectForKey: @"sourceIMAP4ID"];
   if (value)
@@ -594,7 +613,7 @@ static NSString    *userAgent      = nil;
   id result;
 
   error = nil;
-  message = [self mimeMessageForRecipient: nil extractingImages: NO];
+  message = [self _mimeMessageForRecipient: nil extractingImages: NO draft: YES];
 
   if (!message)
     {
@@ -1040,6 +1059,7 @@ static NSString    *userAgent      = nil;
     [info setObject: [addresses objectAtIndex: 0] forKey: @"replyTo"];
 
   h = [sourceMail mailHeaders];
+  deliveryNotification = [[h objectForKey: @"x-sogo-request-delivery-notification"] boolValue];
   priority = [h objectForKey: @"x-priority"];
   if ([priority isNotEmpty] && [priority isKindOfClass: [NSString class]])
     [info setObject: (NSString*)priority forKey: @"X-Priority"];
@@ -1980,6 +2000,13 @@ static NSString    *userAgent      = nil;
 //
 - (NSData *) mimeMessageForRecipient: (NSString *) theRecipient extractingImages: (BOOL)extractImage
 {
+  return [self _mimeMessageForRecipient: theRecipient extractingImages: extractImage draft: NO];
+}
+
+- (NSData *) _mimeMessageForRecipient: (NSString *) theRecipient
+                    extractingImages: (BOOL) extractImage
+                               draft: (BOOL) draft
+{
   NGMimeMessageGenerator *generator, *partGenerator;
   NGMimeMessage *mimeMessage;
   NSData *certificate, *content, *p7s;
@@ -1987,11 +2014,15 @@ static NSString    *userAgent      = nil;
   NGMutableHashMap *hashMap;
   NGMimeMessage *message;
   NSMutableData *d;
+  NSDictionary *draftHeaders;
+
+  draftHeaders = draft && deliveryNotification
+    ? [NSDictionary dictionaryWithObject: @"YES" forKey: @"X-SOGo-Request-Delivery-Notification"] : nil;
 
   // Nothing to sign or encrypt, let's generate the message and return immediately
   if (![self sign] && ![self encrypt])
     {
-      mimeMessage = [self mimeMessageWithHeaders: nil  excluding: nil  extractingImages: extractImage  bodyOnly: NO];
+      mimeMessage = [self mimeMessageWithHeaders: draftHeaders excluding: nil extractingImages: extractImage bodyOnly: NO];
       if (mimeMessage)
         {
           generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
@@ -2046,7 +2077,7 @@ static NSString    *userAgent      = nil;
     }
 
   // We got our mime part, let's add our mail headers
-  hashMap = [self mimeHeaderMapWithHeaders: nil
+  hashMap = [self mimeHeaderMapWithHeaders: draftHeaders
                                  excluding: [NSArray arrayWithObjects: @"MIME-Version", @"Content-Type", @"Content-Transfer-Encoding", nil]];
   message = [NGMimeMessage messageWithHeader: hashMap];
   generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
@@ -2286,6 +2317,7 @@ static NSString    *userAgent      = nil;
   NSData *message, *messageForSent;
   SOGoMailFolder *sentFolder;
   SOGoDomainDefaults *dd;
+  SOGoMailer *mailer;
   NSURL *sourceIMAP4URL, *smtpUrl;
   NSException *error;
   NSString *userId;
@@ -2293,6 +2325,10 @@ static NSString    *userAgent      = nil;
   dd = [[context activeUser] domainDefaults];
   messageForSent = nil;
   userId = [[self->container mailAccountFolder] nameInContainer];
+  smtpUrl = [self smtp4URL];
+  mailer = smtpUrl
+    ? [SOGoMailer mailerWithDomainDefaultsAndSmtpUrl: dd smtpUrl: smtpUrl userIdAccount: userId]
+    : [SOGoMailer mailerWithDomainDefaults: dd];
 
   // If we are encrypting mails, let's generate and
   // send them individually
@@ -2317,28 +2353,13 @@ static NSString    *userAgent      = nil;
             return  [NSException exceptionWithHTTPStatus: 500
                                                   reason: @"could not generate message content"];
 
-          smtpUrl = [self smtp4URL];
-
-          if (smtpUrl)
-          {
-            error = [[SOGoMailer mailerWithDomainDefaultsAndSmtpUrl: dd smtpUrl: smtpUrl userIdAccount: userId]
-                        sendMailData: message
-                        toRecipients: [NSArray arrayWithObject: recipient]
-                              sender: [self sender]
-                   withAuthenticator: [self authenticatorInContext: context]
-                           inContext: context
-                       systemMessage: NO];
-          }
-          else
-          {
-            error = [[SOGoMailer mailerWithDomainDefaults: dd]
-                 sendMailData: message
-                 toRecipients: [NSArray arrayWithObject: recipient]
-                       sender: [self sender]
-            withAuthenticator: [self authenticatorInContext: context]
-                    inContext: context
-                systemMessage: NO];
-          }
+          error = [mailer sendMailData: message
+                         toRecipients: [NSArray arrayWithObject: recipient]
+                               sender: [self sender]
+                    withAuthenticator: [self authenticatorInContext: context]
+                            inContext: context
+                        systemMessage: NO
+          requestDeliveryNotification: deliveryNotification];
 
           if (error) {
             [self cleanTmpFiles];
@@ -2360,31 +2381,22 @@ static NSString    *userAgent      = nil;
         return  [NSException exceptionWithHTTPStatus: 500
                                               reason: @"could not generate message content"];
 
-      smtpUrl = [self smtp4URL];
-
-      if (smtpUrl)
-      {
-        error = [[SOGoMailer mailerWithDomainDefaultsAndSmtpUrl: dd smtpUrl: smtpUrl userIdAccount: userId]
-                    sendMailData: message
-                    toRecipients: [self allBareRecipients]
-                          sender: [self sender]
+      error = [mailer sendMailData: message
+                     toRecipients: [self allBareRecipients]
+                           sender: [self sender]
                 withAuthenticator: [self authenticatorInContext: context]
                         inContext: context
-                    systemMessage: NO];
-      }
-      else
-      {
-        error = [[SOGoMailer mailerWithDomainDefaults: dd]
-              sendMailData: message
-              toRecipients: [self allBareRecipients]
-                    sender: [self sender]
-        withAuthenticator: [self authenticatorInContext: context]
-                inContext: context
-            systemMessage: NO];
-      }
+                    systemMessage: NO
+      requestDeliveryNotification: deliveryNotification];
     }
 
-  if (!error && copyToSent)
+  if (error)
+    {
+      [self cleanTmpFiles];
+      return error;
+    }
+
+  if (copyToSent)
     {
       sentFolder = [[self mailAccountFolder] sentFolderInContext: context];
       if ([sentFolder isKindOfClass: [NSException class]])

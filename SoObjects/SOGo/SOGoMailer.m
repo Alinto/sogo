@@ -265,6 +265,7 @@
               withAuthenticator: (id <SOGoAuthenticator>) authenticator
                       inContext: (WOContext *) woContext
                   systemMessage: (BOOL) isSystemMessage
+    requestDeliveryNotification: (BOOL) requestDeliveryNotification
 {
   NSString *currentTo, *login, *password, *encryption, *protocol, *server;
   NSString * smtpAuthMethod;
@@ -381,16 +382,21 @@
                    exceptionWithHTTPStatus: 500
                    reason: @"cannot send message:"
                    @" unsupported authentication method"];
+      if (!result && requestDeliveryNotification && ![client supportsDeliveryStatusNotifications])
+        result = [NSException exceptionWithHTTPStatus: 400
+                                             reason: @"SMTP server does not support delivery notifications. "
+                                                     @"Clear Request Delivery Notifications to send without them."];
       if (!result)
         {
-          if ([client mailFrom: sender])
+          if ([client mailFrom: sender requestDeliveryNotification: requestDeliveryNotification])
             {
               toErrors = [NSMutableArray array];
               addresses = [recipients objectEnumerator];
               currentTo = [addresses nextObject];
               while (currentTo)
                 {
-                  if (![client recipientTo: [currentTo pureEMailAddress]])
+                  if (![client recipientTo: [currentTo pureEMailAddress]
+                              requestDeliveryNotification: requestDeliveryNotification])
                     {
                       [self logWithFormat: @"error with recipient '%@'", currentTo];
                       [toErrors addObject: [currentTo pureEMailAddress]];
@@ -443,7 +449,29 @@
                      inContext: (WOContext *) woContext
                  systemMessage: (BOOL) isSystemMessage
 {
+  return [self sendMailData: data
+              toRecipients: recipients
+                    sender: sender
+         withAuthenticator: authenticator
+                 inContext: woContext
+             systemMessage: isSystemMessage
+ requestDeliveryNotification: NO];
+}
+
+- (NSException *) sendMailData: (NSData *) data
+                 toRecipients: (NSArray *) recipients
+                       sender: (NSString *) sender
+            withAuthenticator: (id <SOGoAuthenticator>) authenticator
+                    inContext: (WOContext *) woContext
+                systemMessage: (BOOL) isSystemMessage
+  requestDeliveryNotification: (BOOL) requestDeliveryNotification
+{
   NSException *result;
+
+  if (requestDeliveryNotification && [mailingMechanism isEqualToString: @"sendmail"])
+    return [NSException exceptionWithHTTPStatus: 400
+                                        reason: @"Delivery notifications require SMTP submission. "
+                                                @"Clear Request Delivery Notifications to send without them."];
 
   if (![recipients count])
     result = [NSException exceptionWithHTTPStatus: 500
@@ -515,7 +543,8 @@
                                   sender: [sender pureEMailAddress]
                        withAuthenticator: authenticator
                                inContext: woContext 
-                           systemMessage: isSystemMessage];
+                           systemMessage: isSystemMessage
+             requestDeliveryNotification: requestDeliveryNotification];
 	}
     }
 
