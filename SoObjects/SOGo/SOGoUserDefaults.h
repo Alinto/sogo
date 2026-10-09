@@ -153,6 +153,8 @@ extern NSString *SOGoPasswordRecoverySecondaryEmail;
 - (void) setMailComposeMessageType: (NSString *) newValue;
 - (NSString *) mailComposeMessageType;
 
+- (BOOL) mailRequestReceipt;
+
 - (void) setMailComposeFontSize: (int) newValue;
 - (int) mailComposeFontSize;
 

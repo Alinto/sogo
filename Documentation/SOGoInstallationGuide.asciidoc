@@ -2834,6 +2834,23 @@ or in a popup window. Possible values are:
 * `inline`
 * `popup`
 
+|U |SOGoMailRequestReceipt
+|Request a read receipt by default when composing a new message, reply or
+forward in the web interface. Set `SOGoMailRequestReceipt = YES;` in
+`sogo.conf` to enable it globally, or configure it at the domain or user
+level.
+
+Users can clear the Return Receipt checkbox for individual messages.
+Reopening an existing draft preserves its receipt request instead of
+applying this default again. Editing an existing message or template also
+preserves its receipt request.
+
+This controls outgoing receipt requests, not responses to incoming requests
+or SMTP delivery status notifications. A receipt is not guaranteed: the
+recipient's mail client may decline or ignore the request.
+
+Defaults to `NO`.
+
 |S |SOGoEnableEMailAlarms
 |Parameter used to enable email-based alarms on events and tasks.
 
