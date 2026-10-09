@@ -4,20 +4,20 @@
 "Create a new event" = "Создать новое событие";
 "Create a new task" = "Создать новую задачу";
 "Edit this event or task" = "Редактировать это событие или задачу";
-"Print the current calendar view" = "Напечатать календарь в этом виде";
+"Print the current calendar view" = "Напечатать текущий вид календаря";
 "Delete this event or task" = "Удалить это событие или задачу";
-"Go to today" = "Перейти на сегодня";
-"Switch to day view" = "Перейти к обзору дня";
-"Switch to week view" = "Перейти к обзору недели";
-"Switch to month view" = "Перейти к обзору месяца";
-"Switch to multi-columns day view" = "Перейти к обзору дня в несколько колонок";
-"Reload all calendars" = "Перезагрузить все календари";
+"Go to today" = "Перейти к сегодняшней дате";
+"Switch to day view" = "Переключиться на вид по дням";
+"Switch to week view" = "Переключиться на вид по неделям";
+"Switch to month view" = "Переключиться на вид по месяцам";
+"Switch to multi-columns day view" = "Переключиться на многоколоночный вид дня";
+"Reload all calendars" = "Обновить все календари";
 
 /* Tabs */
 "Date" = "Дата";
 "Calendars" = "Календари";
 "No events for selected criteria" = "Нет событий для выбранного критерия";
-"No tasks for selected criteria" = "Нет заданий для выбранного критерия";
+"No tasks for selected criteria" = "Нет задач для выбранного критерия";
 
 /* Day */
 "DayOfTheMonth" = "День месяца";
@@ -53,19 +53,19 @@
 "Export Calendar..." = "Экспортировать календарь...";
 "Import Events..." = "Импорт событий...";
 "Import Events" = "Импорт событий";
-"Select an iCalendar file (.ics)." = "Выберите iCalendar файл (.ics).";
+"Select an iCalendar file (.ics)." = "Выберите файл iCalendar (.ics).";
 "Upload" = "Загрузить";
-"Uploading" = "Закачивается";
+"Uploading" = "Загрузка";
 "Publish Calendar..." = "Опубликовать календарь...";
 "Reload Remote Calendars" = "Обновить удаленные календари";
 "Properties" = "Свойства";
 "Done" = "Готово";
 "An error occurred while importing calendar." = "Ошибка при импорте календаря.";
 "No event was imported." = "События не были импортированы.";
-"A total of %{0} events were imported in the calendar." = " Всего %{0} событий было импортировано в календарь.";
-"Compose E-Mail to All Attendees" = "Составить сообщение ко всем приглашенным";
-"Compose E-Mail to Undecided Attendees" = "Составить сообщение ко всем не решившим приглашенным";
-"Download iOS - MacOS configuration profile" = "Скачать профиль конфигурации iOS - MacOS";
+"A total of %{0} events were imported in the calendar." = "Всего %{0} событий было импортировано в календарь.";
+"Compose E-Mail to All Attendees" = "Написать всем участникам";
+"Compose E-Mail to Undecided Attendees" = "Написать участникам, которые еще не ответили";
+"Download iOS - MacOS configuration profile" = "Скачать профиль конфигурации для iOS/macOS";
 
 /* Relative dates */
 "Yesterday" = "Вчера";
@@ -74,7 +74,7 @@
 "Last %@" = "Последний %@";
 
 /* Folders */
-"Personal calendar" = "Персональный календарь";
+"Personal calendar" = "Личный календарь";
 
 /* Misc */
 "OpenGroupware.org" = "OpenGroupware.org";
@@ -85,28 +85,28 @@
 "For user" = "Для пользователя";
 "Any Authenticated User" = "Любой аутентифицированный пользователь";
 "Public Access" = "Публичный доступ";
-"label_Public" = "Публичное событие";
-"label_Private" = "Личное событие";
+"label_Public" = "Публичное";
+"label_Private" = "Личное";
 "label_Confidential" = "Конфиденциальное";
-"label_Viewer" = "Показывать все";
-"label_DAndTViewer" = "Показывать дату и время";
-"label_Modifier" = "Изменять";
-"label_Responder" = "Отвечать";
-"label_None" = "Ничего";
+"label_Viewer" = "Просмотр всего";
+"label_DAndTViewer" = "Просмотр даты и времени";
+"label_Modifier" = "Изменение";
+"label_Responder" = "Ответ";
+"label_None" = "Нет";
 "View All" = "Показать все";
-"View the Date & Time" = "Показывать время и дату";
+"View the Date & Time" = "Показывать дату и время";
 "Modify" = "Изменить";
 "Respond To" = "Ответить";
 "None" = "Нет";
 "This person can create objects in my calendar."
-= "Этот участник может создавать записи в моем календаре.";
+= "Этот пользователь может создавать записи в моем календаре.";
 "This person can erase objects from my calendar."
-= "Этот участник может удалять записи в моем календаре.";
+= "Этот пользователь может удалять записи в моем календаре.";
 
 /* Button Titles */
 "Subscribe to a Calendar..." = "Подписаться на календарь...";
 "Remove the selected Calendar" = "Удалить выделенный календарь";
-"New calendar" = "Новый календарь...";
+"New calendar" = "Новый календарь";
 "Name of the Calendar" = "Название календаря";
 "new" = "Новый";
 "Print view" = "Печать";
@@ -117,27 +117,27 @@
 "Save and Close" = "Сохранить и закрыть";
 "Close" = "Закрыть";
 "Invite Attendees" = "Пригласить участников";
-"Create Jitsi Meeting" = "Create Jitsi Meeting";
+"Create Jitsi Meeting" = "Создать встречу Jitsi";
 "Attach" = "Прикрепить";
 "Update" = "Обновить";
 "Cancel" = "Отменить";
 "Reset" = "Сбросить";
 "Save" = "Сохранить";
 "show_rejected_apts" = "Показать отклоненные встречи";
-"hide_rejected_apts" = "Спрятать отклоненные встречи";
+"hide_rejected_apts" = "Скрыть отклоненные встречи";
 
 /* Schedule */
 "Schedule" = "Расписание";
-"No appointments found" = "Не найдено назначенных встреч";
-"Meetings proposed by you" = "Ваши предложения о встрече";
-"Meetings proposed to you" = "Предложенные Вам встречи";
+"No appointments found" = "Встреч не найдено";
+"Meetings proposed by you" = "Встречи, предложенные вами";
+"Meetings proposed to you" = "Встречи, предложенные вам";
 "sched_startDateFormat" = "%d/%m %H:%M";
 "action" = "Действие";
-"accept" = "Согласиться";
-"decline" = "Отказаться";
-"more attendees" = "Пригласить еще";
-"Hide already accepted and rejected appointments" = "Скрыть согласившихся и отказавшихся.";
-"Show already accepted and rejected appointments" = "Показать согласившихся и отказавшихся.";
+"accept" = "Принять";
+"decline" = "Отклонить";
+"more attendees" = "Еще участники";
+"Hide already accepted and rejected appointments" = "Скрыть уже принятые и отклоненные встречи";
+"Show already accepted and rejected appointments" = "Показать уже принятые и отклоненные встречи";
 
 /* Print view */
 "LIST" = "Список";
@@ -145,33 +145,33 @@
 "Title" = "Заголовок";
 "Layout" = "Разметка";
 "What to Print" = "Что печатать";
-"Options" = "Опции";
+"Options" = "Параметры";
 "Tasks with no due date" = "Задачи без указания срока выполнения";
 "Display working hours only" = "Показывать только рабочие часы";
 "Completed tasks" = "Выполненные задачи";
 "Display events and tasks colors" = "Показывать цвета событий и задач";
 "Borders" = "Границы";
-"Backgrounds" = "Условия";
+"Backgrounds" = "Фоны";
 "Page Format" = "Формат страницы";
 
 /* Appointments */
-"Appointment viewer" = "Просмотр встреч";
-"Appointment editor" = "Редактор встреч";
-"Appointment proposal" = "Предложение встреч";
-"Appointment on" = "Встреча";
+"Appointment viewer" = "Просмотр встречи";
+"Appointment editor" = "Редактор встречи";
+"Appointment proposal" = "Предложение встречи";
+"Appointment on" = "Встреча на";
 "Start" = "Начало";
 "End" = "Конец";
-"Due Date" = "К сроку";
+"Due Date" = "Срок выполнения";
 "Name" = "Имя";
 "Email" = "E-mail";
-"Status" = "Состояние";
+"Status" = "Статус";
 "% complete" = "% выполнено";
 "Location" = "Место";
 "Add a category" = "Добавить категорию";
 "Priority" = "Приоритет";
-"Privacy" = "Приватность";
-"Cycle" = "Цикл";
-"Cycle End" = "Конец цикла";
+"Privacy" = "Конфиденциальность";
+"Cycle" = "Повторение";
+"Cycle End" = "Окончание повторения";
 "Categories" = "Категории";
 "Classification" = "Классификация";
 "Duration" = "Продолжительность";
@@ -181,12 +181,12 @@
 "Description" = "Описание";
 "Document" = "Документ";
 "Category" = "Категория";
-"Repeat" = "Повторять";
+"Repeat" = "Повтор";
 "Reminder" = "Напоминание";
 "General" = "Общее";
 "Reply" = "Ответ";
-"Created by" = "Создано";
-"You are invited to participate" = "Вас приглашают принять участие";
+"Created by" = "Создано пользователем";
+"You are invited to participate" = "Вы приглашены принять участие";
 "Target" = "Адрес";
 "attributes" = "атрибуты";
 "attendees" = "участники";
@@ -200,37 +200,37 @@
 "Private" = "Личное";
 
 /* text used in overviews and tooltips */
-"empty title" = "Пустой заголовок";
+"empty title" = "Без названия";
 "private appointment" = "Личная встреча";
 "Change..." = "Изменить...";
 
 /* Appointments (participation state) */
-"partStat_NEEDS-ACTION" = "Требует действия";
+"partStat_NEEDS-ACTION" = "Я отвечу позже";
 "partStat_ACCEPTED" = "Я буду участвовать";
 "partStat_DECLINED" = "Я не буду участвовать";
-"partStat_TENTATIVE" = "Я подтвержу позже";
-"partStat_DELEGATED" = "Я делегирую";
+"partStat_TENTATIVE" = "Возможно, я буду участвовать";
+"partStat_DELEGATED" = "Я передаю другому";
 "partStat_OTHER" = "Другое";
 
 /* Appointments (error messages) */
 "Conflicts found!" = "Выявлены конфликты!";
 "Invalid iCal data!" = "Неверные данные iCal!";
-"Could not create iCal data!" = "Не могу создать данные в формате iCal!";
+"Could not create iCal data!" = "Не удалось создать данные iCal!";
 
 /* Searching */
 "view_all" = "Все";
 "view_today" = "Сегодня";
 "view_next7" = "Следующие 7 дней";
 "view_next14" = "Следующие 14 дней";
-"view_next31" = "Следующий 31 день";
+"view_next31" = "31 день вперед";
 "view_thismonth" = "Этот месяц";
 "view_thisyear" = "Этот год";
 "view_last7" = "Последние 7 дней";
 "view_last14" = "Последние 14 дней";
-"view_last31" = "Последний 31 день";
+"view_last31" = "31 день назад";
 "view_lastmonth" = "Последний месяц";
 "view_lastyear" = "Прошлый год";
-"view_future" = "Все будущие мероприятия";
+"view_future" = "Все будущие события";
 "view_selectedday" = "Выбранный день";
 "view_not_started" = "Неначатые задачи";
 "view_overdue" = "Просроченные задачи";
@@ -242,14 +242,14 @@
 "Search attendees" = "Поиск участников";
 "Search resources" = "Поиск ресурсов";
 "Search appointments" = "Поиск встреч";
-"All day Event" = "Весь день";
+"All day Event" = "Событие на весь день";
 "check for conflicts" = "Проверить на конфликты";
 "URL" = "URL";
 "newAttendee" = "Добавить участника";
 
 /* calendar modes */
 "Overview" = "Обзор";
-"Chart" = "Карта";
+"Chart" = "Диаграмма";
 "List" = "Список";
 "Columns" = "Колонки";
 
@@ -269,9 +269,9 @@
 "PUBLIC_vevent" = "Публичное событие";
 "CONFIDENTIAL_vevent" = "Конфиденциальное событие";
 "PRIVATE_vevent" = "Личное событие";
-"PUBLIC_vtodo" = "Публичное задание";
-"CONFIDENTIAL_vtodo" = "Конфиденциальное задание";
-"PRIVATE_vtodo" = "Личное задание";
+"PUBLIC_vtodo" = "Публичная задача";
+"CONFIDENTIAL_vtodo" = "Конфиденциальная задача";
+"PRIVATE_vtodo" = "Личная задача";
 
 /* status type */
 "status_" = "Не указано";
@@ -293,36 +293,36 @@
 "high" = "высокий";
 
 /* Cycles */
-"cycle_once" = "цикл_однажды";
-"cycle_daily" = "цикл_ежедневно";
-"cycle_weekly" = "цикл_еженедельно";
-"cycle_2weeks" = "цикл_каждые_2_недели";
-"cycle_4weeks" = "цикл_каждые_4_недели";
-"cycle_monthly" = "цикл_помесячно";
-"cycle_weekday" = "цикл_по_рабочим_дням";
-"cycle_yearly" = "цикл_ежегодно";
-"cycle_end_never" = "цикл_не_завершается_никогда";
-"cycle_end_until" = "цикл_завершается_до";
-"Recurrence pattern" = "Шаблон повторений";
-"Range of recurrence" = "Диапазон повторений";
+"cycle_once" = "Без повторения";
+"cycle_daily" = "Каждый день";
+"cycle_weekly" = "Каждую неделю";
+"cycle_2weeks" = "Каждые две недели";
+"cycle_4weeks" = "Каждые четыре недели";
+"cycle_monthly" = "Каждый месяц";
+"cycle_weekday" = "По рабочим дням";
+"cycle_yearly" = "Каждый год";
+"cycle_end_never" = "Без даты окончания";
+"cycle_end_until" = "До даты";
+"Recurrence pattern" = "Шаблон повторения";
+"Range of recurrence" = "Период повторения";
 "Daily" = "Ежедневно";
 "Multi-Columns" = "В несколько колонок";
 "Weekly" = "Еженедельно";
 "Monthly" = "Ежемесячно";
 "Yearly" = "Ежегодно";
-"Every" = "Каждые ";
+"Every" = "Каждые";
 "Days" = "дней";
 "Week(s)" = "недель(и)";
-"On" = "На";
+"On" = "В";
 "Month(s)" = "месяца(цев)";
 
 /* [Event recurrence editor] Ex: _The_ first Sunday */
-"The" = "Это";
-"Recur on day(s)" = "Повторяется в дни";
+"The" = " ";
+"Recur on day(s)" = "Повторять по дням";
 "Year(s)" = "год(года)";
 
 /* [Event recurrence editor] Ex: Every first Sunday _of_ April */
-"cycle_of" = "из";
+"cycle_of" = " ";
 "No end date" = "Нет даты завершения";
 "Create" = "Создать";
 "appointment(s)" = "встреча(встречи)";
@@ -330,7 +330,7 @@
 "End Repeat" = "Прекратить повторение";
 "Never" = "Никогда";
 "After" = "После";
-"On Date" = "В дату ";
+"On Date" = "В дату";
 "times" = "раз";
 "First" = "Первый";
 "Second" = "Второй";
@@ -340,8 +340,8 @@
 "Last" = "Последний";
 
 /* Appointment categories */
-"category_none" = "нет";
-"category_labels" = "Годовщина,День рождения,Дела,Звонки,Клиенты,Конкуренты,Потребители,Избранное,В след событию,Подарки,Праздники,Идеи,Встречи,Проблемы,Разное,Личное,Проекты,Государственный праздник,Статус,Поставщики,Путешествие,Каникулы";
+"category_none" = "Нет";
+"category_labels" = "Годовщина,День рождения,Дела,Звонки,Клиенты,Конкуренты,Заказчики,Избранное,Последующие действия,Подарки,Праздники,Идеи,Встреча,Проблемы,Разное,Личное,Проекты,Государственный праздник,Статус,Поставщики,Путешествия,Отпуск";
 "repeat_NEVER" = "Не повторять";
 "repeat_DAILY" = "Ежедневно";
 "repeat_WEEKLY" = "Еженедельно";
@@ -374,11 +374,11 @@
 "reminder_START" = "начала события";
 "reminder_END" = "конца события";
 "Reminder Details" = "Подробности напоминания";
-"Choose a Reminder Action" = "Выбор действия для напоминания";
+"Choose a Reminder Action" = "Выберите действие для напоминания";
 "Show an Alert" = "Показать оповещение";
-"Send an E-mail" = "Послать сообщение e-mail";
-"Email Organizer" = "Email организатору";
-"Email Attendees (internal users)" = "Email участников (внутренние пользователи)";
+"Send an E-mail" = "Отправить письмо";
+"Email Organizer" = "Написать организатору";
+"Email Attendees (internal users)" = "Написать участникам (внутренним пользователям)";
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
@@ -389,28 +389,28 @@
 "Reminder units" = "Единицы времени напоминания";
 
 /* Aria label for reminder time position (after or before) */
-"Reminder position" = "Положение напоминания";
+"Reminder position" = "Позиция напоминания";
 
 /* Aria label for reminder relation with event (start or end) */
-"Reminder relation" = "Зависимость напоминания";
+"Reminder relation" = "Относительно события";
 
 /* transparency */
 "Show Time as Free" = "Отображать время как свободное";
 
 /* email notifications */
-"Send Appointment Notifications" = "Отправлять напоминания о встречах";
+"Send Appointment Notifications" = "Отправлять уведомления о встрече";
 "From" = "От";
 "To" = "Кому";
 
 /* dates */
 "DateFrom" = "От";
-"DateTo" = "Кому";
+"DateTo" = "До";
 
 /* validation errors */
 validate_notitle           = "Нет названия. Продолжить?";
 validate_invalid_startdate = "Неверная дата начала!";
-validate_invalid_enddate   = "Неверная дата конца!";
-validate_endbeforestart    = "Дата начала позже даты конца";
+validate_invalid_enddate   = "Неверная дата окончания!";
+validate_endbeforestart    = "Дата окончания не может быть раньше даты начала.";
 validate_untilbeforeend    = "Повторение должно заканчиваться после первого появления.";
 
 "Events" = "События";
@@ -434,24 +434,24 @@ validate_untilbeforeend    = "Повторение должно заканчив
 "Reload" = "Обновить";
 
 /* Number of selected components in events or tasks list */
-"selected" = "выбран";
-"eventPartStatModificationError" = "Невозможно изменить статус Вашего участия.";
+"selected" = "выбрано";
+"eventPartStatModificationError" = "Не удалось изменить статус вашего участия.";
 
 /* menu */
 "New Event..." = "Новое событие...";
-"New Task..." = "Новое задание...";
-"Edit Selected Event..." = "Редактировать выбранное задание...";
-"Delete Selected Event" = "Удалить выбранное задание";
+"New Task..." = "Новая задача...";
+"Edit Selected Event..." = "Редактировать выбранное событие...";
+"Delete Selected Event" = "Удалить выбранное событие";
 "Select All" = "Выбрать все";
 "Workweek days only" = "Только рабочие дни недели";
-"Tasks in View" = "Задания в виде";
+"Tasks in View" = "Задачи в текущем представлении";
 "eventDeleteConfirmation" = "Следующие события будут удалены:";
 "taskDeleteConfirmation" = "Следующие задачи будут удалены:";
 "Would you like to continue?" = "Продолжить?";
 "You cannot remove nor unsubscribe from your personal calendar."
-= "Вы не можете удалить персональный календарь, равно как и выключить подписку на него.";
+= "Вы не можете удалить свой личный календарь или отменить подписку на него.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
-= "Вы уверены что хотите удалить календарь \"%{0}\"?";
+= "Вы уверены, что хотите удалить календарь \"%{0}\"?";
 "Are you sure you want to delete the selected components?"
 = "Вы уверены, что вы хотите удалить выбранные компоненты?";
 
@@ -468,7 +468,7 @@ validate_untilbeforeend    = "Повторение должно заканчив
 "Optional Participant" = "Необязательный участник";
 
 /* Participant role: participation is optional */
-"opt-participant" = "Возможный участник";
+"opt-participant" = "Необязательный участник";
 
 /* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Не участник";
@@ -494,9 +494,9 @@ validate_untilbeforeend    = "Повторение должно заканчив
 /* Participant status: tentatively accepted */
 "Tentative" = "Предварительно";
 
-"Free" = "Свободен";
-"Busy" = "Занят";
-"Maybe busy" = "Возможно занят";
+"Free" = "Свободно";
+"Busy" = "Занято";
+"Maybe busy" = "Возможно занято";
 "No free-busy information" = "Нет информации о занятости";
 
 /* FreeBusy panel buttons and labels */
@@ -511,9 +511,9 @@ validate_untilbeforeend    = "Повторение должно заканчив
 "Between" = "между";
 "and" = "и";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
-= "У одного или нескольких приглашенных есть конфликт по времени.\nВы хотите сохранить текущие настройки несмотря на конфликт?";
+= "У одного или нескольких участников есть конфликт по времени.\nСохранить текущие настройки?";
 "Would you like to remove them and send the invitation to the remaining attendees?"
-= "Вы хотите удалить их и отправить приглашение оставшимся участникам?";
+= "Удалить их и отправить приглашение оставшимся участникам?";
 
 /* events list */
 "Due" = "Срок";
@@ -524,30 +524,30 @@ vevent_class2 = "(Конфиденциальное событие)";
 
 /* tasks list */
 "Descending Order" = "В убывающем порядке";
-vtodo_class0 = "(Публичное задание)";
-vtodo_class1 = "(Личное задание)";
-vtodo_class2 = "(Конфиденциальное задание)";
-"closeThisWindowMessage" = "Спасибо! Вы можете закрыть это окно или посмотреть ";
-"Multicolumn Day View" = "День в несколько колонок";
-"Please select an event or a task." = "Пожалуйста выберите событие или задачу.";
-"editRepeatingItem" = "Вы выбрали для изменения повторяющееся событие. Изменяя свойства этого события, вы можете изменить их для всех повторов или только для выбранного события. Что вы хотите изменить?";
-"button_thisOccurrenceOnly" = "Только это появление";
-"button_allOccurrences" = "Все появления";
-"Edit This Occurrence" = "Редактировать это появление";
-"Edit All Occurrences" = "Редактировать все появления";
-"Update This Occurrence" = "Обновить это появление";
-"Update All Occurrences" = "Обновить все появления";
+vtodo_class0 = "(Публичная задача)";
+vtodo_class1 = "(Личная задача)";
+vtodo_class2 = "(Конфиденциальная задача)";
+"closeThisWindowMessage" = "Спасибо! Теперь можно закрыть это окно или открыть ";
+"Multicolumn Day View" = "Многоколоночный вид дня";
+"Please select an event or a task." = "Пожалуйста, выберите событие или задачу.";
+"editRepeatingItem" = "Вы редактируете повторяющийся элемент. Изменить только этот экземпляр или все повторения?";
+"button_thisOccurrenceOnly" = "Только этот экземпляр";
+"button_allOccurrences" = "Все повторения";
+"Edit This Occurrence" = "Редактировать этот экземпляр";
+"Edit All Occurrences" = "Редактировать все повторения";
+"Update This Occurrence" = "Обновить этот экземпляр";
+"Update All Occurrences" = "Обновить все повторения";
 
 /* Properties dialog */
 "Color" = "Цвет";
-"Include in free-busy" = "Включить свободен-занят";
+"Include in free-busy" = "Учитывать в статусе занятости";
 "Synchronization" = "Синхронизация";
 "Synchronize" = "Синхронизировать";
 "Tag" = "Метка";
-"Display" = "Вид";
+"Display" = "Отображение";
 "Show alarms" = "Показывать оповещения";
-"Show tasks" = "Показывать задания";
-"Notifications" = "Напоминания";
+"Show tasks" = "Показывать задачи";
+"Notifications" = "Уведомления";
 "Receive a mail when I modify my calendar" = "Получать письмо, если я изменю свой календарь";
 "Receive a mail when someone else modifies my calendar" = "Получать письмо, если кто-то изменит мой календарь";
 "When I modify my calendar, send a mail to" = "Если я изменяю календарь, отправлять письмо на адрес";
@@ -563,8 +563,8 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "Show All Calendars" = "Показать все календари";
 
 "Links to this Calendar" = "Ссылки на этот календарь";
-"Authenticated User Access" = "Доступ авторизированных пользователей";
-"CalDAV URL" = "CalDAV URL ";
+"Authenticated User Access" = "Доступ авторизованных пользователей";
+"CalDAV URL" = "CalDAV URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 "Copy to clipboard" = "Скопировать в буфер обмена";
@@ -578,15 +578,15 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "appointmentFieldInvalid" = "Пожалуйста, укажите число больше нуля в поле оповещений.";
 "recurrenceUnsupported" = "Этот тип повторений пока не поддерживается.";
 "Please specify a calendar name." = "Пожалуйста, укажите имя календаря.";
-"tagNotDefined" = "Вы должны указать метку (tag) если хотите синхронизировать этот календарь.";
+"tagNotDefined" = "Нужно указать метку, чтобы синхронизировать этот календарь.";
 "tagAlreadyExists" = "Указанная метка уже используется в другом календаре.";
-"tagHasChanged" = "Если Вы смените метку в этом календаре, то будет необходимо заново синхронизировать данные на Вашем мобильном устройстве. \nПродолжить?";
-"tagWasAdded" = "Если Вы захотите синхронизировать этот календарь, то будет необходимо заново синхронизировать данные на Вашем мобильном устройстве. \nПродолжить?";
-"tagWasRemoved" = "Если вы удалите этот календарь, то будет необходимо заново синхронизировать данные на Вашем мобильном устройстве.\n Продолжить?";
+"tagHasChanged" = "Если вы измените метку этого календаря, данные на мобильном устройстве придется загрузить заново.\nПродолжить?";
+"tagWasAdded" = "Если вы хотите синхронизировать этот календарь, данные на мобильном устройстве придется загрузить заново.\nПродолжить?";
+"tagWasRemoved" = "Если вы отключите синхронизацию этого календаря, данные на мобильном устройстве придется загрузить заново.\nПродолжить?";
 "DestinationCalendarError" = "Исходный и целевой календари совпадают. Пожалуйста, выберите другой целевой календарь.";
 "EventCopyError" = "Копирование не удалось. Пожалуйста, попытайтесь скопировать в другой календарь.";
 "Please select at least one calendar" = "Выберите хотя бы один календарь";
-"Open Task..." = "Открыть задание...";
+"Open Task..." = "Открыть задачу...";
 "Mark Completed" = "Пометить как завершенное";
 "Delete Task" = "Удалить задачу";
 "Delete Event" = "Удалить событие";
@@ -596,52 +596,52 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "Copy To" = "Копировать в";
 "Subscriptions" = "Подписки";
 "Subscribe to a shared calendar" = "Подписаться на общий календарь";
-"Subscribe to a web calendar..." = "Подписаться на календарь в сети...";
+"Subscribe to a web calendar..." = "Подписаться на веб-календарь...";
 "URL of the Calendar" = "URL календаря";
-"Web Calendar" = "Web Calendar";
-"Web Calendars" = "Календарь в интернет";
-"Reload on login" = "Перезагружать при входе";
+"Web Calendar" = "Веб-календарь";
+"Web Calendars" = "Веб-календари";
+"Reload on login" = "Обновлять при входе";
 "Invalid number." = "Число неверно.";
-"Please identify yourself to %{0}" = "Пожалуйста, представьте себя %{0}";
-"quantity" = "количество";
+"Please identify yourself to %{0}" = "Пожалуйста, войдите в %{0}";
+"quantity" = "Количество";
 "Current view" = "Текущий вид";
-"Selected events and tasks" = "Выбранные события и задания";
+"Selected events and tasks" = "Выбранные события и задачи";
 "Custom date range" = "Специальный диапазон дат";
 "Select starting date" = "Выберите начальную дату";
 "Select ending date" = "Выберите конечную дату";
-"Delegated to" = "Делегировано ";
-"Keep sending me updates" = "Продолжать посылать мне обновления";
+"Delegated to" = "Делегировано";
+"Keep sending me updates" = "Продолжать отправлять мне обновления";
 "OK" = "ОК";
 "Confidential" = "Конфиденциально";
-"Enable" = "Доступен";
+"Enable" = "Включить";
 "Filter" = "Фильтр";
 "Sort" = "Сортировка";
 "Back" = "Назад";
 "Day" = "День";
 "Month" = "Месяц";
-"New Appointment" = "Новое посещение";
+"New Appointment" = "Новая встреча";
 "filters" = "фильтры";
 "Today" = "Сегодня";
-"More options" = "Больше опций";
+"More options" = "Больше параметров";
 "Delete This Occurrence" = "Удалить это появление";
 "Delete All Occurrences" = "Удалить все появления";
 "Add Recurrence Date" = "Добавить дату повторения";
-"Add From" = "Добавить поле начала";
-"Add Due" = "Добавить Сделать к сроку";
+"Add From" = "Добавить дату начала";
+"Add Due" = "Добавить срок выполнения";
 "Import" = "Импорт";
 "Rename" = "Переименовать";
 "Import Calendar" = "Импортировать календарь";
-"Select an ICS file." = "Выберите iCalendar файл (.ics).";
-"You have modified data unsaved. Do you want to close popup and loose data ?" = "У вас не сохранены измененные данные. Вы хотите закрыть всплывающее окно и потерять данные?";
+"Select an ICS file." = "Выберите файл ICS.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "У вас есть несохраненные изменения. Закрыть всплывающее окно и потерять их?";
 
 /* Notification when user subscribes to a calendar */
-"Successfully subscribed to calendar" = "Успешная подписка на календарь";
+"Successfully subscribed to calendar" = "Подписка на календарь оформлена";
 
 /* Aria label for color chip button to select and unselect an event or task */
-"Toggle item" = "Сменить выделение";
+"Toggle item" = "Переключить выделение элемента";
 
 /* Aria label for scope of search on events or tasks */
-"Search scope" = "Поиск по типу";
+"Search scope" = "Область поиска";
 
 /* Hotkey to create an event */
 "hotkey_create_event" = "e";
