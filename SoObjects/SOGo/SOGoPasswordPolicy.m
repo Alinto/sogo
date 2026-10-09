@@ -75,7 +75,7 @@ static const NSString *SPECIAL_SYMBOL_ALLOWED = @"%$&*(){}!?\\@#.,:;+=\\[\\]\\|<
         NSNumber *value = [policy objectForKey:@"value"];
         NSInteger index = [[self policies] indexOfObject: label];
         
-        if (0 < value) {
+        if (0 < [value intValue]) {
           NSMutableDictionary *newPolicy = [NSMutableDictionary dictionaryWithDictionary: policy];
           [newPolicy setObject:[[self regexPoliciesWithCount: value] objectAtIndex: index] forKey:@"regex"]; 
           [passwordPolicy addObject: newPolicy];
