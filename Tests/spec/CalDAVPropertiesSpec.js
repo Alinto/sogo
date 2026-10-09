@@ -130,4 +130,103 @@ END:VCALENDAR`
       .withContext(`Returned vCalendar matches ${filename}`)
       .toBe(true)
   })
+
+  it("calendar-multiget removes exact duplicate recurrence rules", async function() {
+    const filename = `duplicate-rrule.ics`
+    const event = `BEGIN:VCALENDAR
+PRODID:-//Inverse//Event Generator//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:duplicate-rrule
+SUMMARY:Duplicate recurrence rule
+DTSTART:20260211T123000Z
+DTEND:20260211T140000Z
+RRULE:FREQ=WEEKLY;INTERVAL=2;BYDAY=WE
+RRULE:FREQ=WEEKLY;INTERVAL=2;BYDAY=WE
+RRULE:FREQ=WEEKLY;INTERVAL=2;BYDAY=FR
+END:VEVENT
+END:VCALENDAR`
+
+    let response = await webdav.createCalendarObject(resource, filename, event)
+    expect(response.status).toBe(201)
+
+    response = await webdav.calendarMultiGet(resource, filename)
+    expect(response.length)
+      .withContext(`Number of results from calendar-multiget`)
+      .toBe(1)
+
+    const calendarData = response[0].props.calendarData.replace(/\r\n/g, '\n')
+    const wednesdayRules = calendarData.match(/^RRULE:FREQ=WEEKLY;INTERVAL=2;BYDAY=WE$/gm) || []
+    const fridayRules = calendarData.match(/^RRULE:FREQ=WEEKLY;INTERVAL=2;BYDAY=FR$/gm) || []
+
+    expect(wednesdayRules.length)
+      .withContext(`Duplicated recurrence rule is returned once`)
+      .toBe(1)
+    expect(fridayRules.length)
+      .withContext(`Different recurrence rule is preserved`)
+      .toBe(1)
+
+    const dirtySerializedLength = Buffer.byteLength(`${event.replace(/\n/g, '\r\n')}\r\n`, 'utf8')
+    const [objectProperties] = await webdav.propfindWebdav(resource + filename, ['getcontentlength'])
+    expect(Number(objectProperties.props.getcontentlength))
+      .withContext(`Persisted calendar object is normalized on save`)
+      .toBeLessThan(dirtySerializedLength)
+  })
+
+  it("calendar-multiget removes only exact duplicate alarms", async function() {
+    const filename = `duplicate-alarm.ics`
+    const event = `BEGIN:VCALENDAR
+PRODID:-//Inverse//Event Generator//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:duplicate-alarm
+SUMMARY:Duplicate alarm
+DTSTART:20260211T123000Z
+DTEND:20260211T140000Z
+BEGIN:VALARM
+UID:37e0f1a4-6d0c-4a0e-9d3b-6b6f0f5c1a22
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:ten minutes
+END:VALARM
+BEGIN:VALARM
+UID:37e0f1a4-6d0c-4a0e-9d3b-6b6f0f5c1a22
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:ten minutes
+END:VALARM
+BEGIN:VALARM
+UID:37e0f1a4-6d0c-4a0e-9d3b-6b6f0f5c1a22
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:ten minutes
+ACKNOWLEDGED:20260211T121500Z
+END:VALARM
+END:VEVENT
+END:VCALENDAR`
+
+    let response = await webdav.createCalendarObject(resource, filename, event)
+    expect(response.status).toBe(201)
+
+    response = await webdav.calendarMultiGet(resource, filename)
+    expect(response.length)
+      .withContext(`Number of results from calendar-multiget`)
+      .toBe(1)
+
+    const calendarData = response[0].props.calendarData.replace(/\r\n/g, '\n')
+    const alarms = calendarData.match(/^BEGIN:VALARM$/gm) || []
+    const acknowledged = calendarData.match(/^ACKNOWLEDGED:20260211T121500Z$/gm) || []
+
+    expect(alarms.length)
+      .withContext(`Duplicated alarm is returned once and distinct alarm is preserved`)
+      .toBe(2)
+    expect(acknowledged.length)
+      .withContext(`Acknowledged alarm is preserved`)
+      .toBe(1)
+
+    const [objectProperties] = await webdav.propfindWebdav(resource + filename, ['getcontentlength'])
+    expect(Number(objectProperties.props.getcontentlength))
+      .withContext(`Persisted calendar object matches the returned normalized content`)
+      .toBe(Buffer.byteLength(response[0].props.calendarData, 'utf8'))
+  })
 })

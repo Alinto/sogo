@@ -86,6 +86,41 @@
   return [self rules: rules withTimeZone: timezone];
 }
 
+- (BOOL) removeDuplicateRecurrenceRules
+{
+  NSArray *rules;
+  NSMutableArray *duplicateRules, *ruleStrings;
+  NSEnumerator *allRules;
+  iCalRecurrenceRule *currentRule;
+  NSString *currentRuleString;
+
+  rules = [self recurrenceRules];
+  if ([rules count] < 2)
+    return NO;
+
+  duplicateRules = [NSMutableArray array];
+  ruleStrings = [NSMutableArray array];
+
+  allRules = [rules objectEnumerator];
+  while ((currentRule = [allRules nextObject]))
+    {
+      currentRuleString = [currentRule versitString];
+      if ([ruleStrings containsObject: currentRuleString])
+        [duplicateRules addObject: currentRule];
+      else
+        [ruleStrings addObject: currentRuleString];
+    }
+
+  allRules = [duplicateRules objectEnumerator];
+  while ((currentRule = [allRules nextObject]))
+    {
+      [currentRule setParent: nil];
+      [children removeObjectIdenticalTo: currentRule];
+    }
+
+  return ([duplicateRules count] > 0);
+}
+
 - (void) removeAllRecurrenceDates
 {
   [self removeChildren: [self childrenWithTag: @"rdate"]];
