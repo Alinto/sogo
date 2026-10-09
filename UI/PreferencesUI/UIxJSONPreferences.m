@@ -407,6 +407,10 @@ static SoProduct *preferencesProduct = nil;
   if (![[defaults source] objectForKey: @"SOGoMailReplyPlacement"])
     [[defaults source] setObject: [defaults mailReplyPlacement] forKey: @"SOGoMailReplyPlacement"];
 
+  if (![[defaults source] objectForKey: @"SOGoMailSaveRepliesInOriginalFolder"])
+    [[defaults source] setObject: [NSNumber numberWithBool: [defaults mailSaveRepliesInOriginalFolder]]
+                         forKey: @"SOGoMailSaveRepliesInOriginalFolder"];
+
   if (![[defaults source] objectForKey: @"SOGoMailUseSignatureOnNew"])
     [[defaults source] setObject: [NSNumber numberWithBool: [defaults mailUseSignatureOnNew]] forKey: @"SOGoMailUseSignatureOnNew"];
   

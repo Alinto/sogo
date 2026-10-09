@@ -85,6 +85,12 @@
 
 #import "SOGoDraftObject.h"
 
+@interface SOGoDraftObject (ReplyFolder)
+- (NSData *) _mimeMessageForRecipient: (NSString *) recipient
+                    extractingImages: (BOOL) extractImages
+                               draft: (BOOL) draft;
+- (id) _replySaveFolder;
+@end
 
 static NSString *contentTypeValue = @"text/plain; charset=utf-8";
 static NSString *htmlContentTypeValue = @"text/html; charset=utf-8";
@@ -157,6 +163,7 @@ static NSString    *userAgent      = nil;
   [path release];
   [sourceURL release];
   [sourceFlag release];
+  [replyFolder release];
   [inReplyTo release];
   [references release];
   [tmpFiles release];
@@ -433,6 +440,8 @@ static NSString    *userAgent      = nil;
     {
       infos = [NSMutableDictionary dictionary];
       [infos setObject: headers forKey: @"headers"];
+      if (replyFolder)
+        [infos setObject: replyFolder forKey: @"replyFolder"];
       if (text)
 	[infos setObject: text forKey: @"text"];
       [infos setObject: [NSNumber numberWithBool: isHTML]
@@ -490,6 +499,7 @@ static NSString    *userAgent      = nil;
   if ([value length] > 0)
     [self setText: value];
   isHTML = [[infoDict objectForKey: @"isHTML"] boolValue];
+  ASSIGN (replyFolder, [infoDict objectForKey: @"replyFolder"]);
 
   value = [infoDict objectForKey: @"sourceIMAP4ID"];
   if (value)
@@ -594,7 +604,7 @@ static NSString    *userAgent      = nil;
   id result;
 
   error = nil;
-  message = [self mimeMessageForRecipient: nil extractingImages: NO];
+  message = [self _mimeMessageForRecipient: nil extractingImages: NO draft: YES];
 
   if (!message)
     {
@@ -1040,6 +1050,8 @@ static NSString    *userAgent      = nil;
     [info setObject: [addresses objectAtIndex: 0] forKey: @"replyTo"];
 
   h = [sourceMail mailHeaders];
+  if ([[h objectForKey: @"x-sogo-reply-folder"] isKindOfClass: [NSString class]])
+    ASSIGN (replyFolder, [[h objectForKey: @"x-sogo-reply-folder"] stringByUnescapingURL]);
   priority = [h objectForKey: @"x-priority"];
   if ([priority isNotEmpty] && [priority isKindOfClass: [NSString class]])
     [info setObject: (NSString*)priority forKey: @"X-Priority"];
@@ -1101,6 +1113,7 @@ static NSString    *userAgent      = nil;
   [self setSourceFlag: @"Answered"];
   [self setSourceIMAP4ID: [[sourceMail nameInContainer] intValue]];
   [self setSourceFolderWithMailObject: sourceMail];
+  ASSIGN (replyFolder, sourceFolder);
 
   if ([[ud mailComposeMessageType] isEqualToString: @"html"]) {
     [self setText: [NSString stringWithFormat: @"<br/><br/>%@", [sourceMail contentForReply]]];
@@ -1980,6 +1993,13 @@ static NSString    *userAgent      = nil;
 //
 - (NSData *) mimeMessageForRecipient: (NSString *) theRecipient extractingImages: (BOOL)extractImage
 {
+  return [self _mimeMessageForRecipient: theRecipient extractingImages: extractImage draft: NO];
+}
+
+- (NSData *) _mimeMessageForRecipient: (NSString *) theRecipient
+                    extractingImages: (BOOL) extractImage
+                               draft: (BOOL) draft
+{
   NGMimeMessageGenerator *generator, *partGenerator;
   NGMimeMessage *mimeMessage;
   NSData *certificate, *content, *p7s;
@@ -1987,11 +2007,15 @@ static NSString    *userAgent      = nil;
   NGMutableHashMap *hashMap;
   NGMimeMessage *message;
   NSMutableData *d;
+  NSDictionary *draftHeaders;
+
+  draftHeaders = draft && [replyFolder length]
+    ? [NSDictionary dictionaryWithObject: [replyFolder stringByEscapingURL] forKey: @"X-SOGo-Reply-Folder"] : nil;
 
   // Nothing to sign or encrypt, let's generate the message and return immediately
   if (![self sign] && ![self encrypt])
     {
-      mimeMessage = [self mimeMessageWithHeaders: nil  excluding: nil  extractingImages: extractImage  bodyOnly: NO];
+      mimeMessage = [self mimeMessageWithHeaders: draftHeaders excluding: nil extractingImages: extractImage bodyOnly: NO];
       if (mimeMessage)
         {
           generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
@@ -2046,7 +2070,7 @@ static NSString    *userAgent      = nil;
     }
 
   // We got our mime part, let's add our mail headers
-  hashMap = [self mimeHeaderMapWithHeaders: nil
+  hashMap = [self mimeHeaderMapWithHeaders: draftHeaders
                                  excluding: [NSArray arrayWithObjects: @"MIME-Version", @"Content-Type", @"Content-Transfer-Encoding", nil]];
   message = [NGMimeMessage messageWithHeader: hashMap];
   generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
@@ -2281,6 +2305,51 @@ static NSString    *userAgent      = nil;
 //
 //
 //
+- (id) _replySaveFolder
+{
+  NSArray *paths;
+  NSString *component;
+  SOGoMailAccount *account;
+  NSException *unavailable;
+  id folder, rights;
+  NSUInteger i;
+
+  account = [self mailAccountFolder];
+  paths = [replyFolder componentsSeparatedByString: @"/"];
+  unavailable = [NSException exceptionWithHTTPStatus: 409
+    reason: @"Original reply folder is unavailable. Disable Save replies in original folder in Mail preferences and retry."];
+  if ([paths count] < 3 || [[paths objectAtIndex: 0] length]
+      || ![[paths objectAtIndex: 1] isEqualToString: [account nameInContainer]])
+    return unavailable;
+
+  folder = account;
+  for (i = 2; i < [paths count]; i++)
+    {
+      component = [paths objectAtIndex: i];
+      if (![component hasPrefix: @"folder"] || [component length] <= 6)
+        return unavailable;
+      folder = [folder lookupName: component inContext: context acquire: NO];
+      if ([folder isKindOfClass: [NSException class]])
+        return folder;
+      if (![folder isKindOfClass: [SOGoMailFolder class]])
+        return unavailable;
+    }
+
+  if (![folder exists])
+    return unavailable;
+  if ([account hasCapability: @"acl"])
+    {
+      rights = [[folder imap4Connection] myRightsForMailboxAtURL: [folder imap4URL]];
+      if ([rights isKindOfClass: [NSException class]])
+        return rights;
+      if (![rights isKindOfClass: [NSString class]] || [rights rangeOfString: @"i"].location == NSNotFound)
+        return [NSException exceptionWithHTTPStatus: 403
+          reason: @"Cannot write to original reply folder. Disable Save replies in original folder in Mail preferences and retry."];
+    }
+
+  return folder;
+}
+
 - (NSException *) sendMailAndCopyToSent: (BOOL) copyToSent
 {
   NSData *message, *messageForSent;
@@ -2289,10 +2358,21 @@ static NSString    *userAgent      = nil;
   NSURL *sourceIMAP4URL, *smtpUrl;
   NSException *error;
   NSString *userId;
+  BOOL saveReply;
 
   dd = [[context activeUser] domainDefaults];
   messageForSent = nil;
   userId = [[self->container mailAccountFolder] nameInContainer];
+  error = nil;
+  saveReply = copyToSent && [replyFolder length]
+    && [[[context activeUser] userDefaults] mailSaveRepliesInOriginalFolder];
+  sentFolder = nil;
+  if (saveReply)
+    {
+      sentFolder = [self _replySaveFolder];
+      if ([sentFolder isKindOfClass: [NSException class]])
+        return (NSException *) sentFolder;
+    }
 
   // If we are encrypting mails, let's generate and
   // send them individually
@@ -2384,14 +2464,31 @@ static NSString    *userAgent      = nil;
       }
     }
 
-  if (!error && copyToSent)
+  if (error)
     {
-      sentFolder = [[self mailAccountFolder] sentFolderInContext: context];
+      [self cleanTmpFiles];
+      return error;
+    }
+
+  if (copyToSent)
+    {
+      if (!saveReply)
+        sentFolder = [[self mailAccountFolder] sentFolderInContext: context];
       if ([sentFolder isKindOfClass: [NSException class]])
         error = (NSException *) sentFolder;
       else
         {
-          error = [sentFolder postData: messageForSent flags: @"seen"];
+          if (saveReply)
+            error = [[sentFolder imap4Connection] postData: messageForSent flags: @"seen"
+                                             toFolderURL: [sentFolder imap4URL]];
+          else
+            error = [sentFolder postData: messageForSent flags: @"seen"];
+          if (error && saveReply)
+            {
+              [self cleanTmpFiles];
+              return [NSException exceptionWithHTTPStatus: 500
+                reason: [NSString stringWithFormat: @"Message sent, but saving the reply copy failed. Do not resend.\n%@", [error reason]]];
+            }
           if (!error)
             {
               [self imap4Connection];
