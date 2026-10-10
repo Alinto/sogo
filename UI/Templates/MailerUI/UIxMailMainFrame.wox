@@ -13,6 +13,13 @@
     var mailAccounts = <var:string value="mailAccounts" const:escapeHTML="NO" />;
     var userNames = <var:string value="userNames" const:escapeHTML="NO" />;
     var unseenCountFolders = <var:string value="unseenCountFolders" const:escapeHTML="NO" />;
+    var sieveCapabilities = <var:string value="sieveCapabilities" const:escapeHTML="NO" />;
+    var forwardEnabled = <var:string value="forwardEnabled" const:escapeHTML="NO" />;
+    var notificationEnabled = <var:string value="notificationEnabled" const:escapeHTML="NO" />;
+    var vacationEnabled = <var:string value="isVacationEnabled" const:escapeHTML="NO" />;
+    var forwardConstraints = <var:string value="forwardConstraints" const:escapeHTML="NO" />;
+    var forwardConstraintsDomains = <var:string value="forwardConstraintsDomains" const:escapeHTML="NO" />;
+    var defaultEmailAddresses = <var:string value="defaultEmailAddresses" const:escapeHTML="NO" />;
   </script>
 
   <main class="view"

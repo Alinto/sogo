@@ -530,3 +530,32 @@
 "You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "You are about to permanently delete some messages. Are you sure you want to proceed with this action?";
 "Apply" = "Apply";
 "%{0} message(s) deleted" = "%{0} message(s) deleted";
+
+/* Mail filter editor strings used by the dialog controller */
+"Size (Kb)" = "Size (Kb)";
+"Header" = "Header";
+"Flag the message with" = "Flag the message with";
+"Discard the message" = "Discard the message";
+"File the message in" = "File the message in";
+"Keep the message" = "Keep the message";
+"Forward the message to" = "Forward the message to";
+"Notify the message to" = "Notify the message to";
+"Send a reject message" = "Send a reject message";
+"Send a vacation message" = "Send a vacation message";
+"Stop processing filter rules" = "Stop processing filter rules";
+"is under" = "is under";
+"is over" = "is over";
+"is" = "is";
+"is not" = "is not";
+"matches" = "matches";
+"matches regex" = "matches regex";
+"does not match regex" = "does not match regex";
+
+/* Forward address validation errors used by the mail filter editor */
+"You are not allowed to forward your messages to an external email address." = "You are not allowed to forward your messages to an external email address.";
+"You are not allowed to forward your messages to an internal email address." = "You are not allowed to forward your messages to an internal email address.";
+"You are not allowed to forward your messages to this domain:" = "You are not allowed to forward your messages to this domain:";
+
+/* Create filter from mail reading view */
+"Create filter" = "Create filter";
+"Filter created" = "Filter created";

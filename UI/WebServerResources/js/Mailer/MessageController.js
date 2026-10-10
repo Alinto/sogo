@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MessageController.$inject = ['$window', '$scope', '$q', '$state', '$mdMedia', '$mdDialog', '$mdPanel', 'sgConstant', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'sgHotkeys', 'encodeUriFilter', 'sgSettings', 'ImageGallery', 'sgFocus', 'Dialog', 'Preferences', 'Calendar', 'Component', 'Account', 'Mailbox', 'Message', 'AddressBook', 'Card'];
-  function MessageController($window, $scope, $q, $state, $mdMedia, $mdDialog, $mdPanel, sgConstant, stateAccounts, stateAccount, stateMailbox, stateMessage, sgHotkeys, encodeUriFilter, sgSettings, ImageGallery, focus, Dialog, Preferences, Calendar, Component, Account, Mailbox, Message, AddressBook, Card) {
+  MessageController.$inject = ['$window', '$scope', '$q', '$state', '$mdMedia', '$mdDialog', '$mdPanel', '$mdToast', 'sgConstant', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'sgHotkeys', 'encodeUriFilter', 'sgSettings', 'ImageGallery', 'sgFocus', 'Dialog', 'Preferences', 'Calendar', 'Component', 'Account', 'Mailbox', 'Message', 'AddressBook', 'Card'];
+  function MessageController($window, $scope, $q, $state, $mdMedia, $mdDialog, $mdPanel, $mdToast, sgConstant, stateAccounts, stateAccount, stateMailbox, stateMessage, sgHotkeys, encodeUriFilter, sgSettings, ImageGallery, focus, Dialog, Preferences, Calendar, Component, Account, Mailbox, Message, AddressBook, Card) {
     var vm = this, popupWindow = null, hotkeys = [];
 
     this.$onInit = function() {
@@ -31,6 +31,7 @@
       this.$showDetailedRecipients = this.$alwaysShowDetailedRecipients;
       this.showRawSource = false;
       this.mailInDeletion = -1;
+      this.mailboxes = [];
       this.junkIcon = Preferences.defaults.mailJunkIcon;
 
       _registerHotkeys(hotkeys);
@@ -529,6 +530,132 @@
       if (!this._showMailEditorInPopup('compose')) {
         _showMailEditor($event, this.message.$compose());
       }
+    };
+
+    /**
+     * Retrieve the list of mailboxes of the main account (0).
+     * The list is forwarded to the Sieve filter controller.
+     */
+    function _loadAllMailboxes() {
+      var account;
+
+      if (vm.mailboxes.length) {
+        return;
+      }
+      if (sgSettings.activeUser('path').mail) {
+        // Fetch a flatten version of the mailboxes list of the main account (0)
+        // This list will be forwarded to the Sieve filter controller
+        account = new Account({ id: 0 });
+        account.$getMailboxes().then(function() {
+          var allMailboxes = account.$flattenMailboxes({all: true}),
+              index = -1,
+              length = allMailboxes.length;
+          while (++index < length) {
+            vm.mailboxes.push(allMailboxes[index]);
+          }
+        });
+      }
+    }
+
+    function validateForwardAddress(address) {
+      var defaultAddresses, domains, domain;
+
+      domains = [];
+
+      if ($window.forwardConstraints > 0) {
+
+        // We first extract the list of 'known domains' to SOGo
+        defaultAddresses = $window.defaultEmailAddresses;
+        _.forEach(defaultAddresses, function(adr) {
+          var domain = adr.split("@")[1];
+          if (domain) {
+            domains.push(domain.toLowerCase());
+          }
+        });
+
+        // We check if we're allowed or not to forward based on the domain defaults
+        domain = address.split("@")[1].toLowerCase();
+        if (domains.indexOf(domain) < 0 && $window.forwardConstraints == 1) {
+          throw new Error(l("You are not allowed to forward your messages to an external email address."));
+        }
+        else if (domains.indexOf(domain) >= 0 && $window.forwardConstraints == 2) {
+          throw new Error(l("You are not allowed to forward your messages to an internal email address."));
+        }
+        else if ($window.forwardConstraints == 2 &&
+                 $window.forwardConstraintsDomains.length > 0 &&
+                 $window.forwardConstraintsDomains.indexOf(domain) < 0) {
+          throw new Error(l("You are not allowed to forward your messages to this domain:") + " " + domain);
+        }
+        else if ($window.forwardConstraints == 3 &&
+                  domains.indexOf(domain) < 0 &&
+                    ($window.forwardConstraintsDomains.length > 0 &&
+                    $window.forwardConstraintsDomains.indexOf(domain) < 0)) {
+          // If constraints mode is 3 and the domain is not an internal nor in forwardConstraintsDomains list, throw an error
+          throw new Error(l("You are not allowed to forward your messages to this domain:")+ " " + domain);
+        }
+      }
+
+      return true;
+    }
+
+    this.createFilter = function($event) {
+      var filter, from, sender;
+
+      if (_messageDialog() !== null) return;
+
+      from = (stateMessage.from && stateMessage.from.length > 0) ? stateMessage.from[0] : null;
+      sender = from && from.email ? from.email : '';
+      filter = {
+        name: sender,
+        match: 'all',
+        active: 1,
+        rules: [{ field: 'from', operator: 'is', value: sender }],
+        actions: [{ method: 'fileinto' }]
+      };
+      if (stateMessage.subject) {
+        filter.rules.push({ field: 'subject', operator: 'contains', value: stateMessage.subject });
+      }
+
+      _loadAllMailboxes();
+
+      _messageDialog(
+        $mdDialog
+          .show({
+            parent: angular.element(document.body),
+            targetEvent: $event,
+            clickOutsideToClose: false,
+            escapeToClose: false,
+            templateUrl: sgSettings.activeUser('folderURL') + '/Preferences/editFilter?filter=new',
+            controller: 'MailFilterDialogController',
+            controllerAs: 'filterEditor',
+            locals: {
+              filter: filter,
+              mailboxes: vm.mailboxes,
+              labels: Preferences.defaults.SOGoMailLabelsColors,
+              validateForwardAddress: validateForwardAddress
+            }
+          })
+          .then(function() {
+            var message;
+
+            if (!Preferences.defaults.SOGoSieveFilters)
+              Preferences.defaults.SOGoSieveFilters = [];
+            Preferences.defaults.SOGoSieveFilters.push(filter);
+            Preferences.$save().then(function() {
+              $mdToast.show(
+                $mdToast.simple()
+                  .textContent(l('Filter created'))
+                  .position(sgConstant.toastPosition)
+                  .hideDelay(2000));
+            }, function(response) {
+              message = response && response.data ? response.data.message : response.statusText;
+              Dialog.alert(l('Error'), message || l('An error occured, please try again.'));
+            });
+          }, _.noop) // Cancel
+          .finally(function() {
+            _messageDialog(null);
+          })
+      );
     };
 
     this.openInPopup = function(action) {

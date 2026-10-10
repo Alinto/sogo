@@ -77,7 +77,13 @@ module.exports = function(grunt) {
       },
       dist: {
         options: {
-          compress: true,
+          // Match the output style of the committed bundles: uglify-js >= 3.17
+          // defaults to arrows:true and strips leading "use strict" directives,
+          // which would churn every bundle on each rebuild.
+          compress: {
+            arrows: false,
+            directives: false
+          },
           sourceMapIncludeSources: true
         },
         files: js_files
