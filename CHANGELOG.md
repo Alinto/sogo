@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.12.12](https://github.com/Alinto/sogo/compare/SOGo-5.12.11...SOGo-5.12.12) (2026-10-12)
+
+
+### Bug Fixes
+
+* **contact:** set proper protection search endpoint ([dbf27ba](https://github.com/Alinto/sogo/commit/dbf27badb47fefb502f3a2cf3c2767e8e497d1f9))
+* **doc:** typos ([aa7f82c](https://github.com/Alinto/sogo/commit/aa7f82c09d3653d3426f8e80d94f831cd19a1f2b))
+* **mail:** fix the sort value ([6c93d6b](https://github.com/Alinto/sogo/commit/6c93d6b66cd2e53d66b9f921ef9223b9598b040d))
+* **mail:** Keep content of Outlook downlevel-revealed conditional comments. Fixes [#6167](https://bugs.sogo.nu/view.php?id=6167). ([be3630d](https://github.com/Alinto/sogo/commit/be3630d009600a69ba012e2d3fc6fe727445de7b))
+* **mail:** sanitize the domain part of generated message-ids ([20779cf](https://github.com/Alinto/sogo/commit/20779cf3531b52f3bb0795e9f17d9d580918cf2f)), closes [#6201](https://bugs.sogo.nu/view.php?id=6201)
+* **pwd:** fix 0 value for password policy ([981df7b](https://github.com/Alinto/sogo/commit/981df7b2fc02b43eed444cbe404b73b2333c0d5d))
+
 ## [5.12.11](https://github.com/Alinto/sogo/compare/SOGo-5.12.10...SOGo-5.12.11) (2026-09-14)
 
 
