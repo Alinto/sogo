@@ -1,0 +1,520 @@
+/* toolbar */
+"Save and Close" = "Yadda saxla və Bağla";
+"Close" = "Bağla";
+"Preferences saved" = "Tənzimləmələr yadda saxlanıldı";
+
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Yadda saxlanılmamış dəyişikliklər";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Konfiqurasiya dəyişikliklərinizi yadda saxlamaq istərdinizmi?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Yadda saxla";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Yadda saxlama";
+
+/* tabs */
+"General" = "Ümumi";
+"Calendar Options" = "Təqvim tənzimləmələri";
+"Contacts Options" = "Əlaqə tənzimləmələri";
+"Mail Options" = "E-poçt tənzimləmələri";
+"IMAP Accounts" = "IMAP hesabları";
+"Vacation" = "Tətil";
+"Forward" = "Yönləndir";
+"Password" = "Şifrə";
+"Notification" = "Bildiriş";
+"Categories" = "Kateqoriyalar";
+"Appointments invitations" = "Görüş dəvətləri";
+"Name" = "Tam ad";
+"Color" = "Rəng";
+"Add" = "Əlavə et";
+"Delete" = "Sil";
+
+/* contacts categories */
+"contacts_category_labels" = "Həmkar, Rəqib, Müştəri, Dost, Ailə, İş ortağı, Təchizatçı, Mətbuat, VIP";
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Avtomatik tətil cavabını aktivləşdir";
+"Enable custom auto reply subject" = "Fərdiləşdirilmiş avtomatik cavab mövzusunu aktivləşdir";
+"Auto reply subject" = "Avtomatik cavabın mövzusu";
+"You can write ${subject} to insert the original subject" = "Əsl mövzunu əlavə etmək üçün ${subject} yaza bilərsiniz";
+"Auto reply message" = "Avtomatik cavab mesajı";
+"Email addresses" = "E-poçt ünvanları";
+"Add default email addresses" = "Standart e-poçt ünvanı əlavə et";
+"Days between responses" = "Cavablar arasındakı gün sayı";
+"Do not send responses to mailing lists" = "E-poçt siyahılarına cavab göndərmə";
+"Activation Constraints" = "Aktivləşdirmə məhdudiyyətləri";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Gün və saat aralıqlarını müstəqil olaraq fərdiləşdirin və isteğe bağlı olaraq həftə içi günlərini birləşdirərək tətil süzgəclərinizi seçimlərinizə görə tənzimləyin";
+"Enable auto reply on" = "Avtomatik cavabın açılacağı tarix";
+"First day of vacation" = "Tatilin ilk günü";
+"Disable auto reply after" = "Avtomatik cavab bu müddətdən sonra söndürülsün";
+"Last day of vacation" = "Tatilin son günü";
+"Enter date" = "Tarix daxil edin";
+/* Enable auto reply at this time of the day */
+"Enable auto reply at" = "Avtomatik cavabı aç";
+"Enter time" = "Saat daxil edin";
+/* Disable auto reply at this time of the day */
+"Disable auto reply at" = "Avtomatik cavabı bağla";
+"Enable auto reply on these days" = "Avtomatik cavab bu günlərdə açılsın";
+"Always send vacation message response" = "Tətil cavabı mesajı həmişə göndərilsin";
+"The vacation message is sent prior to apply your filters." = "Tətil mesajı süzgəcləriniz tətbiq edilmədən əvvəl göndərilir.";
+"Discard incoming mails during vacation" = "Tətildə gələn mesajları sil";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Tətil mesajı göndərilir, lakin gələn mesajlar gelen qutunuza çatdırılmır.";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Zəhmət olmasa avtomatik cavabı aktivləşdirəcəyiniz e-poçt ünvanlarını və cavab mesajınızı müəyyən edin.";
+"Your vacation message must not end with a single dot on a line." = "Tətil cavab mesajınız bir sətirdə tək nöqtə ilə bitməməlidir.";
+"End date of your auto reply must be in the future."
+= "Avtomatik cavabın bitmə tarixi gələcəkdə bir tarix olmalıdır.";
+
+/* forward messages */
+"Forward incoming messages" = "Gələn e-poçtları yönləndirərkən";
+"Always forward" = "Həmişə yönləndir";
+"Incoming messages are forwarded prior to apply your filters." = "Gələn mesajlar süzgəcləriniz tətbiq edilmədən əvvəl yönləndirilir.";
+"Keep a copy" = "Bir nüsxəsini saxla";
+"Enter an email" = "Bir e-poçt ünvanı daxil edin";
+"Add another email" = "Başqa bir e-poçt əlavə et";
+"Please specify an address to which you want to forward your messages."
+= "Zəhmət olmasa e-poçtların yönləndiriləcəyi ünvanı göstərin.";
+"You are not allowed to forward your messages to an external email address." = "Mesajlarınızı sistemdən kənar bir ünvana yönləndirə bilməzsiniz.";
+"You are not allowed to forward your messages to an internal email address." = "Mesajlarınızı sistemdəki başqa bir ünvana yönləndirə bilməzsiniz.";
+"You are not allowed to forward your messages to this domain:" = "Mesajlarınızı bu domenə yönləndirmə icazəniz yoxdur:";
+
+/* notification */
+"Notify incoming messsages" = "Gələn mesajlar bildirilsin";
+"Notification Message Sent" = "Bildiriş mesajı göndərildi";
+"Notification Message" = "%{0} üzərinə yeni mesaj gəldi bildirişi";
+
+/* d & t */
+"Time Zone" = "Saat qurşağı";
+"Short Date Format" = "Qısa tarix formatı";
+"Long Date Format" = "Uzun tarix formatı";
+"Time Format" = "Saat formatı";
+"default" = "Standart";
+"Default Module" = "Standart modul";
+"Save" = "Yadda saxla";
+"shortDateFmt_0" = "%d-%b-%y";
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
+
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
+
+/* Timezone autocompletion */
+"No matches found." = "Uyğunluq tapılmadı.";
+
+/* calendar */
+"Week begins on" = "Həftənin ilk günü";
+"Day start time" = "Gün başlanğıc saati";
+"Day end time" = "Gün bitmə saati";
+"Day start time must be prior to day end time." = "Gün başlanğıc saati, gün bitmə saatindən əvvəl olmalıdır.";
+"Week days to display" = "Göstəriləcək günlər";
+"Show time as busy outside working hours" = "İş saatlarından kənar vaxtlar məşğul olaraq görünsün";
+"First week of year" = "İlin ilk həftəsi";
+"Enable reminders for Calendar items" = "Təqvim elementlərində xatırlatıcılar istifadə edilsin";
+"Play a sound when a reminder comes due" = "Xatırlatma zamanı səsli xəbərdarlıq verilsin";
+"Default reminder" = "Standart xatırlatma müddəti";
+"firstWeekOfYear_January1" = "1 Yanvar tarixindən başlayır";
+"firstWeekOfYear_First4DayWeek" = "İlk 4 günlük həftədir";
+"firstWeekOfYear_FirstFullWeek" = "İlk tam həftədir";
+"Prevent from being invited to appointments" = "Görüş dəvəti almağın qarşısını al";
+"White list for appointment invitations" = "Görüş dəvətləri ağ siyahısı";
+"Contacts Names" = "Əlaqə adları";
+"Duplicate name" = "Eyni ad";
+"Calendar categories must have unique names." = "Təqvim kateqoriyaları fərqli adlardan ibarət olmalıdır.";
+"Disable e-mail notifications on CalDAV" = "CalDAV üzərindəki e-poçt bildirişlərini söndür";
+
+/* Default Calendar */
+"Default calendar" = "Standart təqvim";
+"selectedCalendar" = "Seçilmiş təqvim";
+"personalCalendar" = "Şəxsi təqvim";
+"firstCalendar" = "İlk aktiv təqvim";
+"reminder_NONE" = "Xatırlatıcı yoxdur";
+"reminder_5_MINUTES_BEFORE" = "5 dəqiqə əvvəl";
+"reminder_10_MINUTES_BEFORE" = "10 dəqiqə əvvəl";
+"reminder_15_MINUTES_BEFORE" = "15 dəqiqə əvvəl";
+"reminder_30_MINUTES_BEFORE" = "30 dəqiqə əvvəl";
+"reminder_45_MINUTES_BEFORE" = "45 dəqiqə əvvəl";
+"reminder_1_HOUR_BEFORE" = "1 saat əvvəl";
+"reminder_2_HOURS_BEFORE" = "2 saat əvvəl";
+"reminder_5_HOURS_BEFORE" = "5 saat əvvəl";
+"reminder_15_HOURS_BEFORE" = "15 saat əvvəl";
+"reminder_1_DAY_BEFORE" = "1 gün əvvəl";
+"reminder_2_DAYS_BEFORE" = "2 gün əvvəl";
+"reminder_1_WEEK_BEFORE" = "1 həftə əvvəl";
+
+/* Mailer */
+"Labels" = "Etiketlər";
+"Label" = "Etiket";
+"IMAP Label" = "IMAP etiketi";
+"Invalid label" = "Boşluq və bu simvolları istifadə etməyin ( ) { } % * \" \\";
+"Duplicate label" = "Eyni etiket";
+"IMAP labels must have unique names." = "IMAP etiketlərinin adları fərqli olmalıdır.";
+"New label" = "Yeni etiket";
+"Show subscribed mailboxes only" = "Yalnız abunə olunmuş e-poçt qovluqları göstərilsin";
+"Synchronize only default mail folders (EAS)" = "Yalnız standart e-poçt qovluqları sinxronizasiya edilsin (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Bütün e-poçt qutuları üçün görülməmiş mesajların sayı alınsın";
+"Sort messages by threads" = "Mesajlar mövzuya görə qruplaşdırılsın";
+"Always open mail composer" = "Həmişə e-poçt redaktoru açılsın";
+"Inside current window" = "Cari pəncərədə";
+"In a popup window" = "Yeni pəncərədə";
+"When sending mail, add unknown recipients to my" = "Göndərilən mesajda olan yeni əlaqələr, aşağıdakı dəftərimə əlavə edilsin";
+"Address Book" = "Ünvan dəftəri";
+"Forward messages" = "Mesaj yönləndirilərkən";
+"messageforward_inline" = "Sətir daxilində";
+"messageforward_attached" = "Əlavə olaraq";
+"When replying to a message" = "Mesaj cavablandırılarkən";
+"replyplacement_above" = "Cavabım əsl mətnin üstündən başlasın";
+"replyplacement_below" = "Cavabım əsl mətnin altından başlasın";
+"And place my signature" = "Və imzam";
+"signatureplacement_above" = "cavabımın altına yerləşdirilsin";
+"signatureplacement_below" = "əsl mətnin altına yerləşdirilsin";
+"Compose messages in" = "Mesaj formatı";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "Düz mətn";
+"Insert signature on new message" = "İmza yeni mesajlara əlavə edilsin";
+"Insert signature on reply" = "İmza cavablara əlavə edilsin";
+"Insert signature on forward" = "İmza yönləndirilən e-poçtlara əlavə edilsin";
+"Show recipients or sender full email in mailboxes" = "E-poçt qutularında alıcıların və ya göndərənin tam ünvanı göstərilsin";
+"Hide attachements for inline images" = "Sətir daxili şəkillərdə əlavə fayllar gizlədilsin";
+"Show attachments above the message" = "Əlavələri mesajın üstündə göstər";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Standart şrift ölçüsü";
+
+"Display remote inline images" = "Mənbəyi kənarda olan sətir daxili şəkillər göstərilsin";
+"displayremoteinlineimages_never" = "Heç vaxt";
+"displayremoteinlineimages_always" = "Həmişə";
+"Auto save every" = "Yazılan mesajın avtomatik saxlanma intervalı";
+"minutes" = "dəqiqə";
+"Automatically mark messages as read" = "Mesajlar avtomatik olaraq oxunmuş kimi işarələnsin";
+"Immediately on display" = "Görüldüyü anda";
+"After displaying for" = "Görüldükdən sonra";
+"seconds" = "saniyə";
+
+/* Contact */
+"Personal Address Book" = "Şəxsi ünvan dəftəri";
+"Collected Address Book" = "Avtomatik əlavə edilən ünvanlar";
+"Contact categories must have unique names." = "Əlaqə kateqoriyalarının unikal adları olmalıdır.";
+
+/* IMAP Accounts */
+"Settings" = "Tənzimləmələr";
+"Security" = "Təhlükəsizlik";
+"Mail Account" = "E-poçt hesabı";
+"New Mail Account" = "Yeni e-poçt hesabı";
+"Server Name" = "Server adı";
+"Outgoing Server Name (SMTP)" = "Gedən server adı (SMTP)";
+"Smtp Auth" = "SMTP kimlik doğrulaması";
+"Port" = "Port";
+"Encryption" = "Şifrələmə";
+"Outgoing Encryption" = "Gedən şifrələmə";
+"None" = "Heç biri";
+"User Name" = "İstifadəçi adı";
+"Full Name" = "Ad Soyad";
+"Email" = "E-poçt";
+"Reply To Email" = "Cavab e-poçtu";
+"Signature" = "İmza";
+"Identities" = "Kimliklər";
+"Always use the default identity when replying to messages" = "Mesajlar cavablandırılarkən həmişə standart kimlik istifadə edilsin";
+"Default Identity" = "Standart kimlik";
+"New Identity" = "Yeni kimlik";
+"(Click to create)" = "(Yaratmaq üçün klikləyin)";
+"Please enter your signature below" = "Zəhmət olmasa imzanızı aşağıya daxil edin";
+"Please specify a valid sender address." = "Zəhmət olmasa etibarlı göndərən ünvanı göstərin.";
+"Please specify a valid reply-to address." = "Zəhmət olmasa etibarlı cavab ünvanı göstərin.";
+"Specify a hostname other than the local host" = "Yerli serverdən fərqli server adı göstərin";
+
+"No certificate installed" = "Heç bir sertifikat qurulmayıb";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "SSL sertifikatı PKCS#12 (PFX) formatından istifadə etməlidir.";
+"Uninstall" = "Sil";
+"Choose PKCS12 Certificate .." = "PKCS12 sertifikatını seçin...";
+"Certificate Import Password" = "Sertifikat idxal şifrəsi";
+"Upload" = "Yüklə";
+"When composing a message" = "Mesaj yazarkən";
+"Digitally sign the message by default" = "Mesaj standart olaraq rəqəmsal imzalansın";
+"Always try to encrypt the message" = "Mesaj həmişə şifrələnməyə çalışılsın";
+"An error occurred while importing the certificate. Verify your password." = "Sertifikat idxal edilərkən problem yarandı. Şifrənizi yoxlayın.";
+"Data too big. Please contact technical support." = "Məlumat çox böyükdür. Zəhmət olmasa texniki dəstək ilə əlaqə saxlayın.";
+
+/* Additional Parameters */
+"Additional Parameters" = "Əlavə xüsusiyyətlər";
+
+/* password */
+"Current password" = "Cari şifrə";
+"New password" = "Yeni şifrə";
+"Confirmation" = "Təsdiq";
+"Change" = "Dəyiş";
+"Passwords don't match" = "Şifrə ilə təsdiqi eyni deyil";
+
+
+/* Event+task classifications */
+"Default events classification" = "Standart tədbir təsnifatı";
+"Default tasks classification" = "Standart tapşırıq təsnifatı";
+"PUBLIC_item" = "Hamıya açıq";
+"CONFIDENTIAL_item" = "Gizli";
+"PRIVATE_item" = "Şəxsi";
+
+/* Event+task categories */
+"Calendar Category" = "Təqvim kateqoriyası";
+"Add Calendar Category" = "Təqvim kateqoriyası əlavə et";
+"New category" = "Yeni kateqoriya";
+"Reset to defaults" = "Standartlara sıfırla";
+"Remove Calendar Category" = "Təqvim kateqoriyasını sil";
+"Contact Category" = "Əlaqə kateqoriyası";
+"Add Contact Category" = "Əlaqə kateqoriyası əlavə et";
+"Remove Contact Category" = "Əlaqə kateqoriyasını sil";
+"category_none" = "Heç biri";
+"calendar_category_labels" = "İldönümü,Doğum günü,İş,Zənglər,Müştərilər,Rəqib,Müştəri,Sevimlilər,İzlə,Hədiyyə,Tətillər,İdealar,Görüş,Problemlər,Müxtəlif,Şəxsi,Layihələr,Bayram,Status,Təchizatçı,Səyahət,Tətil";
+
+/* Default module */
+"Calendar" = "Təqvim";
+"Contacts" = "Ünvan dəftəri";
+"Mail" = "E-poçt";
+"Last" = "Son istifadə edilən";
+"Default Module " = "Standart açılış modulu";
+"SOGo Version" = "SOGo versiyası";
+
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "Tənzimləmələr yadda saxlanılsın və səhifə yenilensin?";
+"Language" = "Dil";
+"choose" = "Seçin...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Bosnian" = "Bosanski";
+"Bulgarian" = "Български";
+"Catalan" = "Català";
+"ChineseChina" = "简体中文";
+"ChineseTaiwan" = "正體中文";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"Galician" = "Galego";
+"German" = "Deutsch";
+"Hebrew" = "עברית";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
+"Italian" = "Italiano";
+"Japanese" = "日本語";
+"Kazakh" = "Қазақ";
+"Korean" = "한국어";
+"Latvian" = "Latviešu";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"Montenegrin" = "Crnogorski";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
+"Russian" = "Русский";
+"Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"Thai" = "ภาษา";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Azerbaijani" = "Azərbaycan dili";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"Refresh View" = "Yeniləmə tezliyi";
+"refreshview_manually" = "Əl ilə";
+"refreshview_every_minute" = "Dəqiqədə bir";
+"refreshview_every_2_minutes" = "Hər 2 dəqiqədə bir";
+"refreshview_every_5_minutes" = "Hər 5 dəqiqədə bir";
+"refreshview_every_10_minutes" = "Hər 10 dəqiqədə bir";
+"refreshview_every_20_minutes" = "Hər 20 dəqiqədə bir";
+"refreshview_every_30_minutes" = "Hər 30 dəqiqədə bir";
+"refreshview_once_per_hour" = "Saatda bir";
+"Enable Desktop Notifications" = "Masaüstü bildirişlərini aç";
+
+/* Return receipts */
+"When I receive a request for a return receipt" = "Qəbz bildirişi sorğusu aldığımda";
+"Never send a return receipt" = "Heç vaxt qəbz bildirişi göndərmə";
+"Allow return receipts for some messages" = "Aşağıdakı şərtlərdə qəbz bildirişi göndər";
+"If I'm not in the To or Cc of the message" = "Gələn mesajın alıcı və ya surət sahəsində deyilsəm";
+"If the sender is outside my domain" = "Göndərən ünvanı domenimdən kənardadırsa";
+"In all other cases" = "Digər bütün hallarda";
+"Never send" = "Heç vaxt göndərmə";
+"Always send" = "Həmişə göndər";
+"Ask me" = "Məndən sor";
+
+/* Filters - UIxPreferences */
+"Filters" = "Süzgəclər";
+"Active" = "Aktiv";
+"Move Up" = "Yuxarı köçür";
+"Move Down" = "Aşağı köçür";
+"Connection error" = "Bağlantı problemi";
+"Service temporarily unavailable" = "Xidmət müvəqqəti olaraq əlçatmazdır";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Süzgəci aktivləşdir";
+
+/* Filters - UIxFilterEditor */
+"Filter name" = "Süzgəcin adı";
+/* Button label */
+"Add a condition" = "Bir şərt əlavə et";
+/* Button label */
+"Add an action" = "Bir əməliyyat əlavə et";
+"For incoming messages that" = "Gələn mesajlar üçün";
+"match all of the following rules" = "aşağıdakı qaydaların hamısına uyğundursa";
+"match any of the following rules" = "aşağıdakı qaydalardan yalnız birinə uyğundursa";
+"match all messages" = "hər mesaj üçün";
+"Perform these actions" = "Bu əməliyyatları yerinə yetir";
+"Untitled Filter" = "Adlandırılmamış süzgəc";
+"Subject" = "Mövzu";
+"From" = "Göndərən";
+"To" = "Alıcı";
+"Cc" = "Surət";
+"To or Cc" = "Alıcı və ya Surət";
+"Size (Kb)" = "Ölçü (Kb)";
+"Header" = "Başlıq";
+"Body" = "Məzmun";
+"Flag the message with" = "Mesaja ulduz əlavə et";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Ulduz";
+
+"Discard the message" = "Mesajı rədd et";
+"File the message in" = "Mesajı burada arxivlə";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "E-poçt qutusu";
+
+"Keep the message" = "Mesajı saxla";
+"Forward the message to" = "Mesajı bu ünvana yönləndir";
+"Notify the message to" = "Mesajı bura bildir";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "E-poçt";
+
+"Send a reject message" = "Rədd edildi mesajı göndər";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Mesaj";
+
+"Send a vacation message" = "Tətil mesajı göndər";
+"Stop processing filter rules" = "Süzgəc qaydalarını emal etməyi dayandır";
+"is under" = "bundan azdırsa";
+"is over" = "bundan çoxdursa";
+"is" = "buna bərabərdirsə";
+"is not" = "buna bərabər deyilsə";
+"contains" = "bunu ehtiva edərsə";
+"does not contain" = "bunu ehtiva etməzsə";
+"matches" = "bununla uyğundursa";
+"does not match" = "bununla uyğun deyilsə";
+"matches regex" = "bu müntəzəm ifadə ilə uyğundursa";
+"does not match regex" = "bu müntəzəm ifadə ilə uyğun deyilsə";
+/* Placeholder for the value field of a condition */
+"Value" = "Dəyər";
+"Seen" = "Görülmüş";
+"Deleted" = "Silinmiş";
+"Answered" = "Cavablandırılmış";
+"Flagged" = "Ulduzlu";
+"Junk" = "İstənməyən";
+"Not Junk" = "İstənməyən deyil";
+
+/* Password policy */
+"The password was changed successfully." = "Şifrə uğurla dəyişdirildi.";
+"Password must not be empty." = "Şifrə boş ola bilməz.";
+"The passwords do not match. Please try again." = "Şifrə ilə təsdiqi eyni deyil. Zəhmət olmasa yenidən cəhd edin.";
+"Password change failed" = "Şifrə dəyişdirilmədi";
+"Password change failed - Permission denied" = "Şifrə dəyişdirilmədi. Kifayət qədər icazəniz yoxdur";
+"Password change failed - Insufficient password quality" = "Şifrə dəyişdirilmədi. Şifrə tələb olunan şərtlərə cavab vermir";
+"Password change failed - Password is too short" = "Şifrə dəyişdirilmədi. Şifrə çox qısadır";
+"Password change failed - Password is too young" = "Şifrə dəyişdirilmədi. Şifrə çox zəifdir";
+"Password change failed - Password is in history" = "Şifrə dəyişdirilmədi. Şifrə əvvəllər istifadə edilmişdir";
+"Unhandled policy error: %{0}" = "Emal edilməmiş siyasət xətası: %{0}";
+"Unhandled error response" = "Emal edilməmiş xəta cavabı";
+"Password change is not supported." = "Şifrə dəyişdirilməsi dəstəklənmir.";
+"Unhandled HTTP error code: %{0}" = "Emal edilməmiş HTTP xəta kodu: %{0}";
+"Cancel" = "Ləğv et";
+"Invitations" = "Dəvətlər";
+"Edit Filter" = "Süzgəci redaktə et";
+"Delete Filter" = "Süzgəci sil";
+"Create Filter" = "Yeni süzgəc";
+"Delete Label" = "Etiketi sil";
+"Create Label" = "Yeni etiket";
+"Accounts" = "Hesablar";
+"Edit Account" = "Hesabı redaktə et";
+"Delete Account" = "Hesabı sil";
+"Create Account" = "Hesab yarat";
+"Account Name" = "Hesab adı";
+"SSL" = "SSL";
+"TLS" = "TLS";
+
+/* Avatars */
+"Use Gravatar" = "Gravatar istifadə edilsin";
+"Alternate Avatar" = "Alternativ avatar";
+"none" =  "Heç biri";
+"identicon" = "Profil ikonu";
+"monsterid" = "Canavar";
+"wavatar" = "Wavatar";
+"retro" = "Retro";
+
+/* Animation Level */
+"Animation Level" = "Animasiya səviyyəsi";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Normal";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Məhdud";
+"animation_NONE" = "Yox";
+
+/* 2FA */
+"Enable two-factor authentication using a TOTP application" = "TOTP tətbiqi ilə iki mərhələli doğrulamanı aktivləşdirin";
+"You must enter this key into your TOTP application." = "Bu açarı TOTP tətbiqinizə daxil etməlisiniz";
+"If you do not and you log out you will not be able to login again." = "Bunu etmədən çıxış etsəniz yenidən giriş edə bilməyəcəksiniz.";
+"Enter TOTP verification code :" = "TOTP doğrulama kodunu daxil edin:";
+"Invalid TOTP verification code" = "TOTP doğrulama kodu etibarsızdır";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "Xarici Sieve skripti istifadə olunur";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve e-poçtları süzmək üçün istifadə edilə bilən bir proqramlaşdırma dilidir. Süzgəclərinizin, tətil və yönləndirmə tənzimləmələrinin SOGo tərəfindən idarə edilməsinə icazə versəniz, aktiv skriptiniz deaktiv ediləcəkdir.";
+"Let SOGo handle everything" = "Hər şeyi SOGo-ya həvalə et";
+
+/* Password Recovery */
+"Password recovery mode" = "Şifrə bərpası rejimi";
+"Question" = "Sual";
+"Secondary e-mail" = "İkinci e-poçt";
+"Answer" = "Cavab";
+"Password recovery" = "Şifrə bərpası";
+"Password change" = "Şifrəni dəyiş";
