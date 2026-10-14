@@ -1,6 +1,6 @@
 /* toolbar */
-"Save and Close" = "Desar i tancar";
-"Close" = "Tancar";
+"Save and Close" = "Desa i tanca";
+"Close" = "Tanca";
 "Preferences saved" = "Preferències desades";
 
 /* Unsaved changes confirmation dialog title */
@@ -10,7 +10,7 @@
 "Do you want to save your changes made to the configuration?" = "Voleu desar els canvis que heu fet a la configuració?";
 
 /* Unsaved changes confirmation dialog button */
-"Save" = "Desar";
+"Save" = "Desa";
 
 /* Unsaved changes confirmation dialog button */
 "Don't Save" = "No desis";
@@ -21,79 +21,79 @@
 "Contacts Options" = "Opcions de contactes";
 "Mail Options" = "Opcions de correu";
 "IMAP Accounts" = "Comptes IMAP";
-"Vacation" = "Vacances";
-"Forward" = "Redirigir";
+"Vacation" = "Absència";
+"Forward" = "Reenviament";
 "Password" = "Contrasenya";
-"Notification" = "Notification";
+"Notification" = "Notificació";
 "Categories" = "Categories";
-"Appointments invitations" = "Invitacions per a cites";
+"Appointments invitations" = "Invitacions a cites";
 "Name" = "Nom";
 "Color" = "Color";
-"Add" = "Afegir";
-"Delete" = "Esborrar";
+"Add" = "Afegeix";
+"Delete" = "Suprimeix";
 
 /* contacts categories */
-"contacts_category_labels" = "Company, Competidor, Client, Amic, Familia, Soci de Negocis, Proveïdor, Prensa, VIP";
+"contacts_category_labels" = "Col·lega, Competidor, Client, Amic, Família, Soci, Proveïdor, Premsa, VIP";
 
 /* vacation (auto-reply) */
-"Enable vacation auto reply" = "Activar resposta automàtica";
-"Enable custom auto reply subject" = "Activar assumpte personalitzat de resposta automàtica";
+"Enable vacation auto reply" = "Activa la resposta automàtica per absència";
+"Enable custom auto reply subject" = "Activa un assumpte personalitzat per a la resposta automàtica";
 "Auto reply subject" = "Assumpte de la resposta automàtica";
-"You can write ${subject} to insert the original subject" = "Podeu escriure ${subject} per afegir l'assumpte original";
-"Auto reply message" = "Respondre automàticament una sola vegada a cada remitent amb aquest text";
+"You can write ${subject} to insert the original subject" = "Podeu escriure ${subject} per inserir l’assumpte original";
+"Auto reply message" = "Missatge de resposta automàtica";
 "Email addresses" = "Adreces de correu";
-"Add default email addresses" = "Afegir adreces de correu per defecte";
+"Add default email addresses" = "Afegeix les adreces de correu per defecte";
 "Days between responses" = "Dies entre respostes";
-"Do not send responses to mailing lists" = "No enviar respostes a llistes de correu";
-"Activation Constraints" = "Activation Constraints";
-"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences";
-"Enable auto reply on" = "Activar resposta automàtica";
-"First day of vacation" = "Primer dia de vacances";
-"Disable auto reply after" = "Disable auto reply after";
-"Last day of vacation" = "Últim dia de vacances";
-"Enter date" = "Introduïu la Data";
+"Do not send responses to mailing lists" = "No enviïs respostes a les llistes de correu";
+"Activation Constraints" = "Restriccions d’activació";
+"Customize day and hour ranges independently and optionally combine them with specific weekdays to tailor your vacation filters to your preferences" = "Personalitzeu els intervals de dies i hores de manera independent i, opcionalment, combineu-los amb dies concrets de la setmana per adaptar els filtres d’absència a les vostres preferències";
+"Enable auto reply on" = "Activa la resposta automàtica el dia";
+"First day of vacation" = "Primer dia d’absència";
+"Disable auto reply after" = "Desactiva la resposta automàtica després del dia";
+"Last day of vacation" = "Últim dia d’absència";
+"Enter date" = "Introduïu la data";
 /* Enable auto reply at this time of the day */
-"Enable auto reply at" = "Enable auto reply at";
-"Enter time" = "Enter time";
+"Enable auto reply at" = "Activa la resposta automàtica a les";
+"Enter time" = "Introduïu l’hora";
 /* Disable auto reply at this time of the day */
-"Disable auto reply at" = "Disable auto reply at";
-"Enable auto reply on these days" = "Enable auto reply on these days";
-"Always send vacation message response" = "Envia sempre resposta de missatge de vacances";
-"The vacation message is sent prior to apply your filters." = "El missatge de vacances s'envia abans d'aplicar els teus filtres";
-"Discard incoming mails during vacation" = "Descartar els missatges entrants durant les vacances";
-"The vacation message is sent but incoming messages are not delivered to your inbox." = "El missatge de vacances s'envia però els missatges entrants no s'entreguen a la teva safata d'entrada.";
+"Disable auto reply at" = "Desactiva la resposta automàtica a les";
+"Enable auto reply on these days" = "Activa la resposta automàtica aquests dies";
+"Always send vacation message response" = "Envia sempre el missatge d’absència";
+"The vacation message is sent prior to apply your filters." = "El missatge d’absència s’envia abans d’aplicar els vostres filtres.";
+"Discard incoming mails during vacation" = "Descarta els missatges entrants durant l’absència";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "El missatge d’absència s’envia, però els missatges entrants no es lliuren a la vostra safata d’entrada.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Especifiqueu el missatge i les adreces de correu per a les quals voleu activar la resposta automàtica.";
-"Your vacation message must not end with a single dot on a line." = "El seu missatge d'autoresposta per vacances no ha d'acabar amb un punt en una línia a part.";
+"Your vacation message must not end with a single dot on a line." = "El missatge d’absència no pot acabar amb un punt sol en una línia.";
 "End date of your auto reply must be in the future."
-= "La data de finalització de la seva resposta automàtica ha d'estar en el futur.";
+= "La data de finalització de la resposta automàtica ha de ser en el futur.";
 
 /* forward messages */
-"Forward incoming messages" = "Redirigir missatges entrants";
-"Always forward" = "Always forward";
-"Incoming messages are forwarded prior to apply your filters." = "Incoming messages are forwarded prior to apply your filters.";
-"Keep a copy" = "Desar-ne una còpia";
-"Enter an email" = "Introdueix una adreça de correu";
-"Add another email" = "Afegeix una altra adreça de correu";
+"Forward incoming messages" = "Reenvia els missatges entrants";
+"Always forward" = "Reenvia sempre";
+"Incoming messages are forwarded prior to apply your filters." = "Els missatges entrants es reenvien abans d’aplicar els vostres filtres.";
+"Keep a copy" = "Conserva’n una còpia";
+"Enter an email" = "Introduïu una adreça de correu";
+"Add another email" = "Afegiu una altra adreça de correu";
 "Please specify an address to which you want to forward your messages."
-= "Especifiqueu l'adreça a la qual voleu redirigir els missatges.";
-"You are not allowed to forward your messages to an external email address." = "No podeu re-enviar missatges a una adreça electrònica externa.";
-"You are not allowed to forward your messages to an internal email address." = "No podeu re-enviar missatges a una adreça de correu electrònic intern.";
-"You are not allowed to forward your messages to this domain:" = "No podeu reenviar missatges cap aquest domini:";
+= "Especifiqueu l’adreça a la qual voleu reenviar els missatges.";
+"You are not allowed to forward your messages to an external email address." = "No podeu reenviar els missatges a una adreça de correu externa.";
+"You are not allowed to forward your messages to an internal email address." = "No podeu reenviar els missatges a una adreça de correu interna.";
+"You are not allowed to forward your messages to this domain:" = "No podeu reenviar els missatges a aquest domini:";
 
 /* notification */
-"Notify incoming messsages" = "Notify incoming messsages";
-"Notification Message Sent" = "Notification message sent";
-"Notification Message" = "Notification of new message on %{0}";
+"Notify incoming messsages" = "Notifica els missatges entrants";
+"Notification Message Sent" = "Missatge de notificació que s’envia";
+"Notification Message" = "Notificació de missatge nou a %{0}";
 
 /* d & t */
-"Time Zone" = "Time Zone";
+"Time Zone" = "Fus horari";
 "Short Date Format" = "Format de data curt";
 "Long Date Format" = "Format de data llarg";
-"Time Format" = "Format d'hora";
+"Time Format" = "Format d’hora";
 "default" = "Per defecte";
 "Default Module" = "Mòdul per defecte";
-"Save" = "Desar";
+"Save" = "Desa";
 "shortDateFmt_0" = "%d-%b-%y";
 "shortDateFmt_1" = "%d-%m-%y";
 "shortDateFmt_2" = "%d/%m/%y";
@@ -134,22 +134,22 @@
 "No matches found." = "No hi ha coincidències.";
 
 /* calendar */
-"Week begins on" = "Setmana comença en";
-"Day start time" = "Hora inici dia";
-"Day end time" = "Hora final dia";
-"Day start time must be prior to day end time." = "L'hora de començament del dia ha de ser anterior a l'hora d'acabament.";
-"Week days to display" = "Dies de la setmana a mostrar";
+"Week begins on" = "La setmana comença el";
+"Day start time" = "Hora d’inici del dia";
+"Day end time" = "Hora de finalització del dia";
+"Day start time must be prior to day end time." = "L’hora d’inici del dia ha de ser anterior a l’hora de finalització.";
+"Week days to display" = "Dies de la setmana que es mostren";
 "Show time as busy outside working hours" = "Mostra el temps com ocupat fora de les hores de treball";
-"First week of year" = "Primera setmana de l'any";
-"Enable reminders for Calendar items" = "Habilitar recordatoris per a ítems del calendari";
-"Play a sound when a reminder comes due" = "Usar senyal acústic per als recordatoris";
-"Default reminder" = "Recordatori per omissió";
-"firstWeekOfYear_January1" = "Comença l'1 de gener";
+"First week of year" = "Primera setmana de l’any";
+"Enable reminders for Calendar items" = "Activa els recordatoris per als elements del calendari";
+"Play a sound when a reminder comes due" = "Reprodueix un so quan venci un recordatori";
+"Default reminder" = "Recordatori per defecte";
+"firstWeekOfYear_January1" = "Comença l’1 de gener";
 "firstWeekOfYear_First4DayWeek" = "Primera setmana de 4 dies";
 "firstWeekOfYear_FirstFullWeek" = "Primera setmana completa";
-"Prevent from being invited to appointments" = "Impedeix ser convidat a cites";
+"Prevent from being invited to appointments" = "Impedeix que us convidin a cites";
 "White list for appointment invitations" = "Llista blanca per a invitacions a cites";
-"Contacts Names" = "Nom dels Contactes";
+"Contacts Names" = "Noms dels contactes";
 "Duplicate name" = "Nom duplicat";
 "Calendar categories must have unique names." = "Les categories de calendari han de tenir noms únics.";
 "Disable e-mail notifications on CalDAV" = "Desactiva les notificacions per correu electrònic a CalDAV";
@@ -158,73 +158,73 @@
 "Default calendar" = "Calendari per defecte";
 "selectedCalendar" = "Calendari seleccionat";
 "personalCalendar" = "Calendari personal";
-"firstCalendar" = "Primer calendari habilitat";
-"reminder_NONE" = "Cap Recordatori";
-"reminder_5_MINUTES_BEFORE" = "5 minuts";
-"reminder_10_MINUTES_BEFORE" = "10 minuts";
-"reminder_15_MINUTES_BEFORE" = "15 minuts";
-"reminder_30_MINUTES_BEFORE" = "30 minuts";
+"firstCalendar" = "Primer calendari activat";
+"reminder_NONE" = "Cap recordatori";
+"reminder_5_MINUTES_BEFORE" = "5 minuts abans";
+"reminder_10_MINUTES_BEFORE" = "10 minuts abans";
+"reminder_15_MINUTES_BEFORE" = "15 minuts abans";
+"reminder_30_MINUTES_BEFORE" = "30 minuts abans";
 "reminder_45_MINUTES_BEFORE" = "45 minuts abans";
-"reminder_1_HOUR_BEFORE" = "1 hora";
-"reminder_2_HOURS_BEFORE" = "2 hores";
-"reminder_5_HOURS_BEFORE" = "5 hores";
-"reminder_15_HOURS_BEFORE" = "15 hores";
-"reminder_1_DAY_BEFORE" = "1 dia";
-"reminder_2_DAYS_BEFORE" = "2 dies";
+"reminder_1_HOUR_BEFORE" = "1 hora abans";
+"reminder_2_HOURS_BEFORE" = "2 hores abans";
+"reminder_5_HOURS_BEFORE" = "5 hores abans";
+"reminder_15_HOURS_BEFORE" = "15 hores abans";
+"reminder_1_DAY_BEFORE" = "1 dia abans";
+"reminder_2_DAYS_BEFORE" = "2 dies abans";
 "reminder_1_WEEK_BEFORE" = "1 setmana abans";
 
 /* Mailer */
 "Labels" = "Etiquetes";
-"Label" = "Etiquetar";
+"Label" = "Etiqueta";
 "IMAP Label" = "Etiqueta IMAP";
-"Invalid label" = "No useu l'espai, ni ( ) { } % * \" \\ ";
+"Invalid label" = "No useu espais ni ( ) { } % * \" \\";
 "Duplicate label" = "Etiqueta duplicada";
 "IMAP labels must have unique names." = "Les etiquetes IMAP han de tenir noms únics.";
 "New label" = "Etiqueta nova";
-"Show subscribed mailboxes only" = "Mostrar només les bústies subscrites";
-"Synchronize only default mail folders (EAS)" = "Sincronitzar només les carpetes de correu per defecte (EAS)";
-"Fetch count of unseen messages for all mailboxes" = "Obtenir el recompte de missatges no vistos per a totes les bústies";
-"Sort messages by threads" = "Ordenar els missatges per temes";
-"Always open mail composer" = "Obrir sempre l'editor de missatges";
+"Show subscribed mailboxes only" = "Mostra només les bústies subscrites";
+"Synchronize only default mail folders (EAS)" = "Sincronitza només les carpetes de correu per defecte (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Obtén el recompte de missatges no llegits de totes les bústies";
+"Sort messages by threads" = "Ordena els missatges per fils";
+"Always open mail composer" = "Obre sempre l’editor de missatges";
 "Inside current window" = "Dins de la finestra actual";
 "In a popup window" = "En una finestra emergent";
-"When sending mail, add unknown recipients to my" = "En enviar un missatge, afegeix els destinataris desconeguts al meu";
-"Address Book" = "Llibreta d'adreces";
-"Forward messages" = "Reenviar missatges";
+"When sending mail, add unknown recipients to my" = "En enviar un missatge, afegeix els destinataris desconeguts a la meva";
+"Address Book" = "Llibreta d’adreces";
+"Forward messages" = "Reenvia els missatges";
 "messageforward_inline" = "Incorporats";
-"messageforward_attached" = "Com a adjunts";
-"When replying to a message" = "En contestar a un missatge";
-"replyplacement_above" = "amb la resposta abans";
-"replyplacement_below" = "amb la resposta després";
-"And place my signature" = "Col·locant la signatura";
-"signatureplacement_above" = "abans";
-"signatureplacement_below" = "després";
-"Compose messages in" = "Compondre els missatges en";
+"messageforward_attached" = "Com a adjunt";
+"When replying to a message" = "En respondre un missatge";
+"replyplacement_above" = "Comença la resposta a sobre del text citat";
+"replyplacement_below" = "Comença la resposta a sota del text citat";
+"And place my signature" = "I col·loca la signatura";
+"signatureplacement_above" = "a sota de la resposta";
+"signatureplacement_below" = "a sota del text citat";
+"Compose messages in" = "Redacta els missatges en";
 "composemessagestype_html" = "HTML";
-"composemessagestype_text" = "Text net";
-"Insert signature on new message" = "Insert signature on new message";
-"Insert signature on reply" = "Insert signature on reply";
-"Insert signature on forward" = "Insert signature on forward";
-"Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
-"Hide attachements for inline images" = "Hide attachments for inline images";
+"composemessagestype_text" = "Text pla";
+"Insert signature on new message" = "Insereix la signatura en els missatges nous";
+"Insert signature on reply" = "Insereix la signatura en respondre";
+"Insert signature on forward" = "Insereix la signatura en reenviar";
+"Show recipients or sender full email in mailboxes" = "Mostra l’adreça electrònica completa dels destinataris o remitents a les bústies";
+"Hide attachements for inline images" = "Amaga els adjunts de les imatges incrustades";
 "Show attachments above the message" = "Mostra els adjunts a sobre del missatge";
 
 /* Base font size for messages composed in HTML */
-"Default font size" = "Mida per defecte del tipus de lletra";
+"Default font size" = "Mida de lletra per defecte";
 
-"Display remote inline images" = "Mostrar imatges remotes embegudes";
+"Display remote inline images" = "Mostra les imatges remotes incrustades";
 "displayremoteinlineimages_never" = "Mai";
 "displayremoteinlineimages_always" = "Sempre";
-"Auto save every" = "Auto desar cada";
+"Auto save every" = "Desa automàticament cada";
 "minutes" = "minuts";
-"Automatically mark messages as read" = "Automatically mark messages as read";
-"Immediately on display" = "Immediately on display";
-"After displaying for" = "After displaying for";
-"seconds" = "seconds";
+"Automatically mark messages as read" = "Marca automàticament els missatges com a llegits";
+"Immediately on display" = "Immediatament en mostrar-los";
+"After displaying for" = "Després de mostrar-los durant";
+"seconds" = "segons";
 
 /* Contact */
-"Personal Address Book" = "Llibreta personal d'adreces";
-"Collected Address Book" = "Llibreta d'adreces recopilades";
+"Personal Address Book" = "Llibreta d’adreces personal";
+"Collected Address Book" = "Llibreta d’adreces recopilades";
 "Contact categories must have unique names." = "Les categories de contactes han de tenir noms únics.";
 
 /* IMAP Accounts */
@@ -232,49 +232,49 @@
 "Security" = "Seguretat";
 "Mail Account" = "Compte de correu";
 "New Mail Account" = "Compte de correu nou";
-"Server Name" = "Servidor";
-"Outgoing Server Name (SMTP)" = "Outgoing Server Name (SMTP)";
-"Smtp Auth" = "Smtp Auth";
+"Server Name" = "Nom del servidor";
+"Outgoing Server Name (SMTP)" = "Nom del servidor de sortida (SMTP)";
+"Smtp Auth" = "Autenticació SMTP";
 "Port" = "Port";
-"Encryption" = "Encriptació";
-"Outgoing Encryption" = "Outgoing Encryption";
+"Encryption" = "Xifratge";
+"Outgoing Encryption" = "Xifratge de sortida";
 "None" = "Cap";
-"User Name" = "Usuari";
+"User Name" = "Nom d’usuari";
 "Full Name" = "Nom complet";
 "Email" = "Correu electrònic";
-"Reply To Email" = "Respondre a aquesta adreça de correu";
+"Reply To Email" = "Adreça de resposta";
 "Signature" = "Signatura";
 "Identities" = "Identitats";
-"Always use the default identity when replying to messages" = "Always use the default identity when replying to messages";
+"Always use the default identity when replying to messages" = "Utilitza sempre la identitat per defecte en respondre els missatges";
 "Default Identity" = "Identitat per defecte";
-"New Identity" = "Nova identitat";
-"(Click to create)" = "(Clic per a crear-la)";
-"Please enter your signature below" = "Si us plau, poseu la signatura a sota";
-"Please specify a valid sender address." = "Per favor, especifique una adreça vàlida per al remitent.";
-"Please specify a valid reply-to address." = "Per favor, especifique una adreça de resposta vàlida.";
-"Specify a hostname other than the local host" = "Especificar un nom de host que no sigui el host local";
+"New Identity" = "Identitat nova";
+"(Click to create)" = "(Feu clic per crear-la)";
+"Please enter your signature below" = "Introduïu la signatura a continuació";
+"Please specify a valid sender address." = "Especifiqueu una adreça de remitent vàlida.";
+"Please specify a valid reply-to address." = "Especifiqueu una adreça de resposta vàlida.";
+"Specify a hostname other than the local host" = "Especifiqueu un nom d’amfitrió diferent de l’amfitrió local";
 
-"No certificate installed" = "No s’ha instal·lat cap certificat";
-"The SSL certificate must use the PKCS#12 (PFX) format." = "El certificat SSL ha d'utilitzar el format PKCS#12 (PFX).";
-"Uninstall" = "Desinstal·lar";
-"Choose PKCS12 Certificate .." = " Seleccionar el certificat PKCS12 ..";
-"Certificate Import Password" = "Contrasenya per importar el certificat";
-"Upload" = "Carregar";
+"No certificate installed" = "No hi ha cap certificat instal·lat";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "El certificat SSL ha d’utilitzar el format PKCS#12 (PFX).";
+"Uninstall" = "Desinstal·la";
+"Choose PKCS12 Certificate .." = "Tria el certificat PKCS12…";
+"Certificate Import Password" = "Contrasenya d’importació del certificat";
+"Upload" = "Puja";
 "When composing a message" = "En redactar un missatge";
-"Digitally sign the message by default" = "Signar digitalment el missatge per defecte";
-"Always try to encrypt the message" = "Sempre intentar xifrar el missatge";
-"An error occurred while importing the certificate. Verify your password." = "S'ha produït un error en importar el certificat. Verifiqueu la vostra contrasenya.";
-"Data too big. Please contact technical support." = "Data too big. Please contact technical support.";
+"Digitally sign the message by default" = "Signa digitalment el missatge per defecte";
+"Always try to encrypt the message" = "Intenta sempre xifrar el missatge";
+"An error occurred while importing the certificate. Verify your password." = "S’ha produït un error en importar el certificat. Verifiqueu la vostra contrasenya.";
+"Data too big. Please contact technical support." = "Les dades són massa grans. Contacteu amb el servei d’assistència tècnica.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Paràmetres addicionals";
 
 /* password */
-"Current password" = "Current password";
+"Current password" = "Contrasenya actual";
 "New password" = "Contrasenya nova";
-"Confirmation" = "Confirmar contrasenya nova";
-"Change" = "Canviar";
-"Passwords don't match" = "Passwords don't match";
+"Confirmation" = "Confirmació";
+"Change" = "Canvia";
+"Passwords don't match" = "Les contrasenyes no coincideixen";
 
 
 /* Event+task classifications */
@@ -286,28 +286,28 @@
 
 /* Event+task categories */
 "Calendar Category" = "Categoria de calendari";
-"Add Calendar Category" = "Afegir categoria de calendari";
-"New category" = "Nova categoria";
-"Reset to defaults" = "Restablir els valors predeterminats";
-"Remove Calendar Category" = "Suprimeix categoria de calendari";
-"Contact Category" = "Categoria de llibreta d'adreces";
-"Add Contact Category" = "Afegir categoria de llibreta d'adreces";
-"Remove Contact Category" = "Suprimeix categoria de llibreta d'adreces";
+"Add Calendar Category" = "Afegeix una categoria de calendari";
+"New category" = "Categoria nova";
+"Reset to defaults" = "Restableix els valors per defecte";
+"Remove Calendar Category" = "Elimina la categoria de calendari";
+"Contact Category" = "Categoria de contacte";
+"Add Contact Category" = "Afegeix una categoria de contacte";
+"Remove Contact Category" = "Elimina la categoria de contacte";
 "category_none" = "Cap";
-"calendar_category_labels" = "Aniversari,Natalici,Negocis,Telefonades,Clients,Competició,Feina,Favorits,Seguiment,Regals,Festes,Idees,Reunió,Assumptes,Altres,Personal,Projectes,Vacances públiques,Estat,Proveïdors,Viatges,Vacances";
+"calendar_category_labels" = "Aniversari,Natalici,Negocis,Trucades,Clients,Competència,Client,Preferits,Seguiment,Regals,Festes,Idees,Reunió,Incidències,Miscel·lània,Personal,Projectes,Festiu oficial,Estat,Proveïdors,Viatges,Vacances";
 
 /* Default module */
 "Calendar" = "Calendari";
-"Contacts" = "Llibreta d'adreces";
+"Contacts" = "Llibreta d’adreces";
 "Mail" = "Correu";
-"Last" = "Últim usat";
-"Default Module " = "Pàgina per defecte";
+"Last" = "Últim utilitzat";
+"Default Module " = "Mòdul per defecte";
 "SOGo Version" = "Versió del SOGo";
 
 /* Confirmation asked when changing the language */
-"Save preferences and reload page now?" = "Guardar les preferències i recarregar la pàgina ara?";
-"Language" = "Language";
-"choose" = "Choose ...";
+"Save preferences and reload page now?" = "Voleu desar les preferències i tornar a carregar la pàgina ara?";
+"Language" = "Llengua";
+"choose" = "Trieu…";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Bosnian" = "Bosanski";
@@ -355,7 +355,7 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
-"Refresh View" = "Refresqui la vista";
+"Refresh View" = "Actualitza la vista";
 "refreshview_manually" = "Manualment";
 "refreshview_every_minute" = "Cada minut";
 "refreshview_every_2_minutes" = "Cada 2 minuts";
@@ -363,49 +363,49 @@
 "refreshview_every_10_minutes" = "Cada 10 minuts";
 "refreshview_every_20_minutes" = "Cada 20 minuts";
 "refreshview_every_30_minutes" = "Cada 30 minuts";
-"refreshview_once_per_hour" = "Cada hora";
-"Enable Desktop Notifications" = "Enable Desktop Notifications";
+"refreshview_once_per_hour" = "Un cop per hora";
+"Enable Desktop Notifications" = "Activa les notificacions d’escriptori";
 
 /* Return receipts */
-"When I receive a request for a return receipt" = "Quan reba una sol·licitud de justificant de recepció";
-"Never send a return receipt" = "No enviar mai un justificant de recepció";
-"Allow return receipts for some messages" = "Permetre els justificants de recepció per alguns dels missatges";
-"If I'm not in the To or Cc of the message" = "Si no estic en el camp Per o CC del missatge";
+"When I receive a request for a return receipt" = "Quan rebi una sol·licitud de justificant de recepció";
+"Never send a return receipt" = "No enviïs mai justificants de recepció";
+"Allow return receipts for some messages" = "Permet els justificants de recepció per a alguns missatges";
+"If I'm not in the To or Cc of the message" = "Si no soc al camp Per a o A/c del missatge";
 "If the sender is outside my domain" = "Si el remitent està fora del meu domini";
 "In all other cases" = "En tots els altres casos";
-"Never send" = "No enviar mai";
-"Always send" = "Enviar sempre";
-"Ask me" = "Preguntar";
+"Never send" = "No l’enviïs mai";
+"Always send" = "Envia’l sempre";
+"Ask me" = "Pregunta-m’ho";
 
 /* Filters - UIxPreferences */
 "Filters" = "Filtres";
 "Active" = "Actiu";
-"Move Up" = "Pujar";
-"Move Down" = "Baixar";
+"Move Up" = "Mou amunt";
+"Move Down" = "Mou avall";
 "Connection error" = "Error de connexió";
-"Service temporarily unavailable" = "Servei temporalment no disponible";
+"Service temporarily unavailable" = "El servei no està disponible temporalment";
 
 /* Aria label for filter enable checkbox */
-"Enable filter" = "Habilita el filtre";
+"Enable filter" = "Activa el filtre";
 
 /* Filters - UIxFilterEditor */
 "Filter name" = "Nom del filtre";
 /* Button label */
-"Add a condition" = "Afegir una condició";
+"Add a condition" = "Afegeix una condició";
 /* Button label */
-"Add an action" = "Afegir una acció";
-"For incoming messages that" = "Per a missatges d'entrada que";
-"match all of the following rules" = "compleixin TOTES aquestes regles";
-"match any of the following rules" = "compleixin ALGUNA d'aquestes regles";
+"Add an action" = "Afegeix una acció";
+"For incoming messages that" = "Per als missatges entrants que";
+"match all of the following rules" = "compleixin totes les regles següents";
+"match any of the following rules" = "compleixin qualsevol de les regles següents";
 "match all messages" = "tots els missatges";
-"Perform these actions" = "Realitzar aquestes accions";
+"Perform these actions" = "Executa aquestes accions";
 "Untitled Filter" = "Filtre sense títol";
 "Subject" = "Assumpte";
 "From" = "De";
-"To" = "A";
-"Cc" = "Cc";
-"To or Cc" = "A o Cc";
-"Size (Kb)" = "Mida (Kb)";
+"To" = "Per a";
+"Cc" = "A/c";
+"To or Cc" = "Per a o A/c";
+"Size (Kb)" = "Mida (kB)";
 "Header" = "Capçalera";
 "Body" = "Cos";
 "Flag the message with" = "Marca el missatge amb";
@@ -414,84 +414,84 @@
 "Flag" = "Marca";
 
 "Discard the message" = "Descarta el missatge";
-"File the message in" = "Arxiva el missatge en";
+"File the message in" = "Arxiva el missatge a";
 
 /* Select field label of "file message" mail filter action */
 "Mailbox" = "Bústia";
 
-"Keep the message" = "Desa el missatge";
-"Forward the message to" = "Redirigeix el missatge a";
-"Notify the message to" = "Notify the message to";
+"Keep the message" = "Conserva el missatge";
+"Forward the message to" = "Reenvia el missatge a";
+"Notify the message to" = "Notifica el missatge a";
 
 /* Input field label of "forward" mail filter action */
 "Email" = "Correu electrònic";
 
-"Send a reject message" = "Respon amb un missatge de refús";
+"Send a reject message" = "Envia un missatge de rebuig";
 
 /* Input field label of "reject" mail filter action */
 "Message" = "Missatge";
 
-"Send a vacation message" = "Respon amb un missatge de vacances";
-"Stop processing filter rules" = "Para de processar regles";
-"is under" = "està per sota de";
-"is over" = "està per damunt de";
-"is" = "és igual a";
-"is not" = "no és igual a";
-"contains" = "conté la cadena";
-"does not contain" = "no conté la cadena";
-"matches" = "compleix patró amb *";
-"does not match" = "no compleix patró amb *";
-"matches regex" = "compleix regex";
-"does not match regex" = "no compleix regex";
+"Send a vacation message" = "Envia un missatge d’absència";
+"Stop processing filter rules" = "Atura el processament de les regles de filtre";
+"is under" = "és inferior a";
+"is over" = "és superior a";
+"is" = "és";
+"is not" = "no és";
+"contains" = "conté";
+"does not contain" = "no conté";
+"matches" = "coincideix amb el patró";
+"does not match" = "no coincideix amb el patró";
+"matches regex" = "coincideix amb l’expressió regular";
+"does not match regex" = "no coincideix amb l’expressió regular";
 /* Placeholder for the value field of a condition */
 "Value" = "Valor";
-"Seen" = "Vist";
-"Deleted" = "Esborrat";
-"Answered" = "Contestat";
-"Flagged" = "Marcat";
-"Junk" = "Brossa";
-"Not Junk" = "No brossa";
+"Seen" = "Llegit";
+"Deleted" = "Suprimit";
+"Answered" = "Respost";
+"Flagged" = "Senyalat";
+"Junk" = "Correu brossa";
+"Not Junk" = "No és correu brossa";
 
 /* Password policy */
-"The password was changed successfully." = "La contrasenya s'ha canviat correctament";
-"Password must not be empty." = "La contrasenya no ha d'estar buida.";
-"The passwords do not match. Please try again." = "Les contrasenyes no coincideixen. Intenta-ho de nou.";
-"Password change failed" = "Ha fallat el canvi de contrasenya";
-"Password change failed - Permission denied" = "Ha fallat el canvi de contrasenya - Permís denegat";
-"Password change failed - Insufficient password quality" = "Ha fallat el canvi de contrasenya - La contrasenya  no es prou segura.";
-"Password change failed - Password is too short" = "Ha fallat el canvi de contrasenya - La contrasenya és massa curta.";
-"Password change failed - Password is too young" = "Ha fallat el canvi de contrasenya - La contrasenya s'ha canviat recentment";
-"Password change failed - Password is in history" = "Ha fallat el canvi de contrasenya - La contrasenya esta  en l'històric";
-"Unhandled policy error: %{0}" = "Error desconegut de política:%{0}";
-"Unhandled error response" = "Error desconegut";
-"Password change is not supported." = "El canvi de contrasenya no està suportat";
-"Unhandled HTTP error code: %{0}" = "Codi d'error HTTP desconegut:%{0}";
-"Cancel" = "Cancel·lar";
+"The password was changed successfully." = "S’ha canviat la contrasenya correctament.";
+"Password must not be empty." = "La contrasenya no pot estar buida.";
+"The passwords do not match. Please try again." = "Les contrasenyes no coincideixen. Torneu-ho a provar.";
+"Password change failed" = "No s’ha pogut canviar la contrasenya";
+"Password change failed - Permission denied" = "No s’ha pogut canviar la contrasenya: permís denegat";
+"Password change failed - Insufficient password quality" = "No s’ha pogut canviar la contrasenya: la contrasenya no és prou segura";
+"Password change failed - Password is too short" = "No s’ha pogut canviar la contrasenya: la contrasenya és massa curta";
+"Password change failed - Password is too young" = "No s’ha pogut canviar la contrasenya: la contrasenya és massa recent";
+"Password change failed - Password is in history" = "No s’ha pogut canviar la contrasenya: la contrasenya ja s’ha utilitzat anteriorment";
+"Unhandled policy error: %{0}" = "Error de política no gestionat: %{0}";
+"Unhandled error response" = "Resposta d’error no gestionada";
+"Password change is not supported." = "No s’admet el canvi de contrasenya.";
+"Unhandled HTTP error code: %{0}" = "Codi d’error HTTP no gestionat: %{0}";
+"Cancel" = "Cancel·la";
 "Invitations" = "Invitacions";
-"Edit Filter" = "Editeu filtre";
-"Delete Filter" = "Esborrar filtre";
-"Create Filter" = "Crear filtre";
-"Delete Label" = "Suprimir l'etiqueta";
-"Create Label" = "Crear l'etiqueta";
+"Edit Filter" = "Edita el filtre";
+"Delete Filter" = "Suprimeix el filtre";
+"Create Filter" = "Crea un filtre";
+"Delete Label" = "Suprimeix l’etiqueta";
+"Create Label" = "Crea una etiqueta";
 "Accounts" = "Comptes";
-"Edit Account" = "Modificar compte";
-"Delete Account" = "Esborrar compte";
-"Create Account" = "Crear compte";
-"Account Name" = "Nom de compte";
+"Edit Account" = "Edita el compte";
+"Delete Account" = "Suprimeix el compte";
+"Create Account" = "Crea un compte";
+"Account Name" = "Nom del compte";
 "SSL" = "SSL";
 "TLS" = "TLS";
 
 /* Avatars */
-"Use Gravatar" = "Empra Gravatar";
+"Use Gravatar" = "Utilitza Gravatar";
 "Alternate Avatar" = "Avatar alternatiu";
 "none" =  "Cap";
-"identicon" = "Icona d'identitat";
+"identicon" = "Icona d’identitat";
 "monsterid" = "Monstre";
 "wavatar" = "Wavatar";
 "retro" = "Retro";
 
 /* Animation Level */
-"Animation Level" = "Nivell d'animació";
+"Animation Level" = "Nivell d’animació";
 /* Normal Animation Mode */
 "animation_NORMAL" = "Normal";
 /* Limited Animation Mode */
@@ -499,21 +499,21 @@
 "animation_NONE" = "Cap";
 
 /* 2FA */
-"Enable two-factor authentication using a TOTP application" = "Activa l'autenticació en dos passos mitjançant Google Authenticator";
-"You must enter this key into your TOTP application." = "Has d'introduir aquesta clau a l'aplicació Google Authenticator.";
-"If you do not and you log out you will not be able to login again." = "Si no ho fas i surts, no podràs tornar a iniciar la sessió.";
-"Enter TOTP verification code :" = "Enter TOTP verification code :";
-"Invalid TOTP verification code" = "Invalid TOTP verification code";
+"Enable two-factor authentication using a TOTP application" = "Activa l’autenticació de dos factors mitjançant una aplicació TOTP";
+"You must enter this key into your TOTP application." = "Heu d’introduir aquesta clau a l’aplicació TOTP.";
+"If you do not and you log out you will not be able to login again." = "Si no ho feu i sortiu, no podreu tornar a iniciar la sessió.";
+"Enter TOTP verification code :" = "Introduïu el codi de verificació TOTP:";
+"Invalid TOTP verification code" = "Codi de verificació TOTP no vàlid";
 
 /* External Sieve scripts */
-"An external Sieve script is active" = "Un script extern de Sieve està actiu";
-"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "El Sieve és un llenguatge de programació que es pot utilitzar per filtrar correu electrònic. Si deixes que SOGo gestioni la configuració dels teus filtres, les vacances i el reenviament, el vostre script actiu es desactivarà.";
-"Let SOGo handle everything" = "Deixa que SOGo s'ocupi de tot";
+"An external Sieve script is active" = "Hi ha un script de Sieve extern actiu";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve és un llenguatge de programació que es pot utilitzar per filtrar el correu electrònic. Si deixeu que el SOGo gestioni la configuració dels filtres, l’absència i el reenviament, es desactivarà el vostre script actiu.";
+"Let SOGo handle everything" = "Deixa que el SOGo s’encarregui de tot";
 
 /* Password Recovery */
-"Password recovery mode" = "Password recovery mode";
-"Question" = "Question";
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password recovery" = "Password recovery";
-"Password change" = "Password change";
+"Password recovery mode" = "Mode de recuperació de la contrasenya";
+"Question" = "Pregunta";
+"Secondary e-mail" = "Adreça electrònica secundària";
+"Answer" = "Resposta";
+"Password recovery" = "Recuperació de la contrasenya";
+"Password change" = "Canvi de contrasenya";
