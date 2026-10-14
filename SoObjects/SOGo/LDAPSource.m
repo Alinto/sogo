@@ -45,6 +45,7 @@ static Class NSStringK;
                                  stringByReplacingString: @"'" withString: @"\\'"] \
                                  stringByReplacingString: @"%" withString: @"%%"]
 
+
 @implementation LDAPSource
 
 + (void) initialize
@@ -66,6 +67,29 @@ static Class NSStringK;
 
   return source;
 }
+
+- (NSString*) LDAPEscapeFilterChars: (NSString*) assertionValue
+                   keepWildcard: (BOOL) keepWildcard
+{
+    if (![assertionValue isKindOfClass:[NSString class]]) {
+        return @"";
+    }
+ 
+    unichar nul = 0;
+    NSString *nulString = [NSString stringWithCharacters:&nul length:1];
+    NSString *s = [assertionValue stringByReplacingOccurrencesOfString:@"\\" withString:@"\\5c"];
+    if(!keepWildcard)
+         s = [s stringByReplacingOccurrencesOfString:@"*" withString:@"\\2a"];
+    s = [s stringByReplacingOccurrencesOfString:@"(" withString:@"\\28"];
+    s = [s stringByReplacingOccurrencesOfString:@")" withString:@"\\29"];
+    s = [s stringByReplacingOccurrencesOfString:nulString withString:@"\\00"];
+
+    //Only for objective-c
+    s = [s stringByReplacingString: @"'" withString: @"\\'"];
+    s = [s stringByReplacingString: @"%" withString: @"%%"];
+    return s;
+}
+
 
 //
 //
@@ -550,7 +574,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 
   qs = [NSMutableString string];
 
-  escapedUid = SafeLDAPCriteria(theUID);
+  escapedUid = [self LDAPEscapeFilterChars: theUID keepWildcard:NO];
 
   fields = [_bindFields objectEnumerator];
   while ((currentField = [fields nextObject]))
@@ -931,7 +955,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   EOQualifier *qualifier;
   NSMutableString *qs;
 
-  escapedFilter = SafeLDAPCriteria(filter);
+  escapedFilter = [self LDAPEscapeFilterChars: filter keepWildcard: NO];
   qs = [NSMutableString string];
 
   if (([escapedFilter length] == 0 && !_listRequiresDot) || [escapedFilter isEqualToString: @"."])
@@ -986,7 +1010,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   NSEnumerator *bindFieldsEnum;
   NSMutableString *qs;
 
-  escapedUid = SafeLDAPCriteria(uid);
+  escapedUid = [self LDAPEscapeFilterChars: uid keepWildcard:NO];
 
   fieldFormat = [NSString stringWithFormat: @"(%%@='%@')", escapedUid];
   mailFormat = [[_mailFields stringsWithFormat: fieldFormat]
@@ -1557,7 +1581,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   if ([theID length] > 0)
     {
       s = [NSString stringWithFormat: @"(%@='%@')",
-                    _IDField, SafeLDAPCriteria(theID)];
+                    _IDField, [self LDAPEscapeFilterChars: theID keepWildcard:NO]];
       qualifier = [EOQualifier qualifierWithQualifierFormat: s];
       ldapEntry = [self _lookupLDAPEntry: qualifier
 			 usingConnection: connection];
@@ -1661,14 +1685,14 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
       if ([theAttributes count] == 1)
 	{
 	    s = [NSString stringWithFormat: @"(%@='%@')",
-			  [theAttributes lastObject], SafeLDAPCriteria(theValue)];
+			  [theAttributes lastObject], [self LDAPEscapeFilterChars: theValue keepWildcard:NO]];
 
 	}
       else
 	{
 	  NSString *fieldFormat;
 
-	  fieldFormat = [NSString stringWithFormat: @"(%%@='%@')", SafeLDAPCriteria(theValue)];
+	  fieldFormat = [NSString stringWithFormat: @"(%%@='%@')", [self LDAPEscapeFilterChars: theValue keepWildcard:NO]];
 	  s = [[theAttributes stringsWithFormat: fieldFormat]
 			 componentsJoinedByString: @" OR "];
 	}
