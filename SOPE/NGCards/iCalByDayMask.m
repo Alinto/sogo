@@ -229,7 +229,7 @@
               order = 0;
 
               [value getCharacters: chars
-                             range: NSMakeRange(0, valueLength)];
+                             range: NSMakeRange(valueLength - 2, 2)];
 
               switch (chars[0])
                 {
