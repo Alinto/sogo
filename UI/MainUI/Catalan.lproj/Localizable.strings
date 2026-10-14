@@ -1,36 +1,36 @@
 /* this file is in UTF-8 format! */
 
 "title" = "SOGo";
-"Username" = "Usuari";
+"Username" = "Nom d’usuari";
 "Password" = "Contrasenya";
 "Domain" = "Domini";
-"Remember username" = "recordar usuari";
-"Connect" = "Connectar";
+"Remember username" = "Recorda el nom d’usuari";
+"Connect" = "Connecta";
 
 /* Appears while authentication is in progress */
-"Authenticating" = "S'està autenticant";
+"Authenticating" = "S’està autenticant";
 
 /* Appears when authentication succeeds */
-"Welcome" = "Benvingut/da";
+"Welcome" = "Us donem la benvinguda";
 
-"Authentication Failed" = "L'autenticació ha fallat";
-"Wrong username or password." = "Usuari o contrasenya incorrectes.";
-"Retry" = "Torneu-ho a intentar";
-"Login failed due to unhandled error case:" = "Connexió fallida a causa d'un error inesperat: ";
-"cookiesNotEnabled" = "No us hi podeu connectar perquè les galetes estan deshabilitades. Habiliteu les galetes en el navegador i torneu a intentar-ho.";
-"browserNotCompatible" = "Aquesta versió del navegador no és compatible amb el sistema. Us recomanem l'ús de Firefox. Feu clic en l'enllaç següent per descarregar-vos la versió más recent d'aquest navegador.";
-"alternativeBrowsers" = "També podeu utilitza un d'aquests navegadors compatibles: ";
-"alternativeBrowserSafari" = "Safari.";
+"Authentication Failed" = "L’autenticació ha fallat";
+"Wrong username or password." = "El nom d’usuari o la contrasenya són incorrectes.";
+"Retry" = "Torna-ho a provar";
+"Login failed due to unhandled error case:" = "No s’ha pogut iniciar la sessió a causa d’un error no previst: ";
+"cookiesNotEnabled" = "No podeu iniciar la sessió perquè les galetes estan desactivades al navegador. Activeu les galetes a la configuració del navegador i torneu-ho a provar.";
+"browserNotCompatible" = "Hem detectat que la versió del vostre navegador no és compatible amb aquest lloc. Us recomanem que utilitzeu el Firefox. Feu clic a l’enllaç següent per a baixar-ne la versió més recent.";
+"alternativeBrowsers" = "També podeu utilitzar els navegadors compatibles següents";
+"alternativeBrowserSafari" = "També podeu utilitzar el Safari.";
 
 /* 2FA */
 "Verification Code" = "Codi de verificació";
-"Enter the 6-digit verification code from your TOTP application." = "Introdueix el codi de verificació de 6 dígits de l'aplicació Google Authenticator.";
-"You provided an invalid TOTP key." = "Has proporcionat una clau de Google Authenticator invàlida.";
-"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application.";
+"Enter the 6-digit verification code from your TOTP application." = "Introduïu el codi de verificació de 6 xifres de l’aplicació TOTP.";
+"You provided an invalid TOTP key." = "Heu proporcionat una clau TOTP no vàlida.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "S’ha desactivat l’autenticació de dos factors. Aneu al mòdul de preferències per a restaurar l’autenticació de dos factors i tornar a configurar l’aplicació TOTP.";
 
-"Download" = "Descàrrega";
+"Download" = "Baixa";
 "Language" = "Llengua";
-"choose" = "Triar ...";
+"choose" = "Trieu…";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Bosnian" = "Bosanski";
@@ -79,58 +79,58 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
-"About" = "Informació";
-"AboutBox" = "Developed by Inverse and Alinto, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
-"Your account was locked due to too many failed attempts." = "El vostre compte ha estat bloquejat per un excés d'intents fallits.";
-"Your account was locked due to an expired password." = "El vostre compte ha estat bloquejat perquè la contrasenya ha caducat.";
-"Login failed due to unhandled error case" = "Connexió fallida a causa d'un error inesperat";
+"About" = "Quant a";
+"AboutBox" = "Desenvolupat per Inverse i Alinto, SOGo és un servidor de treball en grup complet centrat en l’escalabilitat i la simplicitat.<br/><br/>\nSOGo ofereix una interfície web rica basada en AJAX i admet diversos clients natius mitjançant protocols estàndard com ara CalDAV i CardDAV.<br/><br/>\nSOGo es distribueix sota la <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> versió 2 o posterior, i algunes parts es distribueixen sota la GNU LGPL versió 2. És programari lliure: podeu modificar-lo i redistribuir-lo. NO hi ha CAP GARANTIA, en la mesura que ho permeti la llei.<br/><br/>\nConsulteu <a href=\"http://www.sogo.nu/en/support/community.html\">aquesta pàgina</a> per a conèixer les diverses opcions d’assistència.";
+"Your account was locked due to too many failed attempts." = "S’ha bloquejat el vostre compte a causa d’un excés d’intents fallits.";
+"Your account was locked due to an expired password." = "S’ha bloquejat el vostre compte perquè la contrasenya ha caducat.";
+"Login failed due to unhandled error case" = "No s’ha pogut iniciar la sessió a causa d’un error no previst";
 "Change your Password" = "Canvieu la contrasenya";
-"The password was changed successfully." = "La contrasenya s'ha canviat correctament";
-"Your password has expired, please enter a new one below" = "La contrasenya ha caducat; introduïu-ne una nova";
-"Your password is too weak. Please choose a stronger password to enhance your security" = "Your password is too weak. Please choose a stronger password to enhance your security";
-"Password must not be empty." = "Heu d'escriure la contrasenya.";
-"The passwords do not match. Please try again." = "Les contrasenyes no coincideixen. Torneu-ho a intentar.";
-"Password Grace Period" = "Període de validesa de la contrasenya";
-"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Us resten %{0} connexions abans que se us bloquegi el compte. Si us plau, canvieu la contrasenya en el panell de preferències.";
+"The password was changed successfully." = "S’ha canviat la contrasenya correctament.";
+"Your password has expired, please enter a new one below" = "La contrasenya ha caducat. Introduïu-ne una de nova a continuació";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "La contrasenya és massa feble. Trieu una contrasenya més robusta per a millorar la seguretat";
+"Password must not be empty." = "La contrasenya no pot estar buida.";
+"The passwords do not match. Please try again." = "Les contrasenyes no coincideixen. Torneu-ho a provar.";
+"Password Grace Period" = "Període de gràcia de la contrasenya";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Us queden %{0} inicis de sessió abans que es bloquegi el compte. Canvieu la contrasenya al diàleg de preferències.";
 "Password about to expire" = "La contrasenya està a punt de caducar";
-"Your password is going to expire in %{0} %{1}." = "La contrasenya caducarà d'aquí a %{0} %{1}.";
+"Your password is going to expire in %{0} %{1}." = "La contrasenya caducarà d’aquí a %{0} %{1}.";
 "days" = "dies";
 "hours" = "hores";
 "minutes" = "minuts";
 "seconds" = "segons";
-"Password change failed" = "Canvi de contrasenya sense èxit";
-"Password change failed - Permission denied" = "Canvi de contrasenya no vàlid - Permís denegat";
-"Password change failed - Insufficient password quality" = "Canvi de contrasenya no vàlid - Contrasenya massa simple";
-"Password change failed - Password is too short" = "Canvi de contrasenya no vàlid - Contrasenya massa curta";
-"Password change failed - Password is too young" = "Canvi de contrasenya no vàlid - Contrasenya massa recent";
-"Password change failed - Password is in history" = "Canvi de contrasenya no vàlid - La contrasenya es troba en l'historial";
-"Unhandled policy error: %{0}" = "Error en política no previst: %{0}";
-"Unhandled error response" = "Error no previst";
-"Password change is not supported." = "No s'admet canvi de contrasenyes.";
-"Unhandled HTTP error code: %{0}" = "Error HTTP no previst. Codi: %{0}";
-"Current password" = "Current password";
+"Password change failed" = "No s’ha pogut canviar la contrasenya";
+"Password change failed - Permission denied" = "No s’ha pogut canviar la contrasenya: permís denegat";
+"Password change failed - Insufficient password quality" = "No s’ha pogut canviar la contrasenya: la contrasenya no és prou segura";
+"Password change failed - Password is too short" = "No s’ha pogut canviar la contrasenya: la contrasenya és massa curta";
+"Password change failed - Password is too young" = "No s’ha pogut canviar la contrasenya: la contrasenya és massa recent";
+"Password change failed - Password is in history" = "No s’ha pogut canviar la contrasenya: la contrasenya ja s’ha utilitzat anteriorment";
+"Unhandled policy error: %{0}" = "Error de política no gestionat: %{0}";
+"Unhandled error response" = "Resposta d’error no gestionada";
+"Password change is not supported." = "No s’admet el canvi de contrasenya.";
+"Unhandled HTTP error code: %{0}" = "Codi d’error HTTP no gestionat: %{0}";
+"Current password" = "Contrasenya actual";
 "New password" = "Contrasenya nova";
-"Passwords don't match" = "Passwords don't match";
+"Passwords don't match" = "Les contrasenyes no coincideixen";
 "Confirmation" = "Confirmació";
-"Change" = "Change";
-"Cancel" = "Cancel·lar";
-"Please wait..." = "Si us plau, espereu-vos...";
-"Close" = "Tancar";
-"Missing search parameter" = "Falten paràmetres de cerca";
+"Change" = "Canvia";
+"Cancel" = "Cancel·la";
+"Please wait..." = "Espereu…";
+"Close" = "Tanca";
+"Missing search parameter" = "Falta el paràmetre de cerca";
 "Missing type parameter" = "Falta el paràmetre de tipus";
 
 /* Password Recovery */
-"Secondary e-mail" = "Secondary e-mail";
-"Answer" = "Answer";
-"Password lost" = "Password lost";
-"No password recovery method has been defined for this user" = "No password recovery method has been defined for this user";
-"Invalid secret question answer" = "Invalid secret question answer";
-"Next" = "Next";
-"Back" = "Back";
-"Please enter a new password below" = "Please enter a new password below";
-"A link will be sent to %{0}" = "A link will be sent to %{0}";
-"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "A password reset link has been sent, please check your recovery e-mail mailbox and click on the link";
-"Invalid configuration for email password recovery" = "Invalid configuration for email password recovery";
-"Password recovery email in error" = "Password recovery email in error";
-"Password reset" = "Password reset";
-"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}";
+"Secondary e-mail" = "Adreça electrònica secundària";
+"Answer" = "Resposta";
+"Password lost" = "He perdut la contrasenya";
+"No password recovery method has been defined for this user" = "No s’ha definit cap mètode de recuperació de la contrasenya per a aquest usuari";
+"Invalid secret question answer" = "La resposta a la pregunta secreta no és vàlida";
+"Next" = "Següent";
+"Back" = "Enrere";
+"Please enter a new password below" = "Introduïu una contrasenya nova a continuació";
+"A link will be sent to %{0}" = "S’enviarà un enllaç a %{0}";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "S’ha enviat un enllaç per a restablir la contrasenya. Comproveu la bústia de l’adreça de correu de recuperació i feu clic a l’enllaç";
+"Invalid configuration for email password recovery" = "La configuració de la recuperació de la contrasenya per correu electrònic no és vàlida";
+"Password recovery email in error" = "Error en el correu de recuperació de la contrasenya";
+"Password reset" = "Restabliment de la contrasenya";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Hola, %{0}:\nS’ha sol·licitat canviar la vostra contrasenya.\n\nSi no heu fet aquesta sol·licitud, ignoreu aquest correu.\n\nEn cas contrari, feu clic en aquest enllaç per a canviar la contrasenya: %{1}";
