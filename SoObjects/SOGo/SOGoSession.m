@@ -45,6 +45,11 @@
 
   cache = [SOGoCache sharedCache];
 
+  //We check that the session is base64
+  NSData *decodedData = [[NSData alloc] initWithBase64EncodedString:theSessionKey options:0];
+  if(!decodedData)
+    return value;
+
   key = [NSString stringWithFormat: @"session:%@", theSessionKey];
   value = [cache valueForKey: key];
 

@@ -204,7 +204,7 @@ static NSString *sessionsFolderURLString = nil;
   NSArray *attrs;
   NSDictionary *record;
   EOEntity *entity;
-  EOSQLQualifier *qualifier;
+  EOQualifier *qualifier;
 
   record = nil;
 
@@ -217,6 +217,7 @@ static NSString *sessionsFolderURLString = nil;
                                          qualifierFormat:
                                             @"c_id='%@'",
                                           theID];
+
       [qualifier autorelease];
 
       [context beginTransaction];
