@@ -176,7 +176,8 @@ static NSString    *userAgent      = nil;
 {
   if (!path)
     {
-      path = [[self userSpoolFolderPath] stringByAppendingPathComponent: nameInContainer];
+
+      path = [[self userSpoolFolderPath] stringByAppendingPathComponent: [nameInContainer asSafeFilename]];
       [path retain];
     }
 
