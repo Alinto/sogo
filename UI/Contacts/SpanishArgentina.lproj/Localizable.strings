@@ -295,7 +295,7 @@
 "Upload" = "Cargar";
 "Uploading" = "Cargando";
 "Done" = "Hecho";
-"An error occured while importing contacts." = "Ha ocurrido un error mientras se importaban los contactos.";
+"An error occurred while importing contacts." = "Ha ocurrido un error mientras se importaban los contactos.";
 "No card was imported." = "No se ha importado ningún contacto.";
 "A total of %{0} cards were imported in the addressbook." = "Un total de %{0} contactos han sido importados a la libreta de direcciones.";
 "Reload" = "Recargar";
@@ -350,7 +350,7 @@
 "New Custom Value" = "Nuevo campo personalizado";
 "Synchronization" = "Sincronización";
 "Synchronize" = "Sincronizar";
-"Sucessfully subscribed to address book" = "Se suscribió con éxito a la libreta de direcciones ";
+"Successfully subscribed to address book" = "Se suscribió con éxito a la libreta de direcciones ";
 "A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */

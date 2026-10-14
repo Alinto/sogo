@@ -156,7 +156,7 @@
 "File size upload limit reached" = "Pasiektas failo dydžio įkėlimo limitas";
 
 /* Generic server error */
-"An error occured, please try again." = "Įvyko klaida, bandykite dar kartą.";
+"An error occurred, please try again." = "Įvyko klaida, bandykite dar kartą.";
 
 /* Open datepicker */
 "Open Calendar" = "Atidaryti kalendorių";

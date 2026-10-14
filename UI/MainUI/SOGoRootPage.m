@@ -902,7 +902,7 @@ static const NSString *kJwtKey = @"jwt";
       {
         [self logWithFormat: @"Unknown type: %@", type];
         response = [self responseWithStatus: 400
-                              andString: @"Unknwon Authentication type"];
+                              andString: @"Unknown Authentication type"];
       }
     }
     else
@@ -979,7 +979,7 @@ static const NSString *kJwtKey = @"jwt";
           {
             [self logWithFormat: @"Unknown type: %@", type];
             result = [self responseWithStatus: 400
-                                  andString: @"Unknwon Authentication type"];
+                                  andString: @"Unknown Authentication type"];
           }
         }
         else

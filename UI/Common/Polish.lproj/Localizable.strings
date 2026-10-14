@@ -156,7 +156,7 @@
 "File size upload limit reached" = "Rozmiar pliku jest większy niż dopuszczalny limit";
 
 /* Generic server error */
-"An error occured, please try again." = "Wystąpił błąd, proszę spróbować ponownie.";
+"An error occurred, please try again." = "Wystąpił błąd, proszę spróbować ponownie.";
 
 /* Open datepicker */
 "Open Calendar" = "Otwórz kalendarz";

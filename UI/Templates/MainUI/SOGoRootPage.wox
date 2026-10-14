@@ -17,7 +17,7 @@
 
   <!--
       MAIN CONTENT ROW
-      Content of the application view injected injected in the element bellow
+      Content of the application view injected in the element below
       MUST be the first html element after body
       SHOULD  be a main tag (with role="main")
   -->

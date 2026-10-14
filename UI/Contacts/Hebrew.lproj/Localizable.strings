@@ -295,7 +295,7 @@
 "Upload" = "להעלות";
 "Uploading" = "העלאה";
 "Done" = "הסתיים בהצלחה";
-"An error occured while importing contacts." = "אירעה שגיאה במהלך יבוא אנשי קשר.";
+"An error occurred while importing contacts." = "אירעה שגיאה במהלך יבוא אנשי קשר.";
 "No card was imported." = "לא הובאה כרטיסייה";
 "A total of %{0} cards were imported in the addressbook." = "סה\"כ {0}% כרטיסיות הובאו לרשימת אנשי קשר.";
 "Reload" = "טען מחדש";
@@ -350,7 +350,7 @@
 "New Custom Value" = "ערך מותאם אישית חדש";
 "Synchronization" = "סינכרון";
 "Synchronize" = "סינכרון";
-"Sucessfully subscribed to address book" = "מנוי לרשימת אנשי קשר נרשם בהצלחה";
+"Successfully subscribed to address book" = "מנוי לרשימת אנשי קשר נרשם בהצלחה";
 "A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */

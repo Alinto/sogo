@@ -1085,7 +1085,7 @@
                 account = [auxAccounts objectAtIndex: i];
                 if (![[account objectForKey: @"password"] isKindOfClass: [NSDictionary class]])
                 {
-                  [self errorWithFormat:@"Can't decrypt the password for auxiliary account %@, is not a dictionnary",
+                  [self errorWithFormat:@"Can't decrypt the password for auxiliary account %@, is not a dictionary",
                               [account objectForKey: @"name"]];
                   continue;
                 }
@@ -1109,7 +1109,7 @@
                   [self errorWithFormat:@"Can't decrypt the password for auxiliary account %@: %@",
                               [account objectForKey: @"name"], [exception reason]];
                 else if(!password)
-                  [self errorWithFormat:@"No exception but decyrpted password is empty for account %@",[account objectForKey: @"name"]];
+                  [self errorWithFormat:@"No exception but decrypted password is empty for account %@",[account objectForKey: @"name"]];
                 else
                   [account setObject: password forKey: @"password"];
               }

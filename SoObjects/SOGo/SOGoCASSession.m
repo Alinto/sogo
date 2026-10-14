@@ -267,7 +267,7 @@
   NSString *errorText;
   NGDOMText *valueNode;
 
-  errorString = [NSMutableString stringWithString: (@"a CAS failure occured"
+  errorString = [NSMutableString stringWithString: (@"a CAS failure occurred"
                                                     @" during operation")];
   if ([element hasAttribute: @"code"])
     [errorString appendFormat: @" (code: '%@')",

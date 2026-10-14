@@ -295,7 +295,7 @@
 "Upload" = "Upload";
 "Uploading" = "Uploaden";
 "Done" = "Klaar";
-"An error occured while importing contacts." = "Tijdens het importeren is een fout opgetreden.";
+"An error occurred while importing contacts." = "Tijdens het importeren is een fout opgetreden.";
 "No card was imported." = "Geen contactgegevens geïmporteerd.";
 "A total of %{0} cards were imported in the addressbook." = "Een totaal van %{0} kaarten werd in het adresboek geïmporteerd.";
 "Reload" = "Herladen";
@@ -350,7 +350,7 @@
 "New Custom Value" = "Nieuwe aangepaste waarde";
 "Synchronization" = "Synchronisatie";
 "Synchronize" = "Synchroniseren";
-"Sucessfully subscribed to address book" = "Met succes geabonneerd op dit adresboek";
+"Successfully subscribed to address book" = "Met succes geabonneerd op dit adresboek";
 "A similar card already exists. Would you like to save it anyway?" = "Er bestaat al een vergelijkbare kaart. Wil je deze kaart alsnog opslaan?";
 
 /* Aria label for scope of search on contacts */

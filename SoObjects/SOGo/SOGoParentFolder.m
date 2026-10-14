@@ -422,7 +422,7 @@ static SoSecurityManager *sm = nil;
         }
       else
         {
-          [self errorWithFormat: @"An error occured when creating a folder: %@ - %@", [error name], [error reason]];
+          [self errorWithFormat: @"An error occurred when creating a folder: %@ - %@", [error name], [error reason]];
           error = [self exceptionWithHTTPStatus: 400
                                          reason: @"The new folder could not be created"];
         }
@@ -522,7 +522,7 @@ static SoSecurityManager *sm = nil;
 	  error = [self initSubscribedSubFolders];
 	  if (error)
 	    {
-	      [self errorWithFormat: @"a database error occured: %@", [error reason]];
+	      [self errorWithFormat: @"a database error occurred: %@", [error reason]];
 	      obj = [self exceptionWithHTTPStatus: 503];
 	    }
 	  else
@@ -542,7 +542,7 @@ static SoSecurityManager *sm = nil;
   error = [self initSubFolders];
   if (error)
     {
-      [self errorWithFormat: @"a database error occured: %@", [error reason]];
+      [self errorWithFormat: @"a database error occurred: %@", [error reason]];
       obj = [self exceptionWithHTTPStatus: 503];
     }
   else
@@ -571,7 +571,7 @@ static SoSecurityManager *sm = nil;
   error = [self initSubFolders];
   if(error)
   {
-    [self errorWithFormat: @"a database error occured when inititializing the subFolders: %@", [error reason]];
+    [self errorWithFormat: @"a database error occurred when initializing the subFolders: %@", [error reason]];
     if(isPropfind)
     {
       /* We exceptionnally raise the exception here because doPROPFIND: will
@@ -585,7 +585,7 @@ static SoSecurityManager *sm = nil;
   error = [self initSubscribedSubFolders];
   if (error)
   {
-    [self errorWithFormat: @"a database error occured when subscribing to subfolders: %@", [error reason]];
+    [self errorWithFormat: @"a database error occurred when subscribing to subfolders: %@", [error reason]];
     if(isPropfind)
       [error raise];
   }
@@ -678,7 +678,7 @@ static SoSecurityManager *sm = nil;
 
       if (error)
 	{
-	  [self errorWithFormat: @"a database error occured: %@", [error reason]];
+	  [self errorWithFormat: @"a database error occurred: %@", [error reason]];
 	  return [NSException exceptionWithDAVStatus: 503];
 	}
       

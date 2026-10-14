@@ -71,7 +71,7 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Nema odabranog poštanskog sandučeta";
 
-"An error occured while communicating with the mail server" = "Desila se greška prilikom kontaktiranja poštanskog servera";
+"An error occurred while communicating with the mail server" = "Desila se greška prilikom kontaktiranja poštanskog servera";
 
 /* Mailbox actions */
 

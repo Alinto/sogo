@@ -82,7 +82,7 @@
 "You are not allowed to forward your messages to this domain:" = "Du har ikke lov til å videresende meldinger til dette domenet: ";
 
 /* notification */
-"Notify incoming messsages" = "Varsle innkommende meldinger";
+"Notify incoming messages" = "Varsle innkommende meldinger";
 "Notification Message Sent" = "Varslingsmelding sendt";
 "Notification Message" = "Varsling om ny melding på %{0}";
 
@@ -206,7 +206,7 @@
 "Insert signature on reply" = "Sett inn signatur på svar";
 "Insert signature on forward" = "Sett inn signatur på videresending";
 "Show recipients or sender full email in mailboxes" = "Vis mottakere eller avsender av hele e-posten i innboksene";
-"Hide attachements for inline images" = "Skjul vedlegg for innebygde bilder";
+"Hide attachments for inline images" = "Skjul vedlegg for innebygde bilder";
 "Show attachments above the message" = "Vis vedlegg over meldingen";
 
 /* Base font size for messages composed in HTML */

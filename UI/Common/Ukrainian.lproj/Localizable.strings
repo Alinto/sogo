@@ -156,7 +156,7 @@
 "File size upload limit reached" = "Досягнуто обмеження на розмір файлу";
 
 /* Generic server error */
-"An error occured, please try again." = "Сталася помилка, спробуйте ще раз пізніше.";
+"An error occurred, please try again." = "Сталася помилка, спробуйте ще раз пізніше.";
 
 /* Open datepicker */
 "Open Calendar" = "Відкрити календар";

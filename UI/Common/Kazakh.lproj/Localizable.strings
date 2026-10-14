@@ -156,7 +156,7 @@
 "File size upload limit reached" = "Жүктелетін файлдың шекті өлшемі толды";
 
 /* Generic server error */
-"An error occured, please try again." = "Қате пайда болды, кейінірек қайталап көріңіз.";
+"An error occurred, please try again." = "Қате пайда болды, кейінірек қайталап көріңіз.";
 
 /* Open datepicker */
 "Open Calendar" = "Күнтізбені ашу";

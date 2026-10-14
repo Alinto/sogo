@@ -295,7 +295,7 @@
 "Upload" = "Жүктеу";
 "Uploading" = "Жүктелуде";
 "Done" = "Дайын";
-"An error occured while importing contacts." = "Контактілерді импорттау кезінде қате кетті.";
+"An error occurred while importing contacts." = "Контактілерді импорттау кезінде қате кетті.";
 "No card was imported." = "Жазбалар импортталмады.";
 "A total of %{0} cards were imported in the addressbook." = "Байланыс кітапшасына барлығы %{0} жазба импортталды.";
 "Reload" = "Жаңарту";
@@ -350,7 +350,7 @@
 "New Custom Value" = "Жаңа бапталатын мән";
 "Synchronization" = "Үйлестіру";
 "Synchronize" = "Үйлестіру";
-"Sucessfully subscribed to address book" = "Байланыс кітапшасына сәтті жазылым";
+"Successfully subscribed to address book" = "Байланыс кітапшасына сәтті жазылым";
 "A similar card already exists. Would you like to save it anyway?" = "Мұндай карточка бұрыннан бар. Сонда да сақтағыңыз келе ме?";
 
 /* Aria label for scope of search on contacts */

@@ -295,7 +295,7 @@
 "Upload" = "Įkelti";
 "Uploading" = "Įkeliama";
 "Done" = "Atlikta";
-"An error occured while importing contacts." = "Importuojant kontaktus įvyko klaida.";
+"An error occurred while importing contacts." = "Importuojant kontaktus įvyko klaida.";
 "No card was imported." = "Kortelė nebuvo importuota.";
 "A total of %{0} cards were imported in the addressbook." = "Iš viso %{0} kortelės buvo importuotos į adresų knygą.";
 "Reload" = "Perkrauti";
@@ -350,7 +350,7 @@
 "New Custom Value" = "New Custom Value";
 "Synchronization" = "Sinchronizavimas";
 "Synchronize" = "Sinchronizuoti";
-"Sucessfully subscribed to address book" = "Sėkmingai užsiprenumeravote adresų knygą";
+"Successfully subscribed to address book" = "Sėkmingai užsiprenumeravote adresų knygą";
 "A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */

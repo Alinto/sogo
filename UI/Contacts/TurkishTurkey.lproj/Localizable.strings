@@ -295,7 +295,7 @@
 "Upload" = "Yükle";
 "Uploading" = "Yükleniyor";
 "Done" = "Tamam";
-"An error occured while importing contacts." = "Adresler içe aktarılırken bir sorun çıktı.";
+"An error occurred while importing contacts." = "Adresler içe aktarılırken bir sorun çıktı.";
 "No card was imported." = "İçe herhangi bir kart aktarılmadı.";
 "A total of %{0} cards were imported in the addressbook." = "Toplam %{0} kart adres defteri içine aktarıldı.";
 "Reload" = "Yenile";
@@ -350,7 +350,7 @@
 "New Custom Value" = "Yeni özel değer";
 "Synchronization" = "Eşitleme";
 "Synchronize" = "Eşitle";
-"Sucessfully subscribed to address book" = "Adres defterine abone olundu";
+"Successfully subscribed to address book" = "Adres defterine abone olundu";
 "A similar card already exists. Would you like to save it anyway?" = "Benzer bir kart zaten var. Yine de kaydetmek ister misiniz?";
 
 /* Aria label for scope of search on contacts */

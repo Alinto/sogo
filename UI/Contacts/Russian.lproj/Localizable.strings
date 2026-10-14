@@ -295,7 +295,7 @@
 "Upload" = "Загрузить";
 "Uploading" = "Закачивается";
 "Done" = "Готово";
-"An error occured while importing contacts." = "Произошла ошибка при импорте контактов.";
+"An error occurred while importing contacts." = "Произошла ошибка при импорте контактов.";
 "No card was imported." = "Записи не были импортированы.";
 "A total of %{0} cards were imported in the addressbook." = "Всего %{0} записей было импортировано в адресную книгу.";
 "Reload" = "Обновить";
@@ -350,7 +350,7 @@
 "New Custom Value" = "Новое настраиваемое значение";
 "Synchronization" = "Синхронизация";
 "Synchronize" = "Синхронизировать";
-"Sucessfully subscribed to address book" = "Успешная подписка на адресную книгу";
+"Successfully subscribed to address book" = "Успешная подписка на адресную книгу";
 "A similar card already exists. Would you like to save it anyway?" = "Подобная карточка уже существует. Вы все равно хотите сохранить?";
 
 /* Aria label for scope of search on contacts */

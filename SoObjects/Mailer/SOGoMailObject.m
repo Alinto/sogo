@@ -956,7 +956,7 @@ static BOOL debugSoParts       = NO;
           if (body)
             [currentAttachment setObject: body forKey: @"body"];
           else
-            [self errorWithFormat: @"Failed add attachement %@, empty body - failed to decode : %@", currentPath, currentInfo];
+            [self errorWithFormat: @"Failed to add attachment %@, empty body - failed to decode : %@", currentPath, currentInfo];
           [attachments addObject: currentAttachment];
 	}
     }

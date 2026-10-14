@@ -204,7 +204,7 @@
               close();
               $state.go('app.addressbook');
             }, function(data, status) {
-              Dialog.alert(l('Warning'), l('An error occured while deleting the card "%{0}".',
+              Dialog.alert(l('Warning'), l('An error occurred while deleting the card "%{0}".',
                                            card.$fullname()));
             });
         });

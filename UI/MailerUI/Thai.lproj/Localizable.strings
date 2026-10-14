@@ -71,7 +71,7 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "ไม่ได้เลือกกล่องจดหมาย";
 
-"An error occured while communicating with the mail server" = "เกิดข้อผิดพลาดขึ้นในขณะที่กำลังสื่อสารกับเซิร์ฟเวอร์ของเมล์";
+"An error occurred while communicating with the mail server" = "เกิดข้อผิดพลาดขึ้นในขณะที่กำลังสื่อสารกับเซิร์ฟเวอร์ของเมล์";
 
 /* Mailbox actions */
 

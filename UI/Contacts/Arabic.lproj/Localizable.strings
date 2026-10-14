@@ -295,7 +295,7 @@
 "Upload" = "تحميل الى";
 "Uploading" = "تحميل الى";
 "Done" = "تم";
-"An error occured while importing contacts." = "حدث خطأ أثناء استيراد جهات الاتصال.";
+"An error occurred while importing contacts." = "حدث خطأ أثناء استيراد جهات الاتصال.";
 "No card was imported." = "لم يتم استيراد أي بطاقة.";
 "A total of %{0} cards were imported in the addressbook." = "قد تم استيراد ما مجموعه%{0} بطاقات في دفتر العناوين.";
 "Reload" = "إعادة التحميل";
@@ -350,7 +350,7 @@
 "New Custom Value" = "New Custom Value";
 "Synchronization" = "Synchronization";
 "Synchronize" = "Synchronize";
-"Sucessfully subscribed to address book" = "Successfully subscribed to address book";
+"Successfully subscribed to address book" = "Successfully subscribed to address book";
 "A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */

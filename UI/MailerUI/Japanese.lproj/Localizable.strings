@@ -71,7 +71,7 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "メールボックスが選択されていません";
 
-"An error occured while communicating with the mail server" = "メールサーバーとの通信中にエラーが発生しました";
+"An error occurred while communicating with the mail server" = "メールサーバーとの通信中にエラーが発生しました";
 
 /* Mailbox actions */
 

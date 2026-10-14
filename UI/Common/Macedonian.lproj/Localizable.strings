@@ -156,7 +156,7 @@
 "File size upload limit reached" = "Достигнат е максиналната големина за прикачување на фајлови";
 
 /* Generic server error */
-"An error occured, please try again." = "Настана грешка, обидете се повторно";
+"An error occurred, please try again." = "Настана грешка, обидете се повторно";
 
 /* Open datepicker */
 "Open Calendar" = "Отвори го календарот";

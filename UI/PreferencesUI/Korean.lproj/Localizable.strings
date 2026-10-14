@@ -82,7 +82,7 @@
 "You are not allowed to forward your messages to this domain:" = "이 도메인으로는 메시지를 전달할 수 없습니다:";
 
 /* notification */
-"Notify incoming messsages" = "수신 메시지 알림";
+"Notify incoming messages" = "수신 메시지 알림";
 "Notification Message Sent" = "알림 메시지 전송됨";
 "Notification Message" = "%{0}의 새 메시지 알림";
 
@@ -206,7 +206,7 @@
 "Insert signature on reply" = "답장에 서명 삽입";
 "Insert signature on forward" = "전달에 서명 삽입";
 "Show recipients or sender full email in mailboxes" = "사서함에 수신자 또는 발신자 전체 이메일 표시";
-"Hide attachements for inline images" = "인라인 이미지의 첨부 파일 숨기기";
+"Hide attachments for inline images" = "인라인 이미지의 첨부 파일 숨기기";
 "Show attachments above the message" = "Show attachments above the message";
 
 /* Base font size for messages composed in HTML */

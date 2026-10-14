@@ -82,7 +82,7 @@
 "You are not allowed to forward your messages to this domain:" = "Ön számára nem engedélyezett az üzenetek továbbítása ebbe a tartományba:";
 
 /* notification */
-"Notify incoming messsages" = "Értesítés bejövő üzenetekről";
+"Notify incoming messages" = "Értesítés bejövő üzenetekről";
 "Notification Message Sent" = "Értesítő üzenet elküldve";
 "Notification Message" = "Értesítés új üzenetekről %{0}";
 
@@ -206,7 +206,7 @@
 "Insert signature on reply" = "Aláírás beszúrása válasz esetén";
 "Insert signature on forward" = "Aláírás beszúrása továbbítás esetén";
 "Show recipients or sender full email in mailboxes" = "A címzettek vagy a feladó teljes e-mail-címének megjelenítése a postafiókokban";
-"Hide attachements for inline images" = "Beágyazott képek mellékleteinek elrejtése";
+"Hide attachments for inline images" = "Beágyazott képek mellékleteinek elrejtése";
 "Show attachments above the message" = "Mellékletek megjelenítése az üzenet felett";
 
 /* Base font size for messages composed in HTML */

@@ -82,7 +82,7 @@
 "You are not allowed to forward your messages to this domain:" = "Вы не можете пересылать свои сообщения на указанный домен:";
 
 /* notification */
-"Notify incoming messsages" = "Уведомлять о входящих сообщениях";
+"Notify incoming messages" = "Уведомлять о входящих сообщениях";
 "Notification Message Sent" = "Уведомление отправлено";
 "Notification Message" = "Уведомление о новом сообщении на %{0}";
 
@@ -206,7 +206,7 @@
 "Insert signature on reply" = "Вставить подпись в ответе";
 "Insert signature on forward" = "Вставить подпись при пересылке";
 "Show recipients or sender full email in mailboxes" = "Показывать полную электронную почту получателей или отправителя в почтовых ящиках";
-"Hide attachements for inline images" = "Скрыть вложения для встроенных изображений";
+"Hide attachments for inline images" = "Скрыть вложения для встроенных изображений";
 "Show attachments above the message" = "Show attachments above the message";
 
 /* Base font size for messages composed in HTML */

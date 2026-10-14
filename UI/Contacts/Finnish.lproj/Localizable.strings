@@ -295,7 +295,7 @@
 "Upload" = "Lataa";
 "Uploading" = "Lataus";
 "Done" = "Valmis";
-"An error occured while importing contacts." = "Yhteystietojen tuonnissa tapahtui virhe.";
+"An error occurred while importing contacts." = "Yhteystietojen tuonnissa tapahtui virhe.";
 "No card was imported." = "Yhtään korttia ei tuotu.";
 "A total of %{0} cards were imported in the addressbook." = "Yhteensä %{0} korttia tuotu osoitekirjaan.";
 "Reload" = "Päivitä";
@@ -350,7 +350,7 @@
 "New Custom Value" = "New Custom Value";
 "Synchronization" = "Synkronointi";
 "Synchronize" = "Synkronoi";
-"Sucessfully subscribed to address book" = "Osoitekirjan tilaus onnistui";
+"Successfully subscribed to address book" = "Osoitekirjan tilaus onnistui";
 "A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */

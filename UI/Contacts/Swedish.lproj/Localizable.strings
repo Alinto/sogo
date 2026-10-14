@@ -295,7 +295,7 @@
 "Upload" = "Ladda upp";
 "Uploading" = "Laddar upp";
 "Done" = "Klart";
-"An error occured while importing contacts." = "Ett fel inträffade under importen av kontaker.";
+"An error occurred while importing contacts." = "Ett fel inträffade under importen av kontaker.";
 "No card was imported." = "Inga adresskort importerades.";
 "A total of %{0} cards were imported in the addressbook." = "Totalt %{0} av adresskorten importerades till adressboken.";
 "Reload" = "Ladda om";
@@ -350,7 +350,7 @@
 "New Custom Value" = "Ny valfri ändring";
 "Synchronization" = "Synkronisering";
 "Synchronize" = "Synkronisera";
-"Sucessfully subscribed to address book" = "Prenumeration på adressbok skapad";
+"Successfully subscribed to address book" = "Prenumeration på adressbok skapad";
 "A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */

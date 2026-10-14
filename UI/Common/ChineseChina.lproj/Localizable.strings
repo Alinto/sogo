@@ -156,7 +156,7 @@
 "File size upload limit reached" = "已到达文件大小上传上限";
 
 /* Generic server error */
-"An error occured, please try again." = "发生错误，请再次尝试";
+"An error occurred, please try again." = "发生错误，请再次尝试";
 
 /* Open datepicker */
 "Open Calendar" = "Open Calendar";

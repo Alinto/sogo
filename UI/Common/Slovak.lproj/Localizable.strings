@@ -156,7 +156,7 @@
 "File size upload limit reached" = "Bol dosiahnutý limit pre veľkosť nahraného súboru.";
 
 /* Generic server error */
-"An error occured, please try again." = "Vyskytla sa chyba, skúste to znova.";
+"An error occurred, please try again." = "Vyskytla sa chyba, skúste to znova.";
 
 /* Open datepicker */
 "Open Calendar" = "Otvoriť kalendár";

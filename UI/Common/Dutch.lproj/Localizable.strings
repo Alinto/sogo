@@ -156,7 +156,7 @@
 "File size upload limit reached" = "Bestand grote limiet is bereikt";
 
 /* Generic server error */
-"An error occured, please try again." = "Er is iets verkeerd gegaan. Probeer het nogmaals.";
+"An error occurred, please try again." = "Er is iets verkeerd gegaan. Probeer het nogmaals.";
 
 /* Open datepicker */
 "Open Calendar" = "Open de kalender";

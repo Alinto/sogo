@@ -71,7 +71,7 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Няма избрана пощенска кутия";
 
-"An error occured while communicating with the mail server" = "Възникна грешка в комуникацията с пощенският сървър";
+"An error occurred while communicating with the mail server" = "Възникна грешка в комуникацията с пощенският сървър";
 
 /* Mailbox actions */
 

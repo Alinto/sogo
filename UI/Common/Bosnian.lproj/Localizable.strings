@@ -156,7 +156,7 @@
 "File size upload limit reached" = "Prekoračen limit za veličinu priloga";
 
 /* Generic server error */
-"An error occured, please try again." = "Došlo je do greške, molimo pokušajte ponovo.";
+"An error occurred, please try again." = "Došlo je do greške, molimo pokušajte ponovo.";
 
 /* Open datepicker */
 "Open Calendar" = "Otvorite Kalendar";

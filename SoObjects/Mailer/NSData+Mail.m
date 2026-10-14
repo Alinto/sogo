@@ -103,7 +103,7 @@
 }
 
 /*
- * Excpected form is: "=?charset?encoding?encoded text?=".
+ * Expected form is: "=?charset?encoding?encoded text?=".
  */
 - (NSString *) decodedHeader
 {

@@ -717,7 +717,7 @@
                   ng-true-value="1"
                   ng-false-value="0"
                   label:aria-label="Hide attachments for inline images">
-                <var:string label:value="Hide attachements for inline images"/>
+                <var:string label:value="Hide attachments for inline images"/>
               </md-checkbox>
             </div>
 
@@ -1438,7 +1438,7 @@
                   ng-model="app.preferences.defaults.Notification.enabled"
                   ng-true-value="1"
                   ng-false-value="0">
-                <var:string label:value="Notify incoming messsages"/>
+                <var:string label:value="Notify incoming messages"/>
               </md-checkbox>
 
               <div flex-offset="5" ng-show="app.preferences.defaults.Notification.enabled == 1">

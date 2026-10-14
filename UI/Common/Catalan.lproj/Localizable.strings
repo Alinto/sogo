@@ -156,7 +156,7 @@
 "File size upload limit reached" = "S'ha superat la mida màxima de càrrega del fitxer";
 
 /* Generic server error */
-"An error occured, please try again." = "S'ha produït un error, torneu-ho a provar.";
+"An error occurred, please try again." = "S'ha produït un error, torneu-ho a provar.";
 
 /* Open datepicker */
 "Open Calendar" = "Obrir Calendari";

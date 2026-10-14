@@ -295,7 +295,7 @@
 "Upload" = "Kargatu";
 "Uploading" = "Kargatzen";
 "Done" = "Eginda";
-"An error occured while importing contacts." = "Errorea gertatu da txartelak inportatzean.";
+"An error occurred while importing contacts." = "Errorea gertatu da txartelak inportatzean.";
 "No card was imported." = "Ez da txartelik inportatu.";
 "A total of %{0} cards were imported in the addressbook." = "Guztira %{0} txartel inportatu dira helbide liburuan.";
 "Reload" = "Birkargatu";
@@ -350,7 +350,7 @@
 "New Custom Value" = "New Custom Value";
 "Synchronization" = "Synchronization";
 "Synchronize" = "Synchronize";
-"Sucessfully subscribed to address book" = "Successfully subscribed to address book";
+"Successfully subscribed to address book" = "Successfully subscribed to address book";
 "A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */

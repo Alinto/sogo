@@ -3633,7 +3633,7 @@ void handle_eas_terminate(int signum)
       else
         {
           [theResponse setStatus: 500];
-          [theResponse appendContentString: @"FATAL ERROR occured during SendMail"];
+          [theResponse appendContentString: @"FATAL ERROR occurred during SendMail"];
         }
     }
 }
@@ -4219,7 +4219,7 @@ void handle_eas_terminate(int signum)
           else
             {
               [theResponse setStatus: 500];
-              [theResponse appendContentString: @"FATAL ERROR occured during SmartForward"];
+              [theResponse appendContentString: @"FATAL ERROR occurred during SmartForward"];
             }
         }
       else if (!isSmartForward)

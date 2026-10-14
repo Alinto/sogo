@@ -295,7 +295,7 @@
 "Upload" = "Завантажити";
 "Uploading" = "Завантажується";
 "Done" = "Зроблено";
-"An error occured while importing contacts." = "Трапилась помилка під час імпортування контактів.";
+"An error occurred while importing contacts." = "Трапилась помилка під час імпортування контактів.";
 "No card was imported." = "Жодна картка імпортована.";
 "A total of %{0} cards were imported in the addressbook." = "Разом %{0} карток було імпортовано до адресної книги.";
 "Reload" = "Перевантажити";
@@ -350,7 +350,7 @@
 "New Custom Value" = "Нове налаштовуване значення";
 "Synchronization" = "Синхронізація";
 "Synchronize" = "Синхронізувати";
-"Sucessfully subscribed to address book" = "Успішна підписка на адресну книгу";
+"Successfully subscribed to address book" = "Успішна підписка на адресну книгу";
 "A similar card already exists. Would you like to save it anyway?" = "Подібна картка вже існує. Все одно зберегти?";
 
 /* Aria label for scope of search on contacts */

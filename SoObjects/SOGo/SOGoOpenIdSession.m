@@ -892,7 +892,7 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
               type = [sd getLoginTypeForDomain: self->forDomain];
               if(type != nil && [type isEqualToString: @"openid"] && ![user_domain isEqualToString: self->forDomain])
               {
-                [self errorWithFormat: @"Openid userinfo email is not the right domain. Excpected: %@, Got %@", self->forDomain, user_domain];
+                [self errorWithFormat: @"Openid userinfo email is not the right domain. Expected: %@, Got %@", self->forDomain, user_domain];
                 [result setObject: @"mail-error" forKey: @"error"];
                 return result;
               }

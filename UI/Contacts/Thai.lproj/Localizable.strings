@@ -295,7 +295,7 @@
 "Upload" = "อัปโหลด";
 "Uploading" = "กำลังอัปโหลด";
 "Done" = "เสร็จแล้ว";
-"An error occured while importing contacts." = "เกิดข้อผิดพลาดขณะนำเข้ารายชื่อผู้ติดต่อ";
+"An error occurred while importing contacts." = "เกิดข้อผิดพลาดขณะนำเข้ารายชื่อผู้ติดต่อ";
 "No card was imported." = "ไม่มีการนำเข้าบัตร";
 "A total of %{0} cards were imported in the addressbook." = "จำนวนทั้งหมด %{0} บัตรถูกนำเข้าในสมุดที่อยู่";
 "Reload" = "รีโหลด";
@@ -350,7 +350,7 @@
 "New Custom Value" = "ค่าที่กำหนดเองใหม่";
 "Synchronization" = "การประสานข้อมูล";
 "Synchronize" = "ซิงโครไนซ์";
-"Sucessfully subscribed to address book" = "สมัครสมาชิกที่สมุดที่อยู่เรียบร้อยแล้ว";
+"Successfully subscribed to address book" = "สมัครสมาชิกที่สมุดที่อยู่เรียบร้อยแล้ว";
 "A similar card already exists. Would you like to save it anyway?" = "มีบัตรที่คล้ายกันอยู่แล้ว คุณต้องการบันทึกมันอยู่หรือไม่?";
 
 /* Aria label for scope of search on contacts */

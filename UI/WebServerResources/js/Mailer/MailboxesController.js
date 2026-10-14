@@ -445,7 +445,7 @@
             .then(function() {
               // success
             }, function(data, status) {
-              Dialog.alert(l('An error occured while creating the mailbox "%{0}".', name),
+              Dialog.alert(l('An error occurred while creating the mailbox "%{0}".', name),
                            l(data.error));
             });
         });
@@ -612,7 +612,7 @@
 
         function removeUser(user) {
           account.$removeDelegate(user.uid).catch(function(data, status) {
-            Dialog.alert(l('Warning'), l('An error occured, please try again.'));
+            Dialog.alert(l('Warning'), l('An error occurred, please try again.'));
           });
         }
 

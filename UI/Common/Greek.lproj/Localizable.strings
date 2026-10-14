@@ -156,7 +156,7 @@
 "File size upload limit reached" = "Ξεπεράστηκε το όριο μεγέθους αρχείου για μεταφόρτωση";
 
 /* Generic server error */
-"An error occured, please try again." = "Προέκυψε σφάλμα, παρακαλούμε δοκιμάστε ξανά.";
+"An error occurred, please try again." = "Προέκυψε σφάλμα, παρακαλούμε δοκιμάστε ξανά.";
 
 /* Open datepicker */
 "Open Calendar" = "Άνοιγμα Ημερολογίου";

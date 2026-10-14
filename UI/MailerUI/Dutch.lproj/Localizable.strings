@@ -71,7 +71,7 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Geen postvak geselecteerd";
 
-"An error occured while communicating with the mail server" = "Er is een fout opgetreden tijdens de communicatie met de mailserver";
+"An error occurred while communicating with the mail server" = "Er is een fout opgetreden tijdens de communicatie met de mailserver";
 
 /* Mailbox actions */
 

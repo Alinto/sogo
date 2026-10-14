@@ -78,7 +78,7 @@ static NSString *productDirectoryName = @"SOGo";
 	  [directory stringByAppendingPathComponent: productDirectoryName]];
 }
 
-- (NSArray *) productSearchPathes
+- (NSArray *) productSearchPaths
 {
   NSMutableArray *ma;
 
@@ -95,7 +95,7 @@ static NSString *productDirectoryName = @"SOGo";
       searchPathes = [ma copy];
 
       if ([searchPathes count] == 0)
-	[self logWithFormat: @"%s: no search pathes were found !",
+	[self logWithFormat: @"%s: no search paths were found !",
 	      __PRETTY_FUNCTION__];
     }
 
@@ -107,7 +107,7 @@ static NSString *productDirectoryName = @"SOGo";
   SoProductRegistry *registry = nil;
   NSFileManager *fm;
   NSMutableArray *loadedProducts;
-  NSEnumerator *pathes;
+  NSEnumerator *paths;
   NSString *lpath, *bpath;
   NSEnumerator *productNames;
   NSString *productName;
@@ -120,8 +120,8 @@ static NSString *productDirectoryName = @"SOGo";
 
   loadedProducts = [NSMutableArray array];
 
-  pathes = [[self productSearchPathes] objectEnumerator];
-  while ((lpath = [pathes nextObject]))
+  paths = [[self productSearchPaths] objectEnumerator];
+  while ((lpath = [paths nextObject]))
   {
     productNames = [[fm directoryContentsAtPath: lpath] objectEnumerator];
     while ((productName = [productNames nextObject]))
@@ -154,7 +154,7 @@ static NSString *productDirectoryName = @"SOGo";
 {
   SoProductRegistry *registry = nil;
   NSFileManager *fm;
-  NSEnumerator *pathes;
+  NSEnumerator *paths;
   NSString *lpath, *bpath;
   NSEnumerator *productNames;
   NSString *productName;
@@ -165,8 +165,8 @@ static NSString *productDirectoryName = @"SOGo";
   registry = [SoProductRegistry sharedProductRegistry];
   fm = [NSFileManager defaultManager];
 
-  pathes = [[self productSearchPathes] objectEnumerator];
-  while ((lpath = [pathes nextObject]))
+  paths = [[self productSearchPaths] objectEnumerator];
+  while ((lpath = [paths nextObject]))
     {
       productNames = [[fm directoryContentsAtPath: lpath] objectEnumerator];
       while ((productName = [productNames nextObject]))

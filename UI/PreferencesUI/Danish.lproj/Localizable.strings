@@ -82,7 +82,7 @@
 "You are not allowed to forward your messages to this domain:" = "Du må ikke videresende dine beskeder til dette domæne:";
 
 /* notification */
-"Notify incoming messsages" = "Giv besked om indgående beskeder";
+"Notify incoming messages" = "Giv besked om indgående beskeder";
 "Notification Message Sent" = "Besked sendt";
 "Notification Message" = "Notifikation om ny besked på %{0}";
 
@@ -206,7 +206,7 @@
 "Insert signature on reply" = "Indsæt signatur på svar";
 "Insert signature on forward" = "Indsæt signatur på videresend";
 "Show recipients or sender full email in mailboxes" = "Vis modtagere eller afsender fulde e-mail i postkasserne";
-"Hide attachements for inline images" = "Skjul vedhæftet filer for indsatte billeder";
+"Hide attachments for inline images" = "Skjul vedhæftet filer for indsatte billeder";
 "Show attachments above the message" = "Vis vedhæftede filer over beskeden";
 
 /* Base font size for messages composed in HTML */

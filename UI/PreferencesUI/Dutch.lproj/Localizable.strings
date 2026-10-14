@@ -82,7 +82,7 @@
 "You are not allowed to forward your messages to this domain:" = "U mag uw berichten niet doorsturen naar dit domein:";
 
 /* notification */
-"Notify incoming messsages" = "Meld binnenkomende berichten";
+"Notify incoming messages" = "Meld binnenkomende berichten";
 "Notification Message Sent" = "Meldingsbericht verzonden";
 "Notification Message" = "Melding van nieuw bericht op %{0}";
 
@@ -206,7 +206,7 @@
 "Insert signature on reply" = "Handtekening invoegen bij antwoord";
 "Insert signature on forward" = "Handtekening bij doorsturen invoegen";
 "Show recipients or sender full email in mailboxes" = "Toon ontvangers of afzenders volledige e-mail in mailboxen";
-"Hide attachements for inline images" = "Bijlagen voor inline-afbeeldingen verbergen";
+"Hide attachments for inline images" = "Bijlagen voor inline-afbeeldingen verbergen";
 "Show attachments above the message" = "Show attachments above the message";
 
 /* Base font size for messages composed in HTML */

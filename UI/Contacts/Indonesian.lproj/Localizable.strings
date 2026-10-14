@@ -295,7 +295,7 @@
 "Upload" = "Unggah";
 "Uploading" = "Sedang mengunggah";
 "Done" = "selesai";
-"An error occured while importing contacts." = "terjadi kesalahan saat impor kontak";
+"An error occurred while importing contacts." = "terjadi kesalahan saat impor kontak";
 "No card was imported." = "tidak ada kontak yang di impor";
 "A total of %{0} cards were imported in the addressbook." = "Total %{0} kartu telah diimpor di buku alamat ini.";
 "Reload" = "memuat";
@@ -350,7 +350,7 @@
 "New Custom Value" = "Nilai Kustom Baru";
 "Synchronization" = "Sinkronisasi";
 "Synchronize" = "Mensinkronisasikan";
-"Sucessfully subscribed to address book" = "Berhasil berlangganan pada Buku Alamat...";
+"Successfully subscribed to address book" = "Berhasil berlangganan pada Buku Alamat...";
 "A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */

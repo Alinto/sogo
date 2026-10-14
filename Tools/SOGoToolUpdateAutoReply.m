@@ -315,7 +315,7 @@
                                         temporarily: !!(result & temporarilyAutoReply)])
                     NSLog(@"Enabled auto-reply of user %@", user);
                   else
-                    NSLog(@"An error occured while enabling auto-reply of user %@", user);
+                    NSLog(@"An error occurred while enabling auto-reply of user %@", user);
                 }
               else if (result & disableAutoReply)
                 {
@@ -326,7 +326,7 @@
                                         temporarily: !!(result & temporarilyAutoReply)])
                     NSLog(@"Removed auto-reply of user %@", user);
                   else
-                    NSLog(@"An error occured while removing auto-reply of user %@", user);
+                    NSLog(@"An error occurred while removing auto-reply of user %@", user);
                 }
             }
         }

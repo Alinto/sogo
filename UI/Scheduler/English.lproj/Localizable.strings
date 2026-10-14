@@ -336,7 +336,7 @@
 "Second" = "Second";
 "Third" = "Third";
 "Fourth" = "Fourth";
-"Fift" = "Fift";
+"Fifth" = "Fifth";
 "Last" = "Last";
 
 /* Appointment categories */
@@ -530,9 +530,9 @@ vtodo_class2 = "(Confidential task)";
 "closeThisWindowMessage" = "Thank you! You may now close this window or view your ";
 "Multicolumn Day View" = "Multicolumn Day View";
 "Please select an event or a task." = "Please select an event or a task.";
-"editRepeatingItem" = "The item you are editing is a repeating item. Do you want to edit all occurences of it or only this single instance?";
-"button_thisOccurrenceOnly" = "This occurence only";
-"button_allOccurrences" = "All occurences";
+"editRepeatingItem" = "The item you are editing is a repeating item. Do you want to edit all occurrences of it or only this single instance?";
+"button_thisOccurrenceOnly" = "This occurrence only";
+"button_allOccurrences" = "All occurrences";
 "Edit This Occurrence" = "Edit This Occurrence";
 "Edit All Occurrences" = "Edit All Occurrences";
 "Update This Occurrence" = "Update This Occurrence";

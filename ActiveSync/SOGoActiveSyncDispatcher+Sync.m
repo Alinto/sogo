@@ -435,7 +435,7 @@ FIXME
                  else
                    {
                      // FIXME - what to do?
-                     [self errorWithFormat: @"Fatal error occured - tried to call -processSyncAddCommand: ... on a mail folder. We abort."];
+                     [self errorWithFormat: @"Fatal error occurred - tried to call -processSyncAddCommand: ... on a mail folder. We abort."];
                      abort();
                    }
               }

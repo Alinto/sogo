@@ -156,7 +156,7 @@
 "File size upload limit reached" = "Batas upload ukuran file tercapai";
 
 /* Generic server error */
-"An error occured, please try again." = "An error occured, please try again.";
+"An error occurred, please try again." = "An error occurred, please try again.";
 
 /* Open datepicker */
 "Open Calendar" = "Open Calendar";

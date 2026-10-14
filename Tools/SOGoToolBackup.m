@@ -121,7 +121,7 @@
       rc = [fm createDirectoryAtPath: directory
                           attributes: nil];
       if (!rc)
-        NSLog (@"an error occured during directory creation");
+        NSLog (@"an error occurred during directory creation");
     }
 
   return rc;
