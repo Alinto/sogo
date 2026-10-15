@@ -295,7 +295,7 @@
 "Upload" = "Încarcare";
 "Uploading" = "Încarc";
 "Done" = "Terminat";
-"An error occured while importing contacts." = "A apărut o eroare în timpiul importului de contacte.";
+"An error occurred while importing contacts." = "A apărut o eroare în timpiul importului de contacte.";
 "No card was imported." = "Niciun card nu a fost importat.";
 "A total of %{0} cards were imported in the addressbook." = "Un total de %{0} carduri au fost importate în agendă.";
 "Reload" = "Reîncărcare";
@@ -350,7 +350,7 @@
 "New Custom Value" = "Noua Valoare Personalizată";
 "Synchronization" = "Sincronizare";
 "Synchronize" = "Sincronizare";
-"Sucessfully subscribed to address book" = "Te-ai abonat cu succes la agendă.";
+"Successfully subscribed to address book" = "Te-ai abonat cu succes la agendă.";
 "A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */

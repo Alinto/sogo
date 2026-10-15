@@ -82,7 +82,7 @@
 "You are not allowed to forward your messages to this domain:" = "Nemáte povoleno přeposílání Vašich zpráv na následující doménu:";
 
 /* notification */
-"Notify incoming messsages" = "Notifikovat příchozí zprávy";
+"Notify incoming messages" = "Notifikovat příchozí zprávy";
 "Notification Message Sent" = "Notifikovat odeslané zprávy";
 "Notification Message" = "Notifikovat odeslané zprávy v %{0}";
 
@@ -206,7 +206,7 @@
 "Insert signature on reply" = "Vkládat podpis do odpovědí";
 "Insert signature on forward" = "Vkládat podpis do přeposlaných zpráv";
 "Show recipients or sender full email in mailboxes" = "Zobrazovat kompletní e-mailové adresy v poštovních složkách";
-"Hide attachements for inline images" = "Skrývat obrázky v textu";
+"Hide attachments for inline images" = "Skrývat obrázky v textu";
 "Show attachments above the message" = "Zobrazit přílohy nad zprávou";
 
 /* Base font size for messages composed in HTML */

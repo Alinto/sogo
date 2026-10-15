@@ -82,7 +82,7 @@
 "You are not allowed to forward your messages to this domain:" = "Non tes permiso para reenviar as túas mensaxes a este dominio:";
 
 /* notification */
-"Notify incoming messsages" = "Notificar mensaxes entrantes";
+"Notify incoming messages" = "Notificar mensaxes entrantes";
 "Notification Message Sent" = "Mensaxe de notificación enviado";
 "Notification Message" = "Notificación de mensaxe nova o %{0}";
 
@@ -206,7 +206,7 @@
 "Insert signature on reply" = "Inserir firma na resposta";
 "Insert signature on forward" = "Inserir firma ao reenviar";
 "Show recipients or sender full email in mailboxes" = "Mostrar os destinatarios ou o remitente completo nas caixas de correos de correo";
-"Hide attachements for inline images" = "Ocultar arquivos adxuntos para imaxes en liña";
+"Hide attachments for inline images" = "Ocultar arquivos adxuntos para imaxes en liña";
 "Show attachments above the message" = "Show attachments above the message";
 
 /* Base font size for messages composed in HTML */

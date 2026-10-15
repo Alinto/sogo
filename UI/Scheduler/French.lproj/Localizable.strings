@@ -333,10 +333,10 @@
 "On Date" = "À la date";
 "times" = "fois";
 "First" = "premier";
-"Second" = "deuxieme";
-"Third" = "troisieme";
-"Fourth" = "quatrieme";
-"Fift" = "cinquieme";
+"Second" = "deuxième";
+"Third" = "troisième";
+"Fourth" = "quatrième";
+"Fifth" = "cinquième";
 "Last" = "dernier";
 
 /* Appointment categories */
@@ -531,8 +531,8 @@ vtodo_class2 = "(Tâche confidentielle)";
 "Multicolumn Day View" = "Multicolonne";
 "Please select an event or a task." = "Veuillez sélectionner un événement ou une tâche.";
 "editRepeatingItem" = "L'élément que vous éditez est récurrent. Voulez-vous modifier toutes ses occurrences ou seulement celle-ci ?";
-"button_thisOccurrenceOnly" = "Cette occurence seulement";
-"button_allOccurrences" = "Toutes les occurences";
+"button_thisOccurrenceOnly" = "Cette occurrence seulement";
+"button_allOccurrences" = "Toutes les occurrences";
 "Edit This Occurrence" = "Modifier cette occurrence";
 "Edit All Occurrences" = "Modifier toutes les occurrences";
 "Update This Occurrence" = "Mettre à jour cette occurrence";

@@ -156,7 +156,7 @@
 "File size upload limit reached" = "Limita de upload a fost atinsă";
 
 /* Generic server error */
-"An error occured, please try again." = " A apărut o eroare. Încercați din nou.";
+"An error occurred, please try again." = " A apărut o eroare. Încercați din nou.";
 
 /* Open datepicker */
 "Open Calendar" = "Deschide calendarul";

@@ -119,7 +119,7 @@
             vm.service.selectedFolder = null;
             $state.go('app.addressbook', { addressbookId: 'personal' });
           }, function(data, status) {
-            Dialog.alert(l('An error occured while deleting the addressbook "%{0}".',
+            Dialog.alert(l('An error occurred while deleting the addressbook "%{0}".',
                            vm.service.selectedFolder.name),
                          l(data.error));
           });
@@ -139,7 +139,7 @@
           .catch(function(response) {
             if (response) {
               var message = response.data.message || response.statusText;
-              Dialog.alert(l('An error occured while deleting the addressbook "%{0}".',
+              Dialog.alert(l('An error occurred while deleting the addressbook "%{0}".',
                              vm.service.selectedFolder.name),
                            message);
             }
@@ -197,7 +197,7 @@
                 '<md-toast>',
                 '  <div class="md-toast-content">',
                 '    <md-icon class="md-warn md-hue-1">error_outline</md-icon>',
-                '    <span>' + l('An error occured while importing contacts.') + '</span>',
+                '    <span>' + l('An error occurred while importing contacts.') + '</span>',
                 '  </div>',
                 '</md-toast>'
               ].join(''),

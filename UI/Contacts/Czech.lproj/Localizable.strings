@@ -295,7 +295,7 @@
 "Upload" = "Upload";
 "Uploading" = "Nahrávání";
 "Done" = "Hotovo";
-"An error occured while importing contacts." = "Při importu došlo k chybě.";
+"An error occurred while importing contacts." = "Při importu došlo k chybě.";
 "No card was imported." = "Nebyl importován žádný kontakt.";
 "A total of %{0} cards were imported in the addressbook." = "Do adresáře bylo importováno %{0} kontaktů.";
 "Reload" = "Aktualizovat";
@@ -350,7 +350,7 @@
 "New Custom Value" = "Nová Vlastní Hodnota";
 "Synchronization" = "Synchronizace";
 "Synchronize" = "Synchronizovat";
-"Sucessfully subscribed to address book" = "Přihlášení k odebírání adresáře kontaktů proběhlo úspěšně";
+"Successfully subscribed to address book" = "Přihlášení k odebírání adresáře kontaktů proběhlo úspěšně";
 "A similar card already exists. Would you like to save it anyway?" = "Podobný kontakt již existuje. Opravdu jej chcete uložit?";
 
 /* Aria label for scope of search on contacts */

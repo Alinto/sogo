@@ -295,7 +295,7 @@
 "Upload" = "Uwchlwytho";
 "Uploading" = "Yn uwchlwytho";
 "Done" = "Cwblhawyd";
-"An error occured while importing contacts." = "Digwyddodd gwall wrth fewngludo cysylltiadau.";
+"An error occurred while importing contacts." = "Digwyddodd gwall wrth fewngludo cysylltiadau.";
 "No card was imported." = "Dim carden wedi'i mewngludo.";
 "A total of %{0} cards were imported in the addressbook." = "Mewngludwyd cyfanswm o %{0} carden i'r llyfr cyfeiriadau.";
 "Reload" = "Ail-lwytho";
@@ -350,7 +350,7 @@
 "New Custom Value" = "Gwerth Personol Newydd";
 "Synchronization" = "Cysoni";
 "Synchronize" = "Cysoni";
-"Sucessfully subscribed to address book" = "Wedi tanysgrifio'n llwyddiannus i'r llyfr cyfeiriadau";
+"Successfully subscribed to address book" = "Wedi tanysgrifio'n llwyddiannus i'r llyfr cyfeiriadau";
 "A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */

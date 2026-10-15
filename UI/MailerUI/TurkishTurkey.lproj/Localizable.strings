@@ -71,7 +71,7 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Herhangi bir e-posta klasörü seçilmemiş";
 
-"An error occured while communicating with the mail server" = "E-posta sunucusu ile iletişim kurulurken bir sorun çıktı";
+"An error occurred while communicating with the mail server" = "E-posta sunucusu ile iletişim kurulurken bir sorun çıktı";
 
 /* Mailbox actions */
 

@@ -79,7 +79,7 @@
 /* error handling */
 
 - (NSException *)handleException:(NSException *)_exc onPath:(NSString *)_p {
-  fprintf(stderr, "Error: catched exception on path '%s': %s\n",
+  fprintf(stderr, "Error: caught exception on path '%s': %s\n",
 	  [_p cString], [[_exc description] cString]);
   return nil;
 }

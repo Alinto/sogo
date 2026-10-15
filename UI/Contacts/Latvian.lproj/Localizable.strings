@@ -295,7 +295,7 @@
 "Upload" = "Augšupielādēt";
 "Uploading" = "Augšupielāde";
 "Done" = "Darīts";
-"An error occured while importing contacts." = "Importējot kontaktpersonas radās kļūda.";
+"An error occurred while importing contacts." = "Importējot kontaktpersonas radās kļūda.";
 "No card was imported." = "Nav kartiņa importēta.";
 "A total of %{0} cards were imported in the addressbook." = "Kopumā no % {0} kartiņas tika importētas adrešu grāmatā.";
 "Reload" = "Pārlādēt";
@@ -350,7 +350,7 @@
 "New Custom Value" = "Jauna pielāgota vērtība";
 "Synchronization" = "Sinhronizācija";
 "Synchronize" = "Sinhronizēt";
-"Sucessfully subscribed to address book" = "Sekmīgi abonējis adrešu grāmatu";
+"Successfully subscribed to address book" = "Sekmīgi abonējis adrešu grāmatu";
 "A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */

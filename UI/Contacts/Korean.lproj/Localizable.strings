@@ -295,7 +295,7 @@
 "Upload" = "업로드";
 "Uploading" = "업로드 중";
 "Done" = "완료";
-"An error occured while importing contacts." = "연락처 가져오기 중 오류가 발생했습니다.";
+"An error occurred while importing contacts." = "연락처 가져오기 중 오류가 발생했습니다.";
 "No card was imported." = "가져온 카드가 없습니다.";
 "A total of %{0} cards were imported in the addressbook." = "총 %{0}개의 카드가 주소록으로 가져와졌습니다.";
 "Reload" = "새로고침";
@@ -350,7 +350,7 @@
 "New Custom Value" = "새 사용자 지정 값";
 "Synchronization" = "동기화";
 "Synchronize" = "동기화";
-"Sucessfully subscribed to address book" = "주소록 구독 성공";
+"Successfully subscribed to address book" = "주소록 구독 성공";
 "A similar card already exists. Would you like to save it anyway?" = "유사한 카드가 이미 존재합니다. 그래도 저장하시겠습니까?";
 
 /* Aria label for scope of search on contacts */

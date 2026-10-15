@@ -71,7 +71,7 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Cap carpeta seleccionada";
 
-"An error occured while communicating with the mail server" = "S'ha produït un error durant la comunicació amb el servidor de correu";
+"An error occurred while communicating with the mail server" = "S'ha produït un error durant la comunicació amb el servidor de correu";
 
 /* Mailbox actions */
 

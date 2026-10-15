@@ -71,7 +71,7 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Nici o cutie poștală selectată";
 
-"An error occured while communicating with the mail server" = "A apărut o eroare în timpul comunicaţiei cu serverul de mail";
+"An error occurred while communicating with the mail server" = "A apărut o eroare în timpul comunicaţiei cu serverul de mail";
 
 /* Mailbox actions */
 
@@ -430,7 +430,7 @@
 "cannot send message (smtp) - recipients discarded" = "Mesajul nu poate fi trimis. Următoarea adrese sunt invalide:";
 "cannot send message: (smtp) error when connecting" = "Mesajul nu poate fi trimis: eroare de conectare la serverul SMTP.";
 "cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
-"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
+"cannot sign message because the certificate can't be read" = "The message can't be signed because the certificate associated to the mail account can't be read.";
 "cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
 
 /* Contacts list in mail editor */

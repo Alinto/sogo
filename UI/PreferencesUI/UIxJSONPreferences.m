@@ -129,7 +129,7 @@ static SoProduct *preferencesProduct = nil;
   else
     {
       data = [NSDictionary dictionaryWithObjectsAndKeys:
-                             @"An error occured while communicating with the Sieve server", @"message", nil];
+                             @"An error occurred while communicating with the Sieve server", @"message", nil];
       response = [self responseWithStatus: 500 andJSONRepresentation: data];
     }
 

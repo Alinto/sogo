@@ -71,7 +71,7 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Ingen valgt mailboks.";
 
-"An error occured while communicating with the mail server" = "Det oppstod en feil under kommunikasjon med e-postserveren ";
+"An error occurred while communicating with the mail server" = "Det oppstod en feil under kommunikasjon med e-postserveren ";
 
 /* Mailbox actions */
 

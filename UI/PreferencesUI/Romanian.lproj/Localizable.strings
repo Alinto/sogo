@@ -82,7 +82,7 @@
 "You are not allowed to forward your messages to this domain:" = "Nu aveți voie să trimiteți mesajele dvs. către acest domeniu:";
 
 /* notification */
-"Notify incoming messsages" = "Notify incoming messsages";
+"Notify incoming messages" = "Notify incoming messages";
 "Notification Message Sent" = "Notification message sent";
 "Notification Message" = "Notification of new message on %{0}";
 
@@ -206,7 +206,7 @@
 "Insert signature on reply" = "Insert signature on reply";
 "Insert signature on forward" = "Insert signature on forward";
 "Show recipients or sender full email in mailboxes" = "Show recipients or sender full email in mailboxes";
-"Hide attachements for inline images" = "Hide attachments for inline images";
+"Hide attachments for inline images" = "Hide attachments for inline images";
 "Show attachments above the message" = "Show attachments above the message";
 
 /* Base font size for messages composed in HTML */

@@ -292,7 +292,7 @@ unsigned char GetRruleMonthNum(unsigned char a, unsigned char b) {
   data = [self fetchBLOB];
 
   if((int)[data length] < sizeof(DWORD)) {
-    NSLog(@"TNEF: ERROR try to decode empty data where it should'nt");
+    NSLog(@"TNEF: ERROR try to decode empty data where it shouldn't");
     return;
   }
     
@@ -770,7 +770,7 @@ unsigned char GetRruleMonthNum(unsigned char a, unsigned char b) {
                           }
                           if (!partName) {
                             // Fallback
-                            [self warnWithFormat: @"Could not get TNEF attachment name, fallback to unamed.bin"];
+                            [self warnWithFormat: @"Could not get TNEF attachment name, fallback to unnamed.bin"];
                             partName = @"unnamed.bin";
                           }
 

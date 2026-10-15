@@ -71,7 +71,7 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "未選擇任何郵箱";
 
-"An error occured while communicating with the mail server" = "連接郵件伺服器時發生錯誤";
+"An error occurred while communicating with the mail server" = "連接郵件伺服器時發生錯誤";
 
 /* Mailbox actions */
 
@@ -430,7 +430,7 @@
 "cannot send message (smtp) - recipients discarded" = "無法寄送信件。以下的收件者帳號無效";
 "cannot send message: (smtp) error when connecting" = "無法寄送郵件: 連接 SMTP伺服器時發生錯誤。";
 "cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
-"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
+"cannot sign message because the certificate can't be read" = "The message can't be signed because the certificate associated to the mail account can't be read.";
 "cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
 
 /* Contacts list in mail editor */

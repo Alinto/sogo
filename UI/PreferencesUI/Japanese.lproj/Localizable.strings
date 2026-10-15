@@ -82,7 +82,7 @@
 "You are not allowed to forward your messages to this domain:" = "このメールアドレスにメッセージを転送することは許可されていません:";
 
 /* notification */
-"Notify incoming messsages" = "Notify incoming messsages";
+"Notify incoming messages" = "Notify incoming messages";
 "Notification Message Sent" = "Notification message sent";
 "Notification Message" = "Notification of new message on %{0}";
 
@@ -206,7 +206,7 @@
 "Insert signature on reply" = "返信するときに署名を挿入する";
 "Insert signature on forward" = "転送するときに署名を挿入する";
 "Show recipients or sender full email in mailboxes" = "宛先や差出人のメールアドレス全体をメールボックスに表示する";
-"Hide attachements for inline images" = "インライン画像用の添付ファイルを非表示にする";
+"Hide attachments for inline images" = "インライン画像用の添付ファイルを非表示にする";
 "Show attachments above the message" = "Show attachments above the message";
 
 /* Base font size for messages composed in HTML */

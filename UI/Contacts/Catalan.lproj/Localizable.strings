@@ -295,7 +295,7 @@
 "Upload" = "Carregar";
 "Uploading" = "Carregant";
 "Done" = "Fet";
-"An error occured while importing contacts." = "Hi ha hagut un error en importar els contactes.";
+"An error occurred while importing contacts." = "Hi ha hagut un error en importar els contactes.";
 "No card was imported." = "No s'ha importat cap contacte.";
 "A total of %{0} cards were imported in the addressbook." = "S'han importat a la llibreta %{0} contactes.";
 "Reload" = "Actualitzar";
@@ -350,7 +350,7 @@
 "New Custom Value" = "Nou valor personalitzat";
 "Synchronization" = "Sincronització";
 "Synchronize" = "Sincronitzar";
-"Sucessfully subscribed to address book" = "S'ha subscrit correctament a la llibreta d'adreces";
+"Successfully subscribed to address book" = "S'ha subscrit correctament a la llibreta d'adreces";
 "A similar card already exists. Would you like to save it anyway?" = "Ja existeix un contacte similar. Voleu desar-lo igualment?";
 
 /* Aria label for scope of search on contacts */

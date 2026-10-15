@@ -144,7 +144,7 @@
         // Unsubscribe without confirmation
         this.calendar.$delete()
           .catch(function(data, status) {
-            Dialog.alert(l('An error occured while deleting the calendar "%{0}".', $ctrl.calendar.name),
+            Dialog.alert(l('An error occurred while deleting the calendar "%{0}".', $ctrl.calendar.name),
                          l(data.error));
           });
       }
@@ -154,7 +154,7 @@
           .then(function() {
             $ctrl.calendar.$delete()
               .catch(function(data, status) {
-                Dialog.alert(l('An error occured while deleting the calendar "%{0}".', $ctrl.calendar.name),
+                Dialog.alert(l('An error occurred while deleting the calendar "%{0}".', $ctrl.calendar.name),
                              l(data.error));
               });
           });

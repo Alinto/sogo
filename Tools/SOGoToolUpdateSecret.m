@@ -84,11 +84,11 @@
       "     -o old_secret        the current value of the secret if any, if given alone, it will decrypts all current data\n"
       "                          The secret must be a 32 chars long utf-8 strings (128 bits)\n\n"
       "  Example set a secret for the first time:\n"
-      "       sogo-tool update-secret -n exemple_NewSuperSecretOfLenght32\n"
+      "       sogo-tool update-secret -n example_NewSuperSecretOfLength32\n"
       "  Examples change for a new value of secret:\n"
-      "       sogo-tool update-secret -n exemple_NewSuperSecretOfLenght32:32 -o exemple_OldSuperSecretOfLenght32\n"
+      "       sogo-tool update-secret -n example_NewSuperSecretOfLength32:32 -o example_OldSuperSecretOfLength32\n"
       "  Examples unset the secret and come back to unencrypted data:\n"
-      "       sogo-tool update-secret -o exemple_OldSuperSecretOfLenght32\n");
+      "       sogo-tool update-secret -o example_OldSuperSecretOfLength32\n");
 }
 
 
@@ -181,7 +181,7 @@
         account = [aux objectAtIndex: count];
         if(![[account objectForKey: @"password"] isKindOfClass: [NSString class]])
         {
-          NSLog(@"Can't encrypt the password for auxiliary account %@, password is not a string, probabbly already encrypted",
+          NSLog(@"Can't encrypt the password for auxiliary account %@, password is not a string, probably already encrypted",
                         [account objectForKey: @"name"]);
           continue;
         }
@@ -233,7 +233,7 @@
         account = [aux objectAtIndex: count];
         if(![[account objectForKey: @"password"] isKindOfClass: [NSDictionary class]])
         {
-          NSLog(@"Can't decrypt the password for auxiliary account %@, is not a dictionnary",
+          NSLog(@"Can't decrypt the password for auxiliary account %@, is not a dictionary",
                         [account objectForKey: @"name"]);
           continue;
         }
@@ -296,7 +296,7 @@
         account = [aux objectAtIndex: count];
         if(![[account objectForKey: @"password"] isKindOfClass: [NSDictionary class]])
         {
-          NSLog(@"Can't decrypt the password for auxiliary account %@, is not a dictionnary",
+          NSLog(@"Can't decrypt the password for auxiliary account %@, is not a dictionary",
                         [account objectForKey: @"name"]);
           continue;
         }

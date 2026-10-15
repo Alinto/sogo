@@ -295,7 +295,7 @@
 "Upload" = "アップロード";
 "Uploading" = "アップロード中";
 "Done" = "完了";
-"An error occured while importing contacts." = "連絡先のインポート中にエラーが発生しました。";
+"An error occurred while importing contacts." = "連絡先のインポート中にエラーが発生しました。";
 "No card was imported." = "インポートされたカードはありません。";
 "A total of %{0} cards were imported in the addressbook." = "合計で%{0}のカードがアドレス帳にインポートされました。";
 "Reload" = "再読み込み";
@@ -350,7 +350,7 @@
 "New Custom Value" = "新しいカスタム値";
 "Synchronization" = "同期";
 "Synchronize" = "同期する";
-"Sucessfully subscribed to address book" = "アドレス帳に登録されました";
+"Successfully subscribed to address book" = "アドレス帳に登録されました";
 "A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */

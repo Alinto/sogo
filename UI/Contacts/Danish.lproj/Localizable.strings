@@ -295,7 +295,7 @@
 "Upload" = "Indlæs";
 "Uploading" = "Uploader";
 "Done" = "Udført";
-"An error occured while importing contacts." = "Der opstod en fejl under importering af kontaktpersoner.";
+"An error occurred while importing contacts." = "Der opstod en fejl under importering af kontaktpersoner.";
 "No card was imported." = "Intet kort blev importeret.";
 "A total of %{0} cards were imported in the addressbook." = "I alt blev % {0} kort importeret i adressebogen.";
 "Reload" = "Genindlæs";
@@ -350,7 +350,7 @@
 "New Custom Value" = "Ny brugerdefineret værdi";
 "Synchronization" = "Synkronisering";
 "Synchronize" = "Synkronisér";
-"Sucessfully subscribed to address book" = "Tilmeldte sig adressebogen";
+"Successfully subscribed to address book" = "Tilmeldte sig adressebogen";
 "A similar card already exists. Would you like to save it anyway?" = "Et lignende kort findes allerede. Vil du alligevel gemme den?";
 
 /* Aria label for scope of search on contacts */

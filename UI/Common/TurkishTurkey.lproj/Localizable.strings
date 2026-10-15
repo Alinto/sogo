@@ -156,7 +156,7 @@
 "File size upload limit reached" = "Yüklenebilecek dosya boyutu sınırı aşıldı";
 
 /* Generic server error */
-"An error occured, please try again." = "Bir sorun çıktı. Lütfen yeniden deneyin.";
+"An error occurred, please try again." = "Bir sorun çıktı. Lütfen yeniden deneyin.";
 
 /* Open datepicker */
 "Open Calendar" = "Takvimi aç";

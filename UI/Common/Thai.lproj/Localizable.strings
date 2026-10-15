@@ -156,7 +156,7 @@
 "File size upload limit reached" = "ขนาดไฟล์ที่อัปโหลดเกินขีดจำกัด";
 
 /* Generic server error */
-"An error occured, please try again." = "เกิดข้อผิดพลาด โปรดลองอีกครั้ง";
+"An error occurred, please try again." = "เกิดข้อผิดพลาด โปรดลองอีกครั้ง";
 
 /* Open datepicker */
 "Open Calendar" = "เปิดปฏิทิน";

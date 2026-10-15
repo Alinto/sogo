@@ -71,7 +71,7 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "No buzon seleccionado";
 
-"An error occured while communicating with the mail server" = "Ha ocurrido un error mientras se comunicaba con el servidor de correo electrónico";
+"An error occurred while communicating with the mail server" = "Ha ocurrido un error mientras se comunicaba con el servidor de correo electrónico";
 
 /* Mailbox actions */
 

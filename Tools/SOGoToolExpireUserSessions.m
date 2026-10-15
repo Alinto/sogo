@@ -94,7 +94,7 @@
   if (!channel)
   {
     /* FIXME: nice error msg */
-    NSLog(@"Can't aquire channel");
+    NSLog(@"Can't acquire channel");
     return rc = NO;
   }
 

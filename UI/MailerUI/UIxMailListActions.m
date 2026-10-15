@@ -1022,7 +1022,7 @@
   else
     {
       data = [NSDictionary dictionaryWithObjectsAndKeys:
-                             @"An error occured while communicating with the mail server", @"message", nil];
+                             @"An error occurred while communicating with the mail server", @"message", nil];
       response = [self responseWithStatus: 500 /* Error */
                     andJSONRepresentation: data];
     }
@@ -1273,7 +1273,7 @@
   else
     {
       data = [NSDictionary dictionaryWithObjectsAndKeys:
-                             @"An error occured while communicating with the mail server", @"message", nil];
+                             @"An error occurred while communicating with the mail server", @"message", nil];
       response = [self responseWithStatus: 500 /* Error */
                     andJSONRepresentation: data];
     }

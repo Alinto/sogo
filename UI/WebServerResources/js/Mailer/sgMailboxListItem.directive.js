@@ -187,7 +187,7 @@
                     .then(function() {
                       $state.go('mail.account.inbox');
                     }, function(response) {
-                      Dialog.alert(l('An error occured while deleting the mailbox "%{0}".', $ctrl.mailbox.name),
+                      Dialog.alert(l('An error occurred while deleting the mailbox "%{0}".', $ctrl.mailbox.name),
                                    l(response.error));
                     });
                 });
@@ -255,7 +255,7 @@
                 .then(function() {
                   // success
                 }, function(data, status) {
-                  Dialog.alert(l('An error occured while creating the mailbox "%{0}".', name),
+                  Dialog.alert(l('An error occurred while creating the mailbox "%{0}".', name),
                                l(data.error));
                 });
             });

@@ -156,7 +156,7 @@
 "File size upload limit reached" = "Den uppladdade filen är för stor";
 
 /* Generic server error */
-"An error occured, please try again." = "Ett fel inträffade, vänligen försök igen.";
+"An error occurred, please try again." = "Ett fel inträffade, vänligen försök igen.";
 
 /* Open datepicker */
 "Open Calendar" = "Öppna kalender";

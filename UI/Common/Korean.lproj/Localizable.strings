@@ -156,7 +156,7 @@
 "File size upload limit reached" = "파일 크기 업로드 제한에 도달했습니다";
 
 /* Generic server error */
-"An error occured, please try again." = "An error occured, please try again.";
+"An error occurred, please try again." = "An error occurred, please try again.";
 
 /* Open datepicker */
 "Open Calendar" = "캘린더 열기";

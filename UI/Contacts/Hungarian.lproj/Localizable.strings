@@ -295,7 +295,7 @@
 "Upload" = "Feltöltés";
 "Uploading" = "Feltöltés";
 "Done" = "Kész";
-"An error occured while importing contacts." = "Hiba lépett fel a kapcsolatok importálása során.";
+"An error occurred while importing contacts." = "Hiba lépett fel a kapcsolatok importálása során.";
 "No card was imported." = "Névjegy nem került importálásra.";
 "A total of %{0} cards were imported in the addressbook." = "Az összes %{0} névjegy importálástra került a címjegyzékbe.";
 "Reload" = "Újratöltés";
@@ -350,7 +350,7 @@
 "New Custom Value" = "Új kiegészítő adat";
 "Synchronization" = "Szinkronizálás";
 "Synchronize" = "Szinkronizálás";
-"Sucessfully subscribed to address book" = "Sikeresen feliratkozott a címjegyzékre";
+"Successfully subscribed to address book" = "Sikeresen feliratkozott a címjegyzékre";
 "A similar card already exists. Would you like to save it anyway?" = "Már van hasonló névjegy. Mindenképp szeretné menteni?";
 
 /* Aria label for scope of search on contacts */

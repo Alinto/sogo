@@ -49,7 +49,7 @@
   if (!monthlyRepeatList)
     {
       monthlyRepeatList = [NSArray arrayWithObjects: @"First", @"Second", @"Third",
-				   @"Fourth", @"Fift", @"Last", nil];
+				   @"Fourth", @"Fifth", @"Last", nil];
       [monthlyRepeatList retain];
     }
 

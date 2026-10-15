@@ -71,7 +71,7 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "선택한 메일함이 없습니다.";
 
-"An error occured while communicating with the mail server" = "메일 서버와 통신하는 동안 오류가 발생했습니다.";
+"An error occurred while communicating with the mail server" = "메일 서버와 통신하는 동안 오류가 발생했습니다.";
 
 /* Mailbox actions */
 

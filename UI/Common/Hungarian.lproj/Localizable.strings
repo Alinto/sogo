@@ -156,7 +156,7 @@
 "File size upload limit reached" = "Elérte a maximális állomány feltöltési méretkorlátot";
 
 /* Generic server error */
-"An error occured, please try again." = "Hiba történt, próbálja újra.";
+"An error occurred, please try again." = "Hiba történt, próbálja újra.";
 
 /* Open datepicker */
 "Open Calendar" = "Naptár megnyitása";

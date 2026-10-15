@@ -156,7 +156,7 @@
 "File size upload limit reached" = "Maximale Dateigröße für das Hochladen erreicht";
 
 /* Generic server error */
-"An error occured, please try again." = "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es nochmal.";
+"An error occurred, please try again." = "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es nochmal.";
 
 /* Open datepicker */
 "Open Calendar" = "Kalender öffnen";

@@ -254,7 +254,7 @@
 - (void) usage
 {
   fprintf (stderr, "Usage: truncate-calendar [-r] USER FOLDER DATE\n\n"
-           "            -r         also delete recurrent events (including all occurences)\n"
+           "            -r         also delete recurrent events (including all occurrences)\n"
 	   "            USER       the owner of the calendar folder\n"
 	   "            FOLDER     the id of the folder to clean up\n"
 	   "            DATE       UTC datetime - events older than this date will be removed\n\n"

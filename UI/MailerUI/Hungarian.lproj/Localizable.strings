@@ -71,7 +71,7 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Nincs kijelölt postafiók";
 
-"An error occured while communicating with the mail server" = "Hiba történt a levelező kiszolgálóval történő kapcsolattartás során";
+"An error occurred while communicating with the mail server" = "Hiba történt a levelező kiszolgálóval történő kapcsolattartás során";
 
 /* Mailbox actions */
 

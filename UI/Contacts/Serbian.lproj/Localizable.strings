@@ -295,7 +295,7 @@
 "Upload" = "Отпреми";
 "Uploading" = "Отпремање";
 "Done" = "Урађено";
-"An error occured while importing contacts." = "Догодила се грешка при увозу контаката.";
+"An error occurred while importing contacts." = "Догодила се грешка при увозу контаката.";
 "No card was imported." = "Нису увезене картице.";
 "A total of %{0} cards were imported in the addressbook." = "Укупно %{0} картица је увезено у адресар.";
 "Reload" = "Поново учитај";
@@ -350,7 +350,7 @@
 "New Custom Value" = "Нова прилагођена вредност";
 "Synchronization" = "Синхронизација";
 "Synchronize" = "Синхронизуј";
-"Sucessfully subscribed to address book" = "Успешно претплаћен на адресар";
+"Successfully subscribed to address book" = "Успешно претплаћен на адресар";
 "A similar card already exists. Would you like to save it anyway?" = "Слична картица већ постоји. Да ли свакако желиш да сачуваш ову картицу?";
 
 /* Aria label for scope of search on contacts */

@@ -71,7 +71,7 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Non caixa do correo seleccionada";
 
-"An error occured while communicating with the mail server" = "Ocorreu un erro mentres se comunicaba co servidor de correo electrónico";
+"An error occurred while communicating with the mail server" = "Ocorreu un erro mentres se comunicaba co servidor de correo electrónico";
 
 /* Mailbox actions */
 

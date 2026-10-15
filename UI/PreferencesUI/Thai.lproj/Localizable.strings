@@ -82,7 +82,7 @@
 "You are not allowed to forward your messages to this domain:" = "คุณไม่ได้รับอนุญาตให้ส่งข้อความของคุณไปยังโดเมนนี้:";
 
 /* notification */
-"Notify incoming messsages" = "แจ้งเตือนข้อความที่เข้ามา";
+"Notify incoming messages" = "แจ้งเตือนข้อความที่เข้ามา";
 "Notification Message Sent" = "ข้อความแจ้งเตือนถูกส่ง";
 "Notification Message" = "การแจ้งเตือนข้อความใหม่ใน %{0}";
 
@@ -206,7 +206,7 @@
 "Insert signature on reply" = "เพิ่มลายเซ็นต์ในการตอบกลับ";
 "Insert signature on forward" = "แทรกลายเซ็นต์ไปยังข้างหน้า";
 "Show recipients or sender full email in mailboxes" = "แสดงผู้รับหรือผู้ส่งอีเมลเต็มในกล่องจดหมาย";
-"Hide attachements for inline images" = "ซ่อนสิ่งที่แนบมาสำหรับภาพอินไลน์";
+"Hide attachments for inline images" = "ซ่อนสิ่งที่แนบมาสำหรับภาพอินไลน์";
 "Show attachments above the message" = "แสดงสิ่งที่แนบมาด้านบนข้อความ";
 
 /* Base font size for messages composed in HTML */

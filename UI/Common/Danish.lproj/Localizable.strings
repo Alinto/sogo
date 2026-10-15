@@ -156,7 +156,7 @@
 "File size upload limit reached" = "Grænsen for upload af filstørrelse er nået";
 
 /* Generic server error */
-"An error occured, please try again." = "Der opstod en fejl, prøv venligst igen.";
+"An error occurred, please try again." = "Der opstod en fejl, prøv venligst igen.";
 
 /* Open datepicker */
 "Open Calendar" = "Åben kalender";

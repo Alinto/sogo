@@ -71,7 +71,7 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Бірде—бір папка таңдалмады";
 
-"An error occured while communicating with the mail server" = "Пошта серверіне жүгіну кезінде қате кетті.";
+"An error occurred while communicating with the mail server" = "Пошта серверіне жүгіну кезінде қате кетті.";
 
 /* Mailbox actions */
 

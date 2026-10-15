@@ -295,7 +295,7 @@
 "Upload" = "上傳";
 "Uploading" = "上傳中";
 "Done" = "完成";
-"An error occured while importing contacts." = "匯入聯絡人時發生錯誤。";
+"An error occurred while importing contacts." = "匯入聯絡人時發生錯誤。";
 "No card was imported." = "沒有匯入任何聯絡人。";
 "A total of %{0} cards were imported in the addressbook." = "總共匯入 %{0} 筆聯絡人到通訊錄中。";
 "Reload" = "重新載入";
@@ -350,7 +350,7 @@
 "New Custom Value" = "新增自訂欄位";
 "Synchronization" = "同步";
 "Synchronize" = "同步";
-"Sucessfully subscribed to address book" = "已成功訂閱通訊錄";
+"Successfully subscribed to address book" = "已成功訂閱通訊錄";
 "A similar card already exists. Would you like to save it anyway?" = "A similar card already exists. Would you like to save it anyway?";
 
 /* Aria label for scope of search on contacts */

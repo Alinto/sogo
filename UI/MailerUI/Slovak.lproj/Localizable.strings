@@ -71,7 +71,7 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Nebola vybraná žiadna schránka.";
 
-"An error occured while communicating with the mail server" = "Pri komunikácii s poštovým serverom nastala chyba.";
+"An error occurred while communicating with the mail server" = "Pri komunikácii s poštovým serverom nastala chyba.";
 
 /* Mailbox actions */
 
@@ -430,7 +430,7 @@
 "cannot send message (smtp) - recipients discarded" = "Správa sa nedá odoslať: nasledujúci príjemcovia nemajú platnú adresu.";
 "cannot send message: (smtp) error when connecting" = "Správa sa nedá odoslať: chyba pri pripájaní na SMTP server.";
 "cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
-"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
+"cannot sign message because the certificate can't be read" = "The message can't be signed because the certificate associated to the mail account can't be read.";
 "cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
 
 /* Contacts list in mail editor */

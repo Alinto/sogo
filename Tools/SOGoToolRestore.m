@@ -469,7 +469,7 @@
   if (error)
     {
       rc = NO;
-      NSLog (@"an error occured during folder creation: %@", error);
+      NSLog (@"an error occurred during folder creation: %@", error);
     }
   else
     rc = YES;
@@ -496,7 +496,7 @@
       if (error)
         {
           rc = NO;
-          NSLog (@"an error occured during folder deletion: %@", error);
+          NSLog (@"an error occurred during folder deletion: %@", error);
         }
       else
         gcsFolder = nil;

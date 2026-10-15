@@ -71,7 +71,7 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Ni izbranega poštnega predala";
 
-"An error occured while communicating with the mail server" = "Prišlo je do napake pri komunikaciji s poštnim strežnikom";
+"An error occurred while communicating with the mail server" = "Prišlo je do napake pri komunikaciji s poštnim strežnikom";
 
 /* Mailbox actions */
 

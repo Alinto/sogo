@@ -71,7 +71,7 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Nėra pasirinkta pašto dėžutė";
 
-"An error occured while communicating with the mail server" = "Bendraujant su pašto serveriu įvyko klaida";
+"An error occurred while communicating with the mail server" = "Bendraujant su pašto serveriu įvyko klaida";
 
 /* Mailbox actions */
 
