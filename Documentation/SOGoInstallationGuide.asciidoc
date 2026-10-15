@@ -2786,6 +2786,27 @@ are:
 
 Defaults to `below`.
 
+|U |SOGoMailSaveRepliesInOriginalFolder
+|Save sent replies and replies to all in the folder containing the original
+message, instead of the account's Sent folder. This applies to replies
+created in the web interface, when saving sent messages is enabled. New
+messages and forwards continue to use the Sent folder.
+
+Defaults to `NO`. Users can change this option in Mail preferences.
+It can also be set at the system, domain or user level. The current
+preference is applied when sending.
+
+Reply drafts preserve the original folder in draft-only metadata, which
+is omitted from submitted messages and sent copies. Drafts created before
+this feature, or by other clients without this metadata, use Sent.
+
+The original folder must still exist in the same account. When the server
+supports IMAP ACLs, SOGo also checks insert rights before sending. If these
+checks fail, sending stops; disable the preference to use Sent instead.
+Folders are not recreated or followed after renaming. IMAP append failures
+after delivery are reported explicitly and the draft is retained; the
+message has already been sent and must not be resent.
+
 |U |SOGoMailReplyTo
 |The email address to use in the `reply-to` header field when the user
 sends a message, if _SOGoMailCustomFromEnabled_ is set in the user's
