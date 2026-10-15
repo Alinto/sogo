@@ -241,6 +241,11 @@
                     <var:string label:value="Return Receipt"/>
                   </sg-checkmark>
                 </md-menu-item>
+                <md-menu-item>
+                  <sg-checkmark ng-model="editor.message.editable.deliveryNotification">
+                    <var:string label:value="Request Delivery Notifications"/>
+                  </sg-checkmark>
+                </md-menu-item>
                 <md-menu-item ng-show="editor.account.$hasCertificate()">
                   <md-button class="md-primary" ng-disabled="true" ng-bind="::'Security' | loc"><!-- Security --></md-button>
                 </md-menu-item>

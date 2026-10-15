@@ -58,6 +58,13 @@
             withAuthenticator:(id<SOGoAuthenticator>)authenticator
                     inContext:(WOContext *)woContext
                 systemMessage:(BOOL)isSystemMessage;
+- (NSException *)sendMailData:(NSData *)data
+                 toRecipients:(NSArray *)recipients
+                       sender:(NSString *)sender
+            withAuthenticator:(id<SOGoAuthenticator>)authenticator
+                    inContext:(WOContext *)woContext
+                systemMessage:(BOOL)isSystemMessage
+  requestDeliveryNotification:(BOOL)requestDeliveryNotification;
 - (NSException *)sendMailAtPath:(NSString *)filename
                    toRecipients:(NSArray *)recipients
                          sender:(NSString *)sender
