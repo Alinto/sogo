@@ -124,6 +124,9 @@
 - (NSString *) buildDate;
 - (BOOL) isUIxDebugEnabled;
 
+/* Content Security Policy */
+- (NSString *) cspNonce;
+
 @end
 
 #endif	/* __UIxComponent_H_ */

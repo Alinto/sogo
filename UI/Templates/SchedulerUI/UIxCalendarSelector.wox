@@ -6,7 +6,7 @@
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label">
-  <script type="text/javascript">
+  <script type="text/javascript" var:nonce="cspNonce">
     var calendarsData = <var:string value="calendars.jsonRepresentation" const:escapeHTML="NO" />;
   </script>
 </container>
