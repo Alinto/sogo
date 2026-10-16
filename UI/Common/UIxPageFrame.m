@@ -25,6 +25,7 @@
 #import <Foundation/NSUserDefaults.h> /* for locale strings */
 
 #import <NGObjWeb/WOResourceManager.h>
+#import <NGObjWeb/WOResponse.h>
 
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
@@ -673,6 +674,53 @@
   return [[cc userAgentType] isEqualToString: @"IE"] ||
     [[ud animationMode] isEqualToString: @"limited"] ||
     [[ud animationMode] isEqualToString: @"none"];
+}
+
+/* Content Security Policy */
+
+//
+// AngularJS must evaluate expressions without eval() when the policy
+// doesn't allow 'unsafe-eval'.
+//
+- (NSString *) ngCSP
+{
+  if ([[SOGoSystemDefaults sharedSystemDefaults] contentSecurityPolicy])
+    return @"no-unsafe-eval";
+
+  return nil;
+}
+
+- (NSString *) contentSecurityPolicyHeader
+{
+  return [NSString stringWithFormat:
+                     @"default-src 'self'; "
+                   @"script-src 'self' 'nonce-%@'; "
+                   @"style-src 'self' 'unsafe-inline'; "
+                   @"img-src * data: blob:; "
+                   @"font-src 'self' data:; "
+                   @"media-src 'self' data: blob:; "
+                   @"frame-src 'self' data: blob:; "
+                   @"worker-src 'self' blob:; "
+                   @"connect-src 'self'; "
+                   @"object-src 'none'; "
+                   @"base-uri 'self'; "
+                   @"frame-ancestors 'self'",
+                   [self cspNonce]];
+}
+
+- (void) appendToResponse: (WOResponse *) aResponse
+                inContext: (WOContext *) aContext
+{
+  NSString *mode;
+
+  [super appendToResponse: aResponse inContext: aContext];
+
+  mode = [[SOGoSystemDefaults sharedSystemDefaults] contentSecurityPolicy];
+  if (mode && ![self hideFrame] && [self cspNonce])
+    [aResponse setHeader: [self contentSecurityPolicyHeader]
+                  forKey: ([mode isEqualToString: @"enforce"]
+                           ? @"content-security-policy"
+                           : @"content-security-policy-report-only")];
 }
 
 - (BOOL) isCompatibleBrowser

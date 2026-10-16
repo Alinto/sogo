@@ -11,7 +11,7 @@
 
   <var:string var:value="doctype" const:escapeHTML="NO" />
   <var:if condition="hideFrame" const:negate="YES">
-    <html const:xmlns="http://www.w3.org/1999/xhtml" var:lang="localeCode">
+    <html const:xmlns="http://www.w3.org/1999/xhtml" var:lang="localeCode" var:ng-csp="ngCSP">
       <head>
         <title var:sg-default="title"><var:string value="title"/></title>
         <meta name="hideFrame" var:content="hideFrame" />
@@ -62,7 +62,7 @@
           <!-- MAIN CONTENT ROW -->
           <var:component-content />
           
-          <script type="text/javascript">
+          <script type="text/javascript" var:nonce="cspNonce">
             var ApplicationBaseURL = '<var:string value="modulePath" />';
             var ResourcesURL = '<var:string value="applicationPath" />.woa/WebServerResources';
             var minimumSearchLength = <var:string value="minimumSearchLength" />;

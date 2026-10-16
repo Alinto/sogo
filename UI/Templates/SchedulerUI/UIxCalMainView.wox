@@ -9,7 +9,7 @@
     className="UIxPageFrame"
     title="moduleName"
     const:jsFiles="vendor/ckeditor/build/ckeditor.js, vendor/ng-sortable.min.js, Common/sgCkeditor.component.js, Common.js, Preferences.services.js, Contacts.services.js, Mailer.services.js, vendor/angular-file-upload.min.js, Scheduler.js, Scheduler.services.js, vendor/FileSaver.min.js, vendor/punycode.js">
-  <script type="text/javascript">
+  <script type="text/javascript" var:nonce="cspNonce">
     var firstDayOfWeek = <var:string value="firstDayOfWeek"/>;
     var dayStartHour = <var:string value="dayStartHour"/>;
     var currentView = '<var:string value="currentView"/>';

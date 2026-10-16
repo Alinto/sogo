@@ -2411,6 +2411,26 @@ Defaults to `SOGo` when unset.
 an additional icon will appear near the logout button in SOGo's
 web interface. The URL will always be open in a separate page.
 
+|S |SOGoContentSecurityPolicy
+|Parameter used to send a Content Security Policy with the pages of
+the Web interface. The policy only allows the scripts served by SOGo
+and the inline scripts it generates itself, and forbids `eval()`, which
+protects against script injection. Possible values are:
+
+[options="compact"]
+* `report-only` - send the policy as `Content-Security-Policy-Report-Only`:
+  violations are only reported in the browser console
+* `enforce` - send the policy as `Content-Security-Policy`
+
+The files listed in `SOGoUIAdditionalJSFiles` are served by SOGo and
+allowed by the policy. However, they will fail if they load further
+scripts from another origin, evaluate strings with `eval()` or
+`new Function()`, or add inline scripts or event handlers (`onclick=`).
+Install any script they depend on under `WebServerResources` and list it
+in `SOGoUIAdditionalJSFiles` as well.
+
+The policy is disabled when unset.
+
 |U |SOGoLoginModule
 |Parameter used to specify which module to show after login. Possible
 values are:

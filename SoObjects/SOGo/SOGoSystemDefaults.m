@@ -644,6 +644,18 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return [self boolForKey: @"SOGoUIxDebugEnabled"];
 }
 
+/* Returns "report-only", "enforce" or nil when disabled */
+- (NSString *) contentSecurityPolicy
+{
+  NSString *mode;
+
+  mode = [[self stringForKey: @"SOGoContentSecurityPolicy"] lowercaseString];
+  if ([mode isEqualToString: @"report-only"] || [mode isEqualToString: @"enforce"])
+    return mode;
+
+  return nil;
+}
+
 - (BOOL) easDebugEnabled
 {
   return [self boolForKey: @"SOGoEASDebugEnabled"];
