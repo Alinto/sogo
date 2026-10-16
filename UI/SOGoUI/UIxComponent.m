@@ -29,8 +29,10 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSURL+misc.h>
+#import <NGExtensions/NGBase64Coding.h>
 
 #import <SOGo/NSCalendarDate+SOGo.h>
+#import <SOGo/NSData+Crypto.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Crypto.h>
@@ -774,6 +776,32 @@ static SoProduct      *commonProduct      = nil;
   sd = [SOGoSystemDefaults sharedSystemDefaults];
 
   return [sd uixDebugEnabled];
+}
+
+/* Content Security Policy */
+
+//
+// Nonce allowing the inline scripts of the current response to run. It
+// is shared by all the components of the response through the context
+// and is nil when no policy is configured, so no attribute is rendered.
+//
+- (NSString *) cspNonce
+{
+  NSString *nonce;
+
+  if (![[SOGoSystemDefaults sharedSystemDefaults] contentSecurityPolicy])
+    return nil;
+
+  nonce = [context objectForKey: @"SOGoCSPNonce"];
+  if (!nonce)
+    {
+      nonce = [[NSData generateSaltForLength: 16 withPrintable: NO]
+                stringByEncodingBase64];
+      if (nonce)
+        [context setObject: nonce forKey: @"SOGoCSPNonce"];
+    }
+
+  return nonce;
 }
 
 //
