@@ -2628,6 +2628,14 @@ from the SOGo Webmail interface.
 
 Defaults to `NO` when unset.
 
+|D |SOGoMailAuxiliaryUserAccountsReadOnly
+|Only useful if `SOGoMailAuxiliaryUserAccountsEnabled = YES;`. Tell that auxiliiary
+accounts are read-only and can only be set by admin with sogo-tool. User cannot
+add external account nor modify them. Any previous external account not set by admin
+will be removed.
+
+Defaults to `NO` when unset.
+
 |U |SOGoDefaultCalendar
 |Parameter used to specify which calendar is used when creating an event
 or a task. Possible values are:

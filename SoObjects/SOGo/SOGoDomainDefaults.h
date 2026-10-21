@@ -37,7 +37,7 @@
 
 - (BOOL) mailCustomFromEnabled;
 - (BOOL) mailAuxiliaryUserAccountsEnabled;
-
+- (BOOL) mailAuxiliaryUserAccountsReadOnly;
 - (BOOL) mailDisableXForward;
 - (NSString *) mailDomain;
 - (NSString *) imapServer;

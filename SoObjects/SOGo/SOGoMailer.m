@@ -276,6 +276,7 @@
   NSURL * smtpUrl;
   SOGoUser* user;
   SOGoSystemDefaults *sd;
+  SOGoDomainDefaults *domainDefaults;
   BOOL doSmtpAuth;
 
   result = nil;
@@ -325,6 +326,16 @@
           {
             login = [currentAcount objectForKey: @"userName"];
             password = [currentAcount objectForKey: @"password"];
+            domainDefaults = [[woContext activeUser] domainDefaults];
+            if(!password && [domainDefaults mailAuxiliaryUserAccountsReadOnly] && [currentAcount objectForKey: @"readOnly"])
+            {
+              //If aux account is read only with no password, user the current user one instead
+              protocol = @"imap";
+              if ([encryption isEqualToString: @"ssl"] || [encryption isEqualToString: @"tls"])
+                protocol = @"imaps";
+              server = [NSString stringWithFormat: @"%@://%@", protocol, [currentAcount objectForKey: @"serverName"]];
+              password = [authenticator smtpPasswordInContext: woContext forURL: server];
+            }
             smtpAuthMethod = @"plain"; //Only support plain for auxiliary account
           }
           else

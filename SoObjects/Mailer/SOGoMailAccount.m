@@ -956,9 +956,27 @@ static NSString *inboxFolderName = @"INBOX";
     }
   else
     {
+      
       password = [[self _mailAccount] objectForKey: @"password"];
       if (!password)
-        password = @"";
+      {
+        SOGoDomainDefaults *dd;
+        dd = [[context activeUser] domainDefaults];
+        if([dd mailAuxiliaryUserAccountsReadOnly] && [[self _mailAccount] objectForKey: @"readOnly"])
+        {
+          //If we use aux account in read only, to not have a password means to use the current user one
+          imapURL = [self imap4URL];
+
+          password = [[self authenticatorInContext: context]
+                   imapPasswordInContext: context
+		                  forURL: imapURL
+                              forceRenew: renewed];
+          if (!password)
+            [self errorWithFormat: @"no IMAP4 password available"];
+        }
+        else
+          password = @"";
+      }
     }
 
   return password;

@@ -506,31 +506,7 @@ static SoProduct *preferencesProduct = nil;
   // Add timezone offset
   [values setObject: [NSNumber numberWithInt: [[defaults timeZone] secondsFromGMT]] forKey: @"UserTimeZoneSecondsFromGMT"];
 
-  accounts = [NSMutableArray arrayWithArray: [values objectForKey: @"AuxiliaryMailAccounts"]];
-  if ([accounts count])
-    {
-      int i;
-      NSDictionary *security, *accountPassword;
-      NSMutableDictionary *auxAccount, *limitedSecurity;
-      NSString *password, *encryptedPassword, *sogoSecret, *iv, *tag;
-      NSException* exception = nil;
-
-      for (i = 0; i < [accounts count]; i++)
-        {
-          auxAccount = [accounts objectAtIndex: i];
-          security = [auxAccount objectForKey: @"security"];
-          if (security && [domainDefaults mailCertificateEnabled])
-            {
-              limitedSecurity = [NSMutableDictionary dictionaryWithDictionary: security];
-              if ([limitedSecurity objectForKey: @"certificate"])
-                {
-                  [limitedSecurity setObject: [NSNumber numberWithBool: YES] forKey: @"hasCertificate"];
-                  [limitedSecurity removeObjectForKey: @"certificate"];
-                }
-              [auxAccount setObject: limitedSecurity forKey: @"security"];
-            }
-        }
-    }
+  NSMutableArray *clean_accounts = [NSMutableArray array];
   // We inject our default mail account
   account = [[[context activeUser] mailAccountsNoRawHtmlSignature] objectAtIndex: 0];
   if (![account objectForKey: @"receipts"])
@@ -542,8 +518,44 @@ static SoProduct *preferencesProduct = nil;
                   forKey:  @"receipts"];
     }
   if (account)
-    [accounts insertObject: account  atIndex: 0];
-  [values setObject: accounts  forKey: @"AuxiliaryMailAccounts"];
+    [clean_accounts addObject: account];
+  
+  //Now check external account
+  if (![domainDefaults mailAuxiliaryUserAccountsReadOnly] && [domainDefaults mailAuxiliaryUserAccountsEnabled])
+  {
+    accounts = [NSMutableArray arrayWithArray: [values objectForKey: @"AuxiliaryMailAccounts"]];
+    if ([accounts count])
+      {
+        int i;
+        NSDictionary *security, *accountPassword;
+        NSMutableDictionary *auxAccount, *limitedSecurity;
+        NSString *password, *encryptedPassword, *sogoSecret, *iv, *tag;
+        NSException* exception = nil;
+
+        BOOL isReadOnly = [domainDefaults mailAuxiliaryUserAccountsReadOnly];
+        for (i = 0; i < [accounts count]; i++)
+          {
+            auxAccount = [accounts objectAtIndex: i];
+            if(isReadOnly && [auxAccount objectForKey: @"readOnly"])
+              continue;
+            security = [auxAccount objectForKey: @"security"];
+            if (security && [domainDefaults mailCertificateEnabled])
+              {
+                limitedSecurity = [NSMutableDictionary dictionaryWithDictionary: security];
+                if ([limitedSecurity objectForKey: @"certificate"])
+                  {
+                    [limitedSecurity setObject: [NSNumber numberWithBool: YES] forKey: @"hasCertificate"];
+                    [limitedSecurity removeObjectForKey: @"certificate"];
+                  }
+                [auxAccount setObject: limitedSecurity forKey: @"security"];
+              }
+            [clean_accounts addObject: auxAccount];
+          }
+      }
+  }
+  
+
+  [values setObject: clean_accounts  forKey: @"AuxiliaryMailAccounts"];
 
   // Ignore parameters as they are injected in the system mail account ([SOGoUser mailAccounts])
   [values removeObjectForKey: @"SOGoMailIdentities"];

@@ -1068,6 +1068,8 @@
       [self _appendSystemMailAccountWithDelegatedIdentities: appendDeletegatedIdentities];
       if ([[self domainDefaults] mailAuxiliaryUserAccountsEnabled])
         {
+
+          //If we are in read-only, only add account with this param
           auxAccounts = [[self userDefaults] auxiliaryMailAccounts];
           if (auxAccounts)
           {
@@ -1085,7 +1087,8 @@
                 account = [auxAccounts objectAtIndex: i];
                 if (![[account objectForKey: @"password"] isKindOfClass: [NSDictionary class]])
                 {
-                  [self errorWithFormat:@"Can't decrypt the password for auxiliary account %@, is not a dictionnary",
+                  if(![account objectForKey: @"readOnly"]) //Read only account can have no password
+                    [self errorWithFormat:@"Can't decrypt the password for auxiliary account %@, is not a dictionnary",
                               [account objectForKey: @"name"]];
                   continue;
                 }

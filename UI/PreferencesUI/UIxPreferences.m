@@ -1230,6 +1230,11 @@ static NSArray *reminderValues = nil;
   return [[user domainDefaults] mailAuxiliaryUserAccountsEnabled];
 }
 
+- (BOOL) mailAuxiliaryUserAccountsReadOnly
+{
+  return [[user domainDefaults] mailAuxiliaryUserAccountsReadOnly];
+}
+
 //
 // Used internally
 //
@@ -1534,15 +1539,30 @@ static NSArray *reminderValues = nil;
 //
 - (NSArray *) _extractAuxiliaryAccounts: (NSArray *) accounts
 {
-  int count, max;
+  int count, i;
+  id isReadOnly;
   NSMutableArray *auxAccounts;
   NSMutableDictionary *account;
+  NSDictionary *currentAux, *auxAccount;
   NSString *sogoSecret, *password;
 
-  max = [accounts count];
-  auxAccounts = [NSMutableArray arrayWithCapacity: max];
+  auxAccounts = [NSMutableArray array];
 
-  for (count = 1; count < max; count++)
+  if ([self mailAuxiliaryUserAccountsReadOnly]) {
+    //External account are read only. Meaning we don't accept any data from accounts
+    //Instead we fetch the current ones to not lost them
+    currentAux = [[[user userDefaults] source] objectForKey: @"AuxiliaryMailAccounts"];
+    for (i = 0; i < [currentAux count]; i++)
+    {
+      auxAccount = [currentAux objectAtIndex: i];
+      isReadOnly = [auxAccount objectForKey: @"readOnly"];
+      if(isReadOnly)
+        [auxAccounts addObject: auxAccount];
+    }
+  }
+  else
+  {
+    for (count = 1; count < [accounts count]; count++)
     {
       account = [accounts objectAtIndex: count];
       if ([self _validateAccount: account])
@@ -1569,6 +1589,7 @@ static NSArray *reminderValues = nil;
           [auxAccounts addObject: account];
         }
     }
+  }
 
   return auxAccounts;
 }
@@ -1863,7 +1884,7 @@ static NSArray *reminderValues = nil;
           accounts = [v objectForKey: @"AuxiliaryMailAccounts"];
           if (accounts && [accounts isKindOfClass: [NSArray class]])
             {
-              if ([accounts count] > 0)
+              if ([accounts count] > 0 || [self mailAuxiliaryUserAccountsReadOnly]) //in the second case it's expected to have only the main account
                 {
                   // The first account is the main system account. The following mapping is required:
                   // - forceDefaultIdentity                => SOGoMailForceDefaultIdentity

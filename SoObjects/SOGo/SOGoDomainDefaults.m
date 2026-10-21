@@ -106,6 +106,11 @@
   return [self boolForKey: @"SOGoMailAuxiliaryUserAccountsEnabled"];
 }
 
+- (BOOL) mailAuxiliaryUserAccountsReadOnly
+{
+  return [self boolForKey: @"SOGoMailAuxiliaryUserAccountsReadOnly"];
+}
+
 - (BOOL) mailDisableXForward
 {
   return [self boolForKey: @"SOGoMailDisableXForward"];
