@@ -1,3 +1,7 @@
+## One-Click Deploy
+
+[![Deploy on RepoCloud](https://d16t0pc4846x52.cloudfront.net/deploylobe.svg)](https://repocloud.io/details/SOGo/)
+
 ## Contribute
 
 SOGo is a collaborative effort in order to create the best Free and Open Source groupware solution.
