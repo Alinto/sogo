@@ -711,6 +711,11 @@ NSString *SOGoPasswordRecoverySecondaryEmail = @"SecondaryEmail";
   return [self stringForKey: @"SOGoMailReplyPlacement"];
 }
 
+- (BOOL) mailSaveRepliesInOriginalFolder
+{
+  return [self boolForKey: @"SOGoMailSaveRepliesInOriginalFolder"];
+}
+
 - (void) setMailSignaturePlacement: (NSString *) newValue
 {
   [self setObject: newValue forKey: @"SOGoMailSignaturePlacement"];
