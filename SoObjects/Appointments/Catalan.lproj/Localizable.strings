@@ -1,4 +1,4 @@
-"Inviting the following persons is prohibited:" = "Està prohibit Convidar a les següents persones:";
+"Inviting the following persons is prohibited:" = "No es permet convidar les persones següents:";
 "Personal Calendar" = "Calendari personal";
 vevent_class0 = "(Esdeveniment públic)";
 vevent_class1 = "(Esdeveniment privat)";
@@ -9,74 +9,74 @@ vtodo_class1 = "(Tasca privada)";
 vtodo_class2 = "(Tasca confidencial)";
 
 /* Receipts */
-"The event \"%{Summary}\" was created" = "Es va crear l'esdeveniment \"%{Summary}\" ";
-"The event \"%{Summary}\" was deleted" = "Es va esborrar l'esdeveniment \"%{Summary}\" ";
-"The event \"%{Summary}\" was updated" = "Es va modificar l'esdeveniment \"%{Summary}\" ";
-"The task \"%{Summary}\" was created" = "The task \"%{Summary}\" was created";
-"The task \"%{Summary}\" was deleted" = "The task \"%{Summary}\" was deleted";
-"The task \"%{Summary}\" was updated" = "The task \"%{Summary}\" was updated";
-"The following attendees(s) were notified" = "S'han notificat els següents assistents ";
-"The following attendees(s) were added" = "S'han afegit els següents assistents";
-"The following attendees(s) were removed" = "Heu suprimit els assistents següents";
+"The event \"%{Summary}\" was created" = "S’ha creat l’esdeveniment «%{Summary}»";
+"The event \"%{Summary}\" was deleted" = "S’ha suprimit l’esdeveniment «%{Summary}»";
+"The event \"%{Summary}\" was updated" = "S’ha actualitzat l’esdeveniment «%{Summary}»";
+"The task \"%{Summary}\" was created" = "S’ha creat la tasca «%{Summary}»";
+"The task \"%{Summary}\" was deleted" = "S’ha suprimit la tasca «%{Summary}»";
+"The task \"%{Summary}\" was updated" = "S’ha actualitzat la tasca «%{Summary}»";
+"The following attendees(s) were notified" = "S’ha enviat una notificació als participants següents";
+"The following attendees(s) were added" = "S’han afegit els participants següents";
+"The following attendees(s) were removed" = "S’han eliminat els participants següents";
 
 /* IMIP messages */
 "calendar_label" = "Calendari";
 "startDate_label" = "Inici";
-"endDate_label" = "Final";
+"endDate_label" = "Fi";
 "time_label" = "Hora";
 "to_label" = "a";
 "due_label" = "Data de venciment";
-"location_label" = "Lloc";
-"summary_label" = "Resum:";
-"comment_label" = "Comentari:";
+"location_label" = "Ubicació";
+"summary_label" = "Resum";
+"comment_label" = "Comentari";
 "organizer_label" = "Organitzador";
-"attendee_label" = "Assistent";
+"attendee_label" = "Participant";
 
 /* Invitation */
-"Event Invitation: \"%{Summary}\"" = "Invitació a l'esdeveniment: \"%{Summary}\"";
-"(sent by %{SentBy}) " = "(enviada per %{SentBy}) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} us ha invitat a %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} us ha invitat a %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+"Event Invitation: \"%{Summary}\"" = "Invitació a l’esdeveniment: «%{Summary}»";
+"(sent by %{SentBy}) " = "(enviat per %{SentBy}) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}us ha convidat a %{Summary}.\n\nInici: %{StartDate}\nFi: %{EndDate}\nDescripció: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}us ha convidat a %{Summary}.\n\nInici: %{StartDate} a les %{StartTime}\nFi: %{EndDate} a les %{EndTime}\nDescripció: %{Description}";
 
 /* Deletion */
-"Event Cancelled: \"%{Summary}\"" = "Esdeveniment suspès: \"%{Summary}\"";
+"Event Cancelled: \"%{Summary}\"" = "Esdeveniment cancel·lat: «%{Summary}»";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText}ha suspès aquest esdeveniment: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}";
+= "%{Organizer} %{SentByText}ha cancel·lat aquest esdeveniment: %{Summary}.\n\nInici: %{StartDate}\nFi: %{EndDate}\nDescripció: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText}ha suspès aquest esdeveniment: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+= "%{Organizer} %{SentByText}ha cancel·lat aquest esdeveniment: %{Summary}.\n\nInici: %{StartDate} a les %{StartTime}\nFi: %{EndDate} a les %{EndTime}\nDescripció: %{Description}";
 
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
-= "La cita \"%{Summary}\" per al dia %{OldStartDate}  ha canviat";
+= "La cita «%{Summary}» del %{OldStartDate} ha canviat";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
-= "La cita \"%{Summary}\" per al dia %{OldStartDate} a les %{OldStartTime} ha canviat";
+= "La cita «%{Summary}» del %{OldStartDate} a les %{OldStartTime} ha canviat";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
-= "Els paràmetres següents han canviat en la reunió \"%{Summary}\":";
+= "Han canviat els paràmetres següents de la reunió «%{Summary}»:";
 "Please accept or decline those changes."
-= "Si us plau, accepteu o rebutgeu aquests canvis.";
+= "Accepteu o rebutgeu aquests canvis.";
 
 /* Reply */
-"Accepted invitation: \"%{Summary}\"" = "Invitació acceptada: \"%{Summary}\"";
-"Declined invitation: \"%{Summary}\"" = "Invitació rebutjada; \"%{Summary}\"";
-"Delegated invitation: \"%{Summary}\"" = "Invitació delegada: \"%{Summary}\"";
-"Not yet decided on invitation: \"%{Summary}\"" = "Encara no decidit sobre la invitació: \"%{Summary}\"";
+"Accepted invitation: \"%{Summary}\"" = "Invitació acceptada: «%{Summary}»";
+"Declined invitation: \"%{Summary}\"" = "Invitació rebutjada: «%{Summary}»";
+"Delegated invitation: \"%{Summary}\"" = "Invitació delegada: «%{Summary}»";
+"Not yet decided on invitation: \"%{Summary}\"" = "Invitació pendent de decisió: «%{Summary}»";
 "%{Attendee} %{SentByText}has accepted your event invitation."
-= "%{Attendee} %{SentByText}ha acceptat la invitació a l'esdeveniment.";
+= "%{Attendee} %{SentByText}ha acceptat la vostra invitació a l’esdeveniment.";
 "%{Attendee} %{SentByText}has declined your event invitation."
-= "%{Attendee} %{SentByText}ha rebutjat la invitació a l'esdeveniment.";
+= "%{Attendee} %{SentByText}ha rebutjat la vostra invitació a l’esdeveniment.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
 = "%{Attendee} %{SentByText}ha delegat la invitació en %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
-= "%{Attendee} %{SentByText}encara no s'ha decidit sobre la invitació a l'esdeveniment.";
+= "%{Attendee} %{SentByText}encara no ha decidit si accepta la vostra invitació a l’esdeveniment.";
 
 /* Reminder */
-"Reminder: \"%{Summary}\" - %{StartDate}" = "Recordatori: \"%{Summary}\" - %{StartDate}";
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Recordatori: «%{Summary}» – %{StartDate}";
 
 /* Resources */
-"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "No es pot accedir al recurs: \"%{Cn} %{SystemEmail}\" ";
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Nombre màxim de reserves simultànies (%{NumberOfSimultaneousBookings}) assolit per al recurs \"%{Cn} %{SystemEmail}\". L'esdeveniment que entra en conflicte és \"%{EventTitle}\", i comença el %{StartDate}.";
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "No es pot accedir al recurs: «%{Cn} %{SystemEmail}»";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "S’ha assolit el nombre màxim de reserves simultànies (%{NumberOfSimultaneousBookings}) per al recurs «%{Cn} %{SystemEmail}». L’esdeveniment en conflicte és «%{EventTitle}» i comença el %{StartDate}.";
 
 /* Participation role */
-"Your participation is required to this event" = "Es requereix la teva participació en aquest esdeveniment";
-"Your participation is optional to this event" = "La teva participació és opcional en aquest esdeveniment";
-"Your participation is not required to this event" = "No es requereix la teva participació en aquest esdeveniment";
+"Your participation is required to this event" = "La vostra participació en aquest esdeveniment és obligatòria";
+"Your participation is optional to this event" = "La vostra participació en aquest esdeveniment és opcional";
+"Your participation is not required to this event" = "La vostra participació en aquest esdeveniment no és necessària";
