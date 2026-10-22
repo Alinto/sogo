@@ -124,6 +124,7 @@ typedef enum
 - (void) addToAlarms: (id) _alarm;
 - (NSArray *) alarms;
 - (BOOL) hasAlarms;
+- (BOOL) removeDuplicateAlarms;
 
 /* comparisons */
 - (NSComparisonResult) compare: (iCalEntityObject *) otherObject;
