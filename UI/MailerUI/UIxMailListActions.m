@@ -427,7 +427,7 @@
 
   //Check sort value
   sortValues = [NSArray arrayWithObjects: @"SUBJECT", @"FROM",
-                    @"DATE", @"SIZE", @"ARRIVAL", nil];
+                    @"DATE", @"SIZE", @"ARRIVAL",@"TO", @"MODSEQ", nil];
 
   if ([sort length] && [sortValues containsObject:sort])
   {
