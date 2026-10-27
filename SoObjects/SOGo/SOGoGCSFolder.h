@@ -103,6 +103,7 @@
 - (void) removeFolderSettings: (NSMutableDictionary *) moduleSettings
                 withReference: (NSString *) reference;
 
+- (void) setContext: (WOContext*) ctx;
 - (BOOL) subscribeUserOrGroup: (NSString *) theIdentifier
 		     reallyDo: (BOOL) reallyDo
                      response: (WOResponse *) theResponse;

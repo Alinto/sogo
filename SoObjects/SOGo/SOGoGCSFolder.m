@@ -375,9 +375,8 @@ static NSArray *childRecordFields = nil;
 
       // Use a format only if it was defined by the user
       if (displayNameFormat)
-	name = [folderSubscriptionValues keysWithFormat: displayNameFormat];
+	      name = [folderSubscriptionValues keysWithFormat: displayNameFormat];
     }
-
   return name;
 }
 
@@ -930,6 +929,11 @@ static NSArray *childRecordFields = nil;
   folderSubscription = [moduleSettings objectForKey: @"SubscribedFolders"];
 
   return [folderSubscription containsObject: [self folderReference]];
+}
+
+- (void) setContext: (WOContext*) ctx
+{
+  context = ctx;
 }
 
 - (BOOL) subscribeUserOrGroup: (NSString *) theIdentifier

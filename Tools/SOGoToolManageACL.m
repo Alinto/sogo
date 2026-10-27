@@ -391,7 +391,7 @@ typedef enum
   NSArray *components;
 
   localContext = [WOContext context];
-  [localContext setActiveUser: [SOGoUser userWithLogin: owner]];
+  [localContext setActiveUser: [SOGoUser userWithLogin: user]];
   userFolder = [SOGoUserFolder objectWithName: owner inContainer: nil];
   components = [folder componentsSeparatedByString: @"/"];
   parentFolder = [userFolder lookupName: [components objectAtIndex: 0]
@@ -401,6 +401,7 @@ typedef enum
   gcsFolder = [parentFolder lookupPersonalFolder: [components objectAtIndex: 1]
 				  ignoringRights: YES];
 
+  [gcsFolder setContext: localContext];
   [gcsFolder subscribeUserOrGroup: user  reallyDo: reallyDo  response: nil];
 }
 
