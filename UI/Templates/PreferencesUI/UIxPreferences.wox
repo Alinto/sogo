@@ -13,7 +13,7 @@
   <main layout-fill="layout-fill" ui-view="preferences"
         ng-controller="navController"><!-- preferences --> </main>
 
-  <script type="text/javascript">
+  <script type="text/javascript" var:nonce="cspNonce">
     var mailCustomFromEnabled = <var:string value="mailCustomFromEnabled" const:escapeHTML="NO"/>;
     var forwardEnabled = <var:string value="forwardEnabled" const:escapeHTML="NO"/>;
     var notificationEnabled = <var:string value="notificationEnabled" const:escapeHTML="NO"/>;
