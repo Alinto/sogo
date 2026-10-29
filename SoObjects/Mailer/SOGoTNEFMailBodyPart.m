@@ -586,7 +586,7 @@ unsigned char GetRruleMonthNum(unsigned char a, unsigned char b) {
 
               // Classification
               filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_BOOLEAN, 0x8506));
-              if (filedata != MAPI_UNDEFINED)
+              if (filedata != MAPI_UNDEFINED && filedata->size >= (int)sizeof(DDWORD))
                 {
                   classification = (DDWORD *)filedata->data;
                   if (*classification == 1)
@@ -597,7 +597,7 @@ unsigned char GetRruleMonthNum(unsigned char a, unsigned char b) {
 
               // Repeating rule
               filedata = MAPIFindUserProp(&(tnef.MapiProperties), PROP_TAG(PT_BINARY, 0x8216));
-              if (filedata != MAPI_UNDEFINED && filedata->size >= 0x1F)
+              if (filedata != MAPI_UNDEFINED && filedata->size >= 0x24)
                 {
                   NSMutableString *rrule = [NSMutableString string];
                   unsigned char *recurData = filedata->data;
@@ -712,7 +712,7 @@ unsigned char GetRruleMonthNum(unsigned char a, unsigned char b) {
                   if (isObject)
                     {
                       // This is an "embedded object", so skip the 16-byte identifier first.
-                      if (NULL != filedata->data) {
+                      if (NULL != filedata->data && filedata->size >= 16 + (int)sizeof(DWORD)) {
                         memcpy(&object_signature, filedata->data + 16, sizeof(DWORD));
                         if (TNEFCheckForSignature(object_signature) == 0) {
                           TNEFInitialize(&emb_tnef);
@@ -725,7 +725,7 @@ unsigned char GetRruleMonthNum(unsigned char a, unsigned char b) {
                        }
                       }
                     }
-                  else
+                  else if (NULL != filedata->data && filedata->size >= (int)sizeof(DWORD))
                     {
                       memcpy(&object_signature, filedata->data, sizeof(DWORD));
                       if (TNEFCheckForSignature(object_signature) == 0) {
@@ -817,19 +817,23 @@ unsigned char GetRruleMonthNum(unsigned char a, unsigned char b) {
                               cid = [NSString stringWithUTF8String: (const char *)prop->data];
                             }
 
-                          NSData *attachment;
+                          NSData *attachment = nil;
                           if (NULL != filedata->data) {
                             if (isObject)
-                              attachment = [NSData dataWithBytes: filedata->data + 16 length: filedata->size - 16];
+                              {
+                                if (filedata->size >= 16)
+                                  attachment = [NSData dataWithBytes: filedata->data + 16 length: filedata->size - 16];
+                              }
                             else
                               attachment = [NSData dataWithBytes: filedata->data length: filedata->size];
+                          }
 
+                          if (attachment)
                             [self bodyPartForAttachment: attachment
                                               withName: partName
                                                 andType: type
                                             andSubtype: subtype
                                           andContentId: cid];
-                          }
 
                           // count++;
                         }
