@@ -454,6 +454,11 @@
   return language;
 }
 
+- (NSArray *) additionalCSSFiles
+{
+  return [self stringArrayForKey: @"SOGoUIAdditionalCSSFiles"];
+}
+
 - (NSArray *) additionalJSFiles
 {
   return [self stringArrayForKey: @"SOGoUIAdditionalJSFiles"];

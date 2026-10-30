@@ -32,6 +32,9 @@
         <var:foreach list="additionalCSSFiles" item="item">
           <link type="text/css" rel="stylesheet" var:href="item"/>
         </var:foreach>
+        <var:foreach list="systemAdditionalCSSFiles" item="item">
+          <link type="text/css" rel="stylesheet" var:href="item"/>
+        </var:foreach>
         <var:if-ie>
           <link type="text/css" rel="stylesheet" rsrc:href="css/no-animation.css"/>
         </var:if-ie>
