@@ -585,6 +585,8 @@
   NSMutableArray *qualifiers;
   NSArray *fieldNames;
   EOAdaptorChannel *channel;
+  EOAdaptorContext *adaptorContext;
+  EOAdaptor *adaptor;
   EOQualifier *loginQualifier, *domainQualifier, *qualifier;
   NSMutableString *sql;
   NSString *value, *field;
@@ -593,10 +595,12 @@
 
   response = nil;
 
-  theID = [theID stringByReplacingString: @"'"  withString: @"''"];
+  //theID = [theID stringByReplacingString: @"'"  withString: @"''"];
   channel = (EOAdaptorChannel *)connection;
   if (channel)
     {
+      adaptorContext = [channel adaptorContext];
+      adaptor = [adaptorContext adaptor];
       qualifiers = [NSMutableArray arrayWithCapacity: [_loginFields count] + 1];
 
       // Always compare against the c_uid field
@@ -660,7 +664,8 @@
       qualifier = [[EOOrQualifier alloc] initWithQualifierArray: qualifiers];
       if (domainQualifier)
         qualifier = [[EOAndQualifier alloc] initWithQualifiers: domainQualifier, qualifier, nil];
-      [qualifier appendSQLToString: sql];
+
+      [qualifier appendSQLToString: sql withAdaptor: adaptor];
 
       ex = [channel evaluateExpressionX: sql];
       if (!ex)
@@ -750,7 +755,7 @@
               [qualifier autorelease];
               [qualifier appendSQLToString: sql];
 
-              ex = [channel evaluateExpressionX: sql];
+              ex = [channel evaluateExpressionX: sql withAdaptor: adaptor];
               if (!ex)
                 {
                   NSDictionary *authResponse;
@@ -930,6 +935,8 @@
   EOAdaptorChannel *channel;
   EOQualifier *domainQualifier;
   GCSChannelManager *cm;
+  EOAdaptorContext *adaptorContext;
+  EOAdaptor *adaptor;
   NSException *ex;
   NSMutableArray *results;
   NSMutableString *sql;
@@ -950,8 +957,10 @@
               domainQualifier = [self visibleDomainsQualifierFromDomain: domain];
               if (domainQualifier)
                 {
+                  adaptorContext = [channel adaptorContext];
+                  adaptor = [adaptorContext adaptor];
                   [sql appendString: @" WHERE "];
-                  [domainQualifier appendSQLToString: sql];
+                  [domainQualifier appendSQLToString: sql withAdaptor: adaptor];
                 }
             }
           else
