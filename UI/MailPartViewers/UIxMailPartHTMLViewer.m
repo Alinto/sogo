@@ -50,6 +50,9 @@ static NSArray *BannedTags = nil;
 /* Tags that can't have any contents (no end tag) */
 static NSArray *VoidTags= nil;
 
+/* Substrings that make an inline style attribute unsafe (may load remote content) */
+static NSArray *UnsafeStyleNeedles = nil;
+
 static xmlCharEncoding
 _xmlCharsetForCharset (NSString *charset)
 {
@@ -151,7 +154,7 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
   if (!BannedTags)
     BannedTags = [[NSArray alloc] initWithObjects: @"script", @"frameset",
                                   @"frame", @"iframe", @"applet", @"link",
-                                  @"base", @"meta", @"title", nil];
+                                  @"base", @"meta", @"title", @"svg", nil];
   if (!VoidTags)
     {
       /* see http://www.w3.org/TR/html4/index/elements.html */
@@ -160,6 +163,11 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
                                   @"img", @"input", @"isindex", @"link",
                                 @"meta", @"param", @"", nil];
     }
+  
+  if (!UnsafeStyleNeedles)
+    UnsafeStyleNeedles = [[NSArray alloc] initWithObjects: @"url", @"image-set",
+                                         @"image(", @"src(", @"cross-fade",
+                                         @"@import", @"expression", @"\\", nil];
 }
 
 - (id) init
@@ -494,7 +502,10 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
 
   lowerName = [_localName lowercaseString];
   if (inStyle || ignoredContent)
-    ;
+  {
+    if (ignoredContent && [lowerName isEqualToString: ignoreTag])
+      ignoredContent++;
+  }
   else if ([lowerName isEqualToString: @"base"])
     ;
   else if ([lowerName isEqualToString: @"meta"])
@@ -553,7 +564,7 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
             {
               skipAttribute = NO;
               name = [[_attributes nameAtIndex: count] lowercaseString];
-              if ([name isEqualToString: @"src"])
+              if ([name isEqualToString: @"src"] || [name isEqualToString: @"srcset"] )
                 {
                   value = [_attributes valueAtIndex: count];
                   if ([value hasPrefix: @"cid:"])
@@ -585,12 +596,12 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
                         }
                       }
                       if(!isBase64)
-                        name = @"unsafe-src";
+                        name = [NSString stringWithFormat: @"unsafe-%@", name];
                     }
                   else
                     skipAttribute = YES;
                 }
-              else if ([name isEqualToString: @"background"] ||
+              else if ([name isEqualToString: @"background"] || [name isEqualToString: @"poster"] ||
                        (([name isEqualToString: @"data"]
                          || [name isEqualToString: @"classid"])
                         && [lowerName isEqualToString: @"object"]))
@@ -619,8 +630,15 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
                   value = [_attributes valueAtIndex: count];
                   lowerValue = [[value lowercaseString] stringByReplacingString: @"\""
                                                                      withString: @""];
-                  if ([lowerValue rangeOfString: @"url"].location != NSNotFound)
-                    name = [NSString stringWithFormat: @"unsafe-%@", name];
+                  int i, n;
+                  for (i = 0, n = [UnsafeStyleNeedles count]; i < n; i++)
+                  {
+                    if ([lowerValue rangeOfString: [UnsafeStyleNeedles objectAtIndex: i]].location != NSNotFound)
+                      {
+                        name = [NSString stringWithFormat: @"unsafe-%@", name];
+                        break;
+                      }
+                  }
                 }
 	      else if ([name isEqualToString: @"rel"])
 		{

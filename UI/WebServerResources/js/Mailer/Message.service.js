@@ -429,7 +429,7 @@
               if (angular.isUndefined(part.unsafeContent)) {
                 part.unsafeContent = document.createElement('div');
                 part.unsafeContent.innerHTML = part.safeContent;
-                angular.forEach(['src', 'data', 'classid', 'background', 'style'], function (suffix) {
+                angular.forEach(['src', 'srcset', 'data', 'classid', 'background', 'style', 'poster'], function (suffix) {
                   var elements = part.unsafeContent.querySelectorAll('[unsafe-' + suffix + ']'),
                     element,
                     value,
