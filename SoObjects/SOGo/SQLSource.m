@@ -753,9 +753,9 @@
 
               qualifier = [[EOAndQualifier alloc] initWithQualifiers: q_uid, q_auth, nil];
               [qualifier autorelease];
-              [qualifier appendSQLToString: sql];
+              [qualifier appendSQLToString: sql withAdaptor: adaptor];
 
-              ex = [channel evaluateExpressionX: sql withAdaptor: adaptor];
+              ex = [channel evaluateExpressionX: sql];
               if (!ex)
                 {
                   NSDictionary *authResponse;
