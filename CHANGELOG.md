@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.12.13](https://github.com/Alinto/sogo/compare/SOGo-5.12.12...SOGo-5.12.13) (2026-11-03)
+
+
+### Features
+
+* **acccount:** Add read only aux accounts ([370a4a4](https://github.com/Alinto/sogo/commit/370a4a433c16f1824820dbc607a308a18cf56dee))
+
+
+### Bug Fixes
+
+* **calendar:** properly set day mask ([46a8ebf](https://github.com/Alinto/sogo/commit/46a8ebf69fb3a9163520838e51322583bca9f9c5))
+* **draft:** check the name of the draft ([0b71116](https://github.com/Alinto/sogo/commit/0b71116c956b8a0e4f77593b50d7bad98cd965cb))
+* **ldap:** properly escape ldap input ([01f545b](https://github.com/Alinto/sogo/commit/01f545b0b3fe2540fb87da5630e944a4a2afc8a6))
+* **mail:** add missing sorting value ([dfbb24b](https://github.com/Alinto/sogo/commit/dfbb24b6fd1b47e81a4a1e2d951e37e0a35e42a3))
+* **mail:** protect tags with unsafe image ([d466d9e](https://github.com/Alinto/sogo/commit/d466d9ea576ae9169bc670a7f8b46210b5757a2e))
+* **sql:** properly parse name in contact lookup ([03ac106](https://github.com/Alinto/sogo/commit/03ac106c2160bde2640b0400a77a805f8969acd8))
+* **sql:** properly parse name in contact lookup part 2 ([328c96c](https://github.com/Alinto/sogo/commit/328c96cdd62acbb162eae4d0da99c3d1926d5e63))
+* **tool:** fix name of subscribe folder by setting the context ([8c50b84](https://github.com/Alinto/sogo/commit/8c50b84d8d5d5a265d7c34ec122227b5481e8e29))
+* **user:** check session key value before using it ([868ecbe](https://github.com/Alinto/sogo/commit/868ecbea55c44dd44b970543dea5f4b1dc8c5a5c))
+
 ### [5.12.12](https://github.com/Alinto/sogo/compare/SOGo-5.12.11...SOGo-5.12.12) (2026-10-12)
 
 
