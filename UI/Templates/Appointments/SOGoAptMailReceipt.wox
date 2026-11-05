@@ -62,7 +62,13 @@ th { font-weight: bold; white-space: nowrap; vertical-align: top; }
       <var:foreach list="addedAttendees" item="currentRecipient">
       <tr>
         <td></td>
+        <var:if condition="currentRecipient.cn">
         <td><a var:href="currentRecipient.email"><var:string value="currentRecipient.cn" const:escapeHTML="NO"/></a></td>
+        </var:if>
+        <var:if condition="currentRecipient.cn" const:negate="YES">
+        <td><a var:href="currentRecipient.email"><var:string value="currentRecipient.rfc822Email" const:escapeHTML="NO"/></a></td>
+        </var:if>
+
       </tr></var:foreach>
       </var:if>       
 
@@ -75,7 +81,13 @@ th { font-weight: bold; white-space: nowrap; vertical-align: top; }
       <var:foreach list="deletedAttendees" item="currentRecipient">
       <tr>
         <td></td>
-        <td><a var:href="currentRecipient.email"><var:string value="currentRecipient.cn"/></a></td>
+        <var:if condition="currentRecipient.cn">
+        <td><a var:href="currentRecipient.email"><var:string value="currentRecipient.cn" const:escapeHTML="NO"/></a></td>
+        </var:if>
+        <var:if condition="currentRecipient.cn" const:negate="YES">
+        <td><a var:href="currentRecipient.email"><var:string value="currentRecipient.rfc822Email" const:escapeHTML="NO"/></a></td>
+        </var:if>
+
       </tr></var:foreach>
       </var:if>
       <var:if condition="apt.comment.length"
