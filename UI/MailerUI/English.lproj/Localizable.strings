@@ -127,6 +127,11 @@
 "Edit Draft..." = "Edit Draft...";
 "Load Images" = "Load Images";
 "Return Receipt" = "Return Receipt";
+"Request Delivery Notifications" = "Request Delivery Notifications";
+"SMTP server does not support delivery notifications. Clear Request Delivery Notifications to send without them."
+  = "SMTP server does not support delivery notifications. Clear Request Delivery Notifications to send without them.";
+"Delivery notifications require SMTP submission. Clear Request Delivery Notifications to send without them."
+  = "Delivery notifications require SMTP submission. Clear Request Delivery Notifications to send without them.";
 "Choose which identity to send this message from" = "Choose which identity to send this message from";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "The sender of this message has asked to be notified when you read this message. Do you wish to notify the sender?";
 "Return Receipt (displayed) - %@"= "Return Receipt (displayed) - %@";

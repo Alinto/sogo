@@ -125,6 +125,7 @@
     SOGoJunkFolderName = "Junk";
     SOGoTemplatesFolderName = "Templates";
     SOGoMailComposeMessageType = "html";
+    SOGoMailRequestDeliveryNotification = NO;
     SOGoMailComposeFontSize = "0";
     SOGoMailHideInlineAttachments = NO;
     SOGoMailDisplayFullEmail = NO;
