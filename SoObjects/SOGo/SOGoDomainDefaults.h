@@ -91,6 +91,7 @@
 
 - (BOOL) iPhoneForceAllDayTransparency;
 
+- (NSArray *) additionalCSSFiles;
 - (NSArray *) additionalJSFiles;
 
 - (BOOL) hideSystemEMail;
