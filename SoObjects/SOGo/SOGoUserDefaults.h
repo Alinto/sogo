@@ -176,6 +176,7 @@ extern NSString *SOGoPasswordRecoverySecondaryEmail;
 
 - (void) setMailReplyPlacement: (NSString *) newValue;
 - (NSString *) mailReplyPlacement;
+- (BOOL) mailSaveRepliesInOriginalFolder;
 
 - (void) setMailSignaturePlacement: (NSString *) newValue;
 - (NSString *) mailSignaturePlacement;
