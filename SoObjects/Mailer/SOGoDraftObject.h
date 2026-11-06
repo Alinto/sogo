@@ -80,6 +80,7 @@
 - (void) fetchMailForForwarding: (SOGoMailObject *) sourceMail;
 
 - (void) setHeaders: (NSDictionary *) newHeaders;
+- (void) setHeadersForNewMessage: (NSDictionary *) newHeaders;
 - (NSDictionary *) headers;
 - (void) setText: (NSString *) newText;
 - (NSString *) text;

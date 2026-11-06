@@ -754,6 +754,7 @@
       htmlComposition = [[ud mailComposeMessageType] isEqualToString: @"html"];
 
       [newMail setIsHTML: htmlComposition];
+      headers = [NSDictionary dictionary];
       if (identity)
         {
           // Set From header
@@ -764,7 +765,6 @@
             format = @"%{email}";
           headers = [NSDictionary dictionaryWithObject: [identity keysWithFormat: format]
                                                 forKey: @"from"];
-          [newMail setHeaders: headers];
 
           // Add signature
           signature = [identity objectForKey: @"signature"];
@@ -775,6 +775,8 @@
               [newMail setText: [NSString stringWithFormat: @"%@%@--%@%@%@", nl, nl, space, nl, signature]];
             }
         }
+
+      [newMail setHeadersForNewMessage: headers];
 
       for (i = 0; i < [uids count]; i++)
         {
