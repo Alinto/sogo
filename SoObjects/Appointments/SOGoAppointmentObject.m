@@ -20,6 +20,7 @@
 */
 
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSNull.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSValue.h>
 
@@ -2164,6 +2165,109 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 }
 
 //
+// Schedule every component the organizer changed in a single PUT. Clients
+// send the whole series, so one request can remove some occurrences, move
+// others and edit the master event at the same time.
+//
+// The master event is handled last because, when it changed, attendees
+// usually receive the whole calendar, and that calendar must already carry
+// the updated occurrences. When only occurrences changed, the master event
+// is left alone to keep the participation status of its attendees.
+//
+- (NSException *) _handleUpdatedCalendar: (iCalCalendar *) newCalendar
+                         fromOldCalendar: (iCalCalendar *) oldCalendar
+{
+  NSArray *newEvents, *oldEvents;
+  NSMutableArray *removedEvents, *updatedEvents, *updatedOldEvents;
+  iCalEvent *newEvent, *oldEvent, *newMaster, *oldMaster;
+  iCalEventChanges *changes;
+  NSException *ex;
+  NSString *recurrenceTime;
+  BOOL resourceHasAutoAccepted;
+  int i;
+
+  newEvents = [newCalendar events];
+  oldEvents = [oldCalendar events];
+  removedEvents = [NSMutableArray array];
+  updatedEvents = [NSMutableArray array];
+  updatedOldEvents = [NSMutableArray array];
+  newMaster = oldMaster = nil;
+
+  for (i = 0; i < [oldEvents count]; i++)
+    {
+      oldEvent = [oldEvents objectAtIndex: i];
+
+      if (![oldEvent recurrenceId])
+        {
+          if (!oldMaster)
+            oldMaster = oldEvent;
+        }
+      else if (![self _eventFromRecurrenceId: [oldEvent recurrenceId]  events: newEvents])
+        [removedEvents addObject: oldEvent];
+    }
+
+  for (i = 0; i < [newEvents count]; i++)
+    {
+      newEvent = [newEvents objectAtIndex: i];
+
+      if (![newEvent recurrenceId])
+        {
+          if (!newMaster)
+            newMaster = newEvent;
+          continue;
+        }
+
+      oldEvent = [self _eventFromRecurrenceId: [newEvent recurrenceId]  events: oldEvents];
+
+      // For a new RECURRENCE-ID, compare against the occurrence it replaces
+      if (oldEvent == nil)
+        {
+          recurrenceTime = [NSString stringWithFormat: @"%f", [[newEvent recurrenceId] timeIntervalSince1970]];
+          oldEvent = (iCalEvent *)[self newOccurenceWithID: recurrenceTime];
+        }
+
+      changes = [iCalEventChanges changesFromEvent: oldEvent  toEvent: newEvent];
+
+      if ([changes sequenceShouldBeIncreased] || [changes hasAttendeeChanges])
+        {
+          [updatedEvents addObject: newEvent];
+          [updatedOldEvents addObject: (oldEvent ? (id) oldEvent : (id) [NSNull null])];
+        }
+    }
+
+  if (newMaster)
+    {
+      changes = [iCalEventChanges changesFromEvent: oldMaster  toEvent: newMaster];
+
+      if (([removedEvents count] == 0 && [updatedEvents count] == 0)
+          || [changes sequenceShouldBeIncreased] || [changes hasAttendeeChanges])
+        {
+          [updatedEvents addObject: newMaster];
+          [updatedOldEvents addObject: (oldMaster ? (id) oldMaster : (id) [NSNull null])];
+        }
+    }
+
+  for (i = 0; i < [removedEvents count]; i++)
+    [self prepareDeleteOccurence: [removedEvents objectAtIndex: i]];
+
+  // Each conflict check resets _resourceHasAutoAccepted, keep it set if any
+  // component got a resource to accept
+  resourceHasAutoAccepted = NO;
+  for (i = 0; i < [updatedEvents count]; i++)
+    {
+      oldEvent = [updatedOldEvents objectAtIndex: i];
+      if ((id) oldEvent == [NSNull null])
+        oldEvent = nil;
+      if ((ex = [self _handleUpdatedEvent: [updatedEvents objectAtIndex: i]  fromOldEvent: oldEvent  force: YES]))
+        return ex;
+      resourceHasAutoAccepted = resourceHasAutoAccepted || _resourceHasAutoAccepted;
+    }
+  _resourceHasAutoAccepted = resourceHasAutoAccepted;
+
+  return nil;
+}
+
+//
 //
 //
 - (NSCalendarDate *) _addedExDate: (iCalEvent *) oldEvent
@@ -2479,11 +2583,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
         }
     }
 
-              // A RECCURENCE-ID was removed
-              if (!newEvent && oldEvent)
-                [self prepareDeleteOccurence: oldEvent];
-              // The master event was changed, A RECCURENCE-ID was added or modified
-              else if ((ex = [self _handleUpdatedEvent: newEvent  fromOldEvent: oldEvent  force: YES]))
+              if ((ex = [self _handleUpdatedCalendar: calendar  fromOldCalendar: oldCalendar]))
                 return ex;
             } // if (ownerIsOrganizer) ..
           //
