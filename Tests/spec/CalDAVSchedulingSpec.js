@@ -669,6 +669,42 @@ describe('CalDAV Scheduling', function() {
         .toBe('20261015T110000Z')
     })
 
+    it('refuses the whole PUT when one changed occurrence is refused', async function() {
+      const uid = 'rrule-several-occurrences-refused'
+      const icsName = `${uid}.ics`
+      const blockerIcsName = `${uid}-blocker.ics`
+      icsList.push(icsName, blockerIcsName)
+
+      await _deleteAllEvents(webdav_su, resourceNoOverbookCalendar)
+
+      // 1. Book the resource where the occurrence of the 8th will be moved
+      await _putEvent(webdav, userCalendar, blockerIcsName, _calendar([
+        'BEGIN:VEVENT',
+        `UID:${uid}-blocker`,
+        'DTSTAMP:20260901T100000Z',
+        'DTSTART:20261008T110000Z',
+        'DTEND:20261008T120000Z',
+        'SUMMARY:Blocker',
+        `ORGANIZER:${user.email}`,
+        `ATTENDEE;RSVP=TRUE;PARTSTAT=NEEDS-ACTION:${resourceNoOverbook.email}`,
+        'END:VEVENT'
+      ]))
+
+      await _putEvent(webdav, userCalendar, icsName, _calendar(
+        _master(uid, 'Weekly sync'), _exception(uid, '22', 'NEEDS-ACTION')))
+
+      // 2. Move the 15th, and the 8th with the booked resource
+      const refused = _exception(uid, '08', 'NEEDS-ACTION')
+      refused.splice(-1, 0, `ATTENDEE;RSVP=TRUE;PARTSTAT=NEEDS-ACTION:${resourceNoOverbook.email}`)
+      await _putEvent(webdav, userCalendar, icsName, _calendar(
+        _master(uid, 'Weekly sync'), _exception(uid, '15', 'NEEDS-ACTION'), refused,
+        _exception(uid, '22', 'NEEDS-ACTION')), 409)
+
+      expect(await _attendeeStartOf(icsName, '15'))
+        .withContext('Occurrence of the 15th not moved in the calendar of the attendee')
+        .toBeUndefined()
+    })
+
     it('schedules the master event along with a changed occurrence', async function() {
       const uid = 'rrule-master-and-occurrence'
       const icsName = `${uid}.ics`

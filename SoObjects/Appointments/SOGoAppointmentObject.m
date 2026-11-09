@@ -2247,6 +2247,20 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
         }
     }
 
+  // Attendees are written to as each component is scheduled. Refuse the
+  // request before any of that happens if one component would be refused.
+  if ([removedEvents count] + [updatedEvents count] > 1)
+    {
+      for (i = 0; i < [updatedEvents count]; i++)
+        {
+          newEvent = [updatedEvents objectAtIndex: i];
+          if ((ex = [self _handleAttendeesConflicts: [newEvent attendees]  forEvent: newEvent  force: YES]))
+            return ex;
+          if ((ex = [self _handleAttendeesAvailability: [newEvent attendees]  forEvent: newEvent]))
+            return ex;
+        }
+    }
+
   for (i = 0; i < [removedEvents count]; i++)
     [self prepareDeleteOccurence: [removedEvents objectAtIndex: i]];
 
