@@ -148,6 +148,11 @@
     return NO;
   if(_login && [_login length] == 0)
     return NO;
+  
+  if(!_pwd)
+    return NO;
+  if(_pwd && [_pwd length] == 0)
+    return NO;
 
   loginDomain = nil;
   if(*_domain == nil || [*_domain length] == 0)

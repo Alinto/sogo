@@ -1218,7 +1218,7 @@ static const NSString *kJwtKey = @"jwt";
      response = [self responseWithStatus: 403
                               andString: @"Missing 'oldPassword' parameter"];
     }
-  else if (!newPassword)
+  else if (!newPassword || (newPassword && [newPassword length] == 0))
     {
      response = [self responseWithStatus: 403
                               andString: @"Missing 'newPassword' parameter"];
