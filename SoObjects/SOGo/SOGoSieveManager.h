@@ -37,6 +37,7 @@
   SOGoUser *user;
   NSMutableArray *requirements;
   NSString *scriptError;
+  BOOL hasMailboxExt; 
 }
 
 + (id) sieveManagerForUser: (SOGoUser *) user;

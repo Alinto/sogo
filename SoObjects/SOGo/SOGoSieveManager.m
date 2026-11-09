@@ -233,6 +233,7 @@ static NSString *sieveScriptName = @"sogo";
       user = nil;
       requirements = nil;
       scriptError = nil;
+      hasMailboxExt = NO;
     }
 
   return self;
@@ -536,11 +537,14 @@ static NSString *sieveScriptName = @"sogo";
                 }
               else if ([method isEqualToString: @"fileinto"])
                 {
-                  mailbox
-                    = [[argument componentsSeparatedByString: @"/"]
-                          componentsJoinedByString: delimiter];
-                  sieveAction = [NSString stringWithFormat: @"%@ %@",
-                                          method, [mailbox asSieveQuotedString]];
+                  mailbox = [[argument componentsSeparatedByString: @"/"] componentsJoinedByString: delimiter];
+                  if(hasMailboxExt)
+                  {
+                    [req addObjectUniquely: @"mailbox"];
+                    sieveAction = [NSString stringWithFormat: @"%@ :create %@", method, [mailbox asSieveQuotedString]];
+                  }
+                  else
+                    sieveAction = [NSString stringWithFormat: @"%@ %@", method, [mailbox asSieveQuotedString]];
                 }
               else if ([method isEqualToString: @"redirect"])
                 sieveAction = [NSString stringWithFormat: @"%@ %@",
@@ -752,7 +756,6 @@ static NSString *sieveScriptName = @"sogo";
     url = [NSURL URLWithString: [dd sieveServer]];
   else
     url = [NSURL URLWithString: @"localhost"];
-
   if ([cUrl host])
     sieveServer = [cUrl host];
   if (!sieveServer && [url host])
@@ -924,6 +927,8 @@ static NSString *sieveScriptName = @"sogo";
 
   dateCapability = [client hasCapability: @"date"] && [client hasCapability: @"relational"];
 
+  if([client hasCapability: @"mailbox"])
+    hasMailboxExt = YES;
   //
   // Now let's generate the script
   //
