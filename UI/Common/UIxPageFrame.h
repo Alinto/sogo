@@ -43,6 +43,7 @@
   NSArray *udKeys;
   NSArray *usKeys;
   NSMutableArray *additionalCSSFiles;
+  NSMutableArray *systemAdditionalCSSFiles;
   NSMutableArray *additionalJSFiles;
   NSMutableArray *systemAdditionalJSFiles;
 }
