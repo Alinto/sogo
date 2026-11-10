@@ -43,6 +43,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 
+#import <NGImap4/NGImap4Client.h>
+#import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NSString+Imap4.h>
 
 #import <SOGo/NSArray+DAV.h>
@@ -50,6 +52,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/NSDictionary+DAV.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoCacheGCSObject.h>
 #import <SOGo/SOGoPermissions.h>
 
@@ -63,6 +66,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <Contacts/SOGoContactGCSEntry.h>
 
+#import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailFolder.h>
 #import <Mailer/SOGoMailNamespace.h>
 
@@ -1867,6 +1871,35 @@ FIXME
 }
 
 //
+// FolderSync also advertises mail folders that can't be opened, so that their
+// subfolders keep their place in the hierarchy: the "Other Users" or "Shared"
+// namespace roots, Dovecot's per-user parents ("Shared/jdoe@example.com") and
+// other \Noselect or \NonExistent parents. Returns NO if the IMAP server can't
+// confirm it, as theFolderName may then be a real folder we failed to open.
+//
+- (BOOL) _isNonSelectableMailFolder: (NSString *) theFolderName
+{
+  SOGoMailAccount *accountFolder;
+  NSDictionary *result;
+  NSArray *flags;
+
+  accountFolder = [[[[context activeUser] homeFolderInContext: context] lookupName: @"Mail"  inContext: context  acquire: NO]
+                     lookupName: @"0"  inContext: context  acquire: NO];
+
+  result = [[[accountFolder imap4Connection] client] list: @"" pattern: theFolderName];
+  if (![[result objectForKey: @"result"] boolValue])
+    return NO;
+
+  flags = [[result objectForKey: @"list"] objectForKey: [NSString stringWithFormat: @"/%@", theFolderName]];
+  if (flags)
+    return ([flags containsObject: @"noselect"] || [flags containsObject: @"nonexistent"]);
+
+  // Cyrus doesn't return the namespace roots in LIST
+  return ([[accountFolder otherUsersFolderNamespaces] containsObject: theFolderName] ||
+          [[accountFolder sharedFolderNamespaces] containsObject: theFolderName]);
+}
+
+//
 //
 //
 - (void) processSyncCollection: (id <DOMElement>) theDocumentElement
@@ -1896,6 +1929,9 @@ FIXME
 
   if (collection == nil)
     {
+      NSString *nameInCache;
+      BOOL knownKey;
+
       // Collection not found - next folderSync will do the cleanup
       //NSLog(@"Sync Collection not found %@ %@", collectionId, realCollectionId);
       //Outlook doesn't like following response
@@ -1904,6 +1940,38 @@ FIXME
       //[theBuffer appendFormat: @"<CollectionId>%@</CollectionId>", collectionId];
       //[theBuffer appendFormat: @"<Status>%d</Status>", 8];
       //[theBuffer appendString: @"</Collection>"];
+
+      // Mail folders that FolderSync advertises but that can't be opened (see
+      // -_isNonSelectableMailFolder:) are answered as empty folders. Without a SyncKey
+      // in the reply, clients like iOS repeat their initial Sync forever (bug #5872).
+      nameInCache = nil;
+      if (realCollectionId)
+        nameInCache = [NSString stringWithFormat: @"folder%@", realCollectionId];
+
+      if (folderType == ActiveSyncMailFolder && nameInCache &&
+          [[imapFolderGUIDS objectForKey: nameInCache] isEqualToString: nameInCache] &&
+          [self _isNonSelectableMailFolder: realCollectionId])
+        {
+          if (debugOn)
+            [self logWithFormat: @"EAS - processSyncCollection: %@ can't be opened, answering as an empty folder", realCollectionId];
+
+          // We only ever hand out SyncKey -1 for these folders. Any other key dates from
+          // when the folder could be opened: ask for a complete resync (Status 3) so that
+          // the client drops the messages and pending changes it still holds for it.
+          knownKey = ([syncKey isEqualToString: @"0"] || [syncKey isEqualToString: @"-1"]);
+
+          [theBuffer appendString: @"<Collection>"];
+          [theBuffer appendString: @"<Class>Email</Class>"];
+          [theBuffer appendFormat: @"<SyncKey>%@</SyncKey>", (knownKey ? @"-1" : @"0")];
+          [theBuffer appendFormat: @"<CollectionId>%@</CollectionId>", collectionId];
+          [theBuffer appendFormat: @"<Status>%d</Status>", (knownKey ? 1 : 3)];
+          [theBuffer appendString: @"</Collection>"];
+
+          // Like for any folder, only the first SyncKey or a resync is a change to push.
+          if (![syncKey isEqualToString: @"-1"])
+            *changeDetected = YES;
+        }
+
       return;
     }
 
