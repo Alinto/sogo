@@ -155,19 +155,21 @@
   httpCode = 200;
   results = [[self clientObject] loadWebCalendar];
 
-  
-  if ([results objectForKey: @"status"])
-  {
-    if ([results objectForKey: @"error"])
+  // Don't reveal how the remote host answered (connection error, HTTP error
+  // or non-calendar content): all failures except a required authentication
+  // return the same response. Details are kept in the server log.
+  error = [results objectForKey: @"error"];
+  if (error)
     {
-      error = [results objectForKey: @"error"];
       if ([error isEqualToString: @"need-auth"])
         httpCode = 401;
-      if ([error isEqualToString: @"invalid-calendar-content"] || [error isEqualToString: @"http-error"])
-        httpCode = 500;
+      else
+        {
+          httpCode = 500;
+          [results setObject: @"bad-url" forKey: @"error"];
+        }
     }
-    [results removeObjectForKey:@"status"];
-  }
+  [results removeObjectForKey: @"status"];
 
   return [self responseWithStatus: httpCode andJSONRepresentation: results];
 }
