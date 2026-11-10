@@ -1747,6 +1747,76 @@ static NSArray *reminderValues = nil;
   return YES;
 }
 
+//
+// Checks a list of addresses (array, or comma-separated string as found in
+// the Notification preference) against SOGoForwardConstraints.
+//
+- (BOOL) _addressesMatchForwardConstraints: (id) addresses
+{
+  NSMutableArray *mails;
+  id address;
+
+  if ([[[context activeUser] domainDefaults] forwardConstraints] <= 0)
+    return YES;
+
+  if ([addresses isKindOfClass: [NSString class]])
+    addresses = [addresses componentsSeparatedByString: @","];
+
+  if (![addresses isKindOfClass: [NSArray class]])
+    return NO;
+
+  mails = [NSMutableArray array];
+  for (address in addresses)
+    {
+      if (![address isKindOfClass: [NSString class]])
+        return NO;
+      if ([address length])
+        [mails addObject: address];
+    }
+
+  return [self doForwardsMatchTheConstraints: mails];
+}
+
+//
+// Checks the arguments of 'redirect' and 'notify' actions of Sieve filters
+// against SOGoForwardConstraints, as the web interface does client-side.
+//
+- (BOOL) _sieveFiltersMatchForwardConstraints: (id) filters
+{
+  NSMutableArray *mails;
+  id filter, actions, action, method, argument;
+
+  if ([[[context activeUser] domainDefaults] forwardConstraints] <= 0
+      || ![filters isKindOfClass: [NSArray class]])
+    return YES;
+
+  mails = [NSMutableArray array];
+  for (filter in filters)
+    {
+      if (![filter isKindOfClass: [NSDictionary class]])
+        continue;
+      actions = [filter objectForKey: @"actions"];
+      if (![actions isKindOfClass: [NSArray class]])
+        continue;
+      for (action in actions)
+        {
+          if (![action isKindOfClass: [NSDictionary class]])
+            continue;
+          method = [action objectForKey: @"method"];
+          if ([method isKindOfClass: [NSString class]]
+              && ([method isEqualToString: @"redirect"] || [method isEqualToString: @"notify"]))
+            {
+              argument = [action objectForKey: @"argument"];
+              if (![argument isKindOfClass: [NSString class]])
+                return NO;
+              [mails addObject: argument];
+            }
+        }
+    }
+
+  return [self doForwardsMatchTheConstraints: mails];
+}
+
 /**
  * @api {post} /so/:username/Preferences/save Save user's defaults and settings
  * @apiVersion 1.0.0
@@ -1780,7 +1850,7 @@ static NSArray *reminderValues = nil;
     {
       NSMutableDictionary *sanitizedLabels;
       NSArray *allKeys, *accounts, *identities, *forwardMails;
-      NSDictionary *newLabels, *forwardPref;
+      NSDictionary *newLabels, *forwardPref, *notificationPref;
       NSString *name;
       id loginModule;
 
@@ -1832,6 +1902,29 @@ static NSArray *reminderValues = nil;
         if(!doForward)
           [v removeObjectForKey: @"Forward"];
       }
+
+      // Notification addresses and filters' redirect/notify actions are
+      // subject to the same forward constraints. Since the submitted values
+      // replace all the stored ones, keep the currently stored value when
+      // the new one is rejected (otherwise all the filters would be lost).
+      notificationPref = [v objectForKey: @"Notification"];
+      if (notificationPref && [notificationPref isKindOfClass: [NSDictionary class]]
+          && [[notificationPref objectForKey: @"enabled"] boolValue]
+          && ![self _addressesMatchForwardConstraints: [notificationPref objectForKey: @"notificationAddress"]])
+        {
+          if ([[user userDefaults] notificationOptions])
+            [v setObject: [[user userDefaults] notificationOptions] forKey: @"Notification"];
+          else
+            [v removeObjectForKey: @"Notification"];
+        }
+
+      if (![self _sieveFiltersMatchForwardConstraints: [v objectForKey: @"SOGoSieveFilters"]])
+        {
+          if ([[user userDefaults] sieveFilters])
+            [v setObject: [[user userDefaults] sieveFilters] forKey: @"SOGoSieveFilters"];
+          else
+            [v removeObjectForKey: @"SOGoSieveFilters"];
+        }
 
       if ([self userHasMailAccess])
         {
