@@ -1,83 +1,83 @@
 /* this file is in UTF-8 format! */
 
 /* toolbars */
-"Save" = "Desar";
-"Close" = "Tancar";
-"Edit User Rights" = "Modificar permisos";
+"Save" = "Desa";
+"Close" = "Tanca";
+"Edit User Rights" = "Edita els permisos dels usuaris";
 "Home" = "Inici";
 "Calendar" = "Calendari";
-"Address Book"  = "Llibreta d'adreces";
+"Address Book"  = "Llibreta d’adreces";
 "Mail" = "Correu";
 "Preferences" = "Preferències";
 "Administration" = "Administració";
-"Disconnect" = "Tancar sessió";
-"Toggle Menu" = "Canviar menú";
+"Disconnect" = "Surt";
+"Toggle Menu" = "Commuta el menú";
 "Right Administration" = "Administració de permisos";
-"Log Console (dev.)" = "Registre d'activitat";
+"Log Console (dev.)" = "Consola de registre (desenv.)";
 "User" = "Usuari";
-"Vacation message is enabled" = "El missatge d'absència està activat";
+"Vacation message is enabled" = "El missatge d’absència està activat";
 "Help" = "Ajuda";
-"noJavascriptError" = "SOGo requereix Javascript. Si us plau, activeu Javascript en el navegador.";
-"noJavascriptRetry" = "Torneu-ho a intentar";
+"noJavascriptError" = "SOGo necessita JavaScript per a funcionar. Assegureu-vos que aquesta opció està disponible i activada a les preferències del navegador.";
+"noJavascriptRetry" = "Torna-ho a provar";
 "Owner" = "Propietari";
-"Publish the Free/Busy information" = "Publicar informació de disponibilitat";
-"Add..." = "Afegir...";
-"Remove" = "Esborrar";
-"Subscribe User" = "Subscriure usuari";
+"Publish the Free/Busy information" = "Publica la informació de disponibilitat";
+"Add..." = "Afegeix…";
+"Remove" = "Elimina";
+"Subscribe User" = "Subscriu l’usuari";
 "Any Authenticated User" = "Qualsevol usuari autenticat";
 "Public Access" = "Accés públic";
-"Any user not listed above" = "Qualsevol usuari no llistat més amunt";
-"Anybody accessing this resource from the public area" = "Qualsevol amb accés a aquest recurs des de l'àrea pública";
-"Sorry, the user rights can not be configured for that object." = "Els permisos d'accés no es poden configurar per a aquest objecte.";
+"Any user not listed above" = "Qualsevol usuari que no aparegui a la llista anterior";
+"Anybody accessing this resource from the public area" = "Qualsevol persona que accedeixi a aquest recurs des de l’àrea pública";
+"Sorry, the user rights can not be configured for that object." = "No es poden configurar els permisos dels usuaris per a aquest objecte.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
-     = "Qualsevol usuari amb un compte en el sistema tindrà accés a la seua bústia de correu \"%{0}\". Està segur de voler donar accés a qualsevol usuari en el sistema? ";
+     = "Qualsevol usuari amb un compte en aquest sistema podrà accedir a la vostra bústia «%{0}». Esteu segur que confieu en tots ells?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
-     = "Qualsevol altre usuari amb un compte al sistema serà capaç d'accedir al seu calendari \"%{0}\". ¿Està vostè segur de voler permetre aço?";
+     = "Qualsevol usuari amb un compte en aquest sistema podrà accedir al vostre calendari «%{0}». Esteu segur que confieu en tots ells?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Potencialment, qualsevol usuari d'Internet podrà accedir al seu calendari \"% {0}\", encara que no tinga un compte en aquest sistema. Aquesta informació és adequada per publicar-la en Internet?";
+     = "Potencialment, qualsevol persona a Internet podrà accedir al vostre calendari «%{0}», encara que no tingui un compte en aquest sistema. Aquesta informació és adequada per a fer-la pública a Internet?";
 "Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
-     = "Qualsevol usuari amb un compte en el sistema tindrà accés al seu calendari \"%{0}\". Està segur de voler donar accés a qualsevol usuari en el sistema? ";
+     = "Qualsevol usuari amb un compte en aquest sistema podrà accedir a la vostra llibreta d’adreces «%{0}». Esteu segur que confieu en tots ells?";
 "Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Qualsevol usuari amb un compte en el sistema tindrà accés a la seua llibreta d'adreces \"%{0}\". Està segur de voler donar accés a qualsevol usuari en el sistema? ";
-"Give Access" = "Donar accés";
-"Keep Private" = "Mantenir en privat";
-"Expand" = "Expandir";
-"Reduce" = "Reduir";
+     = "Potencialment, qualsevol persona a Internet podrà accedir a la vostra llibreta d’adreces «%{0}», encara que no tingui un compte en aquest sistema. Aquesta informació és adequada per a fer-la pública a Internet?";
+"Give Access" = "Dona accés";
+"Keep Private" = "Mantén-ho privat";
+"Expand" = "Amplia";
+"Reduce" = "Redueix";
 
 /* tooltip */
-"Refresh" = "Actualitzar";
+"Refresh" = "Actualitza";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
-        = "No us podeu subscriure a aquesta carpeta!";
+        = "No s’ha pogut fer la subscripció a aquesta carpeta.";
 "You cannot subscribe to a folder that you own!"
-        = "No us podeu subscriure a una carpeta pròpia!";
+        = "No us podeu subscriure a una carpeta de la qual sou propietari.";
 "Unable to unsubscribe from that folder!"
-        = "No és possible cancel·lar la subscripció a aquesta carpeta.";
+        = "No s’ha pogut cancel·lar la subscripció a aquesta carpeta.";
 "You cannot unsubscribe from a folder that you own!"
-        = "No podeu cancel·lar la subscripció a una carpeta pròpia";
-"Unable to rename that folder!" = "No podeu reanomenar la carpeta!";
+        = "No podeu cancel·lar la subscripció a una carpeta de la qual sou propietari.";
+"Unable to rename that folder!" = "No s’ha pogut canviar el nom de la carpeta.";
 "You have already subscribed to that folder!"
-        = "Ja us heu subscrit a aquesta carpeta!";
+        = "Ja esteu subscrit a aquesta carpeta.";
 "The user rights cannot be edited for this object!"
-        = "No es poden modificar els permisos d'accés a aquest objecte.";
+        = "No es poden editar els permisos dels usuaris per a aquest objecte.";
 "A folder by that name already exists." = "Ja hi ha una carpeta amb aquest nom.";
 "You cannot create a list in a shared address book."
-        = "No podeu crear una llista en una agenda compartida.";
+        = "No podeu crear una llista en una llibreta d’adreces compartida.";
 "Warning" = "Atenció";
-"Can't contact server" = "Ha ocorregut un error en contactar amb el servidor. Per favor, intenti-ho més tarda.";
+"Can't contact server" = "S’ha produït un error en contactar amb el servidor. Torneu-ho a provar més tard.";
 "You are not allowed to access this module or this system. Please contact your system administrator."
-= "No teniu permís per a accedir a aquest mòdul o sistema. Contacteu amb l'administrador.";
+= "No teniu permís per a accedir a aquest mòdul o a aquest sistema. Contacteu amb l’administrador del sistema.";
 "You don't have the required privileges to perform the operation."
-= "No disposeu dels permisos necessaris per a fer aquesta operació.";
-"noEmailForDelegation" = "Especifiqueu l'adreça de correu a la qual voleu delegar la invitació.";
-"delegate is organizer" = "El delegat és l'organitzador. Si us plau, especifiqueu un altre delegat.";
+= "No teniu els privilegis necessaris per a fer aquesta operació.";
+"noEmailForDelegation" = "Heu d’especificar l’adreça a la qual voleu delegar la invitació.";
+"delegate is organizer" = "El delegat és l’organitzador. Especifiqueu un delegat diferent.";
 "delegate is a participant" = "El delegat ja és un participant.";
-"delegate is a group" = "L'adreça especificada correspon a un grup. Només podeu delegar en una persona.";
+"delegate is a group" = "L’adreça especificada correspon a un grup. Només podeu delegar en una sola persona.";
 
 /* common buttons */
-"OK" = "D'acord";
-"Cancel" = "Cancel·lar";
+"OK" = "D’acord";
+"Cancel" = "Cancel·la";
 "Yes" = "Sí";
 "No" = "No";
 
@@ -92,9 +92,9 @@
 "Reminder" = "Recordatori";
 "Start" = "Inici";
 "Due Date" = "Data de venciment";
-"Location" = "Lloc";
+"Location" = "Ubicació";
 "Snooze" = "Ajorna";
-"Snooze for " = "Posposar ";
+"Snooze for " = "Ajorna durant ";
 "5 minutes" = "5 minuts";
 "10 minutes" = "10 minuts";
 "15 minutes" = "15 minuts";
@@ -113,23 +113,23 @@
 "Return Receipt Sent" = "Justificant de recepció enviat";
 "a2_Sunday" = "dg";
 "a2_Monday" = "dl";
-"a2_Tuesday" = "dm";
+"a2_Tuesday" = "dt";
 "a2_Wednesday" = "dc";
 "a2_Thursday" = "dj";
 "a2_Friday" = "dv";
 "a2_Saturday" = "ds";
-"Access Rights" = "Drets d'accés";
-"Add User" = "Afegir usuari";
-"Loading" = "Carregant";
-"No such user." = "No existeix aquest usuari";
-"You cannot (un)subscribe to a folder that you own!" = "No es pot (des)subscriure a una carpeta pròpia!";
+"Access Rights" = "Permisos d’accés";
+"Add User" = "Afegeix un usuari";
+"Loading" = "S’està carregant";
+"No such user." = "No existeix aquest usuari.";
+"You cannot (un)subscribe to a folder that you own!" = "No podeu subscriure-us ni cancel·lar la subscripció a una carpeta de la qual sou propietari.";
 
 /* SMIME Certificate field */
 "S/MIME Certificate" = "Certificat S/MIME";
 "Subject Name" = "Nom del subjecte";
 "Issuer" = "Emissor";
 "streetAddress" = "Carrer";
-"stateOrProvinceName" = "Estat o Província";
+"stateOrProvinceName" = "Estat o província";
 "localityName" = "Localitat";
 "countryName" = "País";
 "organizationName" = "Organització";
@@ -141,25 +141,25 @@
 
 
 /* Authentication username */
-"Username" = "Nom d'usuari";
+"Username" = "Nom d’usuari";
 
 /* Authentication password */
 "Password" = "Contrasenya";
 
 /* Authentication failed */
-"Wrong username or password." = "Usuari o contrasenya incorrectes.";
+"Wrong username or password." = "El nom d’usuari o la contrasenya són incorrectes.";
 
 /* Error message displayed bellow search field when the search string has less than the required number of characters */
-"Enter at least %{minimumSearchLength} characters" = "Introduir almenys %{minimumSearchLength} caràcters";
+"Enter at least %{minimumSearchLength} characters" = "Introduïu almenys %{minimumSearchLength} caràcters";
 
 /* Error message displayed when a file upload exceeds WOMaxUploadSize */
-"File size upload limit reached" = "S'ha superat la mida màxima de càrrega del fitxer";
+"File size upload limit reached" = "S’ha superat la mida màxima de pujada de fitxers";
 
 /* Generic server error */
-"An error occured, please try again." = "S'ha produït un error, torneu-ho a provar.";
+"An error occured, please try again." = "S’ha produït un error, torneu-ho a provar.";
 
 /* Open datepicker */
-"Open Calendar" = "Obrir Calendari";
+"Open Calendar" = "Obre el calendari";
 
 /* Toggle visibility (ex: mail account in left navigation menu) */
 "Toggle visibility" = "Commuta la visibilitat";
@@ -167,22 +167,22 @@
 "Keyboard Shortcuts" = "Dreceres de teclat";
 
 /* Aria label for avatar button to select and unselect an item */
-"Toggle item" = "Activa/Desactiva ítem";
+"Toggle item" = "Commuta la selecció de l’element";
 
 /* Toggle multiple items at the same time (hotkeys cheatsheet) */
-"Toggle range of items" = "Activa/Desactiva llista d'ítems";
+"Toggle range of items" = "Commuta la selecció d’un interval d’elements";
 
 /* Question mark shows list of hotkeys */
-"Show or hide this help" = "Mostrar o amagar aquesta ajuda";
+"Show or hide this help" = "Mostra o amaga aquesta ajuda";
 
 /* Space key */
-"key_space" = "space";
+"key_space" = "espai";
 
 /* Delete key */
-"key_delete" = "esborra";
+"key_delete" = "supr";
 
 /* Shift and space key */
-"key_shift+space" = "Majúscules + espai";
+"key_shift+space" = "maj + espai";
 
 /* Up arrow key */
 "key_up" = "↑";
@@ -197,10 +197,10 @@
 "key_right" = "→";
 
 /* Shift and up arrow combo keys */
-"key_shift+up" = "shift + ↑";
+"key_shift+up" = "maj + ↑";
 
 /* Shift and down arrow combo keys */
-"key_shift+down" = "shift + ↓";
+"key_shift+down" = "maj + ↓";
 
 /* Backspace key */
 "key_backspace" = "⌫";
@@ -209,34 +209,34 @@
 "hotkey_search" = "s";
 
 /* Hotkey description to select next list item */
-"View next item" = "Mostrar següent element";
+"View next item" = "Mostra l’element següent";
 
 /* Hotkey description to select previous list item */
-"View previous item" = "Mostrar element anterior";
+"View previous item" = "Mostra l’element anterior";
 
 /* Hotkey description to add next list item to selection */
-"Add next item to selection" = "Afegir el següent element a la selecció";
+"Add next item to selection" = "Afegeix l’element següent a la selecció";
 
 /* Hotkey description to add previous list item to selection */
-"Add previous item to selection" = "Afegir l'element anterior a la selecció";
+"Add previous item to selection" = "Afegeix l’element anterior a la selecció";
 
 /* Hotkey description to move backward in current view */
-"Move backward" = "Retrocedir";
+"Move backward" = "Retrocedeix";
 
 /* Hotkey description to move forward in current view */
-"Move forward" = "Avançar";
+"Move forward" = "Avança";
 
 /* Password Recovery */
 "passwordRecovery_Disabled" = "Desactivat";
 "passwordRecovery_SecretQuestion" = "Pregunta secreta";
-"passwordRecovery_SecretQuestion1" = "Quin és el nom de la teva primera mascota?";
-"passwordRecovery_SecretQuestion2" = "Quin va ser el teu primer cotxe?";
-"passwordRecovery_SecretQuestion3" = "Quina és la teva pel·lícula preferida?";
+"passwordRecovery_SecretQuestion1" = "Quin és el nom de la vostra primera mascota?";
+"passwordRecovery_SecretQuestion2" = "Quin va ser el vostre primer cotxe?";
+"passwordRecovery_SecretQuestion3" = "Quina és la vostra pel·lícula preferida?";
 "passwordRecovery_SecondaryEmail" = "Correu electrònic secundari";
 
 /* Password */
-"POLICY_MIN_LOWERCASE_LETTER" = "Mínim de %{0} lletra minúscula";
-"POLICY_MIN_UPPERCASE_LETTER" = "Mínim de %{0} lletra majúscula";
-"POLICY_MIN_DIGIT" = "Mínim de %{0} dígit";
+"POLICY_MIN_LOWERCASE_LETTER" = "Mínim de %{0} lletres minúscules";
+"POLICY_MIN_UPPERCASE_LETTER" = "Mínim de %{0} lletres majúscules";
+"POLICY_MIN_DIGIT" = "Mínim de %{0} dígits";
 "POLICY_MIN_SPECIAL_SYMBOLS" = "Mínim de %{0} símbols especials";
 "POLICY_MIN_LENGTH" = "Longitud mínima de %{0} caràcters";
