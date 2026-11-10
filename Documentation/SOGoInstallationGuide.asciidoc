@@ -2503,6 +2503,18 @@ Defaults to `NO` when unset.
 |Parameter used to enable S/MIME certificate management from the account editor of the
 preferences window.
 
+When a S/MIME signed message is displayed, the sender's certificate is
+saved in the matching contact of the user's address books (and replaces any
+existing one) only if the signature is valid and every signer certificate
+is issued for the sender's email address. A signature is valid only if the
+signer certificate chains to a certificate authority trusted by the system
+(OpenSSL default CA store, for example `/etc/ssl/certs`). Certificates that
+are self-signed or issued by a private CA are therefore not imported unless
+that CA is added to the system trust store (for example in
+`/usr/local/share/ca-certificates` followed by `update-ca-certificates` on
+Debian/Ubuntu). Note that some distributions only ship the CAs trusted for
+TLS servers, so the root CAs dedicated to S/MIME may also need to be added.
+
 Defaults to `YES` when unset.
 
 |U |SOGoSelectedAddressBook
