@@ -385,7 +385,6 @@
 
     this.setFromIdentity = function (identity) {
       var node, children, nl, reNl, nlNb, space, signature, previousIdentity;
-      var nl2, reNl2;
 
       if (identity && identity.full)
       {
@@ -398,10 +397,8 @@
 
       if (this.composeType == "html") {
         nl = '<br />';
-        reNl = '<br ?/>(&nbsp;)?[ \n]?';
+        reNl = '<br ?/?>(&nbsp;)?[ \n]?';
         space = '&nbsp;';
-        nl2 = '<br ?>';
-        reNl2 = '<br ?>(&nbsp;)?[ \n]?';
       } else {
         nl = '\n';
         reNl = '\n';
@@ -423,24 +420,43 @@
         else
           signature = '';
         
-        previousIdentity = _.find(this.identities, function (currentIdentity, index) {
+        var breakAfterDash = (this.composeType == "html") ? '<br ?/?>' : reNl;
+        var signatureMarker = new RegExp('(<p>)?(?:' + reNl + '){1,' + nlNb + '}--' + space + breakAfterDash, 'g');
+        var endOfSignature = function (text, from, currentSignature) {
+          var parts, at, i, br;
 
-          if (currentIdentity.signature) {
-            try {
-              //var currentSignature = new RegExp('(' + reNl + '){' + nlNb + '}--' + space + reNl +
-              //  currentIdentity.signature.replace(/[-\[\]{}()*+?.,\\^$|#\s]/g, '\\$&'));
-              var currentSignature = new RegExp('(<p>)?(<br ?\/?>(&nbsp;)?[ \\n]?)?--&nbsp;<br ?\/?>(&nbsp;)?[ \\n]?(<\/p>)?' + currentIdentity.signature)
-              if (vm.message.editable.text.search(currentSignature) >= 0) {
-                vm.message.editable.text = vm.message.editable.text.replace(currentSignature, signature);
-                return true;
-              }
-            } catch (error) {
-              // An error can occur (regex too long) when the signature is too big (using images)
-              // In this case, just add the signature at the end (#5695)
-              vm.message.editable.text += signature;
-              return true;
+          parts = (vm.composeType == "html") ? currentSignature.split(/<br ?\/?>/) : [currentSignature];
+          at = from;
+          for (i = 0; i < parts.length; i++) {
+            if (i > 0) {
+              br = text.slice(at).match(/^<br ?\/?>/);
+              if (!br)
+                return null;
+              at += br[0].length;
             }
-            
+            if (!text.startsWith(parts[i], at))
+              return null;
+            at += parts[i].length;
+          }
+          if (vm.composeType == "html" && text.startsWith('</p>', at))
+            at += '</p>'.length;
+          return at;
+        };
+
+        previousIdentity = _.find(this.identities, function (currentIdentity) {
+          var text, match, end;
+
+          if (!currentIdentity.signature)
+            return false;
+
+          text = vm.message.editable.text;
+          signatureMarker.lastIndex = 0;
+          while ((match = signatureMarker.exec(text))) {
+            end = endOfSignature(text, match.index + match[0].length, currentIdentity.signature);
+            if (end == null)
+              continue;
+            vm.message.editable.text = text.slice(0, match.index) + signature + text.slice(end);
+            return true;
           }
           return false;
         });
