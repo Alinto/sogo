@@ -782,6 +782,17 @@ Default value is `0`, or disabled.
 _SOGoCacheCleanupInterval_ must be set to a value equal or higher than
 _SOGoFailedLoginBlockInterval_.
 
+|S |SOGoMaximumFailedPasswordRecoveryCount
+|Parameter used to control the number of wrong secret question answers
+allowed when recovering a password. When reached, password recovery
+by secret question is blocked for the account for
+_SOGoFailedLoginBlockInterval_ seconds since the first wrong answer.
+This counter is independent of _SOGoMaximumFailedLoginCount_: it does
+not block logins, and it is enforced even when failed login
+"rate-limiting" is disabled.
+
+Default value is `5`. Set to `0` to disable.
+
 |S |SOGoMaximumMessageSubmissionCount
 |Parameter used to control the number of email messages a user can send
 from SOGo's webmail interface, to _SOGoMaximumRecipientCount_, in

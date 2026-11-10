@@ -260,6 +260,8 @@
               error = l("Password change failed - Password is in history");
             } else if (perr == passwordPolicyConfig.PolicyPasswordRecoveryInvalidToken) {
               error = l("Invalid token. Could not change password");
+            } else if (perr == passwordPolicyConfig.PolicyAccountLocked) {
+              error = l("Your account was locked due to too many failed attempts.");
             } else {
               error = l("Unhandled policy error: %{0}").formatted(perr);
               perr = passwordPolicyConfig.PolicyPasswordUnknown;

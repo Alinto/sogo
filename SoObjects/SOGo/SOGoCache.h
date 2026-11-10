@@ -92,6 +92,11 @@
 
 - (NSDictionary *) failedCountForLogin: (NSString *) login;
 
+- (void) setFailedPasswordRecoveryCount: (int) theCount
+                               forLogin: (NSString *) theLogin;
+
+- (NSDictionary *) failedPasswordRecoveryCountForLogin: (NSString *) login;
+
 - (void) setMessageSubmissionsCount: (int) theCount
                     recipientsCount: (int) theRecipientsCount
                            forLogin: (NSString *) theLogin;
