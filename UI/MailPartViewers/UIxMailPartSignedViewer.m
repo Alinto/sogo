@@ -94,8 +94,8 @@
 - (void) _processMessage
 {
   NSData *signedData;
-  NSMutableArray *emails;
-  
+  NSMutableArray *emails, *signersEmails;
+
   STACK_OF(X509) *certs;
   X509_STORE *x509Store;
   BIO *msgBio, *inData;
@@ -117,6 +117,8 @@
   certs = NULL;
   certificates = [NSMutableArray array];
   emails = [NSMutableArray array];
+  signersEmails = [NSMutableArray array];
+  signersMatchSender = NO;
   validationMessage = nil;
 
   if (cms)
@@ -138,13 +140,21 @@
 	      char p[1024];
 	      int j;
 	      STACK_OF(OPENSSL_STRING) *emlst;
+	      NSMutableArray *signerEmails;
+	      NSString *email;
 
 	      x = sk_X509_value(certs, i);
 
+	      signerEmails = [NSMutableArray array];
 	      emlst = X509_get1_email(x);
 	      for (j = 0; j < sk_OPENSSL_STRING_num(emlst); j++)
-	          [emails addObject: [[NSString stringWithUTF8String: sk_OPENSSL_STRING_value(emlst, j)] lowercaseString]];
+		{
+		  email = [[NSString stringWithUTF8String: sk_OPENSSL_STRING_value(emlst, j)] lowercaseString];
+		  [emails addObject: email];
+		  [signerEmails addObject: email];
+		}
 	      X509_email_free(emlst);
+	      [signersEmails addObject: signerEmails];
 
 	      memset(p, 0, 1024);
 	      buf = BIO_new(BIO_s_mem());
@@ -227,6 +237,15 @@
         {
           validationMessage = [self labelForKey: @"Message is signed but the certificate doesn't match the sender email address"];
         }
+
+      // Every signer certificate must be issued for the sender address
+      if ([senderAddress length] && [signersEmails count])
+        {
+          signersMatchSender = YES;
+          for (i = 0; i < [signersEmails count]; i++)
+            if (![[signersEmails objectAtIndex: i] containsObject: senderAddress])
+              signersMatchSender = NO;
+        }
     }
   else if (!validationMessage)
     {
@@ -242,6 +261,14 @@
     [self _processMessage];
 
   return validSignature;
+}
+
+- (BOOL) signersMatchSender
+{
+  if (!processed)
+    [self _processMessage];
+
+  return signersMatchSender;
 }
 
 - (NSDictionary *) certificateForSubject: (NSString *) subject
@@ -279,6 +306,11 @@
 }
 
 - (BOOL) validSignature
+{
+  return NO;
+}
+
+- (BOOL) signersMatchSender
 {
   return NO;
 }

@@ -54,6 +54,7 @@
 #import <MailPartViewers/UIxMailRenderingContext.h> // cyclic
 #import <MailPartViewers/UIxMailSizeFormatter.h>
 #import <MailPartViewers/UIxMailPartViewer.h>
+#import <MailPartViewers/UIxMailPartSignedViewer.h>
 
 #import "WOContext+UIxMailer.h"
 #import "UIxMailFormatter.h"
@@ -244,11 +245,16 @@ static NSString *mailETag = nil;
 
   // If we are looking at a S/MIME signed mail which wasn't sent
   // by our actual active user, we update the certificate of that
-  // sender in the user's address book
+  // sender in the user's address book. Only do so if the signature
+  // is valid (trusted chain) and every signer certificate is issued
+  // for the sender address.
   from = [[[[self clientObject] fromEnvelopeAddresses] lastObject] baseEMail];
 
   if (![[context activeUser] hasEmail: from] &&
-      [[self clientObject] isSigned])
+      [[self clientObject] isSigned] &&
+      [viewer isKindOfClass: NSClassFromString(@"UIxMailPartSignedViewer")] &&
+      [viewer validSignature] &&
+      [viewer signersMatchSender])
     {
       SOGoContactFolders *contactFolders;
       NSData *p7s;

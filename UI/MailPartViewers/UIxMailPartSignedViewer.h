@@ -30,11 +30,13 @@
 {
   BOOL processed;
   BOOL validSignature;
+  BOOL signersMatchSender;
   NSMutableArray *certificates;
   NSString *validationMessage;
 }
 
 - (BOOL) validSignature;
+- (BOOL) signersMatchSender;
 - (NSString *) validationMessage;
 - (NSArray *) smimeCertificates;
 - (NSDictionary *) certificateForSubject: (NSString *) subject
