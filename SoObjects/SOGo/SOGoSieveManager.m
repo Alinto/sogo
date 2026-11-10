@@ -1094,8 +1094,8 @@ static NSString *sieveScriptName = @"sogo";
           if ([[values objectForKey: @"startTimeEnabled"] boolValue])
             {
               startTime = [values objectForKey: @"startTime"];
-              timeCondition = [NSString stringWithFormat: @"date :value \"ge\" :zone \"%@\" \"date\" \"time\" \"%@:00\"",
-                                        timeZone, startTime];
+              timeCondition = [NSString stringWithFormat: @"date :value \"ge\" :zone \"%@\" \"date\" \"time\" %@",
+                                        timeZone, [[NSString stringWithFormat: @"%@:00", startTime] asSieveQuotedString]];
               [timeConditions addObject: timeCondition];
             }
 
@@ -1103,8 +1103,8 @@ static NSString *sieveScriptName = @"sogo";
           if ([[values objectForKey: @"endTimeEnabled"] boolValue])
             {
               endTime = [values objectForKey: @"endTime"];
-              timeCondition = [NSString stringWithFormat: @"date :value \"lt\" :zone \"%@\" \"date\" \"time\" \"%@:00\"",
-                                        timeZone, endTime];
+              timeCondition = [NSString stringWithFormat: @"date :value \"lt\" :zone \"%@\" \"date\" \"time\" %@",
+                                        timeZone, [[NSString stringWithFormat: @"%@:00", endTime] asSieveQuotedString]];
               [timeConditions addObject: timeCondition];
             }
 
@@ -1176,7 +1176,7 @@ static NSString *sieveScriptName = @"sogo";
       [vacation_script appendString: @" :addresses ["];
       for (i = 0; i < [addresses count]; i++)
         {
-          [vacation_script appendFormat: @"\"%@\"", [addresses objectAtIndex: i]];
+          [vacation_script appendString: [[NSString stringWithFormat: @"%@", [addresses objectAtIndex: i]] asSieveQuotedString]];
 
           if (i == [addresses count]-1)
             [vacation_script appendString: @"] "];
@@ -1184,7 +1184,7 @@ static NSString *sieveScriptName = @"sogo";
             [vacation_script appendString: @", "];
         }
 
-      [vacation_script appendFormat: @"text:\r\n%@\r\n.\r\n;\r\n", text];
+      [vacation_script appendFormat: @"%@;\r\n", [text asSieveQuotedString]];
 
       // Should we discard incoming mails during vacation?
       if (discardMails)
@@ -1226,7 +1226,7 @@ static NSString *sieveScriptName = @"sogo";
           v = [addresses objectAtIndex: i];
           if (v && [v length] > 0)
             {
-              redirect = [NSString stringWithFormat: @"redirect \"%@\";\r\n", v];
+              redirect = [NSString stringWithFormat: @"redirect %@;\r\n", [v asSieveQuotedString]];
               if (alwaysSend)
                 [script insertString: redirect  atIndex: 0];
               else
@@ -1265,7 +1265,11 @@ static NSString *sieveScriptName = @"sogo";
         addresses = [addresses componentsSeparatedByString: @","];
 
       message = [values objectForKey: @"notificationMessage"];
+      if (![message isKindOfClass: [NSString class]])
+        message = @"";
       notificationTranslated = [values objectForKey: @"notificationTranslated"];
+      if (![notificationTranslated isKindOfClass: [NSString class]])
+        notificationTranslated = @"";
 
       for (i = 0; i < [addresses count]; i++)
         {
@@ -1274,8 +1278,10 @@ static NSString *sieveScriptName = @"sogo";
             {
               notify = @"if header :matches \"subject\" \"*\" {\r\n  set \"subject\" \"${1}\";\r\n}\r\n";
               notify = [notify stringByAppendingString: @"if header :matches \"From\" \"*<*>\" {\r\n  set \"from\" \"${1} ${2}\";\r\n}\r\n"];
-              notify = [notify stringByAppendingFormat: @"set :encodeurl \"body_param\" \"%@\";\r\n", message];
-              notify = [notify stringByAppendingFormat: @"notify :message \"%@: '${subject}' from: ${from}\" \"mailto:%@?body=${body_param}\";\r\n", notificationTranslated, v];
+              notify = [notify stringByAppendingFormat: @"set :encodeurl \"body_param\" %@;\r\n", [message asSieveQuotedString]];
+              notify = [notify stringByAppendingFormat: @"notify :message %@ %@;\r\n",
+                               [[NSString stringWithFormat: @"%@: '${subject}' from: ${from}", notificationTranslated] asSieveQuotedString],
+                               [[NSString stringWithFormat: @"mailto:%@?body=${body_param}", v] asSieveQuotedString]];
 
               [script appendString: notify];
             }
