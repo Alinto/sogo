@@ -803,6 +803,45 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
 
 //
 //
+// Same failed-login accounting as -checkLogin:..., used when the old
+// password is verified while changing it (e.g. ppolicy change upon login,
+// which is reachable without a session). This prevents using
+// changePassword to bypass SOGoMaximumFailedLoginCount.
+//
+- (BOOL) _isFailedLoginBlockedForLogin: (NSString *) username
+                           failedCount: (int *) failedCount
+{
+  NSDictionary *failedLogin;
+  SOGoSystemDefaults *sd;
+  unsigned int currentTime, startTime, lastRequestTime;
+
+  *failedCount = 0;
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if ([sd maximumFailedLoginCount] <= 0)
+    return NO;
+
+  failedLogin = [[SOGoCache sharedCache] failedCountForLogin: username];
+  if (!failedLogin)
+    return NO;
+
+  currentTime = [[NSCalendarDate date] timeIntervalSince1970];
+  startTime = [[failedLogin objectForKey: @"InitialDate"] unsignedIntValue];
+  lastRequestTime = [[failedLogin objectForKey: @"LastRequestDate"] unsignedIntValue];
+
+  if (currentTime - startTime > (unsigned int) [sd failedLoginBlockInterval])
+    {
+      [[SOGoCache sharedCache] setFailedCount: 0
+                                     forLogin: username];
+      return NO;
+    }
+
+  *failedCount = [[failedLogin objectForKey: @"FailedCount"] intValue];
+
+  return (*failedCount >= [sd maximumFailedLoginCount]
+          && currentTime - lastRequestTime < (unsigned int) [sd maximumFailedLoginInterval]);
+}
+
+//
 //
 - (BOOL) changePasswordForLogin: (NSString *) login
                        inDomain: (NSString *) domain
@@ -812,9 +851,10 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
                           token: (NSString *) token
                            perr: (SOGoPasswordPolicyError *) perr
 {
-  NSString *jsonUser, *userLogin, *uid, *userToken;
+  NSString *jsonUser, *userLogin, *uid, *userToken, *failedLoginKey;
   NSMutableDictionary *currentUser;
   BOOL didChange;
+  int failedCount;
   SOGoSystemDefaults *sd;
   NSDictionary *info;
   SOGoUserSettings *us;
@@ -830,9 +870,22 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
   info = [self contactInfosForUserWithUIDorEmail: login];
   uid = [info objectForKey: @"c_uid"];
 
+  failedCount = 0;
+
+  // Key used by -checkLogin:... for the failed login count
+  if ([domain isNotNull] && [domain length]
+      && [login rangeOfString: @"@"].location == NSNotFound)
+    failedLoginKey = [NSString stringWithFormat: @"%@@%@", login, domain];
+  else
+    failedLoginKey = login;
+
   if (passwordRecovery && (![userToken isEqualToString: token] || ![self isPasswordRecoveryTokenValidFor: userToken uid: uid])) {
     didChange = NO;
     *perr = PolicyPasswordRecoveryInvalidToken;
+  } else if (!passwordRecovery
+             && [self _isFailedLoginBlockedForLogin: failedLoginKey failedCount: &failedCount]) {
+    didChange = NO;
+    *perr = PolicyAccountLocked;
   } else if ([self _sourceChangePasswordForLogin: login
                                  inDomain: domain
                               oldPassword: oldPassword
@@ -868,7 +921,20 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
                                         forLogin: userLogin];
     }
     else
-      didChange = NO;
+      {
+        didChange = NO;
+
+        // A rejected new password (quality, history, age) means the old
+        // password was accepted; anything else counts as a failed login.
+        if (!passwordRecovery
+            && [[SOGoSystemDefaults sharedSystemDefaults] maximumFailedLoginCount] > 0
+            && *perr != PolicyInsufficientPasswordQuality
+            && *perr != PolicyPasswordTooShort
+            && *perr != PolicyPasswordTooYoung
+            && *perr != PolicyPasswordInHistory)
+          [[SOGoCache sharedCache] setFailedCount: failedCount + 1
+                                         forLogin: failedLoginKey];
+      }
 
   return didChange;
 }
@@ -1480,27 +1546,81 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
 }
 
 /**
+ * (Secret Question) Check whether password recovery is temporarily blocked for uid
+ * because of too many wrong answers. Resets the counter once the block interval is over.
+ * @param uid User id
+ * @param failedCount Current number of failures (out)
+ * @return True if blocked
+ */
+- (BOOL) _isPasswordRecoveryBlockedForUid: (NSString *) uid
+                              failedCount: (int *) failedCount
+{
+  NSDictionary *failedRecovery;
+  SOGoSystemDefaults *sd;
+  unsigned int currentTime, startTime;
+  int maxFailed;
+
+  *failedCount = 0;
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  maxFailed = [sd maximumFailedPasswordRecoveryCount];
+  if (maxFailed <= 0)
+    return NO;
+
+  failedRecovery = [[SOGoCache sharedCache] failedPasswordRecoveryCountForLogin: uid];
+  if (!failedRecovery)
+    return NO;
+
+  currentTime = [[NSCalendarDate date] timeIntervalSince1970];
+  startTime = [[failedRecovery objectForKey: @"InitialDate"] unsignedIntValue];
+  if (currentTime - startTime > (unsigned int) [sd failedLoginBlockInterval])
+    {
+      [[SOGoCache sharedCache] setFailedPasswordRecoveryCount: 0
+                                                     forLogin: uid];
+      return NO;
+    }
+
+  *failedCount = [[failedRecovery objectForKey: @"FailedCount"] intValue];
+
+  return (*failedCount >= maxFailed);
+}
+
+/**
  * (Secret Question) Check secret question answer, generates and save in user pref the JWT token
+ * Wrong answers are counted per uid; after SOGoMaximumFailedPasswordRecoveryCount failures,
+ * recovery is blocked for SOGoFailedLoginBlockInterval seconds.
  * @param username Username
  * @param domain Domain
  * @param passwordRecoveryData Password recovery data (answer, ...)
+ * @param perr Set to PolicyAccountLocked if recovery is blocked
  * @return JWT Token
  */
-- (NSString *) getTokenAndCheckPasswordRecoveryDataForUsername: (NSString *) username domain:(NSString *) domain withData:(NSDictionary *) passwordRecoveryData
+- (NSString *) getTokenAndCheckPasswordRecoveryDataForUsername: (NSString *) username
+                                                        domain: (NSString *) domain
+                                                      withData: (NSDictionary *) passwordRecoveryData
+                                                          perr: (SOGoPasswordPolicyError *) perr
 {
-  NSString *mode, *questionKey, *answer, *uid, *suffix, *token;
+  NSString *mode, *questionKey, *answer, *storedAnswer, *uid, *suffix, *token;
   SOGoUserDefaults *userDefaults;
   SOGoSystemDefaults *sd;
   NSDictionary *info;
+  id value;
+  int failedCount;
 
+  *perr = PolicyNoError;
   mode = [passwordRecoveryData objectForKey:@"mode"];
   questionKey = [passwordRecoveryData objectForKey:@"question"];
-  answer = [[[passwordRecoveryData objectForKey:@"answer"] lowercaseString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+  value = [passwordRecoveryData objectForKey:@"answer"];
+  answer = nil;
+  if ([value isKindOfClass: [NSString class]])
+    answer = [[value lowercaseString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
   token = nil;
   userDefaults = nil;
   info = [self contactInfosForUserWithUIDorEmail: username];
   uid = [info objectForKey: @"c_uid"];
+  if (![uid length])
+    return nil;
+
   sd = [SOGoSystemDefaults sharedSystemDefaults];
   if ([sd enableDomainBasedUID]
       && ![[info objectForKey: @"DomainLessLogin"] boolValue])
@@ -1519,9 +1639,24 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
     }
 
    if ([sd isPasswordRecoveryEnabled] && nil != userDefaults && [[userDefaults passwordRecoveryMode] isEqualToString: mode]) {
-    if ([[userDefaults passwordRecoveryQuestion] isEqualToString: questionKey] 
-        && [[[[userDefaults passwordRecoveryQuestionAnswer] lowercaseString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString: answer]) {
+    // The counter is keyed on the resolved uid so that it can't be bypassed
+    // by using another form of the username (email, case, etc.)
+    if ([self _isPasswordRecoveryBlockedForUid: uid failedCount: &failedCount]) {
+      *perr = PolicyAccountLocked;
+      return nil;
+    }
+
+    storedAnswer = [[[userDefaults passwordRecoveryQuestionAnswer] lowercaseString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if ([[userDefaults passwordRecoveryQuestion] isEqualToString: questionKey]
+        && [storedAnswer length] > 0
+        && [answer length] > 0
+        && [storedAnswer isEqualToString: answer]) {
           token = [self generateAndSavePasswordRecoveryTokenWithUid: uid username: username domain: domain];
+          [[SOGoCache sharedCache] setFailedPasswordRecoveryCount: 0
+                                                         forLogin: uid];
+    } else if ([sd maximumFailedPasswordRecoveryCount] > 0) {
+          [[SOGoCache sharedCache] setFailedPasswordRecoveryCount: failedCount + 1
+                                                         forLogin: uid];
     }
    }
 

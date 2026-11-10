@@ -479,8 +479,26 @@ static memcached_st *handle = NULL;
 //
 // SOGo password failed counts
 //
-- (void) setFailedCount: (int) theCount
-               forLogin: (NSString *) theLogin
+- (NSDictionary *) _failedCountForLogin: (NSString *) theLogin
+                                 ofType: (NSString *) theType
+{
+  NSDictionary *d;
+  NSString *s;
+  
+  s = [self _valuesOfType: theType forKey: theLogin];
+  d = nil;
+
+  if (s)
+    {
+      d = [s objectFromJSONString];
+    }
+  
+  return d;
+}
+
+- (void) _setFailedCount: (int) theCount
+                forLogin: (NSString *) theLogin
+                  ofType: (NSString *) theType
 {
   NSMutableDictionary *d;
   NSNumber *count;
@@ -489,7 +507,8 @@ static memcached_st *handle = NULL;
     {
       count = [NSNumber numberWithInt: theCount];
 
-      d = [NSMutableDictionary dictionaryWithDictionary: [self failedCountForLogin: theLogin]];
+      d = [NSMutableDictionary dictionaryWithDictionary: [self _failedCountForLogin: theLogin
+                                                                             ofType: theType]];
 
       if (![d objectForKey: @"InitialDate"])
         {
@@ -500,35 +519,53 @@ static memcached_st *handle = NULL;
       
       [d setObject: count  forKey: @"FailedCount"];
       [self _cacheValues: [d jsonRepresentation]
-                  ofType:  @"failedlogins"
+                  ofType: theType
                   forKey: theLogin];
     }
   else
     {
-      [self removeValueForKey: [NSString stringWithFormat: @"%@+failedlogins", theLogin]];
+      [self removeValueForKey: [NSString stringWithFormat: @"%@+%@", theLogin, theType]];
     }
 }
 
+- (void) setFailedCount: (int) theCount
+               forLogin: (NSString *) theLogin
+{
+  [self _setFailedCount: theCount
+               forLogin: theLogin
+                 ofType: @"failedlogins"];
+}
+
 //
-// Returns a dictionary with two keys/values
+// Returns a dictionary with three keys/values
 //
 // FailedCount -> 
 // InitialDate ->
+// LastRequestDate ->
 //
 - (NSDictionary *) failedCountForLogin: (NSString *) theLogin
 {
-  NSDictionary *d;
-  NSString *s;
-  
-  s = [self _valuesOfType: @"failedlogins" forKey: theLogin];
-  d = nil;
+  return [self _failedCountForLogin: theLogin
+                             ofType: @"failedlogins"];
+}
 
-  if (s)
-    {
-      d = [s objectFromJSONString];
-    }
-  
-  return d;
+//
+// SOGo password recovery (secret question) failed counts.
+// Kept separate from failed logins so that a recovery lockout
+// does not prevent the user from logging in, and vice versa.
+//
+- (void) setFailedPasswordRecoveryCount: (int) theCount
+                               forLogin: (NSString *) theLogin
+{
+  [self _setFailedCount: theCount
+               forLogin: theLogin
+                 ofType: @"failedrecovery"];
+}
+
+- (NSDictionary *) failedPasswordRecoveryCountForLogin: (NSString *) theLogin
+{
+  return [self _failedCountForLogin: theLogin
+                             ofType: @"failedrecovery"];
 }
 
 //

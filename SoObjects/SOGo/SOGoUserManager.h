@@ -106,7 +106,10 @@
                            perr: (SOGoPasswordPolicyError *) perr;
 - (NSDictionary *) getPasswordRecoveryInfosForUsername: (NSString *) username domain:(NSString *) domain;
 - (NSString *) generateAndSavePasswordRecoveryTokenWithUid: (NSString *) uid username: (NSString *) username domain:(NSString *) domain;
-- (NSString *) getTokenAndCheckPasswordRecoveryDataForUsername: (NSString *) username domain:(NSString *) domain withData:(NSDictionary *) passwordRecoveryData;
+- (NSString *) getTokenAndCheckPasswordRecoveryDataForUsername: (NSString *) username
+                                                        domain: (NSString *) domain
+                                                      withData: (NSDictionary *) passwordRecoveryData
+                                                          perr: (SOGoPasswordPolicyError *) perr;
 - (NSString *) getPasswordRecoveryTokenFor: (NSString *) username domain:(NSString *) domain;
 - (BOOL) isPasswordRecoveryTokenValidFor: (NSString *) token uid: (NSString *) uid;
 @end

@@ -917,6 +917,17 @@ NSComparisonResult languageSort(id el1, id el2, void *context)
 }
 
 //
+// Number of wrong secret question answers allowed during
+// SOGoFailedLoginBlockInterval seconds before password recovery
+// is blocked for the account. Defaults to 5 (see SOGoDefaults.plist),
+// 0 disables the protection.
+//
+- (int) maximumFailedPasswordRecoveryCount
+{
+  return [self integerForKey: @"SOGoMaximumFailedPasswordRecoveryCount"];
+}
+
+//
 //
 //
 - (int) maximumMessageSizeLimit

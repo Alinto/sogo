@@ -1441,11 +1441,12 @@ static const NSString *kJwtKey = @"jwt";
  */
 - (WOResponse *) passwordRecoveryCheckAction
 {
-  NSString *username, *domain, *token, *mode;
+  NSString *username, *domain, *token, *mode, *remoteHost;
   NSDictionary *message;
   WORequest *request;
   SOGoUserManager *um;
   WOResponse *response;
+  SOGoPasswordPolicyError perr;
 
   username = nil;
   domain = nil;
@@ -1454,12 +1455,23 @@ static const NSString *kJwtKey = @"jwt";
   username = [message objectForKey: @"userName"];
   domain = [message objectForKey: @"domain"];
   mode = [message objectForKey: @"mode"];
+  remoteHost = [request headerForKey: @"x-webobjects-remote-host"];
   um = [SOGoUserManager sharedUserManager];
 
   if ([mode isEqualToString: SOGoPasswordRecoveryQuestion]) {
     // Secret question recovery
-    token = [um getTokenAndCheckPasswordRecoveryDataForUsername: username domain: domain withData: message];
-    if (!token) {
+    token = [um getTokenAndCheckPasswordRecoveryDataForUsername: username
+                                                         domain: domain
+                                                       withData: message
+                                                           perr: &perr];
+    if (!token && perr == PolicyAccountLocked) {
+      [self logWithFormat: @"Password recovery from '%@' for user '%@' blocked - too many failed attempts",
+            remoteHost, username];
+      response = [self responseWithStatus: 403
+                  andString: @"Your account was locked due to too many failed attempts."];
+    } else if (!token) {
+      [self logWithFormat: @"Password recovery from '%@' for user '%@' failed - invalid secret question answer",
+            remoteHost, username];
       response = [self responseWithStatus: 403
                   andString: @"Invalid secret question answer"];
     } else {
