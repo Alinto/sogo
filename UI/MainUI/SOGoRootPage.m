@@ -325,11 +325,22 @@ static const NSString *kJwtKey = @"jwt";
       if ([ud totpEnabled])
         {
           NSString *verificationCode;
+          int totpFailedCount;
 
           verificationCode = [params objectForKey: @"verificationCode"];
           if ([verificationCode length] == 6 && [verificationCode unsignedIntValue] > 0)
             {
               unsigned int code;
+
+              // Too many wrong codes: refuse any code until the block interval is over
+              if ([[SOGoUserManager sharedUserManager] isTotpVerificationBlockedForLogin: [loggedInUser login]
+                                                                              failedCount: &totpFailedCount])
+                {
+                  [self logWithFormat: @"TOTP verification from '%@' for user '%@' blocked - too many failed attempts",
+                        remoteHost, username];
+                  return [self _responseWithLDAPPolicyError: PolicyAccountLocked additionalInfos: nil];
+                }
+
               const char *real_secret;
               char *secret;
 
@@ -407,6 +418,9 @@ static const NSString *kJwtKey = @"jwt";
                   if (old_code != [verificationCode unsignedIntValue])
                   {
                     [self logWithFormat: @"Invalid TOTP key for '%@'", username];
+                    if ([[SOGoSystemDefaults sharedSystemDefaults] maximumFailedTotpCount] > 0)
+                      [[SOGoCache sharedCache] setFailedTotpCount: totpFailedCount + 1
+                                                         forLogin: [loggedInUser login]];
                     [json setObject: [NSNumber numberWithInt: 1] forKey: @"totpInvalidKey"];
                     return [self responseWithStatus: 403 andJSONRepresentation: json];
                   }
@@ -415,6 +429,11 @@ static const NSString *kJwtKey = @"jwt";
                     [us setTotpKey: [[us userPrivateSalt] substringToIndex: 12]];
                   }
                 }
+
+              // Valid code: reset the failed TOTP count
+              if (totpFailedCount > 0)
+                [[SOGoCache sharedCache] setFailedTotpCount: 0
+                                                   forLogin: [loggedInUser login]];
             } 
           else
             {

@@ -793,6 +793,16 @@ not block logins, and it is enforced even when failed login
 
 Default value is `5`. Set to `0` to disable.
 
+|S |SOGoMaximumFailedTotpCount
+|Parameter used to control the number of wrong TOTP verification codes
+allowed when logging in to the web interface. When reached, TOTP
+verification is blocked for the account (even with a valid code) for
+_SOGoFailedLoginBlockInterval_ seconds since the first wrong code.
+This counter is independent of _SOGoMaximumFailedLoginCount_, which
+only counts wrong passwords.
+
+Default value is `5`. Set to `0` to disable.
+
 |S |SOGoMaximumMessageSubmissionCount
 |Parameter used to control the number of email messages a user can send
 from SOGo's webmail interface, to _SOGoMaximumRecipientCount_, in

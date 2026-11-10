@@ -128,6 +128,7 @@ NSComparisonResult languageSort(id el1, id el2, void *context);
 - (int) maximumFailedLoginInterval;
 - (int) failedLoginBlockInterval;
 - (int) maximumFailedPasswordRecoveryCount;
+- (int) maximumFailedTotpCount;
 
 - (int) maximumMessageSizeLimit;
 

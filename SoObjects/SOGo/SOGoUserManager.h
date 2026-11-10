@@ -112,6 +112,8 @@
                                                           perr: (SOGoPasswordPolicyError *) perr;
 - (NSString *) getPasswordRecoveryTokenFor: (NSString *) username domain:(NSString *) domain;
 - (BOOL) isPasswordRecoveryTokenValidFor: (NSString *) token uid: (NSString *) uid;
+- (BOOL) isTotpVerificationBlockedForLogin: (NSString *) login
+                               failedCount: (int *) failedCount;
 @end
 
 #endif /* SOGOUSERMANAGER_H */

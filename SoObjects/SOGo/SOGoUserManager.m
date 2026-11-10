@@ -1546,6 +1546,45 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
 }
 
 /**
+ * (TOTP) Check whether TOTP verification is temporarily blocked for login
+ * because of too many wrong codes. Resets the counter once the block interval is over.
+ * @param login User login (uid)
+ * @param failedCount Current number of failures (out)
+ * @return True if blocked
+ */
+- (BOOL) isTotpVerificationBlockedForLogin: (NSString *) login
+                               failedCount: (int *) failedCount
+{
+  NSDictionary *failedTotp;
+  SOGoSystemDefaults *sd;
+  unsigned int currentTime, startTime;
+  int maxFailed;
+
+  *failedCount = 0;
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  maxFailed = [sd maximumFailedTotpCount];
+  if (maxFailed <= 0 || ![login length])
+    return NO;
+
+  failedTotp = [[SOGoCache sharedCache] failedTotpCountForLogin: login];
+  if (!failedTotp)
+    return NO;
+
+  currentTime = [[NSCalendarDate date] timeIntervalSince1970];
+  startTime = [[failedTotp objectForKey: @"InitialDate"] unsignedIntValue];
+  if (currentTime - startTime > (unsigned int) [sd failedLoginBlockInterval])
+    {
+      [[SOGoCache sharedCache] setFailedTotpCount: 0
+                                         forLogin: login];
+      return NO;
+    }
+
+  *failedCount = [[failedTotp objectForKey: @"FailedCount"] intValue];
+
+  return (*failedCount >= maxFailed);
+}
+
+/**
  * (Secret Question) Check whether password recovery is temporarily blocked for uid
  * because of too many wrong answers. Resets the counter once the block interval is over.
  * @param uid User id
