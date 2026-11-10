@@ -209,4 +209,5 @@
     SOGoPasswordRecoveryMode = "Disabled";
     SOGoPasswordRecoveryQuestion = "SecretQuestion1";
     SOGoMaximumFailedPasswordRecoveryCount = 5;
+    SOGoMaximumFailedTotpCount = 5;
 }

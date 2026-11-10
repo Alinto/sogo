@@ -569,6 +569,23 @@ static memcached_st *handle = NULL;
 }
 
 //
+// SOGo TOTP verification failed counts (web login second factor).
+//
+- (void) setFailedTotpCount: (int) theCount
+                   forLogin: (NSString *) theLogin
+{
+  [self _setFailedCount: theCount
+               forLogin: theLogin
+                 ofType: @"failedtotp"];
+}
+
+- (NSDictionary *) failedTotpCountForLogin: (NSString *) theLogin
+{
+  return [self _failedCountForLogin: theLogin
+                             ofType: @"failedtotp"];
+}
+
+//
 //
 //
 - (void) setMessageSubmissionsCount: (int) theCount
