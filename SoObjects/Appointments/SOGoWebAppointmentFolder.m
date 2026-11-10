@@ -182,7 +182,10 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
                                  forKey: @"imported"];
                     }
                   else
-                    [result setObject: @"invalid-calendar-content" forKey: @"error"];
+                    {
+                      [self errorWithFormat: @"Invalid calendar content from web calendar %@", location];
+                      [result setObject: @"invalid-calendar-content" forKey: @"error"];
+                    }
                 }
               else if (status == 401)
               {
