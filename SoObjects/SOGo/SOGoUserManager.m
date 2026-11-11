@@ -1107,18 +1107,28 @@ static const NSString *kObfuscatedSecondaryEmailKey = @"obfuscatedSecondaryEmail
            withLogin: (NSString *) login
 {
   NSEnumerator *emails;
-  NSString *key, *user_json;
+  NSString *key, *user_json, *email_json;
+  NSMutableDictionary *emailUser;
 
   user_json = [newUser jsonRepresentation];
   [[SOGoCache sharedCache] setUserAttributes: user_json
                                     forLogin: login];
   if (![newUser isKindOfClass: NSNullK])
     {
+      // The cached password hash only belongs to the entry of the login
+      // that authenticated: don't copy it under the user's other addresses,
+      // otherwise an address shared with another account would accept this
+      // user's password. A login with an address is checked against the
+      // authentication source and then cached by checkLogin:.
+      emailUser = [[newUser mutableCopy] autorelease];
+      [emailUser removeObjectForKey: @"password"];
+      email_json = [emailUser jsonRepresentation];
+
       emails = [[newUser objectForKey: @"emails"] objectEnumerator];
       while ((key = [emails nextObject]))
         {
           if (![key isEqualToString: login])
-            [[SOGoCache sharedCache] setUserAttributes: user_json
+            [[SOGoCache sharedCache] setUserAttributes: email_json
                                               forLogin: key];
         }
     }
