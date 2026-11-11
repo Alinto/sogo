@@ -576,27 +576,20 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
                     }
                   else if ([lowerName isEqualToString: @"img"])
                     {
-                      /* [resultPart appendString:
-                         @"src=\"/SOGo.woa/WebServerResources/empty.gif\""]; */
-                      
-                      //Check if the image is base64 ant not url
-                      NSUInteger i, c;
-                      BOOL isBase64 = NO;
-                      for (i = 0, c = [_attributes count]; i < c; i++) {
-                        NSString *type, *value;
-                        type = [_attributes nameAtIndex:i];
-                        if ([type isEqualToString:@"src"])
-                        {
-                          value = [_attributes valueAtIndex:i];
-                          if([value length] > 4 && [[value substringToIndex: 4] isEqualToString:@"data"])
-                          {
-                            isBase64 = YES;
-                            break;
-                          }
-                        }
-                      }
-                      if(!isBase64)
+                      // Defer remote images until the user allows them. A
+                      // data: src is inline. srcset is always deferred: it is
+                      // a list of candidates that may contain remote ones,
+                      // whatever the src is.
+                      if ([name isEqualToString: @"srcset"]
+                          || !([value length] > 4
+                               && [[value substringToIndex: 4] isEqualToString: @"data"]))
                         name = [NSString stringWithFormat: @"unsafe-%@", name];
+                    }
+                  else if ([lowerName isEqualToString: @"source"]
+                           && [name isEqualToString: @"srcset"])
+                    {
+                      // <picture><source srcset>: deferred like <img srcset>
+                      name = @"unsafe-srcset";
                     }
                   else
                     skipAttribute = YES;
@@ -894,6 +887,66 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
 
 @end
 
+/*
+  Returns the <style> elements for the CSS of the mail's <style> blocks.
+  Top-level rules that may load remote content (see UnsafeStyleNeedles) are
+  put in a separate <style> element that browsers ignore (type="text/plain")
+  until the user allows remote content: the front then restores its type from
+  the unsafe-type attribute.
+*/
+static NSString *_styleElementsForCSS (NSString *css)
+{
+  NSMutableString *safeCSS, *unsafeCSS, *elements;
+  NSString *rule, *lowerRule;
+  NSUInteger i, max, start, depth, n, count;
+  unichar c;
+  BOOL ruleEnd, unsafe;
+
+  safeCSS = [NSMutableString string];
+  unsafeCSS = [NSMutableString string];
+  max = [css length];
+  start = 0;
+  depth = 0;
+
+  for (i = 0; i < max; i++)
+    {
+      c = [css characterAtIndex: i];
+      ruleEnd = NO;
+      if (c == '{')
+        depth++;
+      else if (c == '}')
+        {
+          if (depth > 0)
+            depth--;
+          ruleEnd = (depth == 0);
+        }
+      else if (c == ';' && depth == 0)
+        ruleEnd = YES; // at-rule statement, eg. @import ...;
+
+      if (ruleEnd || i == max - 1)
+        {
+          rule = [css substringWithRange: NSMakeRange (start, i + 1 - start)];
+          lowerRule = [[rule lowercaseString] stringByReplacingString: @"\""
+                                                           withString: @""];
+          unsafe = NO;
+          for (n = 0, count = [UnsafeStyleNeedles count]; !unsafe && n < count; n++)
+            unsafe = ([lowerRule rangeOfString: [UnsafeStyleNeedles objectAtIndex: n]].location
+                      != NSNotFound);
+          [(unsafe ? unsafeCSS : safeCSS) appendString: rule];
+          start = i + 1;
+        }
+    }
+
+  elements = [NSMutableString string];
+  if ([safeCSS length])
+    [elements appendFormat: @"<style type=\"text/css\">%@</style>", safeCSS];
+  if ([unsafeCSS length])
+    [elements appendFormat: @"<style type=\"text/plain\" unsafe-type=\"text/css\">%@</style>",
+              unsafeCSS];
+
+  return elements;
+}
+
 @implementation UIxMailPartHTMLViewer
 
 - (id) init
@@ -1061,9 +1114,7 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
 
   css = [handler css];
   if ([css length])
-    cssContent
-      = [NSString stringWithFormat: @"<style type=\"text/css\">%@</style>",
-		  [handler css]];
+    cssContent = _styleElementsForCSS (css);
   else
     cssContent = @"";
   
@@ -1233,9 +1284,7 @@ static NSString *_sanitizeHtmlForDisplay(NSString *content)
 
   css = [handler css];
   if ([css length])
-    cssContent
-      = [NSString stringWithFormat: @"<style type=\"text/css\">%@</style>",
-		  [handler css]];
+    cssContent = _styleElementsForCSS (css);
   else
     cssContent = @"";
   
