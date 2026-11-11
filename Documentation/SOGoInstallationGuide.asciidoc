@@ -431,6 +431,13 @@ Defaults to `localhost`.
 
 See `memcached_servers_parse(3)` for details on the syntax.
 
+SOGo trusts the content of memcached: it caches, among other things, the
+users' attributes and a hash of their password, which is used to validate
+DAV and ActiveSync authentications. memcached has no authentication by
+default, so it must only be reachable by SOGo: bind it to `localhost` (or a
+Unix socket) or protect it with a firewall or SASL, and don't share the
+instance with other applications.
+
 |S |SOGoCacheCleanupInterval
 |Parameter used to set the expiration (in seconds) of each object in the
 cache.
