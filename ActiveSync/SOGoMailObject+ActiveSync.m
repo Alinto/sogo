@@ -69,6 +69,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/NSArray+Utilities.h>
 
+#include "iCalRecurrenceRule+ActiveSync.h"
 #include "iCalTimeZone+ActiveSync.h"
 #include "NSData+ActiveSync.h"
 #include "NSDate+ActiveSync.h"
@@ -1067,8 +1068,32 @@ struct GlobalObjectId {
       if ([event endDate])
         [s appendFormat: @"<EndTime xmlns=\"Email:\">%@</EndTime>", [[event endDate] activeSyncRepresentationInContext: context]];
       
-      // FIXME: Single appointment - others are not supported right now
-      [s appendFormat: @"<InstanceType xmlns=\"Email:\">%d</InstanceType>", 0];
+      // InstanceType -- MS-ASEMAIL 2.2.2.41
+      //   0: single appointment
+      //   1: master of a recurring appointment (needs <Recurrences>)
+      //   2: single instance (exception) of a recurring appointment (needs <RecurrenceId>)
+      //
+      // Without this, iOS cannot match an update of one occurrence to the existing
+      // series: it silently drops it and never sends MeetingResponse.
+      if ([event recurrenceId])
+        {
+          [s appendFormat: @"<InstanceType xmlns=\"Email:\">%d</InstanceType>", 2];
+          // RecurrenceId -- MS-ASEMAIL 2.2.2.63: original start of the occurrence
+          [s appendFormat: @"<RecurrenceId xmlns=\"Email:\">%@</RecurrenceId>",
+             [[event recurrenceId] activeSyncRepresentationInContext: context]];
+        }
+      else if ([event isRecurrent] && [[event recurrenceRules] count])
+        {
+          [s appendFormat: @"<InstanceType xmlns=\"Email:\">%d</InstanceType>", 1];
+          // Recurrences -- MS-ASEMAIL 2.2.2.62
+          [s appendString: @"<Recurrences xmlns=\"Email:\">"];
+          [s appendString: [[[event recurrenceRules] objectAtIndex: 0]
+                             activeSyncRepresentationInContext: context
+                                                     namespace: @"Email"]];
+          [s appendString: @"</Recurrences>"];
+        }
+      else
+        [s appendFormat: @"<InstanceType xmlns=\"Email:\">%d</InstanceType>", 0];
 
       // Location
       if ([[event location] length])
@@ -1088,7 +1113,7 @@ struct GlobalObjectId {
       // Sensitivity
       if ([[event accessClass] isEqualToString: @"PRIVATE"])
         v = 2;
-      if ([[event accessClass] isEqualToString: @"CONFIDENTIAL"])
+      else if ([[event accessClass] isEqualToString: @"CONFIDENTIAL"])
         v = 3;
       else
         v = 0;
