@@ -3684,6 +3684,113 @@ void handle_eas_terminate(int signum)
 }
 
 //
+// Returns the iCalendar data of an iMIP REPLY contained in the message
+// (as top-level part or as part of a multipart), or nil.
+//
+- (iCalCalendar *) _iMIPReplyCalendarFromMessage: (id) thePart
+{
+  NGMimeType *type;
+  id body;
+
+  type = [thePart contentType];
+  if (!type)
+    return nil;
+
+  // Note: messages to nil return NSOrderedSame, so compare lowercase strings
+  if ([[[type type] lowercaseString] isEqualToString: @"multipart"])
+    {
+      NSEnumerator *e;
+      iCalCalendar *calendar;
+      id part;
+
+      body = [thePart body];
+      if (![body isKindOfClass: [NGMimeMultipartBody class]])
+        return nil;
+
+      e = [[body parts] objectEnumerator];
+      while ((part = [e nextObject]))
+        if ((calendar = [self _iMIPReplyCalendarFromMessage: part]))
+          return calendar;
+
+      return nil;
+    }
+
+  if (![[[type type] lowercaseString] isEqualToString: @"text"] ||
+      ![[[type subType] lowercaseString] isEqualToString: @"calendar"])
+    return nil;
+
+  body = [thePart body];
+  if ([body isKindOfClass: [NSData class]])
+    body = [[[NSString alloc] initWithData: body  encoding: NSUTF8StringEncoding] autorelease];
+
+  if (![body isKindOfClass: [NSString class]])
+    return nil;
+
+  {
+    iCalCalendar *calendar;
+
+    calendar = [iCalCalendar parseSingleFromSource: body];
+    if (![[[calendar method] uppercaseString] isEqualToString: @"REPLY"])
+      return nil;
+
+    return calendar;
+  }
+}
+
+//
+// iOS sends its own iMIP REPLY (SendMail) after a MeetingResponse, but SOGo
+// already sent one to the organizer when the participation status was
+// changed. The iOS one is even wrong for series accepted from the calendar
+// (it carries the RECURRENCE-ID of the first occurrence). So we consider the
+// device's reply a duplicate when SOGo sends notifications and the stored
+// event was just changed to the very same participation status.
+//
+- (BOOL) _isIMIPReplyAlreadySentByServer: (NGMimeMessage *) theMessage
+{
+  SOGoAppointmentFolder *folder;
+  SOGoAppointmentObject *eventObject;
+  iCalCalendar *calendar;
+  iCalEvent *replyEvent, *target;
+  iCalPerson *replier, *me;
+  NSString *name;
+
+  if (![[[context activeUser] domainDefaults] appointmentSendEMailNotifications])
+    return NO;
+
+  calendar = [self _iMIPReplyCalendarFromMessage: theMessage];
+  replyEvent = [[calendar events] lastObject];
+  replier = [[replyEvent attendees] lastObject];
+  if (!replyEvent || !replier ||
+      ![[context activeUser] hasEmail: [replier rfc822Email]])
+    return NO;
+
+  folder = [[context activeUser] personalCalendarFolderInContext: context];
+  name = [folder resourceNameForEventUID: [replyEvent uid]];
+  if (![name length])
+    return NO;
+
+  eventObject = [folder lookupName: name  inContext: context  acquire: NO];
+  if (!eventObject || [eventObject isKindOfClass: [NSException class]])
+    return NO;
+
+  // Only right after the server processed the response
+  if ([[eventObject lastModified] timeIntervalSinceNow] < -120)
+    return NO;
+
+  target = nil;
+  if ([replyEvent recurrenceId])
+    target = (iCalEvent *) [eventObject lookupOccurrence:
+                                         [NSString stringWithFormat: @"%f",
+                                                   [[replyEvent recurrenceId] timeIntervalSince1970]]];
+  if (!target)
+    target = (iCalEvent *) [eventObject component: NO  secure: NO];
+
+  me = [target userAsAttendee: [context activeUser]];
+
+  return (me && [me participationStatus] == [replier participationStatus]);
+}
+
+//
 //
 //
 - (void) processSendMail: (id <DOMElement>) theDocumentElement
@@ -3839,9 +3946,26 @@ void handle_eas_terminate(int signum)
         }
     }
 
-  error = [self _sendMail: data
-               recipients: [message allBareRecipients]
-                saveInSentItems: ([(id)[theDocumentElement getElementsByTagName: @"SaveInSentItems"] count] ? YES : NO)];
+  if ([self _isIMIPReplyAlreadySentByServer: message])
+    {
+      // Don't send it twice, but keep it in Sent like the device expects
+      [self logWithFormat: @"EAS - Not sending iMIP reply from device, the server already sent it"];
+      if ([(id)[theDocumentElement getElementsByTagName: @"SaveInSentItems"] count])
+        {
+          SOGoMailAccount *accountFolder;
+
+          accountFolder = [[[[context activeUser] homeFolderInContext: context] lookupName: @"Mail"
+                                                                                 inContext: context
+                                                                                   acquire: NO]
+                            lookupName: @"0"  inContext: context  acquire: NO];
+          [[accountFolder sentFolderInContext: context] postData: data  flags: @"seen"];
+        }
+      error = nil;
+    }
+  else
+    error = [self _sendMail: data
+                 recipients: [message allBareRecipients]
+            saveInSentItems: ([(id)[theDocumentElement getElementsByTagName: @"SaveInSentItems"] count] ? YES : NO)];
 
   if (error)
     {
