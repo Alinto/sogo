@@ -1884,6 +1884,7 @@ void handle_eas_terminate(int signum)
 {
   NSString *realCollectionId, *requestId, *easRequestId, *participationStatus, *calendarId;
   SOGoAppointmentObject *appointmentObject;
+  NSCalendarDate *recurrenceId = nil;
   iCalAlarm *alarm = nil;
   SOGoMailObject *mailObject;
   NSMutableDictionary *uidCache, *folderMetadata;
@@ -2007,6 +2008,43 @@ void handle_eas_terminate(int signum)
                                                                   inContainer: collection];
               [appointmentObject saveCalendar: [event parent]];
            }
+          else if ([event recurrenceId])
+            {
+              // The invitation only contains one occurrence of an existing
+              // series (iMIP REQUEST with RECURRENCE-ID). Merge it into the
+              // stored series as an exception, like the web UI does, so the
+              // new date/time is kept.
+              iCalCalendar *storedCalendar;
+              iCalEvent *storedOccurrence;
+              NSString *recurrenceTime;
+
+              recurrenceTime = [NSString stringWithFormat: @"%f",
+                                         [[event recurrenceId] timeIntervalSince1970]];
+              storedOccurrence = (iCalEvent *) [appointmentObject lookupOccurrence: recurrenceTime];
+              // Use the calendar the occurrence really belongs to, so
+              // removeChild works; without one, take the stored calendar.
+              if (storedOccurrence)
+                storedCalendar = [storedOccurrence parent];
+              else
+                storedCalendar = [appointmentObject calendar: NO secure: NO];
+
+              if (storedCalendar &&
+                  (!storedOccurrence || [storedOccurrence compare: event] == NSOrderedAscending))
+                {
+                  if (storedOccurrence)
+                    [storedCalendar removeChild: storedOccurrence];
+                  [storedCalendar addChild: event];
+                  [appointmentObject saveCalendar: storedCalendar];
+                  [appointmentObject flush];
+
+                  if (debugOn)
+                    [self logWithFormat: @"EAS - Merged exception %@ into event %@", recurrenceTime, [event uid]];
+                }
+            }
+
+          // The invitation mail decides what the response is for: a single
+          // occurrence (RECURRENCE-ID) or the whole series.
+          recurrenceId = [event recurrenceId];
 
           if (uidCache && [calendarId length] > 64)
             {
@@ -2045,7 +2083,8 @@ void handle_eas_terminate(int signum)
 
       [appointmentObject changeParticipationStatus: participationStatus
                                       withDelegate: nil
-                                             alarm: alarm];
+                                             alarm: alarm
+                                   forRecurrenceId: recurrenceId];
 
       [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
       [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
