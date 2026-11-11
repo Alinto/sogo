@@ -745,6 +745,9 @@ static SoProduct      *commonProduct      = nil;
   theme = [[context request] formValueForKey: @"theme"];
   if ([theme length])
     {
+      // The value is decoded: encode it again so that it can't inject
+      // characters (eg. CR/LF) into the Location header
+      theme = [theme stringByEscapingURL];
       url = [NSURL URLWithString: newLocation];
       query = [url query];
       if ([query length])

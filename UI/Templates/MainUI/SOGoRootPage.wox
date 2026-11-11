@@ -10,7 +10,7 @@
     const:jsFiles="Main.js, Common.js"
     >
   <script type="text/javascript" var:nonce="cspNonce">
-    var cookieUsername = <var:string var:value="cookieUsername.doubleQuotedString" const:escapeHTML="NO"/>;
+    var cookieUsername = <var:string var:value="cookieUsernameAsJSString" const:escapeHTML="NO"/>;
     var language = '<var:string var:value="language" const:escapeHTML="NO"/>';
     var loginHint = '<var:string var:value="getLoginHint" const:escapeHTML="NO"/>'
   </script>
