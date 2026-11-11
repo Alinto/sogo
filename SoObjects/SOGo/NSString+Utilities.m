@@ -437,6 +437,10 @@ static int cssEscapingCount;
               break;
             }
         default:
+          /* U+FFFE and U+FFFF are not allowed in XML, not even as a
+             character reference: drop them */
+          if (chars[i] == 0xFFFE || chars[i] == 0xFFFF)
+            break;
           /* escape big chars */
           if (chars[i] > 127)
             {
