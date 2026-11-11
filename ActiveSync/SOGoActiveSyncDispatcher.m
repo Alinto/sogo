@@ -50,6 +50,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGExtensions/NGBase64Coding.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NGCalendarDateRange.h>
 #import <NGExtensions/NGHashMap.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -1869,6 +1870,93 @@ void handle_eas_terminate(int signum)
 
 
 //
+// After a response sent from the calendar (not from the mail), move the
+// matching invitation mails (iMIP REQUEST for that event) from the INBOX to
+// the Trash, like Exchange does. For a response to one occurrence, only the
+// invitations for that occurrence are moved.
+//
+- (void) _trashInvitationMailsForEvent: (iCalEvent *) theMaster
+                          recurrenceId: (NSCalendarDate *) theRecurrenceId
+{
+  SOGoMailAccounts *accountsFolder;
+  SOGoMailAccount *accountFolder;
+  SOGoMailFolder *inbox;
+  NSMutableArray *toTrash;
+  EOQualifier *qualifier;
+  NSArray *uids;
+  NSString *summary, *uid;
+  NSException *error;
+  unsigned int i, max;
+  BOOL useTrash;
+
+  summary = [theMaster summary];
+  uid = [theMaster uid];
+  if (![summary length] || ![uid length])
+    return;
+
+  accountsFolder = [[[context activeUser] homeFolderInContext: context] lookupName: @"Mail"
+                                                                         inContext: context
+                                                                           acquire: NO];
+  accountFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
+  inbox = [accountFolder inboxFolderInContext: context];
+  if (!inbox || [inbox isKindOfClass: [NSException class]])
+    return;
+
+  qualifier = [EOQualifier qualifierWithQualifierFormat:
+                             @"(subject doesContain: %@) AND (not (flags = %@))", summary, @"deleted"];
+  uids = [inbox fetchUIDsMatchingQualifier: qualifier
+                              sortOrdering: @"REVERSE ARRIVAL"
+                                  threaded: NO];
+  if (![uids isKindOfClass: [NSArray class]])
+    return;
+
+  toTrash = [NSMutableArray array];
+  max = [uids count];
+  if (max > 20)
+    max = 20;
+
+  for (i = 0; i < max; i++)
+    {
+      SOGoMailObject *mail;
+      iCalCalendar *calendar;
+      iCalEvent *event;
+
+      mail = [inbox lookupName: [[uids objectAtIndex: i] description]
+                     inContext: context
+                       acquire: NO];
+      if (!mail || [mail isKindOfClass: [NSException class]])
+        continue;
+
+      calendar = [mail calendarFromIMIPMessage];
+      if (![[calendar method] isEqualToString: @"REQUEST"])
+        continue;
+
+      event = [[calendar events] lastObject];
+      if (![[event uid] isEqualToString: uid])
+        continue;
+
+      if (theRecurrenceId &&
+          !([event recurrenceId] &&
+            [[event recurrenceId] timeIntervalSince1970] == [theRecurrenceId timeIntervalSince1970]))
+        continue;
+
+      [mail addFlags: @"seen"];
+      [toTrash addObject: [mail nameInContainer]];
+    }
+
+  if ([toTrash count])
+    {
+      useTrash = YES;
+      error = [inbox deleteUIDs: toTrash  useTrashFolder: &useTrash  inContext: context];
+      if (!error && useTrash)
+        [inbox expunge];
+
+      [self logWithFormat: @"EAS - Moved %d invitation(s) for %@ to Trash after MeetingResponse from calendar: %@",
+            (int)[toTrash count], uid, (error ? [error reason] : @"OK")];
+    }
+}
+
+//
 // <?xml version="1.0"?>
 // <!DOCTYPE ActiveSync PUBLIC "-//MICROSOFT//DTD ActiveSync//EN" "http://www.microsoft.com/">
 // <MeetingResponse xmlns="MeetingResponse:">
@@ -1885,8 +1973,9 @@ void handle_eas_terminate(int signum)
   NSString *realCollectionId, *requestId, *easRequestId, *participationStatus, *calendarId;
   SOGoAppointmentObject *appointmentObject;
   NSCalendarDate *recurrenceId = nil;
+  SOGoMailFolder *invitationFolder = nil;
   iCalAlarm *alarm = nil;
-  SOGoMailObject *mailObject;
+  SOGoMailObject *mailObject = nil;
   NSMutableDictionary *uidCache, *folderMetadata;
   NSMutableString *s, *nameInCache;
   NSData *d;
@@ -1992,6 +2081,11 @@ void handle_eas_terminate(int signum)
         {
           iCalCalendar *calendar;
           iCalEvent *event;
+
+          // Remember where the invitation mail is, so we can move it to
+          // the Trash once the response has been processed.
+          if ([collection isKindOfClass: [SOGoMailFolder class]])
+            invitationFolder = (SOGoMailFolder *) collection;
 
           calendar = [mailObject calendarFromIMIPMessage];
           event = [[calendar events] lastObject];
@@ -2134,6 +2228,43 @@ void handle_eas_terminate(int signum)
                                       withDelegate: nil
                                              alarm: alarm
                                    forRecurrenceId: recurrenceId];
+
+      // Response sent from the calendar: look up the invitation mails
+      if (!invitationFolder)
+        [self _trashInvitationMailsForEvent: (iCalEvent *) [appointmentObject component: NO secure: NO]
+                               recurrenceId: recurrenceId];
+
+      // Like Exchange: once the user has responded, mark the invitation
+      // mail as read and move it to the Trash. The client learns about it
+      // on its next Sync. We never do this when the mail is already in the
+      // Trash, as deleteUIDs would then expunge it for good.
+      if (invitationFolder && mailObject &&
+          ![mailObject isKindOfClass: [NSException class]])
+        {
+          id trashFolder;
+
+          trashFolder = [[invitationFolder mailAccountFolder] trashFolderInContext: context];
+
+          if ([trashFolder isNotNull] &&
+              ![trashFolder isKindOfClass: [NSException class]] &&
+              ![[[trashFolder imap4URL] path] isEqualToString: [[invitationFolder imap4URL] path]])
+            {
+              NSException *error;
+              BOOL useTrash;
+
+              useTrash = YES;
+              [mailObject addFlags: @"seen"];
+              error = [invitationFolder deleteUIDs: [NSArray arrayWithObject: [mailObject nameInContainer]]
+                                    useTrashFolder: &useTrash
+                                         inContext: context];
+              if (!error && useTrash)
+                [invitationFolder expunge];
+
+              if (debugOn)
+                [self logWithFormat: @"EAS - Moved invitation %@ to Trash after MeetingResponse: %@",
+                      [mailObject nameInContainer], (error ? [error reason] : @"OK")];
+            }
+        }
 
       [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
       [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
