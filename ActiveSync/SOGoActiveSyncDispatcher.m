@@ -1907,6 +1907,20 @@ void handle_eas_terminate(int signum)
   appointmentObject = nil;
   calendarId = nil;
 
+  // When responding from the calendar to a single occurrence of a series,
+  // the client tells us which one with InstanceId (EAS 14.1+).
+  {
+    NSString *instanceId;
+
+    instanceId = [[(id)[theDocumentElement getElementsByTagName: @"InstanceId"] lastObject] textValue];
+    if ([instanceId length])
+      {
+        recurrenceId = [instanceId calendarDate];
+        if (debugOn)
+          [self logWithFormat: @"EAS - MeetingResponse for InstanceId %@ (%@)", instanceId, recurrenceId];
+      }
+  }
+
   // Outlook 2013 calls MeetingResponse on the calendar folder! We have
   // no way of handling as we can't retrieve the email (using the id found
   // in requestId) in any mail folder! If that happens, let's simply
@@ -2043,7 +2057,8 @@ void handle_eas_terminate(int signum)
             }
 
           // The invitation mail decides what the response is for: a single
-          // occurrence (RECURRENCE-ID) or the whole series.
+          // occurrence (RECURRENCE-ID) or the whole series. iOS may send an
+          // InstanceId even when the whole series is accepted.
           recurrenceId = [event recurrenceId];
 
           if (uidCache && [calendarId length] > 64)
@@ -2080,6 +2095,40 @@ void handle_eas_terminate(int signum)
         participationStatus = @"TENTATIVE";
       else
         participationStatus = @"DECLINED";
+
+      // Decide whether the response is for one occurrence or the series.
+      // iOS sends an InstanceId (the first occurrence) even when the user
+      // answers a pending invitation for the whole series. So:
+      //  - the occurrence is an exception still waiting for an answer -> it
+      //  - otherwise the series is still waiting for an answer -> series
+      //  - otherwise (e.g. declining one day of an accepted series) -> it
+      if (recurrenceId)
+        {
+          iCalEvent *master, *occurrence;
+          iCalPerson *me;
+
+          master = (iCalEvent *) [appointmentObject component: NO secure: NO];
+          occurrence = (iCalEvent *) [appointmentObject lookupOccurrence:
+                                         [NSString stringWithFormat: @"%f",
+                                                   [recurrenceId timeIntervalSince1970]]];
+
+          if (![master hasRecurrenceRules] && !occurrence)
+            recurrenceId = nil;
+          else
+            {
+              me = (occurrence ? [occurrence userAsAttendee: [context activeUser]] : nil);
+              if (!(me && [me participationStatus] == iCalPersonPartStatNeedsAction))
+                {
+                  me = [master userAsAttendee: [context activeUser]];
+                  if (me && [me participationStatus] == iCalPersonPartStatNeedsAction)
+                    recurrenceId = nil;
+                }
+            }
+
+          if (debugOn)
+            [self logWithFormat: @"EAS - MeetingResponse applies to %@",
+                  (recurrenceId ? [recurrenceId description] : @"the whole series")];
+        }
 
       [appointmentObject changeParticipationStatus: participationStatus
                                       withDelegate: nil
