@@ -47,6 +47,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSString+Encoding.h>
 #import <NGExtensions/NGHashMap.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <NGImap4/NGImap4Envelope.h>
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 #import <NGImap4/NSString+Imap4.h>
@@ -90,6 +91,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <SOGo/NSString+Utilities.h>
 
 #import <Appointments/SOGoAptMailNotification.h>
+#import <Appointments/SOGoAppointmentFolder.h>
+#import <Appointments/SOGoAppointmentObject.h>
 
 
 
@@ -909,6 +912,114 @@ struct GlobalObjectId {
 //
 //
 //
+//
+// Replace a stored exception of a recurring event with a newer version
+// received by mail (iMIP REQUEST with RECURRENCE-ID). Only existing
+// exceptions are updated, and only if the mail version is newer
+// (SEQUENCE/DTSTAMP), so this is safe to run on every Sync.
+//
+- (SOGoAppointmentObject *) _storedEventObjectForUID: (NSString *) uid
+{
+  SOGoAppointmentFolder *folder;
+  SOGoAppointmentObject *eventObject;
+  NSString *name;
+
+  folder = [[context activeUser] personalCalendarFolderInContext: context];
+  if (!folder || ![uid length])
+    return nil;
+
+  name = [folder resourceNameForEventUID: uid];
+  if (![name length])
+    return nil;
+
+  eventObject = [folder lookupName: name  inContext: context  acquire: NO];
+  if (!eventObject || [eventObject isKindOfClass: [NSException class]])
+    return nil;
+
+  return eventObject;
+}
+
+//
+// Replace a stored recurring event with a newer version of the whole
+// series received by mail (iMIP REQUEST without RECURRENCE-ID). Like
+// Outlook/Exchange, exceptions not contained in the new invitation are
+// dropped. Only done if the mail version is newer, so it is safe to run on
+// every Sync.
+//
+- (void) _updateStoredSeriesWithCalendar: (iCalCalendar *) mailCalendar
+                                  master: (iCalEvent *) mailMaster
+{
+  SOGoAppointmentObject *eventObject;
+  iCalCalendar *storedCalendar;
+  iCalEvent *storedMaster, *mailEvent;
+  iCalTimeZone *tz;
+  NSEnumerator *e;
+
+  eventObject = [self _storedEventObjectForUID: [mailMaster uid]];
+  if (!eventObject)
+    return;
+
+  storedMaster = (iCalEvent *) [eventObject component: NO  secure: NO];
+  if (!storedMaster || ![storedMaster isRecurrent] ||
+      [storedMaster compare: mailMaster] != NSOrderedAscending)
+    return;
+
+  storedCalendar = [storedMaster parent];
+  if (!storedCalendar)
+    return;
+
+  // Make sure the time zones used by the new series are present
+  e = [[mailCalendar timezones] objectEnumerator];
+  while ((tz = [e nextObject]))
+    if (![storedCalendar timeZoneWithId: [tz tzId]])
+      [storedCalendar addTimeZone: [[tz mutableCopy] autorelease]];
+
+  // Master first, then the exceptions sent along with it
+  [storedCalendar removeChildren: [NSArray arrayWithArray: [storedCalendar events]]];
+  [storedCalendar addChild: [[mailMaster mutableCopy] autorelease]];
+  e = [[mailCalendar events] objectEnumerator];
+  while ((mailEvent = [e nextObject]))
+    if (mailEvent != mailMaster && [mailEvent recurrenceId])
+      [storedCalendar addChild: [[mailEvent mutableCopy] autorelease]];
+
+  [eventObject saveCalendar: storedCalendar];
+  [eventObject flush];
+
+  [self logWithFormat: @"EAS - Applied update of series %@ from invitation mail", [mailMaster uid]];
+}
+
+- (void) _updateStoredOccurrenceWithEvent: (iCalEvent *) event
+{
+  SOGoAppointmentObject *eventObject;
+  iCalCalendar *storedCalendar;
+  iCalEvent *storedOccurrence, *newOccurrence;
+  NSString *recurrenceTime;
+
+  eventObject = [self _storedEventObjectForUID: [event uid]];
+  if (!eventObject)
+    return;
+
+  recurrenceTime = [NSString stringWithFormat: @"%f",
+                             [[event recurrenceId] timeIntervalSince1970]];
+  storedOccurrence = (iCalEvent *) [eventObject lookupOccurrence: recurrenceTime];
+  // Use the calendar the occurrence really belongs to, so removeChild works
+  storedCalendar = [storedOccurrence parent];
+
+  if (storedCalendar && storedOccurrence &&
+      [storedOccurrence compare: event] == NSOrderedAscending)
+    {
+      // Work on a copy, the mail's event is still used by the caller
+      newOccurrence = [[event mutableCopy] autorelease];
+      [storedCalendar removeChild: storedOccurrence];
+      [storedCalendar addChild: newOccurrence];
+      [eventObject saveCalendar: storedCalendar];
+      [eventObject flush];
+
+      [self logWithFormat: @"EAS - Applied update of occurrence %@ of event %@ from invitation mail",
+            recurrenceTime, [event uid]];
+    }
+}
+
 - (NSString *) activeSyncRepresentationInContext: (WOContext *) _context
 {
   NSData *d, *globalObjId;
@@ -1011,6 +1122,30 @@ struct GlobalObjectId {
 
       event = [[calendar events] lastObject];
       method = [[event parent] method];
+
+      // Like the Exchange calendar attendant: an update to a single
+      // occurrence that is already stored as an exception is applied to
+      // the calendar right away, so the client shows the new time and a
+      // pending invitation in its calendar.
+      if ([method isEqualToString: @"REQUEST"] &&
+          ![event userIsOrganizer: [context activeUser]] &&
+          [event userIsAttendee: [context activeUser]])
+        {
+          iCalEvent *mailMaster, *current;
+          NSEnumerator *e;
+
+          // The series itself is the VEVENT without RECURRENCE-ID
+          mailMaster = nil;
+          e = [[calendar events] objectEnumerator];
+          while (!mailMaster && (current = [e nextObject]))
+            if (![current recurrenceId])
+              mailMaster = current;
+
+          if (mailMaster && [mailMaster isRecurrent])
+            [self _updateStoredSeriesWithCalendar: calendar  master: mailMaster];
+          else if ([event recurrenceId])
+            [self _updateStoredOccurrenceWithEvent: event];
+        }
 
       // If we are the organizer, let's pick the attendee based on the From address
       if ([event userIsOrganizer: [context activeUser]])
