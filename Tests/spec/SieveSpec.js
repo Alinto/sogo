@@ -183,7 +183,7 @@ describe('Sieve', function() {
   it('add simple sieve filter', async function() {
     const folderName = 'Sent'
     const subject = 'add simple sieve filter'
-    const sieveFilter = `require ["fileinto"];\r\nif anyof (header :contains "subject" "${subject}") {\r\n    fileinto :create "${folderName}";\r\n}\r\n`
+    const sieveFilter = `require ["mailbox","fileinto"];\r\nif anyof (header :contains "subject" "${subject}") {\r\n    fileinto :create "${folderName}";\r\n}\r\n`
 
     await prefs.set('SOGoSieveFilters', [{
       active: true,
