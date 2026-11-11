@@ -107,6 +107,21 @@ static const NSString *kJwtKey = @"jwt";
   return cookieLogin;
 }
 
+/* JavaScript string literal of the cookie username, safe to write inside a
+   <script> element: '<', '>' and '&' are escaped so the value can't close
+   the element. */
+- (NSString *) cookieUsernameAsJSString
+{
+  NSString *value;
+
+  value = [[self cookieUsername] doubleQuotedString];
+  value = [value stringByReplacingString: @"<" withString: @"\\u003c"];
+  value = [value stringByReplacingString: @">" withString: @"\\u003e"];
+  value = [value stringByReplacingString: @"&" withString: @"\\u0026"];
+
+  return value;
+}
+
 - (BOOL) rememberLogin
 {
   return ([[self cookieUsername] length]);
