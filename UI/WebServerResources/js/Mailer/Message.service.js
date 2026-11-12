@@ -589,7 +589,7 @@
         if (identity)
           data.from = identity.full;
         var accountDefaults = Message.$Preferences.defaults.AuxiliaryMailAccounts[_this.$mailbox.$account.id];
-        if (accountDefaults.security) {
+        if (accountDefaults && accountDefaults.security) {
           if (accountDefaults.security.alwaysSign)
             data.sign = true;
           if (accountDefaults.security.alwaysEncrypt)
@@ -940,7 +940,7 @@
       return Message.$$resource.fetch(message.$absolutePath({ asDraft: true }), 'edit').then(function (data) {
         Message.$log.debug('New ' + action + ': ' + JSON.stringify(data, undefined, 2) + ' original UID: ' + _this.uid);
         var accountDefaults = Message.$Preferences.defaults.AuxiliaryMailAccounts[_this.$mailbox.$account.id];
-        if (accountDefaults.security) {
+        if (accountDefaults && accountDefaults.security) {
           if (accountDefaults.security.alwaysSign)
             data.sign = true;
           if (accountDefaults.security.alwaysEncrypt)
