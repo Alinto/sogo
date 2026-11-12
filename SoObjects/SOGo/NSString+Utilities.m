@@ -1081,7 +1081,13 @@ static int cssEscapingCount;
   }  
   NS_HANDLER
   {
-    [self logWithFormat: @"Error while stripping HTML injection : %@", [localException name]];
+    // Fail closed: the filters above may not all have run, so don't return a
+    // partially sanitised string. GNUstep returns nil from
+    // -stringByReplacingMatchesInString:... when the result would be empty,
+    // e.g. for "javascript:" itself, which raises in +stringWithString:.
+    [self logWithFormat: @"Error while stripping HTML injection : %@ %@",
+          [localException name], [localException reason]];
+    result = @"";
   }
   NS_ENDHANDLER;
   
