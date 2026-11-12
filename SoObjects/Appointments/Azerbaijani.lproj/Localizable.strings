@@ -1,0 +1,82 @@
+"Inviting the following persons is prohibited:" = "Aşağıdakı şəxslərin dəvət edilməsi qadağandır:";
+"Personal Calendar" = "Şəxsi təqvim";
+vevent_class0 = "(Hamıya açıq tədbir)";
+vevent_class1 = "(Şəxsi tədbir)";
+vevent_class2 = "(Gizli tədbir)";
+
+vtodo_class0 = "(Hamıya açıq tapşırıq)";
+vtodo_class1 = "(Şəxsi tapşırıq)";
+vtodo_class2 = "(Gizli tapşırıq)";
+
+/* Receipts */
+"The event \"%{Summary}\" was created" = "\"%{Summary}\" tədbiri yaradıldı";
+"The event \"%{Summary}\" was deleted" = "\"%{Summary}\" tədbiri silindi";
+"The event \"%{Summary}\" was updated" = "\"%{Summary}\" tədbiri yeniləndi";
+"The task \"%{Summary}\" was created" = "\"%{Summary}\" tapşırığı yaradıldı";
+"The task \"%{Summary}\" was deleted" = "\"%{Summary}\" tapşırığı silindi";
+"The task \"%{Summary}\" was updated" = "\"%{Summary}\" tapşırığı yeniləndi";
+"The following attendees(s) were notified" = "Aşağıdakı iştirakçılar məlumatlandırıldı";
+"The following attendees(s) were added" = "Aşağıdakı iştirakçılar əlavə edildi";
+"The following attendees(s) were removed" = "Aşağıdakı iştirakçılar çıxarıldı";
+
+/* IMIP messages */
+"calendar_label" = "Təqvim";
+"startDate_label" = "Başlanğıc";
+"endDate_label" = "Bitmə";
+"time_label" = "Saat";
+"to_label" = "alıcı";
+"due_label" = "Son tarix";
+"location_label" = "Yer";
+"summary_label" = "Xülasə";
+"comment_label" = "Şərh";
+"organizer_label" = "Təşkilatçı";
+"attendee_label" = "İştirakçı";
+
+/* Invitation */
+"Event Invitation: \"%{Summary}\"" = "Tədbir dəvəti: \"%{Summary}\"";
+"(sent by %{SentBy}) " = "(%{SentBy} tərəfindən göndərildi) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}sizi %{Summary} tədbirinə dəvət etdi.\n\nBaşlanğıc tarixi: %{StartDate}\nBitmə tarixi: %{EndDate}\nAçıqlama: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}sizi %{Summary} tədbirinə dəvət etdi.\n\nBaşlanğıc tarixi: %{StartDate} saat %{StartTime}\nBitmə tarixi: %{EndDate} saat %{EndTime}\nAçıqlama: %{Description}";
+
+/* Deletion */
+"Event Cancelled: \"%{Summary}\"" = "Tədbir ləğv edildi: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}bu tədbiri ləğv etdi: %{Summary}.\n\nBaşlanğıc tarixi: %{StartDate}\nBitmə tarixi: %{EndDate}\nAçıqlama: %{Description}";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}bu tədbiri ləğv etdi: %{Summary}.\n\nBaşlanğıc tarixi: %{StartDate} saat %{StartTime}\nBitmə tarixi: %{EndDate} saat %{EndTime}\nAçıqlama: %{Description}";
+
+/* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "%{OldStartDate} tarixindəki \"%{Summary}\" görüşü dəyişdi";
+"The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
+= "%{OldStartDate} tarixində %{OldStartTime} başlanğıc saatindəki \"%{Summary}\" görüşü dəyişdirildi";
+"The following parameters have changed in the \"%{Summary}\" meeting:"
+= "\"%{Summary}\" görüşünün aşağıdakı xüsusiyyətləri dəyişdi:";
+"Please accept or decline those changes."
+= "Zəhmət olmasa bu dəyişiklikləri qəbul edin və ya rədd edin.";
+
+/* Reply */
+"Accepted invitation: \"%{Summary}\"" = "Dəvət qəbul edildi: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "Dəvət rədd edildi: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Nümayəndə təyin edilən dəvət: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "Dəvət haqqında hələ qərar verilmədi: \"%{Summary}\"";
+"%{Attendee} %{SentByText}has accepted your event invitation."
+= "%{Attendee} %{SentByText}tədbir dəvətinizi qəbul etdi.";
+"%{Attendee} %{SentByText}has declined your event invitation."
+= "%{Attendee} %{SentByText}dəvətinizi rədd etdi.";
+"%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
+= "%{Attendee} %{SentByText}tərəfindən %{Delegate} dəvətinə nümayəndə olaraq təyin edildi.";
+"%{Attendee} %{SentByText}has not yet decided upon your event invitation."
+= "%{Attendee} %{SentByText}hələ tədbir dəvətinizlə bağlı qərarını vermədi.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Xatırlatıcı: \"%{Summary}\" - %{StartDate}";
+
+/* Resources */
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Resursa daxil olmaq mümkün deyil: \"%{Cn} %{SystemEmail}\"";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "\"%{Cn} %{SystemEmail}\" resursu üçün maksimum eyni zamanlı rezervasiya sayına (%{NumberOfSimultaneousBookings}) çatıldı. Ziddiyyətli \"%{EventTitle}\" tədbiri %{StartDate} tarixində başlayır.";
+
+/* Participation role */
+"Your participation is required to this event" = "Bu tədbirə qatılımınız məcburidir";
+"Your participation is optional to this event" = "Bu tədbirə qatılımınız könüllüdür";
+"Your participation is not required to this event" = "Bu tədbirə qatılımınız tələb olunmur";
