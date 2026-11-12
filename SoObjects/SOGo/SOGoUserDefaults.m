@@ -624,6 +624,11 @@ NSString *SOGoPasswordRecoverySecondaryEmail = @"SecondaryEmail";
   return [self stringForKey: @"SOGoMailComposeMessageType"];
 }
 
+- (BOOL) mailRequestDeliveryNotification
+{
+  return [self boolForKey: @"SOGoMailRequestDeliveryNotification"];
+}
+
 - (void) setMailComposeFontSize: (int) newValue
 {
   [self setInteger: newValue forKey: @"SOGoMailComposeFontSize"];

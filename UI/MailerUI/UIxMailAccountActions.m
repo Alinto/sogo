@@ -235,7 +235,7 @@
       save = YES;
     }
 
-  if (save)
+  if (save || [newDraftMessage deliveryNotification])
     {
       [newDraftMessage setHeaders: headers];
       [newDraftMessage storeInfo];
