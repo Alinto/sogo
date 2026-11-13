@@ -210,10 +210,35 @@
 
 - (NSArray *) toOneRelationshipKeys
 {
-  NSString *userDomain;
+  NSDictionary *record;
+  NSEnumerator *records;
+  NSMutableArray *keys;
+  NSArray *allRecords;
+  NSString *userDomain, *key;
 
   userDomain = [[context activeUser] domain];
-  return [source allEntryIDsVisibleFromDomain: userDomain];
+
+  // Fetch all the entries at once and keep them in childRecords, so that the
+  // following -lookupName: of each child (e.g. in a PROPFIND) doesn't trigger
+  // one LDAP search per entry.
+  allRecords = nil;
+  if ([source respondsToSelector: @selector (allContactEntriesVisibleFromDomain:)])
+    allRecords = [(LDAPSource *) source allContactEntriesVisibleFromDomain: userDomain];
+
+  if (!allRecords)
+    return [source allEntryIDsVisibleFromDomain: userDomain];
+
+  keys = [NSMutableArray arrayWithCapacity: [allRecords count]];
+  records = [allRecords objectEnumerator];
+  while ((record = [records nextObject]))
+    {
+      key = [record objectForKey: @"c_name"];
+      [keys addObject: key];
+      if (![childRecords objectForKey: key])
+        [childRecords setObject: record forKey: key];
+    }
+
+  return keys;
 }
 
 - (NSException *) saveLDIFEntry: (SOGoContactLDIFEntry *) ldifEntry
@@ -481,6 +506,11 @@
       records = [source lookupContactsWithQualifier: qualifier
                                     andSortOrdering: ordering
                                            inDomain: domain];
+      // Keep the entries so that a subsequent -lookupName: (e.g. in an
+      // addressbook-query REPORT) doesn't search them again one by one
+      [childRecords setObjects: records
+                       forKeys: [records objectsForKey: @"c_name"
+                                        notFoundMarker: nil]];
       records = [self _flattenedRecords: records];
     }
 
@@ -700,7 +730,11 @@
   NSString *url, *baseURL, *cname, *domain;
   NSString **propertiesArray;
   NSMutableString *buffer;
+  NSMutableArray *urls, *cnames;
+  NSMutableDictionary *prefetched;
   NSDictionary *object;
+  NSEnumerator *records;
+  NSArray *allRecords;
   id connection;
 
   unsigned int count, max, propertiesCount;
@@ -717,15 +751,48 @@
   buffer = [[NSMutableString alloc] initWithCapacity: max*512];
   domain = [[context activeUser] domain];
   connection = [source connection];
-  pool = [[NSAutoreleasePool alloc] init];
+
+  urls = [NSMutableArray arrayWithCapacity: max];
+  cnames = [NSMutableArray arrayWithCapacity: max];
   for (count = 0; count < max; count++)
     {
       element = [refs objectAtIndex: count];
       url = [[[element firstChild] nodeValue] stringByUnescapingURL];
       cname = [self _deduceObjectNameFromURL: url fromBaseURL: baseURL];
-      object = [source lookupContactEntry: cname
-				 inDomain: domain
-			  usingConnection: connection];
+      [urls addObject: (url ? url : @"")];
+      [cnames addObject: (cname ? cname : @"")];
+    }
+
+  // Fetch the requested entries with a few searches instead of one per href.
+  // If several entries share an ID, keep the first one, as a single lookup
+  // would.
+  prefetched = [NSMutableDictionary dictionaryWithCapacity: max];
+  if ([source respondsToSelector: @selector (lookupContactEntries:inDomain:usingConnection:)])
+    {
+      allRecords = [(LDAPSource *) source lookupContactEntries: cnames
+                                                      inDomain: domain
+                                               usingConnection: connection];
+      records = [allRecords objectEnumerator];
+      while ((object = [records nextObject]))
+        {
+          cname = [object objectForKey: @"c_name"];
+          if ([cname length] && ![prefetched objectForKey: cname])
+            [prefetched setObject: object forKey: cname];
+        }
+    }
+
+  pool = [[NSAutoreleasePool alloc] init];
+  for (count = 0; count < max; count++)
+    {
+      url = [urls objectAtIndex: count];
+      cname = [cnames objectAtIndex: count];
+      object = [prefetched objectForKey: cname];
+      // Not prefetched (e.g. missing entry or ID returned with a different
+      // case): fall back to a single lookup
+      if (!object)
+        object = [source lookupContactEntry: cname
+                                   inDomain: domain
+                            usingConnection: connection];
       if (object)
         [self appendObject: object
                 properties: propertiesArray
