@@ -547,6 +547,188 @@ describe('CalDAV Scheduling', function() {
     await _getEvent(webdavAttendee1, attendee1Calendar, icsName, 404)
   })
 
+  describe('RRULE with several changed components in one PUT', function() {
+    const _master = function(uid, summary) {
+      return [
+        'BEGIN:VEVENT',
+        `UID:${uid}`,
+        'DTSTAMP:20260901T100000Z',
+        'DTSTART:20261001T130000Z',
+        'DTEND:20261001T140000Z',
+        'SEQUENCE:0',
+        `SUMMARY:${summary}`,
+        'RRULE:FREQ=WEEKLY;COUNT=5',
+        `ORGANIZER:${user.email}`,
+        `ATTENDEE;RSVP=TRUE;PARTSTAT=NEEDS-ACTION:${attendee1.email}`,
+        'END:VEVENT'
+      ]
+    }
+
+    // Moves the occurrence of 'day' (October 2026) two hours earlier
+    const _exception = function(uid, day, partstat) {
+      return [
+        'BEGIN:VEVENT',
+        `UID:${uid}`,
+        'DTSTAMP:20260901T100000Z',
+        `RECURRENCE-ID:202610${day}T130000Z`,
+        `DTSTART:202610${day}T110000Z`,
+        `DTEND:202610${day}T120000Z`,
+        'SEQUENCE:1',
+        'SUMMARY:Weekly sync',
+        `ORGANIZER:${user.email}`,
+        `ATTENDEE;RSVP=TRUE;PARTSTAT=${partstat}:${attendee1.email}`,
+        'END:VEVENT'
+      ]
+    }
+
+    const _calendar = function(...vevents) {
+      const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//SOGo//Tests//EN']
+      return ICAL.Component.fromString(lines.concat(...vevents, 'END:VCALENDAR').join('\r\n'))
+    }
+
+    const _attendeeStartOf = async function(icsName, day) {
+      const vcalendar = await _getEvent(webdavAttendee1, attendee1Calendar, icsName)
+      const vevent = vcalendar.getAllSubcomponents('vevent').find(e => {
+        const rid = e.getFirstPropertyValue('recurrence-id')
+        return day ? rid && rid.toICALString() == `202610${day}T130000Z` : !rid
+      })
+      return vevent && vevent.getFirstPropertyValue('dtstart').toICALString()
+    }
+
+    for (const changedFirst of [true, false]) {
+      it(`schedules every changed occurrence (changed one ${changedFirst ? 'first' : 'last'})`, async function() {
+        const uid = `rrule-several-occurrences-${changedFirst ? 'first' : 'last'}`
+        const icsName = `${uid}.ics`
+        icsList.push(icsName)
+
+        // 1. Move the occurrence of the 22nd. The attendee receives it
+        await _putEvent(webdav, userCalendar, icsName, _calendar(
+          _master(uid, 'Weekly sync'), _exception(uid, '22', 'NEEDS-ACTION')))
+        expect(await _attendeeStartOf(icsName, '22')).toBe('20261022T110000Z')
+
+        // 2. Move the occurrence of the 8th as well. The 22nd is sent back with
+        //    a different PARTSTAT, as a client holding an older copy would do.
+        const moved = _exception(uid, '08', 'NEEDS-ACTION')
+        const untouched = _exception(uid, '22', 'ACCEPTED')
+        await _putEvent(webdav, userCalendar, icsName, _calendar(_master(uid, 'Weekly sync'),
+          ...(changedFirst ? [moved, untouched] : [untouched, moved])), 204)
+
+        expect(await _attendeeStartOf(icsName, '08'))
+          .withContext('Occurrence of the 8th moved in the calendar of the attendee')
+          .toBe('20261008T110000Z')
+        expect(await _attendeeStartOf(icsName, '22'))
+          .withContext('Occurrence of the 22nd still moved in the calendar of the attendee')
+          .toBe('20261022T110000Z')
+      })
+    }
+
+    it('schedules several occurrences moved in the same PUT', async function() {
+      const uid = 'rrule-several-occurrences-moved'
+      const icsName = `${uid}.ics`
+      icsList.push(icsName)
+
+      await _putEvent(webdav, userCalendar, icsName, _calendar(
+        _master(uid, 'Weekly sync'), _exception(uid, '22', 'NEEDS-ACTION')))
+
+      await _putEvent(webdav, userCalendar, icsName, _calendar(
+        _master(uid, 'Weekly sync'), _exception(uid, '08', 'NEEDS-ACTION'),
+        _exception(uid, '15', 'NEEDS-ACTION'), _exception(uid, '22', 'NEEDS-ACTION')), 204)
+
+      for (const day of ['08', '15', '22']) {
+        expect(await _attendeeStartOf(icsName, day))
+          .withContext(`Occurrence of the ${day} moved in the calendar of the attendee`)
+          .toBe(`202610${day}T110000Z`)
+      }
+    })
+
+    it('cancels a moved occurrence replaced by an EXDATE', async function() {
+      const uid = 'rrule-moved-occurrence-cancelled'
+      const icsName = `${uid}.ics`
+      icsList.push(icsName)
+
+      await _putEvent(webdav, userCalendar, icsName, _calendar(
+        _master(uid, 'Weekly sync'), _exception(uid, '15', 'NEEDS-ACTION'),
+        _exception(uid, '22', 'NEEDS-ACTION')))
+
+      // Drop the occurrence of the 22nd and exclude it from the series
+      const master = _master(uid, 'Weekly sync')
+      master.splice(-1, 0, 'EXDATE:20261022T130000Z')
+      await _putEvent(webdav, userCalendar, icsName, _calendar(
+        master, _exception(uid, '15', 'NEEDS-ACTION')), 204)
+
+      const vcalendar = await _getEvent(webdavAttendee1, attendee1Calendar, icsName)
+      const vevents = vcalendar.getAllSubcomponents('vevent')
+      expect(await _attendeeStartOf(icsName, '22'))
+        .withContext('Occurrence of the 22nd removed from the calendar of the attendee')
+        .toBeUndefined()
+      expect(vevents.find(e => !e.hasProperty('recurrence-id')).hasProperty('exdate'))
+        .withContext('Master event of the attendee excludes the 22nd')
+        .toBe(true)
+      expect(await _attendeeStartOf(icsName, '15'))
+        .withContext('Occurrence of the 15th still moved in the calendar of the attendee')
+        .toBe('20261015T110000Z')
+    })
+
+    it('refuses the whole PUT when one changed occurrence is refused', async function() {
+      const uid = 'rrule-several-occurrences-refused'
+      const icsName = `${uid}.ics`
+      const blockerIcsName = `${uid}-blocker.ics`
+      icsList.push(icsName, blockerIcsName)
+
+      await _deleteAllEvents(webdav_su, resourceNoOverbookCalendar)
+
+      // 1. Book the resource where the occurrence of the 8th will be moved
+      await _putEvent(webdav, userCalendar, blockerIcsName, _calendar([
+        'BEGIN:VEVENT',
+        `UID:${uid}-blocker`,
+        'DTSTAMP:20260901T100000Z',
+        'DTSTART:20261008T110000Z',
+        'DTEND:20261008T120000Z',
+        'SUMMARY:Blocker',
+        `ORGANIZER:${user.email}`,
+        `ATTENDEE;RSVP=TRUE;PARTSTAT=NEEDS-ACTION:${resourceNoOverbook.email}`,
+        'END:VEVENT'
+      ]))
+
+      await _putEvent(webdav, userCalendar, icsName, _calendar(
+        _master(uid, 'Weekly sync'), _exception(uid, '22', 'NEEDS-ACTION')))
+
+      // 2. Move the 15th, and the 8th with the booked resource
+      const refused = _exception(uid, '08', 'NEEDS-ACTION')
+      refused.splice(-1, 0, `ATTENDEE;RSVP=TRUE;PARTSTAT=NEEDS-ACTION:${resourceNoOverbook.email}`)
+      await _putEvent(webdav, userCalendar, icsName, _calendar(
+        _master(uid, 'Weekly sync'), _exception(uid, '15', 'NEEDS-ACTION'), refused,
+        _exception(uid, '22', 'NEEDS-ACTION')), 409)
+
+      expect(await _attendeeStartOf(icsName, '15'))
+        .withContext('Occurrence of the 15th not moved in the calendar of the attendee')
+        .toBeUndefined()
+    })
+
+    it('schedules the master event along with a changed occurrence', async function() {
+      const uid = 'rrule-master-and-occurrence'
+      const icsName = `${uid}.ics`
+      icsList.push(icsName)
+
+      await _putEvent(webdav, userCalendar, icsName, _calendar(
+        _master(uid, 'Weekly sync'), _exception(uid, '22', 'NEEDS-ACTION')))
+
+      // Rename the series and move the occurrence of the 8th in the same PUT
+      await _putEvent(webdav, userCalendar, icsName, _calendar(
+        _master(uid, 'Renamed sync'), _exception(uid, '08', 'NEEDS-ACTION'),
+        _exception(uid, '22', 'NEEDS-ACTION')), 204)
+
+      const vcalendar = await _getEvent(webdavAttendee1, attendee1Calendar, icsName)
+      const master = vcalendar.getAllSubcomponents('vevent').find(e => !e.hasProperty('recurrence-id'))
+      expect(master.getFirstPropertyValue('summary'))
+        .withContext('Summary of the master event in the calendar of the attendee')
+        .toBe('Renamed sync')
+      expect(await _attendeeStartOf(icsName, '08'))
+        .withContext('Occurrence of the 8th moved in the calendar of the attendee')
+        .toBe('20261008T110000Z')
+    })
+  })
+
   it ('RRULE invitation delete exdate dance', async function() {
     // Workflow:
     //   Create an recurring event and invite Bob
