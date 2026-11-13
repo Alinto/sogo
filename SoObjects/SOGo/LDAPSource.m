@@ -1081,21 +1081,16 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   return [self allEntryIDs];
 }
 
-- (NSArray *) allEntryIDs
+/* Search all the entries listed by the address book, returning the requested
+   attributes */
+- (NSEnumerator *) _allEntriesWithAttributes: (NSArray *) attributes
 {
   NSEnumerator *entries;
-  NGLdapEntry *currentEntry;
   NGLdapConnection *ldapConnection;
   EOQualifier *qualifier;
   NSMutableString *qs;
-  NSString *value;
-  NSArray *attributes;
-  NSMutableArray *ids;
-
-  ids = [NSMutableArray array];
 
   ldapConnection = [self _ldapConnection];
-  attributes = [NSArray arrayWithObject: _IDField];
 
   qs = [NSMutableString stringWithFormat: @"(%@='*')", _CNField];
   if ([_filter length])
@@ -1115,6 +1110,19 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
                                        qualifier: qualifier
                                       attributes: attributes];
 
+  return entries;
+}
+
+- (NSArray *) allEntryIDs
+{
+  NSEnumerator *entries;
+  NGLdapEntry *currentEntry;
+  NSString *value;
+  NSMutableArray *ids;
+
+  ids = [NSMutableArray array];
+
+  entries = [self _allEntriesWithAttributes: [NSArray arrayWithObject: _IDField]];
   while ((currentEntry = [entries nextObject]))
     {
       value = [[currentEntry attributeWithName: _IDField]
@@ -1124,6 +1132,22 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
     }
 
   return ids;
+}
+
+/* The bulk lookups below match the returned entries with their IDs (c_name),
+   which requires the ID attribute to be part of the lookup fields. */
+- (BOOL) _lookupFieldsIncludeIDField
+{
+  NSEnumerator *fields;
+  NSString *field;
+
+  fields = [_lookupFields objectEnumerator];
+  while ((field = [fields nextObject]))
+    if ([field isEqualToString: @"*"]
+        || [field caseInsensitiveCompare: _IDField] == NSOrderedSame)
+      return YES;
+
+  return NO;
 }
 
 - (void) _fillEmailsOfEntry: (NGLdapEntry *) ldapEntry
@@ -1429,6 +1453,43 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   return ldifRecord;
 }
 
+/* Same entries as -allEntryIDs, but with all the lookup fields, converted as
+   with -lookupContactEntry:inDomain:. Returns nil when the ID of the entries
+   can't be retrieved this way. */
+- (NSArray *) allContactEntriesVisibleFromDomain: (NSString *) theDomain
+{
+  NSAutoreleasePool *pool;
+  NSEnumerator *entries;
+  NGLdapEntry *currentEntry;
+  NSDictionary *ldifRecord;
+  NSMutableArray *contacts;
+  unsigned int i;
+
+  if (![self _lookupFieldsIncludeIDField])
+    return nil;
+
+  contacts = [NSMutableArray array];
+
+  entries = [self _allEntriesWithAttributes: _lookupFields];
+  i = 0;
+  pool = [NSAutoreleasePool new];
+  while ((currentEntry = [entries nextObject]))
+    {
+      ldifRecord = [self _convertLDAPEntryToContact: currentEntry];
+      if ([[ldifRecord objectForKey: @"c_name"] length] > 0)
+        [contacts addObject: ldifRecord];
+      i++;
+      if (i % 10 == 0)
+        {
+          [pool release];
+          pool = [NSAutoreleasePool new];
+        }
+    }
+  [pool release];
+
+  return contacts;
+}
+
 - (NSArray *) fetchContactsMatching: (NSString *) match
                        withCriteria: (NSArray *) criteria
                            inDomain: (NSString *) theDomain
@@ -1537,8 +1598,8 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   return contacts;
 }
 
-- (NGLdapEntry *) _lookupLDAPEntry: (EOQualifier *) theQualifier
-		   usingConnection: (id) connection
+- (NSEnumerator *) _lookupLDAPEntries: (EOQualifier *) theQualifier
+                      usingConnection: (id) connection
 {
   NGLdapConnection *ldapConnection;
   NSEnumerator *entries;
@@ -1558,7 +1619,14 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
                                        qualifier: theQualifier
                                       attributes: _lookupFields];
 
-  return [entries nextObject];
+  return entries;
+}
+
+- (NGLdapEntry *) _lookupLDAPEntry: (EOQualifier *) theQualifier
+		   usingConnection: (id) connection
+{
+  return [[self _lookupLDAPEntries: theQualifier
+                   usingConnection: connection] nextObject];
 }
 
 - (NGLdapEntry *) _lookupLDAPEntry: (EOQualifier *) theQualifier
@@ -1598,6 +1666,68 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   return [self lookupContactEntry: theID
 			 inDomain: theDomain
 		  usingConnection: [self _ldapConnection]];
+}
+
+/* Fetch several entries by ID with one search per chunk of IDs, instead of
+   one search per ID as with -lookupContactEntry:inDomain:usingConnection:.
+   Entries are returned in no particular order; the caller matches them by
+   their "c_name". IDs with no matching entry are simply absent. Returns nil
+   when the ID of the entries can't be retrieved this way. */
+- (NSArray *) lookupContactEntries: (NSArray *) theIDs
+                          inDomain: (NSString *) theDomain
+                   usingConnection: (id) connection
+{
+  NSAutoreleasePool *pool;
+  NSEnumerator *entries;
+  NGLdapEntry *ldapEntry;
+  EOQualifier *qualifier;
+  NSMutableArray *contacts, *chunk;
+  NSMutableString *qs;
+  NSString *theID;
+  NSUInteger count, max, chunkSize;
+
+  if (![self _lookupFieldsIncludeIDField])
+    return nil;
+
+  contacts = [NSMutableArray array];
+
+  // Stay below the size limit of the connection
+  chunkSize = 100;
+  if (_queryLimit > 0 && (NSUInteger) _queryLimit < chunkSize)
+    chunkSize = _queryLimit;
+
+  chunk = [NSMutableArray arrayWithCapacity: chunkSize];
+  max = [theIDs count];
+  for (count = 0; count < max; count++)
+    {
+      theID = [theIDs objectAtIndex: count];
+      if ([theID length] > 0 && ![chunk containsObject: theID])
+        [chunk addObject: theID];
+
+      if ([chunk count] > 0
+          && ([chunk count] == chunkSize || count == max - 1))
+        {
+          pool = [NSAutoreleasePool new];
+          qs = [NSMutableString string];
+          entries = [chunk objectEnumerator];
+          while ((theID = [entries nextObject]))
+            {
+              if ([qs length])
+                [qs appendString: @" OR "];
+              [qs appendFormat: @"(%@='%@')", _IDField,
+                  [self LDAPEscapeFilterChars: theID keepWildcard: NO]];
+            }
+          qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
+          entries = [self _lookupLDAPEntries: qualifier
+                             usingConnection: connection];
+          while ((ldapEntry = [entries nextObject]))
+            [contacts addObject: [self _convertLDAPEntryToContact: ldapEntry]];
+          [pool release];
+          [chunk removeAllObjects];
+        }
+    }
+
+  return contacts;
 }
 
 - (NSDictionary *) lookupContactEntryWithUIDorEmail: (NSString *) uid

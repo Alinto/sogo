@@ -133,6 +133,13 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField;
 
 - (BOOL) groupExpansionEnabled;
 
+/* Bulk lookups used by the CardDAV address book (SOGoContactSourceFolder) to
+   avoid one LDAP search per contact */
+- (NSArray *) allContactEntriesVisibleFromDomain: (NSString *) theDomain;
+- (NSArray *) lookupContactEntries: (NSArray *) theIDs
+                          inDomain: (NSString *) theDomain
+                   usingConnection: (id) connection;
+
 @end
 
 #endif /* LDAPSOURCE_H */
