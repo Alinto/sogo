@@ -26,6 +26,24 @@
       this.quotaElement = _.find($element.find('div'), function(div) {
         return div.classList.contains('sg-quota');
       });
+
+      // The mailboxes list (md-virtual-repeat) only renders the rows that fit in its last
+      // measured height, and only re-measures on window resize. Expanding/collapsing an
+      // account changes the height of the other accounts' lists, so re-measure on any resize.
+      var container = $element[0].querySelector('md-virtual-repeat-container');
+      if (container && window.ResizeObserver) {
+        this.resizeObserver = new ResizeObserver(function () {
+          var containerCtrl = angular.element(container).controller('mdVirtualRepeatContainer');
+          if (containerCtrl && containerCtrl.repeater)
+            containerCtrl.updateSize();
+        });
+        this.resizeObserver.observe(container);
+      }
+    };
+
+    this.$onDestroy = function () {
+      if (this.resizeObserver)
+        this.resizeObserver.disconnect();
     };
 
 

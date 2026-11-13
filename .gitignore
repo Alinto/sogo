@@ -61,4 +61,4 @@ SoObjects/SOGo/SOGoSAML2Exceptions.*
 
 node_modules
 CLAUDE.md
-.claude/
+.claude/ 
