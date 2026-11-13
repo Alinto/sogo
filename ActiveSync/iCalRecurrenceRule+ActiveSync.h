@@ -40,6 +40,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @interface iCalRecurrenceRule (ActiveSync)
 
 - (NSString *) activeSyncRepresentationInContext:(WOContext *) context;
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context
+                                       namespace: (NSString *) theNamespace;
 - (void) takeActiveSyncValues: (NSDictionary *) theValues
                     inContext: (WOContext *) context;
 
