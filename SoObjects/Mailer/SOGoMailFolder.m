@@ -496,9 +496,8 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSDictionary *
                           // where a message copied within the same account shares
                           // its flags with the original (e.g. Stalwart), the
                           // \Deleted flag otherwise also lands on the Trash copy,
-                          // and whichever client expunges first decides whether
-                          // the message ends up back in the source folder or is
-                          // purged from Trash.
+                          // and if another client expunges Trash before the source
+                          // is expunged, the message ends up back in the source.
                           result = [[client moveUids: uids toFolder: folderName]
                                      objectForKey: @"result"];
                           if ([result boolValue])
