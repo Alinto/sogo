@@ -20,6 +20,8 @@
 
 
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import "SOGoDraftObject.h"
 
@@ -52,8 +54,12 @@ static unsigned int newCount;
 
 - (SOGoDraftObject *) newDraft
 {
-  return [SOGoDraftObject objectWithName: [self generateNameForNewDraft]
-			  inContainer: self];
+  SOGoDraftObject *draft;
+
+  draft = [SOGoDraftObject objectWithName: [self generateNameForNewDraft]
+                           inContainer: self];
+  [draft setDeliveryNotification: [[[context activeUser] userDefaults] mailRequestDeliveryNotification]];
+  return draft;
 }
 
 - (id) lookupName: (NSString *) name

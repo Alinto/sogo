@@ -64,6 +64,7 @@
   BOOL isHTML;
   BOOL sign;
   BOOL encrypt;
+  BOOL deliveryNotification;
   NSMutableArray *tmpFiles;
 
   // Used during S/MIME encryption
@@ -91,6 +92,9 @@
 
 - (void) setEncrypt: (BOOL) aBool;
 - (BOOL) encrypt;
+
+- (void) setDeliveryNotification: (BOOL) aBool;
+- (BOOL) deliveryNotification;
 
 
 /* for replies and forwards */
