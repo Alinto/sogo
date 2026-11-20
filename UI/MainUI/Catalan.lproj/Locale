@@ -21,12 +21,12 @@
   NSHourNameDesignations = ((0, "mitjanit"), (10, "matí"), (12, "migdia"), (14, "tarda"), (20, "vespre"), (22, "nit"));
   NSInternationalCurrencyString = EUR; /* ISO 4217 */
   NSLaterTimeDesignations = ("que ve","següent");
-  NSMonthNameArray = (gener, febrer, març, abril, maig, juny, juliol, agost, setembre, octubre, novembre, desembre);
+  NSMonthNameArray = ("gener", "febrer", "març", "abril", "maig", "juny", "juliol", "agost", "setembre", "octubre", "novembre", "desembre");
   NSNextDayDesignations = ("demà");
   NSNextNextDayDesignations = ("demà passat");
   NSPriorDayDesignations = (ahir);
   NSShortDateFormatString = "%e/%m/%y";
-  NSShortMonthNameArray = (gen, febr, març, abr, maig, juny, jul, ag, set, oct, nov, des);
+  NSShortMonthNameArray = ("gen", "febr", "març", "abr", "maig", "juny", "jul", "ag", "set", "oct", "nov", "des");
   NSShortTimeDateFormatString = "%e/%m/%y %H:%M";
   NSShortWeekDayNameArray = ("dg", "dl", "dt", "dc", "dj", "dv", "ds");
   NSThisDayDesignations = ("avui");
