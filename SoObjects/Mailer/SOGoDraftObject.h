@@ -61,6 +61,7 @@
   NSString *sourceURL;
   NSString *sourceFlag;
   NSString *sourceFolder;
+  NSString *replyFolder;
   BOOL isHTML;
   BOOL sign;
   BOOL encrypt;

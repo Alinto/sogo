@@ -127,6 +127,12 @@
 "Edit Draft..." = "Edit Draft...";
 "Load Images" = "Load Images";
 "Return Receipt" = "Return Receipt";
+"Original reply folder is unavailable. Disable Save replies in original folder in Mail preferences and retry."
+  = "Original reply folder is unavailable. Disable Save replies in original folder in Mail preferences and retry.";
+"Cannot write to original reply folder. Disable Save replies in original folder in Mail preferences and retry."
+  = "Cannot write to original reply folder. Disable Save replies in original folder in Mail preferences and retry.";
+"Message sent, but saving the reply copy failed. Do not resend."
+  = "Message sent, but saving the reply copy failed. Do not resend.";
 "Choose which identity to send this message from" = "Choose which identity to send this message from";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "The sender of this message has asked to be notified when you read this message. Do you wish to notify the sender?";
 "Return Receipt (displayed) - %@"= "Return Receipt (displayed) - %@";
