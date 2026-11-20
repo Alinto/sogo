@@ -766,6 +766,7 @@ static NSArray *infoKeys = nil;
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                               [self localeCode], @"locale",
                               [NSNumber numberWithBool: [self isHTML]], @"isHTML",
+                              [NSNumber numberWithBool: [[self receipt] boolValue]], @"receipt",
                               nil];
   if ((value = [self from]))
     [data setObject: value forKey: @"from"];
