@@ -1,0 +1,137 @@
+/* this file is in UTF-8 format! */
+
+"title" = "SOGo";
+"Username" = "İstifadəçi adı";
+"Password" = "Şifrə";
+"Domain" = "Domen";
+"Remember username" = "İstifadəçi adını xatırla";
+"Connect" = "Qoşul";
+
+/* Appears while authentication is in progress */
+"Authenticating" = "İstifadəçi doğrulanır";
+
+/* Appears when authentication succeeds */
+"Welcome" = "Xoş gəlmisiniz";
+
+"Authentication Failed" = "Doğrulama uğursuz oldu";
+"Wrong username or password." = "İstifadəçi adı və ya şifrə yanlışdır.";
+"Retry" = "Yenidən cəhd edin";
+"Login failed due to unhandled error case:" = "Emal edilməmiş xəta səbəbindən giriş uğursuz oldu:";
+"cookiesNotEnabled" = "Giriş edə bilmirsiniz, çünki brauzerinizdə kukilər bloklanmışdır. Zəhmət olmasa brauzerinizin parametrlərində kukiləri aktivləşdirib yenidən cəhd edin.";
+"browserNotCompatible" = "Brauzer versiyasının bu saytda hələ dəstəklənmədiyini müəyyən etdik. Firefox istifadəsini tövsiyə edirik. Bu brauzerinin son versiyasını yükləmək üçün aşağıdakı keçidə klikləyin.";
+"alternativeBrowsers" = "Alternativ olaraq aşağıdakı uyğun brauzerlərdən də istifadə edə bilərsiniz";
+"alternativeBrowserSafari" = "Alternativ olaraq Safari-dən də istifadə edə bilərsiniz.";
+
+/* 2FA */
+"Verification Code" = "Doğrulama kodu";
+"Enter the 6-digit verification code from your TOTP application." = "TOTP tətbiqinizdəki 6 rəqəmli doğrulama kodunu daxil edin.";
+"You provided an invalid TOTP key." = "Daxil etdiyiniz TOTP kodu etibarsızdır.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "İki mərhələli doğrulama söndürüldü. İki mərhələli doğrulamanı bərpa etmək və TOTP tətbiqinizi yenidən konfiqurasiya etmək üçün tənzimləmələr moduluna keçin.";
+
+"Download" = "Yüklə";
+"Language" = "Dil";
+"choose" = "Seçin...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Bosnian" = "Bosanski";
+"Bulgarian" = "Български";
+"Catalan" = "Català";
+"ChineseChina" = "简体中文";
+"ChineseTaiwan" = "正體中文";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"Galician" = "Galego";
+"German" = "Deutsch";
+"Greek" = "Ελληνικά";
+"Hebrew" = "עברית";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
+"Italian" = "Italiano";
+"Japanese" = "日本語";
+"Korean" = "한국어";
+"Kazakh" = "Қазақ";
+"Latvian" = "Latviešu";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"Montenegrin" = "Crnogorski";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
+"Russian" = "Русский";
+"Serbian" = "Српски";
+"SerbianLatin" = "Srpski";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"Thai" = "ภาษา";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Azerbaijani" = "Azərbaycan dili";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"About" = "Haqqında";
+"AboutBox" = "Inverse və Alinto tərəfindən hazırlanmış SOGo tam funksionallıqlı, istifadəsi asan və miqyaslana bilən qruplar üçün server proqramıdır.<br/><br/>\nSOGo zəngin AJAX əsaslı İnternet interfeysi təklif edir, CalDAV və CardDAV kimi standart protokollar vasitəsilə çoxsaylı yerli müştəriləri dəstəkləyir.<br/><br/>\nSOGo <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> 2-ci versiya və ya yuxarısı lisenziyası, hissələri isə GNU LGPL 2-ci versiya lisenziyası altında paylanır. Bu pulsuz proqramdır. Siz bu proqramı dəyişdirə və yenidən paylaya bilərsiniz. Qanunun icazə verdiyi həddə HEÇ BİR ZƏMANƏTİ YOXDUR.<br/><br/>\nMüxtəlif dəstək seçimləri üçün <a href=\"http://www.sogo.nu/en/support/community.html\">bu səhifəyə</a> baxa bilərsiniz.";
+"Your account was locked due to too many failed attempts." = "Çox sayda uğursuz giriş cəhdi səbəbindən hesabınız kilidləndi.";
+"Your account was locked due to an expired password." = "Şifrənizin müddəti bitdiyi üçün hesabınız kilidləndi.";
+"Login failed due to unhandled error case" = "Müəyyən edilməmiş problem səbəbindən giriş uğursuz oldu";
+"Change your Password" = "Şifrənizi dəyişin";
+"The password was changed successfully." = "Şifrə uğurla dəyişdirildi.";
+"Your password has expired, please enter a new one below" = "Şifrənizin müddəti bitib. Zəhmət olmasa aşağıya yeni şifrə daxil edin";
+"Your password is too weak. Please choose a stronger password to enhance your security" = "Şifrəniz çox zəifdir. Zəhmət olmasa təhlükəsizliyinizi artırmaq üçün daha güclü şifrə seçin";
+"Password must not be empty." = "Şifrə boş ola bilməz.";
+"The passwords do not match. Please try again." = "Şifrə ilə təsdiqi eyni deyil. Zəhmət olmasa yenidən cəhd edin.";
+"Password Grace Period" = "Şifrə güzəşt müddəti";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Hesabınızın kilidlənməsinə %{0} giriş qalıb. Zəhmət olmasa tənzimləmələr pəncərəsindən şifrənizi dəyişin.";
+"Password about to expire" = "Şifrənizin müddəti bitmək üzrədir";
+"Your password is going to expire in %{0} %{1}." = "Şifrənizin müddəti %{0} %{1} ərzində bitəcək.";
+"days" = "gün";
+"hours" = "saat";
+"minutes" = "dəqiqə";
+"seconds" = "saniyə";
+"Password change failed" = "Şifrə dəyişdirilmədi";
+"Password change failed - Permission denied" = "Şifrə dəyişdirilmədi. Kifayət qədər icazəniz yoxdur";
+"Password change failed - Insufficient password quality" = "Şifrə dəyişdirilmədi. Şifrə tələb olunan şərtlərə cavab vermir";
+"Password change failed - Password is too short" = "Şifrə dəyişdirilmədi. Şifrə çox qısadır";
+"Password change failed - Password is too young" = "Şifrə dəyişdirilmədi. Şifrə çox zəifdir";
+"Password change failed - Password is in history" = "Şifrə dəyişdirilmədi. Şifrə əvvəllər istifadə edilmişdir";
+"Unhandled policy error: %{0}" = "Emal edilməmiş siyasət xətası: %{0}";
+"Unhandled error response" = "Emal edilməmiş xəta cavabı";
+"Password change is not supported." = "Şifrənin dəyişdirilməsi dəstəklənmir.";
+"Unhandled HTTP error code: %{0}" = "Emal edilməmiş HTTP xəta kodu: %{0}";
+"Current password" = "Cari şifrə";
+"New password" = "Yeni şifrə";
+"Passwords don't match" = "Şifrələr uyğun gəlmir";
+"Confirmation" = "Təsdiq";
+"Change" = "Dəyiş";
+"Cancel" = "Ləğv et";
+"Please wait..." = "Zəhmət olmasa gözləyin...";
+"Close" = "Bağla";
+"Missing search parameter" = "Axtarış parametri çatışmır";
+"Missing type parameter" = "Növ parametri çatışmır";
+
+/* Password Recovery */
+"Secondary e-mail" = "İkinci e-poçt";
+"Answer" = "Cavab";
+"Password lost" = "Şifrəni unutdum";
+"No password recovery method has been defined for this user" = "Bu istifadəçi üçün şifrə bərpası metodu müəyyən edilməyib";
+"Invalid secret question answer" = "Şəxsi sualın cavabı etibarsızdır";
+"Next" = "İrəli";
+"Back" = "Geri";
+"Please enter a new password below" = "Zəhmət olmasa aşağıya yeni şifrə daxil edin";
+"A link will be sent to %{0}" = "%{0} ünvanına keçid göndəriləcək";
+"A password reset link has been sent, please check your recovery e-mail mailbox and click on the link" = "Şifrə sıfırlama keçidi göndərildi. Zəhmət olmasa bərpa e-poçt ünvanınızı yoxlayın və keçidə klikləyin";
+"Invalid configuration for email password recovery" = "E-poçt ilə şifrə bərpası konfiqurasiyası etibarsızdır";
+"Password recovery email in error" = "Şifrə bərpası e-poçtunda problem";
+"Password reset" = "Şifrəni sıfırla";
+"Hi %{0},\nThere was a request to change your password!\n\nIf you did not make this request then please ignore this email.\n\nOtherwise, please click this link to change your password: %{1}" = "Salam %{0},\nŞifrənizi dəyişmək üçün sorğu daxil oldu!\n\nBu sorğunu siz etmədinizsə bu e-poçtu nəzərə almayın.\n\nSiz etdinizsə şifrənizi dəyişmək üçün bu keçidə klikləyin: %{1}";
