@@ -75,7 +75,7 @@ describe('Sieve', function() {
     const vacationMsg = 'vacation test'
     const daysInterval = 5
     const mailaddr = user.email.replace(/mailto:/, '')
-    const sieveSimpleVacation = `require ["vacation"];\r\nvacation :days ${daysInterval} :addresses ["${mailaddr}"] text:\r\n${vacationMsg}\r\n.\r\n;\r\n`
+    const sieveSimpleVacation = `require ["vacation"];\r\nvacation :days ${daysInterval} :addresses ["${mailaddr}"] "${vacationMsg}";\r\n`
     let vacation
 
     vacation = await prefs.get('Vacation')
@@ -95,7 +95,7 @@ describe('Sieve', function() {
     const vacationMsg = 'vacation test - ignore list'
     const daysInterval = 3
     const mailaddr = user.email.replace(/mailto:/, '')
-    const sieveVacationIgnoreLists = `require ["vacation"];\r\nif allof ( not exists ["list-help", "list-unsubscribe", "list-subscribe", "list-owner", "list-post", "list-archive", "list-id", "Mailing-List"], not header :comparator "i;ascii-casemap" :is "Precedence" ["list", "bulk", "junk"], not header :comparator "i;ascii-casemap" :matches "To" "Multiple recipients of*" ) { vacation :days ${daysInterval} :addresses ["${mailaddr}"] text:\r\n${vacationMsg}\r\n.\r\n;\r\n}\r\n`
+    const sieveVacationIgnoreLists = `require ["vacation"];\r\nif allof ( not exists ["list-help", "list-unsubscribe", "list-subscribe", "list-owner", "list-post", "list-archive", "list-id", "Mailing-List"], not header :comparator "i;ascii-casemap" :is "Precedence" ["list", "bulk", "junk"], not header :comparator "i;ascii-casemap" :matches "To" "Multiple recipients of*" ) { vacation :days ${daysInterval} :addresses ["${mailaddr}"] "${vacationMsg}";\r\n}\r\n`
     let vacation
 
     vacation = await prefs.get('Vacation')
@@ -124,7 +124,7 @@ describe('Sieve', function() {
     ].map(component => component.slice(-2)).join('-')
     const startTime = '17:00'
     const timezone = (user.timezone < 0 ? '-':'+') + ('000' + Math.abs(user.timezone)).slice(-4)
-    const sieveVacationConstraints = `require ["vacation","date","relational"];\r\nif allof ( currentdate :value "ge" "date" "${startDate}", date :value "ge" :zone "${timezone}" "date" "time" "${startTime}:00" ) { vacation :days ${daysInterval} :addresses ["${mailaddr}"] text:\r\n${vacationMsg}\r\n.\r\n;\r\n}\r\n`
+    const sieveVacationConstraints = `require ["vacation","date","relational"];\r\nif allof ( currentdate :value "ge" "date" "${startDate}", date :value "ge" :zone "${timezone}" "date" "time" "${startTime}:00" ) { vacation :days ${daysInterval} :addresses ["${mailaddr}"] "${vacationMsg}";\r\n}\r\n`
     let vacation
 
     vacation = await prefs.get('Vacation')
