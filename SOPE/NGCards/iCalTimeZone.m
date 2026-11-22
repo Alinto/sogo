@@ -20,6 +20,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSPathUtilities.h>
 #import <Foundation/NSTimeZone.h>
@@ -42,6 +43,27 @@ static NSArray *knownTimeZones;
 {
   cache = [[NSMutableDictionary alloc] init];
   knownTimeZones = nil;
+}
+
+/**
+ * Mapping of Microsoft Windows timezone IDs (as sent by Exchange/Outlook,
+ * eg. "W. Europe Standard Time") to IANA timezone IDs.
+ * @see TimeZones/WindowsZones.plist
+ */
++ (NSDictionary *) _windowsTimeZonesInPath: (NSString *) path
+{
+  static NSDictionary *windowsTimeZones = nil;
+
+  if (!windowsTimeZones)
+    {
+      windowsTimeZones = [NSDictionary dictionaryWithContentsOfFile:
+                          [path stringByAppendingPathComponent: @"WindowsZones.plist"]];
+      if (!windowsTimeZones)
+        windowsTimeZones = [NSDictionary dictionary];
+      [windowsTimeZones retain];
+    }
+
+  return windowsTimeZones;
 }
 
 + (iCalTimeZone *) timeZoneForName: (NSString *) theName
@@ -73,12 +95,24 @@ static NSArray *knownTimeZones;
 	      if ([fm fileExistsAtPath: path  isDirectory: &b] && b)
 		{
 		  iCalCalendar *calendar;
-		  NSString *s;
+		  NSString *s, *ianaName;
 		  NSData *d;
-		  
+
 		  s = [NSString stringWithFormat: @"%@/%@.ics", path, theName];
-		  
+
 		  d = [NSData dataWithContentsOfFile: s];
+		  if (!d)
+		    {
+		      // Not an IANA timezone, maybe a Microsoft Windows one
+		      ianaName = [[self _windowsTimeZonesInPath: path] objectForKey: theName];
+		      if (ianaName && ![ianaName isEqualToString: theName])
+			{
+			  o = [self timeZoneForName: ianaName];
+			  if (o)
+			    [cache setObject: o  forKey: theName];
+			  return o;
+			}
+		    }
 		  s = [[NSString alloc] initWithData: d
 					encoding: NSUTF8StringEncoding];
 		  AUTORELEASE(s);
