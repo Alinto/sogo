@@ -558,6 +558,7 @@ describe('CalDAV Scheduling', function() {
         'SEQUENCE:0',
         `SUMMARY:${summary}`,
         'RRULE:FREQ=WEEKLY;COUNT=5',
+        'CLASS:PUBLIC',
         `ORGANIZER:${user.email}`,
         `ATTENDEE;RSVP=TRUE;PARTSTAT=NEEDS-ACTION:${attendee1.email}`,
         'END:VEVENT'
@@ -575,6 +576,7 @@ describe('CalDAV Scheduling', function() {
         `DTEND:202610${day}T120000Z`,
         'SEQUENCE:1',
         'SUMMARY:Weekly sync',
+        'CLASS:PUBLIC',
         `ORGANIZER:${user.email}`,
         `ATTENDEE;RSVP=TRUE;PARTSTAT=${partstat}:${attendee1.email}`,
         'END:VEVENT'
@@ -685,6 +687,11 @@ describe('CalDAV Scheduling', function() {
         'DTSTART:20261008T110000Z',
         'DTEND:20261008T120000Z',
         'SUMMARY:Blocker',
+        // Without CLASS the event takes the organizer's default classification, which
+        // DAVCalendarClassificationSpec sets to CONFIDENTIAL and does not reset.
+        // The resource free/busy lookup only returns events the organizer can read. A non-public
+        // blocker is invisible, the resource looks free and the PUT gets 204 instead of 409.
+        'CLASS:PUBLIC',
         `ORGANIZER:${user.email}`,
         `ATTENDEE;RSVP=TRUE;PARTSTAT=NEEDS-ACTION:${resourceNoOverbook.email}`,
         'END:VEVENT'
