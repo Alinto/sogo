@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.12.14](https://github.com/Alinto/sogo/compare/SOGo-5.12.13...SOGo-5.12.14) (2026-11-23)
+
+
+### Features
+
+* **web:** add optional Content Security Policy ([a863283](https://github.com/Alinto/sogo/commit/a863283680d2581405fe4e37136c1bdd5e792a4d))
+
+
+### Bug Fixes
+
+* **calendar:** add microsoft timezonez ([b009082](https://github.com/Alinto/sogo/commit/b009082343cd9e6d77508b0fc5a36e435296a4f3))
+* **contacts:** emit vCard 3.0 photo parameters for CardDAV clients (bug 5134) ([f3abad7](https://github.com/Alinto/sogo/commit/f3abad7fad2ce3934e76de2467ab30e1a24afe1a))
+* **eas:** answer Sync of non-selectable mail folders as empty folders ([1ed9775](https://github.com/Alinto/sogo/commit/1ed977528c8af4155903edeaae7301cc3e5315f4)), closes [#5872](https://bugs.sogo.nu/view.php?id=5872)
+* **gab:** improve cardav on gab and ldap ([ab59851](https://github.com/Alinto/sogo/commit/ab5985156f2d39d98c45eb48a9979e364f8d2c3d))
+* **lng:** fix catalan language ([0ae4d5f](https://github.com/Alinto/sogo/commit/0ae4d5f41eedc482eb7b1a5cd6739d2cabfb436b))
+* **login:** check that password  is non-empty or null to avoid crash ([ff28192](https://github.com/Alinto/sogo/commit/ff2819278518d09fe3e3a8eed013fa0ddd3a022c))
+* **mail:** check accountDefaults value ([3a9f785](https://github.com/Alinto/sogo/commit/3a9f7854f8f6241f48f36fd07b2dd67286073f8e))
+* **mail:** add missing Greek language support for mail reply/forward ([f6d8725](https://github.com/Alinto/sogo/commit/f6d8725c968eef5e6e74ecfb8e489fe58a5d24bd))
+* **mail:** all folders are correctly listed when displaying/hiding external accounts ([fcb2c5e](https://github.com/Alinto/sogo/commit/fcb2c5ecc213381cbe1cde652cd26b1c36301c68))
+* **mail:** check buffer length before reading TNEF properties ([ee02866](https://github.com/Alinto/sogo/commit/ee0286673015d4facc08e4cbd35392500e345f55))
+* **mail:** replace the previous signature when switching identity ([82e49b5](https://github.com/Alinto/sogo/commit/82e49b5eab1af213317038309ff9c9bc97faacd9)), closes [#6168](https://bugs.sogo.nu/view.php?id=6168) [#6214](https://bugs.sogo.nu/view.php?id=6214) [#5695](https://bugs.sogo.nu/view.php?id=5695)
+* render email if cn is empty in AptMailReceipt ([492b63c](https://github.com/Alinto/sogo/commit/492b63cfc118a237403aca0aaa6f101c55506c4e))
+* **sieve:** add create option if available for fileinto ([38b53c0](https://github.com/Alinto/sogo/commit/38b53c06dd2f3aabbfde43c61557fb25ff40e0c7))
+* **sieve:** for fileinto, user can add a non-existant mail that will be created if sieve supports it ([6b89e51](https://github.com/Alinto/sogo/commit/6b89e51b432a99b0c7d1dc8c8e507d217af08cad))
+
+
+### Localization
+
+* **ca:** Update Catalan translations ([0164b72](https://github.com/Alinto/sogo/commit/0164b72f2b57c45214233589fa0321e43986e86f))
+* **fi:** Update Finnish translations ([1c4d801](https://github.com/Alinto/sogo/commit/1c4d801fc9e8ebe7d256a011a4a13fe35432e9d7))
+* **pt_BR:** Update BrazilianPortuguese translations ([049e921](https://github.com/Alinto/sogo/commit/049e921bf921eca2559dbe39abef310809dd79e5))
+
 ## [5.12.13](https://github.com/Alinto/sogo/compare/SOGo-5.12.12...SOGo-5.12.13) (2026-11-03)
 
 
