@@ -65,13 +65,13 @@
 "A total of %{0} events were imported in the calendar." = "%{0} tehtävää tuotiin kalenteriin.";
 "Compose E-Mail to All Attendees" = "Luo sähköpostiviesti kaikille osallistujille";
 "Compose E-Mail to Undecided Attendees" = "Luo sähköpostiviesti epävarmoille osallistujille";
-"Download iOS - MacOS configuration profile" = "Download iOS - MacOS configuration profile";
+"Download iOS - MacOS configuration profile" = "Lataa iOS- ja macOS-määritysprofiili";
 
 /* Relative dates */
-"Yesterday" = "Yesterday";
+"Yesterday" = "Eilen";
 "Today" = "Tänään";
-"Tomorrow" = "Tomorrow";
-"Last %@" = "Last %@";
+"Tomorrow" = "Huomenna";
+"Last %@" = "Viimeiset %@";
 
 /* Folders */
 "Personal calendar" = "Henkilökohtainen kalenteri";
@@ -110,14 +110,14 @@
 "Name of the Calendar" = "Kalenterin nimi";
 "new" = "Uusi";
 "Print view" = "Tulostusnäkymä";
-"Print" = "Print";
+"Print" = "Tulosta";
 "edit" = "Muokkaa";
 "delete" = "Poista";
 "proposal" = "Ehdotus";
 "Save and Close" = "Tallenna ja sulje";
 "Close" = "Sulje";
 "Invite Attendees" = "Kutsu osallistujia";
-"Create Jitsi Meeting" = "Create Jitsi Meeting";
+"Create Jitsi Meeting" = "Luo Jitsi kokous";
 "Attach" = "Liitä";
 "Update" = "Päivitä";
 "Cancel" = "Peruuta";
@@ -152,7 +152,7 @@
 "Display events and tasks colors" = "Näytä tapahtumat ja tehtävien värit";
 "Borders" = "Reunat";
 "Backgrounds" = "Taustat";
-"Page Format" = "Page Format";
+"Page Format" = "Sivukoko";
 
 /* Appointments */
 "Appointment viewer" = "Tapaamisnäkymä";
@@ -224,12 +224,12 @@
 "view_next14" = "Seuraavat 14 päivää";
 "view_next31" = "Seuraavat 31 päivää";
 "view_thismonth" = "Tämä kuukausi";
-"view_thisyear" = "This Year";
-"view_last7" = "Last 7 days";
-"view_last14" = "Last 14 days";
-"view_last31" = "Last 31 days";
-"view_lastmonth" = "Last Month";
-"view_lastyear" = "Last Year";
+"view_thisyear" = "Tämä vuosi";
+"view_last7" = "Viimeiset 7 päivää";
+"view_last14" = "Viimeiset 14 päivää";
+"view_last31" = "Viimeiset 31 päivää";
+"view_lastmonth" = "Viime kuukausi";
+"view_lastyear" = "Viime vuosi";
 "view_future" = "Kaikki tulevat tapahtumat";
 "view_selectedday" = "Valittu päivä";
 "view_not_started" = "Aloittamattomat tehtävät";
@@ -351,7 +351,7 @@
 "repeat_YEARLY" = "Vuosittain";
 "repeat_CUSTOM" = "Määritetty...";
 "reminder_NONE" = "Ei muistutusta";
-"reminder_0" = "At time of event";
+"reminder_0" = "Tapahtuman alkaessa";
 "reminder_5_MINUTES_BEFORE" = "5 minuuttia ennen";
 "reminder_10_MINUTES_BEFORE" = "10 minuuttia ennen";
 "reminder_15_MINUTES_BEFORE" = "15 minuuttia ennen";
@@ -378,7 +378,7 @@
 "Show an Alert" = "Näytä hälytys";
 "Send an E-mail" = "Lähetä sähköposti";
 "Email Organizer" = "Sähköposti järjestäjälle";
-"Email Attendees (internal users)" = "Email Attendees (internal users)";
+"Email Attendees (internal users)" = "Lähetä sähköposti osallistujille (sisäiset käyttäjät)";
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
@@ -403,8 +403,8 @@
 "To" = "Kenelle";
 
 /* dates */
-"DateFrom" = "From";
-"DateTo" = "To";
+"DateFrom" = "Lähettäjä";
+"DateTo" = "Vastaanottaja";
 
 /* validation errors */
 validate_notitle           = "Otsikkoa ei ole asetettu, jatka?";
@@ -453,34 +453,34 @@ validate_untilbeforeend    = "Uusitun tapahtuman on päätyttävä ensimmäisen 
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Oletko varma että haluat poistaa kalenterin \"%{0}\"?";
 "Are you sure you want to delete the selected components?"
-= "Are you sure you want to delete the selected components?";
+= "Haluatko varmasti poistaa valitut kohteet?";
 
 /* Participation role */
-"Role" = "Role";
+"Role" = "Rooli";
 
 /* Participant role: participation is required */
 "Participant" = "Osallistuja";
 
 /* Participant role: participation is required */
-"req-participant" = "Participant";
+"req-participant" = "Osallistuja";
 
 /* Participant role: participation is optional */
 "Optional Participant" = "Vaihtoehtoiset osallistujat";
 
 /* Participant role: participation is optional */
-"opt-participant" = "Optional Participant";
+"opt-participant" = "Valinnainen osallistuja";
 
 /* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Ei osallistu";
 
 /* Participant role: participant is copied for information purposes only */
-"non-participant" = "Non Participant";
+"non-participant" = "Ei osallistu";
 
 /* Participant role: participant is chair of the calendar entity */
 "Chair" = "Puheenjohtaja";
 
 /* Participant role: participant is chair of the calendar entity */
-"chair" = "Chair";
+"chair" = "Puheenjohtaja";
 
 /* Participant status: needs action */
 "Needs action" = "Vaatii toimenpiteitä";
@@ -513,7 +513,7 @@ validate_untilbeforeend    = "Uusitun tapahtuman on päätyttävä ensimmäisen 
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Aikaristiriita yhdentai useamman osallistujan kanssa.⏎ Haluatko silti säilyttää nykyiset asetukset?";
 "Would you like to remove them and send the invitation to the remaining attendees?"
-= "Would you like to remove them and send the invitation to the remaining attendees?";
+= "Haluatko poistaa heidät ja lähettää kutsun muille osallistujille?";
 
 /* events list */
 "Due" = "Määräaika";
@@ -567,7 +567,7 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 "CalDAV URL" = "CalDAV URL ";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
-"Copy to clipboard" = "Copy to clipboard";
+"Copy to clipboard" = "Kopioi leikepöydälle";
 
 /* Error messages */
 "dayFieldInvalid" = "Ole hyvä ja syötä Päivä -kenttään luku joka on suurempi tai yhtäsuuri kuin 1. ";
@@ -592,10 +592,10 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 "Delete Event" = "Poista tapahtuma";
 "Copy event to my calendar" = "Kopioi tapahtumat kalenteriini";
 "View Raw Source" = "Näytä lähdekoodi";
-"Move To" = "Move To";
-"Copy To" = "Copy To";
+"Move To" = "Siirrä";
+"Copy To" = "Kopioi";
 "Subscriptions" = "Tilaukset";
-"Subscribe to a shared calendar" = "Subscribe to a shared calendar";
+"Subscribe to a shared calendar" = "Tilaa jaettu kalenteri";
 "Subscribe to a web calendar..." = "Liity web-kalenteriin...";
 "URL of the Calendar" = "Kalenterin URL";
 "Web Calendar" = "Web kalenteri";
@@ -625,14 +625,14 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 "More options" = "Lisää valintoja";
 "Delete This Occurrence" = "Poista tämä tapahtuma";
 "Delete All Occurrences" = "Poista kaikki tapahtumat";
-"Add Recurrence Date" = "Add Recurrence Date";
+"Add Recurrence Date" = " Lisää toistopäivä";
 "Add From" = "Lisää aloitusaika";
 "Add Due" = "Lisää määräaika";
 "Import" = "Tuo";
 "Rename" = "Nimeä uudelleen";
 "Import Calendar" = "Tuo kalenteri";
 "Select an ICS file." = "Valitse ICS tiedosto";
-"You have modified data unsaved. Do you want to close popup and loose data ?" = "You have modified data unsaved. Do you want to close popup and loose data ?";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "Sinulla on tallentamattomia muutoksia. Haluatko sulkea ikkunan ja hylätä muutokset?";
 
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Kalenterin tilaus onnistui";

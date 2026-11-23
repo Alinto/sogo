@@ -27,9 +27,9 @@
 "OfficePhone" = "Toimistopuhelin";
 "Organization" = "Organisaatio";
 "Work Phone" = "Työpuhelin";
-"Cell" = "Cell";
+"Cell" = "Matkapuhelin";
 "Pager" = "Hakulaite";
-"Pref" = "Pref";
+"Pref" = "Ensisijainen";
 "Phone" = "Puhelin";
 "Phones" = "Puhelimet";
 "Postal" = "Postiosoite";
@@ -49,37 +49,37 @@
 "Blind Carbon Copy (Bcc)" = "Blind Carbon Copy (Bcc)";
 
 /* Search scope: name fields */
-"name" = "Name";
+"name" = "Nimi";
 
 /* Search scope: name fields */
-"c_cn" = "Name";
+"c_cn" = "Nimi";
 
 /* Search scope: secondary email field */
-"mozillanickname" = "Secondary email";
+"mozillanickname" = "Toissijainen sähköpostiosoite";
 
 /* Search scope: screen name field */
-"nsaimid" = "Screen name";
+"nsaimid" = "Näyttönimi";
 
 /* Search scope: mail fields */
-"mail" = "Mail";
+"mail" = "Sähköposti";
 
 /* Search scope: mail fields */
-"c_mail" = "Mail";
+"c_mail" = "Sähköposti";
 
 /* Search scope: telephone field */
-"telephonenumber" = "Telephone";
+"telephonenumber" = "Puhelin";
 
 /* Search scope: telephone field */
-"homephone" = "Telephone";
+"homephone" = "Puhelin";
 
 /* Search scope: mobile field */
-"mobile" = "Mobile";
+"mobile" = "Mobiili";
 
 /* Search scope: fax field */
 "facsimiletelephonenumber" = "Fax";
 
 /* Search scope: pager field */
-"pager" = "Pager";
+"pager" = "Hakulaite";
 
 /* Search scope: categories field */
 "c_categories" = "Categories";

@@ -3,7 +3,7 @@
 /* Icon's label */
 "Create"      = "Luo";
 "Empty Trash" = "Tyhjennä roskakori";
-"Empty Junk Folder" = "Empty Junk Folder";
+"Empty Junk Folder" = "Tyhjennä roskapostikansio";
 "Delete"      = "Poista";
 "Expunge"     = "Hävitä";
 "Forward"     = "Lähetä edelleen";
@@ -71,7 +71,7 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Ei valittua postilaatikkoa";
 
-"An error occured while communicating with the mail server" = "An error occured while communicating with the mail server";
+"An error occured while communicating with the mail server" = "Yhteydessä postipalvelimeen tapahtui virhe";
 
 /* Mailbox actions */
 
@@ -79,7 +79,7 @@
 "Folder compacted" = "Kansio tiivistetty";
 
 /* Empty Junk Folder success message */
-"Junk folder emptied" = "Junk folder emptied";
+"Junk folder emptied" = "Roskapostikansio tyhjennetty";
 
 /* Empty Trash success message */
 "Trash emptied" = "Roskakori tyhjennetty";
@@ -88,7 +88,7 @@
 "Access rights to" = "Käyttöoikeudet";
 "For user" = "Käyttäjälle";
 "Any Authenticated User" = "Kuka tahansa kirjautunut käyttäjä";
-"View this folder" = "View this folder";
+"View this folder" = "Näytä tämä hakemisto";
 "Read mails from this folder" = "Lue viestit tästä kansiosta";
 "Mark mails read and unread" = "Merkitse viestit luetuksi ja lukemattomaksi";
 "Modify the flags of the mails in this folder" = "Muokkaa kansion lippumerkintöjä ";
@@ -127,13 +127,13 @@
 "Edit Draft..." = "Muokkaa luonnosta...";
 "Load Images" = "Lataa kuvat";
 "Return Receipt" = "Vastaanottokuittaus";
-"Choose which identity to send this message from" = "Choose which identity to send this message from";
+"Choose which identity to send this message from" = "Valitse henkilöllisyys, jolla lähetät tämän viestin";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Viestin lähettäjä pyytää ilmoitusta kun luet tämän viestin. Haluatko lähettää ilmoituksen?";
 "Return Receipt (displayed) - %@"= "Vastaus kuittaus (näkyvä) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Tämä on vastaus kuittaus viestiin jonka lähetit %@lle.⏎ ⏎ Huom: Tämä kuittaus kertoo ainoastaan että viesti on näytetty vastaanottajan koneella. Viestin lukemisesta tai sen sisällön ymmärtämisestä ei ole takuuta.";
-"Security" = "Security";
-"Sign" = "Sign";
-"Encrypt" = "Encrypt";
+"Security" = "Turvallisuus";
+"Sign" = "Allekirjoita";
+"Encrypt" = "Salaa";
 "Priority" = "Prioriteetti";
 "highest" = "Korkein";
 "high" = "Korkea";
@@ -143,23 +143,23 @@
 "This mail is being sent from an unsecure network!" = "Tätä viestiä lähetetään turvattomasta verkosta!";
 "Address Book" = "Osoitekirja";
 "Search For" = "Etsi";
-"Contains" = "Contains";
-"Does not contains" = "Does not contains";
-"Advanced search" = "Advanced search";
-"Anytime" = "Anytime";
-"Last 7 days" = "Last 7 days";
-"Last 30 days" = "Last 30 days";
-"Last 6 month" = "Last 6 month";
-"Before" = "Before";
-"After" = "After";
-"Between" = "Between";
-"and" = "and";
-"With attachments" = "With attachments";
-"In favorites" = "In favorites";
-"Unseen only" = "Unseen only";
-"Show more" = "Show more";
-"Reset" = "Reset";
-"Message size" = "Message size";
+"Contains" = "Sisältää";
+"Does not contains" = "Ei sisällä";
+"Advanced search" = "Edistynyt haku";
+"Anytime" = "Mihin aikaan tahansa";
+"Last 7 days" = "Viimeiset 7 päivää";
+"Last 30 days" = "Viimeiset 30 päivää";
+"Last 6 month" = "Viimeiset 6 kuukautta";
+"Before" = "Ennen";
+"After" = "Jälkeen";
+"Between" = "Välillä";
+"and" = "ja";
+"With attachments" = "Sisältää liitteitä";
+"In favorites" = "Suosikeissa";
+"Unseen only" = "Van näkemättömät";
+"Show more" = "Näytä lisää";
+"Reset" = "Nollaa";
+"Message size" = "Viestin koko";
 
 /* Popup "show" */
 "all"     = "kaikki";
@@ -171,7 +171,7 @@
 /* MailListView */
 "Sender" = "Lähettäjä";
 "Subject or Sender" = "Aihe tai lähettäjä";
-"Subject or Recipient" = "Subject or Recipient";
+"Subject or Recipient" = "Aihe tai Vastaanottaja";
 "To or Cc" = "Vastaanottaja tai kopio";
 "Entire Message" = "Koko viesti";
 "Date"          = "Päiväys";
@@ -184,20 +184,20 @@
 "previous"      = "Edellinen";
 "next"          = "Seuraava";
 "last"          = "Viimeinen";
-"msgnumber_to"  = "to";
-"msgnumber_of"  = "of";
+"msgnumber_to"  = "kenelle";
+"msgnumber_of"  = " ";
 "Mark Unread" = "Merkitse lukemattomaksi";
 "Mark Read"   = "Merkitse luetuksi";
 "Untitled" = "Ei otsikkoa";
 
 /* Filter option in messages list */
-"Show unread messages only" = "Show unread messages only";
+"Show unread messages only" = "Näytä vain lukemattomat viestit";
 
 /* Filter option in messages list */
-"Show flagged messages only" = "Show flagged messages only";
+"Show flagged messages only" = "Näytä vain liputetut viestit";
 
 /* Aria label for icon of labels */
-"Filtered by label" = "Filtered by label";
+"Filtered by label" = "Suodatettu tunnisteella";
 
 /* Tree */
 "SentFolderName"   = "Lähetetyt";
@@ -205,7 +205,7 @@
 "InboxFolderName"  = "Saapuneet";
 "DraftsFolderName" = "Luonnokset";
 "JunkFolderName" = "Roskaa";
-"TemplatesFolderName" = "Templates";
+"TemplatesFolderName" = "Mallipohjat";
 "SieveFolderName"  = "Suodattimet";
 "Folders"          = "Kansiot"; /* title line */
 
@@ -214,7 +214,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Lisää osoitekirjaan...";
-"Successfully created card" = "Successfully created card";
+"Successfully created card" = "Kortti luotu onnistuneesti";
 "Compose Mail To" = "Lähetä viesti";
 "Create Filter From Message..." = "Muodosta viestistä suodatin...";
 
@@ -257,7 +257,7 @@
 "Save As..." = "Tallenna nimellä...";
 "Print Preview" = "Esikatselu";
 "View Message Source" = "Näytä viestin lähdekoodi";
-"View raw message" = "View raw message";
+"View raw message" = "Näytä raakaviesti";
 
 /* Message view "more" menu: create an event from message */
 "Convert To Event" = "Muunna tapahtumaksi";
@@ -266,10 +266,10 @@
 "Convert To Task" = "Muunna tehtäväksi";
 
 /* Message view "more" menu: download message as an eml file */
-"Download message" = "Download message";
+"Download message" = "Lataa viesti";
 
 /* Message view "more" menu: download message as a zip archive */
-"Download message (zip)" = "Download message (zip)";
+"Download message (zip)" = "Lataa viesti (zip)";
 
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "Lataa kaikki liitteet";
@@ -299,34 +299,34 @@
 "to_date" = "to";
 
 /* Encrypted message notification */
-"This message is encrypted" = "This message is encrypted";
+"This message is encrypted" = "Tämä viesti on salattu";
 
 /* Encrypted message but no certificate */
-"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module.";
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Tätä viestiä ei voi purkaa. Varmista, että olet ladannut S/MIME-varmenteesi sähköpostiasetuksissa.";
 
 /* OpenSSL certificate error - unknown issuer */
-"certificate verify error" = "Unable to verify message signature";
+"certificate verify error" = "Viestin allekirjoitusta ei voitu vahvistaa";
 
 /* OpenSSL certificate error - digest failure */
-"digest failure" = "The message has been modified";
+"digest failure" = "Viestiä on muokattu";
 
 /* OpenSSL reading error */
-"Error reading the certificate. Please install a new certificate." = "Error reading the certificate. Please install a new certificate.";
+"Error reading the certificate. Please install a new certificate." = "Virhe varmenteen lukemisessa. Asenna uusi varmenne.";
 
 /* Trying to access a non-existent certificate */
-"No certificate associated to account." = "No certificate associated to account.";
+"No certificate associated to account." = "Tilillä ei ole varmennetta.";
 
 /* Invalid S/MIME signature */
-"Digital signature is not valid" = "Digital signature is not valid";
+"Digital signature is not valid" = "Digitaalinen allekirjoitus ei ole kelvollinen";
 
 /* Valid S/MIME signature */
-"Message is signed" = "Message is signed";
+"Message is signed" = "Viesti on allekirjoitettu";
 
 /* Valid S/MIME signature but common name not found */
-"Message is signed but the certificate doesn't match the sender email address" = "Message is signed but the certificate doesn't match the sender email address";
+"Message is signed but the certificate doesn't match the sender email address" = "Viesti on allekirjoitettu, mutta varmenne ei vastaa lähettäjän sähköpostiosoitetta";
 
 /* Unknown error while validating message signature */
-"Digital signature is not valid" = "Digital signature is not valid";
+"Digital signature is not valid" = "Digitaalinen allekirjoitus ei ole kelvollinen";
 
 "This Folder" = "Tämä kansio";
 
@@ -362,7 +362,7 @@
 "Operation failed" = "Toiminto epäonnistui";
 "Quota" = "Kokorajoitus:";
 "quotasFormat" = "%{0}% käytetty %{1} Mt:sta";
-"messageQuotasFormat" = "%{0}% of %{1} msgs";
+"messageQuotasFormat" = "%{0}% / %{1} viestistä";
 "Unable to move/delete folder." = "Hakemiston siirto/poisto ei onnistu.";
 
 /* Alternative operation when folder cannot be deleted */
@@ -403,17 +403,17 @@
 = "Viestejä ei voitu siirtää roskakoriin. Haluatko poistaa ne välittömästi?";
 
 /* Message editing */
-"Please specify a subject." = "Please specify a subject.";
+"Please specify a subject." = "Anna viestille aihe.";
 "error_missingsubject" = "Viestillä ei ole otsikkoa. Haluatko varrmasti lähettää sen?";
 "error_missingrecipients" = "Ole hyvä ja syötä ainakin yksi vastaanottaja.";
 "Send Anyway" = "Lähetä silti";
 "Error while saving the draft" = "Virhe luonnoksen tallennuksessa";
 
 /* Error when emptying trash */
-"Unable to empty the trash folder." = "Unable to empty the trash folder.";
+"Unable to empty the trash folder." = "Roskakorin tyhjennys epäonnistui.";
 
 /* Error when emptying junk folder */
-"Unable to empty the junk folder." = "Unable to empty the junk folder.";
+"Unable to empty the junk folder." = "Roskapostikansion tyhjennyt epäonnistui.";
 
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Virhe tiedoston \"%{0}\" latauksessa: ";
@@ -429,9 +429,9 @@
 "cannot send message: (smtp) all recipients discarded" = "Viestiä ei voi lähettää: kaikki vastaanottajat ovat virheellisiä.";
 "cannot send message (smtp) - recipients discarded" = "Viestiä ei voi lähettää: seuraavat osoitteet ovat virheellisiä";
 "cannot send message: (smtp) error when connecting" = "Viestiä ei voi lähettää: virhe yhdistettäessä SMTP -palvelimeen.";
-"cannot sign email without certificate" = "The message can't be signed because there's no certificate associated to the mail account.";
-"cannot sign message because the certificate can't be read" = "The message can't be signed becasue the certificate associated to the mail account can't be read.";
-"cannot sign message because the certificate doesn't include the specified sender address" = "The message can't be signed because the sender address is not included in the certificate associated to the mail account.";
+"cannot sign email without certificate" = "Viestiä ei voi allekirjoittaa, koska sähköpostitiliin ei ole liitetty varmennetta.";
+"cannot sign message because the certificate can't be read" = "Viestiä ei voi allekirjoittaa, koska sähköpostitiliin liitettyä varmennetta ei voi lukea.";
+"cannot sign message because the certificate doesn't include the specified sender address" = "Viestiä ei voi allekirjoittaa, koska lähettäjän osoitetta ei ole sähköpostitiliin liitetyssä varmenteessa.";
 
 /* Contacts list in mail editor */
 "Email" = "Sähköposti";
@@ -452,7 +452,7 @@
 "Set as Trash" = "Merkitse roskaksi";
 
 /* Set the folder as the one holding the Templates */
-"Set as Templates" = "Set as Templates";
+"Set as Templates" = "Aseta Mallit-kansioksi";
 
 /* Set the folder as the one holding Junk mails */
 "Set as Junk" = "Merkitse roskaksi";
@@ -464,7 +464,7 @@
 "Copy messages" = "Kopioi viestit";
 "More messages options" = "Lisää viestiasetuksia";
 "Flag" = "Merkitse";
-"Unflag" = "Unflag";
+"Unflag" = "Poista merkintä";
 "Mark as Unread" = "Merkitse lukemattomaksi";
 "Mark as Read" = "Merkitse luetuksi";
 "Closing Window ..." = "Ikkuna sulkeutuu...";
@@ -478,19 +478,19 @@
 "Your email has been sent" = "Sähköpostiviestisi on lähetetty";
 "Folder compacted" = "Kansio tiivistetty";
 
-"More Options" = "More Options";
+"More Options" = "Lisää vaihtoehtoja";
 
-"New draft" = "New draft";
-"Create new draft with this template" = "Create new draft with this template";
+"New draft" = "Uusi luonnos";
+"Create new draft with this template" = "Luo uusi luonnos tällä mallilla";
 
 /* Advanced search */
-"Enter Subject" = "Enter Subject";
-"Enter From" = "Enter From";
-"Enter To" = "Enter To";
-"Enter Cc" = "Enter Cc";
-"Enter Body" = "Enter Body";
-"match" = "match";
-"does not match" = "does not match";
+"Enter Subject" = "Anna aihe";
+"Enter From" = "Anna lähettäjä";
+"Enter To" = "Anna vastaanottaja";
+"Enter Cc" = "Anna kopion vastaanottaja";
+"Enter Body" = "Anna viestiteksti";
+"match" = "täsmää";
+"does not match" = "ei täsmää";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Hakualue";
@@ -517,16 +517,16 @@
 "hotkey_forward" = "f";
 
 /* Email deletion */
-"Clean folder" = "Clean folder";
-"Clean mailbox" = "Clean mailbox";
-"Delete permanently (do not use trash)" = "Delete permanently (do not use trash)";
-"Apply to subfolders" = "Apply to subfolders";
-"Delete e-mails older than" = "Delete e-mails older than";
-"3 months" = "3 months";
-"6 months" = "6 months";
-"9 months" = "9 months";
-"1 year" = "1 year";
-"Custom" = "Custom";
-"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "You are about to permanently delete some messages. Are you sure you want to proceed with this action?";
-"Apply" = "Apply";
-"%{0} message(s) deleted" = "%{0} message(s) deleted";
+"Clean folder" = "Siivoa kansio";
+"Clean mailbox" = "Siivoa postilaatikko";
+"Delete permanently (do not use trash)" = "Poista pysyvästi (älä käytä roskakoria)";
+"Apply to subfolders" = "Käytä myös alikansioihin";
+"Delete e-mails older than" = "Poista sähköpostiviestit jotka ovat vanhempia kuin";
+"3 months" = "3 kk";
+"6 months" = "6 kk";
+"9 months" = "9 kk";
+"1 year" = "1 vuosi";
+"Custom" = "Määritetty";
+"You are about to permanently delete some messages. Are you sure you want to proceed with this action?" = "Olet poistamassa viestejä pysyvästi. Haluatko varmasti jatkaa?";
+"Apply" = "Hyväksy";
+"%{0} message(s) deleted" = "%{0} viesti(ä) poistettu";

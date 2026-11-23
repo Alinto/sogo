@@ -3,7 +3,7 @@
 "title" = "SOGo";
 "Username" = "Käyttäjätunnus";
 "Password" = "Salasana";
-"Domain" = "Domain";
+"Domain" = "Toimialue";
 "Remember username" = "Muista käyttäjätunnus";
 "Connect" = "Yhdistä";
 
@@ -16,17 +16,17 @@
 "Authentication Failed" = "Tunnistautuminen epäonnistui";
 "Wrong username or password." = "Väärä käyttäjätunnus tai salasana.";
 "Retry" = "Yritä uudelleen";
-"Login failed due to unhandled error case:" = "Login failed due to unhandled error case:";
+"Login failed due to unhandled error case:" = "Kirjautuminen epäonnistui odottamattoman virheen vuoksi:";
 "cookiesNotEnabled" = "Et voi kirjautua koska selaimesi evästeet eivät ole käytössä. Salli evästeet selaimen asetuksista ja yritä uudelleen.";
 "browserNotCompatible" = "Olemme havainneet että selaimesi versiota ei tällä hetkellä tueta tällä sivustolla. Suosituksemme on käyttää Firefoxia. Napsauta alla olevaa linkkiä ladataksesi uusimman version tästä selaimesta.";
 "alternativeBrowsers" = "Vaihtoehtoisesti voit myös käyttää seuraavia yhteensopivia selaimia";
 "alternativeBrowserSafari" = "Vaihtoehtoisesti voit myös käyttää Safaria.";
 
 /* 2FA */
-"Verification Code" = "Verification Code";
-"Enter the 6-digit verification code from your TOTP application." = "Enter the 6-digit verification code from your TOTP application.";
-"You provided an invalid TOTP key." = "You provided an invalid TOTP key.";
-"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application.";
+"Verification Code" = "Vahvistuskoodi";
+"Enter the 6-digit verification code from your TOTP application." = "Anna TOTP-sovelluksesi näyttämä 6-numeroinen vahvistuskoodi.";
+"You provided an invalid TOTP key." = "Antamasi TOTP-avain on virheellinen.";
+"Two-factor authentication has been disabled. Visit the Preferences module to restore two-factor authentication and reconfigure your TOTP application." = "Kaksivaiheinen tunnistautuminen on poistettu käytöstä. Ota se uudelleen käyttöön Asetuksissa ja määritä TOTP-sovelluksesi uudelleen.";
 
 "Download" = "Lataa";
 "Language" = "Kieli";

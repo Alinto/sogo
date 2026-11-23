@@ -12,9 +12,9 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 "The event \"%{Summary}\" was created" = "Tapahtuma \"%{Summary}\" luotiin";
 "The event \"%{Summary}\" was deleted" = "Tapahtuma \"%{Summary}\" poistettiin";
 "The event \"%{Summary}\" was updated" = "Tapahtuma \"%{Summary}\" päivitettiin";
-"The task \"%{Summary}\" was created" = "The task \"%{Summary}\" was created";
-"The task \"%{Summary}\" was deleted" = "The task \"%{Summary}\" was deleted";
-"The task \"%{Summary}\" was updated" = "The task \"%{Summary}\" was updated";
+"The task \"%{Summary}\" was created" = "Tehtävä \"%{Summary}\" on luotu";
+"The task \"%{Summary}\" was deleted" = "Tehtävä \"%{Summary}\" on poistettu";
+"The task \"%{Summary}\" was updated" = "Tehtävä \"%{Summary}\" on päivitetty";
 "The following attendees(s) were notified" = "Seuraava(t) osallistuja(t) on informoitu";
 "The following attendees(s) were added" = "Seuraava(t) osalllistuja(t) on lisätty";
 "The following attendees(s) were removed" = "Seuraava(t) osalllistuja(t) poistettiin";
@@ -23,14 +23,14 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 "calendar_label" = "Kalenteri";
 "startDate_label" = "Alkaa";
 "endDate_label" = "Päättyy";
-"time_label" = "Time";
-"to_label" = "to";
+"time_label" = "Aika";
+"to_label" = "Kenelle";
 "due_label" = "Määräpäivä:";
 "location_label" = "Sijainti";
 "summary_label" = "Yhteenveto:";
 "comment_label" = "Kommentti:";
-"organizer_label" = "Organizer";
-"attendee_label" = "Attendee";
+"organizer_label" = "Järjestäjä";
+"attendee_label" = "Osallistuja";
 
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Tapahtumakutsu: \"%{Summary}\"";
@@ -70,13 +70,13 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 = "%{Attendee} %{SentByText} ei vielä ole tehnyt päätöstä tapahtumakutsustasi.";
 
 /* Reminder */
-"Reminder: \"%{Summary}\" - %{StartDate}" = "Reminder: \"%{Summary}\" - %{StartDate}";
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Muistutus: \"%{Summary}\" - %{StartDate}";
 
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Ei pääsyä resurssiin: \"%{Cn} %{SystemEmail}\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Maksimimäärä yhtäaikaisia varauksia\n(%{NumberOfSimultaneousBookings}) saavutettu resurssille \"%{Cn} %{SystemEmail}\". Ristiriitainen tapahtuma: \"%{EventTitle}\" alkaa %{StartDate}.";
 
 /* Participation role */
-"Your participation is required to this event" = "Your participation is required to this event";
-"Your participation is optional to this event" = "Your participation is optional to this event";
-"Your participation is not required to this event" = "Your participation is not required to this event";
+"Your participation is required to this event" = "Osallistumisesi vaaditaan tähän tapahtumaan";
+"Your participation is optional to this event" = "Osallitumisesi tähän tapahtumaan on vapaaehtoinen";
+"Your participation is not required to this event" = "Osallistumistasi ei vaadita tähän tapahtumaan";
