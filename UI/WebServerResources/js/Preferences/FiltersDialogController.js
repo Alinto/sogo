@@ -141,6 +141,18 @@
       this.filter.rules.splice(index, 1);
     };
     
+    // Mailboxes matching the text of a "fileinto" action; the user can also
+    // type the name of a mailbox that is not in the list
+    this.filterMailboxes = function (text) {
+      var search = (text || '').toLowerCase();
+      if (!search)
+        return this.mailboxes;
+      return _.filter(this.mailboxes, function (mailbox) {
+        return (mailbox.$displayName && mailbox.$displayName.toLowerCase().indexOf(search) > -1) ||
+          (mailbox.sievePath && mailbox.sievePath.toLowerCase().indexOf(search) > -1);
+      });
+    };
+
     this.addMailFilterAction = function (event) {
       if (!this.filter.actions)
         this.filter.actions = [];

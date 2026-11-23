@@ -37,6 +37,7 @@
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
 #import <NGImap4/NGSieveClient.h>
+#import <NGImap4/NSString+Imap4.h>
 #import <NGObjWeb/NSException+HTTP.h>
 
 #import "../Mailer/SOGoMailAccount.h"
@@ -537,6 +538,11 @@ static NSString *sieveScriptName = @"sogo";
                 }
               else if ([method isEqualToString: @"fileinto"])
                 {
+                  // A mailbox name typed by the user is not encoded; existing
+                  // mailboxes are already in modified UTF-7 (7-bit safe)
+                  if (![[[SOGoSystemDefaults sharedSystemDefaults] sieveFolderEncoding] isEqualToString: @"UTF-8"]
+                      && ![argument is7bitSafe])
+                    argument = [argument stringByEncodingImap4FolderName];
                   mailbox = [[argument componentsSeparatedByString: @"/"] componentsJoinedByString: delimiter];
                   if(hasMailboxExt)
                   {

@@ -149,16 +149,23 @@
             </md-input-container>
 
             <!-- FILE INTO -->
-            <md-input-container class="md-block" flex="50" ng-if="action.method == 'fileinto'">
-              <label><var:string label:value="Mailbox"/></label>
-              <md-select ng-model="action.argument" required="required">
-                <md-option ng-value="item.sievePath" ng-repeat="item in filterEditor.mailboxes">
-                  <div ng-class="'sg-child-level-' + item.level">
-                    {{ item.$displayName }}
-                  </div>
-                </md-option>
-              </md-select>
-            </md-input-container>
+            <!-- Pick an existing mailbox or type the name of a new one -->
+            <md-autocomplete
+                class="md-block" flex="50"
+                ng-if="action.method == 'fileinto'"
+                md-search-text="action.argument"
+                md-items="item in filterEditor.filterMailboxes(action.argument)"
+                md-item-text="item.sievePath"
+                md-min-length="0"
+                md-no-cache="true"
+                required="required"
+                label:md-floating-label="Mailbox">
+              <md-item-template>
+                <div ng-class="'sg-child-level-' + item.level">
+                  <span md-highlight-text="action.argument" md-highlight-flags="gi">{{ item.$displayName }}</span>
+                </div>
+              </md-item-template>
+            </md-autocomplete>
 
             <!-- FLAG WITH -->
             <md-input-container class="md-block" flex="50" ng-if="action.method == 'addflag'">
