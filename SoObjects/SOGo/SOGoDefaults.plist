@@ -111,6 +111,7 @@
     SOGoRefreshViewCheck = "manually";
     SOGoMailMessageForwarding = "inline";
     SOGoMailReplyPlacement = "below";
+    SOGoMailSaveRepliesInOriginalFolder = NO;
     SOGoMailSignaturePlacement = "below";
     SOGoMailUseSignatureOnNew = YES;
     SOGoMailUseSignatureOnReply = YES;
