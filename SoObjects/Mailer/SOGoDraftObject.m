@@ -204,6 +204,18 @@ static NSString    *userAgent      = nil;
 
 /* contents */
 
+- (void) setHeadersForNewMessage: (NSDictionary *) newHeaders
+{
+  NSMutableDictionary *info;
+  SOGoUserDefaults *ud;
+
+  ud = [[context activeUser] userDefaults];
+  info = [NSMutableDictionary dictionaryWithDictionary: newHeaders];
+  [info setObject: [NSNumber numberWithBool: [ud mailRequestReceipt]]
+          forKey: @"receipt"];
+  [self setHeaders: info];
+}
+
 - (void) setHeaders: (NSDictionary *) newHeaders
 {
   id headerValue;
@@ -1096,7 +1108,7 @@ static NSString    *userAgent      = nil;
   ud = [[context activeUser] userDefaults];
 
   
-  [self setHeaders: info];
+  [self setHeadersForNewMessage: info];
   [self setIsHTML: [[ud mailComposeMessageType] isEqualToString: @"html"]];
   [self setSourceURL: [sourceMail imap4URLString]];
   [self setSourceFlag: @"Answered"];
@@ -1145,7 +1157,7 @@ static NSString    *userAgent      = nil;
   [self _fillInFromAddress: info
            fromSentMailbox: fromSentMailbox
                   envelope: sourceEnvelope];
-  [self setHeaders: info];
+  [self setHeadersForNewMessage: info];
 
   [self setSourceURL: [sourceMail imap4URLString]];
   [self setSourceFlag: @"$Forwarded"];
