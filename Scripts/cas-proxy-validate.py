@@ -1,91 +1,127 @@
-#!/usr/bin/python
-# cas-proxy-validate.py - this file is part of SOGo
-#
-#  Copyright (C) 2010 Inverse inc.
-#
-# Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
-#
-# This file is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2, or (at your option)
-# any later version.
-#
-# This file is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; see the file COPYING.  If not, write to
-# the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-# Boston, MA 02111-1307, USA.
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
-# This script provides a CGI to avoid reentrancy issues when using SOGo in CAS
-# mode
+"""
+cas-proxy-validate.py - CGI helper for SOGo CAS proxy validation
 
-# debian dep: python-memcache
+This script stores the PGT ID associated with a PGT IOU in memcached.
+The key format must match the current SOGo implementation:
+cas-pgtiou:<sha512 hex digest of PGT IOU>
+"""
 
-import cgi
-import memcache
+import hashlib
 import os
 import sys
 
-config = { "cas-addr": "127.0.0.1",
-           "memcached-addrs": ["127.0.0.1:11211"] }
+try:
+    from urllib.parse import parse_qs
+except ImportError:
+    from cgi import parse_qs  # pragma: no cover
 
+import memcache
+
+
+config = {
+    "cas-addr": "127.0.0.1",
+    "memcached-addrs": ["127.0.0.1:11211"],
+}
 
 
 class CASProxyValidator:
     def run(self):
         if "GATEWAY_INTERFACE" in os.environ:
-            self._runAsCGI()
+            self._run_as_cgi()
         else:
-            self._runAsCmd()
+            self._run_as_cmd()
 
-    def _runAsCGI(self):
-        if self._cgiChecks():
-            form = cgi.FieldStorage()
-        if form.list == []:
-            message = "Empty parameters : assuming cert. validation"
-            self._printCGIError(message, 200)
+    @staticmethod
+    def _sha512_hash_ticket(ticket):
+        """Return the lowercase hexadecimal SHA-512 digest used by SOGo."""
+        if isinstance(ticket, str):
+            ticket = ticket.encode("utf-8")
+        return hashlib.sha512(ticket).hexdigest()
+
+    @staticmethod
+    def _print_cgi_response(message, code=403):
+        print(
+            "Status: {code}\r\n"
+            "Content-Type: text/plain; charset=utf-8\r\n"
+            "\r\n"
+            "{message}".format(code=code, message=message)
+        )
+
+    def _cgi_checks(self):
+        if os.environ.get("REQUEST_METHOD") != "GET":
+            self._print_cgi_response("Only 'GET' is accepted.")
+            return False
+
+        remote_addr = os.environ.get("REMOTE_ADDR", "")
+        if remote_addr != config["cas-addr"]:
+            self._print_cgi_response("Who are you? ({})".format(remote_addr))
+            return False
+
+        return True
+
+    @staticmethod
+    def _get_cgi_parameters():
+        # CAS sends pgtId and pgtIou in the query string for a GET callback.
+        query_string = os.environ.get("QUERY_STRING", "")
+        params = parse_qs(query_string, keep_blank_values=True)
+
+        return {
+            key: values[0] if values else ""
+            for key, values in params.items()
+        }
+
+    def _run_as_cgi(self):
+        if not self._cgi_checks():
             return
-        if form.has_key("pgtId") and form.has_key("pgtIou"):
-            pgtIou = form.getfirst("pgtIou")
-            pgtId = form.getfirst("pgtId")
-            self._registerPGTIdAndIou(pgtIou, pgtId)
-            message = "'%s' set to '%s'" \
-                        % ("cas-pgtiou:%s" % pgtIou, pgtId)
-            self._printCGIError(message, 200)
+
+        params = self._get_cgi_parameters()
+
+        # Preserve the historical behaviour used for certificate validation.
+        if not params:
+            self._print_cgi_response(
+                "Empty parameters : assuming cert. validation", 200
+            )
+            return
+
+        pgt_iou = params.get("pgtIou")
+        pgt_id = params.get("pgtId")
+
+        if pgt_iou is not None and pgt_id is not None:
+            key = self._register_pgt_id_and_iou(pgt_iou, pgt_id)
+            self._print_cgi_response(
+                "'{}' set to '{}'".format(key, pgt_id), 200
+            )
         else:
-            self._printCGIError("Missing parameter.")
+            self._print_cgi_response("Missing parameter.")
 
-    def _cgiChecks(self):
-        rc = False
-
-        if os.environ["REQUEST_METHOD"] == "GET":
-            if os.environ["REMOTE_ADDR"] == config["cas-addr"]:
-                rc = True
-            else:
-                self._printCGIError("Who are you? (%s)" % os.environ["REMOTE_ADDR"])
-        else:
-            self._printCGIError("Only 'GET' is accepted.")
-
-        return rc
-
-    def _printCGIError(self, message, code = 403):
-        print("Status: %d\nContent-Type: text/plain; charset=utf-8\n\n%s" % (code, message))
-
-    def _runAsCmd(self):
-        if len(sys.argv) == 3:
-            self._registerPGTIdAndIou(sys.argv[1], sys.argv[2])
-            print("set '%s' to '%s'" % ("cas-pgtiou:%s" % sys.argv[1], sys.argv[2]))
-        else:
+    def _run_as_cmd(self):
+        if len(sys.argv) != 3:
             raise Exception("Missing or too many parameters.")
 
-    def _registerPGTIdAndIou(self, pgtIou, pgtId):
+        pgt_iou = sys.argv[1]
+        pgt_id = sys.argv[2]
+        key = self._register_pgt_id_and_iou(pgt_iou, pgt_id)
+
+        print("set '{}' to '{}'".format(key, pgt_id))
+
+    def _register_pgt_id_and_iou(self, pgt_iou, pgt_id):
+        # Must match:
+        # [self sha512HashTicket: pgtIou]
+        hashed_iou = self._sha512_hash_ticket(pgt_iou)
+        key = "cas-pgtiou:{}".format(hashed_iou)
+
         mc = memcache.Client(config["memcached-addrs"])
-        mc.set("cas-pgtiou:%s" % pgtIou, pgtId)
+
+        if not mc.set(key, pgt_id):
+            raise RuntimeError(
+                "Unable to store PGT mapping in memcached for key '{}'".format(key)
+            )
+
+        return key
+
 
 if __name__ == "__main__":
-    process = CASProxyValidator()
-    process.run()
+    CASProxyValidator().run()
