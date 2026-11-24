@@ -1,0 +1,665 @@
+/* this file is in UTF-8 format! */
+
+/* Tooltips */
+"Create a new event" = "Yeni tədbir yarat";
+"Create a new task" = "Yeni tapşırıq yarat";
+"Edit this event or task" = "Tədbiri və ya tapşırığı redaktə et";
+"Print the current calendar view" = "Cari təqvim görünüşünü çap et";
+"Delete this event or task" = "Tədbiri və ya tapşırığı sil";
+"Go to today" = "Bu günə keç";
+"Switch to day view" = "Günlük görünüşə keç";
+"Switch to week view" = "Həftəlik görünüşə keç";
+"Switch to month view" = "Aylıq görünüşə keç";
+"Switch to multi-columns day view" = "Çox sütunlu günlük görünüşə keç";
+"Reload all calendars" = "Bütün təqvimləri yenilə";
+
+/* Tabs */
+"Date" = "Tarix";
+"Calendars" = "Təqvimlər";
+"No events for selected criteria" = "Seçilmiş meyarlara uyğun tədbir yoxdur";
+"No tasks for selected criteria" = "Seçilmiş meyarlara uyğun tapşırıq yoxdur";
+
+/* Day */
+"DayOfTheMonth" = "Ayın günü";
+"dayLabelFormat" = "%m/%d/%Y";
+"today" = "Bu gün";
+"Previous Day" = "Əvvəlki gün";
+"Next Day" = "Növbəti gün";
+
+/* Week */
+"Week" = "Həftə";
+"this week" = "bu həftə";
+"Week %d" = "%d. həftə";
+"Previous Week" = "Əvvəlki həftə";
+"Next Week" = "Növbəti həftə";
+
+/* Month */
+"this month" = "bu ay";
+"Previous Month" = "Əvvəlki ay";
+"Next Month" = "Növbəti ay";
+/* Week number prefix */
+"W" = "H";
+
+/* Year */
+"this year" = "bu il";
+
+/* Menu */
+"Calendar" = "Təqvim";
+"Contacts" = "Ünvanlar";
+"New Calendar..." = "Yeni təqvim...";
+"Delete Calendar" = "Təqvimi sil...";
+"Unsubscribe Calendar" = "Təqvim abunəsini ləğv et";
+"Sharing..." = "Paylaşılır...";
+"Export Calendar..." = "Təqvimi ixrac et...";
+"Import Events..." = "Tədbirləri idxal et...";
+"Import Events" = "Tədbirləri idxal et";
+"Select an iCalendar file (.ics)." = "Bir iCalendar (.ics) faylı seçin.";
+"Upload" = "Yüklə";
+"Uploading" = "Yüklənir";
+"Publish Calendar..." = "Təqvimi nəşr et...";
+"Reload Remote Calendars" = "Uzaq təqvimləri yenilə";
+"Properties" = "Xüsusiyyətlər";
+"Done" = "Tamam";
+"An error occurred while importing calendar." = "Təqvim idxal edilərkən problem yarandı.";
+"No event was imported." = "Heç bir tədbir idxal edilmədi.";
+"A total of %{0} events were imported in the calendar." = "Ümumilikdə %{0} tədbir təqvimə idxal edildi.";
+"Compose E-Mail to All Attendees" = "Bütün iştirakçılara mesaj yaz";
+"Compose E-Mail to Undecided Attendees" = "Qərar verməmiş iştirakçılara mesaj yaz";
+"Download iOS - MacOS configuration profile" = "iOS - macOS konfiqurasiya profilini yüklə";
+
+/* Relative dates */
+"Yesterday" = "Dünən";
+"Today" = "Bu gün";
+"Tomorrow" = "Sabah";
+"Last %@" = "Son%@";
+
+/* Folders */
+"Personal calendar" = "Şəxsi təqvim";
+
+/* Misc */
+"OpenGroupware.org" = "OpenGroupware.org";
+"Forbidden" = "İcazəniz yoxdur";
+
+/* acls */
+"Access rights to" = "Bura giriş icazələri";
+"For user" = "İstifadəçi üçün";
+"Any Authenticated User" = "Doğrulanmış istifadəçilər";
+"Public Access" = "Hamıya açıq giriş";
+"label_Public" = "Hamıya açıq";
+"label_Private" = "Şəxsi";
+"label_Confidential" = "Gizli";
+"label_Viewer" = "Hamısını görüntülə";
+"label_DAndTViewer" = "Günü və saatı görüntülə";
+"label_Modifier" = "Dəyişdir";
+"label_Responder" = "Bura cavabla";
+"label_None" = "Heç biri";
+"View All" = "Hamısını görüntülə";
+"View the Date & Time" = "Tarixi və saatı görüntülə";
+"Modify" = "Dəyişdir";
+"Respond To" = "Bura cavabla";
+"None" = "Heç biri";
+"This person can create objects in my calendar."
+= "Bu şəxs bu təqvimimdə elementlər yarada bilər.";
+"This person can erase objects from my calendar."
+= "Bu şəxs təqvimimdəki elementləri silə bilər.";
+
+/* Button Titles */
+"Subscribe to a Calendar..." = "Bir təqvimə abunə ol...";
+"Remove the selected Calendar" = "Seçilmiş təqvimi sil";
+"New calendar" = "Yeni təqvim";
+"Name of the Calendar" = "Təqvimin adı";
+"new" = "Yeni";
+"Print view" = "Çap önizləməsi";
+"Print" = "Çap et";
+"edit" = "Redaktə et";
+"delete" = "Sil";
+"proposal" = "Təklif";
+"Save and Close" = "Yadda saxla və Bağla";
+"Close" = "Bağla";
+"Invite Attendees" = "İştirakçı dəvət et";
+"Create Jitsi Meeting" = "Jitsi görüşməsi yarat";
+"Attach" = "Əlavə et";
+"Update" = "Yenilə";
+"Cancel" = "Ləğv et";
+"Reset" = "Sıfırla";
+"Save" = "Yadda saxla";
+"show_rejected_apts" = "Rədd edilən görüşləri göstər";
+"hide_rejected_apts" = "Rədd edilən görüşləri gizlət";
+
+/* Schedule */
+"Schedule" = "Cədvəllə";
+"No appointments found" = "Heç bir görüş tapılmadı";
+"Meetings proposed by you" = "Sizin təklif etdiyiniz görüşlər";
+"Meetings proposed to you" = "Sizə təklif edilən görüşlər";
+"sched_startDateFormat" = "%d/%m %H:%M";
+"action" = "Əməliyyat";
+"accept" = "Qəbul et";
+"decline" = "Rədd et";
+"more attendees" = "Digər iştirakçılar";
+"Hide already accepted and rejected appointments" = "Qəbul edilmiş və rədd edilmiş görüşləri gizlət";
+"Show already accepted and rejected appointments" = "Qəbul edilmiş və rədd edilmiş görüşləri göstər";
+
+/* Print view */
+"LIST" = "Siyahı";
+"Print Settings" = "Çap tənzimləmələri";
+"Title" = "Başlıq";
+"Layout" = "Düzən";
+"What to Print" = "Nə çap ediləcək";
+"Options" = "Seçimlər";
+"Tasks with no due date" = "Son tarixi olmayan tapşırıqlar";
+"Display working hours only" = "Yalnız iş saatlarını göstər";
+"Completed tasks" = "Tamamlanmış tapşırıqlar";
+"Display events and tasks colors" = "Tədbir və tapşırıq rənglərini göstər";
+"Borders" = "Kənar çərçivə";
+"Backgrounds" = "Arxa planlar";
+"Page Format" = "Səhifə formatı";
+
+/* Appointments */
+"Appointment viewer" = "Görüş görüntüləyici";
+"Appointment editor" = "Görüş redaktoru";
+"Appointment proposal" = "Görüş təklifi";
+"Appointment on" = "Görüş vaxtı";
+"Start" = "Başlanğıc";
+"End" = "Bitmə";
+"Due Date" = "Son tarix";
+"Name" = "Tam ad";
+"Email" = "E-poçt";
+"Status" = "Status";
+"% complete" = "% tamamlandı";
+"Location" = "Yer";
+"Add a category" = "Kateqoriya əlavə et";
+"Priority" = "Prioritet";
+"Privacy" = "Gizlilik";
+"Cycle" = "Təkrarlama";
+"Cycle End" = "Təkrarlamanın bitmə tarixi";
+"Categories" = "Kateqoriya";
+"Classification" = "Təsnifat";
+"Duration" = "Müddət";
+"Attendees" = "İştirakçılar";
+"Resources" = "Resurslar";
+"Organizer" = "Təşkilatçı";
+"Description" = "Təsvir";
+"Document" = "Sənəd";
+"Category" = "Kateqoriya";
+"Repeat" = "Təkrar";
+"Reminder" = "Xatırlatıcı";
+"General" = "Ümumi";
+"Reply" = "Cavabla";
+"Created by" = "Yaradan";
+"You are invited to participate" = "Bura dəvət edildiniz";
+"Target" = "Hədəf";
+"attributes" = "xüsusiyyətlər";
+"attendees" = "iştirakçılar";
+"delegated from" = "nümayəndə təyin edən";
+
+/* checkbox title */
+"is private" = "şəxsidir";
+
+/* classification */
+"Public" = "Hamıya açıq";
+"Private" = "Şəxsi";
+
+/* text used in overviews and tooltips */
+"empty title" = "Boş başlıq";
+"private appointment" = "Şəxsi görüş";
+"Change..." = "Dəyiş...";
+
+/* Appointments (participation state) */
+"partStat_NEEDS-ACTION" = "Sonra təsdiqləyəcəyəm";
+"partStat_ACCEPTED" = "Qatılacağam";
+"partStat_DECLINED" = "Qatılmayacağam";
+"partStat_TENTATIVE" = "Bəlkə qatıla bilərəm";
+"partStat_DELEGATED" = "Nümayəndə təyin edirəm";
+"partStat_OTHER" = "Digər";
+
+/* Appointments (error messages) */
+"Conflicts found!" = "Ziddiyyətlər tapıldı!";
+"Invalid iCal data!" = "iCal məlumatları etibarsızdır!";
+"Could not create iCal data!" = "iCal məlumatları yaradıla bilmədi!";
+
+/* Searching */
+"view_all" = "Hamısı";
+"view_today" = "Bu gün";
+"view_next7" = "Gələcək 7 gün";
+"view_next14" = "Gələcək 14 gün";
+"view_next31" = "Gələcək 31 gün";
+"view_thismonth" = "Bu Ay";
+"view_thisyear" = "Bu İl";
+"view_last7" = "Son 7 gün";
+"view_last14" = "Son 14 gün";
+"view_last31" = "Son 31 gün";
+"view_lastmonth" = "Keçən ay";
+"view_lastyear" = "Keçən il";
+"view_future" = "Gələcəkdəki bütün tədbirlər";
+"view_selectedday" = "Seçilmiş gün";
+"view_not_started" = "Başlanmamış tapşırıqlar";
+"view_overdue" = "Müddəti keçmiş tapşırıqlar";
+"view_incomplete" = "Tamamlanmamış tapşırıqlar";
+"View" = "Görüntülə";
+"Title, category or location" = "Başlıq, klass və ya yer";
+"Entire content" = "Bütün məzmun";
+"Search" = "Axtarış";
+"Search attendees" = "İştirakçıları axtar";
+"Search resources" = "Resursları axtar";
+"Search appointments" = "Görüşləri axtar";
+"All day Event" = "Tam gün davam edən tədbir";
+"check for conflicts" = "Ziddiyyətləri yoxla";
+"URL" = "Ünvan";
+"newAttendee" = "İştirakçı əlavə et";
+
+/* calendar modes */
+"Overview" = "Ümumi görünüş";
+"Chart" = "Cədvəl";
+"List" = "Siyahı";
+"Columns" = "Sütunlar";
+
+/* Priorities */
+"prio_0" = "Göstərilməyib";
+"prio_1" = "Yüksək";
+"prio_2" = "Yüksək";
+"prio_3" = "Yüksək";
+"prio_4" = "Yüksək";
+"prio_5" = "Normal";
+"prio_6" = "Aşağı";
+"prio_7" = "Aşağı";
+"prio_8" = "Aşağı";
+"prio_9" = "Aşağı";
+
+/* access classes (privacy) */
+"PUBLIC_vevent" = "Hamıya açıq tədbir";
+"CONFIDENTIAL_vevent" = "Gizli tədbir";
+"PRIVATE_vevent" = "Şəxsi tədbir";
+"PUBLIC_vtodo" = "Hamıya açıq tapşırıq";
+"CONFIDENTIAL_vtodo" = "Gizli tapşırıq";
+"PRIVATE_vtodo" = "Şəxsi tapşırıq";
+
+/* status type */
+"status_" = "Göstərilməyib";
+"status_NOT-SPECIFIED" = "Göstərilməyib";
+"status_TENTATIVE" = "Müvəqqəti";
+"status_CONFIRMED" = "Təsdiqləndi";
+"status_CANCELLED" = "Ləğv edildi";
+"status_NEEDS-ACTION" = "Əməliyyat tələb olunur";
+"status_IN-PROCESS" = "Davam edir";
+"status_COMPLETED" = "Tamamlandı:";
+
+/* Priority level */
+"low" = "aşağı";
+
+/* Priority level */
+"normal" = "normal";
+
+/* Priority level */
+"high" = "yüksək";
+
+/* Cycles */
+"cycle_once" = "Təkrarlanmır";
+"cycle_daily" = "Hər gün";
+"cycle_weekly" = "Hər həftə";
+"cycle_2weeks" = "Hər 2 həftədə bir";
+"cycle_4weeks" = "Hər 4 həftədə bir";
+"cycle_monthly" = "Hər ay";
+"cycle_weekday" = "Hər iş günü";
+"cycle_yearly" = "Hər il";
+"cycle_end_never" = "Heç vaxt bitmir";
+"cycle_end_until" = "Bu tarixə qədər:";
+"Recurrence pattern" = "Təkrarlama modeli";
+"Range of recurrence" = "Təkrarlama aralığı";
+"Daily" = "Günlük";
+"Multi-Columns" = "Çox sütunlu";
+"Weekly" = "Həftəlik";
+"Monthly" = "Aylıq";
+"Yearly" = "İllik";
+"Every" = "Hər";
+"Days" = "Gün";
+"Week(s)" = "Həftə";
+"On" = "Gün";
+"Month(s)" = "Ay";
+
+/* [Event recurrence editor] Ex: _The_ first Sunday */
+"The" = "-";
+"Recur on day(s)" = "Bu günlərdə təkrar et";
+"Year(s)" = "İl";
+
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
+"cycle_of" = "/";
+"No end date" = "Bitmə tarixi yoxdur";
+"Create" = "Yarat";
+"appointment(s)" = "görüş";
+"Repeat until" = "Bu tarixə qədər təkrar et";
+"End Repeat" = "Təkrarlamanın sonu";
+"Never" = "Heç vaxt";
+"After" = "Bu qədər təkrarlamadan sonra";
+"On Date" = "Bu tarixdə";
+"times" = "dəfə";
+"First" = "Birinci";
+"Second" = "İkinci";
+"Third" = "Üçüncü";
+"Fourth" = "Dördüncü";
+"Fift" = "Beşinci";
+"Last" = "Son";
+
+/* Appointment categories */
+"category_none" = "Heç biri";
+"category_labels" = "İldönümü,Doğum günü,İş,Zənglər,Müştərilər,Rəqib,Müştəri,Sevimlilər,İzlə,Hədiyyə,Tətillər,İdealar,Görüş,Problemlər,Müxtəlif,Şəxsi,Layihələr,Bayram,Status,Təchizatçı,Səyahət,Tətil";
+"repeat_NEVER" = "Təkrarlanmır";
+"repeat_DAILY" = "Günlük";
+"repeat_WEEKLY" = "Həftəlik";
+"repeat_BI-WEEKLY" = "İki-həftədə-bir";
+"repeat_EVERY WEEKDAY" = "Həftənin hər günü";
+"repeat_MONTHLY" = "Aylıq";
+"repeat_YEARLY" = "İllik";
+"repeat_CUSTOM" = "Xüsusi...";
+"reminder_NONE" = "Xatırlatıcı yoxdur";
+"reminder_0" = "Tədbir vaxtında";
+"reminder_5_MINUTES_BEFORE" = "5 dəqiqə əvvəl";
+"reminder_10_MINUTES_BEFORE" = "10 dəqiqə əvvəl";
+"reminder_15_MINUTES_BEFORE" = "15 dəqiqə əvvəl";
+"reminder_30_MINUTES_BEFORE" = "30 dəqiqə əvvəl";
+"reminder_45_MINUTES_BEFORE" = "45 dəqiqə əvvəl";
+"reminder_1_HOUR_BEFORE" = "1 saat əvvəl";
+"reminder_2_HOURS_BEFORE" = "2 saat əvvəl";
+"reminder_5_HOURS_BEFORE" = "5 saat əvvəl";
+"reminder_15_HOURS_BEFORE" = "15 saat əvvəl";
+"reminder_1_DAY_BEFORE" = "1 gün əvvəl";
+"reminder_2_DAYS_BEFORE" = "2 gün əvvəl";
+"reminder_1_WEEK_BEFORE" = "1 həftə əvvəl";
+"reminder_CUSTOM" = "Xüsusi...";
+"reminder_MINUTES" = "dəqiqə";
+"reminder_HOURS" = "saat";
+"reminder_DAYS" = "gün";
+"reminder_WEEKS" = "həftə";
+"reminder_BEFORE" = "əvvəl";
+"reminder_AFTER" = "sonra";
+"reminder_START" = "tədbir başlanğıcından";
+"reminder_END" = "tədbir bitimindən";
+"Reminder Details" = "Xatırlatıcı təfərrüatları";
+"Choose a Reminder Action" = "Bir xatırlatıcı əməliyyatı seçin";
+"Show an Alert" = "Bir xəbərdarlıq göstər";
+"Send an E-mail" = "Bir mesaj göndər";
+"Email Organizer" = "Təşkilatçıya e-poçt";
+"Email Attendees (internal users)" = "E-poçt iştirakçıları (daxili istifadəçilər)";
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
+
+/* Arial label for reminder units */
+"Reminder units" = "Xatırlatma elementləri";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "Xatırlatıcı mövqeyi";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "Xatırlatıcı əlaqəsi";
+
+/* transparency */
+"Show Time as Free" = "Bu vaxt aralığını sərbəst olaraq göstər";
+
+/* email notifications */
+"Send Appointment Notifications" = "Görüş bildirişləri göndərilsin";
+"From" = "Başlanğıc";
+"To" = "Bitmə";
+
+/* dates */
+"DateFrom" = "Başdan";
+"DateTo" = "Sonadək";
+
+/* validation errors */
+validate_notitle           = "Başlıq qoyulmayıb, davam etmək istərdinizmi?";
+validate_invalid_startdate = "Başlanğıc tarixi sahəsi etibarsızdır!";
+validate_invalid_enddate   = "Bitmə tarixi sahəsi etibarsızdır!";
+validate_endbeforestart    = "Daxil etdiyiniz bitmə tarixi başlanğıc tarixindən əvvəldir.";
+validate_untilbeforeend    = "Təkrarlanmanın sonu tarixi ilk təkrarlama tarixindən sonra olmalıdır. ";
+
+"Events" = "Tədbirlər";
+"Tasks" = "Tapşırıqlar";
+"Show completed tasks" = "Tamamlanmış tapşırıqları göstər";
+
+/* tabs */
+"Task" = "Tapşırıq";
+"Event" = "Tədbir";
+"Recurrence" = "Təkrarlama";
+
+/* toolbar */
+"New Event" = "Yeni tədbir";
+"New Task" = "Yeni tapşırıq";
+"Edit" = "Redaktə et";
+"Delete" = "Sil";
+"Go to Today" = "Bu günə keç";
+"Day View" = "Günlük görünüş";
+"Week View" = "Həftəlik görünüş";
+"Month View" = "Aylıq görünüş";
+"Reload" = "Yenilə";
+
+/* Number of selected components in events or tasks list */
+"selected" = "seçilmiş";
+"eventPartStatModificationError" = "Qatılım statusunuz dəyişdirilə bilmir.";
+
+/* menu */
+"New Event..." = "Yeni tədbir...";
+"New Task..." = "Yeni tapşırıq...";
+"Edit Selected Event..." = "Seçilmiş tədbiri redaktə et...";
+"Delete Selected Event" = "Seçilmiş tədbiri sil";
+"Select All" = "Hamısını seç";
+"Workweek days only" = "Yalnız həftənin iş günləri";
+"Tasks in View" = "Tapşırıq görünüşü";
+"eventDeleteConfirmation" = "Bu tədbirlər silinəcək:";
+"taskDeleteConfirmation" = "Bu tapşırıqlar silinəcək:";
+"Would you like to continue?" = "Davam etmək istərdinizmi?";
+"You cannot remove nor unsubscribe from your personal calendar."
+= "Şəxsi təqviminizi silə ya da abunəsini ləğv edə bilməzsiniz. ";
+"Are you sure you want to delete the calendar \"%{0}\"?"
+= "\"%{0}\" təqvimini silmək istədiyinizdən əminsinizmi?";
+"Are you sure you want to delete the selected components?"
+= "Seçilmiş komponentləri silmək istədiyinizdən əminsinizmi?";
+
+/* Participation role */
+"Role" = "Rol";
+
+/* Participant role: participation is required */
+"Participant" = "İştirakçı";
+
+/* Participant role: participation is required */
+"req-participant" = "İştirakçı";
+
+/* Participant role: participation is optional */
+"Optional Participant" = "İstəyə bağlı iştirakçı";
+
+/* Participant role: participation is optional */
+"opt-participant" = "İstəyə bağlı iştirakçı";
+
+/* Participant role: participant is copied for information purposes only */
+"Non Participant" = "İştirakçı deyil";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "İştirakçı deyil";
+
+/* Participant role: participant is chair of the calendar entity */
+"Chair" = "Sədirlik";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Sədirlik";
+
+/* Participant status: needs action */
+"Needs action" = "Əməliyyat tələb olunur";
+
+/* Participant status: event accepted */
+"Accepted" = "Qəbul edildi";
+
+/* Participant status: event declined */
+"Declined" = "Rədd edildi";
+
+/* Participant status: tentatively accepted */
+"Tentative" = "Müvəqqəti";
+
+"Free" = "Sərbəst";
+"Busy" = "Məşğul";
+"Maybe busy" = "Məşğul ola bilər";
+"No free-busy information" = "sərbəst/məşğul məlumatı yoxdur";
+
+/* FreeBusy panel buttons and labels */
+"Suggest time slot" = "Saat aralığı təklif edin";
+"Zoom" = "Zoom";
+"Previous slot" = "Əvvəlki aralıq";
+"Next slot" = "Növbəti aralıq";
+"Previous hour" = "Əvvəlki saat";
+"Next hour" = "Növbəti saat";
+"Work days only" = "Yalnız iş günləri";
+"The whole day" = "Tam gün";
+"Between" = "Arasında";
+"and" = "ilə";
+"A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
+= "Bir ya da daha çox iştirakçı ilə saat ziddiyyəti var.\nYenə də cari tənzimləməni saxlamaq istərdinizmi?";
+"Would you like to remove them and send the invitation to the remaining attendees?"
+= "Onları silmək və dəvəti qalan iştirakçılara göndərmək istərdinizmi?";
+
+/* events list */
+"Due" = "Son tarix";
+"(Private Event)" = "(Şəxsi tədbir)";
+vevent_class0 = "(Hamıya açıq tədbir)";
+vevent_class1 = "(Şəxsi tədbir)";
+vevent_class2 = "(Gizli tədbir)";
+
+/* tasks list */
+"Descending Order" = "Azalan sıralama";
+vtodo_class0 = "(Hamıya açıq tapşırıq)";
+vtodo_class1 = "(Şəxsi tapşırıq)";
+vtodo_class2 = "(Gizli tapşırıq)";
+"closeThisWindowMessage" = "Təşəkkürlər! Bu pəncərəni bağlaya və ya aşağıdakıları görüntüləyə bilərsiniz";
+"Multicolumn Day View" = "Çox sütunlu günlük görünüş";
+"Please select an event or a task." = "Zəhmət olmasa bir tədbir və ya tapşırıq seçin.";
+"editRepeatingItem" = "Redaktə etdiyiniz element təkrarlanan bir elementdir. Bu elementin bütün təkrarlamalarını yoxsa yalnız bu bir nüsxəsini redaktə etmək istərdinizmi?";
+"button_thisOccurrenceOnly" = "Yalnız bu təkrarlama";
+"button_allOccurrences" = "Bütün təkrarlamalar";
+"Edit This Occurrence" = "Bu təkrarlamamı redaktə et";
+"Edit All Occurrences" = "Bütün təkrarlamaları redaktə et";
+"Update This Occurrence" = "Bu təkrarlamamı yenilə";
+"Update All Occurrences" = "Bütün təkrarlamaları yenilə";
+
+/* Properties dialog */
+"Color" = "Rəng";
+"Include in free-busy" = "Sərbəst/məşğul içinə daxil et";
+"Synchronization" = "Sinxronizasiya";
+"Synchronize" = "Sinxronizasiya et";
+"Tag" = "Etiket";
+"Display" = "Görüntülənəcək ad";
+"Show alarms" = "Xəbərdarlıqları göstər";
+"Show tasks" = "Tapşırıqları göstər";
+"Notifications" = "Bildirişlər";
+"Receive a mail when I modify my calendar" = "Təqvimimi dəyişdirdikdə mesaj alır";
+"Receive a mail when someone else modifies my calendar" = "Başqası təqvimimi dəyişdirdikdə mesaj alır";
+"When I modify my calendar, send a mail to" = "Bir təqvimi dəyişdirdikdə, aşağıdakı şəxsə mesaj göndər";
+"Email Address" = "E-poçt ünvanı";
+"Export" = "İxrac et";
+
+
+/* Show only the calendar for which the menu is displayed */
+"Show Only This Calendar" = "Yalnız bu təqvimi göstər";
+
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "Bütün təqvimləri göstər";
+
+"Links to this Calendar" = "Bu təqvimin keçidləri";
+"Authenticated User Access" = "Doğrulanmış istifadəçi girişi";
+"CalDAV URL" = "CalDAV ünvanı";
+"WebDAV ICS URL" = "WebDAV ICS ünvanı";
+"WebDAV XML URL" = "WebDAV XML ünvanı";
+"Copy to clipboard" = "Mübadilə buferinə kopyala";
+
+/* Error messages */
+"dayFieldInvalid" = "Zəhmət olmasa Gün sahəsinə 1 və ya daha böyük ədədi dəyər daxil edin.";
+"weekFieldInvalid" = "Zəhmət olmasa Həftə sahəsinə 1 və ya daha böyük ədədi dəyər daxil edin.";
+"monthFieldInvalid" = "Zəhmət olmasa Ay sahəsinə 1 və ya daha böyük ədədi dəyər daxil edin.";
+"monthDayFieldInvalid" = "Zəhmət olmasa ayın günü sahəsində 1 və ya daha böyük ədədi dəyər daxil edin.";
+"yearFieldInvalid" = "Zəhmət olmasa İl sahəsinə 1 və ya daha böyük ədədi dəyər daxil edin.";
+"appointmentFieldInvalid" = "Zəhmət olmasa Görüş sahəsinə 1 və ya daha böyük ədədi dəyər daxil edin.";
+"recurrenceUnsupported" = "Bu təkrarlama növü hələ dəstəklənmir.";
+"Please specify a calendar name." = "Zəhmət olmasa bir təqvim adı göstərin.";
+"tagNotDefined" = "Bu təqvimi sinxronizasiya etmək istəyirsinizsə bir etiket göstərməlisiniz.";
+"tagAlreadyExists" = "Göstərdiyiniz etiket başqa bir təqvim ilə əlaqələndirilmişdir.";
+"tagHasChanged" = "Təqviminizin etiketini dəyişdirirsinizsə, mobil cihazınızda məlumatları yeniləməlisiniz.\nDavam etmək istərdinizmi?";
+"tagWasAdded" = "Bu təqvimi sinxronizasiya etmək istəyirsinizsə, mobil cihazınızda məlumatları yeniləməlisiniz.\nDavam etmək istərdinizmi?";
+"tagWasRemoved" = "Bu təqvimin sinxronizasiyasını ləğv edirsinizsə, mobil cihazınızda məlumatları yeniləməlisiniz.\nDavam etmək istərdinizmi?";
+"DestinationCalendarError" = "Mənbə və hədəf təqvimlər eynidir. Zəhmət olmasa fərqli bir təqvimə kopyalamağı cəhd edin.";
+"EventCopyError" = "Kopyalana bilmədi. Zəhmət olmasa başqa bir təqvimə kopyalamağı cəhd edin.";
+"Please select at least one calendar" = "Zəhmət olmasa ən az bir təqvim seçin";
+"Open Task..." = "Tapşırığı aç...";
+"Mark Completed" = "Tamamlandı kimi işarələ";
+"Delete Task" = "Tapşırığı sil";
+"Delete Event" = "Tədbiri sil";
+"Copy event to my calendar" = "Tədbiri mənim təqvimimə kopyala";
+"View Raw Source" = "Mənbə kodunu göstər";
+"Move To" = "Bura köçür";
+"Copy To" = "Bura kopyala";
+"Subscriptions" = "Üzvlüklər";
+"Subscribe to a shared calendar" = "Paylaşılan bir təqvimə abunə olun";
+"Subscribe to a web calendar..." = "Bir İnternet təqviminə abunə ol...";
+"URL of the Calendar" = "Təqvimin ünvanı";
+"Web Calendar" = "İnternet təqvimi";
+"Web Calendars" = "İnternet təqvimləri";
+"Reload on login" = "Girişdə yenidən yüklə";
+"Invalid number." = "Ədəd etibarsızdır.";
+"Please identify yourself to %{0}" = "Zəhmət olmasa özünüzü %{0} şəxsinə tanıdın ";
+"quantity" = "ədəd";
+"Current view" = "Cari görünüş";
+"Selected events and tasks" = "Seçilmiş tədbirlər və tapşırıqlar";
+"Custom date range" = "Xüsusi tarix aralığı";
+"Select starting date" = "Başlanğıc tarixini seçin";
+"Select ending date" = "Bitmə tarixini seçin";
+"Delegated to" = "Nümayəndə olaraq";
+"Keep sending me updates" = "Yenilikləri mənə göndərməyə davam et";
+"OK" = "Tamam";
+"Confidential" = "Gizli";
+"Enable" = "Aktivləşdir";
+"Filter" = "Süzgəc";
+"Sort" = "Sırala";
+"Back" = "Geri";
+"Day" = "Gün";
+"Month" = "Ay";
+"New Appointment" = "Yeni görüş";
+"filters" = "süzgəclər";
+"Today" = "Bu gün";
+"More options" = "Digər seçimlər";
+"Delete This Occurrence" = "Bu təkrarlamamı sil";
+"Delete All Occurrences" = "Bütün təkrarlamaları sil";
+"Add Recurrence Date" = "Təkrarlama tarixi əlavə et";
+"Add From" = "Başlanğıc tarixi əlavə et";
+"Add Due" = "Bitmə tarixi əlavə et";
+"Import" = "İdxal et";
+"Rename" = "Adını dəyiş";
+"Import Calendar" = "Təqvimi idxal et";
+"Select an ICS file." = "Bir ICS faylı seçin.";
+"You have modified data unsaved. Do you want to close popup and loose data ?" = "Yadda saxlanılmamış dəyişikliklər var. Açılan pəncərəni bağlayaraq dəyişiklikləri ləğv etmək istədiyinizdən əminsinizmi?";
+
+/* Notification when user subscribes to a calendar */
+"Successfully subscribed to calendar" = "Təqvimə abunə oldunuz";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "Elementi aç/bağla";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "Axtarış əhatəsi";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";

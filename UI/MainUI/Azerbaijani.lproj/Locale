@@ -1,0 +1,35 @@
+/* Azerbaijani */
+{
+  NSLanguageName = "Azerbaijani (Azerbaijan)";
+  NSFormalName = "Azerbaijani";
+  NSLocaleCode = "az_AZ"; /* ISO 639-1 */
+  NSLanguageCode = "aze"; /* ISO 639-2 */
+  NSParentContext = "";
+
+  NSAMPMDesignation = (Səhər, "Axşam");
+  NSCurrencySymbol = "₼";
+  NSDateFormatString = "%e, %B, %Y, %A";
+  NSDateTimeOrdering = DMYH;
+  NSDecimalDigits = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+  NSDecimalSeparator = ",";
+  NSEarlierTimeDesignations = (əvvəl, son, "keçmiş", "öncə");
+  NSHourNameDesignations = ((0, gecə), (10, səhər), (12, "günorta"), (14, "günortadan sonra"), (19, "axşam"));
+  NSInternationalCurrencyString = AZN; /* ISO 4217 */
+  NSLaterTimeDesignations = (növbəti);
+  NSMonthNameArray = (Yanvar, Fevral, Mart, Aprel, May, İyun, İyul, Avqust, Sentyabr, Oktyabr, Noyabr, Dekabr);
+  NSNextDayDesignations = ("sabah");
+  NSNextNextDayDesignations = ("birisi gün");
+  NSPriorDayDesignations = ("dünən");
+  NSShortDateFormatString = "%e/%m/%y";
+  NSShortMonthNameArray = (Yan, Fev, Mar, Apr, May, İyn, İyl, Avq, Sen, Okt, Noy, Dek);
+  NSShortTimeDateFormatString = "%e/%m/%y %H:%M";
+  NSShortWeekDayNameArray = (Baz, BzE, ÇAx, Çər, CAx, Cüm, Şnb);
+  NSThisDayDesignations = ("bu gün", "indi");
+  NSThousandsSeparator = ".";
+  NSTimeDateFormatString = "%e %B %Y %A %H:%M:%S %Z";
+  NSTimeFormatString = "%H:%M:%S";
+  NSWeekDayNameArray = (Bazar, "Bazar ertəsi", "Çərşənbə axşamı", "Çərşənbə", "Cümə axşamı", Cümə, Şənbə);
+  NSYearMonthWeekDesignations = ("il", ay, həftə);
+  NSPositiveCurrencyFormatString = "9.999,00 ₼";
+  NSNegativeCurrencyFormatString = "-9.999,00 ₼";
+}
