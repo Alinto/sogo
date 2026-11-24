@@ -21,6 +21,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSException.h>
+#import <Foundation/NSSet.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 
@@ -401,6 +402,46 @@
 - (NSArray *) alarms
 {
   return [self childrenWithTag: @"valarm"];
+}
+
+/* RFC 5545 section 3.6.6 allows any number of VALARMs, so only alarms that
+   serialize identically are dropped. Two alarms sharing an RFC 9074 UID but
+   differing otherwise are left alone: one of them may carry an ACKNOWLEDGED
+   the other lacks, and discarding it would let a dismissed alarm fire again. */
+- (BOOL) removeDuplicateAlarms
+{
+  NSMutableArray *duplicateAlarms;
+  NSMutableSet *alarmStrings;
+  NSEnumerator *allAlarms;
+  iCalAlarm *currentAlarm;
+  NSString *currentAlarmString;
+  NSArray *alarms;
+
+  alarms = [self alarms];
+  if ([alarms count] < 2)
+    return NO;
+
+  duplicateAlarms = [NSMutableArray array];
+  alarmStrings = [NSMutableSet set];
+
+  allAlarms = [alarms objectEnumerator];
+  while ((currentAlarm = [allAlarms nextObject]))
+    {
+      currentAlarmString = [currentAlarm versitString];
+      if ([alarmStrings containsObject: currentAlarmString])
+        [duplicateAlarms addObject: currentAlarm];
+      else
+        [alarmStrings addObject: currentAlarmString];
+    }
+
+  allAlarms = [duplicateAlarms objectEnumerator];
+  while ((currentAlarm = [allAlarms nextObject]))
+    {
+      [currentAlarm setParent: nil];
+      [children removeObjectIdenticalTo: currentAlarm];
+    }
+
+  return ([duplicateAlarms count] > 0);
 }
 
 - (void) setAttach: (NSArray *) _value
