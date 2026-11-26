@@ -50,6 +50,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGExtensions/NGBase64Coding.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NGCalendarDateRange.h>
 #import <NGExtensions/NGHashMap.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -1869,6 +1870,93 @@ void handle_eas_terminate(int signum)
 
 
 //
+// After a response sent from the calendar (not from the mail), move the
+// matching invitation mails (iMIP REQUEST for that event) from the INBOX to
+// the Trash, like Exchange does. For a response to one occurrence, only the
+// invitations for that occurrence are moved.
+//
+- (void) _trashInvitationMailsForEvent: (iCalEvent *) theMaster
+                          recurrenceId: (NSCalendarDate *) theRecurrenceId
+{
+  SOGoMailAccounts *accountsFolder;
+  SOGoMailAccount *accountFolder;
+  SOGoMailFolder *inbox;
+  NSMutableArray *toTrash;
+  EOQualifier *qualifier;
+  NSArray *uids;
+  NSString *summary, *uid;
+  NSException *error;
+  unsigned int i, max;
+  BOOL useTrash;
+
+  summary = [theMaster summary];
+  uid = [theMaster uid];
+  if (![summary length] || ![uid length])
+    return;
+
+  accountsFolder = [[[context activeUser] homeFolderInContext: context] lookupName: @"Mail"
+                                                                         inContext: context
+                                                                           acquire: NO];
+  accountFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
+  inbox = [accountFolder inboxFolderInContext: context];
+  if (!inbox || [inbox isKindOfClass: [NSException class]])
+    return;
+
+  qualifier = [EOQualifier qualifierWithQualifierFormat:
+                             @"(subject doesContain: %@) AND (not (flags = %@))", summary, @"deleted"];
+  uids = [inbox fetchUIDsMatchingQualifier: qualifier
+                              sortOrdering: @"REVERSE ARRIVAL"
+                                  threaded: NO];
+  if (![uids isKindOfClass: [NSArray class]])
+    return;
+
+  toTrash = [NSMutableArray array];
+  max = [uids count];
+  if (max > 20)
+    max = 20;
+
+  for (i = 0; i < max; i++)
+    {
+      SOGoMailObject *mail;
+      iCalCalendar *calendar;
+      iCalEvent *event;
+
+      mail = [inbox lookupName: [[uids objectAtIndex: i] description]
+                     inContext: context
+                       acquire: NO];
+      if (!mail || [mail isKindOfClass: [NSException class]])
+        continue;
+
+      calendar = [mail calendarFromIMIPMessage];
+      if (![[calendar method] isEqualToString: @"REQUEST"])
+        continue;
+
+      event = [[calendar events] lastObject];
+      if (![[event uid] isEqualToString: uid])
+        continue;
+
+      if (theRecurrenceId &&
+          !([event recurrenceId] &&
+            [[event recurrenceId] timeIntervalSince1970] == [theRecurrenceId timeIntervalSince1970]))
+        continue;
+
+      [mail addFlags: @"seen"];
+      [toTrash addObject: [mail nameInContainer]];
+    }
+
+  if ([toTrash count])
+    {
+      useTrash = YES;
+      error = [inbox deleteUIDs: toTrash  useTrashFolder: &useTrash  inContext: context];
+      if (!error && useTrash)
+        [inbox expunge];
+
+      [self logWithFormat: @"EAS - Moved %d invitation(s) for %@ to Trash after MeetingResponse from calendar: %@",
+            (int)[toTrash count], uid, (error ? [error reason] : @"OK")];
+    }
+}
+
+//
 // <?xml version="1.0"?>
 // <!DOCTYPE ActiveSync PUBLIC "-//MICROSOFT//DTD ActiveSync//EN" "http://www.microsoft.com/">
 // <MeetingResponse xmlns="MeetingResponse:">
@@ -1884,8 +1972,10 @@ void handle_eas_terminate(int signum)
 {
   NSString *realCollectionId, *requestId, *easRequestId, *participationStatus, *calendarId;
   SOGoAppointmentObject *appointmentObject;
+  NSCalendarDate *recurrenceId = nil;
+  SOGoMailFolder *invitationFolder = nil;
   iCalAlarm *alarm = nil;
-  SOGoMailObject *mailObject;
+  SOGoMailObject *mailObject = nil;
   NSMutableDictionary *uidCache, *folderMetadata;
   NSMutableString *s, *nameInCache;
   NSData *d;
@@ -1905,6 +1995,20 @@ void handle_eas_terminate(int signum)
   easRequestId = [[(id)[theDocumentElement getElementsByTagName: @"RequestId"] lastObject] textValue];
   appointmentObject = nil;
   calendarId = nil;
+
+  // When responding from the calendar to a single occurrence of a series,
+  // the client tells us which one with InstanceId (EAS 14.1+).
+  {
+    NSString *instanceId;
+
+    instanceId = [[(id)[theDocumentElement getElementsByTagName: @"InstanceId"] lastObject] textValue];
+    if ([instanceId length])
+      {
+        recurrenceId = [instanceId calendarDate];
+        if (debugOn)
+          [self logWithFormat: @"EAS - MeetingResponse for InstanceId %@ (%@)", instanceId, recurrenceId];
+      }
+  }
 
   // Outlook 2013 calls MeetingResponse on the calendar folder! We have
   // no way of handling as we can't retrieve the email (using the id found
@@ -1978,6 +2082,11 @@ void handle_eas_terminate(int signum)
           iCalCalendar *calendar;
           iCalEvent *event;
 
+          // Remember where the invitation mail is, so we can move it to
+          // the Trash once the response has been processed.
+          if ([collection isKindOfClass: [SOGoMailFolder class]])
+            invitationFolder = (SOGoMailFolder *) collection;
+
           calendar = [mailObject calendarFromIMIPMessage];
           event = [[calendar events] lastObject];
           calendarId = [event uid];
@@ -2007,6 +2116,44 @@ void handle_eas_terminate(int signum)
                                                                   inContainer: collection];
               [appointmentObject saveCalendar: [event parent]];
            }
+          else if ([event recurrenceId])
+            {
+              // The invitation only contains one occurrence of an existing
+              // series (iMIP REQUEST with RECURRENCE-ID). Merge it into the
+              // stored series as an exception, like the web UI does, so the
+              // new date/time is kept.
+              iCalCalendar *storedCalendar;
+              iCalEvent *storedOccurrence;
+              NSString *recurrenceTime;
+
+              recurrenceTime = [NSString stringWithFormat: @"%f",
+                                         [[event recurrenceId] timeIntervalSince1970]];
+              storedOccurrence = (iCalEvent *) [appointmentObject lookupOccurrence: recurrenceTime];
+              // Use the calendar the occurrence really belongs to, so
+              // removeChild works; without one, take the stored calendar.
+              if (storedOccurrence)
+                storedCalendar = [storedOccurrence parent];
+              else
+                storedCalendar = [appointmentObject calendar: NO secure: NO];
+
+              if (storedCalendar &&
+                  (!storedOccurrence || [storedOccurrence compare: event] == NSOrderedAscending))
+                {
+                  if (storedOccurrence)
+                    [storedCalendar removeChild: storedOccurrence];
+                  [storedCalendar addChild: event];
+                  [appointmentObject saveCalendar: storedCalendar];
+                  [appointmentObject flush];
+
+                  if (debugOn)
+                    [self logWithFormat: @"EAS - Merged exception %@ into event %@", recurrenceTime, [event uid]];
+                }
+            }
+
+          // The invitation mail decides what the response is for: a single
+          // occurrence (RECURRENCE-ID) or the whole series. iOS may send an
+          // InstanceId even when the whole series is accepted.
+          recurrenceId = [event recurrenceId];
 
           if (uidCache && [calendarId length] > 64)
             {
@@ -2043,9 +2190,81 @@ void handle_eas_terminate(int signum)
       else
         participationStatus = @"DECLINED";
 
+      // Decide whether the response is for one occurrence or the series.
+      // iOS sends an InstanceId (the first occurrence) even when the user
+      // answers a pending invitation for the whole series. So:
+      //  - the occurrence is an exception still waiting for an answer -> it
+      //  - otherwise the series is still waiting for an answer -> series
+      //  - otherwise (e.g. declining one day of an accepted series) -> it
+      if (recurrenceId)
+        {
+          iCalEvent *master, *occurrence;
+          iCalPerson *me;
+
+          master = (iCalEvent *) [appointmentObject component: NO secure: NO];
+          occurrence = (iCalEvent *) [appointmentObject lookupOccurrence:
+                                         [NSString stringWithFormat: @"%f",
+                                                   [recurrenceId timeIntervalSince1970]]];
+
+          if (![master hasRecurrenceRules] && !occurrence)
+            recurrenceId = nil;
+          else
+            {
+              me = (occurrence ? [occurrence userAsAttendee: [context activeUser]] : nil);
+              if (!(me && [me participationStatus] == iCalPersonPartStatNeedsAction))
+                {
+                  me = [master userAsAttendee: [context activeUser]];
+                  if (me && [me participationStatus] == iCalPersonPartStatNeedsAction)
+                    recurrenceId = nil;
+                }
+            }
+
+          if (debugOn)
+            [self logWithFormat: @"EAS - MeetingResponse applies to %@",
+                  (recurrenceId ? [recurrenceId description] : @"the whole series")];
+        }
+
       [appointmentObject changeParticipationStatus: participationStatus
                                       withDelegate: nil
-                                             alarm: alarm];
+                                             alarm: alarm
+                                   forRecurrenceId: recurrenceId];
+
+      // Response sent from the calendar: look up the invitation mails
+      if (!invitationFolder)
+        [self _trashInvitationMailsForEvent: (iCalEvent *) [appointmentObject component: NO secure: NO]
+                               recurrenceId: recurrenceId];
+
+      // Like Exchange: once the user has responded, mark the invitation
+      // mail as read and move it to the Trash. The client learns about it
+      // on its next Sync. We never do this when the mail is already in the
+      // Trash, as deleteUIDs would then expunge it for good.
+      if (invitationFolder && mailObject &&
+          ![mailObject isKindOfClass: [NSException class]])
+        {
+          id trashFolder;
+
+          trashFolder = [[invitationFolder mailAccountFolder] trashFolderInContext: context];
+
+          if ([trashFolder isNotNull] &&
+              ![trashFolder isKindOfClass: [NSException class]] &&
+              ![[[trashFolder imap4URL] path] isEqualToString: [[invitationFolder imap4URL] path]])
+            {
+              NSException *error;
+              BOOL useTrash;
+
+              useTrash = YES;
+              [mailObject addFlags: @"seen"];
+              error = [invitationFolder deleteUIDs: [NSArray arrayWithObject: [mailObject nameInContainer]]
+                                    useTrashFolder: &useTrash
+                                         inContext: context];
+              if (!error && useTrash)
+                [invitationFolder expunge];
+
+              if (debugOn)
+                [self logWithFormat: @"EAS - Moved invitation %@ to Trash after MeetingResponse: %@",
+                      [mailObject nameInContainer], (error ? [error reason] : @"OK")];
+            }
+        }
 
       [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
       [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
@@ -3465,6 +3684,113 @@ void handle_eas_terminate(int signum)
 }
 
 //
+// Returns the iCalendar data of an iMIP REPLY contained in the message
+// (as top-level part or as part of a multipart), or nil.
+//
+- (iCalCalendar *) _iMIPReplyCalendarFromMessage: (id) thePart
+{
+  NGMimeType *type;
+  id body;
+
+  type = [thePart contentType];
+  if (!type)
+    return nil;
+
+  // Note: messages to nil return NSOrderedSame, so compare lowercase strings
+  if ([[[type type] lowercaseString] isEqualToString: @"multipart"])
+    {
+      NSEnumerator *e;
+      iCalCalendar *calendar;
+      id part;
+
+      body = [thePart body];
+      if (![body isKindOfClass: [NGMimeMultipartBody class]])
+        return nil;
+
+      e = [[body parts] objectEnumerator];
+      while ((part = [e nextObject]))
+        if ((calendar = [self _iMIPReplyCalendarFromMessage: part]))
+          return calendar;
+
+      return nil;
+    }
+
+  if (![[[type type] lowercaseString] isEqualToString: @"text"] ||
+      ![[[type subType] lowercaseString] isEqualToString: @"calendar"])
+    return nil;
+
+  body = [thePart body];
+  if ([body isKindOfClass: [NSData class]])
+    body = [[[NSString alloc] initWithData: body  encoding: NSUTF8StringEncoding] autorelease];
+
+  if (![body isKindOfClass: [NSString class]])
+    return nil;
+
+  {
+    iCalCalendar *calendar;
+
+    calendar = [iCalCalendar parseSingleFromSource: body];
+    if (![[[calendar method] uppercaseString] isEqualToString: @"REPLY"])
+      return nil;
+
+    return calendar;
+  }
+}
+
+//
+// iOS sends its own iMIP REPLY (SendMail) after a MeetingResponse, but SOGo
+// already sent one to the organizer when the participation status was
+// changed. The iOS one is even wrong for series accepted from the calendar
+// (it carries the RECURRENCE-ID of the first occurrence). So we consider the
+// device's reply a duplicate when SOGo sends notifications and the stored
+// event was just changed to the very same participation status.
+//
+- (BOOL) _isIMIPReplyAlreadySentByServer: (NGMimeMessage *) theMessage
+{
+  SOGoAppointmentFolder *folder;
+  SOGoAppointmentObject *eventObject;
+  iCalCalendar *calendar;
+  iCalEvent *replyEvent, *target;
+  iCalPerson *replier, *me;
+  NSString *name;
+
+  if (![[[context activeUser] domainDefaults] appointmentSendEMailNotifications])
+    return NO;
+
+  calendar = [self _iMIPReplyCalendarFromMessage: theMessage];
+  replyEvent = [[calendar events] lastObject];
+  replier = [[replyEvent attendees] lastObject];
+  if (!replyEvent || !replier ||
+      ![[context activeUser] hasEmail: [replier rfc822Email]])
+    return NO;
+
+  folder = [[context activeUser] personalCalendarFolderInContext: context];
+  name = [folder resourceNameForEventUID: [replyEvent uid]];
+  if (![name length])
+    return NO;
+
+  eventObject = [folder lookupName: name  inContext: context  acquire: NO];
+  if (!eventObject || [eventObject isKindOfClass: [NSException class]])
+    return NO;
+
+  // Only right after the server processed the response
+  if ([[eventObject lastModified] timeIntervalSinceNow] < -120)
+    return NO;
+
+  target = nil;
+  if ([replyEvent recurrenceId])
+    target = (iCalEvent *) [eventObject lookupOccurrence:
+                                         [NSString stringWithFormat: @"%f",
+                                                   [[replyEvent recurrenceId] timeIntervalSince1970]]];
+  if (!target)
+    target = (iCalEvent *) [eventObject component: NO  secure: NO];
+
+  me = [target userAsAttendee: [context activeUser]];
+
+  return (me && [me participationStatus] == [replier participationStatus]);
+}
+
+//
 //
 //
 - (void) processSendMail: (id <DOMElement>) theDocumentElement
@@ -3620,9 +3946,26 @@ void handle_eas_terminate(int signum)
         }
     }
 
-  error = [self _sendMail: data
-               recipients: [message allBareRecipients]
-                saveInSentItems: ([(id)[theDocumentElement getElementsByTagName: @"SaveInSentItems"] count] ? YES : NO)];
+  if ([self _isIMIPReplyAlreadySentByServer: message])
+    {
+      // Don't send it twice, but keep it in Sent like the device expects
+      [self logWithFormat: @"EAS - Not sending iMIP reply from device, the server already sent it"];
+      if ([(id)[theDocumentElement getElementsByTagName: @"SaveInSentItems"] count])
+        {
+          SOGoMailAccount *accountFolder;
+
+          accountFolder = [[[[context activeUser] homeFolderInContext: context] lookupName: @"Mail"
+                                                                                 inContext: context
+                                                                                   acquire: NO]
+                            lookupName: @"0"  inContext: context  acquire: NO];
+          [[accountFolder sentFolderInContext: context] postData: data  flags: @"seen"];
+        }
+      error = nil;
+    }
+  else
+    error = [self _sendMail: data
+                 recipients: [message allBareRecipients]
+            saveInSentItems: ([(id)[theDocumentElement getElementsByTagName: @"SaveInSentItems"] count] ? YES : NO)];
 
   if (error)
     {

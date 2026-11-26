@@ -59,16 +59,30 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 - (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
-  NSMutableString *s;
   NSString *t;
-  int type;
-
-  s = [NSMutableString string];
 
   if ([[self parent] isKindOfClass: [iCalToDo class]])
     t = @"Tasks";
   else
     t = @"Calendar";
+
+  return [self activeSyncRepresentationInContext: context  namespace: t];
+}
+
+//
+// theNamespace is "Calendar" or "Tasks" for Sync items, and "Email" for the
+// <Recurrences> element of a <MeetingRequest> (MS-ASEMAIL 2.2.2.62). The
+// Email code page uses the same Recurrence_* tag names.
+//
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context
+                                       namespace: (NSString *) theNamespace
+{
+  NSMutableString *s;
+  NSString *t;
+  int type;
+
+  s = [NSMutableString string];
+  t = theNamespace;
 
   [s appendFormat: @"<Recurrence xmlns=\"%@:\">", t];
 

@@ -47,6 +47,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSString+Encoding.h>
 #import <NGExtensions/NGHashMap.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <NGImap4/NGImap4Envelope.h>
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 #import <NGImap4/NSString+Imap4.h>
@@ -69,6 +70,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/NSArray+Utilities.h>
 
+#include "iCalRecurrenceRule+ActiveSync.h"
 #include "iCalTimeZone+ActiveSync.h"
 #include "NSData+ActiveSync.h"
 #include "NSDate+ActiveSync.h"
@@ -89,6 +91,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <SOGo/NSString+Utilities.h>
 
 #import <Appointments/SOGoAptMailNotification.h>
+#import <Appointments/SOGoAppointmentFolder.h>
+#import <Appointments/SOGoAppointmentObject.h>
 
 
 
@@ -908,6 +912,114 @@ struct GlobalObjectId {
 //
 //
 //
+//
+// Replace a stored exception of a recurring event with a newer version
+// received by mail (iMIP REQUEST with RECURRENCE-ID). Only existing
+// exceptions are updated, and only if the mail version is newer
+// (SEQUENCE/DTSTAMP), so this is safe to run on every Sync.
+//
+- (SOGoAppointmentObject *) _storedEventObjectForUID: (NSString *) uid
+{
+  SOGoAppointmentFolder *folder;
+  SOGoAppointmentObject *eventObject;
+  NSString *name;
+
+  folder = [[context activeUser] personalCalendarFolderInContext: context];
+  if (!folder || ![uid length])
+    return nil;
+
+  name = [folder resourceNameForEventUID: uid];
+  if (![name length])
+    return nil;
+
+  eventObject = [folder lookupName: name  inContext: context  acquire: NO];
+  if (!eventObject || [eventObject isKindOfClass: [NSException class]])
+    return nil;
+
+  return eventObject;
+}
+
+//
+// Replace a stored recurring event with a newer version of the whole
+// series received by mail (iMIP REQUEST without RECURRENCE-ID). Like
+// Outlook/Exchange, exceptions not contained in the new invitation are
+// dropped. Only done if the mail version is newer, so it is safe to run on
+// every Sync.
+//
+- (void) _updateStoredSeriesWithCalendar: (iCalCalendar *) mailCalendar
+                                  master: (iCalEvent *) mailMaster
+{
+  SOGoAppointmentObject *eventObject;
+  iCalCalendar *storedCalendar;
+  iCalEvent *storedMaster, *mailEvent;
+  iCalTimeZone *tz;
+  NSEnumerator *e;
+
+  eventObject = [self _storedEventObjectForUID: [mailMaster uid]];
+  if (!eventObject)
+    return;
+
+  storedMaster = (iCalEvent *) [eventObject component: NO  secure: NO];
+  if (!storedMaster || ![storedMaster isRecurrent] ||
+      [storedMaster compare: mailMaster] != NSOrderedAscending)
+    return;
+
+  storedCalendar = [storedMaster parent];
+  if (!storedCalendar)
+    return;
+
+  // Make sure the time zones used by the new series are present
+  e = [[mailCalendar timezones] objectEnumerator];
+  while ((tz = [e nextObject]))
+    if (![storedCalendar timeZoneWithId: [tz tzId]])
+      [storedCalendar addTimeZone: [[tz mutableCopy] autorelease]];
+
+  // Master first, then the exceptions sent along with it
+  [storedCalendar removeChildren: [NSArray arrayWithArray: [storedCalendar events]]];
+  [storedCalendar addChild: [[mailMaster mutableCopy] autorelease]];
+  e = [[mailCalendar events] objectEnumerator];
+  while ((mailEvent = [e nextObject]))
+    if (mailEvent != mailMaster && [mailEvent recurrenceId])
+      [storedCalendar addChild: [[mailEvent mutableCopy] autorelease]];
+
+  [eventObject saveCalendar: storedCalendar];
+  [eventObject flush];
+
+  [self logWithFormat: @"EAS - Applied update of series %@ from invitation mail", [mailMaster uid]];
+}
+
+- (void) _updateStoredOccurrenceWithEvent: (iCalEvent *) event
+{
+  SOGoAppointmentObject *eventObject;
+  iCalCalendar *storedCalendar;
+  iCalEvent *storedOccurrence, *newOccurrence;
+  NSString *recurrenceTime;
+
+  eventObject = [self _storedEventObjectForUID: [event uid]];
+  if (!eventObject)
+    return;
+
+  recurrenceTime = [NSString stringWithFormat: @"%f",
+                             [[event recurrenceId] timeIntervalSince1970]];
+  storedOccurrence = (iCalEvent *) [eventObject lookupOccurrence: recurrenceTime];
+  // Use the calendar the occurrence really belongs to, so removeChild works
+  storedCalendar = [storedOccurrence parent];
+
+  if (storedCalendar && storedOccurrence &&
+      [storedOccurrence compare: event] == NSOrderedAscending)
+    {
+      // Work on a copy, the mail's event is still used by the caller
+      newOccurrence = [[event mutableCopy] autorelease];
+      [storedCalendar removeChild: storedOccurrence];
+      [storedCalendar addChild: newOccurrence];
+      [eventObject saveCalendar: storedCalendar];
+      [eventObject flush];
+
+      [self logWithFormat: @"EAS - Applied update of occurrence %@ of event %@ from invitation mail",
+            recurrenceTime, [event uid]];
+    }
+}
+
 - (NSString *) activeSyncRepresentationInContext: (WOContext *) _context
 {
   NSData *d, *globalObjId;
@@ -1011,6 +1123,30 @@ struct GlobalObjectId {
       event = [[calendar events] lastObject];
       method = [[event parent] method];
 
+      // Like the Exchange calendar attendant: an update to a single
+      // occurrence that is already stored as an exception is applied to
+      // the calendar right away, so the client shows the new time and a
+      // pending invitation in its calendar.
+      if ([method isEqualToString: @"REQUEST"] &&
+          ![event userIsOrganizer: [context activeUser]] &&
+          [event userIsAttendee: [context activeUser]])
+        {
+          iCalEvent *mailMaster, *current;
+          NSEnumerator *e;
+
+          // The series itself is the VEVENT without RECURRENCE-ID
+          mailMaster = nil;
+          e = [[calendar events] objectEnumerator];
+          while (!mailMaster && (current = [e nextObject]))
+            if (![current recurrenceId])
+              mailMaster = current;
+
+          if (mailMaster && [mailMaster isRecurrent])
+            [self _updateStoredSeriesWithCalendar: calendar  master: mailMaster];
+          else if ([event recurrenceId])
+            [self _updateStoredOccurrenceWithEvent: event];
+        }
+
       // If we are the organizer, let's pick the attendee based on the From address
       if ([event userIsOrganizer: [context activeUser]])
         attendee = [event findAttendeeWithEmail: [[[[self envelope] from] lastObject] baseEMail]];
@@ -1067,8 +1203,32 @@ struct GlobalObjectId {
       if ([event endDate])
         [s appendFormat: @"<EndTime xmlns=\"Email:\">%@</EndTime>", [[event endDate] activeSyncRepresentationInContext: context]];
       
-      // FIXME: Single appointment - others are not supported right now
-      [s appendFormat: @"<InstanceType xmlns=\"Email:\">%d</InstanceType>", 0];
+      // InstanceType -- MS-ASEMAIL 2.2.2.41
+      //   0: single appointment
+      //   1: master of a recurring appointment (needs <Recurrences>)
+      //   2: single instance (exception) of a recurring appointment (needs <RecurrenceId>)
+      //
+      // Without this, iOS cannot match an update of one occurrence to the existing
+      // series: it silently drops it and never sends MeetingResponse.
+      if ([event recurrenceId])
+        {
+          [s appendFormat: @"<InstanceType xmlns=\"Email:\">%d</InstanceType>", 2];
+          // RecurrenceId -- MS-ASEMAIL 2.2.2.63: original start of the occurrence
+          [s appendFormat: @"<RecurrenceId xmlns=\"Email:\">%@</RecurrenceId>",
+             [[event recurrenceId] activeSyncRepresentationInContext: context]];
+        }
+      else if ([event isRecurrent] && [[event recurrenceRules] count])
+        {
+          [s appendFormat: @"<InstanceType xmlns=\"Email:\">%d</InstanceType>", 1];
+          // Recurrences -- MS-ASEMAIL 2.2.2.62
+          [s appendString: @"<Recurrences xmlns=\"Email:\">"];
+          [s appendString: [[[event recurrenceRules] objectAtIndex: 0]
+                             activeSyncRepresentationInContext: context
+                                                     namespace: @"Email"]];
+          [s appendString: @"</Recurrences>"];
+        }
+      else
+        [s appendFormat: @"<InstanceType xmlns=\"Email:\">%d</InstanceType>", 0];
 
       // Location
       if ([[event location] length])
@@ -1088,7 +1248,7 @@ struct GlobalObjectId {
       // Sensitivity
       if ([[event accessClass] isEqualToString: @"PRIVATE"])
         v = 2;
-      if ([[event accessClass] isEqualToString: @"CONFIDENTIAL"])
+      else if ([[event accessClass] isEqualToString: @"CONFIDENTIAL"])
         v = 3;
       else
         v = 0;
