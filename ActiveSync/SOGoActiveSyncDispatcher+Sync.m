@@ -1915,6 +1915,7 @@ FIXME
 
   SOGoMicrosoftActiveSyncFolderType folderType;
   unsigned int windowSize, v, status, i;
+  NSString *requestedFilterType;
   BOOL getChanges, first_sync;
 
   changeBuffer = [NSMutableString string];
@@ -2118,6 +2119,26 @@ FIXME
 
       if (!filterType)
         filterType = @"0";
+
+      // Some clients (e.g. Outlook for iOS for the Inbox) send Options with a FilterType
+      // but without BodyPreference. The FilterType must still be honoured and compared
+      // with the stored one - otherwise a widened filter (e.g. 1 day -> 1 month) is never
+      // detected and older messages are never sent.
+      requestedFilterType = [[(id)[theDocumentElement getElementsByTagName: @"FilterType"] lastObject] textValue];
+
+      if (requestedFilterType && ![requestedFilterType isEqualToString: filterType])
+        {
+          if ((([requestedFilterType intValue] != 0) && [filterType intValue] < [requestedFilterType intValue]) ||
+              (([requestedFilterType intValue] == 0) && ([filterType intValue] > [requestedFilterType intValue])))
+            {
+              [context setObject: [NSNumber numberWithBool: YES] forKey: @"FilterTypeChanged"];
+            }
+
+          filterType = requestedFilterType;
+          folderOptions = [[NSDictionary alloc] initWithObjectsAndKeys: mimeSupport, @"MIMESupport", mimeTruncation, @"MIMETruncation", filterType, @"FilterType", bodyPreferenceType, @"BodyPreferenceType", nil];
+          [folderMetadata setObject: folderOptions forKey: @"FolderOptions"];
+          [self _setFolderMetadata: folderMetadata forKey: folderKey];
+        }
     }
   else
     {
