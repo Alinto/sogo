@@ -489,6 +489,28 @@ static NSInteger _compareFetchResultsByUID (id entry1, id entry2, NSDictionary *
                       // to it, we create it.
                       b = [self ensureTrashFolder];
 		  
+                      if (b && [[self mailAccountFolder] supportsMove])
+                        {
+                          // RFC 6851: move the messages atomically instead of
+                          // COPY + STORE \Deleted + (later) EXPUNGE. On servers
+                          // where a message copied within the same account shares
+                          // its flags with the original (e.g. Stalwart), the
+                          // \Deleted flag otherwise also lands on the Trash copy,
+                          // and if another client expunges Trash before the source
+                          // is expunged, the message ends up back in the source.
+                          result = [[client moveUids: uids toFolder: folderName]
+                                     objectForKey: @"result"];
+                          if ([result boolValue])
+                            {
+                              [self flushMailCaches];
+                              [trashFolder flushMailCaches];
+                              return nil;
+                            }
+
+                          return [NSException exceptionWithHTTPStatus: 500
+                                                               reason: @"Could not move UIDs to Trash"];
+                        }
+
                       if (b)
                       {
                         result = [[client copyUids: uids toFolder: folderName]
