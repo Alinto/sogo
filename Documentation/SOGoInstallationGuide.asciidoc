@@ -1025,6 +1025,7 @@ SOGoUserSources = (
     {
         type = ldap;
         CNFieldName = cn;
+        SNFieldName = sn;
         IDFieldName = uid;
         UIDFieldName = uid;
         IMAPHostFieldName = mailHost;
@@ -1068,6 +1069,7 @@ SOGoUserSources = (
     {
         type = ldap;
         CNFieldName = cn;
+        SNFieldName = sn;
         IDFieldName = cn;
         UIDFieldName = sAMAccountName;
         baseDN = "cn=Users,dc=acme,dc=com";
